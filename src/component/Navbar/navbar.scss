@@ -1,0 +1,123 @@
+.navbarContainer .MuiGrid-spacing-xs-2 {
+  margin: auto;
+}
+
+.MasterContainer {
+  height: 900px;
+}
+
+.userInfo {
+  display: flex;
+  justify-content: space-around;
+}
+
+.customIcon_header,.menuIcon {
+  font-size: 32px !important;
+  color: white;
+}
+
+.customIconArrow_header {
+  font-size: 26px !important;
+  color: white;
+}
+
+.headerName {
+  font-family: "Poppins-MediumItalic";
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.Header_Title {
+  color: white;
+  font-size: 20px;
+  padding-left: 1% !important;
+}
+
+.userName {
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90px;
+  overflow: hidden;
+}
+
+.userPosition {
+  color: white;
+  font-size: 13px;
+}
+
+.suranaLogo{
+  margin: 30px 75px;
+  height: 110px;
+  background-color: white;
+  font-size: 16px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menuItemHighLightDark{
+  width: 4%;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.menuItemHighLightDarkBg{
+  background-color: #a20981;
+}
+
+.siderOptions{
+  display: flex;
+  font-size: 16px;
+  margin: 4px 0;
+  height: 40px;
+  align-items: center;
+}
+
+.siderOptionsBg{
+  background-color: #682998;
+}
+
+.SiderResume_Button{
+  padding: 2.3% 5%;
+  color: white;
+}
+
+@media only screen and (max-width: 1100px) {
+  .customIcon_header {
+    font-size: 20px !important;
+  }
+
+  .customIconArrow_header {
+    font-size: 15px !important;
+  }
+
+  .master_container {
+    font-size: 8px !important;
+  }
+
+  .headerName {
+    font-size: 18px !important;
+  }
+
+  .Header_Title {
+    font-size: 16px !important;
+  }
+
+  .userName {
+    font-size: 11px !important;
+    width: 66px !important;
+    margin: 0 2.5px;
+
+    ~ div {
+      font-size: 10px !important;
+      margin: 0 2.5px;
+    }
+
+  }
+
+}
