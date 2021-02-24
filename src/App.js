@@ -7,9 +7,11 @@ import Navbar from "./component/Navbar/navbar.js";
 // pages
 import Dashboard from "./pages/Dashboard/dashboard.js";
 import Resume from "./pages/Resume/resume.js";
+import Interview from './pages/Interview/interview'
 
 
 import './App.css';
+import Employeeform from "./pages/Employeeform/employeeform.js";
 
 function App() {
 
@@ -19,6 +21,8 @@ function App() {
         <Switch>
           <Route path="/resume" component={Resume} exact/>
           <Route path="/dashboard" component={Dashboard} exact/>
+          <Route path="/interview" component={Interview} exact/>
+          <Route path="/employeeform" component={Employeeform} exact/>
         </Switch>
       </Navbar>
     </Router>

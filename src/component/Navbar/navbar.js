@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'purple',
+    backgroundColor: '#0354A4',
   },
   drawer: {
     width: drawerWidth,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: '#420F8D',
+    backgroundColor: '#023E7D',
 
   },
   drawerContainer: {
@@ -67,7 +67,9 @@ function Navbar(props) {
   const [menuItems, setMenuItems] = useState(
     [
       {path:"/resume",title:"Resume"},
-      {path:"/dashboard",title:"Dashboard"}
+      {path:"/dashboard",title:"Dashboard"},
+      {path:"/interview",title:"Interview"},
+      {path:"/employeeform",title:"Employee Form"}
     ]
     );
 
