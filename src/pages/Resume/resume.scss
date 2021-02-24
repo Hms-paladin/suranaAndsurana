@@ -1,0 +1,111 @@
+.ContentTitle {
+    font-size: 24px;
+    font-weight: 550;
+    color: #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 40px;
+  }
+  
+  .master_container {
+    display: flex;
+    padding: 1%;
+  }
+  
+  .Left_Container {
+    width: 55%;
+    padding-left: 7%;
+  }
+  
+  .Right_Container {
+    width: 45%;
+  
+  }
+  
+  .SelectInput_svg {
+    width: 167%;
+    height: 19px;
+  }
+  .DateInput_svg{
+    height: 20px;
+  }
+  
+  .ContainerInput .ant-input {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #0353A4;
+  
+  }
+  
+  .SelectionInput .ant-select-arrow {
+    margin-top: -11px;
+    margin-right: 5px;
+  
+  }
+  
+  
+  .SelectOption .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #0353A4;
+  
+  }
+  
+  .DatepickerInput .ant-picker {
+  
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #0353A4;
+  }
+  
+  .DatepickerInput .ant-picker-suffix {
+    font-size: 23px;
+    color: #0353A4;
+  }
+  
+  .SaveButton {
+    height: 35px;
+    width:28%;
+    background-color: #023E7D;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+    margin-top: 10%;
+    cursor: pointer;
+  }
+  
+  
+  
+  .CancelButton{
+    height: 35px;
+    width: 30%;
+    background-color: rgb(251, 248, 252);
+    text-align: center;
+    color: rgb(134, 130, 130);
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+    margin-top: 10%;
+    cursor: pointer;
+  
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgb(87, 84, 84) !important;
+  }
+  
+  .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+    color: rgb(87, 84, 84) !important;
+  
+  }
