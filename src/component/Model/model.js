@@ -3,11 +3,16 @@ import { Modal } from 'antd';
 import "./model.scss";
 
 function DynModel(props){
-    const [visible, setVisible] = React.useState(true);
+    const [visible, setVisible] = React.useState(false);
 
     function handleCancel() {
         setVisible(false)
+        props.handleChangeCloseModel(false)
     }
+
+    React.useEffect(()=>{
+        setVisible(props.handleChangeModel)
+    },[props.handleChangeModel])
 
     return(
         <Modal

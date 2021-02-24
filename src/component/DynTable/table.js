@@ -82,7 +82,7 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
+  // onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -203,7 +203,7 @@ export default function EnhancedTable(props) {
                 let keys = Object.keys(row)
                 let arrval = []
                 for (var m = 0; m < keys.length; m++) {
-                  arrval.push(<TableCell key={index} align="left">{row[keys[m]]}</TableCell>)
+                  arrval.push(<TableCell key={index+""+m} align="left">{row[keys[m]]}</TableCell>)
                 }
 
                   return (

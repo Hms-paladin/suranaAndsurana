@@ -1,3 +1,27 @@
-.modelContainer .ant-modal-content,.modelContainer .ant-modal-header{
-    border-radius: 5px !important;
+
+.modelContainer {
+    .ant-modal-header{
+        background-color: #0353A4;
+        border-top-left-radius: 5px !important;
+        border-top-right-radius: 5px !important;
+        padding: 10px 24px;
+        text-align: center;
+    }
+    .ant-modal-title{
+        color: #fff;
+    }
+    .ant-modal-content {
+        border-radius: 5px !important;
+    }
+    .ant-modal-close-x{
+        width: 42px;
+        height: 42px;
+        line-height: 40px;
+    }
+    .ant-modal-close-icon{
+        padding: 3px;
+        background-color: #F94144;
+        border-radius: 15px;
+        font-size: 9px;
+    }
 }

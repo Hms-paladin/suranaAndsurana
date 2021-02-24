@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: '#0353A4',
+    backgroundColor: '#0354A4',
   },
   drawer: {
     width: drawerWidth,
@@ -68,8 +68,8 @@ function Navbar(props) {
     [
       {path:"/resume",title:"Resume"},
       {path:"/dashboard",title:"Dashboard"},
-      {path:"/interview",title:"Interview"}
-
+      {path:"/interview",title:"Interview"},
+      {path:"/employeeform",title:"Employee Form"}
     ]
     );
 

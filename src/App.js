@@ -11,6 +11,7 @@ import Interview from './pages/Interview/interview'
 
 
 import './App.css';
+import Employeeform from "./pages/Employeeform/employeeform.js";
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
           <Route path="/resume" component={Resume} exact/>
           <Route path="/dashboard" component={Dashboard} exact/>
           <Route path="/interview" component={Interview} exact/>
-
+          <Route path="/employeeform" component={Employeeform} exact/>
         </Switch>
       </Navbar>
     </Router>
