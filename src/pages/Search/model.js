@@ -30,6 +30,7 @@ function DynModel(props){
             <div className="interviewdetailform"><LabelBox type="select"/></div>
             <div className="interviewdetailform"></div>
             <div className="interviewdetailform"><LabelBox type="select"/></div>
+            <div className="interviewdetailsubmnit"><Button>Submit</Button></div>
             </div>
         </Modal>
     )

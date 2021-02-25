@@ -77,3 +77,21 @@
 .interviewdetailformdiv .interviewdetailform{
     width: 80%;
 }
+.interviewdetailsubmnit{
+    display: flex;
+    justify-content: flex-end;
+}
+.interviewdetailsubmnit Button{
+    background-color: #0353A4;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    margin-right: 50px;
+    padding: 5px 20px;
+    text-transform: none;
+    box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
+}
+.interviewdetailsubmnit Button{
+    background-color: #0353A4;
+}
