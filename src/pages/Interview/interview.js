@@ -1,9 +1,11 @@
-import React from "react";
+import React,{ useState } from "react";
 import { Grid } from "@material-ui/core";
 import './interview.scss'
 import { BackTop, Select,Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import SelectionIcon from '../../images/select.svg'
+import DynModel from './model'
+
 
 
 // const style = {
@@ -18,6 +20,7 @@ import SelectionIcon from '../../images/select.svg'
 // };
 
 function InerviewScreen() {
+    const [ modelOpen, setModelOpen ] = useState(false)
 
     return (
         <div>
@@ -68,30 +71,30 @@ function InerviewScreen() {
                         <Grid item xs={12} container direction="column" justify="left" alignItems="left" >
                             <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className="ordercandidates">
                                 <Grid item xs={10} className="candidateName">Santino</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" /></Grid>
+                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
 
                             </Grid>
                             <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
                                 <Grid item xs={10} className="candidateName">Antonio</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" /></Grid>
+                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)}/></Grid>
 
                             </Grid>
                             <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
                                 <Grid item xs={10} className="candidateName">Gianna</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" /></Grid>
+                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
 
                             </Grid>
                             <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
                                 <Grid item xs={10} className="candidateName">Julius</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" /></Grid>
+                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
 
                             </Grid>
                             <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
                                 <Grid item xs={10} className="candidateName">Alisa</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" /></Grid>
+                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
 
                             </Grid>
-
+                            <DynModel modelTitle={"Candidate's Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
                         </Grid>
                     </div>
 

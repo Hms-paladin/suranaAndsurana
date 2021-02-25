@@ -1,0 +1,79 @@
+.searchflex1 .ant-radio-group{
+    display: flex;
+    justify-content: space-around
+}
+.searchfilterflex{
+    padding: 15px;
+    background-color: #bcbaba;
+    margin: 10px 0px;
+    border-radius: 10px;
+}
+.searchfilterflex1{
+    display: flex;
+    justify-content: space-around;
+
+}
+.dropdown_title{
+    display: flex;
+    align-items: center;
+    height: 40px ;
+    margin-right: 5px;
+    font-weight: 800;
+    font-size: 16px;
+}
+.searchfilterdrpdwn{
+    display: flex;
+    margin-right: 10px;
+    width:20%;
+}
+.searchfilterdrpdwn div{
+    width: 100%;
+}
+.searchfilterflex2{
+    display: flex;
+    justify-content: space-between;
+
+}
+.searchfilterflex2 .searchfilterdrpdwn{
+    width: 20%;
+}
+.searchfilterflex2 Button{
+    background-color: #0353A4 ;
+    box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
+    color: #fff;
+    padding: 5px 5px !important;
+    height: 35px;
+    border-radius: 30px;
+
+}
+.searchfilterflex2 Button:hover{
+    background-color: #0353A4 ;
+
+}
+.searchinterviewbtn{
+    display: flex;
+    justify-content: flex-end;
+
+}
+.searchinterviewbtn Button{
+ background-color: #0353A4;
+ border-radius: 30px;
+ color: #fff;
+ font-size: 18px;
+ font-weight: 800;
+ margin-right: 50px;
+ padding: 5px 20px;
+ text-transform: none;
+ box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
+}
+.searchinterviewbtn Button:hover{
+    background-color: #0353A4;
+}
+.interviewdetailformdiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.interviewdetailformdiv .interviewdetailform{
+    width: 80%;
+}
