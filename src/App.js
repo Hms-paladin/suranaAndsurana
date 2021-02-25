@@ -13,6 +13,8 @@ import Interview from './pages/Interview/interview'
 import './App.css';
 import Employeeform from "./pages/Employeeform/employeeform.js";
 
+export const apiurl = "http://54.198.55.249:8159/api/v1/"
+
 function App() {
 
   return (

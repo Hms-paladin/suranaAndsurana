@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import './interview.scss'
 import { BackTop, Select,Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
-import SelectionIcon from '../../images/select.svg'
+import SelectionIcon from '../../images/select.svg';
+import {apiurl} from "../../App";
+import Axios from "axios";
 
 
 // const style = {
@@ -17,7 +19,37 @@ import SelectionIcon from '../../images/select.svg'
 //     fontSize: 14,
 // };
 
-function InerviewScreen() {
+function InerviewScreen(){
+    const [getdata, setgetData]= useState([])
+
+    useEffect(()=>{
+            Axios({
+                method: 'GET',
+                url: apiurl +'/get_questions',
+               
+            })
+            .then((response) => {
+                setgetData(response.data.data)
+            
+            })
+            .catch((error) => {
+                // alert(JSON.stringify(error))
+            })
+    },[])
+const [postdata, setpostData]=useState([])
+  const  sumbitData=()=>{
+      alert("saxdasx")
+      debugger
+        Axios({
+            method:'POST',
+            url: apiurl + '/insert_interview_scores',
+        })
+        .then((response)=>{
+            console.log(response,"post")
+        })
+    }
+
+
 
     return (
         <div>
@@ -42,6 +74,18 @@ function InerviewScreen() {
             <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions">
                 <Grid item xs={8} className="scrollbar">
                     <div >List of guiding questions</div><br />
+                    {getdata.map((get,index)=>{
+                            // debugger
+                             return(
+                                 <>
+                                <li>{get.questions}</li>
+                                </>
+                            )
+                        })
+                    }
+
+
+                    {/* <div >List of guiding questions</div><br />
 
                     <div> How Did You Hear About This Position?</div>
                     <div>Why Do You Want to Work at This Company?</div>
@@ -56,7 +100,7 @@ function InerviewScreen() {
                     <div>Tell Me About a Time You Made a Mistake.</div>
                     <div>Tell Me About a Time You Failed.</div>
                     <div>Why Are You Leaving Your Current Job?</div>
-                    <div>Why Were You Fired?</div>
+                    <div>Why Were You Fired?</div> */}
 
                 </Grid>
                 <Grid item xs={3} className="candidateBox">
@@ -119,7 +163,7 @@ function InerviewScreen() {
                     <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewSubmit">Submit</div>
+                    <div className="interviewSubmit" onClick={sumbitData}>Submit</div>
                 </Grid>
 
 

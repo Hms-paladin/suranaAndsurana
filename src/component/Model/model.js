@@ -2,6 +2,7 @@ import React from "react";
 import { Modal } from 'antd';
 import "./model.scss";
 
+
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
 
@@ -25,9 +26,8 @@ function DynModel(props){
         zIndex={1201}
         onCancel={handleCancel}
         >
-            <p>some contents...</p>
-            <p>some contents...</p>
-            <p>some contents...</p>
+   
+         {props.children}
         </Modal>
     )
 }
