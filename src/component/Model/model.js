@@ -26,7 +26,6 @@ function DynModel(props){
         zIndex={1201}
         onCancel={handleCancel}
         >
-   
          {props.children}
         </Modal>
     )

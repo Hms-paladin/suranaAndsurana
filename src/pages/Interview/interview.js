@@ -5,9 +5,9 @@ import { BackTop, Select,Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
 import SelectionIcon from '../../images/select.svg';
-import {apiurl} from "../../App";
-import Axios from "axios";
-
+import {useDispatch,connect} from "react-redux";
+import { getInterviewquestions } from "../../actions/interviewActions"
+ 
 
 // const style = {
 //     height: 40,
@@ -20,36 +20,32 @@ import Axios from "axios";
 //     fontSize: 14,
 // };
 
-function InerviewScreen() {
+function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
     const [getdata, setgetData]= useState([])
     const [postdata, setpostData]=useState([])
-
+    const dispatch = useDispatch();
 
     useEffect(()=>{
-            Axios({
-                method: 'GET',
-                url: apiurl +'/get_questions',
-               
-            })
-            .then((response) => {
-                setgetData(response.data.data)
             
-            })
-            .catch((error) => {
-                // alert(JSON.stringify(error))
-            })
-    },[])
+            dispatch(getInterviewquestions())
+
+            // get value from redux store
+            console.log(props.getInterviewquestions,"getInterviewquestions")
+
+    },[dispatch])
+
+
   const  sumbitData=()=>{
-      alert("saxdasx")
-      debugger
-        Axios({
-            method:'POST',
-            url: apiurl + '/insert_interview_scores',
-        })
-        .then((response)=>{
-            console.log(response,"post")
-        })
+    //   alert("saxdasx")
+    //   debugger
+    //     Axios({
+    //         method:'POST',
+    //         url: apiurl + '/insert_interview_scores',
+    //     })
+    //     .then((response)=>{
+    //         console.log(response,"post")
+    //     })
     }
 
 
@@ -175,4 +171,9 @@ function InerviewScreen() {
     )
 }
 
-export default InerviewScreen;
+const mapStateToProps = state => ({
+    getInterviewquestions: state.getInterviewquestions
+  })
+  
+  
+export default connect(mapStateToProps)(InerviewScreen);
