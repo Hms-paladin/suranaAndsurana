@@ -7,7 +7,8 @@ import DynModel from './model'
 import SelectionIcon from '../../images/select.svg';
 import {useDispatch,connect} from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions"
- 
+import Axios from 'axios' 
+const { Option } = Select;
 
 // const style = {
 //     height: 40,
@@ -25,13 +26,25 @@ function InerviewScreen(props) {
     const [getdata, setgetData]= useState([])
     const [postdata, setpostData]=useState([])
     const dispatch = useDispatch();
-
+    const [optionvalues,setoptionvalues]=useState([]);
+    const [score,setscore]=useState([]);
     useEffect(()=>{
             
             dispatch(getInterviewquestions())
-
             // get value from redux store
             console.log(props.getInterviewquestions,"getInterviewquestions")
+            let values=[]
+            Axios({
+                method:"get",
+                url:"http://54.198.55.249:8159/api/v1/get_interviewers",
+            }).then((response)=>{
+                setoptionvalues(response.data.data.map((data)=>({
+                        name:data.name,id:data.emp_id
+              })))
+            })
+            // setoptionvalues(values)
+            // console.log(optionvalues,"data")
+
 
     },[dispatch])
 
@@ -147,7 +160,8 @@ function InerviewScreen(props) {
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     className="SelectionInput" style={{ width: "50%" }} >
-
+                     {optionvalues.map(data=>(
+                    <Option value={data.name} key={data.id}>{data.name}</Option>))} 
                 </Select>
 
             </Grid>

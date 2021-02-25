@@ -12,7 +12,7 @@
 
 // export default Resume;
 
-import react from 'react'
+import React,{useState,useEffect} from 'react'
 import './resume.scss'
 import Grid from '@material-ui/core/Grid';
 import { Layout, Input, DatePicker, message, Button,Space } from 'antd';
@@ -24,14 +24,15 @@ import InfoIcon from '@material-ui/icons/Info';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { Select, Row, Col } from 'antd'
 import { DownCircleTwoTone } from '@ant-design/icons'
+import {useDispatch,connect} from "react-redux";
 // icons:
 // import SelectionIcon from '../../images/selectIcon.png'
 import SelectionIcon from '../../images/select.svg'
 import CalenderIcon from '../../images/calender.svg'
+import Axios from 'axios'
 
-
-
-function ResumePage() {
+const { Option } = Select;
+function ResumePage(props) {
     function onChange(date, dateString) {
         console.log(date, dateString);
       }
@@ -39,6 +40,27 @@ function ResumePage() {
       const success = () => {
         message.success('This is a success message');
       };
+
+      const dispatch = useDispatch();
+    const [optionvalues,setoptionvalues]=useState([]);
+    useEffect(()=>{
+            
+           
+            let values=[]
+            Axios({
+                method:"get",
+                url:"http://54.198.55.249:8159/api/v1/get_interviewers",
+            }).then((response)=>{
+                setoptionvalues(response.data.data.map((data)=>({
+                        name:data.name,id:data.emp_id
+              })))
+            })
+            // setoptionvalues(values)
+            // console.log(optionvalues,"data")
+      
+
+    },[dispatch])
+  
 
     return (
         <div className="Container">
@@ -73,7 +95,8 @@ function ResumePage() {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                                 className="SelectionInput" style={{ width: "50%" }} >
-
+                                 {optionvalues.map(data=>(
+                    <Option value={data.name} key={data.id}>{data.name}</Option>))} 
                             </Select>
                         </Grid>
 
