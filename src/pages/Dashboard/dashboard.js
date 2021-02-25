@@ -3,6 +3,7 @@ import EnhancedTable from "../../component/DynTable/table";
 import DynModel from "../../component/Model/model";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { Button } from "@material-ui/core";
+import InterviewApprover from "../InterviewApprover/InterviewApprover";
 
 
 
@@ -24,14 +25,15 @@ function Dashboard(){
     const [ modelOpen, setModelOpen ] = useState(false)
 
     const [ approveModalOpen, setApproveOpen] = useState(false)
-
     console.log(modelOpen,"modelopen")
     
     return(
         <>
         <EnhancedTable headCells={headCells} rows={rows} tabletitle={"tests"}  />
         <Button onClick={()=>setModelOpen(true)}>Model</Button>
-        <DynModel modelTitle={"test"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
+        <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} width={1000}>
+            <InterviewApprover/>
+        </DynModel>
 
         <Button onClick={()=> setApproveOpen(true)}>Employee Approval Modal</Button>
         <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln)=>setApproveOpen(bln)}

@@ -17,7 +17,7 @@ function DynModel(props){
 
     return(
         <Modal
-        className="modelContainer"
+        className={`modelContainer ${props.modalchanges}`}
         title={props.modelTitle}
         centered={props.centered ? true : false}
         visible={visible}
