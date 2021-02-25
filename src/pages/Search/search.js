@@ -51,23 +51,23 @@ function Search(){
            <div className="searchfilterflex">
                <div className="searchfilterflex1">
                   <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Traits</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Certifications</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Acheivements</span> <Labelbox type="select"/></div>
 
                </div>
                <div className="searchfilterflex2">
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Specialization</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Capabilities</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Talents</span> <Labelbox type="select"/></div>
+                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Status</span> <Labelbox type="select"/></div>
                 <Button>Go</Button>
                </div>
 
            </div>
            <EnhancedTable headCells={headCells} rows={rows} tabletitle={"tests"}  />
            <div className="searchinterviewbtn"><Button onClick={()=>setModelOpen(true)} >Interview Details</Button></div>
-           <DynModel modelTitle={"Candidate's Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
+           <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
 
                       
         </div>
