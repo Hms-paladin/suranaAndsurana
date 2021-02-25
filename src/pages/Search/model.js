@@ -2,6 +2,8 @@ import React from "react";
 import { Modal } from 'antd';
 import LabelBox from '../../helpers/labelbox/labelbox'
 import './search.scss'
+import { Button } from "@material-ui/core";
+
 
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
