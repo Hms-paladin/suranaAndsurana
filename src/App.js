@@ -12,6 +12,7 @@ import Interview from './pages/Interview/interview'
 
 import './App.css';
 import Employeeform from "./pages/Employeeform/employeeform.js";
+import Search from "./pages/Search/search.js";
 
 export const apiurl = "http://54.198.55.249:8159/api/v1/"
 
@@ -25,6 +26,8 @@ function App() {
           <Route path="/dashboard" component={Dashboard} exact/>
           <Route path="/interview" component={Interview} exact/>
           <Route path="/employeeform" component={Employeeform} exact/>
+          <Route path="/search" component={Search} exact/>
+
         </Switch>
       </Navbar>
     </Router>
