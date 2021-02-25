@@ -6,16 +6,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { Layout, Input, DatePicker, Space } from 'antd';
-import { AudioOutlined } from '@ant-design/icons';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { Select, Row, Col } from 'antd'
-import { DownCircleTwoTone } from '@ant-design/icons'
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import List from '@material-ui/core/List';
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import LabelIcon from '@material-ui/icons/Label';
@@ -67,12 +63,11 @@ function Navbar(props) {
   const [menuItems, setMenuItems] = useState(
     [
       {path:"/resume",title:"Resume"},
-      {path:"/dashboard",title:"Dashboard"},
+      {path:"/todoList",title:"Todo"},
       {path:"/interview",title:"Interview"},
       {path:"/employeeform",title:"Employee Form"},
-      {path:"/search",title:"Search"}
-
-
+      {path:"/search",title:"Search"},
+      {path:"/dashboard",title:"Dashboard"},
     ]
     );
 

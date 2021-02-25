@@ -145,32 +145,36 @@ const [postdata, setpostData]=useState([])
                 </Grid>
 
             </Grid>
-            <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
-                <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
-                    optionFilterProp="children" filterOption={(input, option) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    className="SelectionInput" style={{ width: "50%" }} >
+            <form onSubmit>
+                <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
+                    <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
+                        optionFilterProp="children" filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        className="SelectionInput" style={{ width: "50%" }} >
 
-                </Select>
+                    </Select>
 
-            </Grid>
-            <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
                 </Grid>
-                <Grid item xs={5} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="comment"  style={{height:"80px",width:"100%"}}/>
-                </Grid>
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
-                </Grid>
-                <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewSubmit" onClick={sumbitData}>Submit</div>
-                </Grid>
+                <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
+                    <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                        <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
+                    </Grid>
+                    <Grid item xs={5} className="ContainerInput" container direction="row" justify="center">
+                        <Input placeholder="comment"  style={{height:"80px",width:"100%"}}/>
+                    </Grid>
+                    <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                        <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
+                    </Grid>
+                    <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
+                        <div className="interviewSubmit" onClick={sumbitData}>Submit</div>
+                    </Grid>
 
 
-            </Grid>
+                </Grid>
+
+            </form>
+ 
         </div>
     )
 }
