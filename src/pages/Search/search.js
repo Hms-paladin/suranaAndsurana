@@ -139,7 +139,8 @@ function Search(props){
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                                 className="SelectionInput"  >
-
+                               {optionvalues.map((data,index)=>(
+                    <Option value={data.name} key={index}>{data.name}</Option>))} 
                             </Select></div>
                 <Button>Go</Button>
                </div>
