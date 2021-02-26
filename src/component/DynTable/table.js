@@ -41,7 +41,7 @@ function stableSort(array, comparator) {
 
 
 function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort, headCells } = props;
+  const { classes, order, orderBy, onRequestSort, headCells, EnableSno } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -49,9 +49,9 @@ function EnhancedTableHead(props) {
   return (
     <TableHead className="tableHead">
       <TableRow>
-      <TableCell padding="checkbox" className="tableHeadsno">
+      {EnableSno && <TableCell padding="checkbox" className="tableHeadsno">
         S.No
-      </TableCell>
+      </TableCell>}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -190,6 +190,7 @@ export default function EnhancedTable(props) {
               order={order}
               orderBy={orderBy}
             //   onSelectAllClick={handleSelectAllClick}
+              EnableSno={props.EnableSno} 
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
               headCells={props.headCells}
@@ -216,7 +217,7 @@ export default function EnhancedTable(props) {
                       key={row.name}
                       selected={isItemSelected}
                     >
-                    <TableCell align="center">{rowsPerPage * page + index+1}</TableCell>
+                    {props.EnableSno && <TableCell align="center">{rowsPerPage * page + index+1}</TableCell>}
                     {arrval}
                     </TableRow>
                   );
@@ -229,7 +230,7 @@ export default function EnhancedTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {rows.length > 5 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
@@ -237,7 +238,7 @@ export default function EnhancedTable(props) {
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        />}
       {/* </Paper> */}
     </div>
   );

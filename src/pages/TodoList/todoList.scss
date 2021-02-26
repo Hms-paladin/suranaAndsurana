@@ -1,0 +1,11 @@
+.tempClass{
+    cursor: pointer;
+
+    :hover{
+        text-decoration: underline;
+    }
+}
+
+.tempClass:hover{
+        text-decoration: underline;
+    }

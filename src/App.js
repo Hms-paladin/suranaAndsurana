@@ -8,6 +8,7 @@ import Navbar from "./component/Navbar/navbar.js";
 import Dashboard from "./pages/Dashboard/dashboard.js";
 import Resume from "./pages/Resume/resume.js";
 import Interview from './pages/Interview/interview'
+import TodoList from './pages/TodoList/todoList'
 
 
 import './App.css';
@@ -17,7 +18,7 @@ import Search from "./pages/Search/search.js";
 function App() {
 
   return (
-    <Router>
+    <Router basename="suranaAndsurana/?/">
       <Navbar>
         <Switch>
           <Route path="/resume" component={Resume} exact/>
@@ -25,7 +26,7 @@ function App() {
           <Route path="/interview" component={Interview} exact/>
           <Route path="/employeeform" component={Employeeform} exact/>
           <Route path="/search" component={Search} exact/>
-
+          <Route path="/todolist" component={TodoList} exact/>
         </Switch>
       </Navbar>
     </Router>

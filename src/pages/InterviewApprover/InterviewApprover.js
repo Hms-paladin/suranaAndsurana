@@ -7,7 +7,7 @@ import { Grid } from "@material-ui/core";
 import { BackTop, Select,Input} from 'antd';
 import Eyes from '../../images/neweye.svg'
 import Approve from '../../images/APPROVE.png'
-import {apiurl} from '../../App'
+// import { apiurl } from '../../App'
 import SelectionIcon from '../../images/select.svg'
 import Axios from 'axios';
 export default function InterviewApprover(){
@@ -26,20 +26,20 @@ const rows = [
 //   interview dropdown api function
 
 const [optionvalues,setoptionvalues]=useState([]);
-const dropdown=()=>{
-    let values=[]
-    Axios({
-        method:"get",
-        url: apiurl + "get_interviewers",
-    }).then((response)=>{
-        setoptionvalues(response.data.data.map((data)=>({
-                name:data.name,id:data.emp_id
-      })))
-      setoptionvalues(values)
-    })
-    setoptionvalues(values)
-    console.log(optionvalues,"data")
-};
+// const dropdown=()=>{
+//     let values=[]
+//     Axios({
+//         method:"get",
+//         url: apiurl + "get_interviewers",
+//     }).then((response)=>{
+//         setoptionvalues(response.data.data.map((data)=>({
+//                 name:data.name,id:data.emp_id
+//       })))
+//       setoptionvalues(values)
+//     })
+//     setoptionvalues(values)
+//     console.log(optionvalues,"data")
+// };
 
     return(
         <div className="interviewapprove_root">
@@ -55,7 +55,7 @@ const dropdown=()=>{
                     optionFilterProp="children" filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
-                    className="SelectionInput" style={{ width: "40%" }} onChange={dropdown}
+                    className="SelectionInput" style={{ width: "40%" }} onChange={""}
                      value={optionvalues} 
                     >
                     {optionvalues.map(data=>(
