@@ -23,12 +23,13 @@ export const getInterviewquestions = () => async dispatch => {
 
 export const insertInterviewquestions =(obj)=> async dispatch =>{
     try {
-        console.log('Insert Called');
+       alert('Insert Called');
         console.log(obj,"obj")
         axios({
             method:'POST',
-            // url:apiurl + '/insert_interview_scores',
-            url:'http://localhost:8085/api/v1/insert_interview_scores',
+            url:'http://54.198.55.249:8159/api/v1/insert_interview_scores',
+            
+            // url:'http://localhost:8085/api/v1/insert_interview_scores',
             data:{
                 "question":"From which source India got the concept of Single order of court?",
                 "designation":"1",
@@ -47,7 +48,7 @@ export const insertInterviewquestions =(obj)=> async dispatch =>{
             }
         })
         .then((response)=> {
-            alert(response)
+            alert("response")
             console.log(response,"response")
             dispatch({type:POST_INTERVIEW_QUESTIONS,payload:response})
         })

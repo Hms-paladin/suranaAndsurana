@@ -228,7 +228,7 @@ function InerviewScreen(props) {
             dispatch(getInterviewquestions())
 
             // get value from redux store
-            console.log(props.getInterviewquestions,"getInterviewquestions")
+            // console.log(props.getInterviewquestions,"getInterviewquestions")
 
     },[dispatch])
 
@@ -240,7 +240,7 @@ function InerviewScreen(props) {
         e.preventDefault();
         // dispatch(insertInterviewquestions({ }))
         dispatch(insertInterviewquestions({scoreInitial:scoreInitial,comment:comment,scoreFinal:scoreFinal}))
-        console.log(props.insertInterviewquestions,"inserttt")
+        console.log(props.insertInterviewquestions,"inserttddt")
 
 
         console.log(scoreInitial)
