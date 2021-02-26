@@ -7,6 +7,7 @@ import { Grid } from "@material-ui/core";
 import { BackTop, Select,Input} from 'antd';
 import Eyes from '../../images/neweye.svg'
 import {useDispatch,connect} from "react-redux";
+import {apiurl} from '../../utils/baseUrl'
 import Approve from '../../images/APPROVE.png'
 import SelectionIcon from '../../images/select.svg'
 import Axios from 'axios';
@@ -32,10 +33,10 @@ useEffect(()=>{
         let values=[]
         Axios({
             method:"get",
-            url:"http://54.198.55.249:8159/api/v1/get_interviewers",
+            url:apiurl+"get_Interview_Status",
         }).then((response)=>{
             setoptionvalues(response.data.data.map((data)=>({
-                    name:data.name,id:data.emp_id
+                    name:data.status
           })))
         })
         setoptionvalues(values)
@@ -60,8 +61,8 @@ useEffect(()=>{
                     }
                     className="SelectionInput" style={{ width: "40%" }} 
                     >
-                 {optionvalues.map(data=>(
-                    <Option value={data.name} key={data.id}>{data.name}</Option>))} 
+                 {optionvalues.map((data,index)=>(
+                    <Option value={data.name} key={index}>{data.name}</Option>))} 
                 </Select>
 
             </Grid>

@@ -4,6 +4,7 @@ import './interview.scss'
 import { BackTop, Select,Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
+import {apiurl} from '../../utils/baseUrl'
 import SelectionIcon from '../../images/select.svg';
 import {useDispatch,connect} from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions"
@@ -36,10 +37,10 @@ function InerviewScreen(props) {
             let values=[]
             Axios({
                 method:"get",
-                url:"http://54.198.55.249:8159/api/v1/get_interviewers",
+                url:apiurl+"get_Interview_Status",
             }).then((response)=>{
                 setoptionvalues(response.data.data.map((data)=>({
-                        name:data.name,id:data.emp_id
+                        name:data.status
               })))
             })
             // setoptionvalues(values)
@@ -160,8 +161,8 @@ function InerviewScreen(props) {
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     className="SelectionInput" style={{ width: "50%" }} >
-                     {optionvalues.map(data=>(
-                    <Option value={data.name} key={data.id}>{data.name}</Option>))} 
+                     {optionvalues.map((data,index)=>(
+                    <Option value={data.name} key={index}>{data.name}</Option>))} 
                 </Select>
 
             </Grid>

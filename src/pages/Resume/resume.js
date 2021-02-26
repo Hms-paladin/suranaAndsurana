@@ -25,6 +25,7 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { Select, Row, Col } from 'antd'
 import { DownCircleTwoTone } from '@ant-design/icons'
 import {useDispatch,connect} from "react-redux";
+import {apiurl} from '../../utils/baseUrl'
 // icons:
 // import SelectionIcon from '../../images/selectIcon.png'
 import SelectionIcon from '../../images/select.svg'
@@ -46,15 +47,14 @@ function ResumePage(props) {
     useEffect(()=>{
             
            
-            let values=[]
-            Axios({
-                method:"get",
-                url:"http://54.198.55.249:8159/api/v1/get_interviewers",
-            }).then((response)=>{
-                setoptionvalues(response.data.data.map((data)=>({
-                        name:data.name,id:data.emp_id
-              })))
-            })
+            // Axios({
+            //     method:"get",
+            //     url:apiurl+"get_interviewers",
+            // }).then((response)=>{
+            //     setoptionvalues(response.data.data.map((data)=>({
+            //             name:data.name,id:data.emp_id
+            //   })))
+            // })
             // setoptionvalues(values)
             // console.log(optionvalues,"data")
       
@@ -95,8 +95,7 @@ function ResumePage(props) {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                                 className="SelectionInput" style={{ width: "50%" }} >
-                                 {optionvalues.map(data=>(
-                    <Option value={data.name} key={data.id}>{data.name}</Option>))} 
+                                
                             </Select>
                         </Grid>
 

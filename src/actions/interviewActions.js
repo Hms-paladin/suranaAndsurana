@@ -18,20 +18,20 @@ export const getInterviewquestions = () => async dispatch => {
     } catch (err) {
         
     }
-}
-export const getInterviewers = () => async dispatch => {
-    try {
+ }
+// export const getInterviewers = () => async dispatch => {
+//     try {
 
-        axios({
-            method: 'GET',
-            url: apiurl +'/get_interviewers',
-        })
-        .then((response) => {
-            console.log(response.data.data,"interview")
-            dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
-        })
+//         axios({
+//             method: 'GET',
+//             url: apiurl +'/get_interviewers',
+//         })
+//         .then((response) => {
+//             console.log(response.data.data,"interview")
+//             dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
+//         })
         
-    } catch (err) {
+//     } catch (err) {
         
-    }
-}
+//     }
+// }
