@@ -144,10 +144,18 @@
     color: #797777;
     padding: 7px 12px;
     font-size: 14px;
+    z-index: 1;
+}
+
+.formdiv .MuiOutlinedInput-notchedOutline{
     border: 1px solid #023E7D;
-    border-right: none;
-    border-bottom-left-radius: 7px;
-    border-top-left-radius: 7px;
+    background-color: #fff;
+}
+
+.formdiv .MuiFormControl-marginNormal button,.formdiv .MuiFormControl-marginNormal path{
+    color: #023E7D;
+    z-index: 1;
+    padding-right: 7px;
 }
 
 .formdiv .MuiOutlinedInput-adornedEnd{
