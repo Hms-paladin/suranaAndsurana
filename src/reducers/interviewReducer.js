@@ -1,7 +1,10 @@
-import { GET_INTERVIEW_QUESTIONS } from "../utils/Constants.js"
+import { GET_INTERVIEW_QUESTIONS } from "../utils/Constants.js";
+import { POST_INTERVIEW_QUESTIONS } from "../utils/Constants.js";
 
 const initalState = {
-    getInterviewquestions:{}
+    getInterviewquestions:{},
+    insertInterviewquestions:{}
+
 }
 
 export default function(state=initalState,action) {
@@ -9,6 +12,8 @@ export default function(state=initalState,action) {
     switch(type) {
         case GET_INTERVIEW_QUESTIONS:
             return payload
+        case POST_INTERVIEW_QUESTIONS:
+            return payload    
         default:
             return state;    
     }
