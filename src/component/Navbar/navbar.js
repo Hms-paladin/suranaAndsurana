@@ -15,6 +15,7 @@ import { Select, Row, Col } from 'antd'
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import LabelIcon from '@material-ui/icons/Label';
+import logo from '../../images/surana.gif'
 
 
 import './navbar.scss';
@@ -76,12 +77,12 @@ function Navbar(props) {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Grid spacing={2} item xs={12} container direction="row" justify="center" alignItems="center" display="flex" >
-          <Grid item xs={4} container justify="left" alignItems="center" className="Header_Title" >
-            suranaAndsurana
+          <Grid item xs={6} container justify="left" alignItems="baseline" className="Header_Title" >
+          <span className="highlightedtitle">L</span>egal <span className="highlightedtitle">P</span>ractice <span className="highlightedtitle">M</span>anagement <span className="highlightedtitle">S</span>ystem
     </Grid>
 
-          <Grid item xs={5} container alignItems="center">
-            <div className="headerName">Law Practice Management System</div>
+          <Grid item xs={3} container alignItems="center">
+            <div className="headerName"></div>
           </Grid>
 
           <Grid item xs={3} alignItems="center" className="userInfo" >
@@ -106,7 +107,7 @@ function Navbar(props) {
         <Toolbar />
         <div className={classes.drawerContainer}>
 
-          <div className="suranaLogo">LOGO</div> 
+          <div className="suranaLogo"><img src={logo}/></div> 
           {menuItems.map((data, index) => {
             return (
               <Link to={data.path} onClick={()=>setpathname(data.path)}>
