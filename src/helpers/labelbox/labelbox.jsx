@@ -47,7 +47,7 @@ export default class Labelbox extends Component {
 		var timeformat = dateFormat(time, "hh:MM:ss");
 		console.log("timeformat", timeformat)
 		this.setState({ selectedtime: time });
-		this.props.changeData && this.props.changeData(timeformat,time);
+		this.props.changeData && this.props.changeData(timeformat, time);
 	};
 
 	componentWillReceiveProps(props) {
@@ -80,7 +80,7 @@ export default class Labelbox extends Component {
 	renderinput = (data) => {
 		if (data.type == 'text') {
 			return (
-				<div className="formdiv">
+				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
 						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} placeholder={this.props.placeholder} disabled={this.props.disabled} />
@@ -151,10 +151,10 @@ export default class Labelbox extends Component {
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
-					<div >
+					<div className={`${data.error && "datePickerbrdred"} ${this.props.className}`}>
 
 						{/*<DatePicker value={moment(this.props.value)?moment(this.props.value):new Date()} open={this.state.open}  onFocus={()=>this.setState({open:true})} onChange={(date)=>this.datepickerChange(date)}  className="datepickerchnge" style={{width:'100%',}} format="YYYY-MM-DD"  />*/}
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<KeyboardDatePicker
 								placeholder={this.props.placeholder}
 								disableToolbar={true}
@@ -168,17 +168,18 @@ export default class Labelbox extends Component {
 								format="dd/MM/yyyy"
 								margin="normal"
 								id="date-picker-inline"
-								value={this.state.selecteddate}
+								// value={this.state.selecteddate}
+								value={this.props.value === "" ? null : this.props.value}
 								onChange={(date) => this.datepickerChange(date)}
 
 							/>
 						</MuiPickersUtilsProvider>
 
-						{/* {
+						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
 							</div>
-						} */}
+						}
 					</div>
 
 				</div>
@@ -197,7 +198,7 @@ export default class Labelbox extends Component {
 					<div >
 
 						{/*<TimePicker value={this.props.value} onChange={(time)=>this.onChange(time)} />*/}
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<KeyboardTimePicker
 								margin="normal"
 								id="time-picker"
@@ -238,35 +239,59 @@ export default class Labelbox extends Component {
 
 			var optionValue = null
 
-			data.dropdown && data.dropdown.map((value)=>{
-				if(value.id === data.value){
+			data.dropdown && data.dropdown.map((value) => {
+				if (value.id === data.value) {
 					optionValue = value.value
 				}
 			})
+
+			let datePickerValue = []
+
+			if (data.value && this.props.mode === "multiple") {
+				data.dropdown.map((val)=>{
+					console.log(val,"testtttt")
+					console.log(data.value,"<result")
+
+					for(let i = 0 ; i < data.value.length ; i++){
+						if(data.value[i] === val.id || data.value[i] === val.value){
+							datePickerValue.push(val.value)
+						}
+					}
+
+				})
+			} else if (this.props.mode === "multiple" && data.value === "") {
+				datePickerValue = []
+			} else {
+				datePickerValue = optionValue
+			}
+
+			console.log(datePickerValue,"datePickerValue")
+
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 
-					<Select disabled={this.props.disabled && true} className={`${data.error && "brdred"} ${data.error && "brdnone"} selectbox`} showSearch value={data.value} optionLabelProp="label"
-					// value={data.value ? optionValue : 'Select'}
-					suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
-					placeholder={this.props.placeholder}
-						optionFilterProp="label" onChange={(value) => this.props.changeData && this.props.changeData(value)}>
-						{data.dropdown && data.dropdown.length > 0 && data.dropdown.map((item, index) => {
-							return (
-								// <Option label={item[data.valuelabel]} value={item[data.valuebind]}>{item[data.valuelabel]}</Option>
-								<Option value={item.id}>{item.value}</Option>
-								// <Option  value={index} >{item}</Option>
-
-							)
-						})}
+					<Select disabled={this.props.disabled && true}
+						className={`${data.error && "selectbrdred"} ${data.error && "brdnone"} selectbox`}
+						showSearch value={data.value} optionLabelProp="label"
+						mode={this.props.mode ? this.props.mode : false}
+						value={datePickerValue}
+						suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
+						placeholder={this.props.placeholder}
+						optionFilterProp="label"
+						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
+						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
+								return (<Option key={index} value={item.id}>{item.value}</Option>)
+						})
+							: null
+						}
 
 
 					</Select>{
-							<div className="Errormsg">
-								<div>{data.error && data.errmsg}</div>
-							</div>
-						}
+						<div className="Errormsg">
+							<div>{data.error && data.errmsg}</div>
+						</div>
+					}
 
 
 				</div>
