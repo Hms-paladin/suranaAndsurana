@@ -12,24 +12,8 @@
   width: 40%;
 }
 
-.genderDobFlex{
-  display: flex;
-  justify-content: space-between;
-  .selectbox{
-    width: 200% !important;
-  }
-  .dobWid{
-    width: 80%;
-  }
-}
-
-.startdateEnddateFlex{
+.genderDobFlex, .startdateEnddateFlex{
   width: 90%;
-  display: flex;
-  justify-content: space-between;
-  .startdateWid{
-    width: 88%;
-  }
 }
 
 .ContentTitle {
@@ -38,4 +22,8 @@
   color: #000000;
   height: 40px;
   margin-bottom: 10px !important;
+}
+
+.resumeBtnContainer{
+  margin-top: 20px !important;
 }

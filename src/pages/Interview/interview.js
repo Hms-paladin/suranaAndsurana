@@ -1,13 +1,16 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import './interview.scss'
-import { BackTop, Select,Input } from 'antd';
+import { BackTop, Select, Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
 import SelectionIcon from '../../images/select.svg';
-import {useDispatch,connect} from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions"
- 
+
+//CandidatesName:
+const interviewerName = [{ name: "Santino" }, { name: "Antonio" }, { name: "Gianna" }, { name: "Julius" }, { name: "Alisa" }]
+
 
 // const style = {
 //     height: 40,
@@ -21,31 +24,31 @@ import { getInterviewquestions } from "../../actions/interviewActions"
 // };
 
 function InerviewScreen(props) {
-    const [ modelOpen, setModelOpen ] = useState(false)
-    const [getdata, setgetData]= useState([])
-    const [postdata, setpostData]=useState([])
+    const [modelOpen, setModelOpen] = useState(false)
+    const [getdata, setgetData] = useState([])
+    const [postdata, setpostData] = useState([])
     const dispatch = useDispatch();
 
-    useEffect(()=>{
-            
-            dispatch(getInterviewquestions())
+    useEffect(() => {
 
-            // get value from redux store
-            console.log(props.getInterviewquestions,"getInterviewquestions")
+        dispatch(getInterviewquestions())
 
-    },[dispatch])
+        // get value from redux store
+        console.log(props.getInterviewquestions, "getInterviewquestions")
+
+    }, [dispatch])
 
 
-  const  sumbitData=()=>{
-    //   alert("saxdasx")
-    //   debugger
-    //     Axios({
-    //         method:'POST',
-    //         url: apiurl + '/insert_interview_scores',
-    //     })
-    //     .then((response)=>{
-    //         console.log(response,"post")
-    //     })
+    const sumbitData = () => {
+        //   alert("saxdasx")
+        //   debugger
+        //     Axios({
+        //         method:'POST',
+        //         url: apiurl + '/insert_interview_scores',
+        //     })
+        //     .then((response)=>{
+        //         console.log(response,"post")
+        //     })
     }
 
 
@@ -55,32 +58,32 @@ function InerviewScreen(props) {
             <Grid item xs={12} container direction="row" justify="space-around" alignItems="center" spacing={1} >
                 <Grid item xs={5}>
                     <div className="interviewTitle">Proposed Interview Date</div>
-                    <div className="interviewTitle">11-jan-2021</div>
+                    <div >11-jan-2021</div>
 
                 </Grid>
                 <Grid item xs={3}>
                     <div className="interviewTitle">Designation</div>
-                    <div className="interviewTitle">Antony</div>
+                    <div >Antony</div>
 
                 </Grid>
                 <Grid item xs={4}>
                     <div className="interviewTitle">No of  Candidates</div>
-                    <div className="interviewTitle">5</div>
+                    <div>5</div>
 
                 </Grid>
 
             </Grid>
-            <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions">
+            <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions" style={{ marginTop: "2%" }}>
                 <Grid item xs={8} className="scrollbar">
                     <div >List of guiding questions</div><br />
-                    {getdata.map((get,index)=>{
-                            // debugger
-                             return(
-                                 <>
+                    {getdata.map((get, index) => {
+                        // debugger
+                        return (
+                            <>
                                 <li>{get.questions}</li>
-                                </>
-                            )
-                        })
+                            </>
+                        )
+                    })
                     }
 
 
@@ -109,32 +112,16 @@ function InerviewScreen(props) {
                     </div>
                     <div className="scrollerCandidates">
                         <Grid item xs={12} container direction="column" justify="left" alignItems="left" >
-                            <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className="ordercandidates">
-                                <Grid item xs={10} className="candidateName">Santino</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
+                              {interviewerName.map((data) => {
+                                    return (
+                                        <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
+                                            <Grid item xs={10} className="candidateName">{data.name}</Grid>
+                                            <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={() => setModelOpen(true)} /></Grid>
 
-                            </Grid>
-                            <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
-                                <Grid item xs={10} className="candidateName">Antonio</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)}/></Grid>
-
-                            </Grid>
-                            <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
-                                <Grid item xs={10} className="candidateName">Gianna</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
-
-                            </Grid>
-                            <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
-                                <Grid item xs={10} className="candidateName">Julius</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
-
-                            </Grid>
-                            <Grid xs={12} container direction="row" justify="left" alignItems="left" display="flex" className="ordercandidates">
-                                <Grid item xs={10} className="candidateName">Alisa</Grid>
-                                <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={()=>setModelOpen(true)} /></Grid>
-
-                            </Grid>
-                            <DynModel modelTitle={"Candidate's Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
+                                        </Grid>
+                                    )
+                                })}
+                            <DynModel modelTitle={"Candidate's Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} />
                         </Grid>
                     </div>
 
@@ -146,20 +133,20 @@ function InerviewScreen(props) {
                     optionFilterProp="children" filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
-                    className="SelectionInput" style={{ width: "50%" }} >
+                    style={{ width: "50%" }} >
 
                 </Select>
 
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
+                    <Input placeholder="Initial Score" style={{ height: "70px", width: "60%" }} />
                 </Grid>
                 <Grid item xs={5} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="comment"  style={{height:"80px",width:"100%"}}/>
+                    <Input placeholder="comment" style={{ height: "80px", width: "100%" }} />
                 </Grid>
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
+                    <Input placeholder="Initial Score" style={{ height: "70px", width: "60%" }} />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
                     <div className="interviewSubmit" onClick={sumbitData}>Save</div>
@@ -173,7 +160,7 @@ function InerviewScreen(props) {
 
 const mapStateToProps = state => ({
     getInterviewquestions: state.getInterviewquestions
-  })
-  
-  
+})
+
+
 export default connect(mapStateToProps)(InerviewScreen);

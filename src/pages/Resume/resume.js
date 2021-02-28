@@ -6,11 +6,12 @@ import { apiurl } from "../../utils/baseUrl"
 import axios from "axios";
 
 import './resume.scss'
+import CustomButton from '../../component/Butttons/button';
 
 
 function ResumePage() {
 
-    const [ resumeGetList,setGetList ] = useState({})
+    const [resumeGetList, setGetList] = useState({})
     const [Resume_Form, setResumeFrom] = useState({
         userId: {
             value: "",
@@ -20,7 +21,7 @@ function ResumePage() {
         },
         name: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" }, { "name": "alphabetsOnly" }],
             error: null,
             errmsg: null,
         },
@@ -68,7 +69,7 @@ function ResumePage() {
         },
         lastEmployer: {
             value: "",
-            validation: [],
+            validation: [{ "name": "alphabetsOnly" }],
             error: null,
             errmsg: null,
         },
@@ -86,79 +87,85 @@ function ResumePage() {
         },
         email1: {
             value: "",
-            validation: [],
+            validation: [{ "name": "email" }],
             error: null,
             errmsg: null,
         },
         email2: {
             value: "",
-            validation: [],
+            validation: [{ "name": "email" }],
             error: null,
             errmsg: null,
         },
         phone1: {
             value: "",
-            validation: [],
+            validation: [{ "name": "mobile" }],
             error: null,
             errmsg: null,
         },
         phone2: {
             value: "",
-            validation: [],
+            validation: [{ "name": "mobile" }],
             error: null,
             errmsg: null,
         },
         skills: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         Traits: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         certifications: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         specializations: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         talents: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         intrests: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         contactPhone: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" }, { "name": "mobile" }],
             error: null,
             errmsg: null,
         },
         emailId: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" }, { "name": "email" }],
             error: null,
             errmsg: null,
         },
         mailAddress: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" }, { "name": "email" }],
             error: null,
             errmsg: null,
         },
@@ -188,7 +195,7 @@ function ResumePage() {
         },
     })
 
-    useEffect(()=>{
+    useEffect(() => {
 
         let one = apiurl + "get_s_tbl_m_resource_type"
         let two = apiurl + "get_s_tbl_m_qual"
@@ -206,8 +213,8 @@ function ResumePage() {
         // let fiveteen = apiurl + "get_s_tbl_m_status"
         let twevel = apiurl + "get_s_tbl_m_language"
         let thirteen = apiurl + "get_s_tbl_m_industry"
-    
-    
+
+
         const requestOne = axios.get(one);
         const requestTwo = axios.get(two);
         const requestThree = axios.get(three);
@@ -226,8 +233,8 @@ function ResumePage() {
         // const requestSixteen = axios.get(sixteen);
         // const requestSeventeen = axios.get(seventeen);
         // requestFourteen, requestFiveteen, requestSixteen, requestSeventeen
-    
-        axios.all([requestOne, requestTwo, requestThree, requestFour, requestFive, requestSix, requestSeven, requestEight, requestNine, requestTen, requestEleven, requestTwevel , requestThirteen]).then(axios.spread((...responses) => {
+
+        axios.all([requestOne, requestTwo, requestThree, requestFour, requestFive, requestSix, requestSeven, requestEight, requestNine, requestTen, requestEleven, requestTwevel, requestThirteen]).then(axios.spread((...responses) => {
             const responseOne = responses[0].data.data
             const responseTwo = responses[1].data.data
             const responseThree = responses[2].data.data
@@ -245,7 +252,7 @@ function ResumePage() {
             // const requestFiveteen = responses[13].data.data
             // const requestSixteen = responses[14].data.data
             // const requestSeventeen = responses[15].data.data
-    
+
             let candidateList = []
             let qualificationList = []
             let institutionList = []
@@ -259,91 +266,103 @@ function ResumePage() {
             let cityList = []
             let languagesList = []
             let industryList = []
-    
-    
-            responseOne.map((data,index)=>{
-                candidateList.push({value:data.resource_type,id:data.resource_type_id})
+
+
+            responseOne.map((data, index) => {
+                candidateList.push({ value: data.resource_type, id: data.resource_type_id })
             })
-    
-            responseTwo.map((data,index)=>{
-                qualificationList.push({value:data.qual_name,id:data.qualification_id})
+
+            responseTwo.map((data, index) => {
+                qualificationList.push({ value: data.qual_name, id: data.qualification_id })
             })
-    
-            responseThree.map((data,index)=>{
-                institutionList.push({value:data.institute,id:data.institute_id})
+
+            responseThree.map((data, index) => {
+                institutionList.push({ value: data.institute, id: data.institute_id })
             })
-    
-            responseFour.map((data,index)=>{
-                skillsList.push({value:data.skill_name,id:data.skill_id})
+
+            responseFour.map((data, index) => {
+                skillsList.push({ value: data.skill_name, id: data.skill_id })
             })
-    
-            responseFive.map((data,index)=>{
-                traitsList.push({value:data.traits,id:data.traitTable})
+
+            responseFive.map((data, index) => {
+                traitsList.push({ value: data.traits, id: data.traitTable })
             })
-    
-            responseSix.map((data,index)=>{
-                certificateList.push({value:data.certification,id:data.certification_id})
+
+            responseSix.map((data, index) => {
+                certificateList.push({ value: data.certification, id: data.certification_id })
             })
-    
-            responseSeven.map((data,index)=>{
-                specilalizaionsList.push({value:data.specilization,id:data.specialization_id})
+
+            responseSeven.map((data, index) => {
+                specilalizaionsList.push({ value: data.specilization, id: data.specialization_id })
             })
-    
-            responseEight.map((data,index)=>{
-                talentList.push({value:data.talent,id:data.talent_id})
+
+            responseEight.map((data, index) => {
+                talentList.push({ value: data.talent, id: data.talent_id })
             })
-    
-            responseNine.map((data,index)=>{
-                interestList.push({value:data.special_interest,id:data.SpecInterest_id})
+
+            responseNine.map((data, index) => {
+                interestList.push({ value: data.special_interest, id: data.SpecInterest_id })
             })
-    
-            responseTen.map((data,index)=>{
-                stateList.push({value:data.state,id:data.state_id})
+
+            responseTen.map((data, index) => {
+                stateList.push({ value: data.state, id: data.state_id })
             })
-    
-            responseEleven.map((data,index)=>{
-                cityList.push({value:data.state,id:data.city_id})
+
+            responseEleven.map((data, index) => {
+                cityList.push({ value: data.state, id: data.city_id })
             })
-    
-            responseTwevel.map((data,index)=>{
-                languagesList.push({value:data.language,id:data.language_id})
+
+            responseTwevel.map((data, index) => {
+                languagesList.push({ value: data.language, id: data.language_id })
             })
-    
-            responseThirteen.map((data,index)=>{
-                industryList.push({value:data.industry,id:data.industry_id})
+
+            responseThirteen.map((data, index) => {
+                industryList.push({ value: data.industry, id: data.industry_id })
             })
-    
-            setGetList({candidateList, qualificationList, institutionList, skillsList, traitsList, certificateList, specilalizaionsList, talentList, interestList, stateList, cityList, languagesList,industryList})
-    
+
+            setGetList({ candidateList, qualificationList, institutionList, skillsList, traitsList, certificateList, specilalizaionsList, talentList, interestList, stateList, cityList, languagesList, industryList })
+
             // use/access the results 
-          })).catch(errors => {
+        })).catch(errors => {
             // react on errors.
-          })
-      },[])
+        })
+    }, [])
 
 
-    function checkValidation(data, key) {
+    function checkValidation(data, key, multipleId) {
         console.log("key", key);
         console.log("data>>", data);
 
-        var targetkeys = Object.keys(Resume_Form);
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Resume_Form[key].validation
         );
-        // Resume_Form[key].value = data;
-        // Resume_Form[key].error = !errorcheck.state;
-        // Resume_Form[key].errmsg = errorcheck.msg;
-        console.log(!errorcheck.state, "Resume_forminside")
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: Resume_Form[key].validation
+        }
+
+        // only for multi select (start)
+
+        let multipleIdList = []
+
+        if (multipleId) {
+            multipleId.map((item) => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i] === item.value) {
+                        multipleIdList.push(item.id)
+                    }
+                }
+            })
+            dynObj.valueById = multipleIdList.toString()
+        }
+        // (end)
 
         setResumeFrom(prevState => ({
             ...prevState,
-            [key]: {
-                value: data,
-                error: !errorcheck.state,
-                errmsg: errorcheck.msg,
-                validation: Resume_Form[key].validation
-            },
+            [key]: dynObj,
         }));
         // var filtererr = targetkeys.filter(
         //     (obj) =>
@@ -427,29 +446,37 @@ function ResumePage() {
                                 errmsg={Resume_Form.candidate.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={12} >
-                            <div className="genderDobFlex">
-                                <Labelbox type="select"
-                                    placeholder={"Gender"}
-                                    dropdown={[{id:"1",value:"Male"},{id:"2",value:"Female"}]}
-                                    changeData={(data) => checkValidation(data, "gender")}
-                                    // mode={"multiple"}
-                                    value={Resume_Form.gender.value}
-                                    error={Resume_Form.gender.error}
-                                    errmsg={Resume_Form.gender.errmsg}
-                                />
-                                <Labelbox type="datepicker"
-                                    className="dobWid"
-                                    placeholder={"Date of Birth"}
-                                    changeData={(data) => checkValidation(data, "DOB")}
-                                    value={Resume_Form.DOB.value}
-                                    error={Resume_Form.DOB.error}
-                                    errmsg={Resume_Form.DOB.errmsg}
-                                />
-                            </div>
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            //   justify="center"
+                            alignItems="center" >
+                            <Grid item xs={6} >
+                                <div className="genderDobFlex">
+                                    <Labelbox type="select"
+                                        placeholder={"Gender"}
+                                        dropdown={[{ id: "1", value: "Male" }, { id: "2", value: "Female" }]}
+                                        changeData={(data) => checkValidation(data, "gender")}
+                                        // mode={"multiple"}
+                                        value={Resume_Form.gender.value}
+                                        error={Resume_Form.gender.error}
+                                        errmsg={Resume_Form.gender.errmsg}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6} >
+                                <div className="genderDobFlex">
+                                    <Labelbox type="datepicker"
+                                        placeholder={"Date of Birth"}
+                                        disableFuture={true}
+                                        changeData={(data) => checkValidation(data, "DOB")}
+                                        value={Resume_Form.DOB.value}
+                                        error={Resume_Form.DOB.error}
+                                        errmsg={Resume_Form.DOB.errmsg}
+                                    />
+                                </div>
+                            </Grid>
                         </Grid>
-                        {/* <Grid item xs={12}>
-                    </Grid> */}
                         <Grid item xs={7}>
                             <Labelbox type="select"
                                 placeholder={"Basic Qualification"}
@@ -499,24 +526,32 @@ function ResumePage() {
                                 errmsg={Resume_Form.lastEmployer.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <div className="startdateEnddateFlex">
-                                <Labelbox type="datepicker"
-                                    placeholder={"Start date"}
-                                    className="startdateWid"
-                                    changeData={(data) => checkValidation(data, "startDate")}
-                                    value={Resume_Form.startDate.value}
-                                    error={Resume_Form.startDate.error}
-                                    errmsg={Resume_Form.startDate.errmsg}
-                                />
-                                <Labelbox type="datepicker"
-                                    placeholder={"End date"}
-                                    changeData={(data) => checkValidation(data, "endDate")}
-                                    value={Resume_Form.endDate.value}
-                                    error={Resume_Form.endDate.error}
-                                    errmsg={Resume_Form.endDate.errmsg}
-                                />
-                            </div>
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            alignItems="center">
+                            <Grid item xs={6} >
+                                <div className="startdateEnddateFlex">
+                                    <Labelbox type="datepicker"
+                                        placeholder={"Start date"}
+                                        changeData={(data) => checkValidation(data, "startDate")}
+                                        value={Resume_Form.startDate.value}
+                                        error={Resume_Form.startDate.error}
+                                        errmsg={Resume_Form.startDate.errmsg}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6} >
+                                <div className="startdateEnddateFlex">
+                                    <Labelbox type="datepicker"
+                                        placeholder={"End date"}
+                                        changeData={(data) => checkValidation(data, "endDate")}
+                                        value={Resume_Form.endDate.value}
+                                        error={Resume_Form.endDate.error}
+                                        errmsg={Resume_Form.endDate.errmsg}
+                                    />
+                                </div>
+                            </Grid>
                         </Grid>
                         <Grid item xs={7}>
                             <Labelbox type="text"
@@ -563,7 +598,7 @@ function ResumePage() {
                                 mode={"multiple"}
                                 placeholder={"Skills"}
                                 dropdown={resumeGetList.skillsList}
-                                changeData={(data) => checkValidation(data, "skills")}
+                                changeData={(data) => checkValidation(data, "skills", resumeGetList.skillsList)}
                                 value={Resume_Form.skills.value}
                                 error={Resume_Form.skills.error}
                                 errmsg={Resume_Form.skills.errmsg}
@@ -691,9 +726,15 @@ function ResumePage() {
                                 errmsg={Resume_Form.industry.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <button onClick={onSubmit}>submit</button>
-                            <button onClick={null}>Cancel</button>
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            //   justify="center"
+                            alignItems="center"
+                            className="resumeBtnContainer"
+                        >
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} btnDisable={true} />
+                            <CustomButton btnName={"Cancel"} />
                         </Grid>
                     </Grid>
 

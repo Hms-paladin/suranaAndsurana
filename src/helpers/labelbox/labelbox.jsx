@@ -162,8 +162,8 @@ export default class Labelbox extends Component {
 								clearable={false}
 								disableUnderline={true}
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
-								disablePast={this.props.disablePast ? this.props.disablePast : false}
-								minDate={this.props.minDate ? this.props.minDate : null}
+								disablePast={this.props.disablePast && this.props.disablePast}
+								minDate={this.props.minDate && this.props.minDate}
 								inputVariant="outlined"
 								format="dd/MM/yyyy"
 								margin="normal"
@@ -245,43 +245,35 @@ export default class Labelbox extends Component {
 				}
 			})
 
-			let datePickerValue = []
+			let selectValue = []
 
 			if (data.value && this.props.mode === "multiple") {
-				data.dropdown.map((val)=>{
-					console.log(val,"testtttt")
-					console.log(data.value,"<result")
-
-					for(let i = 0 ; i < data.value.length ; i++){
-						if(data.value[i] === val.id || data.value[i] === val.value){
-							datePickerValue.push(val.value)
-						}
-					}
-
-				})
+				selectValue = data.value
 			} else if (this.props.mode === "multiple" && data.value === "") {
-				datePickerValue = []
+				selectValue = []
 			} else {
-				datePickerValue = optionValue
+				selectValue = optionValue
 			}
-
-			console.log(datePickerValue,"datePickerValue")
 
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 
 					<Select disabled={this.props.disabled && true}
-						className={`${data.error && "selectbrdred"} ${data.error && "brdnone"} selectbox`}
-						showSearch value={data.value} optionLabelProp="label"
+						className={`${data.error && "selectbrdred brdnone"} ${this.props.mode !== "multiple" && "selectAdjustHeight"} selectbox`}
+						showSearch
 						mode={this.props.mode ? this.props.mode : false}
-						value={datePickerValue}
+						value={selectValue}
 						suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
 						placeholder={this.props.placeholder}
 						optionFilterProp="label"
 						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
+							if (this.props.mode === "multiple") {
+								return (<Option key={index} value={item.value}>{item.value}</Option>)
+							} else {
 								return (<Option key={index} value={item.id}>{item.value}</Option>)
+							}
 						})
 							: null
 						}

@@ -27,3 +27,10 @@ body {
 } */
 
 
+
+/* table select null css */
+
+.MuiTableRow-root.Mui-selected, .MuiTableRow-root.Mui-selected:hover{
+  background-color: transparent !important;
+}
+
