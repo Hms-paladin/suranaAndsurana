@@ -68,7 +68,7 @@ function TodoList(props) {
             <EnhancedTable headCells={headCells} rows={rows} tabletitle={"Hr task"} />
             <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
 
-            <DynModel modelTitle={"Schedule & Task"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}  content={<InerviewScreen />} />
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}  content={<InerviewScreen />} />
 
             <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)}/>}  />
 
