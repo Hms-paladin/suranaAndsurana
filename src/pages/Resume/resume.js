@@ -432,7 +432,7 @@ function ResumePage() {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <Labelbox type="text"
-                                placeholder={"User Id"}
+                                placeholder={"User Id *"}
                                 changeData={(data) => checkValidation(data, "userId")}
                                 value={Resume_Form.userId.value}
                                 error={Resume_Form.userId.error}
@@ -441,7 +441,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="text"
-                                placeholder={"Name"}
+                                placeholder={"Name *"}
                                 changeData={(data) => checkValidation(data, "name")}
                                 value={Resume_Form.name.value}
                                 error={Resume_Form.name.error}
@@ -450,7 +450,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={7} >
                             <Labelbox type="select"
-                                placeholder={"Type of Resource"}
+                                placeholder={"Type of Resource *"}
                                 dropdown={resumeGetList.candidateList}
                                 changeData={(data) => checkValidation(data, "candidate")}
                                 value={Resume_Form.candidate.value}
@@ -465,7 +465,7 @@ function ResumePage() {
                             <Grid item xs={6} >
                                 <div className="genderDobFlex">
                                     <Labelbox type="select"
-                                        placeholder={"Gender"}
+                                        placeholder={"Gender *"}
                                         dropdown={[{ id: "1", value: "Male" }, { id: "2", value: "Female" }]}
                                         changeData={(data) => checkValidation(data, "gender")}
                                         value={Resume_Form.gender.value}
@@ -477,7 +477,7 @@ function ResumePage() {
                             <Grid item xs={6} >
                                 <div className="genderDobFlex">
                                     <Labelbox type="datepicker"
-                                        placeholder={"Date of Birth"}
+                                        placeholder={"Date of Birth *"}
                                         disableFuture={true}
                                         changeData={(data) => checkValidation(data, "DOB")}
                                         value={Resume_Form.DOB.value}
@@ -489,7 +489,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={7}>
                             <Labelbox type="select"
-                                placeholder={"Basic Qualification"}
+                                placeholder={"Basic Qualification *"}
                                 dropdown={resumeGetList.qualificationList}
                                 changeData={(data) => checkValidation(data, "basicQualification")}
                                 value={Resume_Form.basicQualification.value}
@@ -671,7 +671,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={7}>
                             <Labelbox type="text"
-                                placeholder={"Contact Phone"}
+                                placeholder={"Contact Phone *"}
                                 changeData={(data) => checkValidation(data, "contactPhone")}
                                 value={Resume_Form.contactPhone.value}
                                 error={Resume_Form.contactPhone.error}
@@ -680,7 +680,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="text"
-                                placeholder={"Email ID"}
+                                placeholder={"Email ID *"}
                                 changeData={(data) => checkValidation(data, "emailId")}
                                 value={Resume_Form.emailId.value}
                                 error={Resume_Form.emailId.error}
@@ -689,7 +689,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="text"
-                                placeholder={"Mail Address"}
+                                placeholder={"Mail Address *"}
                                 changeData={(data) => checkValidation(data, "mailAddress")}
                                 value={Resume_Form.mailAddress.value}
                                 error={Resume_Form.mailAddress.error}
@@ -698,7 +698,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"State of Domecile"}
+                                placeholder={"State of Domecile *"}
                                 dropdown={resumeGetList.stateList}
                                 changeData={(data) => checkValidation(data, "state")}
                                 value={Resume_Form.state.value}
@@ -708,7 +708,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"City"}
+                                placeholder={"City *"}
                                 dropdown={resumeGetList.cityList}
                                 changeData={(data) => checkValidation(data, "city")}
                                 value={Resume_Form.city.value}
@@ -718,7 +718,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"Languages Known"}
+                                placeholder={"Languages Known *"}
                                 mode={"multiple"}
                                 dropdown={resumeGetList.languagesList}
                                 changeData={(data) => checkValidation(data, "language", resumeGetList.languagesList)}
@@ -729,7 +729,7 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"Industry"}
+                                placeholder={"Industry *"}
                                 dropdown={resumeGetList.industryList}
                                 changeData={(data) => checkValidation(data, "industry")}
                                 value={Resume_Form.industry.value}
