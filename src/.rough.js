@@ -1,0 +1,1 @@
+userId,name,candidate,gender,DOB,basicQualification,additionalQualification1,additionalQualification2,institution,lastEmployer,startDate,endDate,email1,email2,phone1,phone2,skills,Traits,certifications,specializations,talents,intrests,contactPhone,emailId,mailAddress,state,city,language,industry
