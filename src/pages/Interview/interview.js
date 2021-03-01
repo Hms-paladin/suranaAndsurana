@@ -4,6 +4,7 @@ import './interview.scss'
 import { BackTop, Select, Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
+import {apiurl} from '../../utils/baseUrl'
 import SelectionIcon from '../../images/select.svg';
 import { useDispatch, connect } from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions"
@@ -11,6 +12,8 @@ import { getInterviewquestions } from "../../actions/interviewActions"
 //CandidatesName:
 const interviewerName = [{ name: "Santino" }, { name: "Antonio" }, { name: "Gianna" }, { name: "Julius" }, { name: "Alisa" }]
 
+import Axios from 'axios' 
+const { Option } = Select;
 
 // const style = {
 //     height: 40,
@@ -28,13 +31,25 @@ function InerviewScreen(props) {
     const [getdata, setgetData] = useState([])
     const [postdata, setpostData] = useState([])
     const dispatch = useDispatch();
+    const [optionvalues,setoptionvalues]=useState([]);
+    const [score,setscore]=useState([]);
+    useEffect(()=>{
+            
+            dispatch(getInterviewquestions())
+            // get value from redux store
+            console.log(props.getInterviewquestions,"getInterviewquestions")
+            let values=[]
+            Axios({
+                method:"get",
+                url:apiurl+"get_Interview_Status",
+            }).then((response)=>{
+                setoptionvalues(response.data.data.map((data)=>({
+                        name:data.status
+              })))
+            })
+            // setoptionvalues(values)
+            // console.log(optionvalues,"data")
 
-    useEffect(() => {
-
-        dispatch(getInterviewquestions())
-
-        // get value from redux store
-        console.log(props.getInterviewquestions, "getInterviewquestions")
 
     }, [dispatch])
 
@@ -133,8 +148,9 @@ function InerviewScreen(props) {
                     optionFilterProp="children" filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
-                    style={{ width: "50%" }} >
-
+                    className="SelectionInput" style={{ width: "50%" }} >
+                     {optionvalues.map((data,index)=>(
+                    <Option value={data.name} key={index}>{data.name}</Option>))} 
                 </Select>
 
             </Grid>

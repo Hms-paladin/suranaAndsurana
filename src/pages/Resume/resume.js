@@ -410,6 +410,26 @@ function ResumePage() {
 
 
 
+      const dispatch = useDispatch();
+    const [optionvalues,setoptionvalues]=useState([]);
+    useEffect(()=>{
+            
+           
+            // Axios({
+            //     method:"get",
+            //     url:apiurl+"get_interviewers",
+            // }).then((response)=>{
+            //     setoptionvalues(response.data.data.map((data)=>({
+            //             name:data.name,id:data.emp_id
+            //   })))
+            // })
+            // setoptionvalues(values)
+            // console.log(optionvalues,"data")
+      
+
+    },[dispatch])
+  
+
     return (
         <>
             <Grid item xs={12} className="ContentTitle">
