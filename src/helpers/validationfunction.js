@@ -45,10 +45,10 @@ checkValidation(textValue,validatorsArray){
      return {msg:"Please Enter 4 digit Number",state:false};
        }
    }
-    else if(validatorsArray[valid].name=='mobileHms'){ // 8 Digit Only
-      var re = /^([0-9][0-9]{7,14})$/;
+    else if(validatorsArray[valid].name=='mobileSurana'){ // 8 Digit Only
+      var re = /^([0-9][0-9]{9})$/;
       if(re.test(textValue)==false){
-    return {msg:"Please Enter 8 to 15 digit Mobile Number",state:false};
+    return {msg:"Please Enter 10 digit Mobile Number",state:false};
       }
   }
     else if (validatorsArray[valid].name == "regex") {

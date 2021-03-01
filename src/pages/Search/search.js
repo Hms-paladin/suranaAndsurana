@@ -1,11 +1,16 @@
-import { Button } from "@material-ui/core";
-import React,{useState} from "react";
+import Grid from '@material-ui/core/Grid';
+import React, { useState, useEffect } from "react";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import './search.scss'
-import { Radio } from 'antd';
+import { Radio, Select } from 'antd';
 import EnhancedTable from './table'
-import DynModel from './model' 
+import DynModel from './model'
+import { apiurl } from '../../utils/baseUrl'
+import { useDispatch, connect } from "react-redux";
+import { ResumeSearchStatus } from "../../actions/ResumeSearchAction"
+import Axios from 'axios'
 
+const { Option } = Select;
 const headCells = [
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
@@ -17,61 +22,96 @@ const headCells = [
     { id: 'acheivements', label: 'Acheivements' },
     { id: 'talents', label: 'Talents' },
 
-  ];
-    
-const rows = [
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
 ];
-function Search(){
+
+const rows = [
+    { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+    { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+    { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+    { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+    { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+];
+function Search(props) {
     const [value, setValue] = React.useState(1);
-    const [ modelOpen, setModelOpen ] = useState(false)
-
-
+    const [modelOpen, setModelOpen] = useState(false)
+    const dispatch = useDispatch();
+    const [optionvalues, setoptionvalues] = useState([]);
     const onChange = e => {
-      console.log('radio checked', e.target.value);
-      setValue(e.target.value);
+        console.log('radio checked', e.target.value);
+        setValue(e.target.value);
     }
-    return(
+    useEffect(() => {
+
+        dispatch(ResumeSearchStatus())
+        // get value from redux store
+        Axios({
+            method: "get",
+            url: apiurl + "get_Interview_Status",
+        }).then((response) => {
+            setoptionvalues(response.data.data.map((data) => ({
+                name: data.status
+            })))
+        })
+
+    }, [dispatch])
+
+    return (
         <div>
-           <div className="searchflex1">
-           <Radio.Group onChange={onChange} value={value}>
-      <Radio value={1}>Resume</Radio>
-      <Radio value={2}>Project</Radio>
-      <Radio value={3}>HR</Radio>
-      <Radio value={4}>Label 4</Radio>
-      <Radio value={5}>Label 5</Radio>
-      <Radio value={6}>Label 6</Radio>
+            <div className="radioBoxContainer">
+                <Radio.Group onChange={onChange} value={value}>
+                    <Radio value={1}>Resume</Radio>
+                    <Radio value={2}>Project</Radio>
+                    <Radio value={3}>HR</Radio>
+                    <Radio value={4}>Label 4</Radio>
+                    <Radio value={5}>Label 5</Radio>
+                    <Radio value={6}>Label 6</Radio>
+                </Radio.Group>
+            </div>
 
-    </Radio.Group>
-           </div>
-           <div className="searchfilterflex">
-               <div className="searchfilterflex1">
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Skills</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Traits</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Certifications</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Acheivements</span> <Labelbox type="select"/></div>
+            <div className="searchBoxContainer">
+                <Grid container spacing={3}>
+                    <Grid item xs={3}>
+                        <div>
+                            <div>Skills</div>
+                            <Labelbox type="select" /> 
+                        </div>
+                    </Grid>
+                    <Grid item xs={3} >
+                        <Labelbox type="select" />
+                    </Grid>
+                    <Grid item xs={3} >
+                        <Labelbox type="select" />
+                    </Grid>
+                    <Grid item xs={3} >
+                        <Labelbox type="select" />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3}>
+                    <Grid item xs={3}>
+                        <Labelbox type="select" />
+                    </Grid>
+                    <Grid item xs={3} >
+                        <Labelbox type="select" />
+                    </Grid>
+                    <Grid item xs={3} >
+                        <Labelbox type="select" />
+                    </Grid>
+                    <Grid item xs={3} >
+                        <Labelbox type="select" />
+                    </Grid>
+                </Grid>
+            </div>
 
-               </div>
-               <div className="searchfilterflex2">
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Specialization</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Capabilities</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Talents</span> <Labelbox type="select"/></div>
-                  <div className="searchfilterdrpdwn"><span className="dropdown_title">Status</span> <Labelbox type="select"/></div>
-                <Button>Go</Button>
-               </div>
-
-           </div>
-           <EnhancedTable headCells={headCells} rows={rows} tabletitle={"tests"}  />
-           <div className="searchinterviewbtn"><Button onClick={()=>setModelOpen(true)} >Interview Details</Button></div>
-           <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
-
-                      
         </div>
     )
 }
+const mapStateToProps = state => ({
+    ResumeSearchStatus: state.ResumeSearchStatus
+})
 
-export default Search;
+export default connect(mapStateToProps)(Search);
+
+
+{/* <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
+            <div className="searchinterviewbtn"><Button onClick={() => setModelOpen(true)} >Interview Details</Button></div>
+            <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} /> */}

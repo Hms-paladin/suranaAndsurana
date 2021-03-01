@@ -19,6 +19,7 @@ body {
     sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #E4E4E4 !important;
 }
 
 /* code {
@@ -34,3 +35,6 @@ body {
   background-color: transparent !important;
 }
 
+.ant-notification{  
+ z-index: 30000 !important;
+}

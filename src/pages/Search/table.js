@@ -176,6 +176,7 @@ export default function EnhancedTable(props) {
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
+    <div className="searchtable">
     <div className={classes.root}>
       {/* <Paper className={classes.paper}> */}
       <div className="tableTitle">{props.tabletitle}</div>
@@ -244,6 +245,7 @@ export default function EnhancedTable(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       {/* </Paper> */}
+    </div>
     </div>
   );
 }
