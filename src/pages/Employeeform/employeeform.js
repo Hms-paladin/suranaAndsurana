@@ -1,10 +1,21 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React,{useState} from "react";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import './employeeform.scss'
+import { Upload, message} from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import PublishIcon from '@material-ui/icons/Publish';
+function Employeeform(props){
+     const [imageurl,setimageurl]=useState("")
+     const [filename,setfilename]=useState("")
+   const uploadFile=(e)=>{
+    setimageurl(e.target.files[0])
+       setfilename(e.target.files[0].name)
 
-function Employeeform(){
-    
+   }
+  
+    // fileListData(fileList)
+
     return(
         <div>
             <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Employee form</div>
@@ -64,8 +75,8 @@ function Employeeform(){
                       </div>
                       <div className="employeeform_row7">
                       <div><Labelbox type="select" placeholder="Designation"/></div>
-                      <div><Labelbox type="text" placeholder="Date of Joining"/></div>
-                      <div><Labelbox type="text" placeholder="Supervisor's Name"/></div>
+                      <div><Labelbox type="datepicker" placeholder="Date of Joining"/></div>
+                      <div><Labelbox type="select" placeholder="Supervisor's Name"/></div>
                       <div><Labelbox type="text" placeholder="Supervisor's Email ID"/></div>
                       <div><Labelbox type="text" placeholder="Supervisor's Phone No."/></div>
 
@@ -73,16 +84,32 @@ function Employeeform(){
                       </div>
                       <div className="employeeform_row8">
                       <div><Labelbox type="text" placeholder="Official Email ID"/></div>
-                      <div><Labelbox type="text" placeholder="Official Contact No."/></div>
+                      <div><Labelbox type="text" placeholder="Official Contact No."/></div> 
                       <div><Labelbox type="select" placeholder="Department"/></div>
-                      <div><Labelbox type="text" placeholder="Employee Code"/></div>
+                       <div><Labelbox type="text" placeholder="Employee Code"/></div>
+                      
+                      
 
 
                       </div>
-                      <div className="employeeform_row8 empform_upload_doc">
-                      <div><Labelbox type="text" placeholder="Upload Document"/></div>
+                      <div className="upload_div">
+                      {/* <div><Labelbox type="text" placeholder="Upload Document"/></div> */}
+                       <div style={{width:"50%"}}>
+                      <Upload {...props} className="upload_tag"
+                      action= 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                    //   onChange= {(info)=>handleChange(info) } 
+                    //   fileList={fileListData}
+                    >
                       
+                          <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
+                     </Upload>,
+                   
+                {/* <input type="file" onChange={uploadFile} id="pdfupload"/> */}
+              
 
+               
+            
+                      </div>  
 
                       </div>
                       <div className="employeeform_save"><Button>Save</Button></div>

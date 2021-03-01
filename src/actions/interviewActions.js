@@ -5,7 +5,6 @@ import axios from "axios";
 
 export const getInterviewquestions = () => async dispatch => {
     try {
-
         axios({
             method: 'GET',
             url: apiurl +'/get_questions',
