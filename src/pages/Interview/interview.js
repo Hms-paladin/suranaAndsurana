@@ -270,7 +270,7 @@ function InerviewScreen(props) {
             <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions">
                 <Grid item xs={8} className="scrollbar">
                     <div >List of guiding questions</div><br />
-                    {props.getInterviewquestions.map((get,index)=>{
+                    {getdata.map((get,index)=>{
                             // debugger
                              return(
                                  <>
