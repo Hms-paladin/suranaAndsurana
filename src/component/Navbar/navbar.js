@@ -68,7 +68,7 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       {path:"/employeeform",title:"Employee Form"},
       {path:"/search",title:"Search"},
-      // {path:"/dashboard",title:"Dashboard"},
+      {path:"/projectTask",title:"ProjectTask"},
     ]
     );
 

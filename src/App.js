@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard/dashboard.js";
 import Resume from "./pages/Resume/resume.js";
 import Interview from './pages/Interview/interview'
 import TodoList from './pages/TodoList/todoList'
+import ProjectTask from './pages/ProjectTask/projectTask'
+
 
 
 import './App.css';
@@ -27,6 +29,8 @@ function App() {
           <Route path="/employeeform" component={Employeeform} exact/>
           <Route path="/search" component={Search} exact/>
           <Route path="/todolist" component={TodoList} exact/>
+          <Route path="/projectTask" component={ProjectTask} exact/>
+
         </Switch>
       </Navbar>
     </Router>
