@@ -4,13 +4,14 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl"
 import axios from "axios";
-
+import {useDispatch,connect} from "react-redux";
 import './resume.scss'
 import CustomButton from '../../component/Butttons/button';
+import { InesertResume } from "../../actions/ResumeAction"
 
 
 function ResumePage() {
-
+    const dispatch = useDispatch()
     const [resumeGetList, setGetList] = useState({})
     const [Resume_Form, setResumeFrom] = useState({
         userId: {
@@ -183,6 +184,7 @@ function ResumePage() {
         },
         language: {
             value: "",
+            valueById:"",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
@@ -322,16 +324,12 @@ function ResumePage() {
 
             setGetList({ candidateList, qualificationList, institutionList, skillsList, traitsList, certificateList, specilalizaionsList, talentList, interestList, stateList, cityList, languagesList, industryList })
 
-            // use/access the results 
         })).catch(errors => {
-            // react on errors.
         })
     }, [])
 
 
     function checkValidation(data, key, multipleId) {
-        console.log("key", key);
-        console.log("data>>", data);
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -398,6 +396,10 @@ function ResumePage() {
             // setResumeFrom({ error: true });
         } else {
             // setResumeFrom({ error: false });
+            
+            dispatch(InesertResume(Resume_Form)).then(()=>{
+                handleCancel()
+            })
         }
 
         setResumeFrom(prevState => ({
@@ -405,8 +407,20 @@ function ResumePage() {
         }));
     };
 
+    const handleCancel = () =>{
+        let ResumeFrom_key = [
+            "userId","name","candidate","gender","DOB","basicQualification","additionalQualification1","additionalQualification2","institution","lastEmployer","startDate","endDate","email1","email2","phone1","phone2","skills","Traits","certifications","specializations","talents","intrests","contactPhone","emailId","mailAddress","state","city","language","industry"
+        ]
+
+        ResumeFrom_key.map((data)=>{
+            Resume_Form[data].value = ""
+        })
+        setResumeFrom(prevState => ({
+            ...prevState,
+        }));
+    }
+
     console.log(Resume_Form, "Resume_Form")
-    console.log(Resume_Form.skills.value, "candidateList")
 
     return (
         <>
@@ -447,7 +461,6 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
-                            //   justify="center"
                             alignItems="center" >
                             <Grid item xs={6} >
                                 <div className="genderDobFlex">
@@ -455,7 +468,6 @@ function ResumePage() {
                                         placeholder={"Gender"}
                                         dropdown={[{ id: "1", value: "Male" }, { id: "2", value: "Female" }]}
                                         changeData={(data) => checkValidation(data, "gender")}
-                                        // mode={"multiple"}
                                         value={Resume_Form.gender.value}
                                         error={Resume_Form.gender.error}
                                         errmsg={Resume_Form.gender.errmsg}
@@ -607,7 +619,7 @@ function ResumePage() {
                                 mode={"multiple"}
                                 placeholder={"Traits"}
                                 dropdown={resumeGetList.traitsList}
-                                changeData={(data) => checkValidation(data, "Traits")}
+                                changeData={(data) => checkValidation(data, "Traits", resumeGetList.traitsList)}
                                 value={Resume_Form.Traits.value}
                                 error={Resume_Form.Traits.error}
                                 errmsg={Resume_Form.Traits.errmsg}
@@ -618,7 +630,7 @@ function ResumePage() {
                                 mode={"multiple"}
                                 placeholder={"Certifications"}
                                 dropdown={resumeGetList.certificateList}
-                                changeData={(data) => checkValidation(data, "certifications")}
+                                changeData={(data) => checkValidation(data, "certifications", resumeGetList.certificateList)}
                                 value={Resume_Form.certifications.value}
                                 error={Resume_Form.certifications.error}
                                 errmsg={Resume_Form.certifications.errmsg}
@@ -629,7 +641,7 @@ function ResumePage() {
                                 mode={"multiple"}
                                 placeholder={"Specializations "}
                                 dropdown={resumeGetList.specilalizaionsList}
-                                changeData={(data) => checkValidation(data, "specializations")}
+                                changeData={(data) => checkValidation(data, "specializations", resumeGetList.specilalizaionsList)}
                                 value={Resume_Form.specializations.value}
                                 error={Resume_Form.specializations.error}
                                 errmsg={Resume_Form.specializations.errmsg}
@@ -640,7 +652,7 @@ function ResumePage() {
                                 mode={"multiple"}
                                 placeholder={"Talents"}
                                 dropdown={resumeGetList.talentList}
-                                changeData={(data) => checkValidation(data, "talents")}
+                                changeData={(data) => checkValidation(data, "talents", resumeGetList.talentList)}
                                 value={Resume_Form.talents.value}
                                 error={Resume_Form.talents.error}
                                 errmsg={Resume_Form.talents.errmsg}
@@ -651,7 +663,7 @@ function ResumePage() {
                                 mode={"multiple"}
                                 placeholder={"Special Intrests"}
                                 dropdown={resumeGetList.interestList}
-                                changeData={(data) => checkValidation(data, "intrests")}
+                                changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
                                 value={Resume_Form.intrests.value}
                                 error={Resume_Form.intrests.error}
                                 errmsg={Resume_Form.intrests.errmsg}
@@ -707,8 +719,9 @@ function ResumePage() {
                         <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Languages Known"}
+                                mode={"multiple"}
                                 dropdown={resumeGetList.languagesList}
-                                changeData={(data) => checkValidation(data, "language")}
+                                changeData={(data) => checkValidation(data, "language", resumeGetList.languagesList)}
                                 value={Resume_Form.language.value}
                                 error={Resume_Form.language.error}
                                 errmsg={Resume_Form.language.errmsg}
@@ -727,12 +740,11 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
-                            //   justify="center"
                             alignItems="center"
                             className="resumeBtnContainer"
                         >
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} btnDisable={true} />
-                            <CustomButton btnName={"Cancel"} />
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}  />
+                            <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
 
