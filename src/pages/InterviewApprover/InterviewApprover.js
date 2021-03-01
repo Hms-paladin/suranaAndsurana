@@ -42,6 +42,13 @@ export default function InterviewApprover() {
         })
         setoptionvalues(values)
     }, [dispatch])
+
+     const approvesubmit=(e)=>{
+         alert("Ss")
+
+     }
+
+    
     return (
         <div className="interviewapprove_root">
             {/* <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} contents={<div>sdfghjkl</div>}> */}
@@ -64,6 +71,7 @@ export default function InterviewApprover() {
                 </Select>
 
             </Grid>
+            <form onSubmit={approvesubmit}>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
                     <Input placeholder="Final Score" style={{ height: "70px", width: "60%" }} />
@@ -72,11 +80,12 @@ export default function InterviewApprover() {
                     <Input placeholder="comment" style={{ height: "80px", width: "100%" }} />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewapprove">Approve</div>
+                    <div className="interviewapprove" >Approve</div>
                 </Grid>
-
-
             </Grid>
+                
+            </form>
+       
             {/* </DynModel> */}
         </div>
     )
