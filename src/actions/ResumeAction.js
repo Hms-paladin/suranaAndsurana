@@ -13,7 +13,7 @@ export const InesertResume = (Resume_Form) => async dispatch => {
             data:{
                 "user_id": 1,
                 "name": Resume_Form.name.value,
-                "type_of_resource": Resume_Form.userId.value,
+                "type_of_resource": Resume_Form.candidate.value,
                 "gender": Resume_Form.gender.value,
                 "dob": moment(Resume_Form.DOB.value).format("YYYY-MM-DD"),
                 "bas_qual": Resume_Form.basicQualification.value,
@@ -61,6 +61,8 @@ export const InesertResume = (Resume_Form) => async dispatch => {
             });
         
     } catch (err) {
-        
+            notification.error({
+                message: 'Record Not Added',
+              });
     }
 }

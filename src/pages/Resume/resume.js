@@ -14,15 +14,15 @@ function ResumePage() {
     const dispatch = useDispatch()
     const [resumeGetList, setGetList] = useState({})
     const [Resume_Form, setResumeFrom] = useState({
-        userId: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
+        // userId: {
+        //     value: "",
+        //     validation: [{ "name": "required"}],
+        //     error: null,
+        //     errmsg: null,
+        // },
         name: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetsOnly" }],
+            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
             errmsg: null,
         },
@@ -70,7 +70,7 @@ function ResumePage() {
         },
         lastEmployer: {
             value: "",
-            validation: [{ "name": "alphabetsOnly" }],
+            validation: [{ "name": "alphabetwithspace" }],
             error: null,
             errmsg: null,
         },
@@ -100,13 +100,13 @@ function ResumePage() {
         },
         phone1: {
             value: "",
-            validation: [{ "name": "mobile" }],
+            validation: [{ "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
         phone2: {
             value: "",
-            validation: [{ "name": "mobile" }],
+            validation: [{ "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -154,7 +154,7 @@ function ResumePage() {
         },
         contactPhone: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "mobile" }],
+            validation: [{ "name": "required" },{ "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -166,7 +166,7 @@ function ResumePage() {
         },
         mailAddress: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "email" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -409,7 +409,7 @@ function ResumePage() {
 
     const handleCancel = () =>{
         let ResumeFrom_key = [
-            "userId","name","candidate","gender","DOB","basicQualification","additionalQualification1","additionalQualification2","institution","lastEmployer","startDate","endDate","email1","email2","phone1","phone2","skills","Traits","certifications","specializations","talents","intrests","contactPhone","emailId","mailAddress","state","city","language","industry"
+            "name","candidate","gender","DOB","basicQualification","additionalQualification1","additionalQualification2","institution","lastEmployer","startDate","endDate","email1","email2","phone1","phone2","skills","Traits","certifications","specializations","talents","intrests","contactPhone","emailId","mailAddress","state","city","language","industry"
         ]
 
         ResumeFrom_key.map((data)=>{
@@ -430,7 +430,7 @@ function ResumePage() {
             <div className="Container">
                 <div className="leftContainer">
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <Labelbox type="text"
                                 placeholder={"User Id *"}
                                 changeData={(data) => checkValidation(data, "userId")}
@@ -438,7 +438,7 @@ function ResumePage() {
                                 error={Resume_Form.userId.error}
                                 errmsg={Resume_Form.userId.errmsg}
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
                             <Labelbox type="text"
                                 placeholder={"Name *"}
