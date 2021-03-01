@@ -1,3 +1,12 @@
+
+
+
+
+
+// resume
+
+
+
 // import React from "react";
 // import Labelbox from "../../helpers/labelbox/labelbox"
 
@@ -12,22 +21,26 @@
 
 // export default Resume;
 
-import React,{useState,useEffect} from 'react'
+import react from 'react'
 import './resume.scss'
 import Grid from '@material-ui/core/Grid';
-import { Select, Row, Col,message,Input,DatePicker} from 'antd'
+import { Layout, Input, DatePicker, message, Button,Space } from 'antd';
+import { AudioOutlined } from '@ant-design/icons';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import SettingsIcon from '@material-ui/icons/Settings';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import InfoIcon from '@material-ui/icons/Info';
+import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
+import { Select, Row, Col } from 'antd'
 import { DownCircleTwoTone } from '@ant-design/icons'
-import {useDispatch,connect} from "react-redux";
-import {apiurl} from '../../utils/baseUrl'
 // icons:
 // import SelectionIcon from '../../images/selectIcon.png'
-import Labelbox from "../../helpers/labelbox/labelbox"
 import SelectionIcon from '../../images/select.svg'
 import CalenderIcon from '../../images/calender.svg'
-import Axios from 'axios'
-import './resume.scss'
-const { Option } = Select;
-function ResumePage(props) {
+
+
+
+function ResumePage() {
     function onChange(date, dateString) {
         console.log(date, dateString);
       }
@@ -35,10 +48,6 @@ function ResumePage(props) {
       const success = () => {
         message.success('This is a success message');
       };
-
-      const dispatch = useDispatch();
-    const [optionvalues,setoptionvalues]=useState([]);
- 
 
     return (
         <div className="Container">
@@ -73,7 +82,7 @@ function ResumePage(props) {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                                 className="SelectionInput" style={{ width: "50%" }} >
-                                
+
                             </Select>
                         </Grid>
 
@@ -291,18 +300,126 @@ function ResumePage(props) {
                 </div>
 
             </div>
-        <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <Labelbox type="text" />
-            </Grid>
-            <Grid item xs={12}>
-                <Labelbox type="select" />
-            </Grid>
-            <Grid item xs={12}>
-                <Labelbox type="datepicker" />
-            </Grid>
-        </Grid>
         </div>
+
     )
 }
 export default ResumePage;
+
+
+
+// resume.scss
+
+
+
+.ContentTitle {
+    font-size: 24px;
+    font-weight: 550;
+    color: #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 40px;
+  }
+  
+  .master_container {
+    display: flex;
+    padding: 1%;
+  }
+  
+  .Left_Container {
+    width: 55%;
+    padding-left: 7%;
+  }
+  
+  .Right_Container {
+    width: 45%;
+  
+  }
+  
+  .SelectInput_svg {
+    width: 167%;
+    height: 19px;
+  }
+  .DateInput_svg{
+    height: 20px;
+  }
+  
+  // .ContainerInput .ant-input {
+  //   border-top-left-radius: 8px;
+  //   border-bottom-left-radius: 8px;
+  //   border-top-right-radius: 8px;
+  //   border-bottom-right-radius: 8px;
+  //   border: 1px solid #0353A4;
+  
+  // }
+  
+  .SelectionInput .ant-select-arrow {
+    margin-top: -11px;
+    margin-right: 5px;
+  
+  }
+  
+  
+  .SelectOption .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #0353A4;
+  
+  }
+  
+  .DatepickerInput .ant-picker {
+  
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #0353A4;
+  }
+  
+  .DatepickerInput .ant-picker-suffix {
+    font-size: 23px;
+    color: #0353A4;
+  }
+  
+  .SaveButton {
+    height: 35px;
+    width:28%;
+    background-color: #023E7D;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+    margin-top: 10%;
+    cursor: pointer;
+  }
+  
+  
+  
+  .CancelButton{
+    height: 35px;
+    width: 30%;
+    background-color: rgb(251, 248, 252);
+    text-align: center;
+    color: rgb(134, 130, 130);
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+    margin-top: 10%;
+    cursor: pointer;
+  
+  }
+
+  // ::-webkit-input-placeholder {
+  //   color: rgb(87, 84, 84) !important;
+  // }
+  
+  // .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  //   color: rgb(87, 84, 84) !important;
+  
+  // }

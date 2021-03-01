@@ -18,13 +18,16 @@ import DateFnsUtils from '@date-io/date-fns';
 //   KeyboardDatePicker,
 // } from '@material-ui/pickers';
 import { DatePicker, Select, TimePicker } from 'antd';
+import SelectionIcon from '../../images/select.svg';
+
 
 
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
 		console.log("valid date", props.value)
-		this.state = { gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : new Date() };
+		this.state = { gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
+		// ? props.value : new Date()
 	}
 	changeGender = (data) => {
 		this.setState({ gender: data });
@@ -55,7 +58,7 @@ export default class Labelbox extends Component {
 			}
 			else {
 				var datefmt = dateFormat(props.value && props.value, 'yyyy-mm-dd');
-				this.setState({ selecteddate: datefmt })
+				// this.setState({ selecteddate: datefmt })
 			}
 		}
 		if (props.gendervalue) {
@@ -153,6 +156,7 @@ export default class Labelbox extends Component {
 						{/*<DatePicker value={moment(this.props.value)?moment(this.props.value):new Date()} open={this.state.open}  onFocus={()=>this.setState({open:true})} onChange={(date)=>this.datepickerChange(date)}  className="datepickerchnge" style={{width:'100%',}} format="YYYY-MM-DD"  />*/}
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
 							<KeyboardDatePicker
+								placeholder={this.props.placeholder}
 								disableToolbar={true}
 								autoOk={true}
 								clearable={false}
@@ -160,7 +164,7 @@ export default class Labelbox extends Component {
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
 								disablePast={this.props.disablePast ? this.props.disablePast : false}
 								minDate={this.props.minDate ? this.props.minDate : null}
-								variant="variant"
+								inputVariant="outlined"
 								format="dd/MM/yyyy"
 								margin="normal"
 								id="date-picker-inline"
@@ -243,7 +247,10 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 
-					<Select disabled={this.props.disabled && true} className={`${data.error && "brdred"} ${data.error && "brdnone"} selectbox`} showSearch value={data.value ? optionValue : 'Select'} optionLabelProp="label"
+					<Select disabled={this.props.disabled && true} className={`${data.error && "brdred"} ${data.error && "brdnone"} selectbox`} showSearch value={data.value} optionLabelProp="label"
+					// value={data.value ? optionValue : 'Select'}
+					suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
+					placeholder={this.props.placeholder}
 						optionFilterProp="label" onChange={(value) => this.props.changeData && this.props.changeData(value)}>
 						{data.dropdown && data.dropdown.length > 0 && data.dropdown.map((item, index) => {
 							return (

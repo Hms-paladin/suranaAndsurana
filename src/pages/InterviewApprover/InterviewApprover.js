@@ -9,6 +9,7 @@ import Eyes from '../../images/neweye.svg'
 import {useDispatch,connect} from "react-redux";
 import {apiurl} from '../../utils/baseUrl'
 import Approve from '../../images/APPROVE.png'
+// import { apiurl } from '../../App'
 import SelectionIcon from '../../images/select.svg'
 import Axios from 'axios';
 export default function InterviewApprover(){
@@ -41,6 +42,20 @@ useEffect(()=>{
         })
         setoptionvalues(values)
         console.log(optionvalues,"data")
+// const dropdown=()=>{
+//     let values=[]
+//     Axios({
+//         method:"get",
+//         url: apiurl + "get_interviewers",
+//     }).then((response)=>{
+//         setoptionvalues(response.data.data.map((data)=>({
+//                 name:data.name,id:data.emp_id
+//       })))
+//       setoptionvalues(values)
+//     })
+//     setoptionvalues(values)
+//     console.log(optionvalues,"data")
+// };
 
 
 },[dispatch])
@@ -60,6 +75,7 @@ useEffect(()=>{
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     className="SelectionInput" style={{ width: "40%" }} 
+                     value={optionvalues} 
                     >
                  {optionvalues.map((data,index)=>(
                     <Option value={data.name} key={index}>{data.name}</Option>))} 

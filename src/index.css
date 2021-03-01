@@ -27,3 +27,6 @@ body {
 } */
 
 
+.ant-notification{  
+ z-index: 30000 !important;
+}

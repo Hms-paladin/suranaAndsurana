@@ -177,7 +177,7 @@ function InerviewScreen(props) {
                     <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewSubmit" onClick={sumbitData}>Submit</div>
+                    <div className="interviewSubmit" onClick={sumbitData}>Save</div>
                 </Grid>
 
 
