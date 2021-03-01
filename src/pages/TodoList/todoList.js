@@ -54,7 +54,7 @@ function TodoList(props) {
     // Interview Arrover
 
     const rows = [
-        { id: <div onClick={openModel} className="tempClass" >1</div>, name: 'Schedule & Task' },
+        { id: <div onClick={openModel} className="tempClass" >1</div>, name: 'Interview' },
         { id: <div onClick={openModel3} className="tempClass" >2</div>, name: 'interview approval_Task' },
         { id: <div onClick={openModel2} className="tempClass" >3</div>, name: 'employee approval' },
     ];

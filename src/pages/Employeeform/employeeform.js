@@ -1,20 +1,134 @@
+
+
 import { Button } from "@material-ui/core";
-import React,{useState} from "react";
 import './employeeform.scss'
-import { Upload, message} from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import React ,{useState,useEffect}from "react";
+import Labelbox from "../../helpers/labelbox/labelbox";
+import { Upload, message,Select} from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
+import Axios from 'axios';
+import {apiurl} from '../../utils/baseUrl'
+import './employeeform.scss'
+import ValidationLibrary from "../../helpers/validationfunction";
+const { Option } = Select;
 function Employeeform(props){
-     const [imageurl,setimageurl]=useState("")
-     const [filename,setfilename]=useState("")
-   const uploadFile=(e)=>{
-    setimageurl(e.target.files[0])
-       setfilename(e.target.files[0].name)
+     const [getdata, setgetData]= useState({})
+     const [dept, setdept]= useState({})
+     const [sup_name, setsup_name]= useState({})
+     const [EmpForm, setEmpFrom] = useState({
+        desgination: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        department: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        supervisor_name: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        supervisor_email: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        supervisor_ph: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+    })
+    
+    function checkValidation(data, key, multipleId) {
+        console.log("key", key);
+        console.log("data>>", data);
+        if(key==="supervisor_name"){
 
-   }
-  
-    // fileListData(fileList)
+           Sup_nameGetId(data)
+        }
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            EmpForm[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: EmpForm[key].validation
+        }
+        setEmpFrom(prevState => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    }
+    useEffect(() => {
+        Axios({
+            method:"get",
+            url:apiurl+"get_s_tbl_m_designation",
+        }).then((response)=>{
+            console.log(response,"response")
+            let Designation=[]
+            response.data.data.map((data,index)=>
+            Designation.push({id:data.designation_id,value:data.designation})
+             )
+             setgetData({Designation})
+             console.log(getdata,"values")
+        })
+        Axios({
+            method:"get",
+            url:apiurl+"get_department",
+        }).then((response)=>{
+            console.log(response,"response")
+            let Department=[]
+            response.data.data.map((data,index)=>
+            Department.push({id:data.department_id,value:data.department})
+             )
+             setdept({Department})
+             console.log(Department,"department")
+        })
+        Axios({
+            method:"get",
+            url:apiurl+"get_interviewers",
+        }).then((response)=>{
+            console.log(response,"sup")
+            let Supervisor=[]
+            response.data.data.map((data,index)=>
+            Supervisor.push({id:data.emp_id,value:data.name})
+             )
+             setsup_name({Supervisor})
+             console.log(dept,"dept")
+        })
+        
 
+     }, [])
+     function Sup_nameGetId(data){
+         alert(data,"data")
+        Axios({
+            method:"get",
+            url:apiurl+"get_employee_by_id",
+            data:{
+                emp_id:data
+            }
+        }).then((response)=>{
+            console.log(response,"sup")
+            let Sup_nameId=[]
+            response.data.data.map((data,index)=>
+            Sup_nameId.push({id:data.emp_id,value:data.name})
+             )
+             setsup_name({Sup_nameId})
+             console.log(dept,"dept")
+        })
+     }
+    
     return(
         <div>
             <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Employee form</div>
@@ -27,7 +141,6 @@ function Employeeform(props){
                       <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">B.Sc</div></div>
                       <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">B.Sc</div></div>
                       <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">B.Sc</div></div>
-
 
                 </div>
                 <div className="employeeform_row2">
@@ -73,18 +186,56 @@ function Employeeform(props){
 
                       </div>
                       <div className="employeeform_row7">
-                      <div><Labelbox type="select" placeholder="Designation"/></div>
-                      <div><Labelbox type="datepicker" placeholder="Date of Joining"/></div>
-                      <div><Labelbox type="select" placeholder="Supervisor's Name"/></div>
-                      <div><Labelbox type="text" placeholder="Supervisor's Email ID"/></div>
-                      <div><Labelbox type="text" placeholder="Supervisor's Phone No."/></div>
+                      <div>
+                          <Labelbox type="select" placeholder="Designation"
+                                dropdown={getdata.Designation}
+                                changeData={(data) => checkValidation(data, "desgination")}
+                                value={EmpForm.desgination.value}
+                                error={EmpForm.desgination.error}
+                                errmsg={EmpForm.desgination.errmsg}
+                         />
+                      </div>
+                      <div>
+                          <Labelbox type="datepicker" placeholder="Date of Joining"
+                           
+                          /></div>
+                      <div>
+                          <Labelbox type="select" placeholder="Supervisor's Name"
+                             dropdown={sup_name.Supervisor}
+                             changeData={(data) => checkValidation(data, "supervisor_name")}
+                             value={EmpForm.supervisor_name.value}
+                             error={EmpForm.supervisor_name.error}
+                             errmsg={EmpForm.supervisor_name.errmsg}
+                      /></div>
+                      <div><Labelbox type="text" placeholder="Supervisor's Email ID"
+                      changeData={(data) => checkValidation(data, "supervisor_email")}
+                      value={EmpForm.supervisor_email.value}
+                      error={EmpForm.supervisor_email.error}
+                      errmsg={EmpForm.supervisor_email.errmsg}
+                      />
+                      </div>
+                      <div><Labelbox type="text" placeholder="Supervisor's Phone No."
+                        changeData={(data) => checkValidation(data, "supervisor_ph")}
+                        value={EmpForm.supervisor_ph.value}
+                        error={EmpForm.supervisor_ph.error}
+                        errmsg={EmpForm.supervisor_ph.errmsg}
+                      />
+                      </div>
 
 
                       </div>
                       <div className="employeeform_row8">
                       <div><Labelbox type="text" placeholder="Official Email ID"/></div>
                       <div><Labelbox type="text" placeholder="Official Contact No."/></div> 
-                      <div><Labelbox type="select" placeholder="Department"/></div>
+                      <div>
+                          <Labelbox type="select" placeholder="Department"
+                            dropdown={dept.Department}
+                            changeData={(data) => checkValidation(data, "department")}
+                            value={EmpForm.department.value}
+                            error={EmpForm.department.error}
+                            errmsg={EmpForm.department.errmsg}
+                      />
+                      </div>
                        <div><Labelbox type="text" placeholder="Employee Code"/></div>
                       
                       
@@ -104,6 +255,7 @@ function Employeeform(props){
                      </Upload>,
                    
                 {/* <input type="file" onChange={uploadFile} id="pdfupload"/> */}
+
               
 
                
@@ -112,9 +264,12 @@ function Employeeform(props){
 
                       </div>
                       <div className="employeeform_save"><Button>Save</Button></div>
+                     
                       
         </div>
     )
 }
+
+
 
 export default Employeeform;

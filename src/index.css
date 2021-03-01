@@ -19,6 +19,7 @@ body {
     sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #E4E4E4 !important;
 }
 
 /* code {
@@ -27,6 +28,20 @@ body {
 } */
 
 
+
+/* table select null css */
+
+.MuiTableRow-root.Mui-selected, .MuiTableRow-root.Mui-selected:hover{
+  background-color: transparent !important;
+}
+
 .ant-notification{  
  z-index: 30000 !important;
 }
+.ant-select-dropdown {
+  z-index: 1800 !important;
+}
+
+/* .ant-calendar-picker {
+  z-index: 1410 !important;
+} */

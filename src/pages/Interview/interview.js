@@ -4,12 +4,14 @@ import './interview.scss'
 import { BackTop, Select,Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
-import {apiurl} from '../../utils/baseUrl'
 import SelectionIcon from '../../images/select.svg';
 import {useDispatch,connect} from "react-redux";
-import { getInterviewquestions } from "../../actions/interviewActions"
-import Axios from 'axios' 
-const { Option } = Select;
+import { getInterviewquestions } from "../../actions/interviewActions";
+import { insertInterviewquestions} from "../../actions/interviewActions";
+import Labelbox from "../../helpers/labelbox/labelbox";
+import { Button } from "@material-ui/core";
+
+ 
 
 // const style = {
 //     height: 40,
@@ -25,43 +27,39 @@ const { Option } = Select;
 function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
     const [getdata, setgetData]= useState([])
-    const [postdata, setpostData]=useState([])
+    // const [ postdata, setpostData]=useState({
+    //     score_inital:"",
+    //     comment:"",
+    //     final_score:""
+    // })
+    const [scoreInitial, setscoreInitial] = useState({})
+    const [comment, setcomment] = useState({})
+    const [scoreFinal, setscoreFinal] = useState({})
+
     const dispatch = useDispatch();
-    const [optionvalues,setoptionvalues]=useState([]);
-    const [score,setscore]=useState([]);
+
     useEffect(()=>{
             
             dispatch(getInterviewquestions())
+
             // get value from redux store
             console.log(props.getInterviewquestions,"getInterviewquestions")
-            let values=[]
-            Axios({
-                method:"get",
-                url:apiurl+"get_Interview_Status",
-            }).then((response)=>{
-                setoptionvalues(response.data.data.map((data)=>({
-                        name:data.status
-              })))
-            })
-            // setoptionvalues(values)
-            // console.log(optionvalues,"data")
-
 
     },[dispatch])
 
 
-  const  sumbitData=()=>{
-    //   alert("saxdasx")
-    //   debugger
-    //     Axios({
-    //         method:'POST',
-    //         url: apiurl + '/insert_interview_scores',
-    //     })
-    //     .then((response)=>{
-    //         console.log(response,"post")
-    //     })
-    }
 
+    const handleSubmit=(e)=>{
+        // alert(comment)
+        
+        e.preventDefault();
+        // dispatch(insertInterviewquestions({ }))
+        dispatch(insertInterviewquestions({scoreInitial:scoreInitial,comment:comment,scoreFinal:scoreFinal}))
+        console.log(props.insertInterviewquestions,"inserttddt")
+
+
+        console.log(scoreInitial)
+    }
 
 
     return (
@@ -96,6 +94,7 @@ function InerviewScreen(props) {
                             )
                         })
                     }
+y
 
 
                     {/* <div >List of guiding questions</div><br />
@@ -155,39 +154,43 @@ function InerviewScreen(props) {
                 </Grid>
 
             </Grid>
+            <form  onSubmit={handleSubmit}>
             <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
                 <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
                     optionFilterProp="children" filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     className="SelectionInput" style={{ width: "50%" }} >
-                     {optionvalues.map((data,index)=>(
-                    <Option value={data.name} key={index}>{data.name}</Option>))} 
+
                 </Select>
 
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
+                    <Input placeholder="Initial Score" onChange={e=>setscoreInitial(e.target.value) }  style={{height:"70px",width:"60%"}}/>
                 </Grid>
                 <Grid item xs={5} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="comment"  style={{height:"80px",width:"100%"}}/>
+                    <Input placeholder="comment"onChange={e=>setcomment(e.target.value) }  style={{height:"80px",width:"100%"}}/>
                 </Grid>
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score"  style={{height:"70px",width:"60%"}}/>
+                    <Input placeholder="Final Score" onChange={e=>setscoreFinal(e.target.value) }  style={{height:"70px",width:"60%"}}/>
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewSubmit" onClick={sumbitData}>Save</div>
+                    <Button type="submit" className="interviewSubmit" >Submit</Button>
                 </Grid>
 
 
             </Grid>
+
+            </form>
+      
         </div>
     )
 }
 
 const mapStateToProps = state => ({
-    getInterviewquestions: state.getInterviewquestions
+    getInterviewquestions: state.getInterviewquestions,
+    insertInterviewquestions:state.insertInterviewquestions
   })
   
   
