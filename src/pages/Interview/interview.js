@@ -8,12 +8,13 @@ import {apiurl} from '../../utils/baseUrl'
 import SelectionIcon from '../../images/select.svg';
 import { useDispatch, connect } from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions"
+import Axios from 'axios' 
+const { Option } = Select;
 
 //CandidatesName:
 const interviewerName = [{ name: "Santino" }, { name: "Antonio" }, { name: "Gianna" }, { name: "Julius" }, { name: "Alisa" }]
 
-import Axios from 'axios' 
-const { Option } = Select;
+
 
 // const style = {
 //     height: 40,

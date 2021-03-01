@@ -408,28 +408,6 @@ function ResumePage() {
     console.log(Resume_Form, "Resume_Form")
     console.log(Resume_Form.skills.value, "candidateList")
 
-
-
-      const dispatch = useDispatch();
-    const [optionvalues,setoptionvalues]=useState([]);
-    useEffect(()=>{
-            
-           
-            // Axios({
-            //     method:"get",
-            //     url:apiurl+"get_interviewers",
-            // }).then((response)=>{
-            //     setoptionvalues(response.data.data.map((data)=>({
-            //             name:data.name,id:data.emp_id
-            //   })))
-            // })
-            // setoptionvalues(values)
-            // console.log(optionvalues,"data")
-      
-
-    },[dispatch])
-  
-
     return (
         <>
             <Grid item xs={12} className="ContentTitle">
