@@ -12,6 +12,7 @@ import {useDispatch,connect} from "react-redux";
 import {apiurl} from '../../utils/baseUrl'
 import { GetInterviewers } from "../../actions/GetInterviewersActions"
 import { GetDesignation } from "../../actions/GetDesignationActions"
+import ValidationLibrary from '../../helpers/validationfunction'
 
 
 
@@ -23,8 +24,22 @@ const { Option } = Select;
 function DynModel(props){
 
     const [visible, setVisible] = React.useState(false);
-    const [optionvalues,setoptionvalues]=useState([]);
-    const [optiondata,setoptiondata]=useState([]);
+    const [interviewerdata,setinterviewerdata]=useState([]);
+    const [designationdata,setdesignationdata]=useState([]);
+    const [Interviewschedule, setInterviewschedule] = useState({
+        desgination: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        name: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }
+    })
 
     function onChange(date, dateString) {
         console.log(date, dateString);
@@ -34,7 +49,28 @@ function DynModel(props){
         setVisible(false)
         props.handleChangeCloseModel(false)
     }
+    function checkValidation(data, key, multipleId) {
+        console.log("key", key);
+        console.log("data>>", data);
+        // if(key==="supervisor_name"){
 
+        //    Sup_nameGetId(data)
+        // }
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            Interviewschedule[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: Interviewschedule[key].validation
+        }
+        setInterviewschedule(prevState => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    }
     React.useEffect(()=>{
         setVisible(props.handleChangeModel)
     },[props.handleChangeModel])
@@ -49,9 +85,12 @@ function DynModel(props){
           method:"get",
           url:apiurl+"get_interviewers",
       }).then((response)=>{
-          setoptionvalues(response.data.data.map((data)=>({
-                  name:data.name
-        })))
+        let Interviewer=[]
+        response.data.data.map((data,index)=>
+        Interviewer.push({id:data.emp_id,value:data.name}))
+        
+        setinterviewerdata({Interviewer})
+        
       })
     //   dispatch(GetDesignation())
       // get value from redux store
@@ -61,10 +100,15 @@ function DynModel(props){
         method:"get",
         url:apiurl+"get_s_tbl_m_designation",
     }).then((response)=>{
-        setoptiondata(response.data.data.map((data)=>({
-                designation:data.designation
-      })))
-    })
+        let Designation=[]
+        response.data.data.map((data,index)=>
+        Designation.push({id:data.designation_id,value:data.designation}))
+        
+        setdesignationdata({Designation})
+
+    }
+    )
+   
        
   },[dispatch])
   
@@ -81,9 +125,17 @@ function DynModel(props){
         onCancel={handleCancel}
         >
             <div className="interviewdetailformdiv">
-            <div className="interviewdetailform"><LabelBox type="select" placeholder={"Proposed Designation"} /></div>
+            <div className="interviewdetailform"><LabelBox type="select" placeholder={"Proposed Designation"} 
+            dropdown={designationdata.Designation} 
+            changeData={(data) => checkValidation(data, "desgination")}
+            value={Interviewschedule.desgination.value} />
+            </div>
             <div className="interviewdetailform"><LabelBox type="datepicker" placeholder={"Proposed Date"}/></div>
-            <div className="interviewdetailform"><LabelBox type="select" placeholder={"Interviewer"}/></div>
+            <div className="interviewdetailform"><LabelBox type="select" placeholder={"Interviewer"}
+            dropdown={interviewerdata.Interviewer} 
+            changeData={(data) => checkValidation(data, "interviewer")}
+            value={Interviewschedule.name.value} />
+            </div>
             <div className="interviewdetailsubmnit"><Button>Submit</Button></div>
             </div>
         </Modal>

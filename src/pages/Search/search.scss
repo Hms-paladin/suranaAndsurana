@@ -165,3 +165,6 @@ z-index: 9999 !important;
     // [class^=ant-]{
     //     z-index: 99 !important;
     // }
+    .ant-select-dropdown{
+        z-index: 1201 !important;
+    }
