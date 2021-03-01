@@ -3,7 +3,14 @@
     justify-content: space-around
 }
 
-.searchBoxContainer .MuiGrid-item{
-    display: flex;
-    // justify-content: space-around
+.searchBoxContainer{
+    background-color: #bdbdbd;
+    margin-top: 20px;
+    padding: 10px 30px 1px 30px;
+    border-radius: 10px;
+}
+
+.goSearchbtn{
+    height: 30px;
+    border-radius: 20px !important;
 }

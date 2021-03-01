@@ -9,5 +9,7 @@ export const GET_EMPLOYEEFORM_ID = "GET_EMPLOYEEFORM_ID"
 
 
 // Resume
-
 export const INSERT_RESUME = "INSERT_RESUME"
+
+// Search
+export const GET_SKILLS = "GET_SKILLS"
