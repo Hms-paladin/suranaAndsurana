@@ -228,7 +228,7 @@ function InerviewScreen(props) {
             dispatch(getInterviewquestions())
 
             // get value from redux store
-            // console.log(props.getInterviewquestions,"getInterviewquestions")
+            console.log(props.getInterviewquestions,"getInterviewquestions")
 
     },[dispatch])
 
@@ -270,7 +270,7 @@ function InerviewScreen(props) {
             <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions">
                 <Grid item xs={8} className="scrollbar">
                     <div >List of guiding questions</div><br />
-                    {getdata.map((get,index)=>{
+                    {props.getInterviewquestions.map((get,index)=>{
                             // debugger
                              return(
                                  <>
@@ -279,6 +279,7 @@ function InerviewScreen(props) {
                             )
                         })
                     }
+y
 
 
                     {/* <div >List of guiding questions</div><br />
