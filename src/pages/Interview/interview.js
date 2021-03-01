@@ -357,7 +357,7 @@ function InerviewScreen(props) {
                     <Input placeholder="comment"onChange={e=>setcomment(e.target.value) }  style={{height:"80px",width:"100%"}}/>
                 </Grid>
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score" onChange={e=>setscoreFinal(e.target.value) }  style={{height:"70px",width:"60%"}}/>
+                    <Input placeholder="Final Score" onChange={e=>setscoreFinal(e.target.value) }  style={{height:"70px",width:"60%"}}/>
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
                     <Button type="submit" className="interviewSubmit" >Submit</Button>

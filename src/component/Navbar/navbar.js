@@ -15,6 +15,7 @@ import { Select, Row, Col } from 'antd'
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import LabelIcon from '@material-ui/icons/Label';
+import suranaLogo from "../../images/suranaLogo.png"
 
 
 import './navbar.scss';
@@ -64,10 +65,10 @@ function Navbar(props) {
     [
       {path:"/resume",title:"Resume"},
       {path:"/todoList",title:"Todo"},
-      {path:"/interview",title:"Interview"},
+      // {path:"/interview",title:"Interview"},
       {path:"/employeeform",title:"Employee Form"},
       {path:"/search",title:"Search"},
-      {path:"/dashboard",title:"Dashboard"},
+      // {path:"/dashboard",title:"Dashboard"},
     ]
     );
 
@@ -106,7 +107,7 @@ function Navbar(props) {
         <Toolbar />
         <div className={classes.drawerContainer}>
 
-          <div className="suranaLogo">LOGO</div> 
+          <div className="suranaLogo"><img src={suranaLogo} /></div> 
           {menuItems.map((data, index) => {
             return (
               <Link to={data.path} onClick={()=>setpathname(data.path)}>

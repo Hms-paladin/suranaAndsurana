@@ -29,9 +29,9 @@ function DynModel(props){
         onCancel={handleCancel}
         >
             <div className="interviewdetailformdiv">
-            <div className="interviewdetailform"><LabelBox type="select"/></div>
-            <div className="interviewdetailform"></div>
-            <div className="interviewdetailform"><LabelBox type="select"/></div>
+            <div className="interviewdetailform"><LabelBox type="select" placeholder={"Proposed Designation"} /></div>
+            <div className="interviewdetailform"><LabelBox type="datepicker" placeholder={"Proposed Date"}/></div>
+            <div className="interviewdetailform"><LabelBox type="select" placeholder={"Interviewer"}/></div>
             <div className="interviewdetailsubmnit"><Button>Submit</Button></div>
             </div>
         </Modal>

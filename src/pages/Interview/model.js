@@ -1,10 +1,43 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Modal } from 'antd';
 import Labelbox from "../../helpers/labelbox/labelbox";
+import Axios from 'axios';
 
 
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
+    const [getData, setgetData] = React.useState([])
+
+    useEffect(()=>{
+        // debugger
+
+        // Axios.get('http://54.198.55.249:8159/api/v1/get_candidate_details_by_id', {
+        //     params: {
+        //         resume_id: 2
+        //     }
+        //   })
+        //   .then(function (response) {
+        //     console.log(response);
+        //   })
+
+
+
+        Axios({
+            method:"GET",
+            url:"http://54.198.55.249:8159/api/v1/get_employee_by_id",
+            headers:{
+                'Accept': 'application/json',
+                'content-type':'application/json'
+            },
+            params:{
+                "emp_id":"1"
+            }
+         
+        })
+        .then((response)=>{
+            console.log(response,"ques")
+        })
+    },[])
 
     function handleCancel() {
         setVisible(false)
