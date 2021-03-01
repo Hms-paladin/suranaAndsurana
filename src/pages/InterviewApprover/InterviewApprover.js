@@ -25,9 +25,6 @@ const rows = [
         {  label: 'Date' },{  label: 'Initial Score' },{  label: 'Comments' },{  label: 'Interviewer' }
      ];
         
-     const [ modelOpen, setModelOpen ] = useState(false)
-//   interview dropdown api function
-
 const [optionvalues,setoptionvalues]=useState([]);
 const dispatch = useDispatch();
 useEffect(()=>{
@@ -40,24 +37,6 @@ useEffect(()=>{
                     name:data.status
           })))
         })
-        setoptionvalues(values)
-        console.log(optionvalues,"data")
-// const dropdown=()=>{
-//     let values=[]
-//     Axios({
-//         method:"get",
-//         url: apiurl + "get_interviewers",
-//     }).then((response)=>{
-//         setoptionvalues(response.data.data.map((data)=>({
-//                 name:data.name,id:data.emp_id
-//       })))
-//       setoptionvalues(values)
-//     })
-//     setoptionvalues(values)
-//     console.log(optionvalues,"data")
-// };
-
-
 },[dispatch])
     return(
         <div className="interviewapprove_root">

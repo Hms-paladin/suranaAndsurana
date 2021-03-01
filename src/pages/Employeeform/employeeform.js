@@ -1,6 +1,5 @@
 import { Button } from "@material-ui/core";
 import React,{useState} from "react";
-import Labelbox from "../../helpers/labelbox/labelbox";
 import './employeeform.scss'
 import { Upload, message} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
