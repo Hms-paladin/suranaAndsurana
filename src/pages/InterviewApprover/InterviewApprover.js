@@ -66,13 +66,13 @@ export default function InterviewApprover() {
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score" style={{ height: "70px", width: "60%" }} />
+                    <Input placeholder="Final Score" style={{ height: "70px", width: "60%" }} />
                 </Grid>
                 <Grid item xs={6} className="ContainerInput" container direction="row" justify="center">
                     <Input placeholder="comment" style={{ height: "80px", width: "100%" }} />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewapprove"><img src={Approve} />Approve</div>
+                    <div className="interviewapprove">Approve</div>
                 </Grid>
 
 
