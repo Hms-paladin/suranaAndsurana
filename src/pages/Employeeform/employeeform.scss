@@ -152,6 +152,17 @@
     path{
         fill:#023E7D;
     }
+    div{
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        width:25%;
+        border: 1px solid #023E7D;
+        background-color: #fff;
+
+    }
+    // input[type="file"]{
+    //     display: none !important;
+    // }
     .ant-upload-select {
         border: 1px solid #023E7D !important;
         background-color: #fff;

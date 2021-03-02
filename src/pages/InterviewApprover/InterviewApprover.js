@@ -3,8 +3,8 @@ import Back from '../../images/Vector.svg'
 import './InterviewApprover.scss'
 import EnhancedTable from "../../component/DynTable/table";
 import { Grid } from "@material-ui/core";
-import { Select } from 'antd';
-import { useDispatch, connect } from "react-redux";
+import { Select,Input} from 'antd';
+import { useDispatch, connect} from "react-redux";
 import { apiurl } from '../../utils/baseUrl'
 import SelectionIcon from '../../images/select.svg'
 import Axios from 'axios';
@@ -145,6 +145,7 @@ export default function InterviewApprover() {
                         error={ApproveForm.final_score.error}
                         errmsg={ApproveForm.final_score.errmsg}
                     />
+                    <Input placeholder="Final Score" style={{ height: "70px", width: "60%" }} />
                 </Grid>
                 <Grid item xs={6} className="ContainerInput" container direction="row" justify="center">
                     <Labelbox  type="textarea"
@@ -157,6 +158,7 @@ export default function InterviewApprover() {
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
                     <CustomButton  btnName={"Approve "} btnCustomColor="customPrimary" onBtnClick={Submit_approve}/>
+                    <div className="interviewapprove">Approve</div>
                 </Grid>
             </Grid>
                        

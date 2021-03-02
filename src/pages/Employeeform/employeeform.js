@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 import './employeeform.scss'
 import React ,{useState,useEffect}from "react";
 import Labelbox from "../../helpers/labelbox/labelbox";
-import { Upload, message,Select} from 'antd';
+import { Upload, message,Select,notification} from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
 import Axios from 'axios';
 import {apiurl} from '../../utils/baseUrl'
@@ -15,6 +15,9 @@ function Employeeform(props){
      const [getdata, setgetData]= useState({})
      const [dept, setdept]= useState({})
      const [sup_name, setsup_name]= useState({})
+     const [name, setname]= useState({})
+     const [file,setfile]=useState("")
+     const [fileList,setfileList]=useState("")
      const [EmpForm, setEmpFrom] = useState({
         desgination: {
             value: "",
@@ -34,6 +37,12 @@ function Employeeform(props){
             error: null,
             errmsg: null,
         },
+        date_of_birth: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
         supervisor_email: {
             value: "",
             validation: [{ "name": "required" }],
@@ -46,13 +55,31 @@ function Employeeform(props){
             error: null,
             errmsg: null,
         },
+        official_email: {
+            value: "",
+            validation: [{ "name": "required" },{ "name": "email" }],
+            error: null,
+            errmsg: null,
+        },
+        official_contact: {
+            value: "",
+            validation: [{ "name": "required" },{ "name": "allowNumaricOnly" },{ "name": "mobile" }],
+            error: null,
+            errmsg: null,
+        },
+        employee_code: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
     })
     
     function checkValidation(data, key, multipleId) {
         console.log("key", key);
         console.log("data>>", data);
+       
         if(key==="supervisor_name"){
-
            Sup_nameGetId(data)
         }
         var errorcheck = ValidationLibrary.checkValidation(
@@ -65,9 +92,24 @@ function Employeeform(props){
             errmsg: errorcheck.msg,
             validation: EmpForm[key].validation
         }
+        let multipleIdList = []
+
+        if (multipleId) {
+            multipleId.map((item) => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i] === item.value) {
+                        multipleIdList.push(item.id)
+                    }
+                }
+            })
+            dynObj.valueId = multipleIdList.toString()
+        }
+        // (end)
+
         setEmpFrom(prevState => ({
             ...prevState,
             [key]: dynObj,
+
         }));
     }
     useEffect(() => {
@@ -107,28 +149,205 @@ function Employeeform(props){
              setsup_name({Supervisor})
              console.log(dept,"dept")
         })
-        
+       
 
      }, [])
      function Sup_nameGetId(data){
          alert(data,"data")
         Axios({
-            method:"get",
+            method:"post",
+            header: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+              },
             url:apiurl+"get_employee_by_id",
             data:{
-                emp_id:data
+                "emp_id":data
             }
         }).then((response)=>{
             console.log(response,"sup")
-            let Sup_nameId=[]
+            let empData= []
+            // let phone = null
             response.data.data.map((data,index)=>
-            Sup_nameId.push({id:data.emp_id,value:data.name})
+            // Sup_nameId.push({ph_no:data.con_ph_no,email:data.supervisor_email})
+            empData.push(data)
              )
-             setsup_name({Sup_nameId})
-             console.log(dept,"dept")
+            //  setname({Sup_nameId})
+             setEmpFrom(prevState => ({
+                ...prevState,
+                    supervisor_email:{value:empData[0].supervisor_email},
+                    supervisor_ph:{value:empData[0].con_ph_no}
+            }));
+             console.log(name,"sup_name")
         })
      }
-    
+    function InsertApi(){
+        alert("fdghj")
+        console.log(EmpForm.supervisor_name.value,"dfgh")
+        var formData = new FormData();
+        formData.set("name","sam")
+        formData.set("type_of_resource","Type")
+        formData.set("gender","M")
+        formData.set("dob","2021-02-26")
+        formData.set("bas_qual","Type")
+        formData.set("add_quali_1","Type")
+        formData.set("add_quali_2","Type")
+        formData.set("institution","DMI")
+        formData.set("last_employer","player")
+        formData.set("start_date","2021-02-26")
+        formData.set("end_date","2021-02-26")
+        formData.set("skills","Player")
+        formData.set("traits","Very Good Level")
+        formData.set("certification","Level 1")
+        formData.set("specialization","High")
+        formData.set("achievement","Top")
+        formData.set("capabilities","Communication")
+        formData.set("talents","Learning")
+        formData.set("special_interest","Reading")
+        formData.set("con_ph_no",EmpForm.supervisor_ph.value)
+        formData.set("email_addr","sam@gmail.com")
+        formData.set("address","Chennai")
+        formData.set("state_of_domecile","TN")
+        formData.set("city","Chennai")
+        formData.set("status","1")
+        formData.set("lang_known","Tamil")
+        formData.set("industry","English")
+        formData.set("designation",EmpForm.supervisor_name.value)
+        formData.set("doj",EmpForm.date_of_birth.value)
+        formData.set("supervisor",EmpForm.supervisor_name.value)
+        formData.set("email",EmpForm.official_email.value)
+        formData.set("supervisor_name",EmpForm.supervisor_name.value)
+        formData.set("supervisor_email",EmpForm.supervisor_email.value)
+        formData.set("official_email",EmpForm.official_email.value)
+        formData.set("official_contact",EmpForm.official_contact.value)
+        formData.set("department",EmpForm.department.value)
+        formData.set("employee__code",EmpForm.employee_code.value)
+        formData.append("upload_document",file)
+        formData.set("biometric_data","")
+        formData.set("approved_by","2")
+        formData.set("approved_date","2021-02-26")
+        formData.set("is_interviewer",EmpForm.supervisor_name.value)
+        formData.set("created_on","2021-02-24")
+        formData.set("updated_on","2021-02-26")
+        formData.set("created_by","2021-02-26")
+        formData.set("updated_by","2021-02-26")
+        formData.set("ip_address","Adress")
+        Axios({
+            method:"POST",
+            url:apiurl+"insert_employee",
+            data: formData
+                // "name":"Sam",
+                // "type_of_resource":"Type",
+                // "gender":"M",
+                // "dob":"2021-02-21",
+                // "bas_qual":"Type",
+                // "add_quali_1":"Type",
+                // "add_quali_2":"Type",
+                // "institution":"DMI",
+                // "last_employer":"Yes",
+                // "start_date":"2021-02-24",
+                // "end_date":"2021-02-26",
+                // "skills":"Player",
+                // "traits":"Very Good Level",
+                // "certification":"Level 1",
+                // "specialization":"High",
+                // "achievement":"Top",
+                // "capabilities":"Communication",
+                // "talents":"Learning",
+                // "special_interest":"Reading",
+                // "con_ph_no":"1234567890",
+                // "email_addr":"sam@gmail.com",
+                // "address":"Chennai",
+                // "state_of_domecile":"TN",
+                // "city":"Chennai",
+                // "status":"1",
+                // "lang_known":"Tamil",
+                // "industry":"English",
+                // "designation":"1",
+                // "doj":"2019-12-21",
+                // "supervisor":"1",
+                // "email":"visu@gmail.com",
+                // "supervisor_name":"Visu",
+                // "supervisor_email":"visuraj@gmail.com",
+                // "official_email":"raj@gmail.com",
+                // "official_contact":"9344120434",
+                // "department":"ECE",
+                // "employee__code":"02",
+                // "upload_document":"raj.txt",
+                // "biometric_data":"Notes",
+                // "approved_by":"2",
+                // "approved_date":"2021-02-26",
+                // "is_interviewer":"1",
+                // "created_on":"2021-02-24",
+                // "updated_on":"2021-02-26",
+                // "created_by":"3",
+                // "updated_by":"1",
+                // "ip_address":"Adress"
+            
+            
+        }).then((response)=>{
+            console.log(response,"insert")
+            // Sup_nameGetId()
+            if(response.data.status===1){
+                notification.success({
+                    message: 'Record Added Successfully',
+                  });
+                }
+               
+        })
+          handleCancel()
+    }
+   
+      const  onSubmit=()=>{
+        var mainvalue = {};
+        var targetkeys = Object.keys(EmpForm);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                EmpForm[targetkeys[i]].value,
+                EmpForm[targetkeys[i]].validation
+            );
+            EmpForm[targetkeys[i]].error = !errorcheck.state;
+            EmpForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = EmpForm[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => EmpForm[obj].error == true
+        );
+        console.log(filtererr.length);
+        if (filtererr.length > 0) {
+            // setResumeFrom({ error: true });
+           
+        } else {
+            // setResumeFrom({ error: false });
+            InsertApi()
+           
+        } 
+        setEmpFrom(prevState => ({
+            ...prevState
+        }));
+
+
+    };
+
+    const handleCancel = () =>{
+        let From_key = [
+            "desgination","date_of_birth","supervisor_name","supervisor_email","supervisor_ph","official_contact","official_email","employee_code","department"
+        ]
+
+        From_key.map((data)=>{
+            EmpForm[data].value = ""
+        })
+        setEmpFrom(prevState => ({
+            ...prevState,
+        }));
+    }
+    function onFileChange (e) {
+        console.log("sdfjsdhfjdshflsdf",e.target.files[0].name)
+        setfileList(e.target.files[0])
+       setfile(e.target.files[0].name)
+       
+  console.log(file,"hjkgfh")
+      }
     return(
         <div>
             <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Employee form</div>
@@ -197,7 +416,10 @@ function Employeeform(props){
                       </div>
                       <div>
                           <Labelbox type="datepicker" placeholder="Date of Joining"
-                           
+                            changeData={(data) => checkValidation(data, "date_of_birth")}
+                            value={EmpForm.date_of_birth.value}
+                            error={EmpForm.date_of_birth.error}
+                            errmsg={EmpForm.date_of_birth.errmsg}
                           /></div>
                       <div>
                           <Labelbox type="select" placeholder="Supervisor's Name"
@@ -225,8 +447,18 @@ function Employeeform(props){
 
                       </div>
                       <div className="employeeform_row8">
-                      <div><Labelbox type="text" placeholder="Official Email ID"/></div>
-                      <div><Labelbox type="text" placeholder="Official Contact No."/></div> 
+                      <div><Labelbox type="text" placeholder="Official Email ID"
+                           changeData={(data) => checkValidation(data, "official_email")}
+                           value={EmpForm.official_email.value}
+                           error={EmpForm.official_email.error}
+                           errmsg={EmpForm.official_email.errmsg}
+                      /></div>
+                      <div><Labelbox type="text" placeholder="Official Contact No."
+                           changeData={(data) => checkValidation(data, "official_contact")}
+                           value={EmpForm.official_contact.value}
+                           error={EmpForm.official_contact.error}
+                           errmsg={EmpForm.official_contact.errmsg}
+                      /></div> 
                       <div>
                           <Labelbox type="select" placeholder="Department"
                             dropdown={dept.Department}
@@ -236,7 +468,12 @@ function Employeeform(props){
                             errmsg={EmpForm.department.errmsg}
                       />
                       </div>
-                       <div><Labelbox type="text" placeholder="Employee Code"/></div>
+                       <div><Labelbox type="text" placeholder="Employee Code"
+                        changeData={(data) => checkValidation(data, "employee_code")}
+                        value={EmpForm.employee_code.value}
+                        error={EmpForm.employee_code.error}
+                        errmsg={EmpForm.employee_code.errmsg}
+                       /></div>
                       
                       
 
@@ -244,17 +481,17 @@ function Employeeform(props){
                       </div>
                       <div className="upload_div">
                       {/* <div><Labelbox type="text" placeholder="Upload Document"/></div> */}
-                       <div style={{width:"50%"}}>
-                      <Upload {...props} className="upload_tag"
+                       <div>
+                      {/* <Upload {...props} className="upload_tag"
                       action= 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
                     //   onChange= {(info)=>handleChange(info) } 
                     //   fileList={fileListData}
                     >
                       
                           <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
-                     </Upload>,
+                     </Upload>, */}
                    
-                {/* <input type="file" onChange={uploadFile} id="pdfupload"/> */}
+                 <input type="file" onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
 
               
 
@@ -263,7 +500,7 @@ function Employeeform(props){
                       </div>  
 
                       </div>
-                      <div className="employeeform_save"><Button>Save</Button></div>
+                      <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div>
                      
                       
         </div>
