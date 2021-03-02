@@ -165,7 +165,7 @@ export default function InterviewApprover() {
                     />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <CustomButton  btnCustomColor="customPrimary" onBtnClick={Submit_approve}>
+                    <CustomButton  btnName={<img src={logo} className="lohgo"/>} className="hkbhk" btnCustomColor="customPrimary" onBtnClick={Submit_approve}>
                      
                     </CustomButton>
                 </Grid>
