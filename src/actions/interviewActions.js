@@ -1,5 +1,5 @@
 import { GET_INTERVIEW_QUESTIONS } from "../utils/Constants";
-import { POST_INTERVIEW_QUESTIONS } from "../utils/Constants";
+// import { POST_INTERVIEW_QUESTIONS } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
@@ -20,22 +20,37 @@ export const getInterviewquestions = () => async dispatch => {
     }
 }
 
-export const insertInterviewquestions =(obj)=> async dispatch =>{
+export const insertInterviewquestions =(postData)=> async dispatch =>{
+    alert("s")
     try {
        alert('Insert Called');
-        console.log(obj,"obj")
+        console.log(postData,"obj")
         axios({
             method:'POST',
             url:'http://54.198.55.249:8159/api/v1/insert_interview_scores',
             
             // url:'http://localhost:8085/api/v1/insert_interview_scores',
             data:{
+                // "question":"From which source India got the concept of Single order of court?",
+                // "designation":"1",
+                // "comment":obj.comment,
+                // "score_inital":obj.scoreInitial,
+                // "score_reviewer":"2",
+                // "final_score":obj.scoreFinal,
+                // "status":"1",
+                // "int_details_id":"1",
+                // "resume_id":"1",
+                // "created_on":"2021-02-21 12:12:00",
+                // "updated_on":"2021-02-23 12:12:00",
+                // "created_by":"2",
+                // "updated_by":"1",
+                // "ip_address":"Fify Two"
                 "question":"From which source India got the concept of Single order of court?",
                 "designation":"1",
-                "comment":obj.comment,
-                "score_inital":obj.scoreInitial,
+                "comment":"objcomment",
+                "score_inital":"obscoreInitial",
                 "score_reviewer":"2",
-                "final_score":obj.scoreFinal,
+                "final_score":"objscoreFinal",
                 "status":"1",
                 "int_details_id":"1",
                 "resume_id":"1",
@@ -49,7 +64,7 @@ export const insertInterviewquestions =(obj)=> async dispatch =>{
         .then((response)=> {
             alert("response")
             console.log(response,"response")
-            dispatch({type:POST_INTERVIEW_QUESTIONS,payload:response})
+            // dispatch({type:POST_INTERVIEW_QUESTIONS,payload:response})
         })
     }
     catch(err){

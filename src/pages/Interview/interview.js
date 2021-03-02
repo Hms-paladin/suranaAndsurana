@@ -1,42 +1,48 @@
 import React, {useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import './interview.scss'
-import { BackTop, Select,Input } from 'antd';
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
-import SelectionIcon from '../../images/select.svg';
 import {useDispatch,connect} from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions";
 import { insertInterviewquestions} from "../../actions/interviewActions";
 import { Button } from "@material-ui/core";
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
+import ValidationLibrary from "../../helpers/validationfunction";
 
-
- 
-
-// const style = {
-//     height: 40,
-//     width: 40,
-//     lineHeight: '40px',
-//     borderRadius: 4,
-//     backgroundColor: '#1088e9',
-//     color: '#fff',
-//     textAlign: 'center',
-//     fontSize: 14,
-// };
 
 function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
     const [getdata, setgetData]= useState([])
-    // const [ postdata, setpostData]=useState({
-    //     score_inital:"",
-    //     comment:"",
-    //     final_score:""
-    // })
-    const [scoreInitial, setscoreInitial] = useState({})
-    const [comment, setcomment] = useState({})
-    const [scoreFinal, setscoreFinal] = useState({})
+     const [postData, setpostData] = useState({
+        init_status: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        initial_score: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        comment: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        final_score : {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+
+     })
+ 
 
     const dispatch = useDispatch();
 
@@ -49,6 +55,83 @@ function InerviewScreen(props) {
             console.log(props.getInterviewquestions,"getquestions")
 
     },[dispatch])
+
+    function checkValidation(data, key) {
+
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            postData[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: postData[key].validation
+        }
+
+        // // only for multi select (start)
+
+        // let multipleIdList = []
+
+        // if (multipleId) {
+        //     multipleId.map((item) => {
+        //         for (let i = 0; i < data.length; i++) {
+        //             if (data[i] === item.value) {
+        //                 multipleIdList.push(item.id)
+        //             }
+        //         }
+        //     })
+        //     dynObj.valueById = multipleIdList.toString()
+        // }
+        // // (end)
+
+        setpostData(prevState => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+        // var filtererr = targetkeys.filter(
+        //     (obj) =>
+        //         postData[obj].error == true ||
+        //         postData[obj].error == null
+        // );
+        // if (filtererr.length > 0) {
+        //     setpostData({ error: true, errordummy: false });
+        // } else {
+        //     setpostData({ error: false });
+        // }
+    };
+    
+    function onSubmit() {
+        alert("d")
+        var mainvalue = {};
+        var targetkeys = Object.keys(postData);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                postData[targetkeys[i]].value,
+                postData[targetkeys[i]].validation
+            );
+            postData[targetkeys[i]].error = !errorcheck.state;
+            postData[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = postData[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => postData[obj].error == true
+        );
+        console.log(filtererr.length);
+        if (filtererr.length > 0) {
+            // setpostData({ error: true });
+        } else {
+            // setpostData({ error: false });
+            
+            dispatch(insertInterviewquestions(postData))
+        }
+
+        setpostData(prevState => ({
+            ...prevState
+        }));
+    };
+
+
 
 //     useEffect(()=>{
 //         Axios({
@@ -67,17 +150,17 @@ function InerviewScreen(props) {
 // },[])
 
 
-    const handleSubmit=(e)=>{
-        // alert(comment)
+    // const handleSubmit=(e)=>{
+    //     // alert(comment)
         
-        e.preventDefault();
-        // dispatch(insertInterviewquestions({ }))
-        dispatch(insertInterviewquestions({scoreInitial:scoreInitial,comment:comment,scoreFinal:scoreFinal}))
-        console.log(props.insertInterviewquestions,"inserttddt")
+    //     e.preventDefault();
+    //     // dispatch(insertInterviewquestions({ }))
+    //     dispatch(insertInterviewquestions({scoreInitial:scoreInitial,comment:comment,scoreFinal:scoreFinal}))
+    //     console.log(props.insertInterviewquestions,"inserttddt")
 
 
-        console.log(scoreInitial)
-    }
+    //     console.log(scoreInitial)
+    // }
 
 
     return (
@@ -169,56 +252,60 @@ function InerviewScreen(props) {
                 </Grid>
 
             </Grid>
-            <form  onSubmit={handleSubmit}>
             <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
-                {/* <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
-                    optionFilterProp="children" filterOption={(input, option) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    className="SelectionInput" style={{ width: "50%" }} >
-
-                </Select> */}
                        <Labelbox type="select"
                                 placeholder={"Type of Resource"}
                                 // dropdown={resumeGetList.candidateList}
                                 // changeData={(data) => checkValidation(data, "candidate")}
-                                // value={Resume_Form.candidate.value}
-                                // error={Resume_Form.candidate.error}
-                                // errmsg={Resume_Form.candidate.errmsg}
+                                // value={postData.candidate.value}
+                                // error={postData.candidate.error}
+                                // errmsg={postData.candidate.errmsg}
                             />
 
             </Grid>
-            <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
+            <Grid item xs={12} spacing={1} container direction="row" justify="center" className="interviewScore">
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    {/* <Labelbox placeholder="Initial Score" onChange={e=>setscoreInitial(e.target.value) }  style={{height:"70px",width:"60%"}}/> */}
-                    <Labelbox type="text" placeholder="Initial Score"/>
+                    <Labelbox type="text"
+                     placeholder="Initial Score"
+                     changeData={(data) => checkValidation(data, "initial_score")}
+                     value={postData.initial_score.value}
+                     error={postData.initial_score.error}
+                     errmsg={postData.initial_score.errmsg}
+                     />
                 </Grid>
-                <Grid item xs={5} className="ContainerInput" container direction="row" justify="center">
-                    {/* <Labelbox placeholder="comment"onChange={e=>setcomment(e.target.value) }  style={{height:"80px",width:"100%"}}/> */}
-                    <Labelbox type="text" placeholder="Comment"/>
+                <Grid item xs={5} className="ContainerInput textarea_height" container direction="row" justify="center">
+                    <Labelbox type="textarea"
+                     placeholder="Comment"
+                          changeData={(data) => checkValidation(data, "comment")}
+                          value={postData.comment.value}
+                          error={postData.comment.error}
+                          errmsg={postData.comment.errmsg}
+                          />
 
                 </Grid>
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    {/* <Input placeholder="Final Score" onChange={e=>setscoreFinal(e.target.value) }  style={{height:"70px",width:"60%"}}/> */}
-                    <Labelbox type="text" placeholder="Final Score"/>
+                    <Labelbox type="text"
+                     placeholder="Final Score"
+                          changeData={(data) => checkValidation(data, "final_score")}
+                          value={postData.final_score.value}
+                          error={postData.final_score.error}
+                          errmsg={postData.final_score.errmsg}
+                          />
 
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                   <CustomButton  btnName={"Save"} btnCustomColor="customPrimary"/>
+                   <CustomButton  btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}/>
                 </Grid>
 
             </Grid>
-
-            </form>
-      
         </div>
     )
 }
 
-const mapStateToProps = state => ({
-    getInterviewquestions: state.getInterviewquestions,
-    insertInterviewquestions:state.insertInterviewquestions
-  })
+// const mapStateToProps = state => ({
+//     getInterviewquestions: state.getInterviewquestions,
+//     // insertInterviewquestions:state.insertInterviewquestions
+//   })
   
   
-export default connect(mapStateToProps)(InerviewScreen);
+export default InerviewScreen;
