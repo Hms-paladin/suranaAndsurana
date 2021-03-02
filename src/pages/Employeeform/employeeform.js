@@ -55,13 +55,13 @@ function Employeeform(props){
             error: null,
             errmsg: null,
         },
-        official_email: {
+        official_emailid: {
             value: "",
             validation: [{ "name": "required" },{ "name": "email" }],
             error: null,
             errmsg: null,
         },
-        official_contact: {
+        official_contactno: {
             value: "",
             validation: [{ "name": "required" },{ "name": "allowNumaricOnly" },{ "name": "mobile" }],
             error: null,
@@ -184,6 +184,7 @@ function Employeeform(props){
     function InsertApi(){
         alert("fdghj")
         console.log(EmpForm.supervisor_name.value,"dfgh")
+
         var formData = new FormData();
         formData.set("name","sam")
         formData.set("type_of_resource","Type")
@@ -209,81 +210,85 @@ function Employeeform(props){
         formData.set("address","Chennai")
         formData.set("state_of_domecile","TN")
         formData.set("city","Chennai")
-        formData.set("status","1")
+        formData.set("status",1)
         formData.set("lang_known","Tamil")
         formData.set("industry","English")
         formData.set("designation",EmpForm.supervisor_name.value)
         formData.set("doj",EmpForm.date_of_birth.value)
         formData.set("supervisor",EmpForm.supervisor_name.value)
-        formData.set("email",EmpForm.official_email.value)
-        formData.set("supervisor_name",EmpForm.supervisor_name.value)
+        formData.set("email",EmpForm.official_emailid.value)
+        formData.set("supervisor_name","")
         formData.set("supervisor_email",EmpForm.supervisor_email.value)
-        formData.set("official_email",EmpForm.official_email.value)
-        formData.set("official_contact",EmpForm.official_contact.value)
-        formData.set("department",EmpForm.department.value)
+        formData.set("official_email",EmpForm.official_emailid.value)
+        formData.set("official_contact",EmpForm.official_contactno.value)
+        formData.set("department",1)
         formData.set("employee__code",EmpForm.employee_code.value)
         formData.append("upload_document",file)
         formData.set("biometric_data","")
-        formData.set("approved_by","2")
+        formData.set("approved_by",2)
         formData.set("approved_date","2021-02-26")
-        formData.set("is_interviewer",EmpForm.supervisor_name.value)
+        formData.set("is_interviewer",1)
         formData.set("created_on","2021-02-24")
         formData.set("updated_on","2021-02-26")
-        formData.set("created_by","2021-02-26")
-        formData.set("updated_by","2021-02-26")
+        formData.set("created_by",3)
+        formData.set("updated_by",1)
         formData.set("ip_address","Adress")
         Axios({
             method:"POST",
             url:apiurl+"insert_employee",
-            data: formData
-                // "name":"Sam",
-                // "type_of_resource":"Type",
-                // "gender":"M",
-                // "dob":"2021-02-21",
-                // "bas_qual":"Type",
-                // "add_quali_1":"Type",
-                // "add_quali_2":"Type",
-                // "institution":"DMI",
-                // "last_employer":"Yes",
-                // "start_date":"2021-02-24",
-                // "end_date":"2021-02-26",
-                // "skills":"Player",
-                // "traits":"Very Good Level",
-                // "certification":"Level 1",
-                // "specialization":"High",
-                // "achievement":"Top",
-                // "capabilities":"Communication",
-                // "talents":"Learning",
-                // "special_interest":"Reading",
-                // "con_ph_no":"1234567890",
-                // "email_addr":"sam@gmail.com",
-                // "address":"Chennai",
-                // "state_of_domecile":"TN",
-                // "city":"Chennai",
-                // "status":"1",
-                // "lang_known":"Tamil",
-                // "industry":"English",
-                // "designation":"1",
-                // "doj":"2019-12-21",
-                // "supervisor":"1",
-                // "email":"visu@gmail.com",
-                // "supervisor_name":"Visu",
-                // "supervisor_email":"visuraj@gmail.com",
-                // "official_email":"raj@gmail.com",
-                // "official_contact":"9344120434",
-                // "department":"ECE",
-                // "employee__code":"02",
-                // "upload_document":"raj.txt",
-                // "biometric_data":"Notes",
-                // "approved_by":"2",
-                // "approved_date":"2021-02-26",
-                // "is_interviewer":"1",
-                // "created_on":"2021-02-24",
-                // "updated_on":"2021-02-26",
-                // "created_by":"3",
-                // "updated_by":"1",
-                // "ip_address":"Adress"
-            
+            header: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+              },
+            data:{
+                "name":"Sam",
+                "type_of_resource":"Type",
+                "gender":"M",
+                "dob":"2021-02-21",
+                "bas_qual":"Type",
+                "add_quali_1":"Type",
+                "add_quali_2":"Type",
+                "institution":"DMI",
+                "last_employer":"Yes",
+                "start_date":"2021-02-24",
+                "end_date":"2021-02-26",
+                "skills":"Player",
+                "traits":"Very Good Level",
+                "certification":"Level 1",
+                "specialization":"High",
+                "achievement":"Top",
+                "capabilities":"Communication",
+                "talents":"Learning",
+                "special_interest":"Reading",
+                "con_ph_no":EmpForm.supervisor_ph.value,
+                "email_addr":"sam@gmail.com",
+                "address":"Chennai",
+                "state_of_domecile":"TN",
+                "city":"Chennai",
+                "status":"1",
+                "lang_known":"Tamil",
+                "industry":"English",
+                "designation":EmpForm.desgination.value,
+                "doj":EmpForm.date_of_birth.value,
+                "supervisor":EmpForm.supervisor_name.value,
+                "email":"visu@gmail.com",
+                "supervisor_name":EmpForm.supervisor_name.value,
+                "supervisor_email":EmpForm.supervisor_email.value,
+                "official_email":EmpForm.official_emailid.value,
+                "official_contact":EmpForm.official_contactno.value,
+                "department":"ECE",
+                "employee__code":EmpForm.employee_code.value,
+                "upload_document":file,
+                "biometric_data":"Notes",
+                "approved_by":"2",
+                "approved_date":"2021-02-26",
+                "is_interviewer":"1",
+                "created_on":"2021-02-24",
+                "updated_on":"2021-02-26",
+                "created_by":"3",
+                "updated_by":"1",
+                "ip_address":"Adress"
+            }
             
         }).then((response)=>{
             console.log(response,"insert")
@@ -331,7 +336,7 @@ function Employeeform(props){
 
     const handleCancel = () =>{
         let From_key = [
-            "desgination","date_of_birth","supervisor_name","supervisor_email","supervisor_ph","official_contact","official_email","employee_code","department"
+            "desgination","date_of_birth","supervisor_name","supervisor_email","supervisor_ph","official_contactno","official_emailid","employee_code","department"
         ]
 
         From_key.map((data)=>{
@@ -448,16 +453,16 @@ function Employeeform(props){
                       </div>
                       <div className="employeeform_row8">
                       <div><Labelbox type="text" placeholder="Official Email ID"
-                           changeData={(data) => checkValidation(data, "official_email")}
-                           value={EmpForm.official_email.value}
-                           error={EmpForm.official_email.error}
-                           errmsg={EmpForm.official_email.errmsg}
+                           changeData={(data) => checkValidation(data, "official_emailid")}
+                           value={EmpForm.official_emailid.value}
+                           error={EmpForm.official_emailid.error}
+                           errmsg={EmpForm.official_emailid.errmsg}
                       /></div>
                       <div><Labelbox type="text" placeholder="Official Contact No."
-                           changeData={(data) => checkValidation(data, "official_contact")}
-                           value={EmpForm.official_contact.value}
-                           error={EmpForm.official_contact.error}
-                           errmsg={EmpForm.official_contact.errmsg}
+                           changeData={(data) => checkValidation(data, "official_contactno")}
+                           value={EmpForm.official_contactno.value}
+                           error={EmpForm.official_contactno.error}
+                           errmsg={EmpForm.official_contactno.errmsg}
                       /></div> 
                       <div>
                           <Labelbox type="select" placeholder="Department"
