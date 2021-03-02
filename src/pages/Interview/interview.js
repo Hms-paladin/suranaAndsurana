@@ -8,8 +8,10 @@ import SelectionIcon from '../../images/select.svg';
 import {useDispatch,connect} from "react-redux";
 import { getInterviewquestions } from "../../actions/interviewActions";
 import { insertInterviewquestions} from "../../actions/interviewActions";
-import Labelbox from "../../helpers/labelbox/labelbox";
 import { Button } from "@material-ui/core";
+import CustomButton from '../../component/Butttons/button';
+import Labelbox from "../../helpers/labelbox/labelbox";
+
 
  
 
@@ -43,10 +45,26 @@ function InerviewScreen(props) {
             dispatch(getInterviewquestions())
 
             // get value from redux store
-            console.log(props.getInterviewquestions,"getInterviewquestions")
+            // console.log(props.getInterviewquestions,"getInterviewquestions")
+            console.log(props.getInterviewquestions,"getquestions")
 
     },[dispatch])
 
+//     useEffect(()=>{
+//         Axios({
+//             method: 'POST',
+//             url: apiurl +'get_candidate_details_by_id',
+//             data:{
+//                 "resume_id":"2"
+//             },
+//         })
+//         .then((response) => {
+//             setgetData(response.data.data)
+//         })
+//         .catch((error) => {
+//             alert(JSON.stringify(error))
+//         })
+// },[])
 
 
     const handleSubmit=(e)=>{
@@ -85,7 +103,8 @@ function InerviewScreen(props) {
             <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions">
                 <Grid item xs={8} className="scrollbar">
                     <div >List of guiding questions</div><br />
-                    {getdata.map((get,index)=>{
+                    {
+                    getdata.map((get,index)=>{
                             // debugger
                              return(
                                  <>
@@ -94,7 +113,6 @@ function InerviewScreen(props) {
                             )
                         })
                     }
-y
 
 
                     {/* <div >List of guiding questions</div><br />
@@ -116,10 +134,7 @@ y
 
                 </Grid>
                 <Grid item xs={3} className="candidateBox">
-                    <div className="candidatesList">
-                        List of Candidates
-
-                    </div>
+                    <div className="candidatesList"> List of Candidates </div>
                     <div className="scrollerCandidates">
                         <Grid item xs={12} container direction="column" justify="left" alignItems="left" >
                             <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className="ordercandidates">
@@ -156,29 +171,41 @@ y
             </Grid>
             <form  onSubmit={handleSubmit}>
             <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
-                <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
+                {/* <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
                     optionFilterProp="children" filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     className="SelectionInput" style={{ width: "50%" }} >
 
-                </Select>
+                </Select> */}
+                       <Labelbox type="select"
+                                placeholder={"Type of Resource"}
+                                // dropdown={resumeGetList.candidateList}
+                                // changeData={(data) => checkValidation(data, "candidate")}
+                                // value={Resume_Form.candidate.value}
+                                // error={Resume_Form.candidate.error}
+                                // errmsg={Resume_Form.candidate.errmsg}
+                            />
 
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Initial Score" onChange={e=>setscoreInitial(e.target.value) }  style={{height:"70px",width:"60%"}}/>
+                    {/* <Labelbox placeholder="Initial Score" onChange={e=>setscoreInitial(e.target.value) }  style={{height:"70px",width:"60%"}}/> */}
+                    <Labelbox type="text" placeholder="Initial Score"/>
                 </Grid>
                 <Grid item xs={5} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="comment"onChange={e=>setcomment(e.target.value) }  style={{height:"80px",width:"100%"}}/>
+                    {/* <Labelbox placeholder="comment"onChange={e=>setcomment(e.target.value) }  style={{height:"80px",width:"100%"}}/> */}
+                    <Labelbox type="text" placeholder="Comment"/>
+
                 </Grid>
                 <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Final Score" onChange={e=>setscoreFinal(e.target.value) }  style={{height:"70px",width:"60%"}}/>
+                    {/* <Input placeholder="Final Score" onChange={e=>setscoreFinal(e.target.value) }  style={{height:"70px",width:"60%"}}/> */}
+                    <Labelbox type="text" placeholder="Final Score"/>
+
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <Button type="submit" className="interviewSubmit" >Submit</Button>
+                   <CustomButton  btnName={"Save"} btnCustomColor="customPrimary"/>
                 </Grid>
-
 
             </Grid>
 

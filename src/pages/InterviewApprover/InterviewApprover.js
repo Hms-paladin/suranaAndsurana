@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import Back from '../../images/Vector.svg'
 import './InterviewApprover.scss'
 import EnhancedTable from "../../component/DynTable/table";
-import DynModel from "../../component/Model/model";
 import { Grid } from "@material-ui/core";
-import { BackTop, Select, Input } from 'antd';
-import Eyes from '../../images/neweye.svg'
+import { Select } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl'
-import Approve from '../../images/APPROVE.png'
-// import { apiurl } from '../../App'
 import SelectionIcon from '../../images/select.svg'
 import Axios from 'axios';
+import CustomButton from '../../component/Butttons/button';
+import ValidationLibrary from "../../helpers/validationfunction";
+import Labelbox from "../../helpers/labelbox/labelbox";
+import { InsertApprove } from "../../actions/InterviewApproveraction";
+import logo from "../../images/approvelogo.jpeg"
+
+
 export default function InterviewApprover() {
     const { Option } = Select;
 
@@ -26,9 +29,32 @@ export default function InterviewApprover() {
     ];
 
     const [modelOpen, setModelOpen] = useState(false)
+    // approve form
+    const [ApproveForm, setApproveForm] = useState({
+        final_score: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        comment: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        init_status: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+    })
     //   interview dropdown api function
 
-    const [optionvalues, setoptionvalues] = useState([]);
+    const [optionvalues, setoptionvalues] = useState({
+        
+    });
     const dispatch = useDispatch();
     useEffect(() => {
         let values = []
@@ -36,17 +62,65 @@ export default function InterviewApprover() {
             method: "get",
             url: apiurl + "get_Interview_Status",
         }).then((response) => {
-            setoptionvalues(response.data.data.map((data) => ({
-                name: data.status
-            })))
+            console.log(response,"ss")
+            let interview_status=[]
+        response.data.data.map((data,index) => 
+        interview_status.push({value: data.status, id: data.status_id}))
+        setoptionvalues({interview_status})
+
         })
-        setoptionvalues(values)
     }, [dispatch])
 
-     const approvesubmit=(e)=>{
-         alert("Ss")
+    function checkValidation(data, key) {
 
-     }
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            ApproveForm[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: ApproveForm[key].validation
+        }
+
+        setApproveForm(prevState => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    };
+
+
+    //  insert approve
+    function Submit_approve(){
+        var mainvalue = {};
+        var targetkeys = Object.keys(ApproveForm);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                ApproveForm[targetkeys[i]].value,
+                ApproveForm[targetkeys[i]].validation
+            );
+            ApproveForm[targetkeys[i]].error = !errorcheck.state;
+            ApproveForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = ApproveForm[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => ApproveForm[obj].error == true
+        );
+        console.log(filtererr.length);
+        if (filtererr.length > 0) {
+            // setResumeFrom({ error: true });
+        } else {
+            // setResumeFrom({ error: false });
+            
+            dispatch(InsertApprove(ApproveForm))
+        }
+
+        setApproveForm(prevState => ({
+            ...prevState
+        }));
+
+    }
 
     
     return (
@@ -60,32 +134,43 @@ export default function InterviewApprover() {
             </div>
             <EnhancedTable headCells={Header} rows={rows} />
             <Grid item xs={12} container direction="row" justify="center" alignItems="center" className="interviewstatus" >
-                <Select suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />} showSearch placeholder="Interview Status"
-                    optionFilterProp="children" filterOption={(input, option) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    className="SelectionInput" style={{ width: "40%" }}
-                >
-                    {optionvalues.map((data, index) => (
-                        <Option value={data.name} key={index}>{data.name}</Option>))}
-                </Select>
-
+                <Labelbox type="select"
+                 placeholder="Interview Status"
+                                dropdown={optionvalues.interview_status}
+                                changeData={(data) => checkValidation(data, "init_status")}
+                                value={ApproveForm.init_status.value}
+                                error={ApproveForm.init_status.error}
+                                errmsg={ApproveForm.init_status.errmsg}
+                         /> 
+         
             </Grid>
-            <form onSubmit={approvesubmit}>
+           
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
-                <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="Final Score" style={{ height: "70px", width: "60%" }} />
+                <Grid item xs={3} className="ContainerInput" container direction="row" justify="center"  >
+                    <Labelbox type="text"
+                        placeholder={"Final Score"}
+                        changeData={(data) => checkValidation(data,"final_score")}
+                        value={ApproveForm.final_score.value}
+                        error={ApproveForm.final_score.error}
+                        errmsg={ApproveForm.final_score.errmsg}
+                    />
                 </Grid>
-                <Grid item xs={6} className="ContainerInput" container direction="row" justify="center">
-                    <Input placeholder="comment" style={{ height: "80px", width: "100%" }} />
+                <Grid item xs={6} className="ContainerInput textarea_height" container direction="row" justify="center"  >
+                    <Labelbox  type="textarea" rows={"100"}        
+                        placeholder={"Comment"}
+                        changeData={(data) => checkValidation(data,"comment")}
+                        value={ApproveForm.comment.value}
+                        error={ApproveForm.comment.error}
+                        errmsg={ApproveForm.comment.errmsg}
+                    />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <div className="interviewapprove" >Approve</div>
+                    <CustomButton  btnCustomColor="customPrimary" onBtnClick={Submit_approve}>
+                     
+                    </CustomButton>
                 </Grid>
             </Grid>
-                
-            </form>
-       
+                       
             {/* </DynModel> */}
         </div>
     )

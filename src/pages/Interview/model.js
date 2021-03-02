@@ -9,28 +9,29 @@ function DynModel(props){
     const [getData, setgetData] = React.useState([])
 
     useEffect(()=>{
+        alert("Dd")
         // debugger
 
         // Axios.get('http://54.198.55.249:8159/api/v1/get_candidate_details_by_id', {
-        //     params: {
-        //         resume_id: 2
+        //     data: {
+        //         "resume_id": "2"
         //     }
         //   })
-        //   .then(function (response) {
-        //     console.log(response);
+        //   .then((response)=> {
+        //     console.log(response,"candidate");
         //   })
 
 
 
         Axios({
             method:"GET",
-            url:"http://54.198.55.249:8159/api/v1/get_employee_by_id",
+            url:"http://54.198.55.249:8159/api/v1/get_questions",
             headers:{
                 'Accept': 'application/json',
                 'content-type':'application/json'
             },
             params:{
-                "emp_id":"1"
+                "resume_id":"2"
             }
          
         })
