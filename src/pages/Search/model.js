@@ -33,7 +33,7 @@ function DynModel(props){
             error: null,
             errmsg: null,
         },
-        name: {
+        interviewer: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -134,7 +134,7 @@ function DynModel(props){
             <div className="interviewdetailform"><LabelBox type="select" placeholder={"Interviewer"}
             dropdown={interviewerdata.Interviewer} 
             changeData={(data) => checkValidation(data, "interviewer")}
-            value={Interviewschedule.name.value} />
+            value={Interviewschedule.interviewer.value} />
             </div>
             <div className="interviewdetailsubmnit"><Button>Submit</Button></div>
             </div>
