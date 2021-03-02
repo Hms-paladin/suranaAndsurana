@@ -6,7 +6,9 @@ import GetDesignation from './InterviewSchedule'
 import GetEmployeeApprove from './EmployeeApproveReducer'
 import insertInterviewquestions from "./interviewReducer";
 import getemplyoeeformid from "./employeeformReducer";
-import getSkills from "./SearchReducer";
+import getResumeSearchDropDownOptions from "./MasterDropdowns";
+import getResumeSearchRowdata from "./ResumeSearchRowdata";
+
 
 export default combineReducers({
     getInterviewquestions,
@@ -16,5 +18,6 @@ export default combineReducers({
     GetEmployeeApprove,
     insertInterviewquestions,
     getemplyoeeformid,
-    getSkills
+    getOptions:getResumeSearchDropDownOptions,
+    getResumeSearchRowdata,
 })
