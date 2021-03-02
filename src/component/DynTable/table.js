@@ -128,8 +128,9 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(()=>{
+    // console.log(props.rows,"dynrows")
     setRows(props.rows)
-  },[])
+  },[props])
 
 //   const handleSelectAllClick = (event) => {
 //     if (event.target.checked) {
@@ -204,7 +205,7 @@ export default function EnhancedTable(props) {
                 let keys = Object.keys(row)
                 let arrval = []
                 for (var m = 0; m < keys.length; m++) {
-                  arrval.push(<TableCell key={index+""+m} align="left">{row[keys[m]]}</TableCell>)
+                  arrval.push(<TableCell keys={index+""+m} align="left">{row[keys[m]]}</TableCell>)
                 }
 
                   return (
@@ -214,7 +215,7 @@ export default function EnhancedTable(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={index}
                       selected={isItemSelected}
                     >
                     {props.EnableSno && <TableCell align="center">{rowsPerPage * page + index+1}</TableCell>}

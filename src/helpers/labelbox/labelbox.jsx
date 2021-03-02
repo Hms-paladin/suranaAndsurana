@@ -157,7 +157,7 @@ export default class Labelbox extends Component {
 						<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<KeyboardDatePicker
 								placeholder={this.props.placeholder}
-								disableToolbar={true}
+								disableToolbar={this.props.disableToolbar && this.props.disableToolbar}
 								autoOk={true}
 								clearable={false}
 								disableUnderline={true}

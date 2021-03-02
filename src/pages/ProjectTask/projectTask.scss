@@ -1,0 +1,42 @@
+// .projectTaskHeader{
+//     height: 100px;
+//     border: 1px solid gray;
+//     border-radius: 8px;
+//     padding: 15px;
+ 
+// }   
+
+// .projectTasktitle{
+//     font-size: 18px;
+//     font-weight: bold;
+// }
+
+// .projectTasdata{
+//     font-size: 16px;
+// }
+
+
+.taskContainer{
+    height: auto;
+    margin-top: 2%;
+    background-color: #bcbaba;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+// .selectProject{
+//     width: 50% !important;
+// }
+
+.projectTaskButtons{
+    border-radius: 10px;
+}
+
+.projectButtonContainer{
+ text-align: right;
+ margin-right: 5%;
+ margin-top: 5%;
+}

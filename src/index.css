@@ -42,3 +42,9 @@ body {
   z-index: 1500 !important;
 }
 
+
+/* main content */
+
+.makeStyles-content-6{
+  width: 100px;
+}
