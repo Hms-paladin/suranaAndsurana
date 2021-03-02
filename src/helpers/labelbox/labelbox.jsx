@@ -115,7 +115,7 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<textarea className={`${data.error && "brdred"} brdrcls`} rows="3" cols="50" value={this.props.value} onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}></textarea>
+						<textarea className={`${data.error && "brdred"} brdrcls`} rows="4" cols="50" value={this.props.value} onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}></textarea>
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
