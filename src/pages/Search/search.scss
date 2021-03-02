@@ -4,7 +4,7 @@
 }
 .searchfilterflex{
     padding: 15px;
-    background-color: #bcbaba;
+    // background-color: #bcbaba;
     margin: 10px 0px;
     border-radius: 10px;
 }
@@ -167,4 +167,7 @@ z-index: 9999 !important;
     // }
     .ant-select-dropdown{
         z-index: 1201 !important;
+    }
+    .projsearchfilterdrpdwn{
+        width: 15%;
     }

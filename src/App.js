@@ -14,6 +14,7 @@ import TodoList from './pages/TodoList/todoList'
 import './App.css';
 import Employeeform from "./pages/Employeeform/employeeform.js";
 import Search from "./pages/Search/search.js";
+import projectsearch from "./pages/Search/projectsearch.js";
 
 function App() {
 
@@ -27,6 +28,10 @@ function App() {
           <Route path="/employeeform" component={Employeeform} exact/>
           <Route path="/search" component={Search} exact/>
           <Route path="/todolist" component={TodoList} exact/>
+          <Route path="/projectsearch" component={projectsearch} exact/>
+
+          
+
         </Switch>
       </Navbar>
     </Router>

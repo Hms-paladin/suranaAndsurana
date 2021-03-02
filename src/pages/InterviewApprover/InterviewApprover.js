@@ -13,6 +13,8 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { InsertApprove } from "../../actions/InterviewApproveraction";
 import logo from "../../images/approvelogo.jpeg"
+import { Button } from "@material-ui/core";
+
 
 
 export default function InterviewApprover() {
@@ -134,6 +136,7 @@ export default function InterviewApprover() {
             </div>
             <EnhancedTable headCells={Header} rows={rows} />
             <Grid item xs={12} container direction="row" justify="center" alignItems="center" className="interviewstatus" >
+                <div className="interviewstats_drop">
                 <Labelbox type="select"
                  placeholder="Interview Status"
                                 dropdown={optionvalues.interview_status}
@@ -142,7 +145,7 @@ export default function InterviewApprover() {
                                 error={ApproveForm.init_status.error}
                                 errmsg={ApproveForm.init_status.errmsg}
                          /> 
-         
+         </div>
             </Grid>
            
             <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
@@ -165,9 +168,9 @@ export default function InterviewApprover() {
                     />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <CustomButton  btnCustomColor="customPrimary" onBtnClick={Submit_approve}>
-                     
-                    </CustomButton>
+                    <Button  className="submit_approve" onBtnClick={Submit_approve}>
+                               <img src={logo}/>
+                    </Button>
                 </Grid>
             </Grid>
                        
