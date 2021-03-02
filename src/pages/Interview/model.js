@@ -21,7 +21,6 @@ function DynModel(props){
         })
         .then((response)=>{
             setgetData(response.data.data)
-
         })
     },[])
 

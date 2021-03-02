@@ -4,24 +4,25 @@ import './interview.scss'
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
 import {useDispatch,connect} from "react-redux";
-import { getInterviewquestions } from "../../actions/interviewActions";
-import { insertInterviewquestions} from "../../actions/interviewActions";
+import { insertInterviewquestions } from "../../actions/interviewActions";
 import { Button } from "@material-ui/core";
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
+import {apiurl} from "../../utils/baseUrl";
+import Axios from 'axios';
 
 
 function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
     const [getdata, setgetData]= useState([])
      const [postData, setpostData] = useState({
-        init_status: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
+        // init_status: {
+        //     value: "",
+        //     validation: [{ "name": "required" }],
+        //     error: null,
+        //     errmsg: null,
+        // },
         initial_score: {
             value: "",
             validation: [{ "name": "required" }],
@@ -47,14 +48,17 @@ function InerviewScreen(props) {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-            
-            dispatch(getInterviewquestions())
+  
+        Axios({
+            method:"GET",
+            url: apiurl + '/get_questions',         
+          
+        })
+        .then((response)=>{
+            setgetData(response.data.data)
 
-            // get value from redux store
-            // console.log(props.getInterviewquestions,"getInterviewquestions")
-            console.log(props.getInterviewquestions,"getquestions")
-
-    },[dispatch])
+        })
+    },[])
 
     function checkValidation(data, key) {
 
@@ -69,36 +73,10 @@ function InerviewScreen(props) {
             validation: postData[key].validation
         }
 
-        // // only for multi select (start)
-
-        // let multipleIdList = []
-
-        // if (multipleId) {
-        //     multipleId.map((item) => {
-        //         for (let i = 0; i < data.length; i++) {
-        //             if (data[i] === item.value) {
-        //                 multipleIdList.push(item.id)
-        //             }
-        //         }
-        //     })
-        //     dynObj.valueById = multipleIdList.toString()
-        // }
-        // // (end)
-
         setpostData(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
-        // var filtererr = targetkeys.filter(
-        //     (obj) =>
-        //         postData[obj].error == true ||
-        //         postData[obj].error == null
-        // );
-        // if (filtererr.length > 0) {
-        //     setpostData({ error: true, errordummy: false });
-        // } else {
-        //     setpostData({ error: false });
-        // }
     };
     
     function onSubmit() {
@@ -125,43 +103,12 @@ function InerviewScreen(props) {
             
             dispatch(insertInterviewquestions(postData))
         }
+        console.log(postData,"posttt")
 
         setpostData(prevState => ({
             ...prevState
         }));
     };
-
-
-
-//     useEffect(()=>{
-//         Axios({
-//             method: 'POST',
-//             url: apiurl +'get_candidate_details_by_id',
-//             data:{
-//                 "resume_id":"2"
-//             },
-//         })
-//         .then((response) => {
-//             setgetData(response.data.data)
-//         })
-//         .catch((error) => {
-//             alert(JSON.stringify(error))
-//         })
-// },[])
-
-
-    // const handleSubmit=(e)=>{
-    //     // alert(comment)
-        
-    //     e.preventDefault();
-    //     // dispatch(insertInterviewquestions({ }))
-    //     dispatch(insertInterviewquestions({scoreInitial:scoreInitial,comment:comment,scoreFinal:scoreFinal}))
-    //     console.log(props.insertInterviewquestions,"inserttddt")
-
-
-    //     console.log(scoreInitial)
-    // }
-
 
     return (
         <div>
@@ -196,25 +143,6 @@ function InerviewScreen(props) {
                             )
                         })
                     }
-
-
-                    {/* <div >List of guiding questions</div><br />
-
-                    <div> How Did You Hear About This Position?</div>
-                    <div>Why Do You Want to Work at This Company?</div>
-                    <div>Why Do You Want This Job?</div>
-                    <div>Why Should We Hire You?</div>
-                    <div> What Are Your Greatest Strengths?</div>
-                    <div> What Do You Consider to Be Your Weaknesses?</div>
-                    <div>What Is Your Greatest Professional Achievement?</div>
-                    <div>Tell Me About a Challenge or Conflict You’ve Faced at Work, and How You Dealt With It.</div>
-                    <div>Tell Me About a Time You Demonstrated Leadership Skills.</div>
-                    <div>What’s a Time You Disagreed With a Decision That Was Made at Work?</div>
-                    <div>Tell Me About a Time You Made a Mistake.</div>
-                    <div>Tell Me About a Time You Failed.</div>
-                    <div>Why Are You Leaving Your Current Job?</div>
-                    <div>Why Were You Fired?</div> */}
-
                 </Grid>
                 <Grid item xs={3} className="candidateBox">
                     <div className="candidatesList"> List of Candidates </div>
