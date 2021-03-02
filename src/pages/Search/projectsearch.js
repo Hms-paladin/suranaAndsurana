@@ -3,34 +3,44 @@ import React,{useState,useEffect} from "react";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import './search.scss'
 import { Radio,Select} from 'antd';
-import EnhancedTable from './table'
-import DynModel from './model' 
+import EnhancedTable from "../../component/DynTable/table";
+import DynModel from './model'
 import {apiurl} from '../../utils/baseUrl'
 import {useDispatch,connect} from "react-redux";
 import { ResumeSearchStatus } from "../../actions/ResumeSearchAction"
 import Axios from 'axios'
 import SelectionIcon from '../../images/select.svg'
+import { Collapse } from 'antd';
+
+const { Panel } = Collapse;
+
+function callback(key) {
+  console.log(key);
+}
 
 const { Option } = Select;
 const headCells = [
-    { id: 'name', label: 'Name' },
-    { id: 'age', label: 'Age' },
-    { id: 'gender', label: 'Gender' },
-    { id: 'basic', label: 'Basic Quailification' },
-    { id: 'language', label: 'Languages Known' },
-    { id: 'certification', label: 'Certification' },
-    { id: 'specialization', label: 'Specialization' },
-    { id: 'acheivements', label: 'Acheivements' },
-    { id: 'talents', label: 'Talents' },
+    { id: 'name', label: 'Project Type' },
+    { id: 'age', label: 'Project Name' },
+    { id: 'gender', label: 'Client Type' },
+    { id: 'basic', label: 'Client Name' },
+    { id: 'language', label: 'Billing Type' },
+    { id: 'certification', label: 'Reserved' },
+    { id: 'specialization', label: 'Reserved' },
+    { id: 'acheivements', label: 'Reserved' },
+    { id: 'talents', label: 'Reserved' },
+    { id: 'radio', label: '' },
+
 
   ];
     
 const rows = [
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
-  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder"},
+  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder",radio:<Radio/>},
+  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder",radio:<Radio/>},
+  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder",radio:<Radio/>},
+  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder",radio:<Radio/>},
+  {name:'Ranjith', age:23,gender:"male",basic:"BE",language:'tamil',certification:"-",specialization:"Nil",acheivements:'none',talents:"coder",radio:<Radio/>},
+
 ];
 function Projectsearch(props){
     const [value, setValue] = React.useState(1);
@@ -84,15 +94,30 @@ function Projectsearch(props){
                   <Labelbox type="select" placeholder="billing type"/>
 
                   </div>
-                  <Button >Go</Button>
+                  <Button className="projectsearchgo">Go</Button>
 
                </div>
               
 
            </div>
-           <EnhancedTable headCells={headCells} rows={rows} tabletitle={""}  />
-           <div className="searchinterviewbtn"><Button onClick={()=>setModelOpen(true)} >Interview Details</Button></div>
-           <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} />
+           <div className="projectsearch_collapse">
+           <Collapse onChange={callback}>
+    <Panel header="IP Project (5)" key="1">
+      <EnhancedTable headCells={headCells} rows={rows} tabletitle={""}  />
+
+    </Panel>
+    <Panel header="Cases (5)" key="2">
+    <EnhancedTable headCells={headCells} rows={rows} tabletitle={""}  />
+
+    </Panel>
+    <Panel header="Copyright (5)" key="3">
+    <EnhancedTable headCells={headCells} rows={rows} tabletitle={""}  />
+
+    </Panel>
+  </Collapse>
+  </div>
+           <div className="searchinterviewbtn"><Button onClick={()=>setModelOpen(true)} >Create Task</Button></div>
+           {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
 
                       
         </div>
