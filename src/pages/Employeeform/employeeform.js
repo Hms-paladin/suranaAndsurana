@@ -55,13 +55,13 @@ function Employeeform(props){
             error: null,
             errmsg: null,
         },
-        official_emailid: {
+        EmpOfficialEmail: {
             value: "",
             validation: [{ "name": "required" },{ "name": "email" }],
             error: null,
             errmsg: null,
         },
-        official_contactno: {
+        EmpOfficialContact: {
             value: "",
             validation: [{ "name": "required" },{ "name": "allowNumaricOnly" },{ "name": "mobile" }],
             error: null,
@@ -216,11 +216,11 @@ function Employeeform(props){
         formData.set("designation",EmpForm.supervisor_name.value)
         formData.set("doj",EmpForm.date_of_birth.value)
         formData.set("supervisor",EmpForm.supervisor_name.value)
-        formData.set("email",EmpForm.official_emailid.value)
+        formData.set("email",EmpForm.EmpOfficialEmail.value)
         formData.set("supervisor_name","")
         formData.set("supervisor_email",EmpForm.supervisor_email.value)
-        formData.set("official_email",EmpForm.official_emailid.value)
-        formData.set("official_contact",EmpForm.official_contactno.value)
+        formData.set("official_email",EmpForm.EmpOfficialEmail.value)
+        formData.set("official_contact",EmpForm.EmpOfficialEmail.value)
         formData.set("department",1)
         formData.set("employee__code",EmpForm.employee_code.value)
         formData.append("upload_document",file)
@@ -241,8 +241,8 @@ function Employeeform(props){
                 'Content-Type': 'application/json'
               },
             data:{
-                "name":"Sam",
-                "type_of_resource":"Type",
+                "name":"",
+                "type_of_resource":"",
                 "gender":"M",
                 "dob":"2021-02-21",
                 "bas_qual":"Type",
@@ -274,8 +274,8 @@ function Employeeform(props){
                 "email":"visu@gmail.com",
                 "supervisor_name":EmpForm.supervisor_name.value,
                 "supervisor_email":EmpForm.supervisor_email.value,
-                "official_email":EmpForm.official_emailid.value,
-                "official_contact":EmpForm.official_contactno.value,
+                "official_email":"",
+                "official_contact":"",
                 "department":"ECE",
                 "employee__code":EmpForm.employee_code.value,
                 "upload_document":file,
@@ -336,7 +336,7 @@ function Employeeform(props){
 
     const handleCancel = () =>{
         let From_key = [
-            "desgination","date_of_birth","supervisor_name","supervisor_email","supervisor_ph","official_contactno","official_emailid","employee_code","department"
+            "desgination","date_of_birth","supervisor_name","supervisor_email","supervisor_ph","EmpOfficialContact","EmpOfficialEmail","employee_code","department"
         ]
 
         From_key.map((data)=>{
@@ -453,16 +453,16 @@ function Employeeform(props){
                       </div>
                       <div className="employeeform_row8">
                       <div><Labelbox type="text" placeholder="Official Email ID"
-                           changeData={(data) => checkValidation(data, "official_emailid")}
-                           value={EmpForm.official_emailid.value}
-                           error={EmpForm.official_emailid.error}
-                           errmsg={EmpForm.official_emailid.errmsg}
+                           changeData={(data) => checkValidation(data, "EmpOfficialEmail")}
+                           value={EmpForm.EmpOfficialEmail.value}
+                           error={EmpForm.EmpOfficialEmail.error}
+                           errmsg={EmpForm.EmpOfficialEmail.errmsg}
                       /></div>
                       <div><Labelbox type="text" placeholder="Official Contact No."
-                           changeData={(data) => checkValidation(data, "official_contactno")}
-                           value={EmpForm.official_contactno.value}
-                           error={EmpForm.official_contactno.error}
-                           errmsg={EmpForm.official_contactno.errmsg}
+                           changeData={(data) => checkValidation(data, "EmpOfficialContact")}
+                           value={EmpForm.EmpOfficialContact.value}
+                           error={EmpForm.EmpOfficialContact.error}
+                           errmsg={EmpForm.EmpOfficialContact.errmsg}
                       /></div> 
                       <div>
                           <Labelbox type="select" placeholder="Department"
