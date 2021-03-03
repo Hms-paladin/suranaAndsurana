@@ -10,6 +10,7 @@ import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 const { Option } = Select;
 function Employeeform(props){
+    const [getDetails,setgetDetails]=useState([])
     const [getdata, setgetData]= useState([])
     const [dept, setdept]= useState({})
      const [sup_name, setsup_name]= useState({})
@@ -120,7 +121,8 @@ function Employeeform(props){
            
         })
         .then((response) => {
-            setgetData(response.data.data)
+             setgetDetails(response.data.data)
+            
         })
         .catch((error) => {
             alert(JSON.stringify(error))
@@ -366,7 +368,7 @@ function Employeeform(props){
     return(
         <div>
             <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Employee form</div>
-            {getdata.map((val,index)=>{
+            {getDetails.map((val,index)=>{
                 console.log(val,"vall")
                 return(
             <div className="Employee_formdiv">
