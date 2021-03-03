@@ -7,9 +7,13 @@ import Navbar from "./component/Navbar/navbar.js";
 // pages
 import Dashboard from "./pages/Dashboard/dashboard.js";
 import Resume from "./pages/Resume/resume.js";
-import Interview from './pages/Interview/interview'
-import TodoList from './pages/TodoList/todoList'
-import ProjectTask from './pages/ProjectTask/projectTask'
+import Interview from './pages/Interview/interview';
+import TodoList from './pages/TodoList/todoList';
+import ProjectTask from './pages/ProjectTask/projectTask';
+import ProjectIp1 from './pages/Project IP1/projectIp';
+import ProjectIp2 from './pages/Project Ip2/projectIp2';
+
+
 
 
 
@@ -33,6 +37,10 @@ function App() {
           <Route path="/search" component={Search} exact/>
 
           <Route path="/projectTask" component={ProjectTask} exact/>
+          <Route path="/projectIp" component={ProjectIp1} exact/>
+          <Route path="/projectIp2" component={ProjectIp2} exact/>
+
+
 
         </Switch>
       </Navbar>
