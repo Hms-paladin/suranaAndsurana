@@ -13,9 +13,9 @@ function Employeeform(props){
     useEffect(()=>{
             Axios({
                 method: 'POST',
-                url: apiurl +'get_candidate_details_by_id',
+                url: apiurl +'get_employee_by_id',
                 data:{
-                    "resume_id":"2"
+                  "emp_id":"2"
                 },
                
             })

@@ -12,7 +12,7 @@ import CustomButton from '../../component/Butttons/button';
 import ValidationLibrary from "../../helpers/validationfunction";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { InsertApprove } from "../../actions/InterviewApproveraction";
-import logo from "../../images/approvelogo.jpeg"
+import logo from "../../images/Approvelogo.png"
 import { Button } from "@material-ui/core";
 
 
@@ -148,7 +148,7 @@ export default function InterviewApprover() {
          </div>
             </Grid>
            
-            <Grid item xs={12} spacing={1} container direction="row" justify="center" alignItems="center" className="interviewScore">
+            <Grid item xs={12} spacing={1} container direction="row" justify="center"  className="interviewScore">
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center"  >
                     <Labelbox type="text"
                         placeholder={"Final Score"}
@@ -168,7 +168,7 @@ export default function InterviewApprover() {
                     />
                 </Grid>
                 <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <Button  className="submit_approve" onBtnClick={Submit_approve}>
+                    <Button  className="submit_approve" onClick={Submit_approve}>
                                <img src={logo}/>
                     </Button>
                 </Grid>
