@@ -29,7 +29,7 @@ function ProjectIp() {
     }
 
 
-    const [Resume_Form, setResumeFrom] = useState({
+    const [Trade_Mark, setResumeFrom] = useState({
 
         mark: {
             value: "",
@@ -126,18 +126,18 @@ function ProjectIp() {
 
     function onSubmit() {
         var mainvalue = {};
-        var targetkeys = Object.keys(Resume_Form);
+        var targetkeys = Object.keys(Trade_Mark);
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
-                Resume_Form[targetkeys[i]].value,
-                Resume_Form[targetkeys[i]].validation
+                Trade_Mark[targetkeys[i]].value,
+                Trade_Mark[targetkeys[i]].validation
             );
-            Resume_Form[targetkeys[i]].error = !errorcheck.state;
-            Resume_Form[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Resume_Form[targetkeys[i]].value;
+            Trade_Mark[targetkeys[i]].error = !errorcheck.state;
+            Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter(
-            (obj) => Resume_Form[obj].error == true
+            (obj) => Trade_Mark[obj].error == true
         );
         console.log(filtererr.length);
         if (filtererr.length > 0) {
@@ -145,7 +145,7 @@ function ProjectIp() {
         } else {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Resume_Form)).then(() => {
+            dispatch(InesertResume(Trade_Mark)).then(() => {
                 handleCancel()
             })
         }
@@ -161,7 +161,7 @@ function ProjectIp() {
         ]
 
         ResumeFrom_key.map((data) => {
-            Resume_Form[data].value = ""
+            Trade_Mark[data].value = ""
         })
         setResumeFrom(prevState => ({
             ...prevState,
@@ -174,13 +174,13 @@ function ProjectIp() {
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            Resume_Form[key].validation
+            Trade_Mark[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: Resume_Form[key].validation
+            validation: Trade_Mark[key].validation
         }
 
         // only for multi select (start)
@@ -215,10 +215,7 @@ function ProjectIp() {
                     <Grid item xs={6}>
                         <Labelbox type="text"
                             placeholder={"Project Name *"}
-                        // changeData={(data) => checkValidation(data, "projectname")}
-                        // value={Resume_Form.projectname.value}
-                        // error={Resume_Form.projectname.error}
-                        // errmsg={Resume_Form.projectname.errmsg}
+                        
 
                         />
                     </Grid>
@@ -226,9 +223,9 @@ function ProjectIp() {
                         <Labelbox type="text"
                             placeholder={"client Name *"}
                             changeData={(data) => checkValidation(data, "clientname")}
-                            value={Resume_Form.clientname.value}
-                            error={Resume_Form.clientname.error}
-                            errmsg={Resume_Form.clientname.errmsg}
+                            value={Trade_Mark.clientname.value}
+                            error={Trade_Mark.clientname.error}
+                            errmsg={Trade_Mark.clientname.errmsg}
 
                         />
                     </Grid>
@@ -288,8 +285,8 @@ function ProjectIp() {
 
 
             </Grid>
-            <Tabs onChange={callback} type="card">
-                <TabPane tab="Tab 1" key="1">
+            <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
+                <TabPane tab="Intellectual Property" key="1">
                     <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
                         <TabPane tab="Trade Mark" key="1">
                             <TradeMark />
@@ -300,7 +297,7 @@ function ProjectIp() {
                         <TabPane tab="Design" key="3">
                             Content of Tab Pane 3
                 </TabPane>
-                        <TabPane tab="CopyRight" key="3">
+                        <TabPane tab="CopyRight" key="4">
                             Content of Tab Pane 3
                 </TabPane>
 

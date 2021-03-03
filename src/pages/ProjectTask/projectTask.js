@@ -12,11 +12,11 @@ import LabelBox from '../../helpers/labelbox/labelbox';
 
 
 const headCells = [
-    { id: 'projectType', label: 'ProjectType' },
-    { id: 'projectName', label: 'ProjectName' },
-    { id: 'clientType', label: 'ClientType' },
-    { id: 'clientName', label: 'ClientName' },
-    { id: 'billingType', label: 'BillingType' },
+    { id: 'projectType', label: 'Project Type' },
+    { id: 'projectName', label: 'Project Name' },
+    { id: 'clientType', label: 'Company Type' },
+    { id: 'clientName', label: 'Company Name' },
+    { id: 'billingType', label: 'Billing Type' },
     { id: 'reversed1', label: 'Reversed' },
     { id: 'reversed2', label: 'Reversed' },
     { id: 'reversed3', label: 'Reversed' },
@@ -88,8 +88,8 @@ function ProjectTask() {
 
                 </Grid>
                 <div className="adhocModelButtons">
-                    <CustomButton btnName={"Cancel"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />
+                    <CustomButton btnName={"CANCEL"}  custombtnCSS={"projectTaskGo"} />
+                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />
 
                 </div>
 
@@ -167,8 +167,8 @@ function ProjectTask() {
                     </Grid>
                 </div>
                 <div className="projectTaskModelButtons">
-                    <CustomButton btnName={"Cancel"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />
+                    <CustomButton btnName={"CANCEL"}  custombtnCSS={"projectTaskGo"} />
+                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />
 
                 </div>
 
@@ -197,23 +197,23 @@ function ProjectTask() {
                 <Grid container spacing={2} justify="center">
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"Client type"} />
+                            placeholder={"company type"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"Client type"} />
+                            placeholder={"company"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"Client type"} />
+                            placeholder={"Project type"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"Client type"} />
+                            placeholder={"Project Name"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"Client type"} />
+                            placeholder={"Billing type"} />
                     </Grid>
                     <Grid item xs={2} container justify="center">
                         <CustomButton btnName={"Go"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} />

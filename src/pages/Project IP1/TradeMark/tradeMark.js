@@ -1,5 +1,5 @@
 
-import react,{useState} from 'react';
+import react, { useState } from 'react';
 import './trademark.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
@@ -7,12 +7,37 @@ import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { InesertResume } from "../../../actions/ResumeAction";
 import CustomButton from '../../../component/Butttons/button';
+import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
+import PublishIcon from '@material-ui/icons/Publish';
+import { Upload, message, Button, Icon } from 'antd';
+
+
+
 
 
 function TradeMark() {
+
+    const props = {
+        name: 'file',
+        action: '//jsonplaceholder.typicode.com/posts/',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
     const dispatch = useDispatch()
 
-    const [Resume_Form, setResumeFrom] = useState({
+
+    const [Trade_Mark, setResumeFrom] = useState({
 
         mark: {
             value: "",
@@ -74,7 +99,7 @@ function TradeMark() {
             error: null,
             errmsg: null,
         },
-        usagedetails: {
+        tmjNumber: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -98,24 +123,48 @@ function TradeMark() {
             error: null,
             errmsg: null,
         },
+        applicationdate: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        usefromdate: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        certificatedate: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        tnjDate: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
 
 
     })
 
     function onSubmit() {
         var mainvalue = {};
-        var targetkeys = Object.keys(Resume_Form);
+        var targetkeys = Object.keys(Trade_Mark);
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
-                Resume_Form[targetkeys[i]].value,
-                Resume_Form[targetkeys[i]].validation
+                Trade_Mark[targetkeys[i]].value,
+                Trade_Mark[targetkeys[i]].validation
             );
-            Resume_Form[targetkeys[i]].error = !errorcheck.state;
-            Resume_Form[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Resume_Form[targetkeys[i]].value;
+            Trade_Mark[targetkeys[i]].error = !errorcheck.state;
+            Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter(
-            (obj) => Resume_Form[obj].error == true
+            (obj) => Trade_Mark[obj].error == true
         );
         console.log(filtererr.length);
         if (filtererr.length > 0) {
@@ -123,7 +172,7 @@ function TradeMark() {
         } else {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Resume_Form)).then(() => {
+            dispatch(InesertResume(Trade_Mark)).then(() => {
                 handleCancel()
             })
         }
@@ -139,7 +188,7 @@ function TradeMark() {
         ]
 
         ResumeFrom_key.map((data) => {
-            Resume_Form[data].value = ""
+            Trade_Mark[data].value = ""
         })
         setResumeFrom(prevState => ({
             ...prevState,
@@ -150,13 +199,13 @@ function TradeMark() {
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            Resume_Form[key].validation
+            Trade_Mark[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: Resume_Form[key].validation
+            validation: Trade_Mark[key].validation
         }
 
         // only for multi select (start)
@@ -183,7 +232,7 @@ function TradeMark() {
     };
     return (
         <div className="tradeMarkContainer">
-
+            <Tabs />
             <Grid item xs={12} container direction="row" spacing={1} >
                 <Grid item xs={4} container direction="column" spacing={2} className="projectIp" >
                     <Grid item xs={12} container direction="row" spacing={1}>
@@ -191,54 +240,58 @@ function TradeMark() {
                             <Labelbox type="select"
                                 placeholder={" Status"} />
                         </Grid>
-                        <Grid item xs={4} >
+                        <Grid item xs={3} >
                             <Labelbox type="text"
                                 placeholder={" Mark"}
                                 changeData={(data) => checkValidation(data, "mark")}
-                                value={Resume_Form.mark.value}
-                                error={Resume_Form.mark.error}
-                                errmsg={Resume_Form.mark.errmsg} />
+                                value={Trade_Mark.mark.value}
+                                error={Trade_Mark.mark.error}
+                                errmsg={Trade_Mark.mark.errmsg} />
                         </Grid>
-                        <Grid item xs={4} >
-                            <Labelbox type="text"
-                                placeholder={" Project Type"}
-                                changeData={(data) => checkValidation(data, "projecttype")}
-                                value={Resume_Form.projecttype.value}
-                                error={Resume_Form.projecttype.error}
-                                errmsg={Resume_Form.projecttype.errmsg} />
+                        <Grid item xs={5} >
+                            <div className="uploadbox_div" >
+                                <div>
+                                    <Upload {...props} className="uploadbox_tag"
+                                        action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                        <div className="upload_file_inside"><label>Upload Image</label><PublishIcon /></div>
+                                    </Upload>,
+                                     </div>
+                            </div>
+
                         </Grid>
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Goods and Description"}
                             changeData={(data) => checkValidation(data, "goodsdescription")}
-                            value={Resume_Form.goodsdescription.value}
-                            error={Resume_Form.goodsdescription.error}
-                            errmsg={Resume_Form.goodsdescription.errmsg} />
+                            value={Trade_Mark.goodsdescription.value}
+                            error={Trade_Mark.goodsdescription.error}
+                            errmsg={Trade_Mark.goodsdescription.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Internal Status"}
                             changeData={(data) => checkValidation(data, "internalstutus")}
-                            value={Resume_Form.internalstutus.value}
-                            error={Resume_Form.internalstutus.error}
-                            errmsg={Resume_Form.internalstutus.errmsg} />
+                            value={Trade_Mark.internalstutus.value}
+                            error={Trade_Mark.internalstutus.error}
+                            errmsg={Trade_Mark.internalstutus.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Amendment"}
                             changeData={(data) => checkValidation(data, "amendment")}
-                            value={Resume_Form.amendment.value}
-                            error={Resume_Form.amendment.error}
-                            errmsg={Resume_Form.amendment.errmsg} />
+                            value={Trade_Mark.amendment.value}
+                            error={Trade_Mark.amendment.error}
+                            errmsg={Trade_Mark.amendment.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Priority Details"}
                             changeData={(data) => checkValidation(data, "prioritydetails")}
-                            value={Resume_Form.prioritydetails.value}
-                            error={Resume_Form.prioritydetails.error}
-                            errmsg={Resume_Form.prioritydetails.errmsg} />
+                            value={Trade_Mark.prioritydetails.value}
+                            error={Trade_Mark.prioritydetails.error}
+                            errmsg={Trade_Mark.prioritydetails.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="select"
@@ -252,13 +305,18 @@ function TradeMark() {
                             <Labelbox type="text"
                                 placeholder={" Application Number "}
                                 changeData={(data) => checkValidation(data, "applicationNumber")}
-                                value={Resume_Form.applicationNumber.value}
-                                error={Resume_Form.applicationNumber.error}
-                                errmsg={Resume_Form.applicationNumber.errmsg} />
+                                value={Trade_Mark.applicationNumber.value}
+                                error={Trade_Mark.applicationNumber.error}
+                                errmsg={Trade_Mark.applicationNumber.errmsg} />
                         </Grid>
                         <Grid item xs={6} >
                             <Labelbox type="datepicker"
-                                placeholder={" Application Date "} />
+                                placeholder={" Application Date "}
+                                disableFuture={true}
+                                changeData={(data) => checkValidation(data, "applicationdate")}
+                                value={Trade_Mark.applicationdate.value}
+                                error={Trade_Mark.applicationdate.error}
+                                errmsg={Trade_Mark.applicationdate.errmsg} />
                         </Grid>
 
                     </Grid>
@@ -269,7 +327,12 @@ function TradeMark() {
                         </Grid>
                         <Grid item xs={6} >
                             <Labelbox type="datepicker"
-                                placeholder={" Used From Date "} />
+                                placeholder={" Used From Date "}
+                                disableFuture={true}
+                                changeData={(data) => checkValidation(data, "usefromdate")}
+                                value={Trade_Mark.usefromdate.value}
+                                error={Trade_Mark.usefromdate.error}
+                                errmsg={Trade_Mark.usefromdate.errmsg} />
                         </Grid>
 
                     </Grid>
@@ -278,45 +341,55 @@ function TradeMark() {
                         <Labelbox type="text"
                             placeholder={" Allotment"}
                             changeData={(data) => checkValidation(data, "allotment")}
-                            value={Resume_Form.allotment.value}
-                            error={Resume_Form.allotment.error}
-                            errmsg={Resume_Form.allotment.errmsg} />
+                            value={Trade_Mark.allotment.value}
+                            error={Trade_Mark.allotment.error}
+                            errmsg={Trade_Mark.allotment.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Order"}
                             changeData={(data) => checkValidation(data, "order")}
-                            value={Resume_Form.order.value}
-                            error={Resume_Form.order.error}
-                            errmsg={Resume_Form.order.errmsg} />
+                            value={Trade_Mark.order.value}
+                            error={Trade_Mark.order.error}
+                            errmsg={Trade_Mark.order.errmsg} />
                     </Grid>
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={6} >
                             <Labelbox type="text"
-                                placeholder={" Usage Details "}
-                                changeData={(data) => checkValidation(data, "usagedetails")}
-                                value={Resume_Form.usagedetails.value}
-                                error={Resume_Form.usagedetails.error}
-                                errmsg={Resume_Form.usagedetails.errmsg} />
+                                placeholder={" TMJ Number "}
+                                changeData={(data) => checkValidation(data, "tmjNumber")}
+                                value={Trade_Mark.tmjNumber.value}
+                                error={Trade_Mark.tmjNumber.error}
+                                errmsg={Trade_Mark.tmjNumber.errmsg} />
                         </Grid>
                         <Grid item xs={6} >
                             <Labelbox type="datepicker"
-                                placeholder={" Used From Date "} />
+                                placeholder={" TMJ Date"}
+                                disableFuture={true}
+                                changeData={(data) => checkValidation(data, "tnjDate")}
+                                value={Trade_Mark.tnjDate.value}
+                                error={Trade_Mark.tnjDate.error}
+                                errmsg={Trade_Mark.tnjDate.errmsg}
+                            />
                         </Grid>
 
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="datepicker"
-                            placeholder={" Certificate Date"} />
+                            placeholder={" Used From Date "}
+                            disableFuture={true}
+                            changeData={(data) => checkValidation(data, "usefromdate")}
+                            value={Trade_Mark.usefromdate.value}
+                            error={Trade_Mark.usefromdate.error}
+                            errmsg={Trade_Mark.usefromdate.errmsg} />
                     </Grid>
                     <Grid item xs={12} container justify="center" >
-                        <CustomButton btnName={"save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
-                        <CustomButton btnName={"cancel"} />
+                        <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                        <CustomButton btnName={"CANCEL"} />
 
                     </Grid>
 
                 </Grid>
-
                 <Grid item xs={4} container direction="column" spacing={2}>
 
                     <Grid item xs={12} >
@@ -327,41 +400,41 @@ function TradeMark() {
                         <Labelbox type="text"
                             placeholder={" coments"}
                             changeData={(data) => checkValidation(data, "coments")}
-                            value={Resume_Form.coments.value}
-                            error={Resume_Form.coments.error}
-                            errmsg={Resume_Form.coments.errmsg} />
+                            value={Trade_Mark.coments.value}
+                            error={Trade_Mark.coments.error}
+                            errmsg={Trade_Mark.coments.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" IP India Status"}
                             changeData={(data) => checkValidation(data, "indiaStatus")}
-                            value={Resume_Form.indiaStatus.value}
-                            error={Resume_Form.indiaStatus.error}
-                            errmsg={Resume_Form.indiaStatus.errmsg} />
+                            value={Trade_Mark.indiaStatus.value}
+                            error={Trade_Mark.indiaStatus.error}
+                            errmsg={Trade_Mark.indiaStatus.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Restrictions"}
                             changeData={(data) => checkValidation(data, "restrictions")}
-                            value={Resume_Form.restrictions.value}
-                            error={Resume_Form.restrictions.error}
-                            errmsg={Resume_Form.restrictions.errmsg} />
+                            value={Trade_Mark.restrictions.value}
+                            error={Trade_Mark.restrictions.error}
+                            errmsg={Trade_Mark.restrictions.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Restrictions"}
                             changeData={(data) => checkValidation(data, "restrictions")}
-                            value={Resume_Form.restrictions.value}
-                            error={Resume_Form.restrictions.error}
-                            errmsg={Resume_Form.restrictions.errmsg} />
+                            value={Trade_Mark.restrictions.value}
+                            error={Trade_Mark.restrictions.error}
+                            errmsg={Trade_Mark.restrictions.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
                             placeholder={" Restrictions"}
                             changeData={(data) => checkValidation(data, "restrictions")}
-                            value={Resume_Form.restrictions.value}
-                            error={Resume_Form.restrictions.error}
-                            errmsg={Resume_Form.restrictions.errmsg} />
+                            value={Trade_Mark.restrictions.value}
+                            error={Trade_Mark.restrictions.error}
+                            errmsg={Trade_Mark.restrictions.errmsg} />
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
@@ -374,8 +447,6 @@ function TradeMark() {
 
 
             </Grid>
-
-
 
 
 

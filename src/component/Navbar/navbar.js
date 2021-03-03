@@ -71,6 +71,9 @@ function Navbar(props) {
       {path:"/projectTask",title:"ProjectTask"},
       {path:"/projectIp",title:"ProjectIp1"},
       {path:"/projectIp2",title:"ProjectIp2"},
+      {path:"/projectIpOption1",title:"projectIpOption1"},
+      {path:"/projectIpOption2",title:"projectIpOption2"},
+
 
 
     ]
