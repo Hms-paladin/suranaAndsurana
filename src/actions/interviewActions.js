@@ -1,24 +1,23 @@
-// import { GET_INTERVIEW_QUESTIONS } from "../utils/Constants";
-// import { POST_INTERVIEW_QUESTIONS } from "../utils/Constants";
+ import { GET_INTERVIEW_QUESTIONS,GET_CANDIDATES_DETAILS,POST_INTERVIEW_QUESTIONS} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
 
-// export const getInterviewquestions = () => async dispatch => {
-//     try {
-//         axios({
-//             method: 'GET',
-//             url: apiurl +'/get_questions',
-//         })
-//         .then((response) => {
-//             console.log(response.data.data,"datacheck")
-//             dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
-//         })
+export const getInterviewquestions = () => async dispatch => {
+    try {
+        axios({
+            method: 'GET',
+            url: apiurl +'/get_questions',
+        })
+        .then((response) => {
+            console.log(response.data.data,"datacheck")
+            dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
+        })
         
-//     } catch (err) {
+    } catch (err) {
         
-//     }
-// }
+    }
+}
 
 export const insertInterviewquestions =(postData)=> async dispatch =>{
     try {
@@ -53,5 +52,23 @@ export const insertInterviewquestions =(postData)=> async dispatch =>{
     catch(err){
         alert(err)
 
+    }
+}
+export const GetCandiateDetails = () => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'/get_selected_candidates',
+            data:{
+                "int_detail_id":"1"
+            }
+        })
+        .then((response) => {
+            console.log(response.data.data,"candiate")
+            dispatch({type:GET_CANDIDATES_DETAILS,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
     }
 }

@@ -8,20 +8,31 @@ import { apiurl } from "../../utils/baseUrl";
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
     const [getdata, setgetData]= useState([])
-
-
-    useEffect(()=>{
-  
+    const [res_id,setres_id]=useState({})
+    const [getres_id,setgetres_id]=useState("")
+    useEffect((id)=>{
+      console.log(props.data_id,"dy_resid")
         Axios({
             method:"POST",
             url: apiurl + '/get_candidate_details_by_id',         
             data:{
-                "resume_id":"2"
+                "resume_id":props.data_id&&props.data_id.resume_id
             }
         })
         .then((response)=>{
+           console.log(response.data.data[0],"dataresponse")
             setgetData(response.data.data)
         })
+        var data_id=[]
+        
+        // setres_id(props.data_id.find((data,index)=>{
+        //   return(
+        //        id=data.resume_id
+        //     )
+        // }))
+        
+       
+        console.log(res_id,"res_id")
     },[])
 
     function handleCancel() {
@@ -32,6 +43,7 @@ function DynModel(props){
     React.useEffect(()=>{
         setVisible(props.handleChangeModel)
     },[props.handleChangeModel])
+     console.log(props.data_id,"candiateprops")
 
     return(
         <Modal
