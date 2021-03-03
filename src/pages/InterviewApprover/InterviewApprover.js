@@ -126,6 +126,7 @@ export default function InterviewApprover() {
 
     
     return (
+        
         <div className="interviewapprove_root">
             {/* <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} contents={<div>sdfghjkl</div>}> */}
             <div><img src={Back} style={{ width: "30px" }} /></div>
@@ -178,3 +179,20 @@ export default function InterviewApprover() {
         </div>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

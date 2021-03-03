@@ -11,7 +11,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
-import { Select, Row, Col } from 'antd'
+import { Select, Row, Col } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import LabelIcon from '@material-ui/icons/Label';
@@ -68,6 +68,7 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       {path:"/employeeform",title:"Employee Form"},
       {path:"/search",title:"Search"},
+      // {path:'/project', title:"Project"}
       // {path:"/dashboard",title:"Dashboard"},
     ]
     );

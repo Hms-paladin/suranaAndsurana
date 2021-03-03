@@ -38,7 +38,13 @@ body {
 .ant-notification{  
  z-index: 30000 !important;
 }
-.ant-select-dropdown{
-  z-index: 1500 !important;
+.ant-select-dropdown {
+  z-index: 1800 !important;
 }
 
+/* .ant-calendar-picker {
+  z-index: 1410 !important;
+} */
+input:focus {
+  border: none !important;
+}
