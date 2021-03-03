@@ -39,6 +39,8 @@ export const searchRowdata = (data) => async dispatch => {
                 }
         })
         .then((response) => {
+            console.log(response.data.data,"ddood")
+
             dispatch({type:GET_RESUMESEARCH_ROWDATA,payload:response.data.data})
         })
         

@@ -31,9 +31,10 @@ function Resumesearch(props) {
 
   
     const dispatch = useDispatch();
+    const [ modelOpen, setModelOpen ] = useState(false)
+
     
     const [value, setValue] = React.useState();
-    const [modelOpen, setModelOpen] = useState(false)
     const [optionvalues, setoptionvalues] = useState([]);
     const [resumeSearchList, setGetList] = useState({})
     const [rows,setRowData] = useState([])
@@ -90,10 +91,7 @@ function Resumesearch(props) {
         },
     })
 
-    const onChange = e => {
-        console.log('radio checked', e.target.value);
-        setValue(e.target.value);
-    }
+   
 
     useEffect(() => {
         dispatch(getSkills())
@@ -227,7 +225,7 @@ function Resumesearch(props) {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.dob, gender: data.gender === "M" ? "Male" : "Female", basic: data.bas_qual, language: data.lang_known, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent, box: <Checkbox onClick={handleCheck} name={"checked"+index} checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+            rowDataList.push({ name: data.name, age: data.dob, gender: data.gender === "M" ? "Male" : "Female", basic: data.bas_qual, language: data.lang_known, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent, box:<Checkbox onClick={handleCheck} name={"checked"+index} checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
 
         setRowData(rowDataList)
@@ -340,7 +338,9 @@ function Resumesearch(props) {
             <div className="resume_searchtable">
             <EnhancedTable headCells={headCells} rows={rows && rows} />
             </div>
-            <div className="searchinterviewbtn"> <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary"  custombtnCSS={"goSearchbtn"}  /></div> 
+            <div className="searchinterviewbtn"> <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary"  custombtnCSS={"goSearchbtn"}  onBtnClick={() => setModelOpen(true)}  /></div> 
+            <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} /> 
+
             </div>
                     </div>
        
@@ -356,6 +356,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Resumesearch);
 
 
-{/* <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-            <div className="searchinterviewbtn"><Button onClick={() => setModelOpen(true)} >Interview Details</Button></div>
-            <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} /> */}
+//  <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
+//             <div className="searchinterviewbtn"><Button onClick={() => setModelOpen(true)} >Interview Details</Button></div>/
