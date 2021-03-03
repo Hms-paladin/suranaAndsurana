@@ -1,140 +1,16 @@
-.searchflex1 .ant-radio-group{
+.radioBoxContainer .ant-radio-group{
     display: flex;
     justify-content: space-around
 }
-.searchfilterflex{
-    padding: 15px;
-    background-color: #bcbaba;
-    margin: 10px 0px;
+
+.searchBoxContainer{
+    background-color: #bdbdbd;
+    margin-top: 20px;
+    padding: 10px 30px 1px 30px;
     border-radius: 10px;
 }
-.searchfilterflex1{
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-bottom: 10px;
 
-}
-.searchfilterflex1{
-    margin-bottom: 10px;
-}
-
-.dropdown_title{
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
-    font-weight: 800;
-    font-size: 16px;
-}
-.searchfilterdrpdwn{
-    display: flex;
-    margin-right: 10px;
-    // width:20%;
-}
-.searchfilterdrpdwn div{
-    // width: 100%;
-}
-.searchfilterflex2{
-    display: flex;
-    justify-content: space-between;
-
-}
-.searchfilterflex1 .searchfilterdrpdwn{
-    width: 25%;
-}
-.searchfilterflex2 .searchfilterdrpdwn{
-    width: 25%;
-}
-.searchfilterflex2 Button{
-    background-color: #0353A4 ;
-    box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
-    color: #fff;
-    padding: 5px 5px !important;
-    height: 35px;
-    border-radius: 30px;
-
-}
-.searchfilterflex2 Button:hover{
-    background-color: #0353A4 ;
-
-}
-.searchinterviewbtn{
-    display: flex;
-    justify-content: flex-end;
-
-}
-.searchinterviewbtn Button{
- background-color: #0353A4;
- border-radius: 30px;
- color: #fff;
- font-size: 18px;
- font-weight: 800;
-//  margin-right: 50px;
- padding: 5px 20px;
- text-transform: none;
- box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
-}
-.searchinterviewbtn Button:hover{
-    background-color: #0353A4;
-}
-.interviewdetailformdiv{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.interviewdetailformdiv .interviewdetailform{
-    width: 80%;
-    margin-bottom: 15px;
-}
-.interviewdetailsubmnit{
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
-.interviewdetailsubmnit Button{
-    background-color: #0353A4;
-    border-radius: 30px;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-    margin-right: 50px;
-    padding: 3px 20px;
-    text-transform: none;
-    box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
-}
-.interviewdetailsubmnit Button:hover{
-    background-color: #0353A4;
-}
-.interviewdetailform .ant-select{
-    width: 100%;
-}
-.ant-picker-dropdown{
-z-index: 9999 !important;
-}
-.interviewdetailform .DatePicker_View{
-    width: 100%;
-}
-.searchtable .MuiTableCell-sizeSmall {
-    padding: 6px 10px 6px 10px !important;
-}
-.searchflex1 .ant-radio-inner {
-    width: 26px;
-    height: 26px;
-    border-color: #0353A4 !important;
-}
-.searchflex1 .ant-radio-inner::after {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 18px;
-    height: 18px;
-    background-color: #0353A4 !important;
-}
-    .searchflex1 .ant-radio-wrapper span{
-        font-weight: 600;
-        font-style: italic;
-
-    }
+    
     .searchfilterdrpdwn .ant-select {
         width: 100%;
     }
@@ -165,3 +41,141 @@ z-index: 9999 !important;
     // [class^=ant-]{
     //     z-index: 99 !important;
     // }
+    .ant-select-dropdown{
+        z-index: 1201 !important;
+    }
+    .projsearchfilterdrpdwn{
+        width: 15%;
+    }
+    .projectsearchgo{
+        background-color: #0353A4 !important;
+        border-radius: 30px !important;
+        color: #fff !important;
+        font-size: 14px !important;
+        font-weight: 800 !important;
+       //  margin-right: 50px;
+        padding: 0px 10px !important;
+        text-transform: none !important;
+        box-shadow: 0px 0px 5px 1px rgb(63, 63, 63) !important;
+    }
+    .projectsearch_collapse .ant-collapse-item{
+        border-bottom: 5px solid #e4e4e4 !important;
+        box-shadow: 0px -3px 5px 1px #ccc !important;
+        border-radius: 5px;
+
+    }
+    .projectsearch_collapse{
+        margin-bottom: 10px;
+    }
+    .projectsearch_collapse .ant-collapse-content{
+        border-top: none !important;
+    }
+    .projectsearch_collapse .ant-collapse-content-box{
+        padding-top: 0px !important;
+    }
+    .projectsearch_collapse .ant-collapse-arrow{
+        font-size: 16px !important;
+    }
+    .projectsearch_collapse .ant-collapse-arrow svg{
+        fill: #0353A4 !important;
+    }
+    .projectsearch_collapse .ant-collapse-header{
+        font-weight: 800;
+        font-size: 16px;
+    }
+    .projectsearch_collapse .ant-radio-inner {
+        width: 20px;
+        height: 20px;
+        border-color: #0353A4 !important;
+    }
+    .projectsearch_collapse .ant-radio-inner::after {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        background-color: #0353A4 !important;
+    }
+    
+.goSearchbtn{
+    height: 30px;
+    border-radius: 20px !important;
+}
+
+.searchinterviewbtn{
+    display: flex;
+    justify-content: flex-end
+}
+.radioBoxContainer .ant-radio-inner {
+    width: 23px;
+    height: 23px;
+    border-color: #0353A4 !important;
+}
+.radioBoxContainer .ant-radio-inner::after {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 15px;
+    height: 15px;
+    background-color: #0353A4 !important;
+}
+    .radioBoxContainer .ant-radio-wrapper span{
+        font-weight: 600;
+        font-style: italic;
+
+    }
+    .resume_searchtable .ant-checkbox-inner{
+        width: 18px !important;
+        height: 18px !important;
+        border: 2px solid #0353A4 !important;
+        background-color: #fff!important;
+    }
+    .resume_searchtable .ant-checkbox-checked .ant-checkbox-inner::after{
+        border: 2px solid #0353A4 !important;
+        border-top: 0 !important;
+        border-left: 0 !important;
+    }
+    .searchfilterflex1{
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 10px;
+    
+    }
+    .searchfilterflex{
+        padding: 15px;
+        // background-color: #bcbaba;
+        margin: 10px 0px;
+        border-radius: 10px;
+    }
+    .interviewdetailformdiv{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .interviewdetailformdiv .interviewdetailform{
+        width: 80%;
+        margin-bottom: 15px;
+    }
+    .interviewdetailsubmnit{
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+    .interviewdetailsubmnit Button{
+        background-color: #0353A4;
+        border-radius: 30px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 800;
+        margin-right: 50px;
+        padding: 3px 20px;
+        text-transform: none;
+        box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
+    }
+    .interviewdetailsubmnit Button:hover{
+        background-color: #0353A4;
+    }
+    .interviewdetailform .ant-select{
+        width: 100%;
+    }

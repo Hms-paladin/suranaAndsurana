@@ -38,6 +38,14 @@ body {
 .ant-notification{  
  z-index: 30000 !important;
 }
+
+
+
+/* main content */
+
+.makeStyles-content-6{
+  width: 100px;
+}
 .ant-select-dropdown {
   z-index: 1800 !important;
 }
