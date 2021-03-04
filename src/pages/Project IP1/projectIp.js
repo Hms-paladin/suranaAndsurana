@@ -12,6 +12,14 @@ import { Tabs } from 'antd';
 //import tab content:
 
 import TradeMark from './TradeMark/tradeMark';
+// Design 
+import IndiaFilling from './Design/Application/IndiaFilling';
+
+import InternationalFilling from './Design/Application/InternationalFilling';
+import CancelFiled from './Design/Cancellation/CancelFiled';
+import CancelDefended from "./Design/Cancellation/CancelDefended";
+import RectificationFiled from './Design/Rectification/RectificationFiled';
+import RectificationDefended from './Design/Rectification/RectificationDefended';
 
 const { TabPane } = Tabs;
 
@@ -121,6 +129,19 @@ function ProjectIp() {
             error: null,
             errmsg: null,
         },
+        process_type:{
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        filling_type:{
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+
+        }
 
     })
 
@@ -206,7 +227,8 @@ function ProjectIp() {
 
     };
 
-
+console.log(Resume_Form.process_type.value,"ff")
+console.log(Resume_Form.filling_type.value,"ss")
 
     return (
         <div>
@@ -250,13 +272,24 @@ function ProjectIp() {
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Application"}
+                        placeholder={"Process Type"}
+                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }]}
+                        changeData={(data) => checkValidation(data, "process_type")}
+                        value={Resume_Form.process_type.value}
+                        error={Resume_Form.process_type.error}
+                        errmsg={Resume_Form.process_type.errmsg}
 
                     />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
-                        placeholder={"India Filling"} />
+                        placeholder={"Fillng Type"}
+                        dropdown={Resume_Form.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"}]:[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
+                        changeData={(data) => checkValidation(data, "filling_type")}
+                        value={Resume_Form.filling_type.value}
+                        error={Resume_Form.filling_type.error}
+                        errmsg={Resume_Form.filling_type.errmsg}
+                        />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
@@ -294,17 +327,38 @@ function ProjectIp() {
                         <TabPane tab="Trade Mark" key="1">
                             <TradeMark />
                         </TabPane>
-                        <TabPane tab="Patent" key="2">
-                            Content of Tab Pane 2
-                </TabPane>
-                        <TabPane tab="Design" key="3">
+                        <TabPane tab="Design" key="2">
+                        {
+                           Resume_Form.process_type.value=== '1' && Resume_Form.filling_type.value == '1' &&
+                           <IndiaFilling/> 
+                        }
+                        {
+                           Resume_Form.process_type.value=== '1' && Resume_Form.filling_type.value == '2' &&
+                           <InternationalFilling/>  
+                        }
+                        {
+                           Resume_Form.process_type.value=== '2' && Resume_Form.filling_type.value == '1' &&
+                             <CancelFiled/> 
+                        }
+                        {
+                           Resume_Form.process_type.value=== '2' && Resume_Form.filling_type.value == '2' &&
+                           <CancelDefended/>    
+                        }
+                        {
+                           Resume_Form.process_type.value=== '3' && Resume_Form.filling_type.value == '1' &&
+                           <RectificationFiled/>    
+                        }
+                        {
+                           Resume_Form.process_type.value=== '3' && Resume_Form.filling_type.value == '2' &&
+                           <RectificationDefended/>    
+                        }              
+                        </TabPane>
+                        <TabPane tab="Patent" key="3">
                             Content of Tab Pane 3
+                       </TabPane>
+                        <TabPane tab="CopyRight" key="4">
+                            Content of Tab Pane 4
                 </TabPane>
-                        <TabPane tab="CopyRight" key="3">
-                            Content of Tab Pane 3
-                </TabPane>
-
-
                     </Tabs>
                 </TabPane>
 

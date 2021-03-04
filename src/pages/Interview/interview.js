@@ -468,7 +468,7 @@ function InerviewScreen(props) {
 
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" className="interviewScore">
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                <Grid item xs={2} className="ContainerInput score_input_box" container direction="row" justify="center">
                     <Labelbox type="text"
                      placeholder="Initial Score"
                      changeData={(data) => checkValidation(data, "initial_score")}
@@ -487,7 +487,7 @@ function InerviewScreen(props) {
                           />
 
                 </Grid>
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                <Grid item xs={2} className="ContainerInput score_input_box" container direction="row" justify="center">
                     <Labelbox type="text"
                      placeholder="Final Score"
                           changeData={(data) => checkValidation(data, "final_score")}
