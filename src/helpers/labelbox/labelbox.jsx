@@ -165,7 +165,7 @@ export default class Labelbox extends Component {
 								disablePast={this.props.disablePast && this.props.disablePast}
 								minDate={this.props.minDate && this.props.minDate}
 								inputVariant="outlined"
-								format="dd/MM/yyyy"
+								format="dd-MMM-yyyy"
 								margin="normal"
 								id="date-picker-inline"
 								// value={this.state.selecteddate}

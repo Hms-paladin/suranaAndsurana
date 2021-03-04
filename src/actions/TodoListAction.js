@@ -8,7 +8,7 @@ export const getHrTaskList = () =>async dispatch => {
             method: 'POST',
             url: apiurl +'get_todo_list',
             data:{
-                "assignee_id":"2"
+                "assignee_id":"1"
             }
         })
         .then((response) => {

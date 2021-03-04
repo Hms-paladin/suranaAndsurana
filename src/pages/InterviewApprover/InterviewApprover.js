@@ -11,26 +11,28 @@ import Axios from 'axios';
 import CustomButton from '../../component/Butttons/button';
 import ValidationLibrary from "../../helpers/validationfunction";
 import Labelbox from "../../helpers/labelbox/labelbox";
-import { InsertApprove } from "../../actions/InterviewApproveraction";
+import { InsertApprove, interviewApproverTableData } from "../../actions/InterviewApproveraction";
 import logo from "../../images/Approvelogo.png"
 import { Button } from "@material-ui/core";
+import moment from "moment";
 
 
 
-export default function InterviewApprover() {
-    const { Option } = Select;
+function InterviewApprover(props) {
 
-    const rows = [
-        { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
-        { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
-        { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
+    // const rows = [
+    //     { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
+    //     { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
+    //     { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
 
-    ];
+    // ];
     const Header = [
         { label: 'Date' }, { label: 'Initial Score' }, { label: 'Comments' }, { label: 'Interviewer' }
     ];
 
     const [modelOpen, setModelOpen] = useState(false)
+    const [ rows, setRows ] = useState([])
+
     // approve form
     const [ApproveForm, setApproveForm] = useState({
         final_score: {
@@ -58,6 +60,24 @@ export default function InterviewApprover() {
         
     });
     const dispatch = useDispatch();
+
+
+    useEffect(()=>{
+        dispatch(interviewApproverTableData())
+    },[])
+
+    useEffect(()=>{
+
+        let interviewList = []
+
+        props.interviewData.map((data)=>{
+            interviewList.push({ date: data.Date ? moment(data.Date).format('DD-MMM-YYYY') : null, score: data.score_inital, cmts: data.comment, viewer: data.designation })
+        })
+        setRows(interviewList)
+
+    },[props.interviewData])
+
+
     useEffect(() => {
         let values = []
         Axios({
@@ -181,6 +201,12 @@ export default function InterviewApprover() {
 }
 
 
+const mapStateToProps = state => ({
+    interviewData:state.interviewApproverTableData
+})
+
+
+export default connect(mapStateToProps)(InterviewApprover);
 
 
 
