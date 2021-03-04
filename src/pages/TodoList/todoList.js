@@ -31,7 +31,7 @@ function TodoList(props) {
     const [hrTodoList, setHrTodoList] = useState([])
 
     useEffect(()=>{
-        dispatch(getHrTaskList)
+        dispatch(getHrTaskList())
     },[])
 
     useEffect(()=>{
@@ -39,7 +39,7 @@ function TodoList(props) {
         let hrList = []
 
         props.getHrTodoList.map((data)=>{
-            hrList.push({id:data.interviewer_id,interviewDate:data.Interview_Date,designation:"----",candidates:data.no_of_candidates})
+            hrList.push({id:data.interviewer_id,interviewDate:data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null ,designation:"----",candidates:data.no_of_candidates})
         })
 
         setHrTodoList(hrList)

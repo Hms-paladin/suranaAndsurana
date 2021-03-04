@@ -339,7 +339,6 @@ function InerviewScreen(props) {
 
     }, [dispatch])
     function ViewCandiate(id){
-        alert(id)
         setModelOpen(true)
         setdata_id(cand_data.find((data)=>{
             return(
