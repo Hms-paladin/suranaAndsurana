@@ -14,8 +14,8 @@ import LabelBox from '../../helpers/labelbox/labelbox';
 const headCells = [
     { id: 'projectType', label: 'Project Type' },
     { id: 'projectName', label: 'Project Name' },
-    { id: 'clientType', label: 'Company Type' },
-    { id: 'clientName', label: 'Company Name' },
+    { id: 'clientType', label: 'Client Type' },
+    { id: 'clientName', label: 'Client Name' },
     { id: 'billingType', label: 'Billing Type' },
     { id: 'reversed1', label: 'Reversed' },
     { id: 'reversed2', label: 'Reversed' },
@@ -197,11 +197,11 @@ function ProjectTask() {
                 <Grid container spacing={2} justify="center">
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"company type"} />
+                            placeholder={"Client type"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"company"} />
+                            placeholder={"Client"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"

@@ -12,6 +12,14 @@ import { Tabs } from 'antd';
 //import tab content:
 
 import TradeMark from './TradeMark/tradeMark';
+// Design 
+import IndiaFilling from './Design/Application/IndiaFilling';
+
+import InternationalFilling from './Design/Application/InternationalFilling';
+import CancelFiled from './Design/Cancellation/CancelFiled';
+import CancelDefended from "./Design/Cancellation/CancelDefended";
+import RectificationFiled from './Design/Rectification/RectificationFiled';
+import RectificationDefended from './Design/Rectification/RectificationDefended';
 
 const { TabPane } = Tabs;
 
@@ -121,6 +129,19 @@ function ProjectIp() {
             error: null,
             errmsg: null,
         },
+        process_type:{
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        filling_type:{
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+
+        }
 
     })
 
@@ -206,7 +227,8 @@ function ProjectIp() {
 
     };
 
-
+console.log(Trade_Mark.process_type.value,"ff")
+console.log(Trade_Mark.filling_type.value,"ss")
 
     return (
         <div>
@@ -247,13 +269,24 @@ function ProjectIp() {
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Application"}
+                        placeholder={"Process Type"}
+                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }]}
+                        changeData={(data) => checkValidation(data, "process_type")}
+                        value={Trade_Mark.process_type.value}
+                        error={Trade_Mark.process_type.error}
+                        errmsg={Trade_Mark.process_type.errmsg}
 
                     />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
-                        placeholder={"India Filling"} />
+                        placeholder={"Fillng Type"}
+                        dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"}]:[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
+                        changeData={(data) => checkValidation(data, "filling_type")}
+                        value={Trade_Mark.filling_type.value}
+                        error={Trade_Mark.filling_type.error}
+                        errmsg={Trade_Mark.filling_type.errmsg}
+                        />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
@@ -291,17 +324,39 @@ function ProjectIp() {
                         <TabPane tab="Trade Mark" key="1">
                             <TradeMark />
                         </TabPane>
-                        <TabPane tab="Patent" key="2">
-                            Content of Tab Pane 2
-                </TabPane>
-                        <TabPane tab="Design" key="3">
+                        <TabPane tab="Design" key="2">
+                        {
+                           Trade_Mark.process_type.value=== '1' && Trade_Mark.filling_type.value == '1' &&
+                           <IndiaFilling/> 
+                        }
+                        {
+                           Trade_Mark.process_type.value=== '1' && Trade_Mark.filling_type.value == '2' &&
+                           <InternationalFilling/>  
+                        }
+                        {
+                           Trade_Mark.process_type.value=== '2' && Trade_Mark.filling_type.value == '1' &&
+                             <CancelFiled/> 
+                        }
+                        {
+                           Trade_Mark.process_type.value=== '2' && Trade_Mark.filling_type.value == '2' &&
+                           <CancelDefended/>    
+                        }
+                        {
+                           Trade_Mark.process_type.value=== '3' && Trade_Mark.filling_type.value == '1' &&
+                           <RectificationFiled/>    
+                        }
+                        {
+                           Trade_Mark.process_type.value=== '3' && Trade_Mark.filling_type.value == '2' &&
+                           <RectificationDefended/>    
+                        }  
+                        welcome            
+                        </TabPane>
+                        <TabPane tab="Patent" key="3">
                             Content of Tab Pane 3
-                </TabPane>
+                       </TabPane>
                         <TabPane tab="CopyRight" key="4">
-                            Content of Tab Pane 3
+                            Content of Tab Pane 4
                 </TabPane>
-
-
                     </Tabs>
                 </TabPane>
 

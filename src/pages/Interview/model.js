@@ -2,42 +2,46 @@ import React, {useEffect, useState} from "react";
 import { Modal } from 'antd';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import Axios from 'axios';
+import { apiurl } from "../../utils/baseUrl";
 
 
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
-    const [getData, setgetData] = React.useState([])
-
-    useEffect(()=>{
-        // debugger
-
-        // Axios.get('http://54.198.55.249:8159/api/v1/get_candidate_details_by_id', {
-        //     params: {
-        //         resume_id: 2
-        //     }
-        //   })
-        //   .then(function (response) {
-        //     console.log(response);
-        //   })
-
-
-
+    const [getdata, setgetData]= useState([])
+    const [res_id,setres_id]=useState({})
+  
+  
+    
+    const [getres_id,setgetres_id]=useState("")
+    useEffect((id)=>{
+      console.log(props.data_id&&props.data_id.resume_id,"props")
+      setres_id(props.data_id&&props.data_id.resume_id)
+      console.log(res_id,"id")
         Axios({
-            method:"GET",
-            url:"http://54.198.55.249:8159/api/v1/get_employee_by_id",
-            headers:{
-                'Accept': 'application/json',
-                'content-type':'application/json'
-            },
-            params:{
-                "emp_id":"1"
+            method:"POST",
+            url: apiurl + 'get_candidate_details_by_id',         
+            data:{
+                "resume_id":res_id
             }
-         
         })
         .then((response)=>{
-            console.log(response,"ques")
+            setgetData(response.data.data)
         })
-    },[])
+        
+        // setres_id(props.data_id.map((data,index)=>{
+         
+        //   getres_id(data.resume_id)
+  
+        // }))
+       
+        // setres_id(prevState =>({
+        //   ...prevState,
+        //    res_id:props.data_id&&props.data_id.resume_id
+        // }))
+        
+        console.log(res_id,"res")
+       
+    },[props])
 
     function handleCancel() {
         setVisible(false)
@@ -47,7 +51,7 @@ function DynModel(props){
     React.useEffect(()=>{
         setVisible(props.handleChangeModel)
     },[props.handleChangeModel])
-
+  
     return(
         <Modal
         className="modelContainer"
@@ -59,53 +63,55 @@ function DynModel(props){
         zIndex={1201}
         onCancel={handleCancel}
         >
-            <div className="Employee_formdiv">
-                <div className="employeeform_row1">
-                      <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">John Wick</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">J02445</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">11 Jan 2021</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">M</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">B.Sc</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">B.Sc</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">B.Sc</div></div>
-
-
+            {getdata.map((val,index)=>{
+                return(
+                    <div className="Employee_formdiv">
+                       <div className="employeeform_row1">
+                          <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name?val.name:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id?val.user_id:""}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?val.dob:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender?val.gender:""}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual?val.bas_qual:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2}</div></div>
+                       </div>
+                    <div className="employeeform_row2">
+                        <div className="employeeform_row2flex1">
+                          <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">{val.institution}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">{val.last_employer}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{val.last_empr_start_date}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{val.last_empr_end_date}</div></div>
+                        </div>
+                        <div className="employeeform_row2flex2">
+                          <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills}</div></div>
+                          <div className="employeeform_r2 traitsdiv"><div className="headcolor">Traits</div><div className="employeecont">{val.traits}</div></div>
+                        </div>
+                    </div>
+                    <div className="employeeform_row3">
+                      <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivements</div><div className="employeecont">{val.achievement}</div></div>
+                    </div>
+                    <div className="employeeform_row4">
+                      <div className="employeeform_r2"><div className="headcolor">Capabilitites</div><div className="employeecont">{val.capability}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest}</div></div>
+                    </div> 
+                    <div className="employeeform_row5">
+                      <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr}</div></div>
+                    </div>
+                    <div className="employeeform_row6">
+                      <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Status of the Candidate</div><div className="employeecont">{val.status_resource}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known}</div></div>
+                    </div>     
                 </div>
-                <div className="employeeform_row2">
-                    <div className="employeeform_row2flex1">
-                      <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">John Wick</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">J02445</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">11 Jan 2021</div></div>
-                      <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">11 Jan 2021</div></div>
-
-                      </div>
-                      <div className="employeeform_row2flex2">
-                      <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">John Wick</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">J02445</div></div>
-                    
-                      </div>
-
-                </div>
-                
-            </div>
-            <div className="employeeform_row3">
-                      <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">John Wick</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">J02445</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivements</div><div className="employeecont">J02445</div></div>
-
-                      </div>
-                      <div className="employeeform_row4">
-                      <div className="employeeform_r2"><div className="headcolor">Capabilitites</div><div className="employeecont">John Wick</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">J02445</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">J02445</div></div>
-
-                      </div> 
-                      <div className="employeeform_row5">
-                      <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">John Wick</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">J02445</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">J02445</div></div>
-
-                      </div>               
+                )  
+            })
+            }
         </Modal>
     )
 }

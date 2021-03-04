@@ -11,7 +11,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
-import { Select, Row, Col } from 'antd'
+import { Select, Row, Col } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import LabelIcon from '@material-ui/icons/Label';
@@ -101,7 +101,7 @@ function Navbar(props) {
             <SettingsIcon className="customIcon_header" />
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
-              <div className="userName">Jhone Wick</div>
+              <div className="userName">John Wick</div>
               <div className="userPosition">HOD</div>
             </div>
             <ArrowDropDownCircleIcon className="customIconArrow_header" />

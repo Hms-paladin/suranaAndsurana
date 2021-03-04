@@ -182,9 +182,9 @@ function TradeMarkInternational() {
                     </Grid>
                     <Grid item xs={12} >
 
-                        <div className="upload_div">
-                            <div style={{ width: "200%" }}>
-                                <Upload {...props} className="upload_tag"
+                        <div className="uploadbox_div">
+                            <div style={{width:"230%"}}>
+                                <Upload {...props} className="uploadbox_tag"
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                     <div className="upload_file_inside"><label>Click to upload</label><PublishIcon /></div>
