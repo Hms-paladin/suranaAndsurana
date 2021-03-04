@@ -263,7 +263,7 @@ function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
     const [getdata, setgetData]= useState([])   
     const [cand_data,setcand_data]=useState([])
-    const [data_id,setdata_id]=useState({})
+    const [data_id,setdata_id]=useState([])
     const [optionvalues, setoptionvalues] = useState({});
      const [postData, setpostData] = useState({
         init_status: {
@@ -424,7 +424,8 @@ function InerviewScreen(props) {
             </Grid>
             <Grid item xs={12} container direction="row" justify="left" alignItems="left" className="interviewQuesions">
                 <Grid item xs={8} className="scrollbar">
-                    <div >List of guiding questions</div><br />
+                    <div >List of guiding questions</div>
+                    <ul>
                     {
                     getdata.map((get,index)=>{
                              return(
@@ -434,6 +435,7 @@ function InerviewScreen(props) {
                             )
                         })
                     }
+                    </ul>
                 </Grid>
                 <Grid item xs={3} className="candidateBox">
                     <div className="candidatesList"> List of Candidates </div>
