@@ -1,5 +1,6 @@
 import react, { useState } from 'react';
 import './projectIp.scss';
+import Patent from '../Project IP1/Patent/Patent'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { TableContainer } from '@material-ui/core';
@@ -8,11 +9,8 @@ import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction"
 import { Tabs } from 'antd';
-
 //import tab content:
-
 import TradeMark from './TradeMark/tradeMark';
-
 const { TabPane } = Tabs;
 
 
@@ -295,7 +293,7 @@ function ProjectIp() {
                             <TradeMark />
                         </TabPane>
                         <TabPane tab="Patent" key="2">
-                            Content of Tab Pane 2
+                            <Patent/>
                 </TabPane>
                         <TabPane tab="Design" key="3">
                             Content of Tab Pane 3

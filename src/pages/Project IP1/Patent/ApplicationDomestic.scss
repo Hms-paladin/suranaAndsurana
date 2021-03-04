@@ -1,0 +1,18 @@
+.app_cont_domestic{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width:100%;
+ 
+}
+.app_cont_domestic .custom_labelbox{
+    width:170px !important;
+}
+.comments_line{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.comments_line .custom_labelbox{
+    width:400px !important;
+}

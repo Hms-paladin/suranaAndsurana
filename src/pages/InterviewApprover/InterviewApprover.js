@@ -14,9 +14,6 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { InsertApprove } from "../../actions/InterviewApproveraction";
 import logo from "../../images/Approvelogo.png"
 import { Button } from "@material-ui/core";
-
-
-
 export default function InterviewApprover() {
     const { Option } = Select;
 
