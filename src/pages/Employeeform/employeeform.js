@@ -121,6 +121,7 @@ function Employeeform(props){
            
         })
         .then((response) => {
+            console.log(response.data.data,"response")
              setgetDetails(response.data.data)
             
         })
