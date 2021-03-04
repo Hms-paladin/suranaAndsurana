@@ -9,5 +9,18 @@ export const GET_EMPLOYEEFORM_ID = "GET_EMPLOYEEFORM_ID"
 
 
 // Resume
-
 export const INSERT_RESUME = "INSERT_RESUME"
+
+// masterDropdrop
+export const GET_SKILLS = "GET_SKILLS" 
+export const GET_TRAITS = "GET_TRAITS" 
+export const GET_CERTIFICATION = "GET_CERTIFICATION" 
+export const GET_ACHIEVEMENT = "GET_ACHIEVEMENT" 
+export const GET_SPECILIZATION = "GET_SPECILIZATION" 
+export const GET_CAPABILITY = "GET_CAPABILITY" 
+export const GET_TALENTS = "GET_TALENTS" 
+export const GET_STATUS = "GET_STATUS" 
+
+// ResumeSearch
+
+export const GET_RESUMESEARCH_ROWDATA = "GET_RESUMESEARCH_ROWDATA"

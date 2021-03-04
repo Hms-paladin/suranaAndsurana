@@ -196,7 +196,7 @@ function InerviewScreen(props) {
             </Grid>
             <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
                        <Labelbox type="select"
-                                placeholder={"Type of Resource"}
+                                placeholder={"Interview Status"}
                                 dropdown={optionvalues.interview_status}
                                 changeData={(data) => checkValidation(data, "init_status")}
                                 value={postData.init_status.value}
@@ -206,9 +206,10 @@ function InerviewScreen(props) {
 
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" className="interviewScore">
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                <Grid item xs={2} className="ContainerInput input_change" container direction="row" justify="center">
                     <Labelbox type="text"
                      placeholder="Initial Score"
+                  
                      changeData={(data) => checkValidation(data, "initial_score")}
                      value={postData.initial_score.value}
                      error={postData.initial_score.error}
@@ -225,7 +226,7 @@ function InerviewScreen(props) {
                           />
 
                 </Grid>
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                <Grid item xs={2} className="ContainerInput input_change" container direction="row" justify="center">
                     <Labelbox type="text"
                      placeholder="Final Score"
                           changeData={(data) => checkValidation(data, "final_score")}

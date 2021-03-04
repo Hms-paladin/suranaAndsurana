@@ -79,10 +79,10 @@
     height: 30px;
 }
 
-/* .formdiv .ant-select-arrow{
+.formdiv .ant-select-arrow{
         top: 32%;
-        right: 19px;
-    } */
+        right: 15px;
+    }
 
 .SelectInput_svg {
     width: 23px;
@@ -148,9 +148,9 @@
     font-size: 13px;
 }
 
-.MuiPickersDay-daySelected {
+/* .MuiPickersDay-daySelected {
     background-color: #82af3f !important;
-}
+} */
 
 .MuiDialogActions-root.MuiDialogActions-spacing .MuiButton-label{
     font-size: 12px;
@@ -183,12 +183,6 @@
     color: #b9b9b9 !important;
 }
 
-/* grid  */
-
-.MuiGrid-item{
-    padding: 0% !important;
-}
-
 .inputlabel ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #b9b9b9 !important;
     opacity: 1; /* Firefox */
@@ -204,3 +198,13 @@
   .formdiv .ant-select-single .ant-select-selector .ant-select-selection-search{
       left: 5px;
   }
+
+  /* datePicker header */
+
+   .MuiPickersToolbar-toolbar{
+      height: auto !important;
+  }
+
+  .MuiPickersToolbar-toolbar h4{
+    font-size: 20px !important;
+}

@@ -1,0 +1,28 @@
+.tradeMarkTab {
+    .ant-tabs-content {
+        background-color: rgb(200, 197, 197);
+        padding: 5px;
+    }
+
+    .ant-tabs-nav {
+        margin: 0 !important;
+    }
+    .ant-tabs-tab-active{
+        background-color:rgb(200, 197, 197) !important;
+        border: none !important;
+
+    }
+}
+
+.projectIp {
+    position: relative;
+    bottom: 26px;
+}
+.ipdesign_savebtn button{
+    width: 100px !important;
+}
+.ipdesign_savebtn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

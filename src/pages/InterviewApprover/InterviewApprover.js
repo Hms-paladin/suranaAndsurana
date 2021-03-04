@@ -139,7 +139,7 @@ export default function InterviewApprover() {
             <Grid item xs={12} container direction="row" justify="center" alignItems="center" className="interviewstatus" >
                 <div className="interviewstats_drop">
                 <Labelbox type="select"
-                 placeholder="Interview Status"
+                        placeholder="Interview Status"
                                 dropdown={optionvalues.interview_status}
                                 changeData={(data) => checkValidation(data, "init_status")}
                                 value={ApproveForm.init_status.value}
@@ -150,7 +150,7 @@ export default function InterviewApprover() {
             </Grid>
            
             <Grid item xs={12} spacing={1} container direction="row" justify="center"  className="interviewScore">
-                <Grid item xs={3} className="ContainerInput" container direction="row" justify="center"  >
+                <Grid item xs={3} className="ContainerInput input_change" container direction="row" justify="center"  >
                     <Labelbox type="text"
                         placeholder={"Final Score"}
                         changeData={(data) => checkValidation(data,"final_score")}
