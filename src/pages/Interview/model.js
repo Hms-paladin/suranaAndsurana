@@ -8,21 +8,40 @@ import { apiurl } from "../../utils/baseUrl";
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
     const [getdata, setgetData]= useState([])
-
-
-    useEffect(()=>{
+    const [res_id,setres_id]=useState({})
   
+  
+    
+    const [getres_id,setgetres_id]=useState("")
+    useEffect((id)=>{
+      console.log(props.data_id&&props.data_id.resume_id,"props")
+      setres_id(props.data_id&&props.data_id.resume_id)
+      console.log(res_id,"id")
         Axios({
             method:"POST",
-            url: apiurl + '/get_candidate_details_by_id',         
+            url: apiurl + 'get_candidate_details_by_id',         
             data:{
-                "resume_id":"2"
+                "resume_id":res_id
             }
         })
         .then((response)=>{
             setgetData(response.data.data)
         })
-    },[])
+        
+        // setres_id(props.data_id.map((data,index)=>{
+         
+        //   getres_id(data.resume_id)
+  
+        // }))
+       
+        // setres_id(prevState =>({
+        //   ...prevState,
+        //    res_id:props.data_id&&props.data_id.resume_id
+        // }))
+        
+        console.log(res_id,"res")
+       
+    },[props])
 
     function handleCancel() {
         setVisible(false)
@@ -32,7 +51,7 @@ function DynModel(props){
     React.useEffect(()=>{
         setVisible(props.handleChangeModel)
     },[props.handleChangeModel])
-
+  
     return(
         <Modal
         className="modelContainer"
@@ -48,11 +67,11 @@ function DynModel(props){
                 return(
                     <div className="Employee_formdiv">
                        <div className="employeeform_row1">
-                          <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name?val.name:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id?val.user_id:""}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?val.dob:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender?val.gender:""}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual?val.bas_qual:"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2}</div></div>
                        </div>
