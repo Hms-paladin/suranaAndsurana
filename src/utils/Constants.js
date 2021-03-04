@@ -24,3 +24,8 @@ export const GET_STATUS = "GET_STATUS"
 // ResumeSearch
 
 export const GET_RESUMESEARCH_ROWDATA = "GET_RESUMESEARCH_ROWDATA"
+
+
+// TodoList
+
+export const GET_HRTODOLIST = "GET_HRTODOLIST"
