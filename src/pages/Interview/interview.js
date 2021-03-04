@@ -15,14 +15,15 @@ import Axios from 'axios';
 
 function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
-    const [getdata, setgetData]= useState([])
+    const [getdata, setgetData]= useState([])   
+    const [optionvalues, setoptionvalues] = useState({});
      const [postData, setpostData] = useState({
-        // init_status: {
-        //     value: "",
-        //     validation: [{ "name": "required" }],
-        //     error: null,
-        //     errmsg: null,
-        // },
+        init_status: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
         initial_score: {
             value: "",
             validation: [{ "name": "required" }],
@@ -59,6 +60,20 @@ function InerviewScreen(props) {
 
         })
     },[])
+       useEffect(() => {
+        let values = []
+        Axios({
+            method: "get",
+            url: apiurl + "get_Interview_Status",
+        }).then((response) => {
+            console.log(response,"status")
+            let interview_status=[]
+        response.data.data.map((data,index) => 
+        interview_status.push({value: data.status, id: data.status_id}))
+        setoptionvalues({interview_status})
+
+        })
+    }, [dispatch])
 
     function checkValidation(data, key) {
 
@@ -80,7 +95,7 @@ function InerviewScreen(props) {
     };
     
     function onSubmit() {
-        alert("d")
+
         var mainvalue = {};
         var targetkeys = Object.keys(postData);
         for (var i in targetkeys) {
@@ -103,7 +118,7 @@ function InerviewScreen(props) {
             
             dispatch(insertInterviewquestions(postData))
         }
-        console.log(postData,"posttt")
+
 
         setpostData(prevState => ({
             ...prevState
@@ -135,7 +150,6 @@ function InerviewScreen(props) {
                     <div >List of guiding questions</div><br />
                     {
                     getdata.map((get,index)=>{
-                            // debugger
                              return(
                                  <>
                                 <li>{get.questions}</li>
@@ -182,19 +196,20 @@ function InerviewScreen(props) {
             </Grid>
             <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
                        <Labelbox type="select"
-                                placeholder={"Type of Resource"}
-                                // dropdown={resumeGetList.candidateList}
-                                // changeData={(data) => checkValidation(data, "candidate")}
-                                // value={postData.candidate.value}
-                                // error={postData.candidate.error}
-                                // errmsg={postData.candidate.errmsg}
+                                placeholder={"Interview Status"}
+                                dropdown={optionvalues.interview_status}
+                                changeData={(data) => checkValidation(data, "init_status")}
+                                value={postData.init_status.value}
+                                error={postData.init_status.error}
+                                errmsg={postData.init_status.errmsg}
                             />
 
             </Grid>
             <Grid item xs={12} spacing={1} container direction="row" justify="center" className="interviewScore">
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                <Grid item xs={2} className="ContainerInput input_change" container direction="row" justify="center">
                     <Labelbox type="text"
                      placeholder="Initial Score"
+                  
                      changeData={(data) => checkValidation(data, "initial_score")}
                      value={postData.initial_score.value}
                      error={postData.initial_score.error}
@@ -211,7 +226,7 @@ function InerviewScreen(props) {
                           />
 
                 </Grid>
-                <Grid item xs={2} className="ContainerInput" container direction="row" justify="center">
+                <Grid item xs={2} className="ContainerInput input_change" container direction="row" justify="center">
                     <Labelbox type="text"
                      placeholder="Final Score"
                           changeData={(data) => checkValidation(data, "final_score")}

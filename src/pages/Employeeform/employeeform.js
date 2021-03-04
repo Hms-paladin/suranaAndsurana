@@ -1,14 +1,14 @@
 import { Button } from "@material-ui/core";
-import './employeeform.scss'
 import React ,{useState,useEffect}from "react";
 import Labelbox from "../../helpers/labelbox/labelbox";
-import { Upload, message,Select,notification} from 'antd';
+import { Upload, message} from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
 import Axios from 'axios';
 import {apiurl} from '../../utils/baseUrl'
 import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
-const { Option } = Select;
+import {notification} from 'antd';
+
 function Employeeform(props){
     const [getDetails,setgetDetails]=useState([])
     const [getdata, setgetData]= useState([])
@@ -126,7 +126,7 @@ function Employeeform(props){
             
         })
         .catch((error) => {
-            alert(JSON.stringify(error))
+  
         })
         Axios({
             method:"get",
@@ -367,6 +367,7 @@ function Employeeform(props){
   console.log(file,"hjkgfh")
       }
     return(
+        
         <div>
             <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Employee form</div>
             {getDetails.map((val,index)=>{
@@ -418,7 +419,7 @@ function Employeeform(props){
                     </div>   
                      )  
                     })
-                }
+                } 
                     <div className="employeeform_row7">
                       <div>
                           <Labelbox type="select" placeholder="Designation"

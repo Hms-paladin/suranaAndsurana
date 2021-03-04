@@ -41,7 +41,6 @@ export const insertInterviewquestions =(postData)=> async dispatch =>{
                 "created_by":"2",
                 "updated_by":"1",
                 "ip_address":"Fify Two"
-            
             }
         })
         .then((response)=> {
