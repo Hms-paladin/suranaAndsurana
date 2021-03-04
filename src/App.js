@@ -14,7 +14,7 @@ import ProjectIp1 from './pages/Project IP1/projectIp';
 import ProjectIp2 from './pages/Project Ip2/projectIp2';
 import ProjectIpOption1 from './pages/ProjectIpOption1/projectIpOption1';
 import ProjectIpOption2 from './pages/ProjectIpOption2/projectIpOption2';
-
+import Stages from './pages/stages/stageicon';
 
 
 
@@ -39,6 +39,7 @@ function App() {
           <Route path="/projectIp2" component={ProjectIp2} exact/>
           <Route path="/projectIpOption1" component={ProjectIpOption1} exact/>
           <Route path="/projectIpOption2" component={ProjectIpOption2} exact/>
+          <Route path="/stageicon" component={Stages} exact/>
 
 
 

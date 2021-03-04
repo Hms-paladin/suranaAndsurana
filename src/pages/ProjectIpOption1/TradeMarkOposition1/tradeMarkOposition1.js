@@ -185,6 +185,7 @@ function TradeMarkOposition1() {
     return (
         <div className="trademarkOpsosotionContainer">
             <TabsTcons />
+            
             <Grid item xs={12} container direction="row" spacing={1} >
                 <Grid item xs={4} container direction="column" spacing={2}  >
                     <Grid item xs={12} container direction="row" spacing={1}>
