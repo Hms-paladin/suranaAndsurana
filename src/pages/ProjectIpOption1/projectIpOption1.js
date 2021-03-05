@@ -1,21 +1,15 @@
 import react from 'react';
-import './projectIp2.scss';
+import './projectIpoption1.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import CustomButton from '../../component/Butttons/button';
 import { Tabs } from 'antd';
 
-//import tab content:
-
-import TradeMark from './TrademarkInternational/tradeMarkinternational';
-
-
-
+import TradeMark from './TradeMarkOposition1/tradeMarkOposition1';
 
 
 const { TabPane } = Tabs;
 
-function ProjectIp2() {
+function projectIpoption1() {
 
     function callback(key) {
         console.log(key);
@@ -24,8 +18,6 @@ function ProjectIp2() {
     function callbackinside(key) {
         console.log(key);
     }
-
-   
     return (
         <div>
             <Grid item xs={12} container spacing={4} >
@@ -34,11 +26,13 @@ function ProjectIp2() {
                         <Labelbox type="text"
                             placeholder={"Project Name *"}
 
+
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <Labelbox type="text"
-                            placeholder={"Company Name*"}
+                            placeholder={"Company Name *"}
+
 
                         />
                     </Grid>
@@ -54,19 +48,19 @@ function ProjectIp2() {
             <Grid item xs={12} container spacing={4}>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Project  Sub Type *"}
+                        placeholder={"Project Sub type *"}
 
                     />
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Application"}
+                        placeholder={"Oposition"}
 
                     />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
-                        placeholder={"International Filing "} />
+                        placeholder={"Filed"} />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
@@ -78,24 +72,27 @@ function ProjectIp2() {
             <Grid item xs={12} container spacing={4}>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"HOD /Attorney"}
+                        placeholder={"HOD /Attorney *"}
 
                     />
                 </Grid>
                 <Grid item xs={3}>
-                    <Labelbox type="text"
+                    <Labelbox type="select"
                         placeholder={"Counsel"}
 
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Labelbox type="textarea"
-                        placeholder={"Comments"}
+                        placeholder={"Application"}
                         rows={4}
                     />
                 </Grid>
+
+
+
             </Grid>
-            <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
+             <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
                 <TabPane tab="Intellectual Property" key="1">
                     <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
                         <TabPane tab="Trade Mark" key="1">
@@ -116,8 +113,9 @@ function ProjectIp2() {
                 </TabPane>
 
             </Tabs>
+
+
         </div>
     )
 }
-
-export default ProjectIp2;
+export default projectIpoption1;
