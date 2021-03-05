@@ -269,7 +269,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Process Type"}
+                        placeholder={"Application"}
                         dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }]}
                         changeData={(data) => checkValidation(data, "process_type")}
                         value={Trade_Mark.process_type.value}
@@ -280,7 +280,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
-                        placeholder={"Fillng Type"}
+                        placeholder={"India Fillng "}
                         dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"}]:[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
                         changeData={(data) => checkValidation(data, "filling_type")}
                         value={Trade_Mark.filling_type.value}
@@ -304,13 +304,13 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Application"}
+                        placeholder={"Counsel"}
 
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Labelbox type="textarea"
-                        placeholder={"Application"}
+                        placeholder={"comments"}
                         rows={4}
                     />
                 </Grid>
