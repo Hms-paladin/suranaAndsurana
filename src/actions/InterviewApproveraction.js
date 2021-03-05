@@ -1,5 +1,5 @@
 
-import { GET_INTERVIEW_QUESTIONS } from "../utils/Constants";
+import { GET_INTERVIEW_QUESTIONS, INTERVIEWAPPROVER_TABLE_DATA } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
@@ -20,9 +20,27 @@ export const Interview = () => async dispatch => {
         
     }
 }
+
+export const interviewApproverTableData = () => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'/get_to_do_interview_by_id',
+            data:{
+                resume_id:"1"
+            }
+        })
+        .then((response) => {
+            dispatch({type:INTERVIEWAPPROVER_TABLE_DATA,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
  
 export const InsertApprove = (ApproveForm) => async dispatch => {
-    alert("d")
     console.log(ApproveForm,"form")
     try {
         axios({

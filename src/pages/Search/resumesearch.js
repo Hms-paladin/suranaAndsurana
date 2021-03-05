@@ -40,6 +40,7 @@ function Resumesearch(props) {
     const [rows,setRowData] = useState([])
     const [checkList, setCheckedList] = useState({})
     const [test, setTest] = useState(true)
+    const [selectedCandidateId, setSelectedCandidateId] = useState([]);
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -214,10 +215,24 @@ function Resumesearch(props) {
     }, [props.GetOptions])
 
 
-      const handleCheck = (event) => {
-          setCheckedList({
-            [event.target.name]: !checkList[event.target.name],
-        })
+      const handleCheck = (event,resume_id) => {
+        if(selectedCandidateId.includes(resume_id)){
+            selectedCandidateId.map((data,index)=>{
+                if ( data === resume_id) { 
+                    selectedCandidateId.splice(index, 1); 
+                }
+            })
+
+        }else{
+          selectedCandidateId.push(resume_id)
+        }
+
+          setCheckedList(
+            prevState => ({
+                ...prevState,
+                [event.target.name]: !checkList[event.target.name],
+            })
+        )
         setTest(!test)
       }
 
@@ -225,7 +240,7 @@ function Resumesearch(props) {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.dob, gender: data.gender === "M" ? "Male" : "Female", basic: data.bas_qual, language: data.lang_known, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent, box:<Checkbox onClick={handleCheck} name={"checked"+index} checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+            rowDataList.push({ name: data.name, age: data.dob, gender: data.gender === "M" ? "Male" : "Female", basic: data.bas_qual, language: data.lang_known, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent, box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
 
         setRowData(rowDataList)
@@ -243,9 +258,6 @@ function Resumesearch(props) {
             "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
         }))
     }
-
-    console.log(props.RowData, "RowData")
-    console.log(ResumeSearch_Form, "ResumeSearch_Form")
 
     return (
         <div>
@@ -338,8 +350,9 @@ function Resumesearch(props) {
             <div className="resume_searchtable">
             <EnhancedTable headCells={headCells} rows={rows && rows} />
             </div>
-            <div className="searchinterviewbtn"> <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary"  custombtnCSS={"goSearchbtn"}  onBtnClick={() => setModelOpen(true)}  /></div> 
-            <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} /> 
+            <div className="searchinterviewbtn"> 
+            <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary"  custombtnCSS={"goSearchbtn"}  onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div> 
+            <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} /> 
 
             </div>
                     </div>
