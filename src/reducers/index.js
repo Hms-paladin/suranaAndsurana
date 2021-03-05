@@ -20,4 +20,5 @@ export default combineReducers({
     getemplyoeeformid,
     getOptions:getResumeSearchDropDownOptions,
     getResumeSearchRowdata,
+    
 })

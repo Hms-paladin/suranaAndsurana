@@ -10,6 +10,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import {notification} from 'antd';
 
 function Employeeform(props){
+    const [getDetails,setgetDetails]=useState([])
     const [getdata, setgetData]= useState([])
     const [dept, setdept]= useState({})
      const [sup_name, setsup_name]= useState({})

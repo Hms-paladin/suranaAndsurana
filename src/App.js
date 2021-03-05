@@ -12,6 +12,7 @@ import TodoList from './pages/TodoList/todoList';
 import ProjectTask from './pages/ProjectTask/projectTask';
 import ProjectIp1 from './pages/Project IP1/projectIp';
 import ProjectIp2 from './pages/Project Ip2/projectIp2';
+import AddClient from "./pages/AddClient/addclient";
 
 
 
@@ -39,6 +40,8 @@ function App() {
           <Route path="/projectTask" component={ProjectTask} exact/>
           <Route path="/projectIp" component={ProjectIp1} exact/>
           <Route path="/projectIp2" component={ProjectIp2} exact/>
+
+          <Route path ="/addclient" component ={AddClient} exact/>
 
 
 
