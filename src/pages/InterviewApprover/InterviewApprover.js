@@ -20,12 +20,6 @@ import moment from "moment";
 
 function InterviewApprover(props) {
 
-    // const rows = [
-    //     { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
-    //     { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
-    //     { date: '11-Jan-2020', score: 45, cmts: "Comments about the candiates", viewer: "Ranjith" },
-
-    // ];
     const Header = [
         { label: 'Date' }, { label: 'Initial Score' }, { label: 'Comments' }, { label: 'Interviewer' }
     ];

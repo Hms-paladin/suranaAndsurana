@@ -65,13 +65,13 @@ function TodoList(props) {
 
     function openModelFunc(name) {
         if(name === "interviewer_id"){
-            setInerviewScreen(true)
+            setApproveOpen(true)
         }
         else if(name === "resume_id"){
             setModelOpen(true)
         }
         else if(name === "int_details_id"){
-            setApproveOpen(true)
+            setInerviewScreen(true)
         }
     }
 
