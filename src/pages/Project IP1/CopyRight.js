@@ -1,18 +1,22 @@
 import React,{useState,useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import '../Project IP1/Patent/Patent.scss'
+import CustomButton from '../../component/Butttons/button';
+import Tabs from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import Labelbox from "../../helpers/labelbox/labelbox";
 export default function CopyRight(){
     return(
-        <div>
-            <Grid container direction={"column"}>
-               <Grid item xs={12} md={12} className="app_cont_domestic">
+        <div > 
+                 <Tabs/>
+                 <div className="copyright_div">
                  <Labelbox type="text" placeholder={"Name of Opponent"}/>
-                 <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}/>
-              
+                 <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}/>   
+                 <Labelbox type="text" placeholder={"Upload Image"}/>
+                 </div>  
+                 <Grid item xs={12} container justify="flex-end" className="patent_btns">
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"/>
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"/>
                </Grid>
-              
-            </Grid>
         </div>
     )
 }

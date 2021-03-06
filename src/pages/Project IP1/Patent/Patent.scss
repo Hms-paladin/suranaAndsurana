@@ -35,6 +35,23 @@
 
 
 // button css for patent.js
-.patent_save{
-    border-radius: 50px !important;
+.custom_save{
+    width:115px !important;
+}
+.custom_cancel{
+    width:115px !important;
+    text-transform: none !important;
+}
+.patent_btns{
+    padding:0px 15px 20px;
+}
+// copyright for CopyRight.js css
+.copyright_div{
+   width:100%;
+   padding: 10px;
+   
+}
+.copyright_div .custom_labelbox{
+    margin:30px 15px;
+    width:30%;
 }

@@ -243,7 +243,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                     </Grid>
                     <Grid item xs={6}>
                         <Labelbox type="text"
-                            placeholder={"client Name *"}
+                            placeholder={"Client Name *"}
                             changeData={(data) => checkValidation(data, "clientname")}
                             value={Trade_Mark.clientname.value}
                             error={Trade_Mark.clientname.error}
@@ -270,7 +270,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 <Grid item xs={3}>
                     <Labelbox type="select"
                         placeholder={"Process Type"}
-                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }]}
+                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" },{ id: "4", value: "Opposition" }]}
                         changeData={(data) => checkValidation(data, "process_type")}
                         value={Trade_Mark.process_type.value}
                         error={Trade_Mark.process_type.error}
@@ -281,7 +281,8 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 <Grid item xs={3} >
                     <Labelbox type="select"
                         placeholder={"Fillng Type"}
-                        dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"}]:[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
+                        dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"},{id:"3", value:"Domestic"},{id:"4", value:"Foreign"},{id:"5", value:"PCT"}]
+                        :[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
                         changeData={(data) => checkValidation(data, "filling_type")}
                         value={Trade_Mark.filling_type.value}
                         error={Trade_Mark.filling_type.error}
@@ -310,7 +311,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={6}>
                     <Labelbox type="textarea"
-                        placeholder={"Application"}
+                        placeholder={"Comments"}
                         rows={4}
                     />
                 </Grid>
@@ -350,10 +351,10 @@ console.log(Trade_Mark.filling_type.value,"ss")
                            Trade_Mark.process_type.value=== '3' && Trade_Mark.filling_type.value == '2' &&
                            <RectificationDefended/>    
                         }  
-                        welcome            
+                                   
                         </TabPane>
                         <TabPane tab="Patent" key="3">
-                              <Patent/>
+                              <Patent Type={Trade_Mark}/>
                        </TabPane>
                         <TabPane tab="CopyRight" key="4">
                             <CopyRight/>

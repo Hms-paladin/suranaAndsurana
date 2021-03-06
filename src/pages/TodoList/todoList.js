@@ -18,7 +18,6 @@ const headCells = [
     { id: 'interviewDate', label: 'Interview date' },
     { id: 'designation', label: 'Designation' },
     { id: 'candidates', label: 'No. of Candidates' }
-
 ];
 
 
@@ -28,8 +27,9 @@ function TodoList(props) {
     const [modelOpen, setModelOpen] = useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
+    const [int_id, setint_id] = useState([])
     const [hrTodoList, setHrTodoList] = useState([])
-
+    const [todolist, settodolist] = useState([])
     useEffect(() => {
         dispatch(getHrTaskList())
     }, [])
@@ -37,13 +37,14 @@ function TodoList(props) {
     useEffect(() => {
 
         let hrList = []
+        let todoListdata=[]
 
         console.log()
 
         props.getHrTodoList.map((data) => {
             let showId = null
             let showName = null
-
+            todoListdata.push(data)
             if(data.interviewer_id){
                 showId = data.interviewer_id
                 showName = "interviewer_id"
@@ -54,11 +55,12 @@ function TodoList(props) {
                 showId = data.int_details_id
                 showName = "int_details_id"
             }
-
-            hrList.push({ id: <div onClick={(name) => openModelFunc(showName)} className="tempClass" >{showId}</div>, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: data.designation, candidates: data.no_of_candidates })
+            hrList.push({ id: <div onClick={(name) => openModelFunc(showName)} className="tempClass" >{showId}</div>, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: data.designation, candidates: data.no_of_candidates,showid:showId})
         })
 
         setHrTodoList(hrList)
+        settodolist(todoListdata)
+       console.log(props.getHrTodoList,"divya")
 
     }, [props.getHrTodoList])
 
@@ -80,9 +82,9 @@ function TodoList(props) {
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
             <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
 
-            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen />} />
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={todolist}/>} />
 
-            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} />} />
+            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} interviewer_id={todolist}/>} />
 
         </>
     )

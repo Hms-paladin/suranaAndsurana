@@ -132,6 +132,19 @@
     display: flex;
     justify-content: flex-end;
 }
+.employ_form .custom_labelbox{
+    width:175px !important;
+    margin-right: 33px !important;
+}
+.employ_form .custom_labelbox{
+    margin-right: 0px !important;
+}
+.employ_form{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 0px;
+    justify-content: space-between;
+}
 .employeeform_save Button{
     background-color: #0353A4;
     color: #fff;

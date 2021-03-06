@@ -59,8 +59,21 @@
     height: auto;
     padding-right: 2px;
 }
-
-
+.score_div .formdiv .brdrcls{
+    width:70%;
+    height: 50px;
+}
+.int_comments_div .formdiv .brdrcls{
+    width:445px;
+    height: 70px;
+    
+}
+.int_comments_div{
+    padding-right: 5%;
+}
+.int_btn_save{
+    width:120px !important;
+}
 
 .viewCandidatesList {
     width: 45%;
@@ -96,11 +109,6 @@
     margin-top: 4%;
   
   }
-  
-
-//   .interviewScore{
-//       padding: 3% 2%;
-//   }
 
   .interviewSubmit{
       width: 45%;
@@ -139,30 +147,28 @@
 
 
 }
-
-// /* width */
-// ::-webkit-scrollbar {
-//     width: 10px;
-//   }
-
-//   /* Track */
-//   ::-webkit-scrollbar-track {
-//     background: #f1f1f1; 
-//   }
-
-//   /* Handle */
-//   ::-webkit-scrollbar-thumb {
-//     background: #888; 
-//   }
-
-//   /* Handle on hover */
-//   ::-webkit-scrollbar-thumb:hover {
-//     background: #555; 
-//   }
 .input_change .formdiv .brdrcls{
     width: 60%;
 }
 
 .score_input_box .formdiv .brdrcls{
-    width: 60%;
+    width: 70%;
+    height:50px;
+}
+.inter_status_div{ 
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:20px 0px;
+    width:80%;
+}
+.inter_status_div .custom_labelbox{
+     width:40%  !important;
+
+}
+.interviewScore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
