@@ -5,9 +5,6 @@ import PrivateRoute from './Router/PrivateRoute';
 import Login from "./pages/Login/login.js";
 import Routes from "./Router/route";
 
-import './App.css';
-
-
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("token"));
   const [authTokens, setAuthTokens] = useState(existingTokens);
