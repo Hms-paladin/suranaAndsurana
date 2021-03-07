@@ -49,6 +49,7 @@ body {
 }
 .ant-select-dropdown {
   z-index: 1800 !important;
+  min-height:fit-content !important;
 }
 
 /* .ant-calendar-picker {
@@ -58,3 +59,6 @@ body {
 /* input:focus {
   border: none !important;
 } */
+
+.ant-select-dropdown{
+}
