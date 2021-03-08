@@ -256,6 +256,7 @@ import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl";
+import moment from "moment";
 import Axios from 'axios';
 function InerviewScreen(props) {
     const dispatch = useDispatch();
@@ -263,12 +264,7 @@ function InerviewScreen(props) {
     const [getdata, setgetData] = useState([])
     const [cand_data, setcand_data] = useState([])
     const [data_id, setdata_id] = useState([])
-    const [int_details, setint_details] = useState({
-        interviewdate:"",
-        candidate:"",
-        desgination:"",
-        id:"",
-    })
+    const [int_details, setint_details] = useState({})
     const [optionvalues, setoptionvalues] = useState({});
     const [postData, setpostData] = useState({
         init_status: {
@@ -328,37 +324,37 @@ function InerviewScreen(props) {
         // for candiate post api
         dispatch(GetCandiateDetails())
         var candiate = []
-        console.log(props.GetCandiateDetails, "getcandiate")
+      console.log(props.interviewer_id&&props.interviewer_id.int_details_id,"cand_id")
         Axios({
             method: "POST",
             url: apiurl + 'get_selected_candidates',
             data: {
-                "int_detail_id":int_details.id
+                "int_detail_id":props.interviewer_id&&props.interviewer_id.int_details_id
+                // "int_detail_id":int_details.id
             }
         })
             .then((response) => {
                 console.log(response.data.data, "can_datta")
-                // let can_data=[]
-                // response.data.data[0].output.map((data)=>
-                //     can_data.push(data)
-                // )
+                const Intview_data=[]
+                response.data.data.map((data)=>
+                Intview_data.push({date:moment(data.prop_date_time).format("DD-MM-YYYY"),
+                    designation:data.designation,candiates:data.total_number_candidates})
+                )
             setcand_data(response.data.data[0].output)
-            console.log(cand_data, "can_div")
+            console.log(Intview_data, "can_div")
+            // setint_details(props.interviewer_id.map((data,index)=>{
+            //     // console.log("datacheck",data),
+            //     return(
+            //     ({id:data.int_details_id})
+            //     // propsdata.push(data)
+            //     )}))
+                setint_details({Intview_data})
+              
              
             })
            
             let propsdata=[]
-            props.interviewer_id.map((data,index)=>
-            propsdata.push(data)
-            )
-            setint_details(prevState => ({
-                ...prevState,
-                // interviewdate:propsdata[0].interviewDate,
-                // candidate:propsdata[0].candidates,
-                id:propsdata&&propsdata.int_details_id,
-                // desgination:propsdata[0].designation
-                
-            }))
+           
             console.log("detais",int_details)
 
     }, [dispatch,props])
@@ -433,17 +429,17 @@ function InerviewScreen(props) {
             <Grid item xs={12} container direction="row" justify="space-around" alignItems="center" spacing={1} >
                 <Grid item xs={5}>
                     <div className="interviewTitle">Proposed Interview Date</div>
-                    <div className="interviewTitle">{int_details.interviewdate}</div>
+                    <div className="interview_cont">{int_details.Intview_data?int_details.Intview_data[0].date:"-"}</div>
 
                 </Grid>
                 <Grid item xs={3}>
                     <div className="interviewTitle">Designation</div>
-                    <div className="interviewTitle">{int_details.desgination}</div>
+                    <div className="interview_cont">{int_details.Intview_data?int_details.Intview_data[0].designation:"-"}</div>
 
                 </Grid>
                 <Grid item xs={4}>
                     <div className="interviewTitle">No of  Candidates</div>
-                    <div className="interviewTitle">{int_details.candidate}</div>
+                    <div className="interview_cont">{int_details.Intview_data?int_details.Intview_data[0].candiates:"-"}</div>
 
                 </Grid>
 
@@ -453,7 +449,7 @@ function InerviewScreen(props) {
                     <div >List of guiding questions</div>
                     <ul>
                         {
-                            getdata.map((get, index) => {
+                           getdata.map((get, index) => {
                                 return (
                                     <>
                                         <li>{get.questions}</li>
@@ -467,12 +463,16 @@ function InerviewScreen(props) {
                     <div className="candidatesList"> List of Candidates </div>
                     <div className="scrollerCandidates">
                         <Grid item xs={12} container direction="column" justify="left" alignItems="left" >
-                            {cand_data.map((data, index) =>
+                        {
+                        // cand_data.length===0&& cand_data.length>=0&& 
+                        cand_data.map((data, index) =>{
+                        return(
                                 <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className="ordercandidates">
                                     <Grid item xs={10} className="candidateName">{data.name}</Grid>
                                     <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={() => ViewCandiate(data.resume_id)} /></Grid>
 
                                 </Grid>
+                        )}
                             )}
 
                             <DynModel modelTitle={"Candidate's Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} data_id={data_id} />

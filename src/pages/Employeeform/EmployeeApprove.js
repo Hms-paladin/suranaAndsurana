@@ -21,7 +21,7 @@ useEffect(()=>{
         method:"post",
         url:apiurl+"get_employee_approval",
         data:{
-            emp_id:props.interviewer_id&&props.interviewer_id.int_details_id,
+            emp_id:props.emp_viewer_id&&props.emp_viewer_id.interviewer_id,
         }
     }).then((response)=>{
         console.log(response.data.data,"approve")
@@ -36,10 +36,10 @@ const GetEmployee=()=>{
         method:"post",
         url:apiurl+"get_employee_approval",
         data:{
-            emp_id:"3",
+            emp_id:props.emp_viewer_id&&props.emp_viewer_id.interviewer_id
         }
     }).then((response)=>{
-        console.log(response.data.data,"divya")
+        console.log(response,"divya")
         setemployee(response.data.data.map((data)=>
             ({id:data.emp_id,name:data.name,designation:data.designation})
         ))
@@ -59,7 +59,7 @@ const InsertEmployee=(data)=>{
         method:"post",
         url:apiurl+"insert_employee_status",
         data:{
-            "emp_id":"3",
+            "emp_id":employee.id,
             "approved_by":"3",
             "approved_date":"2021-02-21",
             "emp_status":accept?1:reject?2:"",
@@ -67,13 +67,13 @@ const InsertEmployee=(data)=>{
     }).then((response)=>{
         console.log(response.data.msg,"data")
         GetEmployee()
-        if(accept===true){
+        if(data==1){
             notification.success({
                 message: `Employee approved successfully`,
                 placement: "topRight",
               });
         }
-        if(reject===true){
+        if(data==2){
             notification.warning({
                 message: `Employee rejected`,
                 placement: "topRight",
