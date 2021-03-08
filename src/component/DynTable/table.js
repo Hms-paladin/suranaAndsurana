@@ -204,7 +204,7 @@ export default function EnhancedTable(props) {
 
                 let keys = Object.keys(row)
                 let arrval = []
-                for (var m = 0; m < keys.length-1; m++) {
+                for (var m = 0; m < keys.length; m++) {
                   arrval.push(<TableCell keys={index+""+m} align="left">{row[keys[m]]}</TableCell>)
                 }
 
