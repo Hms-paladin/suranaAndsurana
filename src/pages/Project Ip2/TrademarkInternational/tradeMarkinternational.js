@@ -225,7 +225,7 @@ function TradeMarkInternational() {
                 <Grid item xs={12} container direction="row" spacing={2} >
                     <Grid item xs={3} >
 
-                        <div className="uploadbox_div">
+                        <div className="uploadbox">
                             <div style={{ width: "280%" }}>
                                 <Upload {...props} className="uploadbox_tag"
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
@@ -238,7 +238,7 @@ function TradeMarkInternational() {
 
                     </Grid>
                     <Grid item xs={3} >
-                        <Labelbox type="select"
+                        <Labelbox type="text"
                             placeholder={" Associate"} />
                     </Grid>
                     <Grid item xs={3} >

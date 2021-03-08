@@ -6,3 +6,37 @@
 .TMOpositionButton{
     width: 10%;
 }
+
+
+.uploadbox_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    path{
+        fill:#023E7D;
+    }
+    .ant-upload-select {
+        border: 1px solid #023E7D !important;
+        background-color: #fff;
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        padding-left:10px;
+        padding-right:10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:155px;
+    }
+    .uploadbox_tag{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    div{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 1px;
+    }
+    
+}

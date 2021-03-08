@@ -12,6 +12,8 @@ import CustomButton from '../../../component/Butttons/button';
 
 
 function TradeMarkOposition2() {
+    // const [fileList, setfileList] = useState("")
+    // const [file,setfile]=useState("")
 
     const props = {
         name: 'file',
@@ -183,6 +185,12 @@ function TradeMarkOposition2() {
         }));
 
     };
+
+    // function onFileChange(e) {
+    //     setfileList(e.target.files[0])
+    //     setfile(e.target.files[0].name)
+
+    // }
     return (
         <div className="trademarkOpsosotionContainer">
             <TabsTcons />
@@ -289,6 +297,8 @@ function TradeMarkOposition2() {
                             errmsg={Trade_Mark.agent.errmsg} />
                     </Grid>
                     <Grid item xs={4} >
+                        {/* <input type="file" onChange={onFileChange} id="pdfupload" /> <PublishIcon /> */}
+
                         <Labelbox type="datepicker"
                             placeholder={" Deadline "}
                             disableFuture={true}
@@ -298,10 +308,22 @@ function TradeMarkOposition2() {
                             errmsg={Trade_Mark.deadline.errmsg} />
                     </Grid>
                 </Grid>
+
+                <Grid container justify="left" direction="row"  >
+                    <div className="uploadbox_div" >
+                        <div>
+                            <Upload {...props} className="uploadbox_tag"
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                <div className="upload_file_inside"><label> Order </label><PublishIcon /></div>
+                            </Upload>,
+                                     </div>
+                    </div>
+                </Grid>
             </Grid>
             <div className="customButtonOposition">
-                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS ="TMOpositionButton"/>
-                <CustomButton btnName={"CANCEL"} custombtnCSS ="TMOpositionButton"/>
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="TMOpositionButton" />
+                <CustomButton btnName={"CANCEL"} custombtnCSS="TMOpositionButton" />
 
             </div>
 

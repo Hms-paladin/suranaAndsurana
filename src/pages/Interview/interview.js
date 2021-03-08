@@ -266,7 +266,7 @@ function InerviewScreen(props) {
     const [cand_data, setcand_data] = useState([])
     const [data_id, setdata_id] = useState([])
     const [optionvalues, setoptionvalues] = useState({});
-    const [ selectedCandidateId, setSelectedCandidateId ] = useState()
+    const [selectedCandidateId, setSelectedCandidateId] = useState()
     const [postData, setpostData] = useState({
         init_status: {
             value: "",
@@ -397,7 +397,7 @@ function InerviewScreen(props) {
         } else {
             // setpostData({ error: false });
 
-            dispatch(insertInterviewquestions(postData,selectedCandidateId))
+            dispatch(insertInterviewquestions(postData, selectedCandidateId))
 
         }
 
@@ -407,7 +407,7 @@ function InerviewScreen(props) {
         }));
     };
 
-    const selectCandidate =(id)=>{
+    const selectCandidate = (id) => {
         setSelectedCandidateId(id)
     }
     return (
@@ -450,7 +450,7 @@ function InerviewScreen(props) {
                     <div className="scrollerCandidates">
                         <Grid item xs={12} container direction="column" justify="left" alignItems="left" >
                             {cand_data.map((data, index) =>
-                                <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className={`${data.resume_id === selectedCandidateId && "selectedCandidateBG"} ordercandidates`} onClick={()=>selectCandidate(data.resume_id)}>
+                                <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className={`${data.resume_id === selectedCandidateId && "selectedCandidateBG"} ordercandidates`} onClick={() => selectCandidate(data.resume_id)}>
                                     <Grid item xs={10} className="candidateName">{data.name}</Grid>
                                     <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={() => ViewCandiate(data.resume_id)} /></Grid>
                                 </Grid>

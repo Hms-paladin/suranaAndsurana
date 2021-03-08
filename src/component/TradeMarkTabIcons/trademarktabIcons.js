@@ -30,7 +30,7 @@ function TradeMarkTabIcons(){
                     {TabIcons.map((data,index) => {
                         return (
                             <div   className="tabIconsView" onClick={submit}>
-                                <Grid><img src={data.img} /></Grid>
+                                <Grid><img src={data.img}  className="tabIconImage"/></Grid>
                                 <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
 
                             </div>

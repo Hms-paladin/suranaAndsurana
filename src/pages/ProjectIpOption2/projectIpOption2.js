@@ -55,7 +55,7 @@ function projectIpoption2() {
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
-                        placeholder={"Filed"} />
+                        placeholder={"Defended"} />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
