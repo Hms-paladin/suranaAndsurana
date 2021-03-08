@@ -42,7 +42,6 @@ function TodoList(props) {
         let todoListdata=[]
       
         props.getHrTodoList.map((data) => {
-            console.log(data,"showid")
             let showId = null
             let showName = null
             todoListdata.push(data)
@@ -61,17 +60,14 @@ function TodoList(props) {
             hrList.push({ id: <div onClick={(id,name) => openModelFunc(showName,showId)} className="tempClass" >{showId}</div>, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: data.designation, candidates: data.no_of_candidates,showid:showId})
         })
         setHrTodoList(hrList)
-        settodolist(todoListdata)
         
       
-       console.log(todolist,"divya")
 
     }, [props.getHrTodoList])
 
 
     function openModelFunc(name,id) {
       
-    alert(id)
 
         if(name==="interviewer_id"){
             setApproveOpen(true) 

@@ -324,24 +324,20 @@ function InerviewScreen(props) {
         // for candiate post api
         dispatch(GetCandiateDetails())
         var candiate = []
-      console.log(props.interviewer_id&&props.interviewer_id.int_details_id,"cand_id")
         Axios({
             method: "POST",
             url: apiurl + 'get_selected_candidates',
             data: {
                 "int_detail_id":props.interviewer_id&&props.interviewer_id.int_details_id
-                // "int_detail_id":int_details.id
             }
         })
             .then((response) => {
-                console.log(response.data.data, "can_datta")
                 const Intview_data=[]
                 response.data.data.map((data)=>
                 Intview_data.push({date:moment(data.prop_date_time).format("DD-MM-YYYY"),
                     designation:data.designation,candiates:data.total_number_candidates})
                 )
             setcand_data(response.data.data[0].output)
-            console.log(Intview_data, "can_div")
             // setint_details(props.interviewer_id.map((data,index)=>{
             //     // console.log("datacheck",data),
             //     return(
