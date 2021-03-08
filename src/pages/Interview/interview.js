@@ -288,7 +288,7 @@ function InerviewScreen(props) {
         },
         final_score: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -357,6 +357,16 @@ function InerviewScreen(props) {
     }
 
     function checkValidation(data, key) {
+        let initId = optionvalues.interview_status.find((item)=>{
+            return item.id === data
+        })
+
+        if(key === "init_status" && "Selected" === initId.value ){
+            postData.final_score.validation = [{ "name": "required" }]
+            setpostData(prevState => ({
+                ...prevState,
+            }));
+        };
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
