@@ -11,7 +11,7 @@ import InerviewScreen from "../Interview/interview"
 import EmployeeApprove from '../Employeeform/EmployeeApprove'
 import "./todoList.scss"
 
-
+// Hr Task:
 
 const headCells = [
     { id: 'id', label: 'Interview ID' },
@@ -19,6 +19,33 @@ const headCells = [
     { id: 'designation', label: 'Designation' },
     { id: 'candidates', label: 'No. of Candidates' }
 ];
+
+//Project Task:
+
+const projectheadCells = [
+    { id: 'id', label: 'Task ID' },
+    { id: 'activity', label: 'Activity' },
+    { id: 'subactivity', label: 'Sub Activity' },
+    { id: 'case', label: 'Case' },
+    { id: 'startdate', label: 'Start Date' },
+    { id: 'enddate', label: 'End Date' },
+
+
+];
+
+//workflowheadCells :
+
+
+const workflowheadCells = [
+    { id: 'id', label: 'Work Flow ID' },
+    { id: 'requestedby', label: 'Requested By' },
+    { id: 'requestedon', label: 'Requested On' },
+    { id: 'approvedby', label: 'Approved By' },
+    { id: 'startdateon', label: 'Approved On' },
+
+
+];
+
 
 
 function TodoList(props) {
@@ -28,7 +55,6 @@ function TodoList(props) {
     const [approveModalOpen, setApproveOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
     const [hrTodoList, setHrTodoList] = useState([])
-    const [todolist, settodolist] = useState([])
     const [can_int_id, setcan_int_id] = useState([])
     const [res_id, setres_id] = useState([])
     const [viewer_id, setviewer_id] = useState([])
@@ -44,16 +70,14 @@ function TodoList(props) {
         props.getHrTodoList.map((data) => {
             let showId = null
             let showName = null
-            todoListdata.push(data)
-          
-            if(data.interviewer_id){
+
+            if (data.interviewer_id) {
                 showId = data.interviewer_id
                 showName = "interviewer_id"
-
-            }else if(data.resume_id){
+            } else if (data.resume_id) {
                 showId = data.resume_id
                 showName = "resume_id"
-            }else if(data.int_details_id){
+            } else if (data.int_details_id) {
                 showId = data.int_details_id
                 showName = "int_details_id"
             }
@@ -104,15 +128,21 @@ function TodoList(props) {
     }
 
     return (
-        <>
-            <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
-            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover resume_id={res_id}/>} />
-
-            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}/>} />
-
-            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
-
-        </>
+        <div>
+            {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
+            <div>
+                <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
+                <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
+                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen />} />
+                <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} />} />
+            </div>
+            <div>
+                <EnhancedTable headCells={projectheadCells} rows={hrTodoList} tabletitle={"Project task"} />
+            </div>
+            <div>
+                <EnhancedTable headCells={workflowheadCells} rows={hrTodoList} tabletitle={"Project task"} />
+            </div>
+        </div>
     )
 }
 

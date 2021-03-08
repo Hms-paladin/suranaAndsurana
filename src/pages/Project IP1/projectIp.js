@@ -305,7 +305,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Application"}
+                        placeholder={"Counsel"}
 
                     />
                 </Grid>

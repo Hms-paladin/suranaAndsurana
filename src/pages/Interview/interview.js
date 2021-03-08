@@ -266,6 +266,7 @@ function InerviewScreen(props) {
     const [data_id, setdata_id] = useState([])
     const [int_details, setint_details] = useState({})
     const [optionvalues, setoptionvalues] = useState({});
+    const [ selectedCandidateId, setSelectedCandidateId ] = useState()
     const [postData, setpostData] = useState({
         init_status: {
             value: "",
@@ -287,7 +288,7 @@ function InerviewScreen(props) {
         },
         final_score: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -338,12 +339,7 @@ function InerviewScreen(props) {
                     designation:data.designation,candiates:data.total_number_candidates})
                 )
             setcand_data(response.data.data[0].output)
-            // setint_details(props.interviewer_id.map((data,index)=>{
-            //     // console.log("datacheck",data),
-            //     return(
-            //     ({id:data.int_details_id})
-            //     // propsdata.push(data)
-            //     )}))
+
                 setint_details({Intview_data})
               
              
@@ -370,6 +366,16 @@ function InerviewScreen(props) {
     }
 
     function checkValidation(data, key) {
+        let initId = optionvalues.interview_status.find((item)=>{
+            return item.id === data
+        })
+
+        if(key === "init_status" && "Selected" === initId.value ){
+            postData.final_score.validation = [{ "name": "required" }]
+            setpostData(prevState => ({
+                ...prevState,
+            }));
+        };
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -410,7 +416,7 @@ function InerviewScreen(props) {
         } else {
             // setpostData({ error: false });
 
-            dispatch(insertInterviewquestions(postData))
+            dispatch(insertInterviewquestions(postData,selectedCandidateId))
 
         }
 
@@ -419,7 +425,6 @@ function InerviewScreen(props) {
             ...prevState
         }));
     };
-    console.log(props,"props")
     return (
         <div>
             <Grid item xs={12} container direction="row" justify="space-around" alignItems="center" spacing={1} >
@@ -466,7 +471,6 @@ function InerviewScreen(props) {
                                 <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className="ordercandidates">
                                     <Grid item xs={10} className="candidateName">{data.name}</Grid>
                                     <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={() => ViewCandiate(data.resume_id)} /></Grid>
-
                                 </Grid>
                         )}
                             )}

@@ -49,11 +49,16 @@ body {
 }
 .ant-select-dropdown {
   z-index: 1800 !important;
+  min-height:fit-content !important;
 }
 
 /* .ant-calendar-picker {
   z-index: 1410 !important;
 } */
-input:focus {
+
+/* input:focus {
   border: none !important;
+} */
+
+.ant-select-dropdown{
 }
