@@ -294,7 +294,7 @@ export default class Labelbox extends Component {
 
 		const labelcss = require('./labelbox.css');
 		return (
-			<div>
+			<div className="custom_labelbox">
 				{this.renderinput(this.props)}
 			</div>
 		);
