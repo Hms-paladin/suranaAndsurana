@@ -13,11 +13,8 @@ import Interview from '../pages/Interview/interview';
 import TodoList from '../pages/TodoList/todoList';
 import ProjectTask from '../pages/ProjectTask/projectTask';
 import ProjectIp1 from '../pages/Project IP1/projectIp';
-import ProjectIp2 from '../pages/Project Ip2/projectIp2';
 import Employeeform from "../pages/Employeeform/employeeform.js";
 import Search from '../pages/Search/search';
-import ProjectIpOption1 from '../pages/ProjectIpOption1/projectIpOption1';
-import ProjectIpOption2 from '../pages/ProjectIpOption2/projectIpOption2';
 import Stages from '../pages/stages/stageicon';
 import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
@@ -39,9 +36,6 @@ function Routes(props) {
             {/* Ip TradeMark */}
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
             <PrivateRoute path="/projectIp" component={ProjectIp1} exact />
-            <PrivateRoute path="/projectIp2" component={ProjectIp2} exact />
-            <PrivateRoute path="/projectIpOption1" component={ProjectIpOption1} exact />
-            <PrivateRoute path="/projectIpOption2" component={ProjectIpOption2} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
         </Navbar>
     );

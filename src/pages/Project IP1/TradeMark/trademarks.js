@@ -243,7 +243,6 @@ function TradeMark() {
     };
     return (
         <div className="tradeMarkContainer">
-            <Tabs />
             
             <div>
                 <Grid item xs={12} container direction="row" spacing={1} >

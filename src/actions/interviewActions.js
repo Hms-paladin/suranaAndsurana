@@ -54,7 +54,7 @@ export const GetCandiateDetails = () => async dispatch => {
     try {
         axios({
             method: 'POST',
-            url: apiurl +'/get_selected_candidates',
+            url: apiurl +'get_selected_candidates',
             data:{
                 "int_detail_id":"1"
             }

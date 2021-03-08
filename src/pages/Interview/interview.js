@@ -256,15 +256,15 @@ import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl";
+import moment from "moment";
 import Axios from 'axios';
-
-
 function InerviewScreen(props) {
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
     const [getdata, setgetData] = useState([])
     const [cand_data, setcand_data] = useState([])
     const [data_id, setdata_id] = useState([])
+    const [int_details, setint_details] = useState({})
     const [optionvalues, setoptionvalues] = useState({});
     const [selectedCandidateId, setSelectedCandidateId] = useState()
     const [postData, setpostData] = useState({
@@ -288,7 +288,7 @@ function InerviewScreen(props) {
         },
         final_score: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -299,7 +299,6 @@ function InerviewScreen(props) {
 
     useEffect(() => {
 
-        let values = []
         Axios({
             method: "get",
             url: apiurl + "get_Interview_Status",
@@ -323,24 +322,39 @@ function InerviewScreen(props) {
             })
 
         // for candiate post api
-        dispatch(GetCandiateDetails())
-        var candiate = []
-        console.log(props.GetCandiateDetails, "getcandiate")
+        // dispatch(GetCandiateDetails())
+        console.log(props, "cand_id")
+
+        console.log(props.interviewer_id && props.interviewer_id.int_details_id, "cand_id")
         Axios({
             method: "POST",
             url: apiurl + 'get_selected_candidates',
             data: {
-                "int_detail_id": "1"
+                "int_detail_id": props.interviewer_id && props.interviewer_id.int_details_id
+                // "int_detail_id":int_details.id
             }
         })
             .then((response) => {
-                console.log(response, "can_datta")
+                const Intview_data = []
+                response.data.data.map((data) =>
+                    Intview_data.push({
+                        date: moment(data.prop_date_time).format("DD-MM-YYYY"),
+                        designation: data.designation, candiates: data.total_number_candidates
+                    })
+                )
                 setcand_data(response.data.data[0].output)
-                console.log(cand_data, "can_div")
+                // setint_details(props.interviewer_id.map((data,index)=>{
+                //     // console.log("datacheck",data),
+                //     return(
+                //     ({id:data.int_details_id})
+                //     // propsdata.push(data)
+                //     )}))
+                setint_details({ Intview_data })
+
 
             })
 
-    }, [dispatch])
+    }, [props])
 
 
     function ViewCandiate(id) {
@@ -353,10 +367,20 @@ function InerviewScreen(props) {
         setdata_id(prevState => ({
             ...prevState,
         }));
-        console.log(data_id, "data")
+
     }
 
     function checkValidation(data, key) {
+        let initId = optionvalues.interview_status.find((item) => {
+            return item.id === data
+        })
+
+        if (key === "init_status" && "Selected" === initId.value) {
+            postData.final_score.validation = [{ "name": "required" }]
+            setpostData(prevState => ({
+                ...prevState,
+            }));
+        };
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -410,22 +434,23 @@ function InerviewScreen(props) {
     const selectCandidate = (id) => {
         setSelectedCandidateId(id)
     }
+
     return (
         <div>
             <Grid item xs={12} container direction="row" justify="space-around" alignItems="center" spacing={1} >
                 <Grid item xs={5}>
                     <div className="interviewTitle">Proposed Interview Date</div>
-                    <div className="interviewTitle">11-jan-2021</div>
+                    <div className="interview_cont">{int_details.Intview_data ? int_details.Intview_data[0].date : "-"}</div>
 
                 </Grid>
                 <Grid item xs={3}>
                     <div className="interviewTitle">Designation</div>
-                    <div className="interviewTitle">Antony</div>
+                    <div className="interview_cont">{int_details.Intview_data ? int_details.Intview_data[0].designation : "-"}</div>
 
                 </Grid>
                 <Grid item xs={4}>
                     <div className="interviewTitle">No of  Candidates</div>
-                    <div className="interviewTitle">5</div>
+                    <div className="interview_cont">{int_details.Intview_data ? int_details.Intview_data[0].candiates : "-"}</div>
 
                 </Grid>
 
@@ -463,7 +488,7 @@ function InerviewScreen(props) {
                 </Grid>
 
             </Grid>
-            <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
+            <div className="inter_status_div">
                 <Labelbox type="select"
                     placeholder={"Interview Status"}
                     dropdown={optionvalues.interview_status}
@@ -472,43 +497,36 @@ function InerviewScreen(props) {
                     error={postData.init_status.error}
                     errmsg={postData.init_status.errmsg}
                 />
+            </div>
+
+            <Grid xs={12} spacing={1} container className="interviewScore">
+                <div className="score_div"><Labelbox type="text"
+                    placeholder="Initial Score"
+                    changeData={(data) => checkValidation(data, "initial_score")}
+                    value={postData.initial_score.value}
+                    error={postData.initial_score.error}
+                    errmsg={postData.initial_score.errmsg}
+                /></div>
+                <div className="int_comments_div"><Labelbox type="textarea"
+                    placeholder="Comment"
+                    changeData={(data) => checkValidation(data, "comment")}
+                    value={postData.comment.value}
+                    error={postData.comment.error}
+                    errmsg={postData.comment.errmsg}
+                /></div>
+
+                <div className="score_div"><Labelbox type="text"
+                    placeholder="Final Score"
+                    changeData={(data) => checkValidation(data, "final_score")}
+                    value={postData.final_score.value}
+                    error={postData.final_score.error}
+                    errmsg={postData.final_score.errmsg}
+                /></div>
+                <div style={{ textAlign: "end" }}><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={onSubmit} /></div>
 
             </Grid>
-            <Grid item xs={12} spacing={1} container direction="row" justify="center" className="interviewScore">
-                <Grid item xs={2} className="ContainerInput score_input_box" container direction="row" justify="center">
-                    <Labelbox type="text"
-                        placeholder="Initial Score"
-                        changeData={(data) => checkValidation(data, "initial_score")}
-                        value={postData.initial_score.value}
-                        error={postData.initial_score.error}
-                        errmsg={postData.initial_score.errmsg}
-                    />
-                </Grid>
-                <Grid item xs={5} className="ContainerInput textarea_height" container direction="row" justify="center">
-                    <Labelbox type="textarea"
-                        placeholder="Comment"
-                        changeData={(data) => checkValidation(data, "comment")}
-                        value={postData.comment.value}
-                        error={postData.comment.error}
-                        errmsg={postData.comment.errmsg}
-                    />
 
-                </Grid>
-                <Grid item xs={2} className="ContainerInput score_input_box" container direction="row" justify="center">
-                    <Labelbox type="text"
-                        placeholder="Final Score"
-                        changeData={(data) => checkValidation(data, "final_score")}
-                        value={postData.final_score.value}
-                        error={postData.final_score.error}
-                        errmsg={postData.final_score.errmsg}
-                    />
 
-                </Grid>
-                <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
-                </Grid>
-
-            </Grid>
         </div>
     )
 }

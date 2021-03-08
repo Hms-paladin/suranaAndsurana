@@ -13,8 +13,10 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { InsertApprove, interviewApproverTableData } from "../../actions/InterviewApproveraction";
 import logo from "../../images/Approvelogo.png"
-import { Button } from "@material-ui/core";
 import moment from "moment";
+import { Button } from "@material-ui/core";
+    const { Option } = Select;
+
 
 
 
@@ -150,8 +152,8 @@ function InterviewApprover(props) {
                 <div><label>Designation:Attorney</label></div>
             </div>
             <EnhancedTable headCells={Header} rows={rows} />
-            <Grid item xs={12} container direction="row" justify="center" alignItems="center" className="interviewstatus" >
-                <div className="interviewstats_drop">
+            <Grid item xs={12} container direction="row" justify="center" alignItems="center">
+            <div className="inter_status_div">
                 <Labelbox type="select"
                         placeholder="Interview Status"
                                 dropdown={optionvalues.interview_status}
@@ -163,8 +165,8 @@ function InterviewApprover(props) {
          </div>
             </Grid>
            
-            <Grid item xs={12} spacing={1} container direction="row" justify="center"  className="interviewScore">
-                <Grid item xs={3} className="ContainerInput input_change" container direction="row" justify="center"  >
+                <Grid  xs={12} spacing={1} container  className="interviewScore">
+                    <div className="score_div">
                     <Labelbox type="text"
                         placeholder={"Final Score"}
                         changeData={(data) => checkValidation(data,"final_score")}
@@ -172,21 +174,21 @@ function InterviewApprover(props) {
                         error={ApproveForm.final_score.error}
                         errmsg={ApproveForm.final_score.errmsg}
                     />
-                </Grid>
-                <Grid item xs={6} className="ContainerInput textarea_height" container direction="row" justify="center"  >
-                    <Labelbox  type="textarea" rows={"100"}        
+                    </div>
+                   <div className="approve_comments"> <Labelbox  type="textarea" rows={"100"}        
                         placeholder={"Comment"}
                         changeData={(data) => checkValidation(data,"comment")}
                         value={ApproveForm.comment.value}
                         error={ApproveForm.comment.error}
                         errmsg={ApproveForm.comment.errmsg}
                     />
-                </Grid>
-                <Grid item xs={3} className="ContainerInput" container direction="row" justify="center">
+                    </div>
+                    <div className="int_approve_btn">
                     <Button  className="submit_approve" onClick={Submit_approve}>
-                               <img src={logo}/>
+                               <div><img src={logo}/><label>Approve</label></div>
                     </Button>
-                </Grid>
+                   
+                   </div>
             </Grid>
                        
             {/* </DynModel> */}
