@@ -338,11 +338,11 @@ function Employeeform(props){
             <div className="employeeform_row3">
                       <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">John Wick</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">J02445</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivements</div><div className="employeecont">J02445</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Achievement</div><div className="employeecont">J02445</div></div>
 
                       </div>
                       <div className="employeeform_row4">
-                      <div className="employeeform_r2"><div className="headcolor">Capabilitites</div><div className="employeecont">John Wick</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">John Wick</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">J02445</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">J02445</div></div>
 

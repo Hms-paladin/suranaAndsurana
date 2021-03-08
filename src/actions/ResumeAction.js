@@ -54,7 +54,7 @@ export const InesertResume = (Resume_Form) => async dispatch => {
                 // moment(Resume_Form.startDate).format("YYYY-MM-DD, hh:mm:ss")
                 if(response.data.status===1){
                 notification.success({
-                    message: 'Record Added Successfully',
+                    message: 'Resume Added Successfully',
                   });
                 return Promise.resolve();
                 }

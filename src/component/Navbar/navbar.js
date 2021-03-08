@@ -68,7 +68,7 @@ function Navbar(props) {
   const [menuItems, setMenuItems] = useState(
     [
       { path: "/resume", title: "Resume" },
-      { path: "/todoList", title: "Todo" },
+      { path: "/todoList", title: "To Do List" },
       // {path:"/interview",title:"Interview"},
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
