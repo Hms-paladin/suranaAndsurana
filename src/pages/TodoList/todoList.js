@@ -117,12 +117,7 @@ function TodoList(props) {
                 )
             })
             setcan_int_id(checkData)
-           
-          
-          
         }
-       
-     
     }
 
     return (
@@ -131,7 +126,8 @@ function TodoList(props) {
             <div>
                 <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
                 <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
-                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen />} />
+                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}/>} />
+
                 <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} />} />
             </div>
             <div>
