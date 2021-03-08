@@ -1,6 +1,5 @@
 import { GET_HRTODOLIST } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
-import { userId } from "../utils/userId";
 
 import axios from "axios";
 
@@ -10,7 +9,7 @@ export const getHrTaskList = () =>async dispatch => {
             method: 'POST',
             url: apiurl +'get_todo_list',
             data:{
-                "assignee_id":userId
+                "assignee_id":localStorage.getItem("userId")
             }
         })
         .then((response) => {
