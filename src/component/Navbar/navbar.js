@@ -16,6 +16,9 @@ import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import LabelIcon from '@material-ui/icons/Label';
 import logo from '../../images/surana.gif'
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 import './navbar.scss';
@@ -60,15 +63,18 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const classes = useStyles();
-  const [ pathname, setpathname ] = useState(window.location.pathname)
+  const [pathname, setpathname] = useState(window.location.pathname)
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuItems, setMenuItems] = useState(
     [
-      {path:"/resume",title:"Resume"},
-      {path:"/todoList",title:"Todo"},
+      { path: "/resume", title: "Resume" },
+      { path: "/todoList", title: "Todo" },
       // {path:"/interview",title:"Interview"},
-      {path:"/employeeform",title:"Employee Form"},
-      {path:"/search",title:"Search"},
-      {path:"/projectTask",title:"ProjectTask"},
+      { path: "/employeeform", title: "Employee Form" },
+      { path: "/search", title: "Search" },
+      { path: "/projectTask", title: "ProjectTask" },
+      { path: "/projectIp", title: "ProjectIp1" },
+      { path: "/projectIp2", title: "ProjectIp2" },
 
       // Merge  after api integrated in Ip TradeMark:
 
@@ -79,7 +85,12 @@ function Navbar(props) {
       // {path:"/stageicon",title:"Stages"},
 
     ]
-    );
+  );
+
+  function handleLogout(){
+    localStorage.clear();
+    window.location.reload()
+  }
 
   return (
     <div className={`navbarContainer ${classes.root}`}>
@@ -87,7 +98,7 @@ function Navbar(props) {
       <AppBar position="fixed" className={classes.appBar}>
         <Grid spacing={2} item xs={12} container direction="row" justify="center" alignItems="center" display="flex" >
           <Grid item xs={6} container justify="left" alignItems="baseline" className="Header_Title" >
-          <span className="highlightedtitle">L</span>egal <span className="highlightedtitle">P</span>ractice <span className="highlightedtitle">M</span>anagement <span className="highlightedtitle">S</span>ystem
+            <span className="highlightedtitle">L</span>egal <span className="highlightedtitle">P</span>ractice <span className="highlightedtitle">M</span>anagement <span className="highlightedtitle">S</span>ystem
     </Grid>
 
           <Grid item xs={3} container alignItems="center">
@@ -104,7 +115,23 @@ function Navbar(props) {
               <div className="userName">John Wick</div>
               <div className="userPosition">HOD</div>
             </div>
-            <ArrowDropDownCircleIcon className="customIconArrow_header" />
+            {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}
+            <div className="logoutModel">
+              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event)=>(setAnchorEl(event.currentTarget))}>
+              <ArrowDropDownCircleIcon className="customIconArrow_header" />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={()=>setAnchorEl(null)}
+                style={{top:"49px"}}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </div>
+
           </Grid>
 
         </Grid>
@@ -116,10 +143,10 @@ function Navbar(props) {
         <Toolbar />
         <div className={classes.drawerContainer}>
 
-          <div className="suranaLogo"><img src={logo}/></div> 
+          <div className="suranaLogo"><img src={logo} /></div>
           {menuItems.map((data, index) => {
             return (
-              <Link to={data.path} onClick={()=>setpathname(data.path)}>
+              <Link to={data.path} onClick={() => setpathname(data.path)}>
                 <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
                   <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
                   <LabelIcon className="menuIcon" />

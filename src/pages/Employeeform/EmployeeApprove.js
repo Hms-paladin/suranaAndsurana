@@ -5,38 +5,41 @@ import {useDispatch,connect} from "react-redux";
 import {GetEmployeeApprove} from '../../actions/EmployeeApproveAction'
 import {apiurl} from '../../utils/baseUrl'
 import Axios from 'axios'
+import CustomButton from '../../component/Butttons/button';
 import {notification} from 'antd'
 import { BottomNavigationAction } from '@material-ui/core';
  function EmployeeApprove(props){
     const dispatch = useDispatch();
     const [employee,setemployee]=useState([])
-  
+    const [resume_id,setresume_id]=useState("")
     const [accept,setaccept]=useState(false)
     const [reject,setreject]=useState(false)
 useEffect(()=>{
+    
+    setresume_id(props.int_details_id)
     Axios({
         method:"post",
         url:apiurl+"get_employee_approval",
         data:{
-            emp_id:"3",
+            emp_id:props.emp_viewer_id&&props.emp_viewer_id.interviewer_id,
         }
     }).then((response)=>{
-        console.log(response.data.data,"divya")
+        console.log(response.data.data,"approve")
         setemployee(response.data.data.map((data)=>
             ({id:data.emp_id,name:data.name,designation:data.designation})
         ))
     })
       
-},[dispatch])
+},[dispatch,props])
 const GetEmployee=()=>{
     Axios({
         method:"post",
         url:apiurl+"get_employee_approval",
         data:{
-            emp_id:"3",
+            emp_id:props.emp_viewer_id&&props.emp_viewer_id.interviewer_id
         }
     }).then((response)=>{
-        console.log(response.data.data,"divya")
+        console.log(response,"divya")
         setemployee(response.data.data.map((data)=>
             ({id:data.emp_id,name:data.name,designation:data.designation})
         ))
@@ -56,7 +59,7 @@ const InsertEmployee=(data)=>{
         method:"post",
         url:apiurl+"insert_employee_status",
         data:{
-            "emp_id":"3",
+            "emp_id":employee.id,
             "approved_by":"3",
             "approved_date":"2021-02-21",
             "emp_status":accept?1:reject?2:"",
@@ -64,13 +67,13 @@ const InsertEmployee=(data)=>{
     }).then((response)=>{
         console.log(response.data.msg,"data")
         GetEmployee()
-        if(accept===true){
+        if(data==1){
             notification.success({
                 message: `Employee approved successfully`,
                 placement: "topRight",
               });
         }
-        if(reject===true){
+        if(data==2){
             notification.warning({
                 message: `Employee rejected`,
                 placement: "topRight",
@@ -88,8 +91,8 @@ const InsertEmployee=(data)=>{
         <Labelbox type="text" placeholder="Employee N" value={data.name}/>
          <Labelbox type="text" placeholder="Designation" value={data.designation}/> 
         <div className="employeeform_save">
-            <Button onClick={()=>InsertEmployee("reject")}>Reject</Button>
-            <Button onClick={()=>InsertEmployee("accept")}>Approve</Button>
+            <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={()=>InsertEmployee("reject")} />
+            <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={()=>InsertEmployee("accept")} />
             </div>
             </div>
             )}

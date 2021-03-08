@@ -1,5 +1,4 @@
 
-
 import { Button } from "@material-ui/core";
 import './employeeform.scss'
 import React ,{useState,useEffect}from "react";
@@ -10,6 +9,7 @@ import Axios from 'axios';
 import {apiurl} from '../../utils/baseUrl'
 import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
+import CustomButton from '../../component/Butttons/button';
 const { Option } = Select;
 function Employeeform(props){
      const [getdata, setgetData]= useState({})
@@ -153,7 +153,6 @@ function Employeeform(props){
 
      }, [])
      function Sup_nameGetId(data){
-         alert(data,"data")
         Axios({
             method:"post",
             header: {
@@ -182,7 +181,6 @@ function Employeeform(props){
         })
      }
     function InsertApi(){
-        alert("fdghj")
         console.log(EmpForm.supervisor_name.value,"dfgh")
 
         var formData = new FormData();
@@ -213,14 +211,14 @@ function Employeeform(props){
         formData.set("status",1)
         formData.set("lang_known","Tamil")
         formData.set("industry","English")
-        formData.set("designation",EmpForm.supervisor_name.value)
+        formData.set("designation",EmpForm.desgination.value)
         formData.set("doj",EmpForm.date_of_birth.value)
         formData.set("supervisor",EmpForm.supervisor_name.value)
         formData.set("email",EmpForm.EmpOfficialEmail.value)
         formData.set("supervisor_name","")
         formData.set("supervisor_email",EmpForm.supervisor_email.value)
         formData.set("official_email",EmpForm.EmpOfficialEmail.value)
-        formData.set("official_contact",EmpForm.EmpOfficialEmail.value)
+        formData.set("official_contact",EmpForm.EmpOfficialContact.value)
         formData.set("department",1)
         formData.set("employee__code",EmpForm.employee_code.value)
         formData.append("upload_document",file)
@@ -240,55 +238,8 @@ function Employeeform(props){
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
               },
-            data:{
-                "name":"",
-                "type_of_resource":"",
-                "gender":"M",
-                "dob":"2021-02-21",
-                "bas_qual":"Type",
-                "add_quali_1":"Type",
-                "add_quali_2":"Type",
-                "institution":"DMI",
-                "last_employer":"Yes",
-                "start_date":"2021-02-24",
-                "end_date":"2021-02-26",
-                "skills":"Player",
-                "traits":"Very Good Level",
-                "certification":"Level 1",
-                "specialization":"High",
-                "achievement":"Top",
-                "capabilities":"Communication",
-                "talents":"Learning",
-                "special_interest":"Reading",
-                "con_ph_no":EmpForm.supervisor_ph.value,
-                "email_addr":"sam@gmail.com",
-                "address":"Chennai",
-                "state_of_domecile":"TN",
-                "city":"Chennai",
-                "status":"1",
-                "lang_known":"Tamil",
-                "industry":"English",
-                "designation":EmpForm.desgination.value,
-                "doj":EmpForm.date_of_birth.value,
-                "supervisor":EmpForm.supervisor_name.value,
-                "email":"visu@gmail.com",
-                "supervisor_name":EmpForm.supervisor_name.value,
-                "supervisor_email":EmpForm.supervisor_email.value,
-                "official_email":"",
-                "official_contact":"",
-                "department":"ECE",
-                "employee__code":EmpForm.employee_code.value,
-                "upload_document":file,
-                "biometric_data":"Notes",
-                "approved_by":"2",
-                "approved_date":"2021-02-26",
-                "is_interviewer":"1",
-                "created_on":"2021-02-24",
-                "updated_on":"2021-02-26",
-                "created_by":"3",
-                "updated_by":"1",
-                "ip_address":"Adress"
-            }
+            data:formData
+            
             
         }).then((response)=>{
             console.log(response,"insert")
@@ -409,7 +360,7 @@ function Employeeform(props){
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">J02445</div></div>
 
                       </div>
-                      <div className="employeeform_row7">
+                      <div className="employ_form">
                       <div>
                           <Labelbox type="select" placeholder="Designation"
                                 dropdown={getdata.Designation}
@@ -425,7 +376,8 @@ function Employeeform(props){
                             value={EmpForm.date_of_birth.value}
                             error={EmpForm.date_of_birth.error}
                             errmsg={EmpForm.date_of_birth.errmsg}
-                          /></div>
+                          />
+                     </div>
                       <div>
                           <Labelbox type="select" placeholder="Supervisor's Name"
                              dropdown={sup_name.Supervisor}
@@ -505,7 +457,8 @@ function Employeeform(props){
                       </div>  
 
                       </div>
-                      <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div>
+            <div style={{textAlign:"end"}}><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={onSubmit} /></div>
+                      
                      
                       
         </div>

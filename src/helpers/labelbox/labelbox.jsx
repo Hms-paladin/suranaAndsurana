@@ -165,7 +165,7 @@ export default class Labelbox extends Component {
 								disablePast={this.props.disablePast && this.props.disablePast}
 								minDate={this.props.minDate && this.props.minDate}
 								inputVariant="outlined"
-								format="dd/MM/yyyy"
+								format="dd-MMM-yyyy"
 								margin="normal"
 								id="date-picker-inline"
 								// value={this.state.selecteddate}
@@ -294,7 +294,7 @@ export default class Labelbox extends Component {
 
 		const labelcss = require('./labelbox.css');
 		return (
-			<div>
+			<div className="custom_labelbox">
 				{this.renderinput(this.props)}
 			</div>
 		);

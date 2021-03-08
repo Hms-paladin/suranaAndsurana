@@ -89,7 +89,7 @@ function DynModel(props) {
         if (filtererr.length > 0) {
         } else {
             dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then(()=>{
-                // handleCancel()
+                handleCancel()
             })
         }
 

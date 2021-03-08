@@ -1,5 +1,7 @@
 import react, { useState } from 'react';
 import './projectIp.scss';
+import Patent from '../Project IP1/Patent/Patent'
+import CopyRight from '../Project IP1/CopyRight' 
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { TableContainer } from '@material-ui/core';
@@ -8,9 +10,7 @@ import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction"
 import { Tabs } from 'antd';
-
 //import tab content:
-
 import TradeMark from './TradeMark/tradeMark';
 // Design 
 import IndiaFilling from './Design/Application/IndiaFilling';
@@ -243,7 +243,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                     </Grid>
                     <Grid item xs={6}>
                         <Labelbox type="text"
-                            placeholder={"client Name *"}
+                            placeholder={"Client Name *"}
                             changeData={(data) => checkValidation(data, "clientname")}
                             value={Trade_Mark.clientname.value}
                             error={Trade_Mark.clientname.error}
@@ -269,8 +269,8 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={3}>
                     <Labelbox type="select"
-                        placeholder={"Application"}
-                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }]}
+                        placeholder={"Process Type"}
+                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" },{ id: "4", value: "Opposition" }]}
                         changeData={(data) => checkValidation(data, "process_type")}
                         value={Trade_Mark.process_type.value}
                         error={Trade_Mark.process_type.error}
@@ -280,8 +280,9 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
-                        placeholder={"India Fillng "}
-                        dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"}]:[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
+                        placeholder={"Fillng Type"}
+                        dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"},{id:"3", value:"Domestic"},{id:"4", value:"Foreign"},{id:"5", value:"PCT"}]
+                        :[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
                         changeData={(data) => checkValidation(data, "filling_type")}
                         value={Trade_Mark.filling_type.value}
                         error={Trade_Mark.filling_type.error}
@@ -310,7 +311,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 </Grid>
                 <Grid item xs={6}>
                     <Labelbox type="textarea"
-                        placeholder={"comments"}
+                        placeholder={"Comments"}
                         rows={4}
                     />
                 </Grid>
@@ -324,6 +325,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                         <TabPane tab="Trade Mark" key="1">
                             <TradeMark />
                         </TabPane>
+               
                         <TabPane tab="Design" key="2">
                         {
                            Trade_Mark.process_type.value=== '1' && Trade_Mark.filling_type.value == '1' &&
@@ -349,13 +351,13 @@ console.log(Trade_Mark.filling_type.value,"ss")
                            Trade_Mark.process_type.value=== '3' && Trade_Mark.filling_type.value == '2' &&
                            <RectificationDefended/>    
                         }  
-                        welcome            
+                                   
                         </TabPane>
                         <TabPane tab="Patent" key="3">
-                            Content of Tab Pane 3
+                              <Patent Type={Trade_Mark}/>
                        </TabPane>
                         <TabPane tab="CopyRight" key="4">
-                            Content of Tab Pane 4
+                            <CopyRight/>
                 </TabPane>
                     </Tabs>
                 </TabPane>

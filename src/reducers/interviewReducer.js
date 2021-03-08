@@ -1,26 +1,29 @@
-import { GET_INTERVIEW_QUESTIONS} from "../utils/Constants.js";
-import {GET_CANDIDATES_DETAILS} from '../utils/Constants'
+import { GET_INTERVIEW_QUESTIONS } from "../utils/Constants.js";
+import { GET_CANDIDATES_DETAILS, INTERVIEWAPPROVER_TABLE_DATA } from '../utils/Constants'
 import { POST_INTERVIEW_QUESTIONS } from "../utils/Constants.js";
 
 
 const initalState = {
-    getInterviewquestions:{},
-    getInterview:[],
-    insertInterviewquestions:{},
-    getcandiate:{},
+    getInterviewquestions: {},
+    getInterview: [],
+    insertInterviewquestions: {},
+    getcandiate: {},
+    interviewApproverTableData:[]
 }
 
-export default function(state=initalState,action) {
-    const {type,payload} = action;
-    console.log(type,"type")
-    switch(type) {
-    
+export default function (state = initalState, action) {
+    const { type, payload } = action;
+    console.log(type, "type")
+    switch (type) {
+
         case GET_INTERVIEW_QUESTIONS:
-            return payload    
+            return payload
         case GET_CANDIDATES_DETAILS:
-            return payload           
+            return payload
+        case INTERVIEWAPPROVER_TABLE_DATA:
+            return payload
         default:
-            return state;    
+            return state;
     }
-   
+
 }
