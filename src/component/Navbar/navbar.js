@@ -69,10 +69,14 @@ function Navbar(props) {
       {path:"/employeeform",title:"Employee Form"},
       {path:"/search",title:"Search"},
       {path:"/projectTask",title:"ProjectTask"},
-      {path:"/projectIp",title:"ProjectIp1"},
-      {path:"/projectIp2",title:"ProjectIp2"},
-      {path:"/addclient", title:"Add Client"}
 
+      // Merge  after api integrated in Ip TradeMark:
+
+      // {path:"/projectIp",title:"ProjectIp1"},
+      // {path:"/projectIp2",title:"ProjectIp2"},
+      // {path:"/projectIpOption1",title:"projectIpOption1"},
+      // {path:"/projectIpOption2",title:"projectIpOption2"},
+      // {path:"/stageicon",title:"Stages"},
 
     ]
     );
@@ -97,7 +101,7 @@ function Navbar(props) {
             <SettingsIcon className="customIcon_header" />
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
-              <div className="userName">Jhone Wick</div>
+              <div className="userName">John Wick</div>
               <div className="userPosition">HOD</div>
             </div>
             <ArrowDropDownCircleIcon className="customIconArrow_header" />

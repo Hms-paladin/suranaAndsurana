@@ -8,6 +8,7 @@ import insertInterviewquestions from "./interviewReducer";
 import getemplyoeeformid from "./employeeformReducer";
 import getResumeSearchDropDownOptions from "./MasterDropdowns";
 import getResumeSearchRowdata from "./ResumeSearchRowdata";
+import getHrTodoList from "./TodoListReducer";
 
 
 export default combineReducers({
@@ -20,5 +21,5 @@ export default combineReducers({
     getemplyoeeformid,
     getOptions:getResumeSearchDropDownOptions,
     getResumeSearchRowdata,
-    
+    getHrTodoList
 })

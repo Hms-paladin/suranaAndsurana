@@ -11,11 +11,15 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import {apiurl} from "../../utils/baseUrl";
 import Axios from 'axios';
+import {GetCandiateDetails} from "../../actions/interviewActions";
 
 
 function InerviewScreen(props) {
     const [ modelOpen, setModelOpen ] = useState(false)
-    const [getdata, setgetData]= useState([])
+    const [getdata, setgetData]= useState([])   
+    const [cand_data,setcand_data]=useState([])
+    const [data_id,setdata_id]=useState([])
+    const [optionvalues, setoptionvalues] = useState({});
      const [postData, setpostData] = useState({
         // init_status: {
         //     value: "",
@@ -58,8 +62,38 @@ function InerviewScreen(props) {
             setgetData(response.data.data)
 
         })
-    },[])
 
+        // for candiate post api
+        dispatch(GetCandiateDetails())
+        var candiate=[]
+        console.log(props.GetCandiateDetails,"getcandiate")
+        Axios({
+            method:"POST",
+            url: apiurl +'get_selected_candidates',
+            data:{
+                "int_detail_id":"1"
+            }
+        })
+        .then((response)=>{
+            console.log(response,"can_datta")
+               setcand_data(response.data.data[0].output)
+            console.log(cand_data,"can_div")
+
+        })
+
+    }, [dispatch])
+    function ViewCandiate(id){
+        setModelOpen(true)
+        setdata_id(cand_data.find((data)=>{
+            return(
+                id==data.resume_id
+            )
+        }))
+        setdata_id(prevState => ({
+            ...prevState,
+        }));
+         console.log(data_id,"data")
+    }
     function checkValidation(data, key) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -182,12 +216,12 @@ function InerviewScreen(props) {
             </Grid>
             <Grid item xs={9} container direction="row" justify="center" alignItems="left" className="interviewstatus" >
                        <Labelbox type="select"
-                                placeholder={"Interview Status"}
-                                // dropdown={resumeGetList.candidateList}
-                                // changeData={(data) => checkValidation(data, "candidate")}
-                                // value={postData.candidate.value}
-                                // error={postData.candidate.error}
-                                // errmsg={postData.candidate.errmsg}
+                                placeholder={"Type of Resource"}
+                                dropdown={optionvalues.interview_status}
+                                changeData={(data) => checkValidation(data, "init_status")}
+                                value={postData.init_status.value}
+                                error={postData.init_status.error}
+                                errmsg={postData.init_status.errmsg}
                             />
 
             </Grid>

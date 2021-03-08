@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EnhancedTable from "../../component/DynTable/table";
 import DynModel from "../../component/Model/model";
-import Labelbox from "../../helpers/labelbox/labelbox";
-
-import { Button } from "@material-ui/core";
+import { getHrTaskList } from "../../actions/TodoListAction";
+import { useDispatch, connect } from "react-redux";
+import moment from "moment";
 
 // Model
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
@@ -11,7 +11,7 @@ import InerviewScreen from "../Interview/interview"
 import EmployeeApprove from '../Employeeform/EmployeeApprove'
 import "./todoList.scss"
 
-
+// Hr Task:
 
 const headCells = [
     { id: 'id', label: 'Interview ID' },
@@ -21,9 +21,64 @@ const headCells = [
 
 ];
 
+//Project Task:
+
+const projectheadCells = [
+    { id: 'id', label: 'Task ID' },
+    { id: 'activity', label: 'Activity' },
+    { id: 'subactivity', label: 'Sub Activity' },
+    { id: 'case', label: 'Case' },
+    { id: 'startdate', label: 'Start Date' },
+    { id: 'enddate', label: 'End Date' },
+
+
+];
+
+//workflowheadCells :
+
+
+const workflowheadCells = [
+    { id: 'id', label: 'Work Flow ID' },
+    { id: 'requestedby', label: 'Requested By' },
+    { id: 'requestedon', label: 'Requested On' },
+    { id: 'approvedby', label: 'Approved By' },
+    { id: 'startdateon', label: 'Approved On' },
+
+
+];
+
 
 
 function TodoList(props) {
+
+    const dispatch = useDispatch();
+    const [modelOpen, setModelOpen] = useState(false)
+    const [approveModalOpen, setApproveOpen] = useState(false)
+    const [inerviewScreen, setInerviewScreen] = useState(false)
+    const [hrTodoList, setHrTodoList] = useState([])
+
+    useEffect(() => {
+        dispatch(getHrTaskList())
+    }, [])
+
+    useEffect(() => {
+
+        let hrList = []
+
+        props.getHrTodoList.map((data) => {
+            hrList.push({ id: data.interviewer_id, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: "----", candidates: data.no_of_candidates })
+        })
+
+        setHrTodoList(hrList)
+
+    }, [props.getHrTodoList])
+
+
+    const rows = [
+        { idi: 1, name: 'Interview' },
+        { id: <div onClick={openModel3} className="tempClass" >2</div>, name: 'interview approval_Task' },
+        { id: <div onClick={openModel2} className="tempClass" >3</div>, name: 'employee approval' },
+    ];
 
     function openModel3() {
         setModelOpen(true)
@@ -53,27 +108,33 @@ function TodoList(props) {
 
     // Interview Arrover
 
-    const rows = [
-        { id: <div onClick={openModel} className="tempClass" >1</div>, name: 'Interview' },
-        { id: <div onClick={openModel3} className="tempClass" >2</div>, name: 'interview approval_Task' },
-        { id: <div onClick={openModel2} className="tempClass" >3</div>, name: 'employee approval' },
-    ];
-
-    const [modelOpen, setModelOpen] = useState(false)
-    const [approveModalOpen, setApproveOpen] = useState(false)
-    const [inerviewScreen, setInerviewScreen] = useState(false)
 
     return (
-        <>
-            <EnhancedTable headCells={headCells} rows={rows} tabletitle={"Hr task"} />
-            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
+        <div>
+            {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
+            <div>
+                <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
+                <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
 
-            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}  content={<InerviewScreen />} />
+                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen />} />
 
-            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)}/>}  />
+                <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} />} />
 
-        </>
+            </div>
+            <div>
+                <EnhancedTable headCells={projectheadCells} rows={hrTodoList} tabletitle={"Project task"} />
+
+            </div>
+            <div>
+                <EnhancedTable headCells={workflowheadCells} rows={hrTodoList} tabletitle={"Project task"} />
+
+            </div>
+        </div>
     )
 }
 
-export default TodoList;
+const mapStateToProps = state => ({
+    getHrTodoList: state.getHrTodoList
+})
+
+export default connect(mapStateToProps)(TodoList);

@@ -157,28 +157,19 @@
         width: 80%;
         margin-bottom: 15px;
     }
-    .interviewdetailsubmnit{
+    .interviewdetailSubmit{
+        width: 100%;
         display: flex;
         justify-content: flex-end;
-        width: 100%;
-    }
-    .interviewdetailsubmnit Button{
-        background-color: #0353A4;
-        border-radius: 30px;
-        color: #fff;
-        font-size: 18px;
-        font-weight: 800;
-        margin-right: 50px;
-        padding: 3px 20px;
-        text-transform: none;
-        box-shadow: 0px 0px 5px 1px rgb(63, 63, 63);
-    }
-    .interviewdetailsubmnit Button:hover{
-        background-color: #0353A4;
+        padding: 0px 40px;
     }
     .interviewdetailform .ant-select{
         width: 100%;
     }
 
+    //project.js (scss):
 
-    // Task Search scss
+    .createTaskbtn{
+        text-align: right;
+        margin: 40px;
+    }

@@ -735,8 +735,8 @@ function ResumePage() {
                             alignItems="center"
                             className="resumeBtnContainer"
                         >
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}  />
-                            <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} />
+                            <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit}  />
+                            <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
 
