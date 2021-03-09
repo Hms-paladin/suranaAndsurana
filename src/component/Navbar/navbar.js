@@ -18,8 +18,8 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import List from '@material-ui/core/List';
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
+// import LabelIcon from '@material-ui/icons/Label';
 import LabelIcon from '@material-ui/icons/Label';
-
 
 import './navbar.scss';
 
