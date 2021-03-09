@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import CustomButton from '../../../component/Butttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import Labelbox from "../../../helpers/labelbox/labelbox";
+import DynModel from '../../../component/Model/model';
+import ProjectTaskModel from '../ProjectTaskModel/projecttaskModel';
+import Stages from '../../stages/stageicon'
 
 // tradeMark pages:
 import TMapplicationFiling from './trademarks';
@@ -11,10 +14,31 @@ import TMoppositionFiled from './tmOppo_Filed';
 import TMoppositionDefended from './tmOppo_Defended'
 
 export default function TradeMark(props) {
-    console.log(props, "props")
+
+    const [modelOpen, setModelOpen] = useState(false)
+
+
+
+    function projectTaskModel() {
+        setModelOpen(true)
+    }
+    const modelContent = () => {
+        return (
+            <ProjectTaskModel />
+        )
+    }
+
+    const stageModel = () => {
+        alert( <Stages />)
+        return (
+            <Stages />
+        )
+    }
     return (
         <div>
-            <Tabs />
+            <Tabs task={projectTaskModel} stage={stageModel} />
+            <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
+           
             {
                 props.Type.process_type.value === '' && props.Type.filling_type.value == '' &&
                 <TMapplicationFiling />

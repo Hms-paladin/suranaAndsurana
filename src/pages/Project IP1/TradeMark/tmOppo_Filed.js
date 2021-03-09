@@ -237,7 +237,7 @@ function TradeMarkOposition1() {
                     </Grid>
 
                 </Grid>
-                <Grid item xs={4} container direction="column" spacing={1}>
+                <Grid item xs={4} container direction="column" spacing={3}>
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={6} >
                             <Labelbox type="text"

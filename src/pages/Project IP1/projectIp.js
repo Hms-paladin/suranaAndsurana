@@ -11,7 +11,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction"
 import { Tabs } from 'antd';
 //import tab content:
-import TradeMark from './TradeMark/tradeMark';
+// import TradeMark from './TradeMark/tradeMark';
 // Design 
 import IndiaFilling from './Design/Application/IndiaFilling';
 
@@ -331,6 +331,10 @@ console.log(Trade_Mark.filling_type.value,"ss")
                         </TabPane>
                
                         <TabPane tab="Design" key="2">
+                        {
+                           Trade_Mark.process_type.value=== '' && Trade_Mark.filling_type.value == '' &&
+                           <IndiaFilling/> 
+                        }
                         {
                            Trade_Mark.process_type.value=== '1' && Trade_Mark.filling_type.value == '1' &&
                            <IndiaFilling/> 
