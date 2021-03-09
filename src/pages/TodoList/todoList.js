@@ -119,22 +119,20 @@ function TodoList(props) {
                 )
             })
             setcan_int_id(checkData)
-           
-          
-          
         }
-       
-     
     }
 
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
-                <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
-                <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
-                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen />} />
-                <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} />} />
+            <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
+            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover resume_id={res_id}/>} />
+
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}/>} />
+
+            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
+
             </div>
             <div>
                 <EnhancedTable headCells={projectheadCells} rows={hrTodoList} tabletitle={"Project task"} />

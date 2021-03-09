@@ -13,7 +13,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.2",
-    "antd": "^4.12.3",
+    "antd": "^3.25.3",
     "axios": "^0.21.1",
     "date-fns": "^2.17.0",
     "dateformat": "^4.5.1",

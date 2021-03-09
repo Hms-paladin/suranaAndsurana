@@ -19,7 +19,7 @@ import Search from '../pages/Search/search';
 import ProjectIpOption1 from '../pages/ProjectIpOption1/projectIpOption1';
 import ProjectIpOption2 from '../pages/ProjectIpOption2/projectIpOption2';
 import Stages from '../pages/stages/stageicon';
-import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
+import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
 
 function Routes(props) {
@@ -34,7 +34,7 @@ function Routes(props) {
             <PrivateRoute path="/search" component={Search} exact />
 
             {/* Create Project Form */}
-            <PrivateRoute path="/projectFormCreate" component={ProjectForm} exact />
+            <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
 
             {/* Ip TradeMark */}
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
