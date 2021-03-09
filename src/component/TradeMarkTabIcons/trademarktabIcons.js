@@ -4,8 +4,6 @@ import Grid from '@material-ui/core/Grid';
 
 
 // Icons order :
-
-
 import CheckList from '../../images/checkboxIcon.svg';
 import ApproveIcon from '../../images/approveicon.svg';
 import Tasks from '../../images/menuicon.svg';
@@ -16,72 +14,22 @@ import GroupIcon from '../../images/groupicon.svg';
 const TabIcons = [{ img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
 
-function TradeMarkTabIcons() {
-    const [test,setTest] =useState()
-    // if (event == "CHECKLIST") {
-    //     function func1() {
+function TradeMarkTabIcons(props) {
+    const [selectBox, setSelectBox] = useState()
 
-
-    //         console.log("test1")
-
-
-    //     };
-
-    // }
-    // else if (event == "STAGE") {
-
-    //     function func2() {
-    //         return (
-    //             console.log("test2")
-    //         )
-
-    //     }
-    // }
-    // else {
-    //     function func3() {
-    //         return (
-    //             console.log("test3")
-    //         )
-
-    //     }
-    // }
-
-    function multiplefunction(event) {
-        setTest(event)
-        func1(event);
-        func2(event);
-        func3(event);
-       
+    const tabBox =(boxName)=>{
+        props.onChangeTabBox && props.onChangeTabBox(boxName)
     }
 
-    
-
-
-    function func1(){
-
-        if(test=="CHECKLIST"){
-            console.log("test")
-        }
-        
-    }
-    function func2(){
-        if(test=="Task"){
-            console.log(test,"test1")
-        }
-    }
-    function func3(){
-        console.log("test2")
-    }
     return (
         <div className="tradeMarkIcons">
 
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
                 {TabIcons.map((data, index) => {
                     return (
-                        <div className="tabIconsView" onClick={() => multiplefunction("TASK")}>
+                        <div className="tabIconsView" onClick={() => tabBox(data.title)}>
                             <Grid><img src={data.img} className="tabIconImage" /></Grid>
                             <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
-
                         </div>
                     )
                 })}

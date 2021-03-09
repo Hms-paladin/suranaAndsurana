@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import Grid from '@material-ui/core/Grid';
-import CustomButton from '../../../component/Butttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
-import Labelbox from "../../../helpers/labelbox/labelbox";
 import DynModel from '../../../component/Model/model';
 import ProjectTaskModel from '../ProjectTaskModel/projecttaskModel';
 import Stages from '../../stages/stageicon'
@@ -19,26 +16,21 @@ export default function TradeMark(props) {
 
 
 
-    function projectTaskModel() {
-        setModelOpen(true)
+    function projectTaskModel(boxName) {
+        boxName === "TASKS" && setModelOpen(true)
     }
+
     const modelContent = () => {
         return (
             <ProjectTaskModel />
         )
     }
 
-    const stageModel = () => {
-        alert( <Stages />)
-        return (
-            <Stages />
-        )
-    }
     return (
         <div>
-            <Tabs task={projectTaskModel} stage={stageModel} />
+            <Tabs task={projectTaskModel}  onChangeTabBox={(data) => projectTaskModel(data)} />
             <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
-           
+
             {
                 props.Type.process_type.value === '' && props.Type.filling_type.value == '' &&
                 <TMapplicationFiling />
