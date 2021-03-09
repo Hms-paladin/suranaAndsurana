@@ -1,0 +1,25 @@
+.tempClass{
+    cursor: pointer;
+
+    :hover{
+        text-decoration: underline;
+    }
+}
+
+.tempClass:hover{
+        text-decoration: underline;
+    }
+
+    // .blinkingtext{
+    //     animation: blinker 2s linear infinite;
+    //     color: yellow;
+    //     font-size: 18px;
+    // }
+    
+    // @keyframes blinker {
+    //   50% {
+    //     opacity: 0;
+    //   }
+    // }
+
+

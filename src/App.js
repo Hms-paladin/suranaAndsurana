@@ -1,27 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-// components path
-import Navbar from "./component/Navbar/navbar.js";
-
-// pages
-import Dashboard from "./pages/Dashboard/dashboard.js";
-import Resume from "./pages/Resume/resume.js";
-
-
-import './App.css';
+import { AuthContext } from "./context/auth";
+import PrivateRoute from './Router/PrivateRoute';
+import Login from "./pages/Login/login.js";
+import Routes from "./Router/route";
 
 function App() {
+  const existingTokens = JSON.parse(localStorage.getItem("token"));
+  const [authTokens, setAuthTokens] = useState(existingTokens);
+
+  const setTokens = (data) => {
+    localStorage.setItem("token", JSON.stringify(data.data[0][0]));
+    localStorage.setItem("empId", JSON.stringify(data.data[0][0].emp_id));
+    setAuthTokens(data);
+  }
 
   return (
-    <Router>
-      <Navbar>
+    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+      <Router basename="suranaAndsurana/?/">
         <Switch>
-          <Route path="/resume" component={Resume} exact/>
-          <Route path="/dashboard" component={Dashboard} exact/>
+          <Route path="/login" component={Login} exact />
+          <PrivateRoute path="/" component={Routes} />
         </Switch>
-      </Navbar>
-    </Router>
+      </Router>
+    </AuthContext.Provider>
+
   );
 }
 

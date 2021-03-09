@@ -6,20 +6,20 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { Layout, Input, DatePicker, Space } from 'antd';
-import { AudioOutlined } from '@ant-design/icons';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
-import { Select, Row, Col } from 'antd'
-import { DownCircleTwoTone } from '@ant-design/icons'
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import List from '@material-ui/core/List';
+import { Select, Row, Col } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
-// import LabelIcon from '@material-ui/icons/Label';
 import LabelIcon from '@material-ui/icons/Label';
+import logo from '../../images/surana.gif'
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 import './navbar.scss';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'purple',
+    backgroundColor: '#0354A4',
   },
   drawer: {
     width: drawerWidth,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: '#420F8D',
+    backgroundColor: '#023E7D',
 
   },
   drawerContainer: {
@@ -63,25 +63,46 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const classes = useStyles();
-  const [ pathname, setpathname ] = useState(window.location.pathname)
+  const [pathname, setpathname] = useState(window.location.pathname)
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuItems, setMenuItems] = useState(
     [
-      {path:"/resume",title:"Resume"},
-      {path:"/dashboard",title:"Dashboard"}
+      { path: "/resume", title: "Resume" },
+      { path: "/todoList", title: "To Do List" },
+      // {path:"/interview",title:"Interview"},
+      { path: "/employeeform", title: "Employee Form" },
+      { path: "/search", title: "Search" },
+      { path: "/projectTask", title: "ProjectTask" },
+      { path: "/projectIp", title: "ProjectIp1" },
+      { path: "/projectIp2", title: "ProjectIp2" },
+
+      // Merge  after api integrated in Ip TradeMark:
+
+      // {path:"/projectIp",title:"ProjectIp1"},
+      // {path:"/projectIp2",title:"ProjectIp2"},
+      // {path:"/projectIpOption1",title:"projectIpOption1"},
+      // {path:"/projectIpOption2",title:"projectIpOption2"},
+      // {path:"/stageicon",title:"Stages"},
+
     ]
-    );
+  );
+
+  function handleLogout(){
+    localStorage.clear();
+    window.location.reload()
+  }
 
   return (
     <div className={`navbarContainer ${classes.root}`}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Grid spacing={2} item xs={12} container direction="row" justify="center" alignItems="center" display="flex" >
-          <Grid item xs={4} container justify="left" alignItems="center" className="Header_Title" >
-            suranaAndsurana
+          <Grid item xs={6} container justify="left" alignItems="baseline" className="Header_Title" >
+            <span className="highlightedtitle">L</span>egal <span className="highlightedtitle">P</span>ractice <span className="highlightedtitle">M</span>anagement <span className="highlightedtitle">S</span>ystem
     </Grid>
 
-          <Grid item xs={5} container alignItems="center">
-            <div className="headerName">Law Practice Management System</div>
+          <Grid item xs={3} container alignItems="center">
+            <div className="headerName"></div>
           </Grid>
 
           <Grid item xs={3} alignItems="center" className="userInfo" >
@@ -91,10 +112,26 @@ function Navbar(props) {
             <SettingsIcon className="customIcon_header" />
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
-              <div className="userName">Jhone Wick</div>
+              <div className="userName">John Wick</div>
               <div className="userPosition">HOD</div>
             </div>
-            <ArrowDropDownCircleIcon className="customIconArrow_header" />
+            {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}
+            <div className="logoutModel">
+              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event)=>(setAnchorEl(event.currentTarget))}>
+              <ArrowDropDownCircleIcon className="customIconArrow_header" />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={()=>setAnchorEl(null)}
+                style={{top:"49px"}}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </div>
+
           </Grid>
 
         </Grid>
@@ -106,10 +143,10 @@ function Navbar(props) {
         <Toolbar />
         <div className={classes.drawerContainer}>
 
-          <div className="suranaLogo">LOGO</div> 
+          <div className="suranaLogo"><img src={logo} /></div>
           {menuItems.map((data, index) => {
             return (
-              <Link to={data.path} onClick={()=>setpathname(data.path)}>
+              <Link to={data.path} onClick={() => setpathname(data.path)}>
                 <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
                   <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
                   <LabelIcon className="menuIcon" />
