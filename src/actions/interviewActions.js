@@ -17,9 +17,9 @@ export const getInterviewquestions = () => async dispatch => {
     }
 }
 
-export const insertInterviewquestions =(postData,id)=> async dispatch =>{
+export const insertInterviewquestions =(postData,id,int_details)=> async dispatch =>{
     try {
-        console.log(postData,"obj")
+        console.log(int_details,"obj")
         axios({
             method:'POST',
             url:apiurl + '/insert_interview_scores',
@@ -31,7 +31,7 @@ export const insertInterviewquestions =(postData,id)=> async dispatch =>{
                 "score_reviewer":"2",
                 "final_score":postData.final_score.value,
                 "status":"1",
-                "int_details_id":"1",
+                "int_details_id":int_details.id,
                 "resume_id":id,
                 "created_on":"2021-02-21 12:12:00",
                 "updated_on":"2021-02-23 12:12:00",
