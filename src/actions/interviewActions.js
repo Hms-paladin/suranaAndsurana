@@ -1,6 +1,11 @@
- import { GET_INTERVIEW_QUESTIONS,GET_CANDIDATES_DETAILS,POST_INTERVIEW_QUESTIONS } from "../utils/Constants";
+import { GET_INTERVIEW_QUESTIONS,GET_CANDIDATES_DETAILS,POST_INTERVIEW_QUESTIONS } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
+import { notification } from 'antd';
+import moment from 'moment'
+
+
+
 
 export const getInterviewquestions = () => async dispatch => {
     try {
@@ -17,33 +22,43 @@ export const getInterviewquestions = () => async dispatch => {
     }
 }
 
-export const insertInterviewquestions =(postData,id,int_details)=> async dispatch =>{
+export const InsertInterviewquestions =(postData,id,data)=> async dispatch =>{
     try {
-        console.log(int_details,"obj")
+        console.log(postData,"obj")
         axios({
             method:'POST',
-            url:apiurl + '/insert_interview_scores',
+            url:apiurl + 'insert_interview_scores',
             data:{
-                "question":"From which source India got the concept of Single order of court?",
-                "designation":"1",
+                "designation":data.designation_id,
                 "comment":postData.comment.value,
                 "score_inital":postData.initial_score.value,
                 "score_reviewer":"2",
                 "final_score":postData.final_score.value,
-                "status":"1",
-                "int_details_id":int_details.id,
+                "status":postData.init_status.value,
+                "int_details_id":data.int_details_id    ,
                 "resume_id":id,
-                "created_on":"2021-02-21 12:12:00",
-                "updated_on":"2021-02-23 12:12:00",
+                "created_on":moment().format('YYYY-MM-DD HH:m:s')   ,
+                "updated_on":moment().format('YYYY-MM-DD HH:m:s') ,
                 "created_by":"2",
-                "updated_by":"1",
-                "ip_address":"Fify Two"
+                "updated_by":"2",
+                "ip_address":"Fify Two",
+                "task_id": data.no_of_candidates === 1 ?  data.task_id : 0
             }
         })
-        .then((response)=> {
+        // .then((response)=> {
+        //     // dispatch({type:POST_INTERVIEW_QUESTIONS,payload:response})
+          
+        // }) 
+         .then(function (response) {
             console.log(response,"response")
-            // dispatch({type:POST_INTERVIEW_QUESTIONS,payload:response})
-        })
+            // moment(Resume_Form.startDate).format("YYYY-MM-DD, hh:mm:ss")
+            if(response.data.status===1){
+            notification.success({
+                message: 'Scores Updated Successfully',
+              });
+            return Promise.resolve();
+            }
+        });
     }
     catch(err){
         alert(err)

@@ -10,6 +10,7 @@ import InterviewApprover from "../InterviewApprover/InterviewApprover";
 import InerviewScreen from "../Interview/interview"
 import EmployeeApprove from '../Employeeform/EmployeeApprove'
 import "./todoList.scss"
+// import {InsertInterviewquestions} from '../../actions/interviewActions'
 
 // Hr Task:
 
@@ -88,7 +89,10 @@ function TodoList(props) {
       
 
     }, [props.getHrTodoList])
-
+//  const pageReload=(id)=>{
+//      if(id){
+//      window.location.reload()
+//  }}
 
     function openModelFunc(name,id) {
       
@@ -129,16 +133,18 @@ function TodoList(props) {
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
             <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover resume_id={res_id}/>} />
 
-            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}/>} />
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
+            //  onUpdateRefresh={pageReload(true)}
+               handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
 
             <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
 
             </div>
             <div>
-                <EnhancedTable headCells={projectheadCells} rows={hrTodoList} tabletitle={"Project task"} />
+                <EnhancedTable headCells={projectheadCells} rows={[]} tabletitle={"Project task"} />
             </div>
             <div>
-                <EnhancedTable headCells={workflowheadCells} rows={hrTodoList} tabletitle={"Project task"} />
+                <EnhancedTable headCells={workflowheadCells} rows={[]} tabletitle={"Project task"} />
             </div>
         </div>
     )

@@ -116,16 +116,16 @@ function Resumesearch(props) {
         }))
 
 
-        dispatch(ResumeSearchStatus())
+        // dispatch(ResumeSearchStatus())
         // get value from redux store
-        Axios({
-            method: "get",
-            url: apiurl + "get_Interview_Status",
-        }).then((response) => {
-            setoptionvalues(response.data.data.map((data) => ({
-                name: data.status
-            })))
-        })
+        // Axios({
+        //     method: "get",
+        //     url: apiurl + "get_Interview_Status",
+        // }).then((response) => {
+        //     setoptionvalues(response.data.data.map((data) => ({
+        //         name: data.status
+        //     })))
+        // })
 
     }, [])
 
@@ -206,11 +206,12 @@ function Resumesearch(props) {
         })
 
         getStatus.map((data) => {
-            statusList.push({ id: data.status_id, value: data.status_type })
+            statusList.push({ id: data.status_id, value: data.status })
         })
 
         setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList })
 
+        
 
     }, [props.GetOptions])
 

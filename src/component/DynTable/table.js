@@ -128,7 +128,7 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(()=>{
-    // console.log(props.rows,"dynrows")
+    console.log(props.rows,"d________________________________________________________________ynrows")
     setRows(props.rows)
   },[props])
 
@@ -197,6 +197,7 @@ export default function EnhancedTable(props) {
               headCells={props.headCells}
             />
             <TableBody>
+       
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -217,9 +218,9 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={index}
                       selected={isItemSelected}
-                    >
+                    > 
                     {props.EnableSno && <TableCell align="center">{rowsPerPage * page + index+1}</TableCell>}
-                    {arrval}
+                    {arrval} 
                     </TableRow>
                   );
                 })}
