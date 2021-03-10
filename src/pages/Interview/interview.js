@@ -250,26 +250,16 @@ import './interview.scss'
 import Eyes from '../../images/neweye.svg'
 import DynModel from './model'
 import { useDispatch, connect } from "react-redux";
-<<<<<<< HEAD
 import { GetCandiateDetails } from "../../actions/interviewActions";
-=======
-import { insertInterviewquestions, GetCandiateDetails } from "../../actions/interviewActions";
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
 import { Button } from "@material-ui/core";
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
-<<<<<<< HEAD
 import {InsertInterviewquestions} from '../../actions/interviewActions'
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import Axios from 'axios';
 import { tr } from "date-fns/locale";
-=======
-import { apiurl } from "../../utils/baseUrl";
-import moment from "moment";
-import Axios from 'axios';
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
 function InerviewScreen(props) {
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
@@ -279,13 +269,8 @@ function InerviewScreen(props) {
     const [int_details, setint_details] = useState({})
     const [optionvalues, setoptionvalues] = useState({});
     const [selectedCandidateId, setSelectedCandidateId] = useState()
-<<<<<<< HEAD
     const [comments,setComments] = useState(false)
     const [final,setFinal] = useState(false)
-=======
-    const [taskid,setTaskId] = useState(null)
-    const [intViewId,setintViewId] = useState(null)
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
 
     const [postData, setpostData] = useState({
         init_status: {
@@ -307,13 +292,8 @@ function InerviewScreen(props) {
             errmsg: null,
         },
         final_score: {
-<<<<<<< HEAD
             value: "0",
             // validation: [],
-=======
-            value: "",
-            validation: [],
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
             error: null,
             errmsg: null,
         }
@@ -323,11 +303,6 @@ function InerviewScreen(props) {
 
 
     useEffect(() => {
-<<<<<<< HEAD
-=======
-        setTaskId(props.interviewer_id.task_id)
-        setintViewId(props.interviewer_id.interviewer_id)
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
         Axios({
             method: "get",
             url: apiurl + "get_Interview_Status",
@@ -404,7 +379,6 @@ function InerviewScreen(props) {
         let initId = optionvalues.interview_status.find((item) => {
             return item.id === data
         })
-<<<<<<< HEAD
            
         if (key === "init_status" && "Selected" !== initId.value) {
             setFinal(false)
@@ -415,14 +389,6 @@ function InerviewScreen(props) {
             // setpostData(prevState => ({
             //     ...prevState,
             // }));
-=======
-
-        if (key === "init_status" && "Selected" === initId.value) {
-            postData.final_score.validation = [{ "name": "required" }]
-            setpostData(prevState => ({
-                ...prevState,
-            }));
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
         };
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -463,15 +429,10 @@ function InerviewScreen(props) {
             // setpostData({ error: true });
         } else {
             // setpostData({ error: false });
-<<<<<<< HEAD
             dispatch(InsertInterviewquestions(postData, selectedCandidateId,props.interviewer_id)).then(()=>{
                 props.handleAproverModelClose();
-                // props.onUpdateRefresh();
+                props.onUpdateRefresh();
             })
-=======
-            console.log("_______________________",postData)
-            dispatch(insertInterviewquestions(postData, selectedCandidateId,props.interviewer_id))
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
 
         }
 
@@ -482,12 +443,8 @@ function InerviewScreen(props) {
     };
 
     const selectCandidate =(id)=>{
-<<<<<<< HEAD
         setSelectedCandidateId(id);
         setComments(true)
-=======
-        setSelectedCandidateId(id)
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
     }
 
     return (
@@ -550,10 +507,7 @@ function InerviewScreen(props) {
                 </Grid>
 
             </Grid>
-<<<<<<< HEAD
             {comments === true? <>
-=======
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
             <div className="inter_status_div">
                 <Labelbox type="select"
                     placeholder={"Interview Status"}
@@ -580,34 +534,20 @@ function InerviewScreen(props) {
                     error={postData.comment.error}
                     errmsg={postData.comment.errmsg}
                 /></div>
-<<<<<<< HEAD
 {final=== true ?
-=======
-
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
                 <div className="score_div"><Labelbox type="text"
                     placeholder="Final Score"
                     changeData={(data) => checkValidation(data, "final_score")}
                     value={postData.final_score.value}
-<<<<<<< HEAD
                     // error={postData.final_score.error}
                     // errmsg={postData.final_score.errmsg}
                 /></div>
                 :""}
-=======
-                    error={postData.final_score.error}
-                    errmsg={postData.final_score.errmsg}
-                /></div>
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
                 <div style={{ textAlign: "end" }}><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={onSubmit} /></div>
 
             </Grid>
 
-<<<<<<< HEAD
             </> :""}
-=======
-
->>>>>>> 7de8b0294dde9efa59d191159f236d542d6f82aa
         </div>
     )
 }
