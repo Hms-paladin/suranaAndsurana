@@ -18,6 +18,8 @@ export default function ApplicationForeign(){
                  <Labelbox type="text" placeholder={"Associate"}/>
                  <Labelbox type="select" placeholder={"Status"}/>
                  <div className="foreign_div"><Labelbox type="text" placeholder={"Comments"}/></div>
+                 <Labelbox type="select" placeholder={"Country"}/>
+
 
                </Grid>
                  

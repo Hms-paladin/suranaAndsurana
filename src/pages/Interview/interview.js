@@ -178,7 +178,7 @@ function InerviewScreen(props) {
         }));
     };
 
-    const selectCandidate =(id)=>{
+    const selectCandidate = (id) => {
         setSelectedCandidateId(id)
     }
 console.log(props,"props")
@@ -221,17 +221,12 @@ console.log(props,"props")
                     <div className="candidatesList"> List of Candidates </div>
                     <div className="scrollerCandidates">
                         <Grid item xs={12} container direction="column" justify="left" alignItems="left" >
-                            {
-                                // cand_data.length===0&& cand_data.length>=0&& 
-                                cand_data.map((data, index) => {
-                                    return (
-                                        <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className={`${data.resume_id === selectedCandidateId && "selectedCandidateBG"} ordercandidates`} onClick={()=>selectCandidate(data.resume_id)}>
-                                        <Grid item xs={10} className="candidateName">{data.name}</Grid>
-                                            <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={() => ViewCandiate(data.resume_id)} /></Grid>
-                                        </Grid>
-                                    )
-                                }
-                                )}
+                            {cand_data.map((data, index) =>
+                                <Grid xs={12} container direction="row" justify="center" alignItems="left" display="flex" className={`${data.resume_id === selectedCandidateId && "selectedCandidateBG"} ordercandidates`} onClick={() => selectCandidate(data.resume_id)}>
+                                    <Grid item xs={10} className="candidateName">{data.name}</Grid>
+                                    <Grid item xs={2}><img src={Eyes} className="viewCandidatesList" onClick={() => ViewCandiate(data.resume_id)} /></Grid>
+                                </Grid>
+                            )}
 
                             <DynModel modelTitle={"Candidate's Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} data_id={data_id} />
                         </Grid>

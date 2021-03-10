@@ -72,17 +72,9 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
-      { path: "/projectTask", title: "ProjectTask" },
-      { path: "/projectIp", title: "ProjectIp1" },
-      { path: "/projectIp2", title: "ProjectIp2" },
-
-      // Merge  after api integrated in Ip TradeMark:
-
-      // {path:"/projectIp",title:"ProjectIp1"},
-      // {path:"/projectIp2",title:"ProjectIp2"},
-      // {path:"/projectIpOption1",title:"projectIpOption1"},
-      // {path:"/projectIpOption2",title:"projectIpOption2"},
-      // {path:"/stageicon",title:"Stages"},
+      {path:"/projectIp",title:"ProjectIp1"},
+      {path:"/projectTask",title:"projectTask"},
+      {path:"/stageicon",title:"Stages"},
 
     ]
   );

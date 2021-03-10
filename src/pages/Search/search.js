@@ -5,6 +5,7 @@ import { useDispatch, connect } from "react-redux";
 import './search.scss'
 import Resumesearch from "./resumesearch";
 import Projectsearch from "./projectsearch";
+import TimeSheetModel from './timesheet'
 
 
 
@@ -30,6 +31,8 @@ function Search(props) {
             </div>
             {value ===1 && <Resumesearch/>}
             {value ===2 && <Projectsearch/>}
+            {value ===4 && <TimeSheetModel/>}
+
 
             </div>
     )
