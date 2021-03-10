@@ -63,7 +63,7 @@ function InterviewApprover(props) {
     },[])
 
     useEffect(()=>{
-
+  console.log(props.interviewData,"._________interviewData____________")
         let interviewList = []
 
         props.interviewData.map((data)=>{
