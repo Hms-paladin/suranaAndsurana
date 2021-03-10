@@ -1,7 +1,5 @@
 import React from 'react';
-import Labelbox from "../../helpers/labelbox/labelbox";
-import CustomButton from "../../component/Butttons/button";
-import './search.scss';
+// import './search.s/css';
 import { Divider } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import { Progress } from 'antd';
@@ -16,35 +14,24 @@ import Tick from "../../images/tick.png";
 import H_icon from "../../images/H_icon.svg";
 import M_icon from "../../images/Medium_priority.svg";
 import L_icon from "../../images/Low_priority.svg";
+import Delete from "../../images/delete.png";
+import Plus from "../../images/plus.png";
 
-function TaskSearch(){
+function Task(){
     return(
        <div>
             <div className="searchfilterflex">
-               <div className="searchfilterflex1">
-                  <div className="projsearchfilterdrpdwn">
-                  <Labelbox type="select" placeholder="client type"/>
-                  </div>
-                  <div className="projsearchfilterdrpdwn">
-                  <Labelbox type="select" placeholder="client"/>
+                <div style={{display:'flex', justifyContent:'space-between'}}>
+                    <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Tasks</div>
+                    <div style={{display:'flex'}}>
+                        <img src={Delete} style={{width:'40px'}}/>
+                        <img src={Plus}style={{width:'40px', height:'38px'}} />
+                    </div>
 
-                  </div>
-                  <div className="projsearchfilterdrpdwn">
-                  <Labelbox type="select" placeholder="project type"/>
-
-                  </div>
-                  <div className="projsearchfilterdrpdwn">
-                  <Labelbox type="select" placeholder="project name"/>
-
-                  </div>
-                  <div className="projsearchfilterdrpdwn">
-                  <Labelbox type="select" placeholder="billing type"/>
-                  </div>
-                  <div className="projsearchfilterdrpdwn">
-                  <Labelbox type="select" placeholder="Priority"/>
-                  </div> 
-                  <CustomButton btnName ={"Go"}custombtnCSS="projectsearchgo"></CustomButton>
-               </div>
+                </div>
+           
+           
+              
 {/* first card */}
                <div className="card_div">
                    <Card >
@@ -227,7 +214,9 @@ function TaskSearch(){
                </div>
   {/* Third card end */}
 
-  {/* Fourth card start */}
+
+
+   {/* fourth card start */}
                <div className="card_div" style={{marginTop:'10px'}}>
                    <Card >
                        <div style={{display:'flex', justifyContent:'space-betwen'}}>
@@ -238,7 +227,7 @@ function TaskSearch(){
                            </div>
                         
                            <div style={{width:'36%', padding:'15px'}}>
-                              <h3>Task Details And Other  Details</h3>
+                               <h3>Task Details And Other  Details</h3>
                                <p>Task Details And Other  Details   </p>
                               <div style={{display:'flex', fontWeight:'bold'}}>
                                   <p style={{marginRight:'10px'}}>Start Date : 11-jan-2020</p>
@@ -272,64 +261,6 @@ function TaskSearch(){
                            <img src={ L_icon } style={{marginRight:'10px'}}/>
                            <img src={ File } style={{marginRight:'10px'}}/>
                            <img src={ Percentage } style={{marginRight:'10px'}}/>
-                       </div>
-                    </div>
-                    <div style={{backgroundColor:'#707070', width:'55px'}}>
-                        <img src={Star} style={{margin:'12px'}}/>
-                        <Divider/>
-                        <img src={Tick} style={{margin:'12px'}}/> 
-                     </div>
-                       </div>
-                   </Card>
-               </div>
-   {/* Fourth card end */}
-
-   {/* Fifth card start */}
-               <div className="card_div" style={{marginTop:'10px'}}>
-                   <Card >
-                       <div style={{display:'flex', justifyContent:'space-betwen'}}>
-                           <div style={{backgroundColor:'#707070', width:'55px'}}> 
-                               <p className="num_align_side">1</p>
-                               <Divider/>
-                               <img src={Clock} className="img_side_align"/>
-                           </div>
-                        
-                           <div style={{width:'36%', padding:'15px'}}>
-                               6<h3>Task Details And Other  Details</h3>
-                               <p>Task Details And Other  Details   </p>
-                              <div style={{display:'flex', fontWeight:'bold'}}>
-                                  <p style={{marginRight:'10px'}}>Start Date : 11-jan-2020</p>
-                                  <p>End Date : 11-jan-2020</p>
-                              </div>
-                                <div className="task_bar_align">
-                                <Progress percent={100} status="active" />
-                               </div>
-                          </div>
-                          <div className="divider"></div>
-                          <div style={{width:'37%'}}>
-                            <div className="start_date_yellow">
-                                <p>Started Date : 11-jan-2020</p>
-                                <p>Time : HH:MM</p>
-                            </div>
-                            <div style={{marginBottom:'20px', display:'flex' ,justifyContent:'space-between'}}>
-                               <span>Actual Start Date :<span>11-jan-2020</span></span>    
-                                <span>End Date :<span>11-jan-2020</span></span> 
-                            </div>
-                            <div>
-                              <p>Assigned By <a>Charon Winston</a>On <a>11-jan-2020</a></p>   
-                            </div>
-                   </div>
-                   <div className="divider"></div>
-                   <div style={{marginTop:'20px'}}>
-                       <div className="total_12_div">
-                           <p style={{display:"flex", justifyContent:'center', marginBottom:'0px'}}>Total Hours</p>
-                           <p style={{display:"flex", justifyContent:'center'}}>12</p>
-                       </div>
-                       <div className="images_div">
-                           <img src={ L_icon } style={{marginRight:'10px', width:'18px'}}/>
-                           <img src={ File } style={{marginRight:'10px', width:'18px'}}/>
-                           <img src={ Percentage } style={{marginRight:'10px', width:'18px'}}/>
-                           <img src={ Order } style={{marginRight:'10px', width:'18px'}}/>
                            
                        </div>
                     </div>
@@ -341,9 +272,9 @@ function TaskSearch(){
                        </div>
                    </Card>
                </div>
- {/*Fifth card end  */}
+ {/*fourth card end  */}
 
- {/* Sixth card start */}
+ {/* fifth card start */}
                <div className="card_div" style={{marginTop:'10px'}}>
                    <Card >
                        <div style={{display:'flex', justifyContent:'space-betwen'}}>
@@ -385,9 +316,10 @@ function TaskSearch(){
                            <p style={{display:"flex", justifyContent:'center'}}>12</p>
                        </div>
                        <div className="images_div">
-                           <img src={ Arrow } style={{marginRight:'10px'}}/>
-                           <img src={ File } style={{marginRight:'10px'}}/>
-                           <img src={ Percentage } style={{marginRight:'10px'}}/>
+                       <img src={ L_icon } style={{marginRight:'10px', width:'18px'}}/>
+                           <img src={ File } style={{marginRight:'10px', width:'18px'}}/>
+                           <img src={ Percentage } style={{marginRight:'10px', width:'18px'}}/>
+                           <img src={ Order } style={{marginRight:'10px', width:'18px'}}/>
                        </div>
                     </div>
                     <div style={{backgroundColor:'#707070', width:'55px'}}>
@@ -398,9 +330,9 @@ function TaskSearch(){
                        </div>
                    </Card>
                </div>
-{/* sixth card end */}
+{/* fifth card end */}
 
-{/* Seventh card start */}
+{/* sixth card start */}
                <div className="card_div" style={{marginTop:'10px'}}>
                    <Card >
                        <div style={{display:'flex', justifyContent:'space-betwen'}}>
@@ -445,7 +377,7 @@ function TaskSearch(){
                            <img src={ Arrow } style={{marginRight:'10px', width:'18px'}}/>
                            <img src={ File } style={{marginRight:'10px', width:'18px'}}/>
                            <img src={ Percentage } style={{marginRight:'10px', width:'18px'}}/>
-                           <img src={ Percentage } style={{marginRight:'10px', width:'18px'}}/>
+                           <img src={ Order } style={{marginRight:'10px', width:'18px'}}/>
                        </div>
                     </div>
                     <div style={{backgroundColor:'#707070', width:'55px'}}>
@@ -456,9 +388,27 @@ function TaskSearch(){
                        </div>
                    </Card>
                </div>
-   {/* Seventh card end */}
+   {/* sixth card end */}
+           <div className="bottom_align">
+            <div className="bottom_div" >
+                <div style={{width:'50%'}}>
+                    <p>Time Utilized</p>
+                </div>
+                <div className="divider_bottom"></div>
+                <div style={{width:'45%'}}>
+                    <p style={{marginBottom:'0px'}}>This Month</p>
+                    <p>247 Hrs</p>
+                </div>
+                <div className="divider_bottom"></div>
+                <div  style={{width:'40%'}}>
+                    <p style={{marginBottom:'0px'}}>This Week</p>
+                    <p>47 Hrs</p>
+                </div>
+                
+            </div>
+            </div>
 
-         
+                    
               
 
            </div>
@@ -466,4 +416,4 @@ function TaskSearch(){
        </div>
     )
 }
-export default TaskSearch;
+export default Task;

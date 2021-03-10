@@ -173,3 +173,95 @@
         text-align: right;
         margin: 40px;
     }
+    
+    // task search
+
+  .task_bar_align .ant-progress-inner{
+      border-radius: 0px;
+  }
+  .task_bar_align .ant-progress-bg{
+      background: '#023E7D';
+      height: 14px;
+      border-radius: 0px;
+  }
+  .total_12_div{
+    width: 100px;
+    height: 50px;
+    background: #023E7D;
+    color: white;
+    border-radius: 9px;
+  }
+  .images_div{
+      display: flex;
+      margin-top: 10px;
+  }
+  .card_div .MuiPaper-rounded{
+    border-radius:25px;       
+  }
+  .card_div .MuiPaper-root{
+    // padding: 14px;
+  }
+  .num_align_side{
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 19px;
+    padding-top: 12px;
+
+  }
+  .img_side_align{
+    width: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-left: 15px;
+    margin-top: 10px;
+  }
+  .divider{
+    height: 104px;
+    margin: 15px;
+    border-left: 1px solid #023E7D;
+  }
+  .start_date_yellow{
+    font-size: 17px;
+    display: flex;
+    margin: 6px;
+    justify-content: space-between;
+    color: #FFE81A;
+    font-weight: 500;
+  }
+
+  .adhoc_align{
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 0px;
+  }
+  
+  .task_bar_align_yellow .ant-progress-inner{
+    border-radius: 0px;
+}
+.task_bar_align_yellow .ant-progress-bg{
+    background: '#023E7D';
+    height: 14px;
+    border-radius: 0px;
+}
+.bottom_align{
+    display: flex;
+
+}
+.bottom_div{
+   display: flex;
+    width: 32%;
+    height: 46px;
+    background: #023E7D;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+}
+.divider_bottom{
+    height: 30px;
+    margin: 7px;
+    border-left: 1px solid white;
+
+}
