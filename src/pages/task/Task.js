@@ -173,8 +173,8 @@ function Task(){
                                   <p style={{marginRight:'10px'}}>Start Date : 11-jan-2020</p>
                                   <p>End Date : 11-jan-2020</p>
                               </div>
-                                <div className="task_bar_align">
-                                <Progress percent={100} status="active" />
+                                <div className="task_bar_align_orange">
+                                <Progress percent={10} status="active" />
                                </div>
                           </div>
                           <div className="divider"></div>
@@ -291,7 +291,7 @@ function Task(){
                                   <p style={{marginRight:'10px'}}>Start Date : 11-jan-2020</p>
                                   <p>End Date : 11-jan-2020</p>
                               </div>
-                                <div className="task_bar_align">
+                                <div className="task_bar_align_red">
                                 <Progress percent={27} status="active" />
                                </div>
                           </div>

@@ -21,6 +21,7 @@ import ProjectIpOption2 from '../pages/ProjectIpOption2/projectIpOption2';
 import Stages from '../pages/stages/stageicon';
 import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
 import Task from "../pages/task/Task";
+import AddClient from "../pages/AddClient/addclient";
 
 
 function Routes(props) {
@@ -34,6 +35,7 @@ function Routes(props) {
             <PrivateRoute path="/todolist" component={TodoList} exact />
             <PrivateRoute path="/search" component={Search} exact />
             <PrivateRoute path="/task" component = {Task} exact />
+            <PrivateRoute path ="/addclient" component = {AddClient} exact/>
 
             {/* Create Project Form */}
             <PrivateRoute path="/projectFormCreate" component={ProjectForm} exact />

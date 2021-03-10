@@ -76,6 +76,7 @@ function Navbar(props) {
       { path: "/projectIp", title: "ProjectIp1" },
       { path: "/projectIp2", title: "ProjectIp2" },
       { path: "/task", title: "Task" },
+      { path: "/addclient", title: "Add Client" },
 
       // Merge  after api integrated in Ip TradeMark:
 

@@ -242,12 +242,30 @@
     border-radius: 0px;
 }
 .task_bar_align_yellow .ant-progress-bg{
-    background: '#023E7D';
+    background: #FFE81A;
+    height: 14px;
+    border-radius: 0px;
+}
+
+.task_bar_align_orange .ant-progress-inner{
+    border-radius: 0px;
+}
+.task_bar_align_orange .ant-progress-bg{
+    background: #FF8000;
+    height: 14px;
+    border-radius: 0px;
+}
+.task_bar_align_red .ant-progress-inner{
+    border-radius: 0px;
+}
+.task_bar_align_red .ant-progress-bg{
+    background: #FF0000;
     height: 14px;
     border-radius: 0px;
 }
 .bottom_align{
     display: flex;
+    margin-top: 10px;
 
 }
 .bottom_div{

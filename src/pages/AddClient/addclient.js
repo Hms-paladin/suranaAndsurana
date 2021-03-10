@@ -248,7 +248,7 @@ function AddClient(){
                             <Grid item xs={6} >
                                 <div className="genderDobFlex">
                                     <Labelbox type="datepicker"
-                                        placeholder={"Date of Birth *"}
+                                        placeholder={"Date of Birth"}
                                         disableFuture={true}
                                         changeData={(data) => checkValidation(data, "DOB_1")}
                                         value={Addclient_Form.DOB_1.value}
