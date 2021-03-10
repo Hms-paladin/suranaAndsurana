@@ -17,8 +17,8 @@ export default function Patent(props) {
 
 
 
-   function projectTaskModel() {
-      setModelOpen(true)
+   function projectTaskModel(boxName) {
+      boxName === "TASKS" && setModelOpen(true)
    }
    const modelContent = () => {
       return (
@@ -29,7 +29,7 @@ export default function Patent(props) {
    console.log(props, "props")
    return (
       <div>
-         <Tabs task={projectTaskModel} />
+         <Tabs  onChangeTabBox={(data) => projectTaskModel(data)} />
          <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
          {/* <ApplicationForeign/>
            

@@ -45,30 +45,3 @@ export default TradeMarkTabIcons;
 
 
 
-// <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
-// <div className="tabIconsView" onClick={props.checklist}>
-//     <Grid><img src={CheckList} className="tabIconImage" /></Grid>
-//     <Grid> <div className="tabiconTitle">CHECKLIST</div></Grid>
-
-// </div>
-// <div className="tabIconsView" onClick={props.stage}>
-//     <Grid><img src={ApproveIcon} className="tabIconImage" /></Grid>
-//     <Grid> <div className="tabiconTitle">STAGE</div></Grid>
-
-// </div>
-// <div className="tabIconsView" onClick={props.task}>
-//     <Grid><img src={Tasks} className="tabIconImage" /></Grid>
-//     <Grid> <div className="tabiconTitle">TASKS</div></Grid>
-
-// </div>
-// <div className="tabIconsView" onClick={props.application}>
-//     <Grid><img src={Application} className="tabIconImage" /></Grid>
-//     <Grid> <div className="tabiconTitle">APPLICATION</div></Grid>
-
-// </div>
-// <div className="tabIconsView" onClick={props.stageMonitor}>
-//     <Grid><img src={GroupIcon} className="tabIconImage" /></Grid>
-//     <Grid> <div className="tabiconTitle">STAGE  MONITOR</div></Grid>
-
-// </div>
-// </Grid>

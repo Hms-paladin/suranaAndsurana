@@ -1,29 +1,16 @@
 import react, { useState } from 'react';
 import './projectIp.scss';
-import Patent from '../Project IP1/Patent/Patent'
-import CopyRight from '../Project IP1/CopyRight' 
+import CopyRight from '../Project IP1/CopyRight'
 import Grid from '@material-ui/core/Grid';
-import Labelbox from "../../helpers/labelbox/labelbox";
-import { TableContainer } from '@material-ui/core';
-import CustomButton from '../../component/Butttons/button';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { InesertResume } from "../../actions/ResumeAction"
+import { InesertResume } from "../../actions/ResumeAction";
 import { Tabs } from 'antd';
-//import tab content:
-// import TradeMark from './TradeMark/tradeMark';
-// Design 
-import IndiaFilling from './Design/Application/IndiaFilling';
 
-import InternationalFilling from './Design/Application/InternationalFilling';
-import CancelFiled from './Design/Cancellation/CancelFiled';
-import CancelDefended from "./Design/Cancellation/CancelDefended";
-import RectificationFiled from './Design/Rectification/RectificationFiled';
-import RectificationDefended from './Design/Rectification/RectificationDefended';
-
-//TradeMark:
-
+// IP Tabs:
 import TradeMarkTab from './TradeMark/trademark_Tab';
+import Patent from '../Project IP1/Patent/Patent'
+import Design from '../Project IP1/Design/design';
 
 const { TabPane } = Tabs;
 
@@ -133,13 +120,13 @@ function ProjectIp() {
             error: null,
             errmsg: null,
         },
-        process_type:{
+        process_type: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
-        filling_type:{
+        filling_type: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -231,17 +218,74 @@ function ProjectIp() {
 
     };
 
-console.log(Trade_Mark.process_type.value,"ff")
-console.log(Trade_Mark.filling_type.value,"ss")
-
     return (
         <div>
-            <Grid item xs={12} container spacing={4} >
+            <div className="projectIpContainer">
+                <Grid item xs={12}>
+                    <div className="projectIpFields">
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Project Name</div>
+                            <div>Name</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Client Name</div>
+                            <div>Name</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Project type</div>
+                            <div>J0450</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Project Sub type</div>
+                            <div>J0450</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Process type</div>
+                            <div>J0450</div>
+                        </div>
+
+                    </div>
+
+                </Grid>
+                <Grid item xs={12}>
+                    <div className="projectIpFields">
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Filling Type</div>
+                            <div>Name</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Billable Type</div>
+                            <div>Name</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">HOD / Attorney</div>
+                            <div>J0450</div>
+                        </div>
+                        <div className="projectIpdata">
+                            <div className="projectTitle">counsel</div>
+                            <div>J0450</div>
+                        </div>
+
+                    </div>
+                </Grid>
+                <Grid item xs={12}>
+                    <div className="projectIpFields">
+                        <div className="projectIpdata">
+                            <div className="projectTitle">Comments</div>
+                            <div>text</div>
+                        </div>
+
+
+                    </div>
+
+                </Grid>
+            </div>
+            {/* <Grid item xs={12} container spacing={4} >
                 <Grid item xs={9} container spacing={4} >
                     <Grid item xs={6}>
                         <Labelbox type="text"
                             placeholder={"Project Name *"}
-                        
+
 
                         />
                     </Grid>
@@ -274,7 +318,7 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 <Grid item xs={3}>
                     <Labelbox type="select"
                         placeholder={"Process Type"}
-                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" },{ id: "4", value: "Opposition" }]}
+                        dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }, { id: "4", value: "Opposition" }]}
                         changeData={(data) => checkValidation(data, "process_type")}
                         value={Trade_Mark.process_type.value}
                         error={Trade_Mark.process_type.error}
@@ -285,13 +329,13 @@ console.log(Trade_Mark.filling_type.value,"ss")
                 <Grid item xs={3} >
                     <Labelbox type="select"
                         placeholder={"Fillng Type"}
-                        dropdown={Trade_Mark.process_type.value==1 ?[{id:"1",value:"IndiaFilling"},{id:"2", value:"InternationalFilling"},{id:"3", value:"Domestic"},{id:"4", value:"Foreign"},{id:"5", value:"PCT"}]
-                        :[{id:"1", value:"Filed"},{id:"2", value:"Defended"}]}
+                        dropdown={Trade_Mark.process_type.value == 1 ? [{ id: "1", value: "IndiaFilling" }, { id: "2", value: "InternationalFilling" }, { id: "3", value: "Domestic" }, { id: "4", value: "Foreign" }, { id: "5", value: "PCT" }]
+                            : [{ id: "1", value: "Filed" }, { id: "2", value: "Defended" }]}
                         changeData={(data) => checkValidation(data, "filling_type")}
                         value={Trade_Mark.filling_type.value}
                         error={Trade_Mark.filling_type.error}
                         errmsg={Trade_Mark.filling_type.errmsg}
-                        />
+                    />
                 </Grid>
                 <Grid item xs={3} >
                     <Labelbox type="select"
@@ -322,51 +366,22 @@ console.log(Trade_Mark.filling_type.value,"ss")
 
 
 
-            </Grid>
+            </Grid> */}
             <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
                 <TabPane tab="Intellectual Property" key="1">
                     <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
                         <TabPane tab="Trade Mark" key="1">
-                            <TradeMarkTab Type={Trade_Mark}/>
+                            <TradeMarkTab Type={Trade_Mark} />
                         </TabPane>
-               
                         <TabPane tab="Design" key="2">
-                        {
-                           Trade_Mark.process_type.value=== '' && Trade_Mark.filling_type.value == '' &&
-                           <IndiaFilling/> 
-                        }
-                        {
-                           Trade_Mark.process_type.value=== '1' && Trade_Mark.filling_type.value == '1' &&
-                           <IndiaFilling/> 
-                        }
-                        {
-                           Trade_Mark.process_type.value=== '1' && Trade_Mark.filling_type.value == '2' &&
-                           <InternationalFilling/>  
-                        }
-                        {
-                           Trade_Mark.process_type.value=== '2' && Trade_Mark.filling_type.value == '1' &&
-                             <CancelFiled/> 
-                        }
-                        {
-                           Trade_Mark.process_type.value=== '2' && Trade_Mark.filling_type.value == '2' &&
-                           <CancelDefended/>    
-                        }
-                        {
-                           Trade_Mark.process_type.value=== '3' && Trade_Mark.filling_type.value == '1' &&
-                           <RectificationFiled/>    
-                        }
-                        {
-                           Trade_Mark.process_type.value=== '3' && Trade_Mark.filling_type.value == '2' &&
-                           <RectificationDefended/>    
-                        }  
-                                   
+                            <Design Type={Trade_Mark} />
                         </TabPane>
                         <TabPane tab="Patent" key="3">
-                              <Patent Type={Trade_Mark}/>
-                       </TabPane>
+                            <Patent Type={Trade_Mark} />
+                        </TabPane>
                         <TabPane tab="CopyRight" key="4">
-                            <CopyRight/>
-                </TabPane>
+                            <CopyRight />
+                        </TabPane>
                     </Tabs>
                 </TabPane>
 
