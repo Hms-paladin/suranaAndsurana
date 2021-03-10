@@ -91,7 +91,7 @@ function TodoList(props) {
         
       console.log(props.getHrTodoList,"ddd")
 
-    }, [props.getHrTodoList])
+    }, [props.getHrTodoList,setInerviewScreen])
 //  const pageReload=(id)=>{
 //      if(id){
 //      window.location.reload()
@@ -130,7 +130,7 @@ function TodoList(props) {
         }
         else if(name==="int_status_id"){
             setEmployeeFormOpen(true)
-            let employeedata= props.getHrTodoList.find((val)=>{
+            let employeedata= props.getHrTodoList.find((val)=>{ 
                 return(
                     id == val.int_status_id
                 )
@@ -144,11 +144,12 @@ function TodoList(props) {
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
-            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover int_resume_id={res_id}/>} />
 
             <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
-             onUpdateRefresh={()=>dispatch}
                handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
+
+            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover int_resume_id={res_id}/>} />
+
 
             <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
 

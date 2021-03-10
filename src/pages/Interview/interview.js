@@ -429,7 +429,7 @@ function InerviewScreen(props) {
             // setpostData({ error: false });
             dispatch(InsertInterviewquestions(postData, selectedCandidateId,props.interviewer_id)).then(()=>{
                 props.handleAproverModelClose();
-                props.onUpdateRefresh();
+                // props.onUpdateRefresh();
             })
 
         }

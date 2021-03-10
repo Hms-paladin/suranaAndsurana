@@ -11,7 +11,7 @@ export const InesertResume = (Resume_Form) => async dispatch => {
             method: 'POST',
             url: apiurl + 'insert_s_tbl_pm_resume',
             data:{
-                "user_id": 1,
+                "user_id":  localStorage.getItem(('token').user_id),
                 "name": Resume_Form.name.value,
                 "type_of_resource": Resume_Form.candidate.value,
                 "gender": Resume_Form.gender.value,
@@ -43,10 +43,10 @@ export const InesertResume = (Resume_Form) => async dispatch => {
                 "status_resource": 1,
                 "lang_known": Resume_Form.language.valueById,
                 "industry": Resume_Form.industry.value,
-                "created_on": "2021-02-18 04:57:18",
-                "updated_on": "2021-02-18 04:57:18",
-                "created_by": 1,
-                "updated_by": 1,
+                "created_on": moment().format('YYYY-MM-DD HH:m:s') ,
+                "updated_on": moment().format('YYYY-MM-DD HH:m:s') ,
+                "created_by": localStorage.getItem("empId"),
+                "updated_by": localStorage.getItem("empId"),
                 "ip_address": "123"
             }
           })

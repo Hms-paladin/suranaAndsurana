@@ -32,15 +32,15 @@ export const InsertInterviewquestions =(postData,id,data)=> async dispatch =>{
                 "designation":data.designation_id,
                 "comment":postData.comment.value,
                 "score_inital":postData.initial_score.value,
-                "score_reviewer":"2",
+                "score_reviewer":localStorage.getItem("empId"),
                 "final_score":postData.final_score.value,
                 "status":postData.init_status.value,
                 "int_details_id":data.int_details_id    ,
                 "resume_id":id,
                 "created_on":moment().format('YYYY-MM-DD HH:m:s')   ,
                 "updated_on":moment().format('YYYY-MM-DD HH:m:s') ,
-                "created_by":"2",
-                "updated_by":"2",
+                "created_by":localStorage.getItem("empId"),
+                "updated_by":localStorage.getItem("empId"),
                 "ip_address":"Fify Two",
                 "task_id": data.no_of_candidates === 1 ?  data.task_id : 0
             }
