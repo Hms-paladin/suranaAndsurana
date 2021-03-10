@@ -65,7 +65,6 @@ const InsertEmployee=(data)=>{
             "emp_status":accept?1:reject?2:"",
         },
     }).then((response)=>{
-        console.log(response.data.msg,"data")
         GetEmployee()
         if(data==1){
             notification.success({

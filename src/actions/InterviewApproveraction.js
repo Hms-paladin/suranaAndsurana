@@ -2,6 +2,7 @@
 import { GET_INTERVIEW_QUESTIONS, INTERVIEWAPPROVER_TABLE_DATA } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
+import {notification} from 'antd'
 
 
 export const Interview = () => async dispatch => {
@@ -21,16 +22,17 @@ export const Interview = () => async dispatch => {
     }
 }
 
-export const interviewApproverTableData = () => async dispatch => {
+export const interviewApproverTableData = (props) => async dispatch => {
     try {
         axios({
             method: 'POST',
-            url: apiurl +'/get_to_do_interview_by_id',
+            url: apiurl +'get_to_do_interview_by_id',
             data:{
-                resume_id:"1"
+                resume_id:props.int_resume_id && props.int_resume_id.resume_id
             }
         })
         .then((response) => {
+            console.log(response,"res_id")
             dispatch({type:INTERVIEWAPPROVER_TABLE_DATA,payload:response.data.data})
         })
         
@@ -40,31 +42,34 @@ export const interviewApproverTableData = () => async dispatch => {
 }
 
  
-export const InsertApprove = (ApproveForm) => async dispatch => {
-    console.log(ApproveForm,"form")
+export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl + "insert_approve_status",
             data:{
-                "status":"1",
+                "status":optionvalues.id,
                 "score":ApproveForm.final_score.value,
-                "reviewer":"1",
-                "approval":"5",
-                "Interviewer_cmt":"Good",
+                "reviewer":"",
+                "approval":"",
+                "Interviewer_cmt":Rows.cmts,
                 "approver_cmt":ApproveForm.comment.value,
-                "prop_designation":"1",
-                "prop_int_date_time":"2021-02-01 12:00:00",
-                "resume_id":"1",
+                "prop_designation":Rows.viewer,
+                "prop_int_date_time":Rows.date,
+                "resume_id":props.int_resume_id && props.int_resume_id.resume_id,
                 "created_on":"2021-02-01 12:00:00",
                 "updated_on":"2021-02-12 12:00:00",
                 "created_by":"2",
                 "updated_by":"3",
-                "ip_address":"Chennai"
+                "ip_address":"123"
             }
         })
         .then((response)=>{
-            console.log(response,"res")
+            if(response.data.status===1){
+                notification.success({
+                    message: 'Interview Approve Successfully',
+                  });
+                }
         })
     }
     catch(err){

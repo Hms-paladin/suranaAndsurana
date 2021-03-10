@@ -307,7 +307,6 @@ function InerviewScreen(props) {
             method: "get",
             url: apiurl + "get_Interview_Status",
         }).then((response) => {
-            console.log(response, "status")
             let interview_status = []
             response.data.data.map((data, index) =>
                 interview_status.push({ value: data.status, id: data.status_id }))
@@ -335,7 +334,6 @@ function InerviewScreen(props) {
             url: apiurl + 'get_selected_candidates',
             data: {
                 "int_detail_id": props.interviewer_id && props.interviewer_id.int_details_id
-                // "int_detail_id":int_details.id
             }
         })
             .then((response) => {
@@ -446,7 +444,7 @@ function InerviewScreen(props) {
         setSelectedCandidateId(id);
         setComments(true)
     }
-
+console.log(props,"props")
     return (
         <div>
             <Grid item xs={12} container direction="row" justify="space-around" alignItems="center" spacing={1} >

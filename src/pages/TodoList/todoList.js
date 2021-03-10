@@ -9,6 +9,7 @@ import moment from "moment";
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
 import InerviewScreen from "../Interview/interview"
 import EmployeeApprove from '../Employeeform/EmployeeApprove'
+import Employeeform from '../Employeeform/employeeform'
 import "./todoList.scss"
 // import {InsertInterviewquestions} from '../../actions/interviewActions'
 
@@ -54,10 +55,12 @@ function TodoList(props) {
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
+    const [EmployeeFormOpen, setEmployeeFormOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
     const [hrTodoList, setHrTodoList] = useState([])
     const [can_int_id, setcan_int_id] = useState([])
     const [res_id, setres_id] = useState([])
+    const [Employee_Data,setEmployee_Data]=useState([])
     const [viewer_id, setviewer_id] = useState([])
     useEffect(() => {
         dispatch(getHrTaskList())
@@ -86,7 +89,7 @@ function TodoList(props) {
         })
         setHrTodoList(hrList)
         
-      
+      console.log(props.getHrTodoList,"ddd")
 
     }, [props.getHrTodoList])
 //  const pageReload=(id)=>{
@@ -116,6 +119,7 @@ function TodoList(props) {
             setres_id(data_res_id)
         }
         else if(name==="int_details_id"){
+            // setModelOpen(true)
             setInerviewScreen(true)
             let checkData= props.getHrTodoList.find((val)=>{
                 return(
@@ -124,6 +128,15 @@ function TodoList(props) {
             })
             setcan_int_id(checkData)
         }
+        else if(name==="int_status_id"){
+            setEmployeeFormOpen(true)
+            let employeedata= props.getHrTodoList.find((val)=>{
+                return(
+                    id == val.int_status_id
+                )
+            })
+            setEmployee_Data(employeedata)
+        }
     }
 
     return (
@@ -131,13 +144,16 @@ function TodoList(props) {
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
-            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover resume_id={res_id}/>} />
+            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover int_resume_id={res_id}/>} />
 
             <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
              onUpdateRefresh={()=>dispatch}
                handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
 
             <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
+
+            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} width={1100} content={<Employeeform closemodal={(bln) => setApproveOpen(bln)} emp_form_id={Employee_Data}/>} />
+
 
             </div>
             <div>

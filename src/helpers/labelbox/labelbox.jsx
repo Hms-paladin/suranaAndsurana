@@ -19,6 +19,7 @@ import DateFnsUtils from '@date-io/date-fns';
 // } from '@material-ui/pickers';
 import { DatePicker, Select, TimePicker } from 'antd';
 import SelectionIcon from '../../images/select.svg';
+import TimerIcon from '../../images/timerIcon.svg';
 
 
 
@@ -207,6 +208,7 @@ export default class Labelbox extends Component {
 								KeyboardButtonProps={{
 									'aria-label': 'change time',
 								}}
+								// suffixIcon={<img src={TimerIcon} />}
 							/>
 						</MuiPickersUtilsProvider>
 						{
