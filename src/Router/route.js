@@ -19,6 +19,7 @@ import Search from '../pages/Search/search';
 import ProjectIpOption1 from '../pages/ProjectIpOption1/projectIpOption1';
 import ProjectIpOption2 from '../pages/ProjectIpOption2/projectIpOption2';
 import Stages from '../pages/stages/stageicon';
+import StagesMaster from '../pages/stages/StagesMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
 
@@ -43,6 +44,7 @@ function Routes(props) {
             <PrivateRoute path="/projectIpOption1" component={ProjectIpOption1} exact />
             <PrivateRoute path="/projectIpOption2" component={ProjectIpOption2} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
+            <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
         </Navbar>
     );
 }

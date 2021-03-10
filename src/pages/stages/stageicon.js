@@ -16,7 +16,7 @@ function stages() {
 
             <Grid item xs={12} container direction="row">
                 <Grid item xs={6}>
-                    welcome
+                    
                 </Grid>
                 <Grid item xs={6}>
                     welcome

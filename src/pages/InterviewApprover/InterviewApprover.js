@@ -27,7 +27,7 @@ function InterviewApprover(props) {
     ];
 
     const [modelOpen, setModelOpen] = useState(false)
-    const [ rows, setRows ] = useState([])
+    const [ Rows, setRows ] = useState([])
 
     // approve form
     const [ApproveForm, setApproveForm] = useState({
@@ -80,14 +80,13 @@ function InterviewApprover(props) {
             method: "get",
             url: apiurl + "get_Interview_Status",
         }).then((response) => {
-            console.log(response,"ss")
             let interview_status=[]
         response.data.data.map((data,index) => 
         interview_status.push({value: data.status, id: data.status_id}))
         setoptionvalues({interview_status})
 
         })
-    }, [dispatch])
+    }, [dispatch,props])
 
     function checkValidation(data, key) {
 
@@ -131,7 +130,7 @@ function InterviewApprover(props) {
         } else {
             // setResumeFrom({ error: false });
             
-            dispatch(InsertApprove(ApproveForm))
+            dispatch(InsertApprove(ApproveForm,props,optionvalues,Rows))
         }
 
         setApproveForm(prevState => ({
@@ -139,8 +138,8 @@ function InterviewApprover(props) {
         }));
 
     }
+    console.log(props.int_resume_id && props.int_resume_id.resume_id,"prop")
 
-    
     return (
         
         <div className="interviewapprove_root">
@@ -148,10 +147,10 @@ function InterviewApprover(props) {
             <div><img src={Back} style={{ width: "30px" }} /></div>
             <div className="interview_head">
 
-                <div><label>Interview Id:3</label></div>
-                <div><label>Designation:Attorney</label></div>
+                <div><label>Interview Id:4</label></div>
+                <div><label>Designation:{Rows.viewer}</label></div>
             </div>
-            <EnhancedTable headCells={Header} rows={rows} />
+            <EnhancedTable headCells={Header} rows={Rows} />
             <Grid item xs={12} container direction="row" justify="center" alignItems="center">
             <div className="inter_status_div">
                 <Labelbox type="select"

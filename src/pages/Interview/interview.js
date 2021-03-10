@@ -58,7 +58,6 @@ function InerviewScreen(props) {
             method: "get",
             url: apiurl + "get_Interview_Status",
         }).then((response) => {
-            console.log(response, "status")
             let interview_status = []
             response.data.data.map((data, index) =>
                 interview_status.push({ value: data.status, id: data.status_id }))
@@ -77,20 +76,16 @@ function InerviewScreen(props) {
             })
 
         // for candiate post api
-        // dispatch(GetCandiateDetails())
-
-        console.log(props.interviewer_id && props.interviewer_id.int_details_id, "cand_id")
+        
         Axios({
             method: "POST",
             url: apiurl + 'get_selected_candidates',
             data: {
                 "int_detail_id": props.interviewer_id && props.interviewer_id.int_details_id
-                // "int_detail_id":int_details.id
             }
         })
             .then((response) => {
                 const Intview_data = []
-        console.log(response, "cand_id")
 
                 response.data.data.map((data) =>
                     Intview_data.push({
@@ -100,12 +95,7 @@ function InerviewScreen(props) {
                     })
                 )
                 setcand_data(response.data.data[0].output)
-                // setint_details(props.interviewer_id.map((data,index)=>{
-                //     // console.log("datacheck",data),
-                //     return(
-                //     ({id:data.int_details_id})
-                //     // propsdata.push(data)
-                //     )}))
+               
                 setint_details({ Intview_data })
 
 
@@ -191,7 +181,7 @@ function InerviewScreen(props) {
     const selectCandidate =(id)=>{
         setSelectedCandidateId(id)
     }
-
+console.log(props,"props")
     return (
         <div>
             <Grid item xs={12} container direction="row" justify="space-around" alignItems="center" spacing={1} >
