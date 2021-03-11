@@ -67,26 +67,28 @@ function InterviewApprover(props) {
         let interviewList = []
 
         props.interviewData.map((data)=>{
-            interviewList.push({ date: data.Date ? moment(data.Date).format('DD-MMM-YYYY') : null, score: data.score_inital, cmts: data.comment, viewer: data.designation })
+            interviewList.push({ date:moment(data.Date).format('DD-MMM-YYYY'),Id:data.interview_id, score: data.score_inital, cmts: data.comment, viewer: data.designation })
         })
         setRows(interviewList)
         console.log(interviewList,"._________interviewList____________")
     },[props.interviewData])
+      console.log(Rows,"rows_divya")
+
+      let values = []
+      Axios({
+          method: "get",
+          url: apiurl + "get_Interview_Status",
+      }).then((response) => {
+          let interview_status=[]
+      response.data.data.map((data,index) => 
+      interview_status.push({value: data.status,Id: data.status_id}))
+      setoptionvalues({interview_status})
+
+      })
 
 
-    useEffect(() => {
-        let values = []
-        Axios({
-            method: "get",
-            url: apiurl + "get_Interview_Status",
-        }).then((response) => {
-            let interview_status=[]
-        response.data.data.map((data,index) => 
-        interview_status.push({value: data.status, id: data.status_id}))
-        setoptionvalues({interview_status})
 
-        })
-    }, [dispatch,props])
+  
 
     function checkValidation(data, key) {
 
@@ -106,7 +108,18 @@ function InterviewApprover(props) {
             [key]: dynObj,
         }));
     };
+    const handleCancel = () =>{
+        let From_key = [
+                 "final_score","comment","init_status"
+        ]
 
+        From_key.map((data)=>{
+            ApproveForm[data].value = ""
+        })
+        ApproveForm(prevState => ({
+            ...prevState,
+        }));
+    }
 
     //  insert approve
     function Submit_approve(){
@@ -147,8 +160,8 @@ function InterviewApprover(props) {
             <div><img src={Back} style={{ width: "30px" }} /></div>
             <div className="interview_head">
 
-                <div><label>Interview Id:4</label></div>
-                <div><label>Designation:{Rows.viewer}</label></div>
+                <div><label>Interview Id:<span>{Rows.Id?Rows.Id:"-"}</span></label></div>
+                <div><label>Designation:<span>{Rows.viewer?Rows.viewer:"-"}</span></label></div>
             </div>
             <EnhancedTable headCells={Header} rows={Rows} />
             <Grid item xs={12} container direction="row" justify="center" alignItems="center">

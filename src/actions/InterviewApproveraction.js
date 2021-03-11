@@ -48,7 +48,7 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
             method: 'POST',
             url: apiurl + "insert_approve_status",
             data:{
-                "status":optionvalues.id,
+                "status":optionvalues.Id,
                 "score":ApproveForm.final_score.value,
                 "reviewer":localStorage.getItem("empId"),
                 "approval":"1",
@@ -65,6 +65,7 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
             }
         })
         .then((response)=>{
+            console.log(response,"response")
             if(response.data.status===1){
                 notification.success({
                     message: 'Interview Approve Successfully',
