@@ -59,7 +59,7 @@ function InterviewApprover(props) {
 
 
     useEffect(()=>{
-        dispatch(interviewApproverTableData())
+        dispatch(interviewApproverTableData(props.int_resume_id.resume_id))
     },[])
 
     useEffect(()=>{
@@ -70,7 +70,7 @@ function InterviewApprover(props) {
             interviewList.push({ date: data.Date ? moment(data.Date).format('DD-MMM-YYYY') : null, score: data.score_inital, cmts: data.comment, viewer: data.designation })
         })
         setRows(interviewList)
-
+        console.log(interviewList,"._________interviewList____________")
     },[props.interviewData])
 
 
@@ -202,7 +202,6 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps)(InterviewApprover);
-
 
 
 

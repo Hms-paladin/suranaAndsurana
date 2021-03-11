@@ -22,13 +22,13 @@ export const Interview = () => async dispatch => {
     }
 }
 
-export const interviewApproverTableData = (props) => async dispatch => {
+export const interviewApproverTableData = (id) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl +'get_to_do_interview_by_id',
             data:{
-                resume_id:props.int_resume_id && props.int_resume_id.resume_id
+                resume_id:id
             }
         })
         .then((response) => {
