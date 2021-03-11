@@ -8,32 +8,36 @@ import ValidationLibrary from "../../../helpers/validationfunction";
 import { apiurl } from "../../../utils/baseUrl";
 function ProjectFormCreate(props) {
     const [ProjectType,setProjectType]=useState({})
+    const [ProcessType,setProcessType]=useState({})
+    const [FillingType,setFillingType]=useState({})
     const [SubType_Project,setSubType_Project]=useState({})
     const [BillableType,setBillableType]=useState({})
     const [projectform, setprojectform] = useState({
         project_type: {
-            valueById:"",
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         project_sub_type: {
-            valueById:"",
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         billable_type: {
-            valueById: "",
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         process_type: {
-            valueById: "",
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        filling_type: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -50,6 +54,7 @@ function ProjectFormCreate(props) {
         })
             .then((response) => {
                 console.log("response",response)
+                SubType_Project_Api()
                let projectTypedata=[]
                response.data.data.map((data)=>
                projectTypedata.push({value:data.project_type,id:data.project_type_id})
@@ -73,31 +78,56 @@ function ProjectFormCreate(props) {
             })
 
 
-    //    // process type
+        // process type
        Axios({
         method: "post",
         url: apiurl + 'get_process_type',
         data:{
-            "project_type_id":projectform.project_type.valueById,
-            "sub_project_type_id":projectform.project_sub_type.valueById
+            "project_type_id":projectform.project_type.value,
+            "sub_project_type_id":projectform.project_sub_type.value
         },
     })
         .then((response) => {
             console.log("response",response)
+            let processData=[]
+            response.data.data.map((data)=>
+            processData.push({id:data.process_id,value:data.process})
+            )
+         setProcessType({processData})
          
         })
-        console.log("type",ProjectType)  
+
+    // Filling Type
+    Axios({
+        method: "post",
+        url: apiurl + 'get_process_type',
+        data:{
+            "project_type_id":projectform.project_type.value,
+            "sub_project_type_id":projectform.project_sub_type.value,
+            "process_id":projectform.process_type.value
+        },
+    })
+        .then((response) => {
+            console.log("response",response)
+            let fillingData=[]
+            response.data.data.map((data)=>
+            fillingData.push({id:data.process_id,value:data.process})
+            )
+         setFillingType({fillingData})
+         
+        })
+        
 
     })
 
 //    projectSub_type api
      function SubType_Project_Api(data){
-         alert(data)
+        //  alert(data)
         Axios({
             method: "POST",
             url: apiurl + 'get_project_sub_type',
             data:{
-                "project_type_id":1
+                "project_type_id":data
             }
         })
             .then((response) => {
@@ -112,7 +142,7 @@ function ProjectFormCreate(props) {
 
      }
 
-    function checkValidation(data, key,multipleId) {
+    function checkValidation(data, key) {
         if(key==="project_type"){
             SubType_Project_Api(data)
         }
@@ -128,25 +158,26 @@ function ProjectFormCreate(props) {
             validation: projectform[key].validation
         }
    
-        // only for multi select (start)
+        // // only for multi select (start)
 
-        let multipleIdList = []
+        // let multipleIdList = []
 
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
+        // if (multipleId) {
+        //     multipleId.map((item) => {
+        //         for (let i = 0; i < data.length; i++) {
+        //             if (data[i] === item.value) {
+        //                 multipleIdList.push(item.id)
+        //             }
+        //         }
+        //     })
+        //     dynObj.valueById = multipleIdList.toString()
+        // }
+        // // (end)
 
       
         setprojectform(prevState => ({
             ...prevState,
+            [key]: dynObj,
         }));
     };
 
@@ -207,7 +238,7 @@ function ProjectFormCreate(props) {
                         <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Process Type "}
-                                // dropdown={ProjectType.projectTypedata}
+                                 dropdown={ProcessType.processData}
                                 changeData={(data) => checkValidation(data, "process_type")}
                                 value={projectform.process_type.value}
                                 error={projectform.process_type.error}
@@ -254,7 +285,11 @@ function ProjectFormCreate(props) {
                         <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Filling Type "}
-                               
+                                dropdown={setFillingType.fillingData}
+                                changeData={(data) => checkValidation(data, "filling_type")}
+                                value={projectform.filling_type.value}
+                                error={projectform.filling_type.error}
+                                errmsg={projectform.filling_type.errmsg}
 
                             />
                         </Grid>

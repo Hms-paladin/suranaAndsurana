@@ -17,6 +17,8 @@ import Employeeform from "../pages/Employeeform/employeeform.js";
 import Search from '../pages/Search/search';
 import Stages from '../pages/stages/stageicon';
 import StagesMaster from '../pages/stages/StagesMaster'
+import AddHearing from '../pages/stages/AddHearing'
+import RateMaster from '../pages/stages/RateMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
 
@@ -33,12 +35,13 @@ function Routes(props) {
 
             {/* Create Project Form */}
             <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
-
             {/* Ip TradeMark */}
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
             <PrivateRoute path="/projectIp" component={ProjectIp1} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
             <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
+            <PrivateRoute path="/addhearing" component={AddHearing} exact />
+            <PrivateRoute path="/ratemaster" component={RateMaster} exact />
         </Navbar>
     );
 }

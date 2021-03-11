@@ -23,12 +23,14 @@ export const Interview = () => async dispatch => {
 }
 
 export const interviewApproverTableData = (props) => async dispatch => {
+    console.log(props,"action")
     try {
         axios({
             method: 'POST',
             url: apiurl +'get_to_do_interview_by_id',
             data:{
                 resume_id:props.int_resume_id && props.int_resume_id.resume_id
+                // resume_id:26
             }
         })
         .then((response) => {
@@ -48,10 +50,10 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
             method: 'POST',
             url: apiurl + "insert_approve_status",
             data:{
-                "status":optionvalues.id,
+                "status":optionvalues.Id,
                 "score":ApproveForm.final_score.value,
-                "reviewer":"",
-                "approval":"",
+                "reviewer":1,
+                "approval":5,
                 "Interviewer_cmt":Rows.cmts,
                 "approver_cmt":ApproveForm.comment.value,
                 "prop_designation":Rows.viewer,
@@ -65,6 +67,7 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
             }
         })
         .then((response)=>{
+            console.log(response,"response")
             if(response.data.status===1){
                 notification.success({
                     message: 'Interview Approve Successfully',

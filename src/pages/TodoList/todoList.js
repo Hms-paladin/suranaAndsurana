@@ -119,7 +119,6 @@ function TodoList(props) {
             setres_id(data_res_id)
         }
         else if(name==="int_details_id"){
-            // setModelOpen(true)
             setInerviewScreen(true)
             let checkData= props.getHrTodoList.find((val)=>{
                 return(
@@ -150,7 +149,7 @@ function TodoList(props) {
 
             <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
 
-            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} width={1100} content={<Employeeform closemodal={(bln) => setApproveOpen(bln)} emp_form_id={Employee_Data}/>} />
+            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100} content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
 
 
             </div>
