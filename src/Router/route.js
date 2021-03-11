@@ -18,6 +18,10 @@ import Search from '../pages/Search/search';
 import Stages from '../pages/stages/stageicon';
 import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
+//Litigation :
+
+import Litigation from '../pages/Litigation/litigation';
+
 
 function Routes(props) {
 
@@ -37,6 +41,11 @@ function Routes(props) {
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
             <PrivateRoute path="/projectIp" component={ProjectIp1} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
+
+            {/* Litigation */}
+
+            <PrivateRoute path="/litigation" component={Litigation} exact />
+
         </Navbar>
     );
 }
