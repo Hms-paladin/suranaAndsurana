@@ -1068,7 +1068,7 @@ function Employeeform(props){
     useEffect(() => {
         Axios({
             method: 'POST',
-            url: apiurl +'get_employee_by_id',
+            url: apiurl +'get_candidate_details_by_id',
             data:{
               "emp_id":props.emp_form_id&&props.emp_form_id.int_status_id
             },
@@ -1179,8 +1179,8 @@ function Employeeform(props){
                 formData.set("employee__code",EmpForm.employee_code.value)
                 formData.append("upload_document",file)
                 formData.set("biometric_data","")
-                formData.set("approved_by",2)
-                formData.set("approved_date","2021-02-26")
+                formData.set("approved_by",localStorage.getItem("empId"))
+                formData.set("approved_date",moment().format('YYYY-MM-DD HH:m:s') )
                 formData.set("is_interviewer",1)
                 formData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
                 formData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )

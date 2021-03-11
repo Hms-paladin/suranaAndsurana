@@ -69,10 +69,10 @@ function InterviewApprover(props) {
     props.interviewData.map((data) => {
       interviewList.push({
         date: moment(data.Date).format("DD-MMM-YYYY"),
-        Id: data.interview_id,
+        // Id: data.interview_id,
         score: data.score_inital,
         cmts: data.comment,
-        viewer: data.viewer,
+        viewer: data.interviewer,
       });
     });
     setRows(interviewList);

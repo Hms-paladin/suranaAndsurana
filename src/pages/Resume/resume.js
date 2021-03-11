@@ -420,7 +420,7 @@ function ResumePage() {
         }));
     }
 
-    console.log(Resume_Form, "Resume_Form")
+    console.log( localStorage. getItem('token',), "Resume_Form")
 
     return (
         <>

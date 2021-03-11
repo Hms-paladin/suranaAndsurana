@@ -322,14 +322,22 @@ function TodoList(props) {
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
+       {/*InrerviewScreen after  Schedule     */}
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}
+             content={<InerviewScreen interviewer_id={can_int_id}
+              handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
+
+    {/*InterviewApprover after  selected in interviewscreen     */}
             <DynModel modelTitle={"Interview Approver"}         handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
              content={<InterviewApprover                handleAproverModelClose={(bln) => setModelOpen(bln)}   int_resume_id={res_id}/>} />
 
-<DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
-              handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
-            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
+    {/*EmployeeForm after  selected in interview approve     */}
+            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
+             content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
 
-            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100} content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
+    {/*EmployeeApprove after  value entered in employee form     */}
+            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} 
+            content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
 
             </div>
              <div>
