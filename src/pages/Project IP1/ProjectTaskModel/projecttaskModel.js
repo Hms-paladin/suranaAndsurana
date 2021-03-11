@@ -28,6 +28,12 @@ function ProjectTaskModel() {
                         placeholder={"Sub Activity"} />
                 </Grid>
             </div>
+            <div className="activityTask">
+                <Grid item xs={7} >
+                    <Labelbox type="select"
+                        placeholder={"Location"} />
+                </Grid>
+            </div>
             <div className="projectTaskDatealign">
                 <Grid container spacing={3}>
                     <Grid item xs={4} >
@@ -52,8 +58,10 @@ function ProjectTaskModel() {
             <div className="projectTaskDatealign">
                 <Grid container spacing={3}>
                     <Grid item xs={7}>
-                        <Labelbox type="textarea"
-                            placeholder={"Description"} />
+                        <div className="projectTaskCmd">
+                            <Labelbox type="textarea"
+                                placeholder={"Description"} />
+                        </div>
                     </Grid>
 
                     <Grid item xs={5} >
