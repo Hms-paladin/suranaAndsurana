@@ -322,8 +322,8 @@ function TodoList(props) {
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
-            <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
-             content={<InterviewApprover int_resume_id={res_id}/>} />
+            <DynModel modelTitle={"Interview Approver"}         handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
+             content={<InterviewApprover                handleAproverModelClose={(bln) => setModelOpen(bln)}   int_resume_id={res_id}/>} />
 
 <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
               handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />

@@ -70,6 +70,7 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
                 notification.success({
                     message: 'Interview Approve Successfully',
                   });
+                  return Promise.resolve();
                 }
         })
     }

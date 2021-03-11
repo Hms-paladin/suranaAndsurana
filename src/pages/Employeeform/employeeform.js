@@ -961,6 +961,7 @@ import {apiurl} from '../../utils/baseUrl'
 import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 import {notification} from 'antd';
+import moment from 'moment'
 
 function Employeeform(props){
     const [getDetails,setgetDetails]=useState([])
@@ -1181,10 +1182,10 @@ function Employeeform(props){
                 formData.set("approved_by",2)
                 formData.set("approved_date","2021-02-26")
                 formData.set("is_interviewer",1)
-                formData.set("created_on","2021-02-18 02:24:35")
-                formData.set("updated_on","2021-02-18 02:24:35")
-                formData.set("created_by",3)
-                formData.set("updated_by",1)
+                formData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
+                formData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
+                formData.set("created_by",localStorage.getItem("empId"))
+                formData.set("updated_by",localStorage.getItem("empId"))
                 formData.set("ip_address","Adress")
 
         Axios({
@@ -1193,7 +1194,7 @@ function Employeeform(props){
             header: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
-              },
+              },data:formData
          
             
         }).then((response)=>{
