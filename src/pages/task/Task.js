@@ -1,5 +1,6 @@
 import React from 'react';
 // import './search.s/css';
+import './Task.scss';
 import { Divider } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import { Progress } from 'antd';
@@ -16,15 +17,42 @@ import M_icon from "../../images/Medium_priority.svg";
 import L_icon from "../../images/Low_priority.svg";
 import Delete from "../../images/delete.png";
 import Plus from "../../images/plus.png";
+import Edit from "../../images/edit.svg";
+import Labelbox from "../../helpers/labelbox/labelbox";
+import TablePagination from '@material-ui/core/TablePagination';
+import Blue from "../../images/blue_round.png";
+import Light from "../../images/light_round.png";
+import Orange from "../../images/orange_round.png";
+import Red from "../../images/red_round.png";
+
 
 function Task(){
+    const [page, setPage] = React.useState(2);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
     return(
        <div>
             <div className="searchfilterflex">
                 <div style={{display:'flex', justifyContent:'space-between'}}>
-                    <div style={{marginBottom:"10px",fontSize:'16px',fontWeight:"600"}}>Tasks</div>
+                    <div style={{display:'flex'}}>
+                    <p className="task_head">Tasks</p>
+                    <Labelbox type="select"
+                            placeholder="Subordinate"
+                        />
+
+                    </div>
+                    
                     <div style={{display:'flex'}}>
                         <img src={Delete} style={{width:'40px'}}/>
+                        <img src={ Edit } style={{width:'33px'}}/>
                         <img src={Plus}style={{width:'40px', height:'38px'}} />
                     </div>
 
@@ -404,13 +432,38 @@ function Task(){
                     <p style={{marginBottom:'0px'}}>This Week</p>
                     <p>47 Hrs</p>
                 </div>
-                
+            </div>
+            <div>
+            <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={100}
+          page={page}
+          onChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        
+        />
+            </div>
+            <div style={{display:'flex'}}>
+                <div style={{display:'flex'}}>
+                    <img src={Blue} style={{height:'18px'}} />
+                    <p>Completed</p>
+                </div>
+                <div style={{display:'flex'}}>
+                    <img src={Light} style={{height:'18px'}}/>
+                    <p>In Progress</p>
+                </div>
+                <div style={{display:'flex'}}>
+                    <img src={Orange} style={{height:'18px'}}/>
+                    <p>Not Started</p>
+                </div>
+                <div style={{display:'flex'}}>
+                    <img src={Red} style={{height:'18px'}}/>
+                    <p>Delayed</p>
+                </div>
             </div>
             </div>
-
-                    
-              
-
            </div>
 
        </div>

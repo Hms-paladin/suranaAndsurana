@@ -3,7 +3,7 @@ import './projectTask.scss'
 import Grid from '@material-ui/core/Grid';
 import { Radio } from 'antd';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import { Button } from '@material-ui/core';
+import { Button, Checkbox } from '@material-ui/core';
 import EnhancedTable from "../../component/DynTable/table";
 import CustomButton from '../../component/Butttons/button';
 import DynModel from '../../component/Model/model';
@@ -366,21 +366,141 @@ function ProjectTask() {
         )
     }
 
+    // const projectTaskModelContent = () => {
+    //     return (
+    //         <div className="projectTaskModel">
+
+    //             <Grid item xs={12} className="projectTaskHeader" container justify="center" style={{ margin: "auto" }}>
+    //                 <Grid item xs={12} container direction="row" justify="center" alignItems="center" spacing={1} className="projectTasktitle">
+    //                     <Grid item xs={4} container justify="center" alignItems="center"> IP Project</Grid>
+    //                     <Grid item xs={4} container justify="center" alignItems="center">Project Name</Grid>
+    //                     <Grid item xs={4} container justify="center" alignItems="center">Johnson & Johnson</Grid>
+    //                 </Grid>
+               
+
+    //             </Grid>
+    //             <div className="activityTask">
+    //                 <Grid item xs={7} >
+    //                     <Labelbox type="select"
+    //                         placeholder={"Activity"}
+    //                         changeData={(data) => checkValidation(data, "activity")}
+    //                         value={createproject_Form.activity.value}
+    //                         error={createproject_Form.activity.error}
+    //                         errmsg={createproject_Form.activity.errmsg}
+    //                     />
+    //                 </Grid>
+    //             </div>
+    //             <div className="activityTask">
+    //                 <Grid item xs={7} >
+    //                     <Labelbox type="select"
+    //                         placeholder={"Sub Activity"} 
+    //                         changeData={(data) => checkValidation(data, "sub_activity")}
+    //                         value={createproject_Form.sub_activity.value}
+    //                         error={createproject_Form.sub_activity.error}
+    //                         errmsg={createproject_Form.sub_activity.errmsg}
+    //                  />
+    //                 </Grid>
+    //             </div>
+    //             <div className="projectTaskDatealign">
+    //                 <Grid container spacing={3}>
+    //                     <Grid item xs={4} >
+    //                         <Labelbox type="datepicker"
+    //                             placeholder={"Start Date"}
+    //                             changeData={(data) => checkValidation(data, "start_date_pro")}
+    //                             value={createproject_Form.start_date_pro.value}
+    //                             error={createproject_Form.start_date_pro.error}
+    //                             errmsg={createproject_Form.start_date_pro.errmsg}  
+    //                         />
+    //                     </Grid>
+    //                     <Grid item xs={4} >
+    //                         <Labelbox type="datepicker"
+    //                             placeholder={" End Date"}
+    //                             changeData={(data) => checkValidation(data, "end_date_pro")}
+    //                             value={createproject_Form.end_date_pro.value}
+    //                             error={createproject_Form.end_date_pro.error}
+    //                             errmsg={createproject_Form.end_date_pro.errmsg}   
+    //                         />
+    //                     </Grid>
+    //                     <Grid item xs={3} >
+    //                         <Labelbox type="select"
+    //                             placeholder={"Assign To"}
+    //                             changeData={(data) => checkValidation(data, "assigned_to")}
+    //                             value={createproject_Form.assigned_to.value}
+    //                             error={createproject_Form.assigned_to.error}
+    //                             errmsg={createproject_Form.assigned_to.errmsg}
+    //  />
+    //                     </Grid>
+
+    //                 </Grid>
+    //             </div>
+    //             <div className="projectTaskDatealign">
+    //                 <Grid container spacing={3}>
+    //                     <Grid item xs={7}>
+    //                     <Grid item xs={12} >
+    //                         <Labelbox type="textarea"
+    //                             placeholder={"Description"}
+    //                             changeData={(data) => checkValidation(data, "description")}
+    //                             value={createproject_Form.description.value}
+    //                             error={createproject_Form.description.error}
+    //                             errmsg={createproject_Form.description.errmsg}
+    //                        />
+    //                     </Grid>
+
+    //                     </Grid>
+
+    //                     <Grid item xs={4}>
+    //                     <Grid item xs={12} >
+    //                         <Labelbox type="select"
+    //                             placeholder={"Priority"} 
+    //                             changeData={(data) => checkValidation(data, "priorty")}
+    //                             value={createproject_Form.priorty.value}
+    //                             error={createproject_Form.priorty.error}
+    //                             errmsg={createproject_Form.priorty.errmsg}
+    //                         />
+    //                     </Grid>
+    //                     <Grid item xs={12} >
+    //                         <Labelbox type="select"
+    //                             placeholder={"Tag"} 
+    //                             changeData={(data) => checkValidation(data, "tag_pro")}
+    //                             value={createproject_Form.tag_pro.value}
+    //                             error={createproject_Form.tag_pro.error}
+    //                             errmsg={createproject_Form.tag_pro.errmsg}
+    //                           />
+    //                     </Grid>
+    //                     </Grid>
+    //                 </Grid>
+    //             </div>
+    //             <div className="projectTaskModelButtons">
+    //                 <CustomButton btnName={"CANCEL"}  custombtnCSS={"projectTaskGo"} />
+    //                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"}onBtnClick={() => setTaskModelOpen(true)} custombtnCSS={"projectTaskButtons"} onBtnClick={ProjectSubmit} />
+
+    //             </div>
+    //         </div>
+    //     )
+
+    // }
+
+
     const projectTaskModelContent = () => {
         return (
             <div className="projectTaskModel">
 
-                <Grid item xs={12} className="projectTaskHeader" container justify="center" style={{ margin: "auto" }}>
-                    <Grid item xs={12} container direction="row" justify="center" alignItems="center" spacing={1} className="projectTasktitle">
-                        <Grid item xs={4} container justify="center" alignItems="center"> IP Project</Grid>
-                        <Grid item xs={4} container justify="center" alignItems="center">Project Name</Grid>
-                        <Grid item xs={4} container justify="center" alignItems="center">Johnson & Johnson</Grid>
+                <Grid item xs={12} className="projectTaskHeader" container >
+                    <Grid item xs={12} container  spacing={2} className="projectTasktitle">
+                        <Grid item xs={4} > IP Project</Grid>
+                        <Grid item xs={4} >Project Name</Grid>
+                        <Grid item xs={4} >Johnson & Johnson</Grid>
+                    </Grid>
+                         <Grid item xs={12} container  spacing={2} className="projectTasktitle">
+                        <Grid item xs={4}> Operational</Grid>
+                        <Grid item xs={4}>First Cut Draft</Grid>
+                        <Grid item xs={4}>Assign To</Grid>
                     </Grid>
                
 
                 </Grid>
-                <div className="activityTask">
-                    <Grid item xs={7} >
+                {/* <div className="activityTask">
+                    <Grid item xs={6} >
                         <Labelbox type="select"
                             placeholder={"Activity"}
                             changeData={(data) => checkValidation(data, "activity")}
@@ -389,9 +509,9 @@ function ProjectTask() {
                             errmsg={createproject_Form.activity.errmsg}
                         />
                     </Grid>
-                </div>
-                <div className="activityTask">
-                    <Grid item xs={7} >
+                </div> */}
+                {/* <div className="activityTask">
+                    <Grid item xs={} >
                         <Labelbox type="select"
                             placeholder={"Sub Activity"} 
                             changeData={(data) => checkValidation(data, "sub_activity")}
@@ -400,79 +520,59 @@ function ProjectTask() {
                             errmsg={createproject_Form.sub_activity.errmsg}
                      />
                     </Grid>
-                </div>
-                <div className="projectTaskDatealign">
-                    <Grid container spacing={3}>
-                        <Grid item xs={4} >
-                            <Labelbox type="datepicker"
-                                placeholder={"Start Date"}
-                                changeData={(data) => checkValidation(data, "start_date_pro")}
-                                value={createproject_Form.start_date_pro.value}
-                                error={createproject_Form.start_date_pro.error}
-                                errmsg={createproject_Form.start_date_pro.errmsg}  
-                            />
-                        </Grid>
-                        <Grid item xs={4} >
-                            <Labelbox type="datepicker"
-                                placeholder={" End Date"}
-                                changeData={(data) => checkValidation(data, "end_date_pro")}
-                                value={createproject_Form.end_date_pro.value}
-                                error={createproject_Form.end_date_pro.error}
-                                errmsg={createproject_Form.end_date_pro.errmsg}   
-                            />
-                        </Grid>
-                        <Grid item xs={3} >
+                </div> */}
+                <div className="ddd">
+                    <Grid container spacing={2}>
+                    <Grid item xs={6} >
                             <Labelbox type="select"
-                                placeholder={"Assign To"}
-                                changeData={(data) => checkValidation(data, "assigned_to")}
-                                value={createproject_Form.assigned_to.value}
-                                error={createproject_Form.assigned_to.error}
-                                errmsg={createproject_Form.assigned_to.errmsg}
-     />
+                                placeholder={"Expense Type"}
+                                changeData={(data) => checkValidation(data, "expense_type")}
+                                // value={createproject_Form.start_date_pro.value}
+                                // error={createproject_Form.start_date_pro.error}
+                                // errmsg={createproject_Form.start_date_pro.errmsg}  
+                            />
+                        </Grid>
+                        <Grid item xs={6} >
+                            <Labelbox type="text"
+                                placeholder={"Amount"}
+                                changeData={(data) => checkValidation(data, "amount")}
+                                // value={createproject_Form.start_date_pro.value}
+                                // error={createproject_Form.start_date_pro.error}
+                                // errmsg={createproject_Form.start_date_pro.errmsg}  
+                            />
+                        </Grid>
+                        <Grid item xs={6} >
+                            <Labelbox type="select"
+                                placeholder={"Mode Of Payment "}
+                                changeData={(data) => checkValidation(data, "mode_payment")}
+                                // value={createproject_Form.start_date_pro.value}
+                                // error={createproject_Form.start_date_pro.error}
+                                // errmsg={createproject_Form.start_date_pro.errmsg}  
+                            />
+                        </Grid>
+                        <Grid item xs={6} >
+                            <span className="bill_align"> BILL</span>
+                            <Checkbox className="checkbox_clr"/>
+                            <input type="file"/>                            
                         </Grid>
 
-                    </Grid>
-                </div>
-                <div className="projectTaskDatealign">
-                    <Grid container spacing={3}>
-                        <Grid item xs={7}>
                         <Grid item xs={12} >
                             <Labelbox type="textarea"
                                 placeholder={"Description"}
-                                changeData={(data) => checkValidation(data, "description")}
-                                value={createproject_Form.description.value}
-                                error={createproject_Form.description.error}
-                                errmsg={createproject_Form.description.errmsg}
+                                // changeData={(data) => checkValidation(data, "description")}
+                                // value={createproject_Form.description.value}
+                                // error={createproject_Form.description.error}
+                                // errmsg={createproject_Form.description.errmsg}
                            />
                         </Grid>
+                  
 
-                        </Grid>
-
-                        <Grid item xs={4}>
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={"Priority"} 
-                                changeData={(data) => checkValidation(data, "priorty")}
-                                value={createproject_Form.priorty.value}
-                                error={createproject_Form.priorty.error}
-                                errmsg={createproject_Form.priorty.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={"Tag"} 
-                                changeData={(data) => checkValidation(data, "tag_pro")}
-                                value={createproject_Form.tag_pro.value}
-                                error={createproject_Form.tag_pro.error}
-                                errmsg={createproject_Form.tag_pro.errmsg}
-                              />
-                        </Grid>
-                        </Grid>
                     </Grid>
                 </div>
-                <div className="projectTaskModelButtons">
-                    <CustomButton btnName={"CANCEL"}  custombtnCSS={"projectTaskGo"} />
-                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"}onBtnClick={() => setTaskModelOpen(true)} custombtnCSS={"projectTaskButtons"} onBtnClick={ProjectSubmit} />
+               
+                <div className="projectTaskModelButtons" >
+                    {/* <CustomButton btnName={"CANCEL"}  custombtnCSS={"projectTaskGo"} /> */}
+                    <CustomButton btnName={"SAVE"}  btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"}onBtnClick={() => setTaskModelOpen(true)} custombtnCSS={"projectTaskButtons"} onBtnClick={ProjectSubmit} />
 
                 </div>
             </div>
@@ -535,8 +635,10 @@ function ProjectTask() {
 
                 {/* Project Task Model */}
 
-                <CustomButton btnName={"Create Project Task"} btnCustomColor="customPrimary"  />
-                <DynModel modelTitle={"Project Task"} handleChangeModel={taskModelOpen} handleChangeCloseModel={(bln) => setTaskModelOpen(bln)} content={projectTaskModelContent()} modalchanges="modalchangestask" />
+                <CustomButton btnName={"Create Project Task"} btnCustomColor="customPrimary"   onBtnClick={() => setTaskModelOpen(true)}/>
+                {/* <DynModel modelTitle={"Project Task"} handleChangeModel={taskModelOpen} handleChangeCloseModel={(bln) => setTaskModelOpen(bln)} content={projectTaskModelContent()} modalchanges="modalchangestask" /> */}
+                <DynModel modelTitle={"OPE"} handleChangeModel={taskModelOpen} handleChangeCloseModel={(bln) => setTaskModelOpen(bln)} content={projectTaskModelContent()} modalchanges="modalchangestask" />
+
 
             </div>
 

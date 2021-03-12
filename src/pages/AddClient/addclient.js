@@ -3,13 +3,14 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import CustomButton from '../../component/Butttons/button';
-
+import './addclient.scss';
+import { Label } from '@material-ui/icons';
 
 function AddClient(){
     const [resumeGetList, setGetList] = useState({})
 
     const [Addclient_Form, setAddclient_Form] = useState({
-        type_resource: {
+        client_name: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
@@ -52,7 +53,7 @@ function AddClient(){
             error: null,
             errmsg: null,
         },
-        mail_add_1: {
+        postal_address: {
             value: "",
             valueById: "",
             validation: [{ "name": "required" }],
@@ -105,7 +106,7 @@ function AddClient(){
             error: null,
             errmsg: null,
         },
-        state_domecile: {
+        state: {
             value: "",
             validation: [],
             error: null,
@@ -202,14 +203,16 @@ function AddClient(){
                       
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"Type Of Resource"}
-                                changeData={(data) => checkValidation(data, "type_resource")}
-                                value={Addclient_Form.type_resource.value}
-                                error={Addclient_Form.type_resource.error}
-                                errmsg={Addclient_Form.type_resource.errmsg}
+                                placeholder={"Client Name"}
+                                changeData={(data) => checkValidation(data, "client_name")}
+                                value={Addclient_Form.client_name.value}
+                                error={Addclient_Form.client_name.error}
+                                errmsg={Addclient_Form.client_name.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={12} >
+                        {/* <div > */}
+                        
+                            <Grid item xs={12} >
                             <Labelbox type="select"
                                 placeholder={"Industry"}
                                 // dropdown={resumeGetList.candidateList}
@@ -219,8 +222,10 @@ function AddClient(){
                                 errmsg={Addclient_Form.industrty.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
+                        <Grid container spacing={2} className="dashed_div_client" >
+
+                        <Grid item xs={12} >
+                            <Labelbox  type="text"  
                                 placeholder={"Contact Person 1"}
                                 // dropdown={resumeGetList.qualificationList}
                                 changeData={(data) => checkValidation(data, "con_per_1")}
@@ -229,6 +234,7 @@ function AddClient(){
                                 errmsg={Addclient_Form.con_per_1.errmsg}
                             />
                         </Grid>
+                                 
                         <Grid item xs={12}
                             container
                             direction="row"
@@ -279,31 +285,48 @@ function AddClient(){
                                 errmsg={Addclient_Form.email_id_1.errmsg}
                             />
                         </Grid>
+
+                            </Grid>
+            
                         <Grid item xs={12} className="textarea_height">
                             <Labelbox type="textarea"
-                                placeholder={"Mail Address"}
-                                // dropdown={resumeGetList.institutionList}
-                                changeData={(data) => checkValidation(data, "mail_add_1")}
-                                value={Addclient_Form.mail_add_1.value}
-                                error={Addclient_Form.mail_add_1.error}
-                                errmsg={Addclient_Form.mail_add_1.errmsg}
+                                placeholder={"Postal Address"}
+                                changeData={(data) => checkValidation(data, "postal_address")}
+                                value={Addclient_Form.postal_address.value}
+                                error={Addclient_Form.postal_address.error}
+                                errmsg={Addclient_Form.postal_address.errmsg}
                             />
-                        </Grid>           
+                        </Grid> 
+                        <div style={{display:'flex'}}>  
+                        <div>
+                        <Grid md={12}>
+                    <Labelbox type="text"
+                    placeholder="Name of Power Attorney"></Labelbox>
+  </Grid> 
+                        </div>
+                        
+                    <div style={{marginLeft:'10px'}}>  <input type="file"/></div>
+                  
+              
+                </div>    
+              <Grid container spacing={2} md={12}>
+                  <Grid md={2} style={{color:'#023e7d'}}>POA  </Grid>
+                  <Grid md={2} style={{color:'#023e7d'}}>File Name  </Grid>
+                 </Grid> 
+
+                 <Grid container spacing={2} md={12}>
+                 <Grid md={2} >Field 1  </Grid>
+                 <Grid md={2} >Field 1  </Grid>
+                </Grid> 
+                <Grid container spacing={2} md={12}>
+                <Grid md={2} >Field 2  </Grid>
+                <Grid md={2} >Field 2 </Grid>
+               </Grid> 
 
                     </Grid>
                 </div>
-                <div className="rightContainer">
+                <div className="rightContainer_client">
                     <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Company Name"}
-                                // dropdown={resumeGetList.skillsList}
-                                changeData={(data) => checkValidation(data, "comp_name")}
-                                value={Addclient_Form.comp_name.value}
-                                error={Addclient_Form.comp_name.error}
-                                errmsg={Addclient_Form.comp_name.errmsg}
-                            />
-                        </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Client Type"}
@@ -314,6 +337,7 @@ function AddClient(){
                                 errmsg={Addclient_Form.client_type.errmsg}
                             />
                         </Grid>
+                        <Grid container spacing={2} className="dashed_div_client" >
                         <Grid item xs={12}>
                             <Labelbox type="text"
                                 placeholder={"Contact Person 2"}
@@ -371,13 +395,14 @@ function AddClient(){
                                 errmsg={Addclient_Form.emai_id_2.errmsg}
                             />
                         </Grid>
+                        </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"State of Domecile"}
-                                changeData={(data) => checkValidation(data, "state_domecile")}
-                                value={Addclient_Form.state_domecile.value}
-                                error={Addclient_Form.state_domecile.error}
-                                errmsg={Addclient_Form.state_domecile.errmsg}
+                                placeholder={"State"}
+                                changeData={(data) => checkValidation(data, "state")}
+                                value={Addclient_Form.state.value}
+                                error={Addclient_Form.state.error}
+                                errmsg={Addclient_Form.state.errmsg}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -389,6 +414,7 @@ function AddClient(){
                                 errmsg={Addclient_Form.city.errmsg}
                             />
                         </Grid>
+                
                     
                      
                         <Grid item xs={12}
@@ -400,10 +426,18 @@ function AddClient(){
                             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}  />
                             <CustomButton btnName={"Cancel"}/>
                         </Grid>
+            
+               
                     </Grid>
+                
+                </div>
+              
+          
+            </div>
+            <div>
+               
 
                 </div>
-            </div>
 
         </div>
     )
