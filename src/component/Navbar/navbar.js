@@ -104,7 +104,7 @@ function Navbar(props) {
             <SettingsIcon className="customIcon_header" />
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
-              <div className="userName">John Wick</div>
+              <div className="userName">{localStorage.getItem("user_name").slice(1,-1)}</div>
               <div className="userPosition">HOD</div>
             </div>
             {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}

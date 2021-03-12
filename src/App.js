@@ -13,6 +13,7 @@ function App() {
     localStorage.setItem("token", JSON.stringify(data.data[0][0]));
     localStorage.setItem("empId", JSON.stringify(data.data[0][0].emp_id));
     localStorage.setItem("user_id", JSON.stringify(data.data[0][0].user_id));
+    localStorage.setItem("user_name", JSON.stringify(data.data[0][0].user_name));
     setAuthTokens(data);
   }
 
