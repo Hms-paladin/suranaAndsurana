@@ -86,8 +86,7 @@ function ProjectFormCreate(props) {
             "project_type_id":projectform.project_type.value,
             "sub_project_type_id":projectform.project_sub_type.value
         },
-    })
-        .then((response) => {
+    }).then((response) => {
             console.log("response",response)
             let processData=[]
             response.data.data.map((data)=>
@@ -99,7 +98,7 @@ function ProjectFormCreate(props) {
     const handleCancel = () => {
         let ResumeFrom_key = [
             "process_type", "filling_type"
-        ]
+        ]}
 
     // Filling Type
     Axios({
@@ -110,8 +109,7 @@ function ProjectFormCreate(props) {
             "sub_project_type_id":projectform.project_sub_type.value,
             "process_id":projectform.process_type.value
         },
-    })
-        .then((response) => {
+    }).then((response) => {
             console.log("response",response)
             let fillingData=[]
             response.data.data.map((data)=>
@@ -133,11 +131,9 @@ function ProjectFormCreate(props) {
             data:{
                 "project_type_id":data
             }
-        })
-            .then((response) => {
-                console.log("setProjectSubType",response)
-
-               let projectSubTypeValue=[]
+        }).then((response) => {
+                console.log("setProjectSubType",response);
+               let projectSubTypeValue=[];
                response.data.data.map((data)=>
                projectSubTypeValue.push({value:data.sub_project_type,id:data.sub_project_type_id})
                )
@@ -222,50 +218,10 @@ function ProjectFormCreate(props) {
             <Grid item xs={12} className="projectFormTitle">Project Form</Grid>
             <div className="projectFormContent">
 
-<<<<<<< HEAD
-                            />
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={"Project Type "}
-                                dropdown={ProjectType.projectTypedata}
-                                changeData={(data) => checkValidation(data, "project_type")}
-                                value={projectform.project_type.value}
-                                error={projectform.project_type.error}
-                                errmsg={projectform.project_type.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Process Type "}
-                                 dropdown={ProcessType.processData}
-                                changeData={(data) => checkValidation(data, "process_type")}
-                                value={projectform.process_type.value}
-                                error={projectform.process_type.error}
-                                errmsg={projectform.process_type.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Billable Type "}
-                                dropdown={BillableType.BillableData}
-                                changeData={(data) => checkValidation(data, "billable_type")}
-                                value={projectform.billable_type.value}
-                                error={projectform.billable_type.error}
-                                errmsg={projectform.billable_type.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Counsel"}
-                            />
-                        </Grid>
-=======
                 <Grid item xs={12} container direction="row" justify="center" spacing={3}>
                     <Grid item xs={5} >
                         <Labelbox type="select"
                             placeholder={"Client"}
->>>>>>> 2880aae6bac92e808ee24a7531687aa4d146c628
 
 
                         />
@@ -306,29 +262,6 @@ function ProjectFormCreate(props) {
                             errmsg={Trade_Mark.filling_type.errmsg}
 
 
-<<<<<<< HEAD
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Project Sub Type "}
-                                dropdown={SubType_Project.projectSubTypeValue}
-                                changeData={(data) => checkValidation(data, "project_sub_type")}
-                                value={projectform.project_sub_type.value}
-                                error={projectform.project_sub_type.error}
-                                errmsg={projectform.project_sub_type.errmsg}
-
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Filling Type "}
-                                dropdown={setFillingType.fillingData}
-                                changeData={(data) => checkValidation(data, "filling_type")}
-                                value={projectform.filling_type.value}
-                                error={projectform.filling_type.error}
-                                errmsg={projectform.filling_type.errmsg}
-=======
 
                         />
                     </Grid>
@@ -336,7 +269,6 @@ function ProjectFormCreate(props) {
                         <Labelbox type="select"
                             placeholder={" billable Type "}
 
->>>>>>> 2880aae6bac92e808ee24a7531687aa4d146c628
 
                         />
                     </Grid>
@@ -370,13 +302,8 @@ function ProjectFormCreate(props) {
                
             </div>
             <div className="customFormbtn">
-<<<<<<< HEAD
-                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} />
-                <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"}/>
-=======
                 <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onSubmit} />
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
->>>>>>> 2880aae6bac92e808ee24a7531687aa4d146c628
 
             </div>
         </div>
