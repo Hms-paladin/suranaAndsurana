@@ -6,7 +6,6 @@ import CustomButton from "../../../component/Butttons/button";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { InesertResume } from "../../../actions/ResumeAction";
 import { useDispatch, connect } from "react-redux";
-import { withWidth } from '@material-ui/core';
 
 
 
