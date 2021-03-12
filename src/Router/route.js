@@ -21,6 +21,10 @@ import AddHearing from '../pages/stages/AddHearing'
 import RateMaster from '../pages/stages/RateMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
+//Litigation :
+
+import Litigation from '../pages/Litigation/litigation';
+
 
 function Routes(props) {
 
@@ -42,6 +46,11 @@ function Routes(props) {
             <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
             <PrivateRoute path="/addhearing" component={AddHearing} exact />
             <PrivateRoute path="/ratemaster" component={RateMaster} exact />
+
+            {/* Litigation */}
+
+            <PrivateRoute path="/litigation" component={Litigation} exact />
+
         </Navbar>
     );
 }

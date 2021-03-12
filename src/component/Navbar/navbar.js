@@ -72,14 +72,17 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
-      {path:"/projectIp",title:"ProjectIp1"},
-      {path:"/projectTask",title:"projectTask"},
-      {path:"/stageicon",title:"Stages"},
+      { path: "/projectIp", title: "ProjectIp1" },
+      // {path:"/projectTask",title:"projectTask"},
+
+      // Litigation :
+
+      { path: "/litigation", title: "Litigation" },
 
     ]
   );
 
-  function handleLogout(){
+  function handleLogout() {
     localStorage.clear();
     window.location.reload()
   }
@@ -109,16 +112,16 @@ function Navbar(props) {
             </div>
             {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}
             <div className="logoutModel">
-              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event)=>(setAnchorEl(event.currentTarget))}>
-              <ArrowDropDownCircleIcon className="customIconArrow_header" />
+              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => (setAnchorEl(event.currentTarget))}>
+                <ArrowDropDownCircleIcon className="customIconArrow_header" />
               </Button>
               <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
-                onClose={()=>setAnchorEl(null)}
-                style={{top:"49px"}}
+                onClose={() => setAnchorEl(null)}
+                style={{ top: "49px" }}
               >
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
