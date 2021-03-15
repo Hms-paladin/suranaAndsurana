@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import DynModel from '../../../component/Model/model';
 import ProjectTaskModel from '../ProjectTaskModel/projecttaskModel';
-import Stages from '../../stages/stageicon'
+
+// stage icon in tabviewicons:
+
+import Stages from '../../stages/stageicon';
 
 // tradeMark pages:
 import TMapplicationFiling from './trademarks';
@@ -15,16 +18,23 @@ export default function TradeMark(props) {
     const [modelOpen, setModelOpen] = useState(false)
     const [task, setTask] = useState(true)
     const [stage, setStage] = useState(false)
+    const [stageMonitor, setStageMonitor] = useState(false)
+
 
 
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
             setModelOpen(true)
-            setTask(true)
         }
         else if (boxName === "STAGE") {
             setStage(true)
             setTask(false)
+
+        }
+        else if (boxName === "STAGE  MONITOR"){
+            setStageMonitor(true)
+            setTask(false)
+            setStage(false)
 
         }
 
@@ -70,6 +80,7 @@ export default function TradeMark(props) {
                     <TMoppositionDefended />
                 }
             </div>}
+            
 
         </div>
     )
