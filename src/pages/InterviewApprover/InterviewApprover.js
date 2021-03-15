@@ -61,7 +61,7 @@ function InterviewApprover(props) {
 
 
     useEffect(()=>{
-        dispatch(interviewApproverTableData())
+        dispatch(interviewApproverTableData(props))
         let interviewList = []
 
         props.interviewData.map((data)=>{
