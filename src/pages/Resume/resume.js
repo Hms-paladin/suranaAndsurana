@@ -420,7 +420,7 @@ function ResumePage() {
         }));
     }
 
-    console.log(Resume_Form, "Resume_Form")
+    console.log( localStorage. getItem('token',), "Resume_Form")
 
     return (
         <>
@@ -430,6 +430,7 @@ function ResumePage() {
             <div className="Container">
                 <div className="leftContainer">
                     <Grid container spacing={3}>
+                    
                       
                         <Grid item xs={12}>
                             <Labelbox type="text"

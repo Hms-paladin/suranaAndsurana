@@ -8,10 +8,10 @@
 }
 
 .formdiv .labeltxt {
-    color: #666666;
-    display: block;
-    font-size: 14px;
-    font-weight: 100;
+  color: #666666;
+  display: block;
+  font-size: 14px;
+  font-weight: 100;
 }
 
 .formdiv .brdrcls {
@@ -27,7 +27,15 @@
 }
 
 .formdiv .brdred {
-    border: 1px solid red;
+  border: 1px solid red;
+}
+
+.formdiv .selectbrdred .ant-select-selector{
+  border: 1px solid red !important;
+}
+
+.formdiv .datePickerbrdred .MuiOutlinedInput-notchedOutline{
+  border: 1px solid red !important;
 }
 
 .formdiv .selectbrdred .ant-select-selector{
@@ -39,21 +47,21 @@
 }
 
 .formdiv .brdnone .ant-select-selection{
-    border: none !important;
+  border: none !important;
 }
 
 .formdiv .MuiFormControl-root .MuiTextField-root .MuiFormControl-marginNormal {
-    box-shadow: transparent;
+  box-shadow: transparent;
 }
 
 .formdiv .radiobtncolor {
-    color: #82af3f !important;
+  color: #82af3f !important;
 }
 
 .formdiv .datepickerchnge input {
-    width: 100% !important;
-    padding: 20px;
-    border-radius: 0px;
+  width: 100% !important;
+  padding: 20px;
+  border-radius: 0px;
 }
 
 .formdiv .selectbox .ant-select-selection--single {
@@ -94,22 +102,39 @@
     border-radius: 0;
     outline: unset;
 }
+.formdiv .ant-select-selection{
+  padding: 0px !important;
+  outline: 0;
+  height:30px;
+  /* box-shadow: 0 0 1.5px 0px #ccc; */
+  color: #797777;
+  border-radius: 7px !important;
+  border: 1px solid #023E7D !important;
 
-.formdiv .ant-select-selection__rendered {
-    position: relative;
-    display: block;
-    margin-right: 0;
-    margin-left: 11px;
-    line-height: 30px;
 }
-
+.formdiv .ant-select-selection__rendered {
+  position: relative;
+  display: block;
+  margin-right: 0;
+  margin-left: 11px;
+  line-height: 30px;
+}
+.formdiv .ant-select-selection--multiple .ant-select-selection__placeholder{
+  margin-left: -3px !important;
+  color: #b9b9b9 !important;
+  font-size: 13px !important;
+}
+.formdiv .ant-select-selection-selected-value{
+  margin-left: -3px !important;
+  font-size: 13px !important;
+}
 .formdiv .ant-select-search--inline .ant-select-search__field {
-    border: none;
-    box-shadow: none;
+  border: none;
+  box-shadow: none;
 }
 
 .formdiv .ant-select-search__field__wrap input {
-    padding-left: 0px;
+  padding-left: 0px;
 }
 
 .formdiv .Errormsg {
@@ -122,11 +147,9 @@
 /* .ant-select-dropdown {
     z-index: 1400;
 }
-
 .ant-calendar-picker {
-    z-index: 1410;
+  z-index: 1410;
 }
-
 .ant-calendar-picker-container {
     z-index: 1410 !important;
 } */
@@ -141,11 +164,11 @@
 /* for datepicker */
 
 .MuiPickersCalendarHeader-dayLabel {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .MuiTypography-colorInherit {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 /* .MuiPickersDay-daySelected {
@@ -153,7 +176,7 @@
 } */
 
 .MuiDialogActions-root.MuiDialogActions-spacing .MuiButton-label{
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .formdiv .MuiInputBase-inputAdornedEnd{

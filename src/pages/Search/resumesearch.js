@@ -116,16 +116,16 @@ function Resumesearch(props) {
         }))
 
 
-        dispatch(ResumeSearchStatus())
+        // dispatch(ResumeSearchStatus())
         // get value from redux store
-        Axios({
-            method: "get",
-            url: apiurl + "get_Interview_Status",
-        }).then((response) => {
-            setoptionvalues(response.data.data.map((data) => ({
-                name: data.status
-            })))
-        })
+        // Axios({
+        //     method: "get",
+        //     url: apiurl + "get_Interview_Status",
+        // }).then((response) => {
+        //     setoptionvalues(response.data.data.map((data) => ({
+        //         name: data.status
+        //     })))
+        // })
 
     }, [])
 
@@ -206,11 +206,12 @@ function Resumesearch(props) {
         })
 
         getStatus.map((data) => {
-            statusList.push({ id: data.status_id, value: data.status_type })
+            statusList.push({ id: data.status_id, value: data.status })
         })
 
         setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList })
 
+        
 
     }, [props.GetOptions])
 
@@ -240,10 +241,11 @@ function Resumesearch(props) {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.dob, gender: data.gender === "M" ? "Male" : "Female", basic: data.bas_qual, language: data.lang_known, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent, box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female", basic: data.basic_qual, language: data.language, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent, box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
 
         setRowData(rowDataList)
+        console.log("___=====",rowDataList)
     }, [props.GetRowData,test])
 
     function onSearch() {

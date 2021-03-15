@@ -128,18 +128,18 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(()=>{
-    // console.log(props.rows,"dynrows")
     setRows(props.rows)
+    props.rows.map((row)=> console.log("================ ====",row.age))
   },[props])
 
-//   const handleSelectAllClick = (event) => {
-//     if (event.target.checked) {
-//       const newSelecteds = rows.map((n) => n.name);
-//       setSelected(newSelecteds);
-//       return;
-//     }
-//     setSelected([]);
-//   };
+  // const handleSelectAllClick = (event) => {
+  //   if (event.target.checked) {
+  //     const newSelecteds = rows.map((n) => n.name);
+  //     setSelected(newSelecteds);
+  //     return;
+  //   }
+  //   setSelected([]);
+  // };
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -197,6 +197,7 @@ export default function EnhancedTable(props) {
               headCells={props.headCells}
             />
             <TableBody>
+       
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -217,9 +218,9 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={index}
                       selected={isItemSelected}
-                    >
+                    > 
                     {props.EnableSno && <TableCell align="center">{rowsPerPage * page + index+1}</TableCell>}
-                    {arrval}
+                    {arrval} 
                     </TableRow>
                   );
                 })}

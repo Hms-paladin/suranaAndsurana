@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
-
+import moment from 'moment'
 
 function DynModel(props){
     const [visible, setVisible] = React.useState(false);
@@ -14,14 +14,14 @@ function DynModel(props){
     
     const [getres_id,setgetres_id]=useState("")
     useEffect((id)=>{
-      console.log(props.data_id&&props.data_id.resume_id,"props")
+      console.log(props.data_id&&props.data_id.resume_id,"divya")
       setres_id(props.data_id&&props.data_id.resume_id)
       console.log(res_id,"id")
         Axios({
             method:"POST",
             url: apiurl + 'get_candidate_details_by_id',         
             data:{
-                "resume_id":res_id
+                "resume_id":props.data_id&&props.data_id.resume_id
             }
         })
         .then((response)=>{
@@ -39,7 +39,6 @@ function DynModel(props){
         //    res_id:props.data_id&&props.data_id.resume_id
         // }))
         
-        console.log(res_id,"res")
        
     },[props])
 
@@ -69,7 +68,7 @@ function DynModel(props){
                        <div className="employeeform_row1">
                           <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name?val.name:"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id?val.user_id:""}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?val.dob:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?moment(val.dob).format("DD-MMM-YYYY"):"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender?val.gender:""}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual?val.bas_qual:"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>
@@ -79,8 +78,8 @@ function DynModel(props){
                         <div className="employeeform_row2flex1">
                           <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">{val.institution}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">{val.last_employer}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{val.last_empr_start_date}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{val.last_empr_end_date}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{moment(val.last_empr_start_date).format("DD-MMM-YYYY")}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{moment(val.last_empr_end_date).format("DD-MMM-YYYY")}</div></div>
                         </div>
                         <div className="employeeform_row2flex2">
                           <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills}</div></div>

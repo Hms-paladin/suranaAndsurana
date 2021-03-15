@@ -598,7 +598,7 @@ function ProjectTask() {
                 <Grid container spacing={2} justify="center">
                     <Grid item xs={2} >
                         <Labelbox type="select"
-                            placeholder={"Client type"} />
+                            placeholder={"Client  type"} />
                     </Grid>
                     <Grid item xs={2} >
                         <Labelbox type="select"

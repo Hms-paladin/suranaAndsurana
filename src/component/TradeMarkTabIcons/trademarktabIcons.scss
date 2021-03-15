@@ -2,20 +2,28 @@
     margin-right: 12px;
     }
     
-    
-// .tabsIcons{
-//     margin-right: 10px;
-// }
-    
+
+
+
 .tabIconsView{
+    width: 50px;
     background-color: white;
     margin: 5px;
-    width: 5%;
     text-align: center;
+    padding: 2px;
     border-radius: 6px;
     box-shadow: 0px 0px 4px 3px #b8b6b6;
     cursor: pointer;
-    padding: 6px 3px 2px 3px;
+}
+
+.tabiconTitle{
+    font-size: 7px;
+    color: #023E7D;
+    font-weight: 600;
+}
+
+.tabIconImage{
+    width: 20px;
 }
 
 .active,.tabIconsView:hover{
@@ -24,20 +32,11 @@
 
 }
 
-.tabiconTitle{
-    font-size: 8px;
-    color: #023E7D;
-    font-weight: 700;
-    padding-top: 3px;
-}
-
+    
 @media only screen and (max-width: 1100px) {
     .tabiconTitle{
-        font-size: 5px;
+        font-size: 6px;
        
     }
-    .tabIconsView{
-    padding: 6px 3px 3px 3px;
-
-    }
+    
 }

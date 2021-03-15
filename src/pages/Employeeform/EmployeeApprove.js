@@ -8,15 +8,17 @@ import Axios from 'axios'
 import CustomButton from '../../component/Butttons/button';
 import {notification} from 'antd'
 import { BottomNavigationAction } from '@material-ui/core';
+import moment from 'moment';
  function EmployeeApprove(props){
     const dispatch = useDispatch();
     const [employee,setemployee]=useState([])
     const [resume_id,setresume_id]=useState("")
-    const [accept,setaccept]=useState(false)
-    const [reject,setreject]=useState(false)
+    const [status,setStatus] = useState()
+    
 useEffect(()=>{
     
     setresume_id(props.int_details_id)
+    console.log("props from employeeappro",props.int_details_id)
     Axios({
         method:"post",
         url:apiurl+"get_employee_approval",
@@ -31,49 +33,33 @@ useEffect(()=>{
     })
       
 },[dispatch,props])
-const GetEmployee=()=>{
-    Axios({
-        method:"post",
-        url:apiurl+"get_employee_approval",
-        data:{
-            emp_id:props.emp_viewer_id&&props.emp_viewer_id.interviewer_id
-        }
-    }).then((response)=>{
-        console.log(response,"divya")
-        setemployee(response.data.data.map((data)=>
-            ({id:data.emp_id,name:data.name,designation:data.designation})
-        ))
-    })
-}
 const InsertEmployee=(data)=>{
     
     if(data==="accept"){
-        setaccept(true)
-        setreject(false)
+        setStatus(true)
     }
     if(data==="reject"){
-        setaccept(false)
-        setreject(true)
+        setStatus(false)
     }
     Axios({
         method:"post",
         url:apiurl+"insert_employee_status",
         data:{
             "emp_id":employee.id,
-            "approved_by":"3",
-            "approved_date":"2021-02-21",
-            "emp_status":accept?1:reject?2:"",
+            "approved_by":localStorage.getItem("empId"),
+            "approved_date":moment().format('YYYY-MM-DD') ,
+            "emp_status":status === true?1 :2, 
+            "task_id":""                                  
         },
     }).then((response)=>{
-        console.log(response.data.msg,"data")
-        GetEmployee()
-        if(data==1){
+        if(response.data.status==1){
+            props.closemodal()
             notification.success({
                 message: `Employee approved successfully`,
                 placement: "topRight",
               });
         }
-        if(data==2){
+        if(response.data.status==0){
             notification.warning({
                 message: `Employee rejected`,
                 placement: "topRight",

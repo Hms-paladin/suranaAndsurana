@@ -13,17 +13,25 @@ import Interview from '../pages/Interview/interview';
 import TodoList from '../pages/TodoList/todoList';
 import ProjectTask from '../pages/ProjectTask/projectTask';
 import ProjectIp1 from '../pages/Project IP1/projectIp';
-import ProjectIp2 from '../pages/Project Ip2/projectIp2';
 import Employeeform from "../pages/Employeeform/employeeform.js";
 import Search from '../pages/Search/search';
-import ProjectIpOption1 from '../pages/ProjectIpOption1/projectIpOption1';
-import ProjectIpOption2 from '../pages/ProjectIpOption2/projectIpOption2';
 import Stages from '../pages/stages/stageicon';
+<<<<<<< HEAD
 import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
 import Task from "../pages/task/Task";
 import AddClient from "../pages/AddClient/addclient";
 // import GenerateInvoice from "../pages/Generateinvoi/ce/generateinvoice";
 import GenerateInvoice from "../pages/Generateinvoice/generateinvoice";
+=======
+import StagesMaster from '../pages/stages/StagesMaster'
+import AddHearing from '../pages/stages/AddHearing'
+import RateMaster from '../pages/stages/RateMaster'
+import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
+
+//Litigation :
+
+import Litigation from '../pages/Litigation/litigation';
+>>>>>>> f89a563e59ec89b57c844dd9a23d15d770d2e95f
 
 
 function Routes(props) {
@@ -41,15 +49,19 @@ function Routes(props) {
             <PrivateRoute path ="/generateinvoice" component={ GenerateInvoice } exact/>
 
             {/* Create Project Form */}
-            <PrivateRoute path="/projectFormCreate" component={ProjectForm} exact />
-
+            <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
             {/* Ip TradeMark */}
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
             <PrivateRoute path="/projectIp" component={ProjectIp1} exact />
-            <PrivateRoute path="/projectIp2" component={ProjectIp2} exact />
-            <PrivateRoute path="/projectIpOption1" component={ProjectIpOption1} exact />
-            <PrivateRoute path="/projectIpOption2" component={ProjectIpOption2} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
+            <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
+            <PrivateRoute path="/addhearing" component={AddHearing} exact />
+            <PrivateRoute path="/ratemaster" component={RateMaster} exact />
+
+            {/* Litigation */}
+
+            <PrivateRoute path="/litigation" component={Litigation} exact />
+
         </Navbar>
     );
 }

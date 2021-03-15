@@ -9,6 +9,7 @@ import moment from "moment";
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
 import InerviewScreen from "../Interview/interview"
 import EmployeeApprove from '../Employeeform/EmployeeApprove'
+import Employeeform from '../Employeeform/employeeform'
 import "./todoList.scss"
 
 // Hr Task:
@@ -53,10 +54,12 @@ function TodoList(props) {
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
+    const [EmployeeFormOpen, setEmployeeFormOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
     const [hrTodoList, setHrTodoList] = useState([])
     const [can_int_id, setcan_int_id] = useState([])
     const [res_id, setres_id] = useState([])
+    const [Employee_Data,setEmployee_Data]=useState([])
     const [viewer_id, setviewer_id] = useState([])
     useEffect(() => {
         dispatch(getHrTaskList())
@@ -68,7 +71,6 @@ function TodoList(props) {
         let todoListdata=[]
       
         props.getHrTodoList.map((data) => {
-            console.log(data,"showid")
             let showId = null
             let showName = null
 
@@ -82,15 +84,22 @@ function TodoList(props) {
                 showId = data.int_details_id
                 showName = "int_details_id"
             }
+            else if(data.int_status_id){
+                showId =data.int_status_id
+                showName="int_status_id"
+            }
             hrList.push({ id: <div onClick={(id,name) => openModelFunc(showName,showId)} className="tempClass" >{showId}</div>, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: data.designation, candidates: data.no_of_candidates})
         })
         setHrTodoList(hrList)
+        
+      console.log(props.getHrTodoList,"ddd")
 
     }, [props.getHrTodoList])
 
 
     function openModelFunc(name,id) {
       
+
         if(name==="interviewer_id"){
             setApproveOpen(true) 
             let int_viewer_id= props.getHrTodoList.find((val)=>{
@@ -118,24 +127,46 @@ function TodoList(props) {
             })
             setcan_int_id(checkData)
         }
+        else if(name==="int_status_id"){
+            setEmployeeFormOpen(true)
+            let employeedata= props.getHrTodoList.find((val)=>{
+                return(
+                    id == val.int_status_id
+                )
+            })
+            setEmployee_Data(employeedata)
+        }
     }
 
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
-                <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
-                <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000} content={<InterviewApprover />} />
-                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}/>} />
+            <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
+       {/*InrerviewScreen after  Schedule     */}
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}
+             content={<InerviewScreen interviewer_id={can_int_id}
+              handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
 
-                <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} />} />
+    {/*InterviewApprover after  selected in interviewscreen     */}
+            <DynModel modelTitle={"Interview Approver"}         handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
+             content={<InterviewApprover                handleAproverModelClose={(bln) => setModelOpen(bln)}   int_resume_id={res_id}/>} />
+
+    {/*EmployeeForm after  selected in interview approve     */}
+            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
+             content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
+
+    {/*EmployeeApprove after  value entered in employee form     */}
+            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} 
+            content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
+
             </div>
-            <div>
-                <EnhancedTable headCells={projectheadCells} rows={hrTodoList} tabletitle={"Project task"} />
-            </div>
-            <div>
-                <EnhancedTable headCells={workflowheadCells} rows={hrTodoList} tabletitle={"Project task"} />
-            </div>
+             <div>
+                 <EnhancedTable headCells={projectheadCells} rows={[]} tabletitle={"Project task"} />
+             </div>
+             <div>
+               <EnhancedTable headCells={workflowheadCells} rows={[]} tabletitle={"Project task"} />
+           </div>
         </div>
     )
 }

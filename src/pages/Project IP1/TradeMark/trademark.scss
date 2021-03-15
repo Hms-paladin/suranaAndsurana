@@ -2,6 +2,87 @@
     margin: 8px;
 }
 
+.uploadbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    path{
+        fill:#023E7D;
+    }
+    .ant-upload-select {
+        border: 1px solid #023E7D !important;
+        background-color: #fff;
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        padding-left:10px;
+        padding-right:10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:160px;
+    
+    }
+    .uploadbox_tag{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    div{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 1px;
+    }
+    
+}
+.upload_file_inside{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// trade Mark Application International Filed =>>
+
+
+
+// TradeMark Opposition-Filed  =>>
+
+.trademarkOpsosotionContainer{
+    margin: 15px;
+}
+
+.tradeMarkOpositionButton{
+    
+    margin: 25px;
+    text-align: center;
+    
+}
+
+.TMopositionbuttons{
+    width: 11% !important;
+}
+
+.custombtnOposition{
+ text-align: right;
+margin: 0px 60px 30px 0px;
+position: relative;
+bottom: 20px;
+    
+}
+
+
+// TradeMark Oppsition-Defended :
+
+.customButtonOposition{
+    text-align: right;
+    margin: 20px;
+}
+
+.TMOpositionButton{
+    width: 10%;
+}
+
+
 .uploadbox_div{
     display: flex;
     align-items: center;
@@ -33,9 +114,4 @@
         padding: 1px;
     }
     
-}
-.upload_file_inside{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }

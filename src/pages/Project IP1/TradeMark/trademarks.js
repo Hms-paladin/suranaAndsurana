@@ -243,7 +243,6 @@ function TradeMark() {
     };
     return (
         <div className="tradeMarkContainer">
-            <Tabs />
             
             <div>
                 <Grid item xs={12} container direction="row" spacing={1} >
@@ -262,7 +261,7 @@ function TradeMark() {
                                     errmsg={Trade_Mark.mark.errmsg} />
                             </Grid>
                             <Grid item xs={6} >
-                                <div className="uploadbox_div" >
+                                <div className="uploadbox" >
                                     <div>
                                         <Upload {...props} className="uploadbox_tag"
                                             action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
@@ -376,13 +375,22 @@ function TradeMark() {
                         </Grid>
                     </Grid>
                     <Grid item xs={4} container direction="column" spacing={2}>
-                        <Grid item xs={12} >
-                            <Labelbox type="text"
+                        <Grid item xs={10} >
+                        <div className="uploadbox" >
+                                    <div>
+                                        <Upload {...props} className="uploadbox_tag"
+                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                            <div className="upload_file_inside"><label>Order</label><PublishIcon /></div>
+                                        </Upload>,
+                                     </div>
+                                </div>
+                            {/* <Labelbox type="text"
                                 placeholder={" Order"}
                                 changeData={(data) => checkValidation(data, "order")}
                                 value={Trade_Mark.order.value}
                                 error={Trade_Mark.order.error}
-                                errmsg={Trade_Mark.order.errmsg} />
+                                errmsg={Trade_Mark.order.errmsg} /> */}
                         </Grid>
 
                         <Grid item xs={12} container direction="row" spacing={1}>

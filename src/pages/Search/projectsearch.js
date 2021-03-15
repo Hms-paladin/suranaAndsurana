@@ -39,11 +39,11 @@ const headCells = [
 ];
 
 const rows = [
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder", radio: <Radio /> },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder", radio: <Radio /> },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder", radio: <Radio /> },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder", radio: <Radio /> },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder", radio: <Radio /> },
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder"  },
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder"},
 
 ];
 function Projectsearch(props) {
@@ -114,11 +114,11 @@ function Projectsearch(props) {
             <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
 
           </Panel>
-          <Panel header="Cases (5)" key="2">
+          <Panel header="Litigation Project (5)" key="2">
             <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
 
           </Panel>
-          <Panel header="Copyright (5)" key="3">
+          <Panel header="Retainer Project (5)" key="3">
             <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
 
           </Panel>
