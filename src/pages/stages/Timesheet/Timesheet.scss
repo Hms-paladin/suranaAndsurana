@@ -1,0 +1,36 @@
+.edit_time_sheet{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  
+}
+.time_col_values{
+    color:#707070 !important;
+    font-size: 13px;
+}
+.time_col_head{
+    color:#023E7D;
+    font-weight: 600;
+}
+.time_sheet_labels .formdiv .MuiFormControl-marginNormal{
+    border: 1px solid #023E7D !important;
+    border-radius: 7px !important;
+}
+.time_sheet_labels .formdiv .MuiInput-underline:after{
+    border-bottom: 0px !important;
+}
+.time_sheet_labels .formdiv .MuiInput-underline:before{
+    border-bottom: 0px !important;
+}
+.time_sheet_labels{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.time_sheet_labels .custom_labelbox{
+    width:145px !important;
+}
+.time_save_btndiv{
+    text-align: center;
+    margin:15px 10px 0px;
+}
