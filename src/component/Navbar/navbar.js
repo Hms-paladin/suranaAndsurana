@@ -68,12 +68,17 @@ function Navbar(props) {
   const [menuItems, setMenuItems] = useState(
     [
       { path: "/resume", title: "Resume" },
-      { path: "/todoList", title: "Todo" },
+      { path: "/todoList", title: "To Do List" },
       // {path:"/interview",title:"Interview"},
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
       { path: "/projectIp", title: "ProjectIp1" },
       // {path:"/projectTask",title:"projectTask"},
+      // { path: "/projectIp2", title: "ProjectIp2" },
+      { path: "/task", title: "Task" },
+      { path: "/addclient", title: "Add Client" },
+      { path: "/generateinvoice", title: "GenerateInvoice" },
+
 
       // Litigation :
 

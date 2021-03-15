@@ -537,6 +537,7 @@ function ResumePage() {
                                 <div className="startdateEnddateFlex">
                                     <Labelbox type="datepicker"
                                         placeholder={"Start date"}
+                                        disableFuture={true}
                                         changeData={(data) => checkValidation(data, "startDate")}
                                         value={Resume_Form.startDate.value}
                                         error={Resume_Form.startDate.error}
@@ -548,6 +549,7 @@ function ResumePage() {
                                 <div className="startdateEnddateFlex">
                                     <Labelbox type="datepicker"
                                         placeholder={"End date"}
+                                        disableFuture={true}
                                         changeData={(data) => checkValidation(data, "endDate")}
                                         value={Resume_Form.endDate.value}
                                         error={Resume_Form.endDate.error}
@@ -654,7 +656,7 @@ function ResumePage() {
                         <Grid item xs={12}>
                             <Labelbox type="select"
                                 mode={"multiple"}
-                                placeholder={"Special Intrests"}
+                                placeholder={"Special Interest"}
                                 dropdown={resumeGetList.interestList}
                                 changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
                                 value={Resume_Form.intrests.value}
