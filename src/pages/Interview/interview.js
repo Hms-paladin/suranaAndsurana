@@ -94,7 +94,12 @@ function InerviewScreen(props) {
                 const Intview_data = []
                 response.data.data.map((data) =>
                     Intview_data.push({
+<<<<<<< HEAD
+                        id:data.int_details_id,
+                        date: moment(data.prop_date_time).format("DD-MM-YYYY"),
+=======
                         date: moment(data.prop_date_time).format("DD-MMM-YYYY"),
+>>>>>>> f89a563e59ec89b57c844dd9a23d15d770d2e95f
                         designation: data.designation, candiates: data.total_number_candidates
                     })
                 )
@@ -181,10 +186,15 @@ function InerviewScreen(props) {
             // setpostData({ error: true });
         } else {
             // setpostData({ error: false });
+<<<<<<< HEAD
+
+            dispatch(insertInterviewquestions(postData, selectedCandidateId,int_details,optionvalues))
+=======
             dispatch(InsertInterviewquestions(postData, selectedCandidateId,props.interviewer_id)).then(()=>{
                 props.handleAproverModelClose();
                 // props.onUpdateRefresh();
             })
+>>>>>>> f89a563e59ec89b57c844dd9a23d15d770d2e95f
 
         }
 
