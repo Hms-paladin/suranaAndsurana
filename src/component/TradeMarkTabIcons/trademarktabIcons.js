@@ -9,9 +9,9 @@ import ApproveIcon from '../../images/approveicon.svg';
 import Tasks from '../../images/menuicon.svg';
 import Application from '../../images/editicon.svg';
 import GroupIcon from '../../images/groupicon.svg';
+import TimeSheet from '../../images/timesheet.svg';
 
-
-const TabIcons = [{ img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+const TabIcons = [{ img: TimeSheet, title: "TIME SHEET" },{ img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
 
 function TradeMarkTabIcons(props) {

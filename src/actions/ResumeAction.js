@@ -11,7 +11,7 @@ export const InesertResume = (Resume_Form) => async dispatch => {
             method: 'POST',
             url: apiurl + 'insert_s_tbl_pm_resume',
             data:{
-                "user_id":  localStorage.getItem('token').user_id,
+                "user_id": localStorage.getItem("user_id"),
                 "name": Resume_Form.name.value,
                 "type_of_resource": Resume_Form.candidate.value,
                 "gender": Resume_Form.gender.value,

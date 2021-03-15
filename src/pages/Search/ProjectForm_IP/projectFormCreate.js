@@ -1,118 +1,218 @@
-import react, { useState } from 'react';
+import react,{useEffect,useState} from 'react';
 import './projectFormcreate.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
+import Axios from 'axios';
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
-import { useDispatch, connect } from "react-redux";
-import { withWidth } from '@material-ui/core';
-
-
-
-function ProjectFormCreate() {
-
-    const dispatch = useDispatch()
-
-    const [Trade_Mark, setTrade_Mark] = useState({
-
+import { apiurl } from "../../../utils/baseUrl";
+function ProjectFormCreate(props) {
+    const [ProjectType,setProjectType]=useState({})
+    const [ProcessType,setProcessType]=useState({})
+    const [FillingType,setFillingType]=useState({})
+    const [SubType_Project,setSubType_Project]=useState({})
+    const [BillableType,setBillableType]=useState({})
+    const [projectform, setprojectform] = useState({
+        project_type: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        project_sub_type: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        billable_type: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
         process_type: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         filling_type: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
-
-        }
-
+        },
     })
+    useEffect(() => {
 
-    function onSubmit() {
-        var mainvalue = {};
-        var targetkeys = Object.keys(Trade_Mark);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                Trade_Mark[targetkeys[i]].value,
-                Trade_Mark[targetkeys[i]].validation
-            );
-            Trade_Mark[targetkeys[i]].error = !errorcheck.state;
-            Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
-        }
-        var filtererr = targetkeys.filter(
-            (obj) => Trade_Mark[obj].error == true
-        );
-        console.log(filtererr.length);
-        if (filtererr.length > 0) {
-            // setTrade_Mark({ error: true });
-        } else {
-            // setTrade_Mark({ error: false });
-
-            dispatch(InesertResume(Trade_Mark)).then(() => {
-                handleCancel()
+      
+    //   project type
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_project_type',
+        })
+            .then((response) => {
+                console.log("response",response)
+                SubType_Project_Api()
+               let projectTypedata=[]
+               response.data.data.map((data)=>
+               projectTypedata.push({value:data.project_type,id:data.project_type_id})
+               )
+            setProjectType({projectTypedata})
             })
-        }
+            console.log("type",ProjectType)
 
-        setTrade_Mark(prevState => ({
-            ...prevState
-        }));
-    };
+            // billable type
+           Axios({
+            method: "GET",
+            url: apiurl + 'get_billable_type',
+        })
+            .then((response) => {
+                console.log("response",response)
+               let BillableData=[]
+               response.data.data.map((data)=>
+               BillableData.push({id:data.billable_type_id,value:data.billable_type})
+               )
+            setBillableType({BillableData})
+            })
 
+
+        // process type
+       Axios({
+        method: "post",
+        url: apiurl + 'get_process_type',
+        data:{
+            "project_type_id":projectform.project_type.value,
+            "sub_project_type_id":projectform.project_sub_type.value
+        },
+    }).then((response) => {
+            console.log("response",response)
+            let processData=[]
+            response.data.data.map((data)=>
+            processData.push({id:data.process_id,value:data.process})
+            )
+         setProcessType({processData})
+         
+        })
     const handleCancel = () => {
         let ResumeFrom_key = [
             "process_type", "filling_type"
-        ]
+        ]}
 
-        ResumeFrom_key.map((data) => {
-            Trade_Mark[data].value = ""
+    // Filling Type
+    Axios({
+        method: "post",
+        url: apiurl + 'get_process_type',
+        data:{
+            "project_type_id":projectform.project_type.value,
+            "sub_project_type_id":projectform.project_sub_type.value,
+            "process_id":projectform.process_type.value
+        },
+    }).then((response) => {
+            console.log("response",response)
+            let fillingData=[]
+            response.data.data.map((data)=>
+            fillingData.push({id:data.process_id,value:data.process})
+            )
+         setFillingType({fillingData})
+         
         })
-        setTrade_Mark(prevState => ({
-            ...prevState,
-        }));
-    }
+        
 
+    })
 
+//    projectSub_type api
+     function SubType_Project_Api(data){
+        //  alert(data)
+        Axios({
+            method: "POST",
+            url: apiurl + 'get_project_sub_type',
+            data:{
+                "project_type_id":data
+            }
+        }).then((response) => {
+                console.log("setProjectSubType",response);
+               let projectSubTypeValue=[];
+               response.data.data.map((data)=>
+               projectSubTypeValue.push({value:data.sub_project_type,id:data.sub_project_type_id})
+               )
+            setSubType_Project({projectSubTypeValue})
+            })
 
-    function checkValidation(data, key, multipleId) {
+     }
 
+    function checkValidation(data, key) {
+        if(key==="project_type"){
+            SubType_Project_Api(data)
+        }
+       
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            Trade_Mark[key].validation
+            projectform[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: Trade_Mark[key].validation
+            validation: projectform[key].validation
         }
+   
+        // // only for multi select (start)
 
-        // only for multi select (start)
+        // let multipleIdList = []
 
-        let multipleIdList = []
+        // if (multipleId) {
+        //     multipleId.map((item) => {
+        //         for (let i = 0; i < data.length; i++) {
+        //             if (data[i] === item.value) {
+        //                 multipleIdList.push(item.id)
+        //             }
+        //         }
+        //     })
+        //     dynObj.valueById = multipleIdList.toString()
+        // }
+        // // (end)
 
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
-        setTrade_Mark(prevState => ({
+      
+        setprojectform(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
-
     };
+
+    function onSubmit() {
+
+        var mainvalue = {};
+        var targetkeys = Object.keys(projectform);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                projectform[targetkeys[i]].value,
+                projectform[targetkeys[i]].validation
+            );
+            projectform[targetkeys[i]].error = !errorcheck.state;
+            projectform[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = projectform[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => projectform[obj].error == true
+        );
+        console.log(filtererr.length);
+        if (filtererr.length > 0) {
+            // setpostData({ error: true });
+        } else {
+            // setpostData({ error: false });
+
+
+        }
+
+
+        projectform(prevState => ({
+            ...prevState
+        }));
+    };
+
+
     return (
         <div>
             <Grid item xs={12} className="projectFormTitle">Project Form</Grid>
