@@ -110,7 +110,7 @@ function Navbar(props) {
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
               <div className="userName">
-                {localStorage.getItem("user_name") && localStorage.getItem("user_name").slice(1,-1)}
+              {JSON.parse(localStorage.getItem("token")).user_name}
                 </div>
               <div className="userPosition">HOD</div>
             </div>
