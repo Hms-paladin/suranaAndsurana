@@ -236,9 +236,9 @@ function ProjectFormCreate(props) {
                             placeholder={"Project Type "}
                             dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }, { id: "4", value: "Opposition" }]}
                             changeData={(data) => checkValidation(data, "process_type")}
-                            value={Trade_Mark.process_type.value}
-                            error={Trade_Mark.process_type.error}
-                            errmsg={Trade_Mark.process_type.errmsg}
+                            value={projectform.process_type.value}
+                            error={projectform.process_type.error}
+                            errmsg={projectform.process_type.errmsg}
                         />
                     </Grid>
                     <Grid item xs={5}>
@@ -254,12 +254,12 @@ function ProjectFormCreate(props) {
                     <Grid item xs={5}>
                         <Labelbox type="select"
                             placeholder={"Filling Type "}
-                            dropdown={Trade_Mark.process_type.value == 1 ? [{ id: "1", value: "IndiaFilling" }, { id: "2", value: "InternationalFilling" }, { id: "3", value: "Domestic" }, { id: "4", value: "Foreign" }, { id: "5", value: "PCT" }]
+                            dropdown={projectform.process_type.value == 1 ? [{ id: "1", value: "IndiaFilling" }, { id: "2", value: "InternationalFilling" }, { id: "3", value: "Domestic" }, { id: "4", value: "Foreign" }, { id: "5", value: "PCT" }]
                                 : [{ id: "1", value: "Filed" }, { id: "2", value: "Defended" }]}
                             changeData={(data) => checkValidation(data, "filling_type")}
-                            value={Trade_Mark.filling_type.value}
-                            error={Trade_Mark.filling_type.error}
-                            errmsg={Trade_Mark.filling_type.errmsg}
+                            value={projectform.filling_type.value}
+                            error={projectform.filling_type.error}
+                            errmsg={projectform.filling_type.errmsg}
 
 
 

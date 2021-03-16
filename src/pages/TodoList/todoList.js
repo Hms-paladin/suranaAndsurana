@@ -7,9 +7,9 @@ import moment from "moment";
 
 // Model
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
-import InerviewScreen from "../Interview/interview"
-import EmployeeApprove from '../Employeeform/EmployeeApprove'
-import Employeeform from '../Employeeform/employeeform'
+import InerviewScreen from "../Interview/interview";
+import EmployeeApprove from '../Employeeform/EmployeeApprove';
+import UnblockUserActive from './UnblockUser/unblockuserActive';
 import "./todoList.scss"
 
 // Hr Task:
@@ -30,9 +30,8 @@ const projectheadCells = [
     { id: 'case', label: 'Case' },
     { id: 'startdate', label: 'Start Date' },
     { id: 'enddate', label: 'End Date' },
-
-
 ];
+
 
 //workflowheadCells :
 
@@ -47,6 +46,8 @@ const workflowheadCells = [
 
 ];
 
+const workFlow = [{ id: 1, requestedby: "Francis", requestedon: "11-jan-2020", approvedby: "Winston", startdateon: "12-jan-2020" }]
+
 
 
 function TodoList(props) {
@@ -56,7 +57,9 @@ function TodoList(props) {
     const [approveModalOpen, setApproveOpen] = useState(false)
     const [EmployeeFormOpen, setEmployeeFormOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
+    const [unblockuserActive, setUnblockuserActive] = useState(false)
     const [hrTodoList, setHrTodoList] = useState([])
+    const [projectTodoList, setProjectTodoList] = useState([])
     const [can_int_id, setcan_int_id] = useState([])
     const [res_id, setres_id] = useState([])
     const [Employee_Data,setEmployee_Data]=useState([])
@@ -68,8 +71,8 @@ function TodoList(props) {
     useEffect(() => {
 
         let hrList = []
-        let todoListdata=[]
-      
+        let todoListdata = []
+
         props.getHrTodoList.map((data) => {
             let showId = null
             let showName = null
@@ -94,7 +97,20 @@ function TodoList(props) {
         
       console.log(props.getHrTodoList,"ddd")
 
+
+
+
     }, [props.getHrTodoList])
+
+    useEffect(() => {
+        let projectTask = []
+
+        projectTask.push({ id: <div className="ProjectTaskId" onClick={unblockUser} >01</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021" })
+
+        setProjectTodoList(projectTask)
+    },[])
+
+
 
 
     function openModelFunc(name,id) {
@@ -109,19 +125,19 @@ function TodoList(props) {
             })
             setviewer_id(int_viewer_id)
         }
-        else if(name==="resume_id"){
+        else if (name === "resume_id") {
             setModelOpen(true)
-            let data_res_id= props.getHrTodoList.find((val)=>{
-                return(
+            let data_res_id = props.getHrTodoList.find((val) => {
+                return (
                     id == val.resume_id
                 )
             })
             setres_id(data_res_id)
         }
-        else if(name==="int_details_id"){
+        else if (name === "int_details_id") {
             setInerviewScreen(true)
-            let checkData= props.getHrTodoList.find((val)=>{
-                return(
+            let checkData = props.getHrTodoList.find((val) => {
+                return (
                     id == val.int_details_id
                 )
             })
@@ -138,6 +154,12 @@ function TodoList(props) {
         }
     }
 
+    // unblockUsers ==>
+    function unblockUser() {
+        setUnblockuserActive(true)
+    }
+
+
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
@@ -153,8 +175,8 @@ function TodoList(props) {
              content={<InterviewApprover                handleAproverModelClose={(bln) => setModelOpen(bln)}   int_resume_id={res_id}/>} />
 
     {/*EmployeeForm after  selected in interview approve     */}
-            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
-             content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
+            {/* <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
+             content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} /> */}
 
     {/*EmployeeApprove after  value entered in employee form     */}
     

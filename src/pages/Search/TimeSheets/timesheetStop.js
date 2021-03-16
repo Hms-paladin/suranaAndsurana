@@ -58,6 +58,9 @@ function TimeSheetStartModel(props) {
                     </Grid>
                 </Grid>
             </div>
+            <div className="timeSheetComments">
+                <Labelbox type="textarea" placeholder={"comments"} />
+            </div>
             <div className="customiseButton">
                 <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
                 <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" />

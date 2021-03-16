@@ -73,18 +73,12 @@ function Navbar(props) {
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
       { path: "/projectIp", title: "ProjectIp1" },
-<<<<<<< HEAD
       { path: "/projectIp2", title: "ProjectIp2" },
       { path: "/task", title: "Task" },
       { path: "/addclient", title: "Add Client" },
       { path: "/generateinvoice", title: "GenerateInvoice" },
-
-=======
-      // {path:"/projectTask",title:"projectTask"},
->>>>>>> f89a563e59ec89b57c844dd9a23d15d770d2e95f
-
+      
       // Litigation :
-
       { path: "/litigation", title: "Litigation" },
 
     ]
@@ -115,7 +109,9 @@ function Navbar(props) {
             <SettingsIcon className="customIcon_header" />
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
-              <div className="userName">{localStorage.getItem("user_name").slice(1,-1)}</div>
+              <div className="userName">
+                {localStorage.getItem("user_name") && localStorage.getItem("user_name").slice(1,-1)}
+                </div>
               <div className="userPosition">HOD</div>
             </div>
             {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}

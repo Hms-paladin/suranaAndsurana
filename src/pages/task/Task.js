@@ -67,7 +67,7 @@ function Task(){
                            <div style={{backgroundColor:'#707070', width:'55px'}}> 
                                <p className="num_align_side">1</p>
                                <Divider/>
-                               <img src={Clock} className="img_side_align"/>
+                               <img src={Clock} className="img_side_align" />
                            </div>
                         
                            <div style={{width:'36%', padding:'15px'}}>

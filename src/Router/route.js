@@ -16,13 +16,11 @@ import ProjectIp1 from '../pages/Project IP1/projectIp';
 import Employeeform from "../pages/Employeeform/employeeform.js";
 import Search from '../pages/Search/search';
 import Stages from '../pages/stages/stageicon';
-<<<<<<< HEAD
 import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
 import Task from "../pages/task/Task";
 import AddClient from "../pages/AddClient/addclient";
 // import GenerateInvoice from "../pages/Generateinvoi/ce/generateinvoice";
 import GenerateInvoice from "../pages/Generateinvoice/generateinvoice";
-=======
 import StagesMaster from '../pages/stages/StagesMaster'
 import AddHearing from '../pages/stages/AddHearing'
 import RateMaster from '../pages/stages/RateMaster'
@@ -31,7 +29,6 @@ import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate'
 //Litigation :
 
 import Litigation from '../pages/Litigation/litigation';
->>>>>>> f89a563e59ec89b57c844dd9a23d15d770d2e95f
 
 
 function Routes(props) {

@@ -11,10 +11,19 @@
 
 .customiseButton{
     text-align: right;
-    margin: 250px 50px 20px 0px;
 }
 
 .timeSheetButtons{
     width: 10%;
 
+}
+
+//time sheet comments==>
+
+.timeSheetComments{
+    padding: 15px;
+}
+
+.timeSheetComments .formdiv .brdrcls{
+    height: 150px;
 }
