@@ -4,7 +4,24 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
 import ValidationLibrary from "../../helpers/validationfunction";
 import './RateMaster.scss'
+import EnhancedTable from '../../component/DynTable/table';
 export default function RateMaster(){
+    const header = [
+        { id: 'table_name', label: 'Table Name' },
+        { id: 'activity', label: 'Activity' },
+        { id: 'lower_limit', label: 'Lower Limit' },
+        { id: 'upper_limit', label: 'Upper Limit' },
+        { id: 'designation', label: 'Designation' },
+        { id: 'cost', label: 'Range of Project cost' },
+        { id: 'sub_activity', label: 'Sub Activity' },
+        { id: 'court', label: 'Court' },
+        { id: 'measurement', label: 'Unit of Measurement' },
+      ];
+        
+  const rows = [
+     {table_name:"Table 1",activity:"Activity 1",lower_limit:"lowerlimit1",upper_limit:"upperlimit1",designation:"designation1",cost:"cost",sub_activity:"Subactivity1",court:"court",measurement:"measurement"}
+     
+  ];
    const [RateMaster, setRateMaster] = useState({
       table_name: {
           value: "",
@@ -200,14 +217,14 @@ const handleCancel = () =>{
 
 
           </Grid>   
-          <Grid  item xs={12} className="rate_btns">
+          <div className="rate_cus_btns">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit}/>
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"/>
-          </Grid>
+        </div>
           </Grid>
 
-
-         
+      
+          <div className="rate_enhanced_table"><EnhancedTable headCells={header} rows={rows}/></div>  
       </div>
   )
 }
