@@ -208,7 +208,7 @@ export default class Labelbox extends Component {
 								KeyboardButtonProps={{
 									'aria-label': 'change time',
 								}}
-								// suffixIcon={<img src={TimerIcon} />}
+								suffixIcon={<img src={TimerIcon} />}
 							/>
 						</MuiPickersUtilsProvider>
 						{

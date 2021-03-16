@@ -4,11 +4,15 @@ import { Tabs, Radio } from 'antd';
 import Grid from '@material-ui/core/Grid';
 import Tabcontent from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import Labelbox from "../../helpers/labelbox/labelbox";
+import ValidationLibrary from "../../helpers/validationfunction";
+import { useDispatch, connect } from "react-redux";
+import { InesertResume } from "../../actions/ResumeAction";
 import AddIcon from '../../images/addIcon.svg';
 import CustomButton from "../../component/Butttons/button";
+import { message } from 'antd';
 import DynModel from '../../component/Model/model';
-
-// import ValidationLibrary from "../../../helpers/validationfunction";
+import AddDataModel from './adddataModel';
+import InterimModel from './interimModel';
 
 const { TabPane } = Tabs;
 
@@ -16,56 +20,174 @@ function Litigation() {
     const [litigationCounsel, setLitigationCounsel] = useState(false)
     const [litigationInterim, setLitigationInterim] = useState(false)
 
+    const props = {
+        name: 'file',
+        action: '//jsonplaceholder.typicode.com/posts/',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+    const dispatch = useDispatch()
 
-    const modelContent = () => {
-        return (
-            <div >
-                <Grid item xs={12} container direction="column" justify="center" spacing={2} >
 
+    const [Litigation_Form, setResumeFrom] = useState({
 
-                    <div className="liticationDetails">
-                        <Labelbox type="select" placeholder={"Counsel"} />
-                        <Labelbox type="text" placeholder={"Name"} />
-                        <Labelbox type="number" placeholder={"Phone No"} />
-                        <Labelbox type="text" placeholder={"Email Id"} />
-                        <div className="test">
-                            <Labelbox type="textarea" placeholder={"Address"} />
-                        </div>
-                        <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" />
+        internalcaseno: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        status: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        courtname: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        casetype: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        courtcaseno: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        ddra: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        hearingdate: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        duedate: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        subcase: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        suitvalue: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+       
+    })
 
-                    </div>
+    function onSubmit() {
+        var mainvalue = {};
+        var targetkeys = Object.keys(Litigation_Form);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                Litigation_Form[targetkeys[i]].value,
+                Litigation_Form[targetkeys[i]].validation
+            );
+            Litigation_Form[targetkeys[i]].error = !errorcheck.state;
+            Litigation_Form[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = Litigation_Form[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => Litigation_Form[obj].error == true
+        );
+        console.log(filtererr.length);
+        if (filtererr.length > 0) {
+            // setResumeFrom({ error: true });
+        } else {
+            // setResumeFrom({ error: false });
 
+            dispatch(InesertResume(Litigation_Form)).then(() => {
+                handleCancel()
+            })
+        }
 
-                </Grid>
+        setResumeFrom(prevState => ({
+            ...prevState
+        }));
+    };
 
-            </div>
-        )
+    const handleCancel = () => {
+        let ResumeFrom_key = [
+            "internalcaseno", "status", "courtname","casetype","courtcaseno","ddra","hearingdate","duedate","subcase","suitvalue"
+        ]
+
+        ResumeFrom_key.map((data) => {
+            Litigation_Form[data].value = ""
+        })
+        setResumeFrom(prevState => ({
+            ...prevState,
+        }));
     }
 
-    const modelInterimContent = () => {
-        return (
-            <div >
-                <Grid item xs={12} container direction="column" justify="center" spacing={2} >
+    function checkValidation(data, key, multipleId) {
+
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            Litigation_Form[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: Litigation_Form[key].validation
+        }
+
+        // only for multi select (start)
+
+        let multipleIdList = []
+
+        if (multipleId) {
+            multipleId.map((item) => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i] === item.value) {
+                        multipleIdList.push(item.id)
+                    }
+                }
+            })
+            dynObj.valueById = multipleIdList.toString()
+        }
+        // (end)
+
+        setResumeFrom(prevState => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+
+    };
 
 
-                    <div className="liticationDetails">
-                        <Labelbox type="select" placeholder={"Interim"} />
-                        <Labelbox type="text" placeholder={"Interim Name"} />
-                        <Labelbox type="number" placeholder={"Interim Application No"} />
-                        <Labelbox type="text" placeholder={"Interim Application Date"} />
-                        <div className="test">
-                            <Labelbox type="textarea" placeholder={"Interim Details"} />
-                        </div>
-                        <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" />
+   
 
-                    </div>
-
-
-                </Grid>
-
-            </div>
-        )
-    }
 
     return (
         <div>
@@ -136,20 +258,69 @@ function Litigation() {
                     </div>
                     <Grid item xs={12} container direction="row" spacing={2}>
                         <Grid item xs={4} container direction="column" spacing={2} >
-                            <Labelbox type="text" placeholder={"Internal Case No."} />
-                            <Labelbox type="select" placeholder={"Status"} />
-                            <Labelbox type="select" placeholder={"Court Name"} />
-                            <Labelbox type="select" placeholder={"Case Type"} />
-                            <Labelbox type="text" placeholder={"Court Case No."} />
-                            <Labelbox type="select" placeholder={"DDRA"} />
+                            <Labelbox type="text" placeholder={"Internal Case No."}
+                                changeData={(data) => checkValidation(data, "prioritydetails")}
+                                value={Litigation_Form.internalcaseno.value}
+                                error={Litigation_Form.internalcaseno.error}
+                                errmsg={Litigation_Form.internalcaseno.errmsg} />
+
+                             <Labelbox type="select" placeholder={"Status"}
+                                changeData={(data) => checkValidation(data, "status")}
+                                value={Litigation_Form.status.value}
+                                error={Litigation_Form.status.error}
+                                errmsg={Litigation_Form.status.errmsg} />
+
+                           <Labelbox type="select" placeholder={"Court Name"}
+                                changeData={(data) => checkValidation(data, "courtname")}
+                                value={Litigation_Form.courtname.value}
+                                error={Litigation_Form.courtname.error}
+                                errmsg={Litigation_Form.courtname.errmsg} />
+
+                            <Labelbox type="select" placeholder={"Case Type"}
+                                changeData={(data) => checkValidation(data, "casetype")}
+                                value={Litigation_Form.casetype.value}
+                                error={Litigation_Form.casetype.error}
+                                errmsg={Litigation_Form.casetype.errmsg} />
+
+                            <Labelbox type="text" placeholder={"Court Case No."}
+                                changeData={(data) => checkValidation(data, "courtcaseno")}
+                                value={Litigation_Form.courtcaseno.value}
+                                error={Litigation_Form.courtcaseno.error}
+                                errmsg={Litigation_Form.courtcaseno.errmsg} />
+
+                            <Labelbox type="select" placeholder={"DDRA"}
+                                changeData={(data) => checkValidation(data, "ddra")}
+                                value={Litigation_Form.ddra.value}
+                                error={Litigation_Form.ddra.error}
+                                errmsg={Litigation_Form.ddra.errmsg} />
+
                             <Grid item xs={12} container direction="row" >
-                                <Grid xs={6} > <Labelbox type="datepicker" placeholder={"Court Case No."} /></Grid>
-                                <Grid xs={6} > <Labelbox type="datepicker" placeholder={"Court Case No."} /></Grid>
+                                <Grid xs={6} > <Labelbox type="datepicker" placeholder={"Next Hearing Date"}
+                                    changeData={(data) => checkValidation(data, "hearingdate")}
+                                    value={Litigation_Form.hearingdate.value}
+                                    error={Litigation_Form.hearingdate.error}
+                                    errmsg={Litigation_Form.hearingdate.errmsg} />
+                                </Grid>
+                                <Grid xs={6} > <Labelbox type="datepicker" placeholder={"Due Date"}
+                                    changeData={(data) => checkValidation(data, "duedate")}
+                                    value={Litigation_Form.duedate.value}
+                                    error={Litigation_Form.duedate.error}
+                                    errmsg={Litigation_Form.duedate.errmsg} />
+                                </Grid>
 
 
                             </Grid>
-                            <Labelbox type="select" placeholder={"Sub case"} />
-                            <Labelbox type="text" placeholder={"Suit Value (Numeric)"} />
+                            <Labelbox type="select" placeholder={"Sub case"}
+                                changeData={(data) => checkValidation(data, "subcase")}
+                                value={Litigation_Form.subcase.value}
+                                error={Litigation_Form.subcase.error}
+                                errmsg={Litigation_Form.subcase.errmsg} />
+
+                            <Labelbox type="text" placeholder={"Suit Value (Numeric)"}
+                                changeData={(data) => checkValidation(data, "suitvalue")}
+                                value={Litigation_Form.suitvalue.value}
+                                error={Litigation_Form.suitvalue.error}
+                                errmsg={Litigation_Form.suitvalue.errmsg} /> 
 
 
                         </Grid>
@@ -196,7 +367,7 @@ function Litigation() {
                                         <div>Phone No</div>
                                         <div>Email ID</div>
                                         <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)}/>
+                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
 
                                     </div>
                                 </div>
@@ -207,7 +378,7 @@ function Litigation() {
                                         <div>Phone No</div>
                                         <div>Email ID</div>
                                         <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)}/>
+                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
                                     </div>
                                 </div>
                                 <div className="litigationCounsel">
@@ -230,12 +401,12 @@ function Litigation() {
                                     </div>
                                 </div>
                             </div>
-                            <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={modelContent()} />
-                            <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationInterim} handleChangeCloseModel={(bln) => setLitigationInterim(bln)} content={modelInterimContent()} />
+                            <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={<AddDataModel />} />
+                            <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationInterim} handleChangeCloseModel={(bln) => setLitigationInterim(bln)} content={<InterimModel />} />
                             <div className="customAddcasebtn">
-                                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"}/>
+                                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onSubmit} />
 
-                                <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"}  />
+                                <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
 
                             </div>

@@ -26,15 +26,16 @@ function Search(props) {
                     <Radio value={1}>Resume</Radio>
                     <Radio value={2}>Project</Radio>
                     <Radio value={3}>HR</Radio>
-                    <Radio value={4}>Label 4</Radio>
-                    <Radio value={5}>Task</Radio>
+                    <Radio value={4}>Task</Radio>
+                    <Radio value={5}>Label 4</Radio>
                     <Radio value={6}>Label 6</Radio>
                 </Radio.Group>
             </div>
             {value ===1 && <Resumesearch/>}
             {value ===2 && <Projectsearch/>}
-            {value ===3 && <TaskSearch/>}
             {value ===3 && <HrSearch/>}
+            {value ===4 && <TaskSearch/>}
+
             {value ===5 && <TimeSheetModel/>}
 
             </div>
