@@ -68,18 +68,29 @@ function Navbar(props) {
   const [menuItems, setMenuItems] = useState(
     [
       { path: "/resume", title: "Resume" },
-      { path: "/todoList", title: "Todo" },
+      { path: "/todoList", title: "To Do List" },
       // {path:"/interview",title:"Interview"},
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
-      {path:"/projectIp",title:"ProjectIp1"},
-      {path:"/projectTask",title:"projectTask"},
-      {path:"/stageicon",title:"Stages"},
+      { path: "/projectIp", title: "ProjectIp1" },
+<<<<<<< HEAD
+      { path: "/projectIp2", title: "ProjectIp2" },
+      { path: "/task", title: "Task" },
+      { path: "/addclient", title: "Add Client" },
+      { path: "/generateinvoice", title: "GenerateInvoice" },
+
+=======
+      // {path:"/projectTask",title:"projectTask"},
+>>>>>>> f89a563e59ec89b57c844dd9a23d15d770d2e95f
+
+      // Litigation :
+
+      { path: "/litigation", title: "Litigation" },
 
     ]
   );
 
-  function handleLogout(){
+  function handleLogout() {
     localStorage.clear();
     window.location.reload()
   }
@@ -104,21 +115,21 @@ function Navbar(props) {
             <SettingsIcon className="customIcon_header" />
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
-              <div className="userName">John Wick</div>
+              <div className="userName">{localStorage.getItem("user_name").slice(1,-1)}</div>
               <div className="userPosition">HOD</div>
             </div>
             {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}
             <div className="logoutModel">
-              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event)=>(setAnchorEl(event.currentTarget))}>
-              <ArrowDropDownCircleIcon className="customIconArrow_header" />
+              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => (setAnchorEl(event.currentTarget))}>
+                <ArrowDropDownCircleIcon className="customIconArrow_header" />
               </Button>
               <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
-                onClose={()=>setAnchorEl(null)}
-                style={{top:"49px"}}
+                onClose={() => setAnchorEl(null)}
+                style={{ top: "49px" }}
               >
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>

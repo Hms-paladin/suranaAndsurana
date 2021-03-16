@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
-import ValidationLibrary from "../../../../helpers/validationfunction"
+import ValidationLibrary from "../../../../helpers/validationfunction";
+import Checklist from "../../../../images/checklist.png";
+import Stage from "../../../../images/stage.png";
+import Task from "../../../../images/task.png";
+import Application from "../../../../images/application.png";
 
 function CancelDefended(){
     const [CancelDefended, setCancelDefended] = useState({
@@ -129,6 +133,28 @@ function CancelDefended(){
         }
     return(
         <div className="container">
+                       <div style={{display:'flex', justifyContent:'flex-end'}}>
+            <div style={{margin:'5px'}}>
+              <img src={Checklist} />
+              <p>CHECKLIST</p>
+            </div>
+            <div style={{margin:'5px'}}>
+              <img src={Stage} />
+              <p>STAGE</p>
+            </div>
+            <div style={{margin:'5px'}}>
+              <img src={Task} />
+              <p>TASKS</p>
+            </div>
+            <div style={{margin:'5px'}}>
+              <img src={Application} />
+              <p>APPLICATION</p>
+            </div>
+            <div style={{margin:'5px'}}>
+              <img src={Application} />
+              <p>STAGE MONITOR</p>
+            </div>
+         </div>
             <Grid  container spacing={2}   >
                 <Grid item md={2}>
                     <Labelbox  type="select"

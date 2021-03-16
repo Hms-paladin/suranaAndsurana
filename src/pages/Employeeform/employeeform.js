@@ -8,6 +8,7 @@ import {apiurl} from '../../utils/baseUrl'
 import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 import {notification} from 'antd';
+import moment from "moment";
 
 function Employeeform(props){
     const [getDetails,setgetDetails]=useState([])
@@ -113,60 +114,53 @@ function Employeeform(props){
     }
     useEffect(() => {
         Axios({
-            method: 'POST',
-            url: apiurl +'get_employee_by_id',
-            data:{
-              "emp_id":"2"
-            },
-           
-        })
-        .then((response) => {
-            console.log(response.data.data,"response")
-             setgetDetails(response.data.data)
-            
-        })
-        .catch((error) => {
-  
-        })
+                        method: 'POST',
+                        url: apiurl +'get_candidate_details_by_id',
+                        data:{
+                          "resume_id":props.emp_form_id&&props.emp_form_id.int_status_id
+                        },
+                       
+                    })
+                    .then((response) => {
+                         setgetDetails(response.data.data)
+                        
+                    })
+                    .catch((error) => {
+              
+                    })
         Axios({
             method:"get",
             url:apiurl+"get_s_tbl_m_designation",
         }).then((response)=>{
-            console.log(response,"response")
             let Designation=[]
             response.data.data.map((data,index)=>
             Designation.push({id:data.designation_id,value:data.designation})
              )
              setgetData({Designation})
-             console.log(getdata,"values")
         })
         Axios({
             method:"get",
             url:apiurl+"get_department",
         }).then((response)=>{
-            console.log(response,"response")
             let Department=[]
             response.data.data.map((data,index)=>
             Department.push({id:data.department_id,value:data.department})
              )
              setdept({Department})
-             console.log(Department,"department")
         })
         Axios({
             method:"get",
             url:apiurl+"get_interviewers",
         }).then((response)=>{
-            console.log(response,"sup")
             let Supervisor=[]
             response.data.data.map((data,index)=>
             Supervisor.push({id:data.emp_id,value:data.name})
              )
              setsup_name({Supervisor})
-             console.log(dept,"dept")
         })
        
 
-     }, [])
+     }, [props])
      function Sup_nameGetId(data){
         Axios({
             method:"post",
@@ -179,134 +173,143 @@ function Employeeform(props){
                 "emp_id":data
             }
         }).then((response)=>{
-            console.log(response,"sup")
             let empData= []
-            // let phone = null
             response.data.data.map((data,index)=>
-            // Sup_nameId.push({ph_no:data.con_ph_no,email:data.supervisor_email})
             empData.push(data)
              )
-            //  setname({Sup_nameId})
              setEmpFrom(prevState => ({
                 ...prevState,
                     supervisor_email:{value:empData[0].supervisor_email},
                     supervisor_ph:{value:empData[0].con_ph_no}
             }));
-             console.log(name,"sup_name")
         })
      }
     function InsertApi(){
-        console.log(EmpForm.supervisor_name.value,"dfgh")
+
+        // var formData = new FormData();
+        //         formData.set("name","")
+        //         formData.set("type_of_resource","")
+        //         formData.set("gender","")
+        //         formData.set("dob","")
+        //         formData.set("bas_qual","")
+        //         formData.set("add_quali_1","")
+        //         formData.set("add_quali_2","")
+        //         formData.set("institution","")
+        //         formData.set("last_employer","")
+        //         formData.set("start_date","")
+        //         formData.set("end_date","")
+        //         formData.set("skills","")
+        //         formData.set("traits","")
+        //         formData.set("certification","")
+        //         formData.set("specialization","")
+        //         formData.set("achievement","")
+        //         formData.set("capabilities","")
+        //         formData.set("talents","")
+        //         formData.set("special_interest","")
+        //         formData.append("con_ph_no",EmpForm.supervisor_ph.value)
+        //         formData.set("email_addr","")
+        //         formData.set("address","")
+        //         formData.set("state_of_domecile","")
+        //         formData.set("city","")
+        //         formData.set("status","")
+        //         formData.set("lang_known","")
+        //         formData.set("industry","")
+        //         formData.set("designation",EmpForm.desgination.value)
+        //         formData.set("doj",EmpForm.date_of_birth.value)
+        //         formData.set("supervisor",EmpForm.supervisor_name.value)
+        //         formData.set("email",EmpForm.EmpOfficialEmail.value)
+        //         formData.set("supervisor_name","")
+        //         formData.set("supervisor_email",EmpForm.supervisor_email.value)
+        //         formData.set("official_email",EmpForm.EmpOfficialEmail.value)
+        //         formData.set("official_contact",EmpForm.EmpOfficialContact.value)
+        //         formData.set("department",EmpForm.department.value)
+        //         formData.set("employee__code",EmpForm.employee_code.value)
+        //         formData.append("upload_document",file)
+        //         formData.set("biometric_data","")
+        //         formData.set("approved_by",2)
+        //         formData.set("approved_date","2021-02-26")
+        //         formData.set("is_interviewer",1)
+        //         formData.set("created_on","2021-02-18 02:24:35")
+        //         formData.set("updated_on","2021-02-18 02:24:35")
+        //         formData.set("created_by",3)
+        //         formData.set("updated_by",1)
+        //         formData.set("ip_address","Adress")
+
+        // Axios({
+        //     method:"POST",
+        //     url:apiurl+"insert_employee",
+        //     header: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json'
+        //       }
+        //       ,data:JSON.stringify(formData),
+        //       headers: { "Content-Type": "multipart/form-data" },
+            
+        // })
+        // const dataFile = new FormData();
+        // dataFile.append('userName', 'Fred');
+        // dataFile.append('image', "imageFile"); 
+        // formData.append("employee__code",EmpForm.employee_code.value)
+        // formData.append("upload_document",file)
+        const getEmployeeFormDetails = getDetails[0] || []
 
         var formData = new FormData();
-        formData.set("name","sam")
-        formData.set("type_of_resource","Type")
-        formData.set("gender","M")
-        formData.set("dob","2021-02-26")
-        formData.set("bas_qual","Type")
-        formData.set("add_quali_1","Type")
-        formData.set("add_quali_2","Type")
-        formData.set("institution","DMI")
-        formData.set("last_employer","player")
-        formData.set("start_date","2021-02-26")
-        formData.set("end_date","2021-02-26")
-        formData.set("skills","Player")
-        formData.set("traits","Very Good Level")
-        formData.set("certification","Level 1")
-        formData.set("specialization","High")
-        formData.set("achievement","Top")
-        formData.set("capabilities","Communication")
-        formData.set("talents","Learning")
-        formData.set("special_interest","Reading")
-        formData.set("con_ph_no",EmpForm.supervisor_ph.value)
-        formData.set("email_addr","sam@gmail.com")
-        formData.set("address","Chennai")
-        formData.set("state_of_domecile","TN")
-        formData.set("city","Chennai")
-        formData.set("status",1)
-        formData.set("lang_known","Tamil")
-        formData.set("industry","English")
-        formData.set("designation",EmpForm.supervisor_name.value)
-        formData.set("doj",EmpForm.date_of_birth.value)
-        formData.set("supervisor",EmpForm.supervisor_name.value)
-        formData.set("email",EmpForm.EmpOfficialEmail.value)
-        formData.set("supervisor_name","")
-        formData.set("supervisor_email",EmpForm.supervisor_email.value)
-        formData.set("official_email",EmpForm.EmpOfficialEmail.value)
-        formData.set("official_contact",EmpForm.EmpOfficialEmail.value)
-        formData.set("department",1)
-        formData.set("employee__code",EmpForm.employee_code.value)
-        formData.append("upload_document",file)
-        formData.set("biometric_data","")
-        formData.set("approved_by",2)
-        formData.set("approved_date","2021-02-26")
-        formData.set("is_interviewer",1)
-        formData.set("created_on","2021-02-24")
-        formData.set("updated_on","2021-02-26")
-        formData.set("created_by",3)
-        formData.set("updated_by",1)
-        formData.set("ip_address","Adress")
+                formData.append("name",getEmployeeFormDetails.name)
+        //         formData.append("type_of_resource",getEmployeeFormDetails.type_of_resource)
+                formData.append("gender",getEmployeeFormDetails.gender)
+        //         formData.append("dob",getEmployeeFormDetails.dob)
+        //         formData.append("bas_qual",getEmployeeFormDetails.bas_qual)
+        //         formData.append("add_quali_1",getEmployeeFormDetails.add_quali_1)
+        //         formData.append("add_quali_2",getEmployeeFormDetails.add_quali_2)
+                // formData.append("institution",getEmployeeFormDetails.institution)
+                // formData.append("last_employer",getEmployeeFormDetails.last_employer)
+                // formData.append("start_date",getEmployeeFormDetails.last_empr_start_date)
+                // formData.append("end_date",getEmployeeFormDetails.last_empr_end_date)
+                // formData.append("skills",getEmployeeFormDetails.skills)
+                // formData.append("traits",getEmployeeFormDetails.traits)
+                // formData.append("certification",getEmployeeFormDetails.certification)
+                // formData.append("specialization",getEmployeeFormDetails.specialization)
+                // formData.append("achievement",getEmployeeFormDetails.achievement)
+                // formData.append("capabilities",getEmployeeFormDetails.capabilities)
+                // formData.append("talents",getEmployeeFormDetails.talents)
+                // formData.append("special_interest",getEmployeeFormDetails.special_interest)
+                // formData.append("con_ph_no",EmpForm.supervisor_ph.value)
+                // formData.append("email_addr",getEmployeeFormDetails.email_addr)
+                // formData.append("address",getEmployeeFormDetails.postal_addr)
+                // formData.append("state_of_domecile",getEmployeeFormDetails.state_of_domecile)
+                // formData.append("city",getEmployeeFormDetails.city)
+                // formData.append("status",getEmployeeFormDetails.status_resource)
+                formData.append("lang_known",getEmployeeFormDetails.lang_known)
+                formData.append("industry",getEmployeeFormDetails.industry)
+                formData.append("designation",EmpForm.desgination.value)
+                formData.append("doj",EmpForm.date_of_birth.value)
+                formData.append("supervisor",EmpForm.supervisor_name.value)
+                formData.append("email",EmpForm.EmpOfficialEmail.value)
+                formData.append("supervisor_name","")
+                formData.append("supervisor_email",EmpForm.supervisor_email.value)
+                formData.append("official_email",EmpForm.EmpOfficialEmail.value)
+                formData.append("official_contact",EmpForm.EmpOfficialContact.value)
+                formData.append("department",EmpForm.department.value)
+                formData.append("employee__code",EmpForm.employee_code.value)
+                formData.append("upload_document",file)
+                formData.append("biometric_data","notes")
+                formData.append("approved_by",localStorage.getItem("empId"))
+                formData.append("approved_date",moment().format('YYYY-MM-DD HH:m:s') )
+                formData.append("is_interviewer",localStorage.getItem("user_id"))
+                formData.append("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
+                formData.append("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
+                formData.append("created_by",localStorage.getItem("empId"))
+                formData.append("updated_by",localStorage.getItem("empId"))
+                formData.append("ip_address","Adress")
         Axios({
-            method:"POST",
+            method: "post",
             url:apiurl+"insert_employee",
-            header: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-              },
-            data:{
-                "name":"",
-                "type_of_resource":"",
-                "gender":"M",
-                "dob":"2021-02-21",
-                "bas_qual":"Type",
-                "add_quali_1":"Type",
-                "add_quali_2":"Type",
-                "institution":"DMI",
-                "last_employer":"Yes",
-                "start_date":"2021-02-24",
-                "end_date":"2021-02-26",
-                "skills":"Player",
-                "traits":"Very Good Level",
-                "certification":"Level 1",
-                "specialization":"High",
-                "achievement":"Top",
-                "capabilities":"Communication",
-                "talents":"Learning",
-                "special_interest":"Reading",
-                "con_ph_no":EmpForm.supervisor_ph.value,
-                "email_addr":"sam@gmail.com",
-                "address":"Chennai",
-                "state_of_domecile":"TN",
-                "city":"Chennai",
-                "status":"1",
-                "lang_known":"Tamil",
-                "industry":"English",
-                "designation":EmpForm.desgination.value,
-                "doj":EmpForm.date_of_birth.value,
-                "supervisor":EmpForm.supervisor_name.value,
-                "email":"visu@gmail.com",
-                "supervisor_name":EmpForm.supervisor_name.value,
-                "supervisor_email":EmpForm.supervisor_email.value,
-                "official_email":"",
-                "official_contact":"",
-                "department":EmpForm.department.value,
-                "employee__code":EmpForm.employee_code.value,
-                "upload_document":file,
-                "biometric_data":"Notes",
-                "approved_by":"2",
-                "approved_date":"2021-02-26",
-                "is_interviewer":"1",
-                "created_on":"2021-02-24",
-                "updated_on":"2021-02-26",
-                "created_by":"3",
-                "updated_by":"1",
-                "ip_address":"Adress"
-            }
-            
-        }).then((response)=>{
-            console.log(response,"insert")
-            // Sup_nameGetId()
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+        .then((response)=>{
             if(response.data.status===1){
+              props.closemodal()
                 notification.success({
                     message: 'Record Added Successfully',
                   });
@@ -364,8 +367,9 @@ function Employeeform(props){
         setfileList(e.target.files[0])
        setfile(e.target.files[0].name)
        
-  console.log(file,"hjkgfh")
       }
+  console.log(props,"emp_props")
+
     return(
         
         <div>

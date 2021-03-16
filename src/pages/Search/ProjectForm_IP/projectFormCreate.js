@@ -86,8 +86,7 @@ function ProjectFormCreate(props) {
             "project_type_id":projectform.project_type.value,
             "sub_project_type_id":projectform.project_sub_type.value
         },
-    })
-        .then((response) => {
+    }).then((response) => {
             console.log("response",response)
             let processData=[]
             response.data.data.map((data)=>
@@ -96,6 +95,10 @@ function ProjectFormCreate(props) {
          setProcessType({processData})
          
         })
+    const handleCancel = () => {
+        let ResumeFrom_key = [
+            "process_type", "filling_type"
+        ]}
 
     // Filling Type
     Axios({
@@ -106,8 +109,7 @@ function ProjectFormCreate(props) {
             "sub_project_type_id":projectform.project_sub_type.value,
             "process_id":projectform.process_type.value
         },
-    })
-        .then((response) => {
+    }).then((response) => {
             console.log("response",response)
             let fillingData=[]
             response.data.data.map((data)=>
@@ -129,11 +131,9 @@ function ProjectFormCreate(props) {
             data:{
                 "project_type_id":data
             }
-        })
-            .then((response) => {
-                console.log("setProjectSubType",response)
-
-               let projectSubTypeValue=[]
+        }).then((response) => {
+                console.log("setProjectSubType",response);
+               let projectSubTypeValue=[];
                response.data.data.map((data)=>
                projectSubTypeValue.push({value:data.sub_project_type,id:data.sub_project_type_id})
                )
@@ -217,105 +217,93 @@ function ProjectFormCreate(props) {
         <div>
             <Grid item xs={12} className="projectFormTitle">Project Form</Grid>
             <div className="projectFormContent">
-                <Grid item xs={12} container direction="row" justify="center" spacing={7}>
-                    <Grid item xs={6} container direction="column" spacing={2}>
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={"Client"}
 
-                            />
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={"Project Type "}
-                                dropdown={ProjectType.projectTypedata}
-                                changeData={(data) => checkValidation(data, "project_type")}
-                                value={projectform.project_type.value}
-                                error={projectform.project_type.error}
-                                errmsg={projectform.project_type.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Process Type "}
-                                 dropdown={ProcessType.processData}
-                                changeData={(data) => checkValidation(data, "process_type")}
-                                value={projectform.process_type.value}
-                                error={projectform.process_type.error}
-                                errmsg={projectform.process_type.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Billable Type "}
-                                dropdown={BillableType.BillableData}
-                                changeData={(data) => checkValidation(data, "billable_type")}
-                                value={projectform.billable_type.value}
-                                error={projectform.billable_type.error}
-                                errmsg={projectform.billable_type.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Counsel"}
-                            />
-                        </Grid>
+                <Grid item xs={12} container direction="row" justify="center" spacing={3}>
+                    <Grid item xs={5} >
+                        <Labelbox type="select"
+                            placeholder={"Client"}
 
 
+                        />
                     </Grid>
-                    <Grid item xs={6} container direction="column" spacing={2} >
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Project Name "}
+                    <Grid item xs={5} >
+                        <Labelbox type="select"
+                            placeholder={"Project Name "}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Project Type "}
+                            dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }, { id: "4", value: "Opposition" }]}
+                            changeData={(data) => checkValidation(data, "process_type")}
+                            value={Trade_Mark.process_type.value}
+                            error={Trade_Mark.process_type.error}
+                            errmsg={Trade_Mark.process_type.errmsg}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Project Sub Type "}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Process Type"}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Filling Type "}
+                            dropdown={Trade_Mark.process_type.value == 1 ? [{ id: "1", value: "IndiaFilling" }, { id: "2", value: "InternationalFilling" }, { id: "3", value: "Domestic" }, { id: "4", value: "Foreign" }, { id: "5", value: "PCT" }]
+                                : [{ id: "1", value: "Filed" }, { id: "2", value: "Defended" }]}
+                            changeData={(data) => checkValidation(data, "filling_type")}
+                            value={Trade_Mark.filling_type.value}
+                            error={Trade_Mark.filling_type.error}
+                            errmsg={Trade_Mark.filling_type.errmsg}
 
 
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Project Sub Type "}
-                                dropdown={SubType_Project.projectSubTypeValue}
-                                changeData={(data) => checkValidation(data, "project_sub_type")}
-                                value={projectform.project_sub_type.value}
-                                error={projectform.project_sub_type.error}
-                                errmsg={projectform.project_sub_type.errmsg}
 
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Filling Type "}
-                                dropdown={setFillingType.fillingData}
-                                changeData={(data) => checkValidation(data, "filling_type")}
-                                value={projectform.filling_type.value}
-                                error={projectform.filling_type.error}
-                                errmsg={projectform.filling_type.errmsg}
-
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"HOD/Attorney "}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={" billable Type "}
 
 
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"HOD/Attorney "}
+
+
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Councel "}
+                            
+                        />
+                    </Grid>
+                   
+                    <Grid item xs={5}>
+                        <div className="projectTestArea">
                             <Labelbox type="textarea"
                                 placeholder={"Comments"}
+
                             />
-                        </Grid>
-
-
+                        </div>
                     </Grid>
 
+
+
+
                 </Grid>
-
-
+               
             </div>
             <div className="customFormbtn">
-                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} />
-                <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"}/>
+                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onSubmit} />
+                <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
             </div>
         </div>

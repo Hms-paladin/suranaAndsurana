@@ -3,7 +3,7 @@ import { GET_INTERVIEW_QUESTIONS, INTERVIEWAPPROVER_TABLE_DATA } from "../utils/
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import {notification} from 'antd'
-
+import moment from 'moment'
 
 export const Interview = () => async dispatch => {
     try {
@@ -22,15 +22,13 @@ export const Interview = () => async dispatch => {
     }
 }
 
-export const interviewApproverTableData = (props) => async dispatch => {
-    console.log(props,"action")
+export const interviewApproverTableData = (id) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl +'get_to_do_interview_by_id',
             data:{
-                resume_id:props.int_resume_id && props.int_resume_id.resume_id
-                // resume_id:26
+                resume_id:id
             }
         })
         .then((response) => {
@@ -52,17 +50,17 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
             data:{
                 "status":optionvalues.Id,
                 "score":ApproveForm.final_score.value,
-                "reviewer":1,
-                "approval":5,
+                "reviewer":localStorage.getItem("empId"),
+                "approval":"1",
                 "Interviewer_cmt":Rows.cmts,
                 "approver_cmt":ApproveForm.comment.value,
                 "prop_designation":Rows.viewer,
                 "prop_int_date_time":Rows.date,
                 "resume_id":props.int_resume_id && props.int_resume_id.resume_id,
-                "created_on":"2021-02-01 12:00:00",
-                "updated_on":"2021-02-12 12:00:00",
-                "created_by":"2",
-                "updated_by":"3",
+                "created_on":moment().format('YYYY-MM-DD HH:m:s')  ,
+                "updated_on":moment().format('YYYY-MM-DD HH:m:s')  ,
+                "created_by":localStorage.getItem("empId"),
+                "updated_by":localStorage.getItem("empId"),
                 "ip_address":"123"
             }
         })
@@ -72,6 +70,7 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
                 notification.success({
                     message: 'Interview Approve Successfully',
                   });
+                  return Promise.resolve();
                 }
         })
     }

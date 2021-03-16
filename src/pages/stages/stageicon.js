@@ -1,6 +1,5 @@
 import react, { useState } from 'react';
 import './stagesicon.scss';
-import TabIcons from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import AddIcon from '../../images/addIcon.svg';
@@ -8,7 +7,6 @@ import CustomButton from '../../component/Butttons/button';
 
 function Stages() {
     const [addRows, setAddRows] = useState([])
-    // const [indexValue, setindexValue] = useState([])
 
 
     function Addbox() {
@@ -19,22 +17,13 @@ function Stages() {
             <Grid item xs={5}>
                 <Labelbox type="select" />
             </Grid>
-            {/* <Grid item xs={2} onClick={()=>deleterow(addRows[0])}>
-                Delete
-            </Grid> */}
+         
 
         </Grid>])
 
 
     }
 
-    // function deleterow(id) {
-    //     console.log(id, "addRows")
-    //     if (id > -1) {
-    //         addRows.splice(id, 1);
-    //       }
-    //       setAddRows([...addRows])
-    // }
 
     return (
         <div>

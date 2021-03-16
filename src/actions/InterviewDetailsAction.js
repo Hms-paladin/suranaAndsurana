@@ -1,6 +1,7 @@
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
+import moment from 'moment'
 
 export const InesertInterviewDetails = (Interviewschedule,selectedCandidateId) => async dispatch => {
     console.log(Interviewschedule,selectedCandidateId,"<<<<<<<<<")
@@ -13,10 +14,10 @@ export const InesertInterviewDetails = (Interviewschedule,selectedCandidateId) =
                 "employee_id":Interviewschedule.interviewer.value,
                 "prop_designation":Interviewschedule.desgination.value,
                 "prop_date_time":Interviewschedule.propsedDate.value,
-                "created_on":"2021-02-22 14:00:00",
-                "updated_on":"2022-02-13 09:00:00",
-                "created_by":"6",
-                "updated_by":"1",
+                "created_on":moment().format('YYYY-MM-DD HH:m:s') ,
+                "updated_on":moment().format('YYYY-MM-DD HH:m:s') ,
+                "created_by":localStorage.getItem("empId"),
+                "updated_by":localStorage.getItem("empId"),
                 "ip_address":"198"
             }
           })
