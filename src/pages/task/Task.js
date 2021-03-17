@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 // import './search.s/css';
 import './Task.scss';
 import { Divider } from '@material-ui/core';
@@ -24,9 +24,13 @@ import Blue from "../../images/blue_round.png";
 import Light from "../../images/light_round.png";
 import Orange from "../../images/orange_round.png";
 import Red from "../../images/red_round.png";
-
+import DynModel from "../../component/Model/model";
+import Hearing from './AddHearing'
+import TimeSheetApproval from './Timesheet/TimesheetTable'
 
 function Task(){
+    const [Ts_approval,setTs_approval]=useState(false)
+
     const [page, setPage] = React.useState(2);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
   
@@ -38,6 +42,11 @@ function Task(){
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
+ const [hearing,sethearing]=useState(false)
+
+const handleChangeModel=()=>{
+    sethearing(true)
+}
     return(
        <div>
             <div className="searchfilterflex">
@@ -62,7 +71,7 @@ function Task(){
               
 {/* first card */}
                <div className="card_div">
-                   <Card >
+                   <Card onClick={()=>setTs_approval(true)}>
                        <div style={{display:'flex', justifyContent:'space-betwen'}}>
                            <div style={{backgroundColor:'#707070', width:'55px'}}> 
                                <p className="num_align_side">1</p>
@@ -112,7 +121,7 @@ function Task(){
                            <img src={ Arrow } style={{marginRight:'5px', width:'18px'}}/>
                            <img src={ File } style={{marginRight:'5px', width:'18px'}}/>
                            <img src={ Percentage } style={{marginRight:'5px', width:'18px'}}/>
-                           <img src={ Order } style={{marginRight:'5px', width:'18px'}}/>
+                           <img src={ Order } style={{marginRight:'5px', width:'18px'}} onClick={handleChangeModel}/>
                        </div>
                     </div>
                     <div style={{backgroundColor:'#707070', width:'55px'}}>
@@ -127,7 +136,7 @@ function Task(){
 
 {/* second card */}
                <div className="card_div" style={{marginTop:'10px'}}>
-                   <Card >
+                   <Card>
                        <div style={{display:'flex', justifyContent:'space-betwen'}}>
                            <div style={{backgroundColor:'#707070', width:'55px'}}> 
                                <p className="num_align_side">1</p>
@@ -465,7 +474,12 @@ function Task(){
             </div>
             </div>
            </div>
+ 
 
+ {/* modal */}
+    <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => sethearing(bln)} width={800} content={<Hearing />} />
+    <DynModel modelTitle={"TimeSheet"} handleChangeModel={Ts_approval} handleChangeCloseModel={(bln) => setTs_approval(bln)} width={1100} content={<TimeSheetApproval />} />
+    
        </div>
     )
 }
