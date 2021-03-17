@@ -7,7 +7,8 @@ import axios from "axios";
 import {useDispatch,connect} from "react-redux";
 import './resume.scss'
 import CustomButton from '../../component/Butttons/button';
-import { InesertResume } from "../../actions/ResumeAction"
+import { InesertResume } from "../../actions/ResumeAction";
+import PlusIcon from '../../images/plusIcon.scss';
 
 
 function ResumePage() {
