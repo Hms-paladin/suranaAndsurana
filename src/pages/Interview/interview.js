@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import './interview.scss'
 import Eyes from '../../images/neweye.svg'
-import DynModel from './model'
+import DynModel from "../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
 import { GetCandiateDetails } from "../../actions/interviewActions";
 import { Button } from "@material-ui/core";
@@ -14,6 +14,9 @@ import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import Axios from 'axios';
 import { tr } from "date-fns/locale";
+// Model
+import InterviewApprover from "../InterviewApprover/InterviewApprover";
+
 function InerviewScreen(props) {
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
@@ -25,6 +28,7 @@ function InerviewScreen(props) {
     const [selectedCandidateId, setSelectedCandidateId] = useState()
     const [comments,setComments] = useState(false)
     const [final,setFinal] = useState(false)
+    const [appModelOpen,setAppModelOpen] = useState(false)
 
     const [postData, setpostData] = useState({
         init_status: {
@@ -83,6 +87,7 @@ function InerviewScreen(props) {
         console.log(props, "cand_id")
 
         console.log(props.interviewer_id && props.interviewer_id.int_details_id, "cand_id")
+        console.log(props.interviewer_id && props.interviewer_id, "cand_id")
         Axios({
             method: "POST",
             url: apiurl + 'get_selected_candidates',
@@ -94,7 +99,8 @@ function InerviewScreen(props) {
                 const Intview_data = []
                 response.data.data.map((data) =>
                     Intview_data.push({
-                        date: moment(data.prop_date_time).format("DD-MMM-YYYY"),
+                        id:data.int_details_id,
+                        date: moment(data.prop_date_time).format("DD-MM-YYYY"),
                         designation: data.designation, candiates: data.total_number_candidates
                     })
                 )
@@ -133,10 +139,12 @@ function InerviewScreen(props) {
         })
            
         if (key === "init_status" && "Selected" !== initId.value) {
-            setFinal(false)
+            // setFinal(false)
+            setAppModelOpen(false)
         }
         if (key === "init_status" && "Selected" === initId.value) {
-            setFinal(true)
+            // setFinal(true)
+            setAppModelOpen(true)
             // postData.final_score.validation = [{ "name": "required" }]
             // setpostData(prevState => ({
             //     ...prevState,
@@ -296,9 +304,12 @@ console.log(props,"props")
                 /></div>
                 :""}
                 <div style={{ textAlign: "end" }}><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={onSubmit} /></div>
+                <DynModel modelTitle={"Interview Approver"}         handleChangeModel={appModelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
+             content={<InterviewApprover                  int_resume_id={props.interviewer_id}/>} />
 
             </Grid>
-
+  
+  
             </> :""}
         </div>
     )

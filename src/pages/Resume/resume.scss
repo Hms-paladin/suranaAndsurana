@@ -33,3 +33,31 @@
 .Container .MuiGrid-item{
   padding: 0% !important;
 }
+
+.educationList{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.educationContainer{
+  margin-top: 5% !important;
+}
+
+.educationKeyValue{
+  display: flex;
+  width: 100%;
+  border: 1px solid #023E7D;
+  border-radius: 11px;
+  padding: 10px;
+}
+
+.educationKey{
+  color: #707070;
+  width: 50%;
+}
+
+.educationValue{
+  color: #333232;
+  width: 50%;
+}

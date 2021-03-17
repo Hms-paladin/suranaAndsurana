@@ -265,15 +265,36 @@ function ProjectFormCreate(props) {
                                 placeholder={"Counsel"}
                             />
                         </Grid>
-
-
                     </Grid>
-                    <Grid item xs={6} container direction="column" spacing={2} >
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Project Name "}
-
-
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Project Type "}
+                            dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }, { id: "4", value: "Opposition" }]}
+                            changeData={(data) => checkValidation(data, "process_type")}
+                            value={projectform.process_type.value}
+                            error={projectform.process_type.error}
+                            errmsg={projectform.process_type.errmsg}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Project Sub Type "}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Process Type"}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Labelbox type="select"
+                            placeholder={"Filling Type "}
+                            dropdown={projectform.process_type.value == 1 ? [{ id: "1", value: "IndiaFilling" }, { id: "2", value: "InternationalFilling" }, { id: "3", value: "Domestic" }, { id: "4", value: "Foreign" }, { id: "5", value: "PCT" }]
+                                : [{ id: "1", value: "Filed" }, { id: "2", value: "Defended" }]}
+                            changeData={(data) => checkValidation(data, "filling_type")}
+                            value={projectform.filling_type.value}
+                            error={projectform.filling_type.error}
+                            errmsg={projectform.filling_type.errmsg}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -314,7 +335,7 @@ function ProjectFormCreate(props) {
 
                     </Grid>
 
-                </Grid>
+                {/* </Grid> */}
 
 
             </div>

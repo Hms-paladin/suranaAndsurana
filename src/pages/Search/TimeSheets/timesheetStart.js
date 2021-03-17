@@ -5,7 +5,7 @@ import Labelbox from '../../../helpers/labelbox/labelbox';
 import CustomButton from '../../../component/Butttons/button';
 
 function TimeSheetStartModel(props) {
-const [test,setTest] =useState(false)
+    const [test, setTest] = useState(false)
 
     return (
         <div className="timeSheetStartContainer">
@@ -57,8 +57,11 @@ const [test,setTest] =useState(false)
                     </Grid>
                 </Grid>
             </div>
+            <div className="timeSheetComments">
+                <Labelbox type="textarea" placeholder={"comments"} />
+            </div>
             <div className="customiseButton">
-                <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons"  />
+                <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
                 <CustomButton btnName={"START"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" />
 
             </div>

@@ -245,7 +245,7 @@ function Resumesearch(props) {
         })
 
         setRowData(rowDataList)
-        console.log("___=====",rowDataList)
+        console.log("resumeSearchList.skillList",resumeSearchList.skillList)
     }, [props.GetRowData,test])
 
     function onSearch() {
