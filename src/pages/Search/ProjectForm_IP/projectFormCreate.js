@@ -336,10 +336,10 @@ function ProjectFormCreate(props) {
 
                     </Grid>
 
-                </Grid>
+                {/* </Grid> */}
 
 
-            {/* </div> */}
+            </div>
             <div className="customFormbtn">
                 <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} />
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"}/>
