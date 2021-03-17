@@ -175,7 +175,7 @@ const SignInSide = (props) => {
             <Grid item xs={12} sm={6} md={4} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <img src={Surana} width='155px' height='130px' />   <Typography component="h5" variant="h6">
-                        Client Portal
+                        {/* Client Portal */}
           </Typography>
                     <form className={classes.form} noValidate onSubmit={handleSubmit}>
 

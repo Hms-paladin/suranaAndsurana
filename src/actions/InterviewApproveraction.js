@@ -42,7 +42,8 @@ export const interviewApproverTableData = (id) => async dispatch => {
 }
 
  
-export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async dispatch => {
+export const InsertApprove = (ApproveForm,props,optionvalues,Rows,int_details_id,alldet) => async dispatch => {
+    console.log("optionvalues",int_details_id)
     try {
         axios({
             method: 'POST',
@@ -52,16 +53,17 @@ export const InsertApprove = (ApproveForm,props,optionvalues,Rows) => async disp
                 "score":ApproveForm.final_score.value,
                 "reviewer":localStorage.getItem("empId"),
                 "approval":"1",
-                "Interviewer_cmt":Rows.cmts,
+                "Interviewer_cmt":ApproveForm.comment.value,
                 "approver_cmt":ApproveForm.comment.value,
-                "prop_designation":Rows.viewer,
-                "prop_int_date_time":Rows.date,
+                "prop_designation":alldet.designationID,
+                "prop_int_date_time":alldet.date,
                 "resume_id":props.int_resume_id && props.int_resume_id.resume_id,
                 "created_on":moment().format('YYYY-MM-DD HH:m:s')  ,
                 "updated_on":moment().format('YYYY-MM-DD HH:m:s')  ,
                 "created_by":localStorage.getItem("empId"),
                 "updated_by":localStorage.getItem("empId"),
-                "ip_address":"123"
+                "ip_address":"123",
+                "int_detail_id":int_details_id
             }
         })
         .then((response)=>{

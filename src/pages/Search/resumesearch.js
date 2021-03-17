@@ -335,13 +335,13 @@ function Resumesearch(props) {
                     </Grid>
                     <Grid container item xs={3} >
                         <Grid item xs={9}>
-                            <Labelbox type="select"
+                            {/* <Labelbox type="select"
                                 placeholder="Status"
                                 dropdown={resumeSearchList.statusList}
                                 changeData={(data) => checkValidation(data, "status", resumeSearchList.statusList)}
                                 value={ResumeSearch_Form.status.value}
                                 mode="multiple"
-                            />
+                            /> */}
                         </Grid>
                         <Grid item xs={3}>
                             <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />

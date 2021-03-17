@@ -72,14 +72,14 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
-      { path: "/projectIp", title: "ProjectIp1" },
-      { path: "/projectIp2", title: "ProjectIp2" },
-      { path: "/task", title: "Task" },
-      { path: "/addclient", title: "Add Client" },
-      { path: "/generateinvoice", title: "GenerateInvoice" },
+      // { path: "/projectIp", title: "ProjectIp1" },
+      // { path: "/projectIp2", title: "ProjectIp2" },
+      // { path: "/task", title: "Task" },
+      // { path: "/addclient", title: "Add Client" },
+      // { path: "/generateinvoice", title: "GenerateInvoice" },
       
       // Litigation :
-      { path: "/litigation", title: "Litigation" },
+      // { path: "/litigation", title: "Litigation" },
 
     ]
   );
