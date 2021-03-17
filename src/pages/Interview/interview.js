@@ -101,7 +101,9 @@ function InerviewScreen(props) {
                     Intview_data.push({
                         id:data.int_details_id,
                         date: moment(data.prop_date_time).format("DD-MM-YYYY"),
-                        designation: data.designation, candiates: data.total_number_candidates
+                        designation: data.designation,
+                         candiates: data.total_number_candidates,
+                         approver:data.approver
                     })
                 )
                 setcand_data(response.data.data[0].output)
@@ -144,7 +146,8 @@ function InerviewScreen(props) {
         }
         if (key === "init_status" && "Selected" === initId.value) {
             // setFinal(true)
-            setAppModelOpen(true)
+            int_details.Intview_data[0].approver !== null ? setAppModelOpen(true):  setAppModelOpen(false)
+          
             // postData.final_score.validation = [{ "name": "required" }]
             // setpostData(prevState => ({
             //     ...prevState,
@@ -305,7 +308,7 @@ console.log(props,"props")
                 :""}
                 <div style={{ textAlign: "end" }}><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={onSubmit} /></div>
                 <DynModel modelTitle={"Interview Approver"}         handleChangeModel={appModelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
-             content={<InterviewApprover                  int_resume_id={props.interviewer_id}/>} />
+             content={<InterviewApprover                  int_resume_id={selectedCandidateId}/>} />
 
             </Grid>
   
