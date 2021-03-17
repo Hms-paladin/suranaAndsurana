@@ -46,9 +46,9 @@ function ProjectFormCreate(props) {
     })
     useEffect(() => {
         console.log("value",projectform.project_sub_type.value)
-        SubType_Project_Api()
       
     //   project type
+    async function project_type(){
         Axios({
             method: "GET",
             url: apiurl + 'get_project_type',
@@ -61,8 +61,7 @@ function ProjectFormCreate(props) {
                )
             setProjectType({projectTypedata})
             })
-            console.log("type",ProjectType)
-
+        }
             // billable type
            Axios({
             method: "GET",
@@ -116,7 +115,7 @@ function ProjectFormCreate(props) {
          setFillingType({fillingData})
          
         })
-        
+        // 
 
     },[SubType_Project_Api,projectform])
 

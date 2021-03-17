@@ -81,6 +81,8 @@ function Navbar(props) {
       // Litigation :
       // { path: "/litigation", title: "Litigation" },
 
+      // variable rate master
+      { path: "/ratemaster", title: "Variable Rate Master" },
     ]
   );
 
