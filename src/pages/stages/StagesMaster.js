@@ -3,8 +3,23 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
 import './StagesMaster.scss'
+import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 export default function StagesMaster(){
+    const header = [
+        { id: 'table_name', label: 'Table Name' },
+        { id: 'project_type', label: 'Project Type' },
+        { id: 'sub_project_type', label: 'Sub Project Type' },
+        { id: 'process_type', label: 'Process Type' },
+        { id: 'stage', label: 'Stage' },
+        { id: 'sub_stage', label: 'Sub Stage' },
+        { id: 'no_days', label: 'Number of Days' },
+      ];
+        
+  const rows = [
+     {table_name:"Table 1",project_type:"project 1",sub_project_type:"sub Project1",process_type:"Type1",stage:"Stage 1",sub_stage:"Substage1",no_days:"Number"}
+     
+  ];
    const [RateMaster, setRateMaster] = useState({
       table_name: {
           value: "",
@@ -135,6 +150,12 @@ const handleCancel = () =>{
                error={RateMaster.stages.error}
                errmsg={RateMaster.stages.errmsg}
              />
+               <Labelbox type="text" placeholder={"Remainder Days"}
+               changeData={(data) => checkValidation(data, "compliance")}
+               value={RateMaster.compliance.value}
+               error={RateMaster.compliance.error}
+               errmsg={RateMaster.compliance.errmsg}
+             />
           </Grid>
           <Grid  item xs={4} spacing={2}>
              <Labelbox type="select" placeholder={"Sub Project Type"}
@@ -158,18 +179,22 @@ const handleCancel = () =>{
                error={RateMaster.process_type.error}
                errmsg={RateMaster.process_type.errmsg}
              />
-             <Labelbox type="text" placeholder={"Number of compliance"}
+             <Labelbox type="text" placeholder={"Number of Days"}
                changeData={(data) => checkValidation(data, "compliance")}
                value={RateMaster.compliance.value}
                error={RateMaster.compliance.error}
                errmsg={RateMaster.compliance.errmsg}
              />
-          </Grid>   
+          </Grid> 
+          <Grid  item xs={4} spacing={2}>
+        
+          </Grid>  
           <Grid  item xs={10} spacing={4} alignItems={"flex-end"}>
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit}/>
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>
           </Grid>
           </Grid>
+          <EnhancedTable headCells={header} rows={rows}/>
       </div>
   )
 }

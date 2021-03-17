@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React,{useEffect,useState} from 'react';
 // import './search.s/css';
 import './Task.scss';
 import { Divider } from '@material-ui/core';
@@ -24,13 +24,13 @@ import Blue from "../../images/blue_round.png";
 import Light from "../../images/light_round.png";
 import Orange from "../../images/orange_round.png";
 import Red from "../../images/red_round.png";
+import DynModel from "../../component/Model/model";
+import Hearing from './AddHearing'
+import TimeSheetApproval from './Timesheet/TimesheetTable'
 
-//TimeSheet Start && Stop  ==>
-import DynModel from '../../component/Model/model';
-import TimesheetStart from '../Search/TimeSheets/timesheetStart';
+function Task(){
+    const [Ts_approval,setTs_approval]=useState(false)
 
-
-function Task() {
     const [page, setPage] = React.useState(2);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [startModelOpen, setStartModelOpen] = useState(false)
@@ -48,7 +48,11 @@ function Task() {
     function startModel() {
         setStartModelOpen(true)
     }
+    const [hearing,sethearing]=useState(false)
 
+    const handleChangeModel=()=>{
+        sethearing(true)
+    }
     return (
         <div>
             <div className="searchfilterflex">
@@ -68,34 +72,33 @@ function Task() {
                     </div>
 
                 </div>
-
-
-
-                {/* first card */}
-                <div className="card_div">
-                    <Card >
-                        <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
-                            <div style={{ backgroundColor: '#707070', width: '55px' }}>
-                                <p className="num_align_side">1</p>
-                                <Divider />
-                                <img src={Clock} className="img_side_align" onClick={startModel} />
-                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimesheetStart />} width={1000}/>
-                            </div>
-
-                            <div style={{ width: '36%', padding: '15px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
-                                    <p>Project Name</p>
-                                    <p>project Type</p>
-                                    <p>Client Name</p>
-                                </div>
-                                <div style={{ display: 'flex', marginLeft: '10px', fontWeight: 'bold', fontSize: '16px' }}>
-                                    <p style={{ paddingRight: '30px' }}>Activity</p>
-                                    <p>sub Activity</p>
-                                </div>
-                                <div style={{ display: 'flex', fontWeight: 'bold' }}>
-                                    <p style={{ marginRight: '10px' }}>Start Date : 11-jan-2020</p>
-                                    <p>End Date : 11-jan-2020</p>
-                                </div>
+           
+           
+              
+{/* first card */}
+               <div className="card_div">
+                   <Card onClick={()=>setTs_approval(true)}>
+                       <div style={{display:'flex', justifyContent:'space-betwen'}}>
+                           <div style={{backgroundColor:'#707070', width:'55px'}}> 
+                               <p className="num_align_side">1</p>
+                               <Divider/>
+                               <img src={Clock} className="img_side_align"/>
+                           </div>
+                        
+                           <div style={{width:'36%', padding:'15px'}}>
+                              <div style={{display:'flex', justifyContent:'space-around', fontWeight:'bold'}}>
+                                  <p>Project Name</p>
+                                  <p>project Type</p>
+                                  <p>Client Name</p>
+                              </div>
+                              <div style={{display:'flex', marginLeft:'10px', fontWeight:'bold', fontSize:'16px'}}>
+                                  <p style={{paddingRight:'30px'}}>Activity</p>
+                                  <p>sub Activity</p>
+                              </div>
+                              <div style={{display:'flex', fontWeight:'bold'}}>
+                                  <p style={{marginRight:'10px'}}>Start Date : 11-jan-2020</p>
+                                  <p>End Date : 11-jan-2020</p>
+                              </div>
                                 <div className="task_bar_align">
                                     <Progress percent={100} status="active" />
                                 </div>
@@ -477,6 +480,9 @@ function Task() {
                     </div>
                 </div>
             </div>
+            <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => sethearing(bln)} width={800} content={<Hearing />} />
+    <DynModel modelTitle={"TimeSheet"} handleChangeModel={Ts_approval} handleChangeCloseModel={(bln) => setTs_approval(bln)} width={1100} content={<TimeSheetApproval />} />
+    
 
         </div>
     )

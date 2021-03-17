@@ -73,7 +73,8 @@ function Navbar(props) {
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
       { path: "/projectIp", title: "ProjectIp1" },
-      // { path: "/task", title: "Task" },  ==> set Search Screen 
+      { path: "/projectIp2", title: "ProjectIp2" },
+      { path: "/task", title: "Task" },
       { path: "/addclient", title: "Add Client" },
       { path: "/generateinvoice", title: "GenerateInvoice" },
       

@@ -22,7 +22,7 @@ import AddClient from "../pages/AddClient/addclient";
 // import GenerateInvoice from "../pages/Generateinvoi/ce/generateinvoice";
 import GenerateInvoice from "../pages/Generateinvoice/generateinvoice";
 import StagesMaster from '../pages/stages/StagesMaster'
-import AddHearing from '../pages/stages/AddHearing'
+import AddHearing from '../pages/task/AddHearing'
 import RateMaster from '../pages/stages/RateMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
