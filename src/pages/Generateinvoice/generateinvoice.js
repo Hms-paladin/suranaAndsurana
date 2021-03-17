@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './generateinvoice.scss';
 import { Grid } from '@material-ui/core';
 import CustomButton from "../../component/Butttons/button";
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -66,8 +67,8 @@ const Billablerows = [
                         <CustomButton btnName={"Search"} btnCustomColor="customPrimary"  custombtnCSS={"goSearchbtn"} />
                     </Grid>
                 </Grid>
-               <div>
-               <EnhancedTable headCells={headCells} rows={rows} />
+               <div className="generateTable">
+               <EnhancedTable headCells={headCells} rows={rows}  />
                </div>
              
                <div>

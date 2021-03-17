@@ -14,11 +14,11 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { Select, Row, Col } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
-import LabelIcon from '@material-ui/icons/Label';
 import logo from '../../images/surana.gif'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Personicon from '../../images/personIcon.svg';
 
 
 import './navbar.scss';
@@ -73,8 +73,7 @@ function Navbar(props) {
       { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
       { path: "/projectIp", title: "ProjectIp1" },
-      { path: "/projectIp2", title: "ProjectIp2" },
-      { path: "/task", title: "Task" },
+      // { path: "/task", title: "Task" },  ==> set Search Screen 
       { path: "/addclient", title: "Add Client" },
       { path: "/generateinvoice", title: "GenerateInvoice" },
       
@@ -148,7 +147,7 @@ function Navbar(props) {
               <Link to={data.path} onClick={() => setpathname(data.path)}>
                 <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
                   <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
-                  <LabelIcon className="menuIcon" />
+                  <img src={Personicon} className="menuListIcon" />
                   <div className="SiderResume_Button">{data.title}</div>
                 </div>
               </Link>
