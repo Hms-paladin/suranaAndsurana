@@ -98,11 +98,6 @@ function InerviewScreen(props) {
       const Intview_data = [];
       response.data.data.map((data) =>
         Intview_data.push({
- 
-       
-        // date:data.prop_date_time,
-        //   designation: data.designation,    designationID: data.prop_designation,
-        //   round:data.round
         id:data.int_details_id,
         date: moment(data.prop_date_time).format("DD-MM-YYYY"),
         designation: data.designation,
@@ -299,34 +294,39 @@ function InerviewScreen(props) {
             >
               {
                 // cand_data.length===0&& cand_data.length>=0&&
-                cand_data && cand_data.map((data, index) => {
-                  return (
-                    <Grid
-                      xs={12}
-                      container
-                      direction="row"
-                      justify="center"
-                      alignItems="left"
-                      display="flex"
-                      className={`${
-                        data && data.resume_id && data.resume_id === selectedCandidateId &&
-                        "selectedCandidateBG"
-                      } ordercandidates`}
-                      onClick={() => selectCandidate(data.resume_id,data.name)}
-                    >
-                      <Grid item xs={10} className="candidateName">
-                        {data && data.name}
+                cand_data &&
+                  cand_data.map((data, index) => {
+                    return (
+                      <Grid
+                        xs={12}
+                        container
+                        direction="row"
+                        justify="center"
+                        alignItems="left"
+                        display="flex"
+                        className={`${
+                          data &&
+                          data.resume_id &&
+                          data.resume_id === selectedCandidateId &&
+                          "selectedCandidateBG"
+                        } ordercandidates`}
+                        onClick={() =>
+                          selectCandidate(data.resume_id, data.name)
+                        }
+                      >
+                        <Grid item xs={10} className="candidateName">
+                          {data && data.name}
+                        </Grid>
+                        <Grid item xs={2}>
+                          <img
+                            src={Eyes}
+                            className="viewCandidatesList"
+                            onClick={() => ViewCandiate(data && data.resume_id)}
+                          />
+                        </Grid>
                       </Grid>
-                      <Grid item xs={2}>
-                        <img
-                          src={Eyes}
-                          className="viewCandidatesList"
-                          onClick={() => ViewCandiate(data && data.resume_id)}
-                        />
-                      </Grid>
-                    </Grid>
-                  );
-                })
+                    );
+                  })
               }
 
               <DynModel
@@ -403,9 +403,9 @@ function InerviewScreen(props) {
               width={1000}
               content={
                 <InterviewApprover
-                   props_name={canName }
-                   props_design={ canDesig}
-                  int_props={ candDetails.CandList &&  candDetails.CandList[0]}
+                  props_name={canName}
+                  props_design={canDesig}
+                  int_props={candDetails.CandList && candDetails.CandList[0]}
                   int_details_id={
                     int_details.Intview_data && int_details.Intview_data[0].id
                   }
