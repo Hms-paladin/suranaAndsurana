@@ -77,10 +77,13 @@ function Navbar(props) {
       { path: "/task", title: "Task" },
       { path: "/addclient", title: "Add Client" },
       { path: "/generateinvoice", title: "GenerateInvoice" },
+
       
       // Litigation :
       { path: "/litigation", title: "Litigation" },
 
+      // variable rate master
+      { path: "/ratemaster", title: "Variable Rate Master" },
     ]
   );
 
