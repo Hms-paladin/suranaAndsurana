@@ -171,8 +171,8 @@ function TodoList(props) {
               handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
 
     {/*InterviewApprover after  selected in interviewscreen     */}
-            <DynModel modelTitle={"Interview Approver"}         handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
-             content={<InterviewApprover                handleAproverModelClose={(bln) => setModelOpen(bln)}   int_resume_id={res_id}/>} />
+            {/* <DynModel modelTitle={"Interview Approver"}         handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} width={1000}
+             content={<InterviewApprover                handleAproverModelClose={(bln) => setModelOpen(bln)}   int_resume_id={res_id}/>} /> */}
 
     {/*EmployeeForm after  selected in interview approve     */}
             {/* <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
