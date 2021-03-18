@@ -169,10 +169,9 @@ function InterviewApprover(props) {
       dispatch(
         InsertApprove(
           ApproveForm,
-          props,
           optionvalues,
           Rows,
-          props.int_details_id,props.int_props
+          props.int_details_id,props.int_props,props.props_resid
         )
       ).then(() => {
         props.handleAproverModelClose();

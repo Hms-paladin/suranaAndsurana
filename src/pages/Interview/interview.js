@@ -403,6 +403,7 @@ function InerviewScreen(props) {
               width={1000}
               content={
                 <InterviewApprover
+                  props_resid={selectedCandidateId}
                   props_name={canName}
                   props_design={canDesig}
                   int_props={candDetails.CandList && candDetails.CandList[0]}

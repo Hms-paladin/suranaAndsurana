@@ -381,6 +381,9 @@ function ResumePage() {
         );
         console.log(filtererr.length);
         console.log(educationList.length, "educationList.length")
+        // dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
+        //     handleCancel()
+        // })
         if (educationList.length === 0) {
             !educationerr && setEducationerr(true)
         }
