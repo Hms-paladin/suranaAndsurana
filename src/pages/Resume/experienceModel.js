@@ -32,19 +32,19 @@ function ExperienceModel(props) {
         },
         city: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" }],
             error: null,
             errmsg: null,
         },
         department: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" }],
             error: null,
             errmsg: null,
         },
         designation: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" }],
             error: null,
             errmsg: null,
         },

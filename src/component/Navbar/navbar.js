@@ -19,6 +19,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Personicon from '../../images/personIcon.svg';
+import { useHistory } from "react-router-dom";
 
 
 import './navbar.scss';
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const classes = useStyles();
+  const history = useHistory();
   const [pathname, setpathname] = useState(window.location.pathname)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuItems, setMenuItems] = useState(
@@ -88,7 +90,8 @@ function Navbar(props) {
 
   function handleLogout() {
     localStorage.clear();
-    window.location.reload()
+    history.push("/login")
+    // window.location.reload()
   }
 
   return (

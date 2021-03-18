@@ -38,7 +38,7 @@ function EducationModel(props) {
         },
         percentage: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "PercentageCGPA" }],
             error: null,
             errmsg: null,
         },

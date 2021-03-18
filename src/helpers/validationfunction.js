@@ -11,8 +11,9 @@ checkValidation(textValue,validatorsArray){
       if(validatorsArray[valid].name=='required'){
       return {msg:"Field required",state:false};//validation occurs break the loop & throw the error
     }
-      }else if(validatorsArray[valid].name=='email'){
-        var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      }
+      else if(validatorsArray[valid].name=='email'){
+        var re = /^(?!.{101})(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if(re.test(textValue)==false){
      
       return {msg:"Email is invalid",state:false};//validation occurs break the loop & throw the error
@@ -127,7 +128,17 @@ checkValidation(textValue,validatorsArray){
           return { msg: "Please Enter Future Date", state: false };
         }
       }
-    }
+    } else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
+      var re = /^[ A-Za-z_@./#&+-]{1,100}\z*$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Please Enter Alphabets only", state: false };
+      }
+    }  else if (validatorsArray[valid].name == "PercentageCGPA") {
+      var re = /	^100$|^\d{0,2}(\.\d{1,3})? *%?$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Please Enter Percentage/CGPA only", state: false };
+      }
+    } 
 
     }
     return {msg:"",state:true};//if no error throw empty message
