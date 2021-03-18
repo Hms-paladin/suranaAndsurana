@@ -22,6 +22,9 @@ export const GET_SPECILIZATION = "GET_SPECILIZATION"
 export const GET_CAPABILITY = "GET_CAPABILITY" 
 export const GET_TALENTS = "GET_TALENTS" 
 export const GET_STATUS = "GET_STATUS" 
+export const GET_QUALIFICATION = "GET_QUALIFICATION"
+export const GET_INDUSTRY = "GET_INDUSTRY"
+
 
 // ResumeSearch
 

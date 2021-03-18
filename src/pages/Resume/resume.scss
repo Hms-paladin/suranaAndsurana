@@ -1,18 +1,19 @@
-.Container{
+.Container {
   width: 100%;
   display: flex;
   justify-content: space-around;
 }
 
-.leftContainer{
+.leftContainer {
   width: 40%;
 }
 
-.rightContainer{
+.rightContainer {
   width: 40%;
 }
 
-.genderDobFlex, .startdateEnddateFlex{
+.genderDobFlex,
+.startdateEnddateFlex {
   width: 90%;
 }
 
@@ -24,40 +25,100 @@
   margin-bottom: 10px !important;
 }
 
-.resumeBtnContainer{
+.resumeBtnContainer {
   margin-top: 20px !important;
 }
 
 /* grid  */
 
-.Container .MuiGrid-item{
+.Container .MuiGrid-item {
   padding: 0% !important;
 }
 
-.educationList{
+.educationList,
+.experienceList {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  img {
+    cursor: pointer;
+    height: 23px;
+    padding: 3px;
+  }
 }
 
-.educationContainer{
+.educationContainer {
   margin-top: 5% !important;
 }
 
-.educationKeyValue{
-  display: flex;
-  width: 100%;
-  border: 1px solid #023E7D;
-  border-radius: 11px;
-  padding: 10px;
+.experienceContainer {
+  margin-top: 1% !important;
 }
 
-.educationKey{
+.educationOuterBox,
+.experienceOuterBox {
+  width: 100%;
+  border: 1px solid #023e7d;
+  border-radius: 11px;
+  padding: 10px;
+  margin-top: 10px;
+  height: 100px;
+  overflow-y: auto;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.educationKeyValue,
+.experienceKeyValue {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.educationKeyValue:first-child,
+.experienceKeyValue:first-child {
+  margin-top: 5px !important;
+}
+
+.educationKey,
+.experienceKey {
   color: #707070;
   width: 50%;
 }
 
-.educationValue{
+.educationValue,
+.experienceValue {
   color: #333232;
   width: 50%;
+}
+
+// Resume Educational Model scss ==>
+
+.educationModelContainer {
+  padding: 10px;
+  text-align: center;
+}
+
+// Resume Educational Model scss ==>
+
+.experienceModelContainer {
+  padding: 10px;
+  text-align: right;
+}
+
+.commentbox .formdiv .brdrcls {
+  height: 100px;
+}
+
+.spaceBtGrid {
+  display: flex;
+  justify-content: space-between;
+  .MuiGrid-grid-xs-6 {
+    max-width: 48% !important;
+  }
+}
+
+.errmsgClrResume{
+  color: red;
+  font-size: 13px;
 }
