@@ -390,7 +390,7 @@ function ResumePage() {
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
 
-        } else if (educationList.length === 0 && filtererr.length === 0) {
+        } else if (educationList.length !== 0 && filtererr.length === 0) {
             // setResumeFrom({ error: false });
 
             dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
