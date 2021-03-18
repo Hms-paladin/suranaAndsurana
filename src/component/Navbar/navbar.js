@@ -70,7 +70,7 @@ function Navbar(props) {
       { path: "/resume", title: "Resume" },
       { path: "/todoList", title: "To Do List" },
       // {path:"/interview",title:"Interview"},
-      { path: "/employeeform", title: "Employee Form" },
+      // { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
       // { path: "/projectIp", title: "ProjectIp1" },
       // { path: "/projectIp2", title: "ProjectIp2" },
