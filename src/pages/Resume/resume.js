@@ -5,20 +5,26 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl"
 import axios from "axios";
 import { useDispatch, connect } from "react-redux";
-import './resume.scss'
 import CustomButton from '../../component/Butttons/button';
-import { InesertResume } from "../../actions/ResumeAction"
+import { InesertResume } from "../../actions/ResumeAction";
+import EducationModel from './educationModel';
+import ExperienceModel from './experienceModel';
+import PlusIcon from '../../images/plusIcon.svg';
+import DynModel from '../../component/Model/model';
+import moment from "moment";
+
+import './resume.scss'
 
 
 function ResumePage() {
     const dispatch = useDispatch()
     const [resumeGetList, setGetList] = useState({})
-    const [educationList, setEducationList] = useState([{
-        qualification:'B.e',
-        insitution:"DMI",
-        passing:"2019",
-        percentage:'7.52'
-    }])
+    const [educationModelOpen, setEducationModelOpen] = useState(false)
+    const [experienceModelOpen, setExperienceModelOpen] = useState(false)
+    const [educationList, setEducationList] = useState([])
+    const [experienceList, setExperienceList] = useState([])
+    const [employererr, setEmployererr] = useState(false)
+    const [educationerr, setEducationerr] = useState(false)
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -50,57 +56,15 @@ function ResumePage() {
             error: null,
             errmsg: null,
         },
-        basicQualification: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        additionalQualification1: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        additionalQualification2: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        institution: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        lastEmployer: {
-            value: "",
-            validation: [{ "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
-        startDate: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        endDate: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
         name1: {
             value: "",
-            validation: [{ "name": "email" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         organization1: {
             value: "",
-            validation: [{ "name": "email" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -112,19 +76,19 @@ function ResumePage() {
         },
         phone1: {
             value: "",
-            validation: [{ "name": "email" }],
+            validation: [{ "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
         name2: {
             value: "",
-            validation: [{ "name": "email" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         organization2: {
             value: "",
-            validation: [{ "name": "email" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -136,7 +100,7 @@ function ResumePage() {
         },
         phone2: {
             value: "",
-            validation: [{ "name": "email" }],
+            validation: [{ "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -219,21 +183,15 @@ function ResumePage() {
             error: null,
             errmsg: null,
         },
-        industry: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
         linkedin: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         twitter: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -248,13 +206,10 @@ function ResumePage() {
         let five = apiurl + "get_s_tbl_m_traits"
         let six = apiurl + "get_s_tbl_m_certification"
         let seven = apiurl + "get_s_tbl_m_specialization"
-        // let nine = apiurl + "get_s_tbl_m_achievement"
-        // let ten = apiurl + "get_s_tbl_m_capability" 
         let eight = apiurl + "get_s_tbl_m_talents"
         let nine = apiurl + "get_s_tbl_m_special_interest"
         let ten = apiurl + "get_s_tbl_m_state"
         let eleven = apiurl + "get_s_tbl_m_city"
-        // let fiveteen = apiurl + "get_s_tbl_m_status"
         let twevel = apiurl + "get_s_tbl_m_language"
         let thirteen = apiurl + "get_s_tbl_m_industry"
 
@@ -272,11 +227,6 @@ function ResumePage() {
         const requestEleven = axios.get(eleven);
         const requestTwevel = axios.get(twevel);
         const requestThirteen = axios.get(thirteen);
-        // const requestFourteen = axios.get(fourteen);
-        // const requestFiveteen = axios.get(fiveteen);
-        // const requestSixteen = axios.get(sixteen);
-        // const requestSeventeen = axios.get(seventeen);
-        // requestFourteen, requestFiveteen, requestSixteen, requestSeventeen
 
         axios.all([requestOne, requestTwo, requestThree, requestFour, requestFive, requestSix, requestSeven, requestEight, requestNine, requestTen, requestEleven, requestTwevel, requestThirteen]).then(axios.spread((...responses) => {
             const responseOne = responses[0].data.data
@@ -292,10 +242,6 @@ function ResumePage() {
             const responseEleven = responses[10].data.data
             const responseTwevel = responses[11].data.data
             const responseThirteen = responses[12].data.data
-            // const requestFourteen = responses[12].data.data
-            // const requestFiveteen = responses[13].data.data
-            // const requestSixteen = responses[14].data.data
-            // const requestSeventeen = responses[15].data.data
 
             let candidateList = []
             let qualificationList = []
@@ -434,12 +380,17 @@ function ResumePage() {
             (obj) => Resume_Form[obj].error == true
         );
         console.log(filtererr.length);
+        console.log(educationList.length, "educationList.length")
+        if (educationList.length === 0) {
+            !educationerr && setEducationerr(true)
+        }
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
-        } else {
+
+        } else if (educationList.length === 0 && filtererr.length === 0) {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Resume_Form)).then(() => {
+            dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
                 handleCancel()
             })
         }
@@ -451,18 +402,52 @@ function ResumePage() {
 
     const handleCancel = () => {
         let ResumeFrom_key = [
-            "name", "candidate", "gender", "DOB", "basicQualification", "additionalQualification1", "additionalQualification2", "institution", "lastEmployer", "startDate", "endDate", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "industry"
+            "name", "candidate", "gender", "DOB", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "organization1", "organization2", "name1", "name2", "linkedin", "twitter"
         ]
 
         ResumeFrom_key.map((data) => {
             Resume_Form[data].value = ""
         })
+        setEducationList([])
+        setExperienceList([])
         setResumeFrom(prevState => ({
             ...prevState,
         }));
     }
 
-    console.log(localStorage.getItem('token',), "Resume_Form")
+    function showEducationModel() {
+        setEducationModelOpen(true)
+    }
+
+    function showExperienceModel() {
+        setExperienceModelOpen(true)
+    }
+
+    function addEducations(data) {
+        setEducationList([...educationList, {
+            qualification: data.basicQualification.value,
+            institution: data.institution.value,
+            year_of_passing: moment(data.yearpassing.value).format('YYYY'),
+            cgpa: data.percentage.value,
+            certification_no: '1'
+        }])
+        setEducationModelOpen(false)
+        setEducationerr(false)
+    }
+
+    function addExperience(data) {
+        setExperienceList([...experienceList, {
+            type_of_industry: data.industry.value,
+            company_name: data.companyname.value,
+            city: data.city.value,
+            department: data.department.value,
+            designation: data.designation.value,
+            period_from: data.periodfrom.value,
+            period_to: data.periodto.value,
+            responsible: data.responsibilities.value
+        }])
+        setExperienceModelOpen(false)
+    }
 
     return (
         <>
@@ -697,6 +682,7 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
+                            className="spaceBtGrid"
                             alignItems="center">
                             <Grid item xs={6} >
                                 <Labelbox type="text"
@@ -723,29 +709,32 @@ function ResumePage() {
                         direction="row"
                         alignItems="center"
                         className="educationContainer">
+                        {educationerr && <span className="errmsgClrResume">Please Add Atleast One Education</span>}
                         <div className="educationList">
-                            <div>Education</div>
-                            <div>+</div>
+                            <div>Education*</div>
+                            <div><img src={PlusIcon} onClick={showEducationModel} /></div>
                         </div>
-                        {educationList.map((data) => {
-                            return(
-                            <div className="educationKeyValue">
-                                <div className="educationKey">
-                                    <div>Qualification</div>
-                                    <div>Insitution/University</div>
-                                    <div>Year of Passing</div>
-                                    <div>Percentage/CGPA</div>
-                                </div>
-                                <div className="educationValue">
-                                    <div>{data.qualification}</div>
-                                    <div>{data.insitution}</div>
-                                    <div>{data.passing}</div>
-                                    <div>{data.percentage}</div>
-                                </div>
-                            </div>)
-                        })
+                        {educationList.length > 0 && <div className="educationOuterBox">
+                            {educationList.map((data) => {
+                                return (
+                                    <div className="educationKeyValue">
+                                        <div className="educationKey">
+                                            <div>Qualification</div>
+                                            <div>Insitution/University</div>
+                                            <div>Year of Passing</div>
+                                            <div>Percentage/CGPA</div>
+                                        </div>
+                                        <div className="educationValue">
+                                            <div>{data.qualification}</div>
+                                            <div>{data.institution}</div>
+                                            <div>{data.year_of_passing}</div>
+                                            <div>{data.cgpa}</div>
+                                        </div>
+                                    </div>)
+                            })
+                            }
+                        </div>
                         }
-
                     </Grid>
                 </div>
                 <div className="rightContainer">
@@ -819,6 +808,7 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
+                            className="spaceBtGrid"
                             alignItems="center" >
                             <Grid item xs={6}>
                                 <Labelbox type="text"
@@ -842,6 +832,7 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
+                            className="spaceBtGrid"
                             alignItems="center" >
                             <Grid item xs={6}>
                                 <Labelbox type="text"
@@ -865,7 +856,9 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
-                            alignItems="center" >
+                            alignItems="center"
+                            className="spaceBtGrid"
+                        >
                             <Grid item xs={6}>
                                 <Labelbox type="text"
                                     placeholder={"Reference Name 2"}
@@ -888,6 +881,7 @@ function ResumePage() {
                         <Grid item xs={12}
                             container
                             direction="row"
+                            className="spaceBtGrid"
                             alignItems="center" >
                             <Grid item xs={6}>
                                 <Labelbox type="text"
@@ -922,12 +916,55 @@ function ResumePage() {
                             container
                             direction="row"
                             alignItems="center"
+                            className="experienceContainer">
+                            {employererr && <span className="errmsgClrResume">Please Add Perivous Employer</span>}
+                            <div className="experienceList">
+                                <div>Perivous Employer Details*</div>
+                                <div><img src={PlusIcon} onClick={showExperienceModel} /></div>
+                            </div>
+                            {experienceList.length > 0 && <div className="experienceOuterBox">
+                                {experienceList.map((data) => {
+                                    return (
+                                        <div className="experienceKeyValue">
+                                            <div className="experienceKey">
+                                                <div>Type of Industry</div>
+                                                <div>Company Name</div>
+                                                <div>City</div>
+                                                <div>Department</div>
+                                                <div>Designation</div>
+                                                <div>Period From</div>
+                                                <div>Period To</div>
+                                                <div>Responsibilities</div>
+                                            </div>
+                                            <div className="experienceValue">
+                                                <div>{data.type_of_industry}</div>
+                                                <div>{data.company_name}</div>
+                                                <div>{data.city}</div>
+                                                <div>{data.department}</div>
+                                                <div>{data.designation}</div>
+                                                <div>{data.period_from}</div>
+                                                <div>{data.period_to}</div>
+                                                <div>{data.responsible}</div>
+                                            </div>
+                                        </div>)
+                                })
+                                }
+                            </div>
+                            }
+
+                        </Grid>
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            alignItems="center"
                             className="resumeBtnContainer"
                         >
                             <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} content={<EducationModel addEducations={(data) => addEducations(data)} />} />
+                    <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
 
                 </div>
             </div>
