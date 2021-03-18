@@ -725,7 +725,11 @@ function ResumePage() {
                                             <div>Percentage/CGPA</div>
                                         </div>
                                         <div className="educationValue">
-                                            <div>{data.qualification}</div>
+                                            <div>{resumeGetList.qualificationList.map((getName) => {
+                                                if (data.qualification === getName.id) {
+                                                    return getName.value
+                                                }
+                                            })}</div>
                                             <div>{data.institution}</div>
                                             <div>{data.year_of_passing}</div>
                                             <div>{data.cgpa}</div>
@@ -937,7 +941,11 @@ function ResumePage() {
                                                 <div>Responsibilities</div>
                                             </div>
                                             <div className="experienceValue">
-                                                <div>{data.type_of_industry}</div>
+                                                <div>{resumeGetList.industryList.map((getName) => {
+                                                    if (data.type_of_industry === getName.id) {
+                                                        return getName.value
+                                                    }
+                                                })}</div>
                                                 <div>{data.company_name}</div>
                                                 <div>{data.city}</div>
                                                 <div>{data.department}</div>
