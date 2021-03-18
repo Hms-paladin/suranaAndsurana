@@ -25,6 +25,7 @@ function ResumePage() {
     const [experienceList, setExperienceList] = useState([])
     const [employererr, setEmployererr] = useState(false)
     const [educationerr, setEducationerr] = useState(false)
+    const [expReq, setExpReq] = useState(false)
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -185,13 +186,13 @@ function ResumePage() {
         },
         linkedin: {
             value: "",
-            validation: [],
+            validation: [{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
         twitter: {
             value: "",
-            validation: [],
+            validation: [{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -318,7 +319,12 @@ function ResumePage() {
 
 
     function checkValidation(data, key, multipleId) {
-
+         if (data !== 1 &&  key ==="candidate") { 
+             console.log("candidate",data)
+             setExpReq(true)
+            }else {
+                setExpReq(false) 
+            }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Resume_Form[key].validation
@@ -926,7 +932,7 @@ function ResumePage() {
                             className="experienceContainer">
                             {employererr && <span className="errmsgClrResume">Please Add Perivous Employer</span>}
                             <div className="experienceList">
-                                <div>Perivous Employer Details*</div>
+                                <div>Previous Employer Details{expReq &&"*"}</div>
                                 <div><img src={PlusIcon} onClick={showExperienceModel} /></div>
                             </div>
                             {experienceList.length > 0 && <div className="experienceOuterBox">

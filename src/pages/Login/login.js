@@ -184,7 +184,7 @@ const SignInSide = (props) => {
                             variant="outlined"
                             margin="normal"
                             fullWidth
-                            placeholder={"Email Adress"}
+                            placeholder={"Email Address"}
                             name={"email"}
                             value={email}
                             type="email"

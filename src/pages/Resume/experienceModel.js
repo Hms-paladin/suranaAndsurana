@@ -26,25 +26,25 @@ function ExperienceModel(props) {
         },
         companyname: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "100Char" }],
             error: null,
             errmsg: null,
         },
         city: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" }],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "100Char" }],
             error: null,
             errmsg: null,
         },
         department: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" }],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
         designation: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" }],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -62,7 +62,7 @@ function ExperienceModel(props) {
         },
         responsibilities: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "200Char" }],
             error: null,
             errmsg: null,
         },

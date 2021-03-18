@@ -138,7 +138,22 @@ checkValidation(textValue,validatorsArray){
       if (re.test(textValue) == false) {
         return { msg: "Please Enter Percentage/CGPA only", state: false };
       }
-    } 
+    } else if (validatorsArray[valid].name == "50Char") {
+      var re =/^.{1,51}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Character Limit Exceed", state: false };
+      }
+    } else if (validatorsArray[valid].name == "100Char") {
+      var re =/^.{1,101}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Character Limit Exceed", state: false };
+      }
+    }else if (validatorsArray[valid].name == "200Char") {
+      var re =/^.{1,251}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Character Limit Exceed", state: false };
+      }
+    }
 
     }
     return {msg:"",state:true};//if no error throw empty message

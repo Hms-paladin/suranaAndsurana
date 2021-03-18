@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import "./interview.scss";
 import Eyes from "../../images/neweye.svg";
-import DynModel from "../../component/Model/model";
+import DynModel from "./model";
 import { useDispatch, connect } from "react-redux";
 import { GetCandiateDetails } from "../../actions/interviewActions";
 import { Button } from "@material-ui/core";
@@ -209,7 +209,7 @@ function InerviewScreen(props) {
         )
       ).then(() => {
         props.handleAproverModelClose();
-        props.refresh();
+        // props.refresh();
       });
     }
 

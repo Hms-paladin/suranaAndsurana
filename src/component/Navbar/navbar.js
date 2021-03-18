@@ -74,6 +74,7 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       // { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
+  
       // { path: "/projectIp", title: "ProjectIp1" },
       // { path: "/projectIp2", title: "ProjectIp2" },
       // { path: "/task", title: "Task" },
@@ -85,6 +86,7 @@ function Navbar(props) {
 
       // variable rate master
       { path: "/ratemaster", title: "Variable Rate Master" },
+      {path:"/stagesmaster", title: "StageMaster" },
     ]
   );
 
