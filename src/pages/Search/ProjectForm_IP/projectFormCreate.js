@@ -341,7 +341,7 @@ function ProjectFormCreate(props) {
 
             </div>
             <div className="customFormbtn">
-                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} />
+                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnclick={onsubmit}/>
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"}/>
 
             </div>

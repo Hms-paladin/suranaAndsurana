@@ -228,39 +228,6 @@ function EducationModel() {
             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
 
 
-
-
-            {/* <Labelbox type="select" placeholder="Type of Industry"
-                changeData={(data) => checkValidation(data, "basicQualification")}
-                value={Resume_Form.basicQualification.value}
-                error={Resume_Form.basicQualification.error}
-                errmsg={Resume_Form.basicQualification.errmsg} />
-
-            <Labelbox type="text" placeholder="City"
-                changeData={(data) => checkValidation(data, "institution")}
-                value={Resume_Form.institution.value}
-                error={Resume_Form.institution.error}
-                errmsg={Resume_Form.institution.errmsg} />
-
-            <Labelbox type="text" placeholder="City"
-                changeData={(data) => checkValidation(data, "institution")}
-                value={Resume_Form.institution.value}
-                error={Resume_Form.institution.error}
-                errmsg={Resume_Form.institution.errmsg} />
-
-            <Labelbox type="datepicker" placeholder="Year of Passing"
-                changeData={(data) => checkValidation(data, "yearpassing")}
-                value={Resume_Form.yearpassing.value}
-                error={Resume_Form.yearpassing.error}
-                errmsg={Resume_Form.yearpassing.errmsg} />
-
-            <Labelbox type="text" placeholder="Percentage/CGPA"
-                changeData={(data) => checkValidation(data, "percentage")}
-                value={Resume_Form.percentage.value}
-                error={Resume_Form.percentage.error}
-                errmsg={Resume_Form.percentage.errmsg} /> */}
-
-
         </div>
     )
 }
