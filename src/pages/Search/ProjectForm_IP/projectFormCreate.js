@@ -143,15 +143,15 @@ function ProjectFormCreate(props) {
     }
 
     function checkValidation(data, key, multipleId) {
-        if (key === "project_type") {
-            SubType_Project_Api(data)
-        }
-        if (key === "project_type" || key === "project_sub_type") {
-            setprojectform(prevState => ({
-                ...prevState,
-                process_type: { value: data }
-            }));
-        }
+        // if (key === "project_type") {
+        //     SubType_Project_Api(data)
+        // }
+        // if (key === "project_type" || key === "project_sub_type") {
+        //     setprojectform(prevState => ({
+        //         ...prevState,
+        //         process_type: { value: data }
+        //     }));
+        // }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -183,7 +183,7 @@ function ProjectFormCreate(props) {
 
         setprojectform(prevState => ({
             ...prevState,
-            // [key]: dynObj,
+            [key]: dynObj,
         }));
     };
 
@@ -224,8 +224,8 @@ function ProjectFormCreate(props) {
 
             <Grid item xs={12} className="projectFormTitle">Project Form</Grid>
             <div className="projectFormContent">
-                <Grid item xs={12} container direction="row" justify="center" >
-                    <Grid item xs={5}  >
+                <Grid item xs={12} container direction="row" justify="center" spacing={2} >
+                    <Grid item xs={4}  >
                         <Labelbox type="select"
                             placeholder={"Client"}
                         />
@@ -235,25 +235,159 @@ function ProjectFormCreate(props) {
 
                         />
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={6}>
                         <Labelbox type="text"
                             placeholder={"Project Name "}
                         />
                     </Grid>
-                    <Grid item xs={12} >
-                        <Grid item xs={5}>
-                            <Labelbox type="select"
-                                placeholder={"Project Type "}
-                                dropdown={ProjectType.projectTypedata}
-                                changeData={(data) => checkValidation(data, "process_type")}
-                                value={projectform.process_type.value}
-                                error={projectform.process_type.error}
-                                errmsg={projectform.process_type.errmsg}
-                            />
-                        </Grid>
+                    <Grid item xs={6} >
+                        <Labelbox type="select"
+                            placeholder={"Project Type "}
+                            dropdown={ProjectType.projectTypedata}
+                            changeData={(data) => checkValidation(data, "process_type")}
+                            value={projectform.process_type.value}
+                            error={projectform.process_type.error}
+                            errmsg={projectform.process_type.errmsg}
+                        />
                     </Grid>
+                    {projectform.process_type.value === 1 ?
+                        <>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"Project Sub Type"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"Process Type"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"Filling Type"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"HOD/Attorney"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"Counsel"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"Billable Type"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="select"
+                                    placeholder={"Project Cost Range"}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                            </Grid>
+                            <Grid item xs={6} >
+                                <div className="projectFormComments">
+                                    <Labelbox type="textarea"
+                                        placeholder={"Comments"}
+                                    />
+                                </div>
+                            </Grid>
+                        </>
+                        :
+                        projectform.process_type.value === 6 ?
+                            <>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Filling Type"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Billable Type"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Direct Responsible Attorney"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Deputy Direct Responsible Attorney"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Project Cost Range"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <div className="projectFormComments">
+                                        <Labelbox type="textarea"
+                                            placeholder={"Comments"}
+                                        />
+                                    </div>
+                                </Grid>
+                                
+                                <Grid item xs={6} >
+                                </Grid>
+                            </>
+                            :
+                            (projectform.process_type.value === 2 || projectform.process_type.value === 3 || projectform.process_type.value === 4 || projectform.process_type.value === 5) ?
+                            <>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Billable Type"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Project Type"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Counsel"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"HOD/Attorney"}
+                                    />
+                                </Grid>
+                                
+                                <Grid item xs={6} >
+                                    <Labelbox type="select"
+                                        placeholder={"Project Cost Range"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} >
 
+                                </Grid>
+                                <Grid item xs={6} >
+                                    <div className="projectFormComments">
+                                        <Labelbox type="textarea"
+                                            placeholder={"Comments"}
+                                        />
+                                    </div>
+                                </Grid>
+
+                            </>
+                            :
+                            <Grid item xs={6} >
+                            </Grid>
+                    }
                 </Grid>
+
+
+
+
                 {/* <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={6} >
                         <Labelbox type="select"
