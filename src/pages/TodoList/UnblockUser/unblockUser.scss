@@ -52,7 +52,14 @@
     .ant-switch-checked {
         background-color: #32AC32;
     }
+    .ant-switch::after {
+        top: 5px;
+        }
+    
 }
+
+
+
 .useActivechange{
     .ant-switch{
         height: 32px;
@@ -62,15 +69,18 @@
         
     }
     .ant-switch-handle {
-        top: 6px !important;
+        top: 10px !important;
     }
     .ant-switch-inner {
         font-size: 21px;
         color: #F42D2D ;
         font-weight: 600;
     }
-    // .ant-switch-checked {
-    // }
+    .ant-switch::after {
+        top: 5px;
+        }
+    
+    
 }
 
 

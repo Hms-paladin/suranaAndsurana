@@ -319,12 +319,12 @@ function ResumePage() {
 
 
     function checkValidation(data, key, multipleId) {
-         if (data !== 1 &&  key ==="candidate") { 
-             console.log("candidate",data)
-             setExpReq(true)
-            }else {
-                setExpReq(false) 
-            }
+        if (data !== 1 && key === "candidate") {
+            console.log("candidate", data)
+            setExpReq(true)
+        } else {
+            setExpReq(false)
+        }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Resume_Form[key].validation
@@ -390,18 +390,22 @@ function ResumePage() {
         // dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
         //     handleCancel()
         // })
-        if (educationList.length === 0) {
+        if (educationList.length === 0 && experienceList.length === 0) {
             !educationerr && setEducationerr(true)
+            !employererr && setEmployererr(true)
         }
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
 
-        } else if (educationList.length !== 0 && filtererr.length === 0) {
+        } else if (educationList.length !== 0 && experienceList.length !== 0 && filtererr.length === 0) {
             // setResumeFrom({ error: false });
 
             dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
                 handleCancel()
             })
+            // dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
+            //         handleCancel()
+            //     })
         }
 
         setResumeFrom(prevState => ({
@@ -444,6 +448,10 @@ function ResumePage() {
         setEducationerr(false)
     }
 
+
+
+
+
     function addExperience(data) {
         setExperienceList([...experienceList, {
             type_of_industry: data.industry.value,
@@ -456,6 +464,8 @@ function ResumePage() {
             responsible: data.responsibilities.value
         }])
         setExperienceModelOpen(false)
+        setEmployererr(false)
+
     }
 
     return (
@@ -484,6 +494,7 @@ function ResumePage() {
                                 value={Resume_Form.name.value}
                                 error={Resume_Form.name.error}
                                 errmsg={Resume_Form.name.errmsg}
+                                maxLength={100}
                             />
                         </Grid>
 
@@ -574,120 +585,7 @@ function ResumePage() {
                                 errmsg={Resume_Form.language.errmsg}
                             />
                         </Grid>
-                        {/* <Grid item xs={7}>
-                            <Labelbox type="select"
-                                placeholder={"Basic Qualification *"}
-                                dropdown={resumeGetList.qualificationList}
-                                changeData={(data) => checkValidation(data, "basicQualification")}
-                                value={Resume_Form.basicQualification.value}
-                                error={Resume_Form.basicQualification.error}
-                                errmsg={Resume_Form.basicQualification.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="select"
-                                placeholder={"Additional Qualification 1"}
-                                dropdown={resumeGetList.qualificationList}
-                                changeData={(data) => checkValidation(data, "additionalQualification1")}
-                                value={Resume_Form.additionalQualification1.value}
-                                error={Resume_Form.additionalQualification1.error}
-                                errmsg={Resume_Form.additionalQualification1.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="select"
-                                placeholder={"Additional Qualification 2"}
-                                dropdown={resumeGetList.qualificationList}
-                                changeData={(data) => checkValidation(data, "additionalQualification2")}
-                                value={Resume_Form.additionalQualification2.value}
-                                error={Resume_Form.additionalQualification2.error}
-                                errmsg={Resume_Form.additionalQualification2.errmsg}
-                            />
-                        </Grid> */}
-                        {/* <Grid item xs={7}>
-                            <Labelbox type="select"
-                                placeholder={"Institution"}
-                                dropdown={resumeGetList.institutionList}
-                                changeData={(data) => checkValidation(data, "institution")}
-                                value={Resume_Form.institution.value}
-                                error={Resume_Form.institution.error}
-                                errmsg={Resume_Form.institution.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Last Employer"}
-                                changeData={(data) => checkValidation(data, "lastEmployer")}
-                                value={Resume_Form.lastEmployer.value}
-                                error={Resume_Form.lastEmployer.error}
-                                errmsg={Resume_Form.lastEmployer.errmsg}
-                            />
-                        </Grid> */}
-                        {/* <Grid item xs={12}
-                            container
-                            direction="row"
-                            alignItems="center">
-                            <Grid item xs={6} >
-                                <div className="startdateEnddateFlex">
-                                    <Labelbox type="datepicker"
-                                        placeholder={"Start date"}
-                                        disableFuture={true}
-                                        changeData={(data) => checkValidation(data, "startDate")}
-                                        value={Resume_Form.startDate.value}
-                                        error={Resume_Form.startDate.error}
-                                        errmsg={Resume_Form.startDate.errmsg}
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item xs={6} >
-                                <div className="startdateEnddateFlex">
-                                    <Labelbox type="datepicker"
-                                        placeholder={"End date"}
-                                        disableFuture={true}
-                                        changeData={(data) => checkValidation(data, "endDate")}
-                                        value={Resume_Form.endDate.value}
-                                        error={Resume_Form.endDate.error}
-                                        errmsg={Resume_Form.endDate.errmsg}
-                                    />
-                                </div>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="text"
-                                placeholder={"Reference Email 1"}
-                                changeData={(data) => checkValidation(data, "email1")}
-                                value={Resume_Form.email1.value}
-                                error={Resume_Form.email1.error}
-                                errmsg={Resume_Form.email1.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="text"
-                                placeholder={"Reference Email 2"}
-                                changeData={(data) => checkValidation(data, "email2")}
-                                value={Resume_Form.email2.value}
-                                error={Resume_Form.email2.error}
-                                errmsg={Resume_Form.email2.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="text"
-                                placeholder={"Reference Phone 1"}
-                                changeData={(data) => checkValidation(data, "phone1")}
-                                value={Resume_Form.phone1.value}
-                                error={Resume_Form.phone1.error}
-                                errmsg={Resume_Form.phone1.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="text"
-                                placeholder={"Reference Phone 2"}
-                                changeData={(data) => checkValidation(data, "phone2")}
-                                value={Resume_Form.phone2.value}
-                                error={Resume_Form.phone2.error}
-                                errmsg={Resume_Form.phone2.errmsg}
-                            />
-                        </Grid> */}
+
                         <Grid item xs={12}
                             container
                             direction="row"
@@ -719,6 +617,7 @@ function ResumePage() {
                         alignItems="center"
                         className="educationContainer">
                         {educationerr && <span className="errmsgClrResume">Please Add Atleast One Education</span>}
+
                         <div className="educationList">
                             <div>Education*</div>
                             <div><img src={PlusIcon} onClick={showEducationModel} /></div>
@@ -915,24 +814,15 @@ function ResumePage() {
                                 />
                             </Grid>
                         </Grid>
-                        {/* <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Industry *"}
-                                dropdown={resumeGetList.industryList}
-                                changeData={(data) => checkValidation(data, "industry")}
-                                value={Resume_Form.industry.value}
-                                error={Resume_Form.industry.error}
-                                errmsg={Resume_Form.industry.errmsg}
-                            />
-                        </Grid> */}
+
                         <Grid item xs={12}
                             container
                             direction="row"
                             alignItems="center"
                             className="experienceContainer">
-                            {employererr && <span className="errmsgClrResume">Please Add Perivous Employer</span>}
+                            {Resume_Form.candidate.value !== 1 && employererr && <span className="errmsgClrResume">Please Add Perivous Employer</span>}
                             <div className="experienceList">
-                                <div>Previous Employer Details{expReq &&"*"}</div>
+                                <div>Previous Employer Details{expReq && "*"}</div>
                                 <div><img src={PlusIcon} onClick={showExperienceModel} /></div>
                             </div>
                             {experienceList.length > 0 && <div className="experienceOuterBox">
