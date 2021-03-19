@@ -5,7 +5,7 @@ import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import moment from 'moment'
 
-function DynModel(props){
+function DynModelView(props){
     const [visible, setVisible] = React.useState(false);
     const [getdata, setgetData]= useState([])
     const [res_id,setres_id]=useState({})
@@ -115,4 +115,4 @@ function DynModel(props){
     )
 }
 
-export default DynModel;
+export default DynModelView;

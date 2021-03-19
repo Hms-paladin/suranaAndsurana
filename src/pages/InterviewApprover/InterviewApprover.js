@@ -59,12 +59,12 @@ function InterviewApprover(props) {
   const [optionvalues, setoptionvalues] = useState({});
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(interviewApproverTableData(props.int_resume_id));
-  // }, []);
+  useEffect(() => {
+    dispatch(interviewApproverTableData(props.int_resume_id));
+  }, []);
 
   useEffect(() => {
-
+       console.log(":props.int_resume_id",props.int_resume_id)
     Axios({
       method: 'POST',
       url: apiurl +'get_to_do_interview_by_id',

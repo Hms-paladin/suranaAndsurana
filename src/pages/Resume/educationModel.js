@@ -15,7 +15,7 @@ function EducationModel(props) {
 
     const dispatch = useDispatch()
     const [qualificationList, setQualificationList] = useState([])
-
+  
     const [Education_Form, setEducationForm] = useState({
 
         basicQualification: {
@@ -26,7 +26,7 @@ function EducationModel(props) {
         },
         institution: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "50Char" }],
+            validation: [{ "name": "required" },{ "name": "alphaNumaricOnly" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -45,6 +45,8 @@ function EducationModel(props) {
 
 
     })
+
+   
 
     function onSubmit() {
         var mainvalue = {};

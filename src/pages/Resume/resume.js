@@ -35,7 +35,7 @@ function ResumePage() {
         // },
         name: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetsandSpecialChar" }],
+            validation: [{ "name": "required" }, { "name": "50Char" }],
             error: null,
             errmsg: null,
         },

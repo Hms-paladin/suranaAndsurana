@@ -129,7 +129,7 @@ checkValidation(textValue,validatorsArray){
         }
       }
     } else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
-      var re = /^[ A-Za-z_@./#&+-]{1,100}\z*$/;
+      var re = /^[ A-Za-z_@./#&+-]\z*$/;
       if (re.test(textValue) == false) {
         return { msg: "Please Enter Alphabets only", state: false };
       }
@@ -141,17 +141,17 @@ checkValidation(textValue,validatorsArray){
     } else if (validatorsArray[valid].name == "50Char") {
       var re =/^.{1,51}$/;
       if (re.test(textValue) == false) {
-        return { msg: "Character Limit Exceed", state: false };
+        return { msg:"Input data exceeds the limit", state: false };
       }
     } else if (validatorsArray[valid].name == "100Char") {
       var re =/^.{1,101}$/;
       if (re.test(textValue) == false) {
-        return { msg: "Character Limit Exceed", state: false };
+        return { msg: "Input data exceeds the limit", state: false };
       }
     }else if (validatorsArray[valid].name == "200Char") {
       var re =/^.{1,251}$/;
       if (re.test(textValue) == false) {
-        return { msg: "Character Limit Exceed", state: false };
+        return { msg: "Input data exceeds the limit", state: false };
       }
     }
 

@@ -15,8 +15,8 @@ function HrInterviewModel(props) {
     const [designationdata, setdesignationdata] = useState([]);
     const [Interviewschedule, setInterviewschedule] = useState({
         desgination: {
-            value: "",
-            validation: [{ "name": "required" }],
+            value: props.selectedDesignationID,
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -39,7 +39,7 @@ function HrInterviewModel(props) {
         }
     })
     useEffect(()=> {
-      
+      console.log("asraf",props.selectedId)
         Axios({
             method: 'GET',
             url: apiurl +'get_round',
@@ -121,7 +121,7 @@ function onSubmit() {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-        dispatch(InesertInterviewDetails(Interviewschedule,11)).then(()=>{
+        dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then(()=>{
             // handleCancel()
             // setVisible(false)
             props.handleChangeCloseModel(false)
@@ -154,7 +154,8 @@ function handleCancel() {
           placeholder="Designation"
           changeData={(data) => checkValidation(data, "desgination")}
           dropdown={designationdata.Designation}
-          value={Interviewschedule.desgination.value}
+        //   value={Interviewschedule.desgination.value}
+              value={props.selectedDesignationID}
           error={Interviewschedule.desgination.error}
           errmsg={Interviewschedule.desgination.errmsg}
         />

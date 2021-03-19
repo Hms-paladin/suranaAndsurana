@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import "./interview.scss";
 import Eyes from "../../images/neweye.svg";
-import DynModel from "./model";
+import DynModelView from "./model";
+import DynModel from "../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
 import { GetCandiateDetails } from "../../actions/interviewActions";
 import { Button } from "@material-ui/core";
@@ -205,7 +206,7 @@ function InerviewScreen(props) {
           postData,
           selectedCandidateId,
           props.interviewer_id,
-          int_details.Intview_data[0].round
+          candDetails.CandList[0].round
         )
       ).then(() => {
         props.handleAproverModelClose();
@@ -329,7 +330,7 @@ function InerviewScreen(props) {
                   })
               }
 
-              <DynModel
+              <DynModelView
                 modelTitle={"Candidate's Details"}
                 handleChangeModel={modelOpen}
                 handleChangeCloseModel={(bln) => setModelOpen(bln)}

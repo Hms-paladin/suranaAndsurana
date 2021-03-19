@@ -6,7 +6,8 @@ import { message } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction"
-
+import Axios from 'axios';
+import { apiurl } from "../../utils/baseUrl";
 import './resume.scss';
 import { getIndustry } from '../../actions/MasterDropdowns';
 
@@ -14,7 +15,7 @@ import { getIndustry } from '../../actions/MasterDropdowns';
 function ExperienceModel(props) {
 
     const dispatch = useDispatch()
-
+    const [city, setCity] = useState([])
     const [industryOptions, setIndustryOptions] = useState([])
     const [Experience_Form, setExperienceForm] = useState({
 
@@ -32,7 +33,7 @@ function ExperienceModel(props) {
         },
         city: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "100Char" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -70,6 +71,19 @@ function ExperienceModel(props) {
 
 
     })
+    useEffect(()=>{  
+        Axios({
+       method: "get",
+       url: apiurl + "get_s_tbl_m_city",
+     }).then((response) => {
+       let cityList = [];
+       response.data.data.map((data, index) =>
+       cityList.push({ value: data.state, id: data.city_id })
+       );
+       setCity( cityList );
+     });
+
+   },[])
 
     function onSubmit() {
         var mainvalue = {};
@@ -164,8 +178,9 @@ function ExperienceModel(props) {
                 </Grid>
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={6}> <Labelbox type="text" placeholder="City"
+                <Grid item xs={6}> <Labelbox type="select" placeholder="City"
                     changeData={(data) => checkValidation(data, "city")}
+                    dropdown={city}
                     value={Experience_Form.city.value}
                     error={Experience_Form.city.error}
                     errmsg={Experience_Form.city.errmsg} />
