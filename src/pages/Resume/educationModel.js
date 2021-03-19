@@ -1,37 +1,22 @@
-import react,{useState} from 'react';
+import react, { useState, useEffect } from 'react';
 import './resume.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from "../../component/Butttons/button";
-import {message} from 'antd';
-import {useDispatch,connect} from "react-redux";
+import { message } from 'antd';
+import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction"
+import { getQualification } from '../../actions/MasterDropdowns';
 
 
 
-function EducationModel(){
-    const props = {
-        name: 'file',
-        action: '//jsonplaceholder.typicode.com/posts/',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
+function EducationModel(props) {
+
     const dispatch = useDispatch()
+    const [qualificationList, setQualificationList] = useState([])
 
-
-    const [Resume_Form, setResumeFrom] = useState({
+    const [Education_Form, setEducationForm] = useState({
 
         basicQualification: {
             value: "",
@@ -41,7 +26,7 @@ function EducationModel(){
         },
         institution: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -53,54 +38,53 @@ function EducationModel(){
         },
         percentage: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "PercentageCGPA" }],
             error: null,
             errmsg: null,
         },
-        
+
 
     })
 
     function onSubmit() {
         var mainvalue = {};
-        var targetkeys = Object.keys(Resume_Form);
+        var targetkeys = Object.keys(Education_Form);
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
-                Resume_Form[targetkeys[i]].value,
-                Resume_Form[targetkeys[i]].validation
+                Education_Form[targetkeys[i]].value,
+                Education_Form[targetkeys[i]].validation
             );
-            Resume_Form[targetkeys[i]].error = !errorcheck.state;
-            Resume_Form[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Resume_Form[targetkeys[i]].value;
+            Education_Form[targetkeys[i]].error = !errorcheck.state;
+            Education_Form[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = Education_Form[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter(
-            (obj) => Resume_Form[obj].error == true
+            (obj) => Education_Form[obj].error == true
         );
         console.log(filtererr.length);
         if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
+            // setEducationForm({ error: true });
         } else {
-            // setResumeFrom({ error: false });
+            // setEducationForm({ error: false });
 
-            dispatch(InesertResume(Resume_Form)).then(() => {
-                handleCancel()
-            })
+            props.addEducations(Education_Form)
+            handleCancel()
         }
 
-        setResumeFrom(prevState => ({
+        setEducationForm(prevState => ({
             ...prevState
         }));
     };
 
     const handleCancel = () => {
         let ResumeFrom_key = [
-            "basicQualification", "institution", "yearpassing","percentage",
+            "basicQualification", "institution", "yearpassing", "percentage",
         ]
 
         ResumeFrom_key.map((data) => {
-            Resume_Form[data].value = ""
+            Education_Form[data].value = ""
         })
-        setResumeFrom(prevState => ({
+        setEducationForm(prevState => ({
             ...prevState,
         }));
     }
@@ -109,66 +93,73 @@ function EducationModel(){
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            Resume_Form[key].validation
+            Education_Form[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: Resume_Form[key].validation
+            validation: Education_Form[key].validation
         }
 
-        // only for multi select (start)
-
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
-        setResumeFrom(prevState => ({
+        setEducationForm(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
 
     };
-    return(
-        <div className="educationContainer" >
-                <Labelbox type="select" placeholder="Qualification" 
-                 changeData={(data) => checkValidation(data, "basicQualification")}
-                 value={Resume_Form.basicQualification.value}
-                 error={Resume_Form.basicQualification.error}
-                 errmsg={Resume_Form.basicQualification.errmsg}/>
 
-                <Labelbox type="text" placeholder="Insitution/University" 
-                  changeData={(data) => checkValidation(data, "institution")}
-                  value={Resume_Form.institution.value}
-                  error={Resume_Form.institution.error}
-                  errmsg={Resume_Form.institution.errmsg}/>
+    useEffect(() => {
+        dispatch(getQualification())
+    }, [])
 
-                <Labelbox type="datepicker" placeholder="Year of Passing" 
-                 changeData={(data) => checkValidation(data, "yearpassing")}
-                 value={Resume_Form.yearpassing.value}
-                 error={Resume_Form.yearpassing.error}
-                 errmsg={Resume_Form.yearpassing.errmsg}/>
+    useEffect(() => {
+        console.log(props.getOptions, "getOptions")
 
-                <Labelbox type="text" placeholder="Percentage/CGPA" 
-                 changeData={(data) => checkValidation(data, "percentage")}
-                 value={Resume_Form.percentage.value}
-                 error={Resume_Form.percentage.error}
-                 errmsg={Resume_Form.percentage.errmsg}/>
+        const qualificationList = []
 
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+        props.getOptions && props.getOptions.map((data, index) => {
+            qualificationList.push({ value: data.qual_name, id: data.qualification_id })
+        })
+
+        setQualificationList(qualificationList)
+
+    }, [props.getOptions])
+
+    return (
+        <div className="educationModelContainer" >
+            <Labelbox type="select" placeholder="Qualification"
+                changeData={(data) => checkValidation(data, "basicQualification")}
+                dropdown={qualificationList}
+                value={Education_Form.basicQualification.value}
+                error={Education_Form.basicQualification.error}
+                errmsg={Education_Form.basicQualification.errmsg} />
+
+            <Labelbox type="text" placeholder="Insitution/University"
+                changeData={(data) => checkValidation(data, "institution")}
+                value={Education_Form.institution.value}
+                error={Education_Form.institution.error}
+                errmsg={Education_Form.institution.errmsg} />
+
+            <Labelbox type="datepicker" placeholder="Year of Passing"
+                changeData={(data) => checkValidation(data, "yearpassing")}
+                value={Education_Form.yearpassing.value}
+                error={Education_Form.yearpassing.error}
+                errmsg={Education_Form.yearpassing.errmsg} />
+
+            <Labelbox type="text" placeholder="Percentage/CGPA"
+                changeData={(data) => checkValidation(data, "percentage")}
+                value={Education_Form.percentage.value}
+                error={Education_Form.percentage.error}
+                errmsg={Education_Form.percentage.errmsg} />
+
+            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
         </div>
     )
 }
 
-export default EducationModel
+const mapStateToProps = state => ({
+    getOptions: state.getOptions.getQualification
+})
+
+export default connect(mapStateToProps)(EducationModel);

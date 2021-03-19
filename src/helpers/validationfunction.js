@@ -11,8 +11,9 @@ checkValidation(textValue,validatorsArray){
       if(validatorsArray[valid].name=='required'){
       return {msg:"Field required",state:false};//validation occurs break the loop & throw the error
     }
-      }else if(validatorsArray[valid].name=='email'){
-        var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      }
+      else if(validatorsArray[valid].name=='email'){
+        var re = /^(?!.{101})(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if(re.test(textValue)==false){
      
       return {msg:"Email is invalid",state:false};//validation occurs break the loop & throw the error
@@ -126,6 +127,31 @@ checkValidation(textValue,validatorsArray){
         if (convert_second_date_mill_sec <= convert_Date_mill_sec) {
           return { msg: "Please Enter Future Date", state: false };
         }
+      }
+    } else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
+      var re = /^[ A-Za-z_@./#&+-]{1,100}\z*$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Please Enter Alphabets only", state: false };
+      }
+    }  else if (validatorsArray[valid].name == "PercentageCGPA") {
+      var re = /	^100$|^\d{0,2}(\.\d{1,3})? *%?$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Please Enter Percentage/CGPA only", state: false };
+      }
+    } else if (validatorsArray[valid].name == "50Char") {
+      var re =/^.{1,51}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Character Limit Exceed", state: false };
+      }
+    } else if (validatorsArray[valid].name == "100Char") {
+      var re =/^.{1,101}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Character Limit Exceed", state: false };
+      }
+    }else if (validatorsArray[valid].name == "200Char") {
+      var re =/^.{1,251}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Character Limit Exceed", state: false };
       }
     }
 

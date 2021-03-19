@@ -22,7 +22,7 @@ export const getInterviewquestions = () => async dispatch => {
     }
 }
 
-export const InsertInterviewquestions =(postData,id,data)=> async dispatch =>{
+export const InsertInterviewquestions =(postData,id,data,round)=> async dispatch =>{
     try {
         console.log(postData,"obj")
         axios({
@@ -42,7 +42,8 @@ export const InsertInterviewquestions =(postData,id,data)=> async dispatch =>{
                 "created_by":localStorage.getItem("empId"),
                 "updated_by":localStorage.getItem("empId"),
                 "ip_address":"Fify Two",
-                "task_id": data.no_of_candidates === 1 ?  data.task_id : 0
+                "task_id": data.no_of_candidates === 1 ?  data.task_id : 0,
+                "round":round
             }
         })
         // .then((response)=> {

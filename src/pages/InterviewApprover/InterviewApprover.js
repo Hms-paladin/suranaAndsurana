@@ -11,6 +11,7 @@ import Axios from "axios";
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Labelbox from "../../helpers/labelbox/labelbox";
+
 import {
   InsertApprove,
   interviewApproverTableData,
@@ -58,14 +59,32 @@ function InterviewApprover(props) {
   const [optionvalues, setoptionvalues] = useState({});
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(interviewApproverTableData(props.int_resume_id.resume_id));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(interviewApproverTableData(props.int_resume_id));
+  // }, []);
 
   useEffect(() => {
-    console.log(props.interviewData, "._________interviewData____________");
+
+    Axios({
+      method: 'POST',
+      url: apiurl +'get_to_do_interview_by_id',
+      data:{
+          resume_id:props.int_resume_id
+      }
+  })
+  // .then((response) => {
+  //   let interviewList = [];
+  //   response.data.data.map((data)=>{
+  //     interviewList.push({
+  //       date: moment(data.Date).format("DD-MMM-YYYY"),
+  //       // Id: data.interview_id,
+  //       score: data.score_inital,
+  //       cmts: data.comment,
+  //       viewer: data.interviewer,
+  //     });
+  //   })
+  // })
     let interviewList = [];
-
     props.interviewData.map((data) => {
       interviewList.push({
         date: moment(data.Date).format("DD-MMM-YYYY"),
@@ -146,13 +165,18 @@ function InterviewApprover(props) {
       // setResumeFrom({ error: true });
     } else {
       // setResumeFrom({ error: false });
-
-      dispatch(InsertApprove(ApproveForm, props, optionvalues, Rows)).then(
-        () => {
-          props.handleAproverModelClose();
-          // props.onUpdateRefresh();
-        }
-      );
+      console.log("props.int_details_id", props.int_details_id);
+      dispatch(
+        InsertApprove(
+          ApproveForm,
+          optionvalues,
+          Rows,
+          props.int_details_id,props.int_props,props.props_resid
+        )
+      ).then(() => {
+        props.handleAproverModelClose();
+        props.handleModelClose();
+      });
     }
 
     setApproveForm((prevState) => ({
@@ -170,12 +194,12 @@ function InterviewApprover(props) {
       <div className="interview_head">
         <div>
           <label>
-            Name:<span>{nameAndDesg && nameAndDesg.name}</span>
+            Name:<span>{nameAndDesg && nameAndDesg.name}  { props.props_name && props.props_name}</span>
           </label>
         </div>
         <div>
           <label>
-            Designation:<span>{nameAndDesg && nameAndDesg.Designation}</span>
+            Designation:<span>{nameAndDesg && nameAndDesg.Designation} {props.props_design &&props.props_design}</span>
           </label>
         </div>
       </div>

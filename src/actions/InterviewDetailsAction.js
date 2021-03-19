@@ -18,7 +18,8 @@ export const InesertInterviewDetails = (Interviewschedule,selectedCandidateId) =
                 "updated_on":moment().format('YYYY-MM-DD HH:m:s') ,
                 "created_by":localStorage.getItem("empId"),
                 "updated_by":localStorage.getItem("empId"),
-                "ip_address":"198"
+                "ip_address":"198",
+                "round":Interviewschedule.round.value
             }
           })
             .then(function (response) {

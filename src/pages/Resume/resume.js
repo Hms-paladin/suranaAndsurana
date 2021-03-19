@@ -4,16 +4,28 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl"
 import axios from "axios";
-import {useDispatch,connect} from "react-redux";
-import './resume.scss'
+import { useDispatch, connect } from "react-redux";
 import CustomButton from '../../component/Butttons/button';
 import { InesertResume } from "../../actions/ResumeAction";
+import EducationModel from './educationModel';
+import ExperienceModel from './experienceModel';
 import PlusIcon from '../../images/plusIcon.svg';
+import DynModel from '../../component/Model/model';
+import moment from "moment";
+
+import './resume.scss'
 
 
 function ResumePage() {
     const dispatch = useDispatch()
     const [resumeGetList, setGetList] = useState({})
+    const [educationModelOpen, setEducationModelOpen] = useState(false)
+    const [experienceModelOpen, setExperienceModelOpen] = useState(false)
+    const [educationList, setEducationList] = useState([])
+    const [experienceList, setExperienceList] = useState([])
+    const [employererr, setEmployererr] = useState(false)
+    const [educationerr, setEducationerr] = useState(false)
+    const [expReq, setExpReq] = useState(false)
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -23,7 +35,7 @@ function ResumePage() {
         // },
         name: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }, { "name": "alphabetsandSpecialChar" }],
             error: null,
             errmsg: null,
         },
@@ -45,43 +57,13 @@ function ResumePage() {
             error: null,
             errmsg: null,
         },
-        basicQualification: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        additionalQualification1: {
+        name1: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
         },
-        additionalQualification2: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        institution: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        lastEmployer: {
-            value: "",
-            validation: [{ "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
-        startDate: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        endDate: {
+        organization1: {
             value: "",
             validation: [],
             error: null,
@@ -93,15 +75,27 @@ function ResumePage() {
             error: null,
             errmsg: null,
         },
-        email2: {
-            value: "",
-            validation: [{ "name": "email" }],
-            error: null,
-            errmsg: null,
-        },
         phone1: {
             value: "",
             validation: [{ "name": "mobileSurana" }],
+            error: null,
+            errmsg: null,
+        },
+        name2: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        organization2: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        email2: {
+            value: "",
+            validation: [{ "name": "email" }],
             error: null,
             errmsg: null,
         },
@@ -155,7 +149,7 @@ function ResumePage() {
         },
         contactPhone: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "mobileSurana" }],
+            validation: [{ "name": "required" }, { "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -185,14 +179,20 @@ function ResumePage() {
         },
         language: {
             value: "",
-            valueById:"",
+            valueById: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
-        industry: {
+        linkedin: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "50Char" }],
+            error: null,
+            errmsg: null,
+        },
+        twitter: {
+            value: "",
+            validation: [{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -207,13 +207,10 @@ function ResumePage() {
         let five = apiurl + "get_s_tbl_m_traits"
         let six = apiurl + "get_s_tbl_m_certification"
         let seven = apiurl + "get_s_tbl_m_specialization"
-        // let nine = apiurl + "get_s_tbl_m_achievement"
-        // let ten = apiurl + "get_s_tbl_m_capability" 
         let eight = apiurl + "get_s_tbl_m_talents"
         let nine = apiurl + "get_s_tbl_m_special_interest"
         let ten = apiurl + "get_s_tbl_m_state"
         let eleven = apiurl + "get_s_tbl_m_city"
-        // let fiveteen = apiurl + "get_s_tbl_m_status"
         let twevel = apiurl + "get_s_tbl_m_language"
         let thirteen = apiurl + "get_s_tbl_m_industry"
 
@@ -231,11 +228,6 @@ function ResumePage() {
         const requestEleven = axios.get(eleven);
         const requestTwevel = axios.get(twevel);
         const requestThirteen = axios.get(thirteen);
-        // const requestFourteen = axios.get(fourteen);
-        // const requestFiveteen = axios.get(fiveteen);
-        // const requestSixteen = axios.get(sixteen);
-        // const requestSeventeen = axios.get(seventeen);
-        // requestFourteen, requestFiveteen, requestSixteen, requestSeventeen
 
         axios.all([requestOne, requestTwo, requestThree, requestFour, requestFive, requestSix, requestSeven, requestEight, requestNine, requestTen, requestEleven, requestTwevel, requestThirteen]).then(axios.spread((...responses) => {
             const responseOne = responses[0].data.data
@@ -251,10 +243,6 @@ function ResumePage() {
             const responseEleven = responses[10].data.data
             const responseTwevel = responses[11].data.data
             const responseThirteen = responses[12].data.data
-            // const requestFourteen = responses[12].data.data
-            // const requestFiveteen = responses[13].data.data
-            // const requestSixteen = responses[14].data.data
-            // const requestSeventeen = responses[15].data.data
 
             let candidateList = []
             let qualificationList = []
@@ -331,7 +319,12 @@ function ResumePage() {
 
 
     function checkValidation(data, key, multipleId) {
-
+         if (data !== 1 &&  key ==="candidate") { 
+             console.log("candidate",data)
+             setExpReq(true)
+            }else {
+                setExpReq(false) 
+            }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Resume_Form[key].validation
@@ -393,12 +386,20 @@ function ResumePage() {
             (obj) => Resume_Form[obj].error == true
         );
         console.log(filtererr.length);
+        console.log(educationList.length, "educationList.length")
+        // dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
+        //     handleCancel()
+        // })
+        if (educationList.length === 0) {
+            !educationerr && setEducationerr(true)
+        }
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
-        } else {
+
+        } else if (educationList.length !== 0 && filtererr.length === 0) {
             // setResumeFrom({ error: false });
-            
-            dispatch(InesertResume(Resume_Form)).then(()=>{
+
+            dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
                 handleCancel()
             })
         }
@@ -408,20 +409,54 @@ function ResumePage() {
         }));
     };
 
-    const handleCancel = () =>{
+    const handleCancel = () => {
         let ResumeFrom_key = [
-            "name","candidate","gender","DOB","basicQualification","additionalQualification1","additionalQualification2","institution","lastEmployer","startDate","endDate","email1","email2","phone1","phone2","skills","Traits","certifications","specializations","talents","intrests","contactPhone","emailId","mailAddress","state","city","language","industry"
+            "name", "candidate", "gender", "DOB", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "organization1", "organization2", "name1", "name2", "linkedin", "twitter"
         ]
 
-        ResumeFrom_key.map((data)=>{
+        ResumeFrom_key.map((data) => {
             Resume_Form[data].value = ""
         })
+        setEducationList([])
+        setExperienceList([])
         setResumeFrom(prevState => ({
             ...prevState,
         }));
     }
 
-    console.log( localStorage. getItem('token',), "Resume_Form")
+    function showEducationModel() {
+        setEducationModelOpen(true)
+    }
+
+    function showExperienceModel() {
+        setExperienceModelOpen(true)
+    }
+
+    function addEducations(data) {
+        setEducationList([...educationList, {
+            qualification: data.basicQualification.value,
+            institution: data.institution.value,
+            year_of_passing: moment(data.yearpassing.value).format('YYYY'),
+            cgpa: data.percentage.value,
+            certification_no: '1'
+        }])
+        setEducationModelOpen(false)
+        setEducationerr(false)
+    }
+
+    function addExperience(data) {
+        setExperienceList([...experienceList, {
+            type_of_industry: data.industry.value,
+            company_name: data.companyname.value,
+            city: data.city.value,
+            department: data.department.value,
+            designation: data.designation.value,
+            period_from: data.periodfrom.value,
+            period_to: data.periodto.value,
+            responsible: data.responsibilities.value
+        }])
+        setExperienceModelOpen(false)
+    }
 
     return (
         <>
@@ -431,18 +466,7 @@ function ResumePage() {
             <div className="Container">
                 <div className="leftContainer">
                     <Grid container spacing={3}>
-                    
-                      
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Name *"}
-                                changeData={(data) => checkValidation(data, "name")}
-                                value={Resume_Form.name.value}
-                                error={Resume_Form.name.error}
-                                errmsg={Resume_Form.name.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={7} >
+                        <Grid item xs={12} >
                             <Labelbox type="select"
                                 placeholder={"Type of Resource *"}
                                 dropdown={resumeGetList.candidateList}
@@ -452,6 +476,17 @@ function ResumePage() {
                                 errmsg={Resume_Form.candidate.errmsg}
                             />
                         </Grid>
+
+                        <Grid item xs={12}>
+                            <Labelbox type="text"
+                                placeholder={"Name *"}
+                                changeData={(data) => checkValidation(data, "name")}
+                                value={Resume_Form.name.value}
+                                error={Resume_Form.name.error}
+                                errmsg={Resume_Form.name.errmsg}
+                            />
+                        </Grid>
+
                         <Grid item xs={12}
                             container
                             direction="row"
@@ -481,7 +516,65 @@ function ResumePage() {
                                 </div>
                             </Grid>
                         </Grid>
-                        <Grid item xs={7}>
+                        <Grid item xs={12}>
+                            <Labelbox type="text"
+                                placeholder={"Contact Phone *"}
+                                changeData={(data) => checkValidation(data, "contactPhone")}
+                                value={Resume_Form.contactPhone.value}
+                                error={Resume_Form.contactPhone.error}
+                                errmsg={Resume_Form.contactPhone.errmsg}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Labelbox type="text"
+                                placeholder={"Email ID *"}
+                                changeData={(data) => checkValidation(data, "emailId")}
+                                value={Resume_Form.emailId.value}
+                                error={Resume_Form.emailId.error}
+                                errmsg={Resume_Form.emailId.errmsg}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Labelbox type="text"
+                                placeholder={"Mail Address *"}
+                                changeData={(data) => checkValidation(data, "mailAddress")}
+                                value={Resume_Form.mailAddress.value}
+                                error={Resume_Form.mailAddress.error}
+                                errmsg={Resume_Form.mailAddress.errmsg}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Labelbox type="select"
+                                placeholder={"State of Domecile *"}
+                                dropdown={resumeGetList.stateList}
+                                changeData={(data) => checkValidation(data, "state")}
+                                value={Resume_Form.state.value}
+                                error={Resume_Form.state.error}
+                                errmsg={Resume_Form.state.errmsg}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Labelbox type="select"
+                                placeholder={"City *"}
+                                dropdown={resumeGetList.cityList}
+                                changeData={(data) => checkValidation(data, "city")}
+                                value={Resume_Form.city.value}
+                                error={Resume_Form.city.error}
+                                errmsg={Resume_Form.city.errmsg}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Labelbox type="select"
+                                placeholder={"Languages Known *"}
+                                mode={"multiple"}
+                                dropdown={resumeGetList.languagesList}
+                                changeData={(data) => checkValidation(data, "language", resumeGetList.languagesList)}
+                                value={Resume_Form.language.value}
+                                error={Resume_Form.language.error}
+                                errmsg={Resume_Form.language.errmsg}
+                            />
+                        </Grid>
+                        {/* <Grid item xs={7}>
                             <Labelbox type="select"
                                 placeholder={"Basic Qualification *"}
                                 dropdown={resumeGetList.qualificationList}
@@ -510,8 +603,8 @@ function ResumePage() {
                                 error={Resume_Form.additionalQualification2.error}
                                 errmsg={Resume_Form.additionalQualification2.errmsg}
                             />
-                        </Grid>
-                        <Grid item xs={7}>
+                        </Grid> */}
+                        {/* <Grid item xs={7}>
                             <Labelbox type="select"
                                 placeholder={"Institution"}
                                 dropdown={resumeGetList.institutionList}
@@ -529,8 +622,8 @@ function ResumePage() {
                                 error={Resume_Form.lastEmployer.error}
                                 errmsg={Resume_Form.lastEmployer.errmsg}
                             />
-                        </Grid>
-                        <Grid item xs={12}
+                        </Grid> */}
+                        {/* <Grid item xs={12}
                             container
                             direction="row"
                             alignItems="center">
@@ -594,7 +687,67 @@ function ResumePage() {
                                 error={Resume_Form.phone2.error}
                                 errmsg={Resume_Form.phone2.errmsg}
                             />
+                        </Grid> */}
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            className="spaceBtGrid"
+                            alignItems="center">
+                            <Grid item xs={6} >
+                                <Labelbox type="text"
+                                    placeholder={"Linkedin"}
+                                    changeData={(data) => checkValidation(data, "linkedin")}
+                                    value={Resume_Form.linkedin.value}
+                                    error={Resume_Form.linkedin.error}
+                                    errmsg={Resume_Form.linkedin.errmsg}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="text"
+                                    placeholder={"Twitter"}
+                                    changeData={(data) => checkValidation(data, "twitter")}
+                                    value={Resume_Form.twitter.value}
+                                    error={Resume_Form.twitter.error}
+                                    errmsg={Resume_Form.twitter.errmsg}
+                                />
+                            </Grid>
                         </Grid>
+                    </Grid>
+                    <Grid item xs={12}
+                        container
+                        direction="row"
+                        alignItems="center"
+                        className="educationContainer">
+                        {educationerr && <span className="errmsgClrResume">Please Add Atleast One Education</span>}
+                        <div className="educationList">
+                            <div>Education*</div>
+                            <div><img src={PlusIcon} onClick={showEducationModel} /></div>
+                        </div>
+                        {educationList.length > 0 && <div className="educationOuterBox">
+                            {educationList.map((data) => {
+                                return (
+                                    <div className="educationKeyValue">
+                                        <div className="educationKey">
+                                            <div>Qualification</div>
+                                            <div>Insitution/University</div>
+                                            <div>Year of Passing</div>
+                                            <div>Percentage/CGPA</div>
+                                        </div>
+                                        <div className="educationValue">
+                                            <div>{resumeGetList.qualificationList.map((getName) => {
+                                                if (data.qualification === getName.id) {
+                                                    return getName.value
+                                                }
+                                            })}</div>
+                                            <div>{data.institution}</div>
+                                            <div>{data.year_of_passing}</div>
+                                            <div>{data.cgpa}</div>
+                                        </div>
+                                    </div>)
+                            })
+                            }
+                        </div>
+                        }
                     </Grid>
                 </div>
                 <div className="rightContainer">
@@ -665,65 +818,104 @@ function ResumePage() {
                                 errmsg={Resume_Form.intrests.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={7}>
-                            <Labelbox type="text"
-                                placeholder={"Contact Phone *"}
-                                changeData={(data) => checkValidation(data, "contactPhone")}
-                                value={Resume_Form.contactPhone.value}
-                                error={Resume_Form.contactPhone.error}
-                                errmsg={Resume_Form.contactPhone.errmsg}
-                            />
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            className="spaceBtGrid"
+                            alignItems="center" >
+                            <Grid item xs={6}>
+                                <Labelbox type="text"
+                                    placeholder={"Reference Name 1"}
+                                    changeData={(data) => checkValidation(data, "name1")}
+                                    value={Resume_Form.name1.value}
+                                    error={Resume_Form.name1.error}
+                                    errmsg={Resume_Form.name1.errmsg}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="text"
+                                    placeholder={"Reference Organization 1"}
+                                    changeData={(data) => checkValidation(data, "organization1")}
+                                    value={Resume_Form.organization1.value}
+                                    error={Resume_Form.organization1.error}
+                                    errmsg={Resume_Form.organization1.errmsg}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Email ID *"}
-                                changeData={(data) => checkValidation(data, "emailId")}
-                                value={Resume_Form.emailId.value}
-                                error={Resume_Form.emailId.error}
-                                errmsg={Resume_Form.emailId.errmsg}
-                            />
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            className="spaceBtGrid"
+                            alignItems="center" >
+                            <Grid item xs={6}>
+                                <Labelbox type="text"
+                                    placeholder={"Reference Email 1"}
+                                    changeData={(data) => checkValidation(data, "email1")}
+                                    value={Resume_Form.email1.value}
+                                    error={Resume_Form.email1.error}
+                                    errmsg={Resume_Form.email1.errmsg}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="text"
+                                    placeholder={"Reference Phone Number 1"}
+                                    changeData={(data) => checkValidation(data, "phone1")}
+                                    value={Resume_Form.phone1.value}
+                                    error={Resume_Form.phone1.error}
+                                    errmsg={Resume_Form.phone1.errmsg}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="text"
-                                placeholder={"Mail Address *"}
-                                changeData={(data) => checkValidation(data, "mailAddress")}
-                                value={Resume_Form.mailAddress.value}
-                                error={Resume_Form.mailAddress.error}
-                                errmsg={Resume_Form.mailAddress.errmsg}
-                            />
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            alignItems="center"
+                            className="spaceBtGrid"
+                        >
+                            <Grid item xs={6}>
+                                <Labelbox type="text"
+                                    placeholder={"Reference Name 2"}
+                                    changeData={(data) => checkValidation(data, "name2")}
+                                    value={Resume_Form.name2.value}
+                                    error={Resume_Form.name2.error}
+                                    errmsg={Resume_Form.name2.errmsg}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="text"
+                                    placeholder={"Reference Organization 2"}
+                                    changeData={(data) => checkValidation(data, "organization2")}
+                                    value={Resume_Form.organization2.value}
+                                    error={Resume_Form.organization2.error}
+                                    errmsg={Resume_Form.organization2.errmsg}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"State of Domecile *"}
-                                dropdown={resumeGetList.stateList}
-                                changeData={(data) => checkValidation(data, "state")}
-                                value={Resume_Form.state.value}
-                                error={Resume_Form.state.error}
-                                errmsg={Resume_Form.state.errmsg}
-                            />
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            className="spaceBtGrid"
+                            alignItems="center" >
+                            <Grid item xs={6}>
+                                <Labelbox type="text"
+                                    placeholder={"Reference Email 2"}
+                                    changeData={(data) => checkValidation(data, "email2")}
+                                    value={Resume_Form.email2.value}
+                                    error={Resume_Form.email2.error}
+                                    errmsg={Resume_Form.email2.errmsg}
+                                />
+                            </Grid>
+                            <Grid item xs={6} >
+                                <Labelbox type="text"
+                                    placeholder={"Reference Phone 2"}
+                                    changeData={(data) => checkValidation(data, "phone2")}
+                                    value={Resume_Form.phone2.value}
+                                    error={Resume_Form.phone2.error}
+                                    errmsg={Resume_Form.phone2.errmsg}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"City *"}
-                                dropdown={resumeGetList.cityList}
-                                changeData={(data) => checkValidation(data, "city")}
-                                value={Resume_Form.city.value}
-                                error={Resume_Form.city.error}
-                                errmsg={Resume_Form.city.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Languages Known *"}
-                                mode={"multiple"}
-                                dropdown={resumeGetList.languagesList}
-                                changeData={(data) => checkValidation(data, "language", resumeGetList.languagesList)}
-                                value={Resume_Form.language.value}
-                                error={Resume_Form.language.error}
-                                errmsg={Resume_Form.language.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Industry *"}
                                 dropdown={resumeGetList.industryList}
@@ -732,6 +924,51 @@ function ResumePage() {
                                 error={Resume_Form.industry.error}
                                 errmsg={Resume_Form.industry.errmsg}
                             />
+                        </Grid> */}
+                        <Grid item xs={12}
+                            container
+                            direction="row"
+                            alignItems="center"
+                            className="experienceContainer">
+                            {employererr && <span className="errmsgClrResume">Please Add Perivous Employer</span>}
+                            <div className="experienceList">
+                                <div>Previous Employer Details{expReq &&"*"}</div>
+                                <div><img src={PlusIcon} onClick={showExperienceModel} /></div>
+                            </div>
+                            {experienceList.length > 0 && <div className="experienceOuterBox">
+                                {experienceList.map((data) => {
+                                    return (
+                                        <div className="experienceKeyValue">
+                                            <div className="experienceKey">
+                                                <div>Type of Industry</div>
+                                                <div>Company Name</div>
+                                                <div>City</div>
+                                                <div>Department</div>
+                                                <div>Designation</div>
+                                                <div>Period From</div>
+                                                <div>Period To</div>
+                                                <div>Responsibilities</div>
+                                            </div>
+                                            <div className="experienceValue">
+                                                <div>{resumeGetList.industryList.map((getName) => {
+                                                    if (data.type_of_industry === getName.id) {
+                                                        return getName.value
+                                                    }
+                                                })}</div>
+                                                <div>{data.company_name}</div>
+                                                <div>{data.city}</div>
+                                                <div>{data.department}</div>
+                                                <div>{data.designation}</div>
+                                                <div>{data.period_from}</div>
+                                                <div>{data.period_to}</div>
+                                                <div>{data.responsible}</div>
+                                            </div>
+                                        </div>)
+                                })
+                                }
+                            </div>
+                            }
+
                         </Grid>
                         <Grid item xs={12}
                             container
@@ -739,10 +976,12 @@ function ResumePage() {
                             alignItems="center"
                             className="resumeBtnContainer"
                         >
-                            <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit}  />
+                            <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} content={<EducationModel addEducations={(data) => addEducations(data)} />} />
+                    <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
 
                 </div>
             </div>

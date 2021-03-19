@@ -16,6 +16,7 @@ import './search.scss'
 
 function DynModel(props) {
     const dispatch = useDispatch();
+    const[roundDropdownValues,setroundDropdownValues] =useState({})
     const [visible, setVisible] = React.useState(false);
     const [interviewerdata, setinterviewerdata] = useState([]);
     const [designationdata, setdesignationdata] = useState([]);
@@ -35,6 +36,12 @@ function DynModel(props) {
             errmsg: null,
         },
         propsedDate: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, 
+        round: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -125,55 +132,93 @@ function DynModel(props) {
 
         }
         )
+            
+        Axios({
+            method: 'GET',
+            url: apiurl +'get_resume_round_search',
+        }).then((response) => {
+                    let hr_round = []
+                response.data.data.map((data, index) =>
+                hr_round.push({ 
+                    id: data.status_id,
+                    value: data.status
+                  
+                   })
+                )
+                setroundDropdownValues({hr_round})
+                console.log(roundDropdownValues.hr_round,"hr_round")
+        })
 
     }, [dispatch])
 
 
     return (
-        <Modal
-            className="modelContainer"
-            title={props.modelTitle}
-            centered={props.centered ? true : false}
-            visible={visible}
-            footer={null}
-            width={props.width ? props.width : 520}
-            zIndex={1201}
-            onCancel={handleCancel}
-        >
-            <div className="interviewdetailformdiv">
-                <div className="interviewdetailform">
-                    <LabelBox type="select" placeholder={"Proposed Designation"}
-                        dropdown={designationdata.Designation}
-                        changeData={(data) => checkValidation(data, "desgination")}
-                        value={Interviewschedule.desgination.value}
-                        error={Interviewschedule.desgination.error}
-                        errmsg={Interviewschedule.desgination.errmsg}
-                    />
-                </div>
-                <div className="interviewdetailform">
-                    <LabelBox type="datepicker" placeholder={"Proposed Date"}
-                        changeData={(data) => checkValidation(data, "propsedDate")}
-                        value={Interviewschedule.propsedDate.value}
-                        error={Interviewschedule.propsedDate.error}
-                        errmsg={Interviewschedule.propsedDate.errmsg}
-                    />
-                </div>
-                <div className="interviewdetailform">
-                    <LabelBox type="select" placeholder={"Interviewer"}
-                        dropdown={interviewerdata.Interviewer}
-                        changeData={(data) => checkValidation(data, "interviewer")}
-                        value={Interviewschedule.interviewer.value}
-                        error={Interviewschedule.interviewer.error}
-                        errmsg={Interviewschedule.interviewer.errmsg}
-                    />
-                </div>
-                {/* <div className="interviewdetailsubmnit"><Button>Submit</Button></div> */}
-                <div className="interviewdetailSubmit">
-                    <CustomButton btnName={"Submit"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
-                </div>
-            </div>
-        </Modal>
-    )
+      <Modal
+        className="modelContainer"
+        title={props.modelTitle}
+        centered={props.centered ? true : false}
+        visible={visible}
+        footer={null}
+        width={props.width ? props.width : 520}
+        zIndex={1201}
+        onCancel={handleCancel}
+      >
+        <div className="interviewdetailformdiv">
+          <div className="interviewdetailform">
+            {" "}
+            <LabelBox
+              type="select"
+              placeholder="Round"
+              dropdown={roundDropdownValues.hr_round}
+            changeData={(data) => checkValidation(data, "round")}
+            value={Interviewschedule.round.value}
+            error={Interviewschedule.round.error}
+            errmsg={Interviewschedule.round.errmsg}
+            />
+          </div>
+          <div className="interviewdetailform">
+            <LabelBox
+              type="select"
+              placeholder={"Proposed Designation"}
+              dropdown={designationdata.Designation}
+              changeData={(data) => checkValidation(data, "desgination")}
+              value={Interviewschedule.desgination.value}
+              error={Interviewschedule.desgination.error}
+              errmsg={Interviewschedule.desgination.errmsg}
+            />
+          </div>
+          <div className="interviewdetailform">
+            <LabelBox
+              type="datepicker"
+              placeholder={"Proposed Date"}
+              changeData={(data) => checkValidation(data, "propsedDate")}
+              value={Interviewschedule.propsedDate.value}
+              error={Interviewschedule.propsedDate.error}
+              errmsg={Interviewschedule.propsedDate.errmsg}
+            />
+          </div>
+          <div className="interviewdetailform">
+            <LabelBox
+              type="select"
+              placeholder={"Interviewer"}
+              dropdown={interviewerdata.Interviewer}
+              changeData={(data) => checkValidation(data, "interviewer")}
+              value={Interviewschedule.interviewer.value}
+              error={Interviewschedule.interviewer.error}
+              errmsg={Interviewschedule.interviewer.errmsg}
+            />
+          </div>
+          {/* <div className="interviewdetailsubmnit"><Button>Submit</Button></div> */}
+          <div className="interviewdetailSubmit">
+            <CustomButton
+              btnName={"Submit"}
+              btnCustomColor="customPrimary"
+              onBtnClick={onSubmit}
+            />
+          </div>
+        </div>
+      </Modal>
+    );
 }
 
 export default DynModel;

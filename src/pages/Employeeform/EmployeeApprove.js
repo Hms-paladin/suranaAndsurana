@@ -17,8 +17,8 @@ import moment from 'moment';
     
 useEffect(()=>{
     
-    setresume_id(props.int_details_id)
-    console.log("props from employeeappro",props.int_details_id)
+    // setresume_id(props.int_details_id)
+    console.log("emp_viewer_id",props.emp_viewer_id)
     Axios({
         method:"post",
         url:apiurl+"get_employee_approval",
@@ -49,7 +49,7 @@ const InsertEmployee=(data)=>{
             "approved_by":localStorage.getItem("empId"),
             "approved_date":moment().format('YYYY-MM-DD') ,
             "emp_status":status === true?1 :2, 
-            "task_id":""                                  
+            "task_id":props.emp_viewer_id.task_id                                 
         },
     }).then((response)=>{
         if(response.data.status==1){

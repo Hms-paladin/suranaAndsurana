@@ -186,9 +186,9 @@ const handleCancel = () =>{
                errmsg={RateMaster.compliance.errmsg}
              />
           </Grid> 
-          <Grid  item xs={4} spacing={2}>
+          {/* <Grid  item xs={4} spacing={2}>
         
-          </Grid>  
+          </Grid>   */}
           <Grid  item xs={10} spacing={4} alignItems={"flex-end"}>
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit}/>
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>

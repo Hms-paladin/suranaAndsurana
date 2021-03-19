@@ -19,6 +19,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Personicon from '../../images/personIcon.svg';
+import { useHistory } from "react-router-dom";
 
 
 import './navbar.scss';
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const classes = useStyles();
+  const history = useHistory();
   const [pathname, setpathname] = useState(window.location.pathname)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuItems, setMenuItems] = useState(
@@ -70,23 +72,28 @@ function Navbar(props) {
       { path: "/resume", title: "Resume" },
       { path: "/todoList", title: "To Do List" },
       // {path:"/interview",title:"Interview"},
-      { path: "/employeeform", title: "Employee Form" },
+      // { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search" },
-      { path: "/projectIp", title: "ProjectIp1" },
-      { path: "/projectIp2", title: "ProjectIp2" },
-      { path: "/task", title: "Task" },
-      { path: "/addclient", title: "Add Client" },
-      { path: "/generateinvoice", title: "GenerateInvoice" },
+  
+      // { path: "/projectIp", title: "ProjectIp1" },
+      // { path: "/projectIp2", title: "ProjectIp2" },
+      // { path: "/task", title: "Task" },
+      // { path: "/addclient", title: "Add Client" },
+      // { path: "/generateinvoice", title: "GenerateInvoice" },
       
       // Litigation :
-      { path: "/litigation", title: "Litigation" },
+      // { path: "/litigation", title: "Litigation" },
 
+      // variable rate master
+      { path: "/ratemaster", title: "Variable Rate Master" },
+      {path:"/stagesmaster", title: "StageMaster" },
     ]
   );
 
   function handleLogout() {
     localStorage.clear();
-    window.location.reload()
+    history.push("/login")
+    // window.location.reload()
   }
 
   return (

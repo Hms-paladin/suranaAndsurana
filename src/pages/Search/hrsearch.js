@@ -35,24 +35,51 @@ const rows = [
 
    
 function Hrsearch() {
+    const dispatch = useDispatch();
   const [hrmodelOpen, setHRModelOpen] = useState(false)
     const[roundDropdownValues,setroundDropdownValues] =useState({})
-useEffect(()=> {
-Axios({
-    method: 'GET',
-    url: apiurl +'get_round',
-}).then((response) => {
-            let hr_round = []
-        response.data.data.map((data, index) =>
-        hr_round.push({ 
-            id: data.status_id,
-            value: data.status
-          
-           })
-        )
-        setroundDropdownValues({hr_round})
-        console.log(roundDropdownValues.hr_round,"hr_round")
-})
+    const [designationdata, setdesignationdata] = useState([]);
+    const [interviewStatus, setinterviewStatus] = useState([]);
+    useEffect(()=> {
+      
+        Axios({
+            method: 'GET',
+            url: apiurl +'get_round',
+        }).then((response) => {
+                    let hr_round = []
+                response.data.data.map((data, index) =>
+                hr_round.push({ 
+                    id: data.status_id,
+                    value: data.status
+                  
+                   })
+                )
+                setroundDropdownValues({hr_round})
+                console.log(roundDropdownValues.hr_round,"hr_round")
+        })
+        Axios({
+            method: "GET",
+            url: apiurl + "get_s_tbl_m_designation",
+        }).then((response) => {
+            let Designation = []
+            response.data.data.map((data, index) =>
+                Designation.push({ id: data.designation_id, value: data.designation }))
+    
+            setdesignationdata({ Designation })
+
+            Axios({
+                method: "get",
+                url: apiurl + "get_Interview_Status",
+              }).then((response) => {
+                let interview_status = [];
+                response.data.data.map((data, index) =>
+                  interview_status.push({ value: data.status, id: data.status_id })
+                );
+                setinterviewStatus({ interview_status });
+              });
+
+    }, [dispatch])
+
 },[])
 
 
@@ -63,27 +90,62 @@ Axios({
  
 
     return (
-        <div className="hrContainer">
-            <div className="hrHeader">
-                <Grid item xs={12} container direction="row" spacing={1}>
-                    <Grid item xs={3}>  <Labelbox type="select" placeholder="Designation" 
-                
-                      /></Grid>
-                    <Grid item xs={3}><Labelbox type="select" placeholder="Rounds"      dropdown={roundDropdownValues.hr_round}
-                      /></Grid>
-                    <Grid item xs={3}><Labelbox type="select" placeholder="Status" /></Grid>
-                    <Grid item xs={3}><CustomButton btnName={"Go"} btnCustomColor="customPrimary" /></Grid>
-                </Grid>
-            </div>
-            <EnhancedTable headCells={headCells} rows={rows} tabletitle={"Designation"} />
-            <div className="hrsearchbtn">
-                <CustomButton btnName={"Schedule Interview"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={()=>scheduleInterview()} />
-                <DynModel modelTitle={"Interview Details"} handleChangeModel={hrmodelOpen} handleChangeCloseModel={(bln)=>setHRModelOpen(bln)} content={<HrInterviewModel />} />
-            </div>
-          
-
+      <div className="hrContainer">
+        <div className="hrHeader">
+          <Grid item xs={12} container direction="row" spacing={1}>
+            <Grid item xs={3}>
+              {" "}
+              <Labelbox
+                type="select"
+                placeholder="Designation"
+                dropdown={designationdata.Designation}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Labelbox
+                type="select"
+                placeholder="Rounds"
+                dropdown={roundDropdownValues.hr_round}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Labelbox
+                type="select"
+                placeholder="Status"
+                dropdown={interviewStatus.interview_status}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <CustomButton btnName={"Go"} btnCustomColor="customPrimary" />
+            </Grid>
+          </Grid>
         </div>
-    )
+        <EnhancedTable
+          headCells={headCells}
+          rows={rows}
+          tabletitle={"Designation"}
+        />
+        <div className="hrsearchbtn">
+          <CustomButton
+            btnName={"Schedule Interview"}
+            btnCustomColor="customPrimary"
+            custombtnCSS={"goSearchbtn"}
+            onBtnClick={() => scheduleInterview()}
+          />
+          <DynModel
+            modelTitle={"Interview Details"}
+            handleChangeModel={hrmodelOpen}
+            handleChangeCloseModel={(bln) => setHRModelOpen(bln)}
+            content={
+              <HrInterviewModel
+                handleChangeCloseModel={(bln) => setHRModelOpen(bln)}
+                selectedId={1}
+              />
+            }
+          />
+        </div>
+      </div>
+    );
 }
 
 export default Hrsearch;
