@@ -48,20 +48,21 @@ function ProjectFormCreate(props) {
         console.log("value",projectform.project_sub_type.value)
       
     //   project type
-    async function project_type(){
+ 
         Axios({
             method: "GET",
             url: apiurl + 'get_project_type',
-        })
-            .then((response) => {
-                SubType_Project_Api()
+        }).then((response) => {
+                // SubType_Project_Api()
+                console.log( response.data.data," response.data.data")
                let projectTypedata=[]
                response.data.data.map((data)=>
                projectTypedata.push({value:data.project_type,id:data.project_type_id})
                )
             setProjectType({projectTypedata})
+            console.log( {projectTypedata}," {projectTypedata}")
             })
-        }
+        
             // billable type
            Axios({
             method: "GET",
@@ -223,7 +224,7 @@ function ProjectFormCreate(props) {
             <Grid item xs={12} className="projectFormTitle">Project Form</Grid>
             <div className="projectFormContent">
                 <Grid item xs={12} container direction="row" justify="center" spacing={7}>
-                    <Grid item xs={6} container direction="column" spacing={2}>
+                    <Grid item xs={5} container direction="column" >
                         <Grid item xs={12} >
                             <Labelbox type="select"
                                 placeholder={"Client"}
@@ -231,16 +232,16 @@ function ProjectFormCreate(props) {
                             />
                         </Grid>
                         <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={"Project Type "}
-                                dropdown={ProjectType.projectTypedata}
-                                changeData={(data) => checkValidation(data, "project_type")}
-                                value={projectform.project_type.value}
-                                error={projectform.project_type.error}
-                                errmsg={projectform.project_type.errmsg}
-                            />
+                        <Labelbox type="select"
+                            placeholder={"Project Type "}
+                            dropdown={ProjectType.projectTypedata}
+                            changeData={(data) => checkValidation(data, "process_type")}
+                            value={projectform.process_type.value}
+                            error={projectform.process_type.error}
+                            errmsg={projectform.process_type.errmsg}
+                        />
                         </Grid>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Process Type "}
                                  dropdown={ProcessType.processData}
@@ -264,19 +265,23 @@ function ProjectFormCreate(props) {
                             <Labelbox type="select"
                                 placeholder={"Counsel"}
                             />
-                        </Grid>
+                        </Grid> */}
+                    </Grid>
+                    <Grid item xs={2}>
+                    <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary"
+                     custombtnCSS={"btnProjectForm"} 
+                     />
                     </Grid>
                     <Grid item xs={5}>
-                        <Labelbox type="select"
-                            placeholder={"Project Type "}
-                            dropdown={[{ id: "1", value: "Application" }, { id: "2", value: "Rectification" }, { id: "3", value: "Cancellation" }, { id: "4", value: "Opposition" }]}
-                            changeData={(data) => checkValidation(data, "process_type")}
-                            value={projectform.process_type.value}
-                            error={projectform.process_type.error}
-                            errmsg={projectform.process_type.errmsg}
-                        />
+                    <Labelbox type="text"
+                                placeholder={"Project Type "}
+                                // changeData={(data) => checkValidation(data, "project_type")}
+                                // value={projectform.project_type.value}
+                                // error={projectform.project_type.error}
+                                // errmsg={projectform.project_type.errmsg}
+                            />
                     </Grid>
-                    <Grid item xs={5}>
+                    {/* <Grid item xs={5}>
                         <Labelbox type="select"
                             placeholder={"Project Sub Type "}
                         />
@@ -296,8 +301,8 @@ function ProjectFormCreate(props) {
                             error={projectform.filling_type.error}
                             errmsg={projectform.filling_type.errmsg}
                             />
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Grid> */}
+                        {/* <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Project Sub Type "}
                                 dropdown={SubType_Project.projectSubTypeValue}
@@ -317,9 +322,9 @@ function ProjectFormCreate(props) {
                                 error={projectform.filling_type.error}
                                 errmsg={projectform.filling_type.errmsg}
 
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
+                            /> */}
+                        {/* </Grid> */}
+                        {/* <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"HOD/Attorney "}
 
@@ -330,7 +335,7 @@ function ProjectFormCreate(props) {
                             <Labelbox type="textarea"
                                 placeholder={"Comments"}
                             />
-                        </Grid>
+                        </Grid> */}
 
 
                     </Grid>
