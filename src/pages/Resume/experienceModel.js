@@ -193,7 +193,6 @@ function ExperienceModel(props) {
                     error={Experience_Form.department.error}
                     errmsg={Experience_Form.department.errmsg} />
                 </Grid>
-
                 <Grid item xs={6}><Labelbox type="text" placeholder="Designation"
                     changeData={(data) => checkValidation(data, "designation")}
                     value={Experience_Form.designation.value}
@@ -209,7 +208,6 @@ function ExperienceModel(props) {
                     errmsg={Experience_Form.periodfrom.errmsg} 
                     disableFuture ={"false"}/>
                 </Grid>
-
                 <Grid item xs={6}><Labelbox type="datepicker" placeholder="Period To"
                     changeData={(data) => checkValidation(data, "periodto")}
                     value={Experience_Form.periodto.value}
