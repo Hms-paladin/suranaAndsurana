@@ -130,7 +130,7 @@ export default function RateMaster() {
                 "upper_limit": RateMaster.upper_limit.value,
                 "lower_limit": RateMaster.lower_limit.value,
                 "unit_id": RateMaster.unit_measurement.value,
-                "table_id": RateMaster.table_name.value
+                // "table_id": RateMaster.table_name.value
             }
 
         })
@@ -138,7 +138,7 @@ export default function RateMaster() {
                 if (response.data.status === 1) {
                     getVariablerateMaster();
                     notification.success({
-                        message: 'Variable Rate Master Updated Successfully',
+                        message: 'Variable rate master added successfully',
                     });
                     return Promise.resolve();
                 }
