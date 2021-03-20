@@ -300,148 +300,8 @@ const handleCheck = (event,resume_id,designation_id) => {
 
 },[])
 useEffect(() => {
-
-  const rowData =[
-    {
-     designation_id:1,
-     designation:"test",
-    result:[
-    {
-    resume_id:1,
-    name:"Brindha",
-    age:"23",
-    gender:"F",
-    basic_quali:"test",
-    interviewed_by:"test",
-    interviewed_date:"test",
-    score:"test",
-    interviewed_date:"test",
-    score:"20",
-    round:"1",
-    result:"selected",designation_id:1,
-    
-    },
-    
-    {
-      resume_id:2,
-      name:"Brins",
-      age:"23",
-      gender:"F",
-      basic_quali:"test",
-      interviewed_by:"test",
-      interviewed_date:"test",
-      score:"test",
-      interviewed_date:"test",
-      score:"20",
-      round:"1",
-      result:"selected",designation_id:1,
-      
-      },    {
-        resume_id:3,
-        name:"Brins",
-        age:"23",
-        gender:"F",
-        basic_quali:"test",
-        interviewed_by:"test",
-        interviewed_date:"test",
-        score:"test",
-        interviewed_date:"test",
-        score:"20",
-        round:"1",
-        result:"selected",designation_id:1,
-        
-        },    {
-          resume_id:4,
-          name:"Brins",
-          age:"23",
-          gender:"F",
-          basic_quali:"test",
-          interviewed_by:"test",
-          interviewed_date:"test",
-          score:"test",
-          interviewed_date:"test",
-          score:"20",
-          round:"1",
-          result:"selected",designation_id:1,
-          
-          },    {
-            resume_id:5,
-            name:"Brins",
-            age:"23",
-            gender:"F",
-            basic_quali:"test",
-            interviewed_by:"test",
-            interviewed_date:"test",
-            score:"test",
-            interviewed_date:"test",
-            score:"20",
-            round:"1",
-            result:"selected",designation_id:1,
-            
-            },    {
-              resume_id:6,
-              name:"Brins",
-              age:"23",
-              gender:"F",
-              basic_quali:"test",
-              interviewed_by:"test",
-              interviewed_date:"test",
-              score:"test",
-              interviewed_date:"test",
-              score:"20",
-              round:"1",
-              result:"selected",designation_id:1,
-              
-              },
-    
-    ]
-    },
-    {
-      designation_id:2,
-      designation:"test2",
-     result:[
-     {
-     resume_id:11,
-     name:"Asraf",
-     age:"23",
-     gender:"M",
-     basic_quali:"test",
-     interviewed_by:"test",
-     interviewed_date:"test",
-     score:"test",
-     interviewed_date:"test",
-     score:"20",
-     round:"1",
-     result:"selected",designation_id:1,
-     
-     },
-     
-     {
-       resume_id:21,
-       name:"Mushraf",
-       age:"23",
-       gender:"M",
-       basic_quali:"test",
-       interviewed_by:"test",
-       interviewed_date:"test",
-       score:"test",
-       interviewed_date:"test",
-       score:"20",
-       round:"1",
-       result:"selected",designation_id:1,
-       
-       },
-     
-     ]
-     },
-
-    ];
-
      let multipleTable = []
-
      props.GetRowData.map((data)=>{
-        
-    // rowData.map((data)=>{
  let rowDataList = []
 
         data.result.map((data,index) => {
@@ -460,7 +320,6 @@ useEffect(() => {
        />
        )
      })
-
      setMultipleTable(multipleTable)
 
 }, [  props.GetRowData,test])

@@ -114,19 +114,6 @@ function Resumesearch(props) {
             "talent_id": "",
             "status_id": ""
         }))
-
-
-        // dispatch(ResumeSearchStatus())
-        // get value from redux store
-        // Axios({
-        //     method: "get",
-        //     url: apiurl + "get_Interview_Status",
-        // }).then((response) => {
-        //     setoptionvalues(response.data.data.map((data) => ({
-        //         name: data.status
-        //     })))
-        // })
-
     }, [])
 
     function checkValidation(data, key, multipleId) {
