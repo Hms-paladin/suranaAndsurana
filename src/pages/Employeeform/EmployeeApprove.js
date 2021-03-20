@@ -28,7 +28,7 @@ useEffect(()=>{
     }).then((response)=>{
         console.log(response.data.data,"approve")
         setemployee(response.data.data.map((data)=>
-            ({id:data.emp_id,name:data.name,designation:data.designation})
+            ({id:data.emp_id,name:data.name,designation:data.designation,emp_code:data.employee_code})
         ))
     })
       
@@ -73,7 +73,7 @@ const InsertEmployee=(data)=>{
         <div>
             {employee.map((data)=>
             <div>
-        <Labelbox type="text" placeholder="Employee Id" value={data.id}/>
+        <Labelbox type="text" placeholder="Employee Id" value={data.emp_code}/>
         <Labelbox type="text" placeholder="Employee N" value={data.name}/>
          <Labelbox type="text" placeholder="Designation" value={data.designation}/> 
         <div className="employeeform_save">

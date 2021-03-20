@@ -17,6 +17,7 @@ function Employeeform(props){
      const [sup_name, setsup_name]= useState({})
      const [name, setname]= useState({})
      const [file,setfile]=useState("")
+     const [taskId,setTaskId]=useState("")
      const [fileList,setfileList]=useState("")
      const [EmpForm, setEmpFrom] = useState({
         desgination: {
@@ -113,6 +114,7 @@ function Employeeform(props){
         }));
     }
     useEffect(() => {
+
         Axios({
                         method: 'POST',
                         url: apiurl +'get_candidate_details_by_id',
@@ -158,8 +160,6 @@ function Employeeform(props){
              )
              setsup_name({Supervisor})
         })
-       
-
      }, [props])
      function Sup_nameGetId(data){
         Axios({
@@ -301,6 +301,7 @@ function Employeeform(props){
                 formData.append("created_by",localStorage.getItem("empId"))
                 formData.append("updated_by",localStorage.getItem("empId"))
                 formData.append("ip_address","Adress")
+                formData.append("task_id",props.emp_form_id&&props.emp_form_id.task_id)
         Axios({
             method: "post",
             url:apiurl+"insert_employee",
@@ -382,7 +383,7 @@ function Employeeform(props){
                           <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender  === "M"?"Male": "Female"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2}</div></div>
