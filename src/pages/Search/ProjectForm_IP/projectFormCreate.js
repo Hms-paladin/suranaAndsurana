@@ -435,10 +435,8 @@ function ProjectFormCreate(props) {
                                             />
                                         </Grid>
                                     </Grid>
-
                                     :
                                     (projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4) ?
-
                                         <Grid item xs={6} container direction="row" spacing={2}>
                                             <Grid item xs={6} >
                                                 <Labelbox type="select"
