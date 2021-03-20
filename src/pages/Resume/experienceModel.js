@@ -200,6 +200,7 @@ function ExperienceModel(props) {
                     error={Experience_Form.designation.error}
                     errmsg={Experience_Form.designation.errmsg} />
                 </Grid>
+                
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="datepicker" placeholder="Period From"
