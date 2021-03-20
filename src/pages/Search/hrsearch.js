@@ -402,6 +402,7 @@ function checkValidation(data, key) {
             btnCustomColor="customPrimary"
             custombtnCSS={"goSearchbtn"}
             onBtnClick={() => scheduleInterview()}
+            btnDisable={selectedCandidateId.length <= 0}
           />
           <DynModel
             modelTitle={"Interview Details"}

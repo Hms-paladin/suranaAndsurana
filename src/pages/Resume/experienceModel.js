@@ -27,7 +27,7 @@ function ExperienceModel(props) {
         },
         companyname: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "100Char" }],
+            validation: [{ "name": "required" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -39,13 +39,13 @@ function ExperienceModel(props) {
         },
         department: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "50Char" }],
+            validation: [{ "name": "required" },{ "name": "alphabetwithspace" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
         designation: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetsOnly" },{ "name": "50Char" }],
+            validation: [{ "name": "required" },{ "name": "alphabetwithspace" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -202,7 +202,7 @@ function ExperienceModel(props) {
                 </Grid>
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={6}> <Labelbox type="datepicker" placeholder="Period From"
+                <Grid item xs={6}> <Labelbox  type="datepicker" placeholder="Period From"
                     changeData={(data) => checkValidation(data, "periodfrom")}
                     value={Experience_Form.periodfrom.value}
                     error={Experience_Form.periodfrom.error}
