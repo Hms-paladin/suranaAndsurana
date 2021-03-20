@@ -6,7 +6,10 @@ import CustomButton from "../../../component/Butttons/button";
 import Axios from 'axios';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { apiurl } from "../../../utils/baseUrl";
+import { Redirect, Link } from 'react-router-dom';
+
 function ProjectFormCreate(props) {
+  const [pathname, setpathname] = useState(window.location.pathname)
     const [ProjectType, setProjectType] = useState({})
     const [ProcessType, setProcessType] = useState({})
     const [FillingType, setFillingType] = useState({})
@@ -86,43 +89,43 @@ function ProjectFormCreate(props) {
 
 
         // process type
-        Axios({
-            method: "post",
-            url: apiurl + 'get_process_type',
-            data: {
-                "project_type_id": projectform.project_type.value,
-                "sub_project_type_id": projectform.project_sub_type.value
-            },
-        })
-            .then((response) => {
-                console.log("response", response)
-                let processData = []
-                response.data.data.map((data) =>
-                    processData.push({ id: data.process_id, value: data.process })
-                )
-                setProcessType({ processData })
+        // Axios({
+        //     method: "post",
+        //     url: apiurl + 'get_process_type',
+        //     data: {
+        //         "project_type_id": projectform.project_type.value,
+        //         "sub_project_type_id": projectform.project_sub_type.value
+        //     },
+        // })
+        //     .then((response) => {
+        //         console.log("response", response)
+        //         let processData = []
+        //         response.data.data.map((data) =>
+        //             processData.push({ id: data.process_id, value: data.process })
+        //         )
+        //         setProcessType({ processData })
 
-            })
+        //     })
 
         // Filling Type
-        Axios({
-            method: "post",
-            url: apiurl + 'get_process_type',
-            data: {
-                "project_type_id": projectform.project_type.value,
-                "sub_project_type_id": projectform.project_sub_type.value,
-                "process_id": projectform.process_type.value
-            },
-        })
-            .then((response) => {
-                console.log("response", response)
-                let fillingData = []
-                response.data.data.map((data) =>
-                    fillingData.push({ id: data.process_id, value: data.process })
-                )
-                setFillingType({ fillingData })
+        // Axios({
+        //     method: "post",
+        //     url: apiurl + 'get_process_type',
+        //     data: {
+        //         "project_type_id": projectform.project_type.value,
+        //         "sub_project_type_id": projectform.project_sub_type.value,
+        //         "process_id": projectform.process_type.value
+        //     },
+        // })
+        //     .then((response) => {
+        //         console.log("response", response)
+        //         let fillingData = []
+        //         response.data.data.map((data) =>
+        //             fillingData.push({ id: data.process_id, value: data.process })
+        //         )
+        //         setFillingType({ fillingData })
 
-            })
+        //     })
         // 
 
         // Unit of Measurement 
@@ -140,7 +143,7 @@ function ProjectFormCreate(props) {
 
         //
 
-    }, [SubType_Project_Api, projectform])
+    }, [])
 
     //    projectSub_type api
     function SubType_Project_Api(data) {
@@ -253,9 +256,12 @@ function ProjectFormCreate(props) {
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary" custombtnCSS="btnCreateClient"
+                        <Link to="/addclient" >
+                            <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary" custombtnCSS="btnCreateClient"
+                                onBtnClick={() => setpathname("/addclient")}
+                            />
+                        </Link>
 
-                        />
                     </Grid>
                     <Grid item xs={6}>
                         <Labelbox type="text"
@@ -412,7 +418,7 @@ function ProjectFormCreate(props) {
                                         placeholder={"Project Cost Range"}
                                     />
                                 </Grid>
-                                {projectform.billable_type.value === 3 ?
+                                {projectform?.billable_type?.value === 3 ?
                                     <Grid xs={12} container direction="row" spacing={2}>
                                         <Grid item xs={3} >
                                             <Labelbox type="select"
@@ -508,7 +514,7 @@ function ProjectFormCreate(props) {
 
                                     </Grid>
 
-                                    {projectform.billable_type.value === 3 ?
+                                    {projectform?.billable_type?.value === 3 ?
                                         <Grid xs={12} container direction="row" spacing={2}>
                                             <Grid item xs={3} >
                                                 <Labelbox type="select"
@@ -546,7 +552,7 @@ function ProjectFormCreate(props) {
                                                         placeholder={"Unit of Measurement"}
                                                         dropdown={projectUnit.projectUnitdata}
                                                         changeData={(data) => checkValidation(data, "unit_measurement")}
-                                                        value={projectform.projectUnitdata[2]}
+                                                        value={projectform.unit_measurement.value}
                                                         error={projectform.unit_measurement.error}
                                                         errmsg={projectform.unit_measurement.errmsg}
                                                     />
