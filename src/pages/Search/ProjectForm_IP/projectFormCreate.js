@@ -12,6 +12,7 @@ function ProjectFormCreate(props) {
     const [FillingType, setFillingType] = useState({})
     const [SubType_Project, setSubType_Project] = useState({})
     const [BillableType, setBillableType] = useState({})
+    const [projectUnit, setprojectUnit] = useState({})
     const [projectform, setprojectform] = useState({
         project_type: {
             value: "",
@@ -38,6 +39,12 @@ function ProjectFormCreate(props) {
             errmsg: null,
         },
         filling_type: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        unit_measurement: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -117,6 +124,21 @@ function ProjectFormCreate(props) {
 
             })
         // 
+
+        // Unit of Measurement 
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_unit_of_measure',
+        })
+            .then((response) => {
+                let projectUnitdata = []
+                response.data.data.map((data) =>
+                    projectUnitdata.push({ value: data.unit, id: data.unit_id })
+                )
+                setprojectUnit({ projectUnitdata })
+            })
+
+        //
 
     }, [SubType_Project_Api, projectform])
 
@@ -280,6 +302,11 @@ function ProjectFormCreate(props) {
                             <Grid item xs={6} >
                                 <Labelbox type="select"
                                     placeholder={"Billable Type"}
+                                    dropdown={BillableType.BillableData}
+                                    changeData={(data) => checkValidation(data, "billable_type")}
+                                    value={projectform.billable_type.value}
+                                    error={projectform.billable_type.error}
+                                    errmsg={projectform.billable_type.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={6} >
@@ -287,14 +314,66 @@ function ProjectFormCreate(props) {
                                     placeholder={"Project Cost Range"}
                                 />
                             </Grid>
-                            <Grid item xs={6} >
-                            </Grid>
+                            {projectform.billable_type.value === 3 ?
+                                <Grid xs={12} container direction="row" spacing={2}>
+
+                                    <Grid item xs={3} >
+                                        <Labelbox type="select"
+                                            placeholder={"Base Rate"}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3} >
+                                        <Labelbox type="select"
+                                            placeholder={"Unit of Measurement"}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3} >
+                                        <Labelbox type="text"
+                                            placeholder={"Limit"}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3} >
+                                        <Labelbox type="text"
+                                            placeholder={"Additional Rate Hourly"}
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                :
+                                (projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4) ?
+
+                                    <Grid item xs={6} container direction="row" spacing={2}>
+                                        <Grid item xs={6} >
+                                            <Labelbox type="select"
+                                                placeholder={"Base Rate"}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6} >
+                                            <Labelbox type="select"
+                                                placeholder={"Unit of Measurement"}
+                                                dropdown={projectUnit.projectUnitdata}
+                                                changeData={(data) => checkValidation(data, "unit_measurement")}
+                                                value={projectform.unit_measurement.value}
+                                                error={projectform.unit_measurement.error}
+                                                errmsg={projectform.unit_measurement.errmsg}
+                                            />
+                                        </Grid>
+
+                                    </Grid>
+                                    :
+                                    <Grid item xs={6}>
+
+                                    </Grid>
+                            }
                             <Grid item xs={6} >
                                 <div className="projectFormComments">
                                     <Labelbox type="textarea"
                                         placeholder={"Comments"}
                                     />
                                 </div>
+                            </Grid>
+                            <Grid item xs={6}>
+
                             </Grid>
                         </>
                         :
@@ -307,9 +386,10 @@ function ProjectFormCreate(props) {
                                 </Grid>
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
-                                        placeholder={"Billable Type"}
+                                        placeholder={"Deputy Direct Responsible Attorney"}
                                     />
                                 </Grid>
+
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
                                         placeholder={"Direct Responsible Attorney"}
@@ -317,16 +397,72 @@ function ProjectFormCreate(props) {
                                 </Grid>
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
-                                        placeholder={"Deputy Direct Responsible Attorney"}
+                                        placeholder={"Billable Type"}
+                                        dropdown={BillableType.BillableData}
+                                        changeData={(data) => checkValidation(data, "billable_type")}
+                                        value={projectform.billable_type.value}
+                                        error={projectform.billable_type.error}
+                                        errmsg={projectform.billable_type.errmsg}
                                     />
                                 </Grid>
+
+
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
                                         placeholder={"Project Cost Range"}
                                     />
                                 </Grid>
-                                <Grid item xs={6} >
-                                </Grid>
+                                {projectform.billable_type.value === 3 ?
+                                    <Grid xs={12} container direction="row" spacing={2}>
+                                        <Grid item xs={3} >
+                                            <Labelbox type="select"
+                                                placeholder={"Base Rate"}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3} >
+                                            <Labelbox type="select"
+                                                placeholder={"Unit of Measurement"}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3} >
+                                            <Labelbox type="text"
+                                                placeholder={"Limit"}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3} >
+                                            <Labelbox type="text"
+                                                placeholder={"Additional Rate Hourly"}
+                                            />
+                                        </Grid>
+                                    </Grid>
+
+                                    :
+                                    (projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4) ?
+
+                                        <Grid item xs={6} container direction="row" spacing={2}>
+                                            <Grid item xs={6} >
+                                                <Labelbox type="select"
+                                                    placeholder={"Base Rate"}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={6} >
+                                                <Labelbox type="select"
+                                                    placeholder={"Unit of Measurement"}
+                                                    dropdown={projectUnit.projectUnitdata}
+                                                    changeData={(data) => checkValidation(data, "unit_measurement")}
+                                                    value={projectform.unit_measurement.value}
+                                                    error={projectform.unit_measurement.error}
+                                                    errmsg={projectform.unit_measurement.errmsg}
+                                                />
+                                            </Grid>
+
+                                        </Grid>
+                                        :
+                                        <Grid item xs={6}>
+
+                                        </Grid>
+                                }
+
                                 <Grid item xs={6} >
                                     <div className="projectFormComments">
                                         <Labelbox type="textarea"
@@ -334,141 +470,113 @@ function ProjectFormCreate(props) {
                                         />
                                     </div>
                                 </Grid>
-                                
+
                                 <Grid item xs={6} >
                                 </Grid>
                             </>
                             :
                             (projectform.process_type.value === 2 || projectform.process_type.value === 3 || projectform.process_type.value === 4 || projectform.process_type.value === 5) ?
-                            <>
-                                <Grid item xs={6} >
-                                    <Labelbox type="select"
-                                        placeholder={"Billable Type"}
-                                    />
-                                </Grid>
-                                <Grid item xs={6} >
-                                    <Labelbox type="select"
-                                        placeholder={"Project Type"}
-                                    />
-                                </Grid>
-                                <Grid item xs={6} >
-                                    <Labelbox type="select"
-                                        placeholder={"Counsel"}
-                                    />
-                                </Grid>
-                                <Grid item xs={6} >
-                                    <Labelbox type="select"
-                                        placeholder={"HOD/Attorney"}
-                                    />
-                                </Grid>
-                                
-                                <Grid item xs={6} >
-                                    <Labelbox type="select"
-                                        placeholder={"Project Cost Range"}
-                                    />
-                                </Grid>
-                                <Grid item xs={6} >
+                                <>
 
-                                </Grid>
-                                <Grid item xs={6} >
-                                    <div className="projectFormComments">
-                                        <Labelbox type="textarea"
-                                            placeholder={"Comments"}
+
+                                    <Grid item xs={6} >
+                                        <Labelbox type="select"
+                                            placeholder={"Counsel"}
                                         />
-                                    </div>
-                                </Grid>
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <Labelbox type="select"
+                                            placeholder={"HOD/Attorney"}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <Labelbox type="select"
+                                            placeholder={"Project Cost Range"}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <Labelbox type="select"
+                                            placeholder={"Billable Type"}
+                                            dropdown={BillableType.BillableData}
+                                            changeData={(data) => checkValidation(data, "billable_type")}
+                                            value={projectform.billable_type.value}
+                                            error={projectform.billable_type.error}
+                                            errmsg={projectform.billable_type.errmsg}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
 
-                            </>
-                            :
-                            <Grid item xs={6} >
-                            </Grid>
+                                    </Grid>
+
+                                    {projectform.billable_type.value === 3 ?
+                                        <Grid xs={12} container direction="row" spacing={2}>
+                                            <Grid item xs={3} >
+                                                <Labelbox type="select"
+                                                    placeholder={"Base Rate"}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={3} >
+                                                <Labelbox type="select"
+                                                    placeholder={"Unit of Measurement"}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={3} >
+                                                <Labelbox type="text"
+                                                    placeholder={"Limit"}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={3} >
+                                                <Labelbox type="text"
+                                                    placeholder={"Additional Rate Hourly"}
+                                                />
+                                            </Grid>
+                                        </Grid>
+
+                                        :
+                                        (projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4) ?
+
+                                            <Grid item xs={6} container direction="row" spacing={2}>
+                                                <Grid item xs={6} >
+                                                    <Labelbox type="select"
+                                                        placeholder={"Base Rate"}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={6} >
+                                                    <Labelbox type="select"
+                                                        placeholder={"Unit of Measurement"}
+                                                        dropdown={projectUnit.projectUnitdata}
+                                                        changeData={(data) => checkValidation(data, "unit_measurement")}
+                                                        value={projectform.projectUnitdata[2]}
+                                                        error={projectform.unit_measurement.error}
+                                                        errmsg={projectform.unit_measurement.errmsg}
+                                                    />
+                                                </Grid>
+
+                                            </Grid>
+                                            :
+                                            <Grid item xs={6}>
+
+                                            </Grid>
+                                    }
+
+
+
+                                    <Grid item xs={6} >
+                                        <div className="projectFormComments">
+                                            <Labelbox type="textarea"
+                                                placeholder={"Comments"}
+                                            />
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                    </Grid>
+
+                                </>
+                                :
+                                <Grid item xs={6} >
+                                </Grid>
                     }
                 </Grid>
-
-
-
-
-                {/* <Grid item xs={12} container direction="row" spacing={2}>
-                    <Grid item xs={6} >
-                        <Labelbox type="select"
-                            placeholder={"Client"}
-                        />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Labelbox type="text"
-                            placeholder={"Project Name "}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Labelbox type="select"
-                            placeholder={"Project Type "}
-                            dropdown={ProjectType.projectTypedata}
-                            changeData={(data) => checkValidation(data, "process_type")}
-                            value={projectform.process_type.value}
-                            error={projectform.process_type.error}
-                            errmsg={projectform.process_type.errmsg}
-                        />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Labelbox type="select"
-                            placeholder={"Project Sub Type"}
-                        />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Labelbox type="select"
-                            placeholder={"Process Type"}
-                        />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Labelbox type="select"
-                            placeholder={"Filling Type"}
-                        />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Labelbox type="select"
-                            placeholder={"HOD/Attorney"}
-                        />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Labelbox type="select"
-                            placeholder={"Counsel"}
-                        />
-                    </Grid>
-
-
-
-                </Grid>
-                <Grid xs={12} container direction="row" spacing={1}>
-                    <Grid item xs={2} >
-                        <Labelbox type="select"
-                            placeholder={"Billable Type"}
-                        />
-                        (Fixed-Retainer)
-
-                    </Grid>
-                    <Grid item xs={2} >
-                        <Labelbox type="select"
-                            placeholder={"Base Rate"}
-                        />
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Labelbox type="select"
-                            placeholder={"Unit of Measurement"}
-                        />
-                        (Per Month)
-                    </Grid>
-                    
-                </Grid>
-                <br />
-                <Grid item xs={6} >
-                    <div className="projectFormComments">
-                        <Labelbox type="textarea"
-                            placeholder={"Comments"}
-                        />
-                    </div>
-                </Grid> */}
-
-
             </div>
 
             <div className="customFormbtn">
