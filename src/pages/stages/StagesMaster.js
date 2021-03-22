@@ -136,12 +136,12 @@ setIsLoaded(false);
 }) 
 
    const [RateMaster, setRateMaster] = useState({
-      table_name: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
+      // table_name: {
+      //     value: "",
+      //     validation: [{ "name": "required" }],
+      //     error: null,
+      //     errmsg: null,
+      // },
       project_type: {
           value: "",
           validation: [{ "name": "required" }],
@@ -348,13 +348,13 @@ const handleCancel = () =>{
       <div>
           <Grid container spacing={3} className="stage_firstgrid">
           <Grid item xs={5} spacing={4} direction={"column"}>
-             <Labelbox type="select" placeholder={"Table Name"}
+             {/* <Labelbox type="select" placeholder={"Table Name"}
              dropdown={projectTableName.projectTableNamedata}
                changeData={(data) => checkValidation(data, "table_name")}
                value={RateMaster.table_name.value}
                error={RateMaster.table_name.error}
                errmsg={RateMaster.table_name.errmsg}
-             />
+             /> */}
           </Grid>
           <Grid  item xs={5} spacing={2}>
           </Grid>

@@ -707,11 +707,12 @@ function ResumePage() {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Labelbox type="select"
-                                mode={"multiple"}
+                            <Labelbox type="text"
+                                // mode={"multiple"}
                                 placeholder={"Special Interest"}
-                                dropdown={resumeGetList.interestList}
-                                changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
+                                // dropdown={resumeGetList.interestList}
+                                // changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
+                                changeData={(data) => checkValidation(data, "intrests")}
                                 value={Resume_Form.intrests.value}
                                 error={Resume_Form.intrests.error}
                                 errmsg={Resume_Form.intrests.errmsg}

@@ -26,7 +26,7 @@ function EducationModel(props) {
         },
         institution: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphaNumaricOnly" },{ "name": "50Char" }],
+            validation: [{ "name": "required" },{ "name": "alphabetwithspace" },{ "name": "50Char" }],
             error: null,
             errmsg: null,
         },
