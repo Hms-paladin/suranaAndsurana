@@ -86,7 +86,8 @@ export default function RateMaster() {
       value: "",
       validation: [{ name: "required" },{ name: "allowNumaricOnly" },
       // { name: amountError === 1 ? "Upto5lakh":'' }
-      // { name: "Upto5lakh" , rangeID:amountError},
+      // { name: "Upto5lakh" },
+      { name: "custommaxValue",params:"0" }
     ],
       error: null,
       errmsg: null,
@@ -160,7 +161,11 @@ export default function RateMaster() {
   };
   function checkValidation(data, key, multipleId) {
     if(data && key =="range_project_cost"){
-      console.log("range_project_cost",data)
+      // data ===1? RateMaster.amount.validation[2].params = 200000:""
+      // data ===2? RateMaster.amount.validation[2].params = 100:""
+      // data ===3? RateMaster.amount.validation[2].params = 100:""
+      // data ===5? RateMaster.amount.validation[2].params = 100:""
+
     }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
