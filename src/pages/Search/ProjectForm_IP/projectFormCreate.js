@@ -10,7 +10,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import DynModel from '../../../component/Model/model';
 import { getProjectSubType, getProcessType } from '../../../actions/MasterDropdowns';
-import VariableRate from './variableRate';
+import VariableRate from '../../stages/RateMaster';
 
 function ProjectFormCreate(props) {
     const dispatch = useDispatch()
@@ -604,7 +604,7 @@ function ProjectFormCreate(props) {
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
             </div>
-            <DynModel modelTitle={"Variable Rate"} handleChangeModel={variableid} handleChangeCloseModel={(bln) => setVariableid(bln)} content={<VariableRate />} width={1200} />
+            <DynModel modelTitle={"Variable Rate"} handleChangeModel={variableid} handleChangeCloseModel={(bln) => setVariableid(bln)} content={<VariableRate />} width={1300} />
         </div>
     )
 }

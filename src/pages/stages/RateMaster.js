@@ -9,7 +9,7 @@ import Axios from "axios";
 import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
-export default function RateMaster() {
+export default function RateMaster(props) {
   const header = [
     // { id: 'table_names', label: 'Table Name' },
     { id: "activity", label: "Activity" },
