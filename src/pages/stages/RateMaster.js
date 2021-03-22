@@ -37,7 +37,7 @@ export default function RateMaster() {
   const [projectUnit, setprojectUnit] = useState({});
   const [projectTableName, setprojectTableName] = useState({});
   const [projectDesignation, setprojectDesignation] = useState({});
-
+  const [amountError, setamountError] = useState("");
   const [isLoaded, setIsLoaded] = useState(true);
   const [RateMaster, setRateMaster] = useState({
     table_name: {
@@ -54,7 +54,7 @@ export default function RateMaster() {
     },
     lower_limit: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{ name: "allowNumaricOnly" }],
       error: null,
       errmsg: null,
     },
@@ -78,19 +78,22 @@ export default function RateMaster() {
     },
     upper_limit: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{ name: "allowNumaricOnly" }],
       error: null,
       errmsg: null,
     },
     amount: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{ name: "allowNumaricOnly" },
+      // { name: amountError === 1 ? "Upto5lakh":'' }
+      { name: "Upto5lakh" , rangeID:amountError},
+    ],
       error: null,
       errmsg: null,
     },
     court: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [],
       error: null,
       errmsg: null,
     },
@@ -113,12 +116,19 @@ export default function RateMaster() {
       RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
     }
+    var filtererr = targetkeys.filter(
+      (obj) => RateMaster[obj].error == true
+  );
+//   if (filtererr.length > 0) {
+//     // setRateMaster({ error: true });
+
+// }else if (filtererr.length === 0) {
     Axios({
       method: "POST",
       url: apiurl + "insert_vairable_rate",
       data: {
         range_id: RateMaster.range_project_cost.value,
-        location_id: RateMaster.court.value,
+        location_id: RateMaster.court.value || 0,
         designation_id: RateMaster.designation.value,
         activity_id: RateMaster.activity.value,
         created_on: moment().format("YYYY-MM-DD HH:m:s"),
@@ -138,22 +148,20 @@ export default function RateMaster() {
         notification.success({
           message: "Variable Rate Master Updated Successfully",
         });
+        handleCancel()
         return Promise.resolve();
       }
     });
+  // }
 
-    var filtererr = targetkeys.filter((obj) => RateMaster[obj].error == true);
-    console.log(filtererr.length);
-    if (filtererr.length > 0) {
-      // setResumeFrom({ error: true });
-    } else {
-      // setResumeFrom({ error: false });
-    }
     setRateMaster((prevState) => ({
       ...prevState,
     }));
   };
   function checkValidation(data, key, multipleId) {
+    if(data && key =="range_project_cost"){
+      console.log("range_project_cost",data)
+    }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       RateMaster[key].validation
@@ -164,7 +172,9 @@ export default function RateMaster() {
       errmsg: errorcheck.msg,
       validation: RateMaster[key].validation,
     };
-    let multipleIdList = [];
+    console.log("ERROE",amountError)
+     
+    // let multipleIdList = [];
     if (key == "activity") {
       // Sub Activity
       Axios({
@@ -191,11 +201,19 @@ export default function RateMaster() {
     }));
   }
   const handleCancel = () => {
-    let From_key = [];
+    let From_key = ["table_name","activity","lower_limit","designation","range_project_cost","sub_activity",
+    "upper_limit","amount","court","unit_measurement"];
 
     From_key.map((data) => {
-      RateMaster[data].value = "";
+     
+      try {
+        RateMaster[data].value = "";
+        console.log("mapping",RateMaster[data].value)
+      } catch (error) {
+        throw(error)
+      }
     });
+   
     setRateMaster((prevState) => ({
       ...prevState,
     }));
@@ -244,7 +262,7 @@ export default function RateMaster() {
             lower_limit: variableRateList[m].lower_limit,
             upper_limit: variableRateList[m].upper_limit,
             amount: variableRateList[m].rate,
-            designation: variableRateList[m].table_names,
+            designation: variableRateList[m].designation,
             range: variableRateList[m].range,
             sub_activity: variableRateList[m].sub_activity,
             court: variableRateList[m].location,
@@ -364,13 +382,6 @@ export default function RateMaster() {
       <div className="var_rate_master">Variable Rate Master</div>
       <Grid container spacing={6} className="ratemaster_firstgrid">
         <Grid item xs={4} spacing={4} direction={"column"}>
-          {/* <Labelbox type="select" placeholder={"Table Name"}
-                        dropdown={projectTableName.projectTableNamedata}
-                        changeData={(data) => checkValidation(data, "table_name")}
-                        value={RateMaster.table_name.value}
-                        error={RateMaster.table_name.error}
-                        errmsg={RateMaster.table_name.errmsg}
-                    /> */}
           <Labelbox
             type="select"
             placeholder={"Range of project cost "}
@@ -427,7 +438,6 @@ export default function RateMaster() {
             errmsg={RateMaster.unit_measurement.errmsg}
           />
         </Grid>
-
         <Grid item xs={4} spacing={2}>
           <Labelbox
             type="select"
@@ -463,7 +473,7 @@ export default function RateMaster() {
             custombtnCSS="custom_save"
             onBtnClick={onSubmit}
           />
-          <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
+          <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"     onBtnClick={handleCancel}      />
         </div>
       </Grid>
 

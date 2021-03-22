@@ -13,7 +13,7 @@ function DynModelView(props){
   
     
     const [getres_id,setgetres_id]=useState("")
-    useEffect((id)=>{
+    useEffect(()=>{
       console.log(props.data_id&&props.data_id.resume_id,"divya")
       setres_id(props.data_id&&props.data_id.resume_id)
       console.log(res_id,"id")
@@ -69,43 +69,43 @@ function DynModelView(props){
                           <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name?val.name:"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id?val.user_id:""}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?moment(val.dob).format("DD-MMM-YYYY"):"-"}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender?val.gender:""}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 ||"M" ? "Male": "Female"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual?val.bas_qual:"-"}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1 ?val.add_quali_1:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2?val.add_quali_2:"-"}</div></div>
                        </div>
                     <div className="employeeform_row2">
                         <div className="employeeform_row2flex1">
-                          <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">{val.institution}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">{val.last_employer}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">{val.institution ? val.institution:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">{val.last_employer ? val.last_employer:"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{moment(val.last_empr_start_date).format("DD-MMM-YYYY")}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{moment(val.last_empr_end_date).format("DD-MMM-YYYY")}</div></div>
                         </div>
                         <div className="employeeform_row2flex2">
-                          <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills}</div></div>
-                          <div className="employeeform_r2 traitsdiv"><div className="headcolor">Traits</div><div className="employeecont">{val.traits}</div></div>
+                          <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills ? val.skills:"-"}</div></div>
+                          <div className="employeeform_r2 traitsdiv"><div className="headcolor">Traits</div><div className="employeecont">{val.traits ?val.traits :"-"}</div></div>
                         </div>
                     </div>
                     <div className="employeeform_row3">
-                      <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">{val.achievement}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications? val.certifications:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization? val.specialization:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">{val.achievement ? val.achievement:"-"}</div></div>
                     </div>
                     <div className="employeeform_row4">
-                      <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability ? val.capability:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent ? val.talent:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest ? val.special_interest:"-"}</div></div>
                     </div> 
                     <div className="employeeform_row5">
-                      <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.email_addr:"-"}</div></div>
                     </div>
                     <div className="employeeform_row6">
-                      <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Status of the Candidate</div><div className="employeecont">{val.status_resource}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Status of the Candidate</div><div className="employeecont">{val.status_resource ? val.status_resource:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known:"-"}</div></div>
                     </div>     
                 </div>
                 )  

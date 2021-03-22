@@ -46,13 +46,13 @@ function Employeeform(props){
         },
         supervisor_email: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "email" }],
             error: null,
             errmsg: null,
         },
         supervisor_ph: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "mobile" }],
             error: null,
             errmsg: null,
         },
@@ -403,10 +403,10 @@ function Employeeform(props){
                     <div className="employeeform_row3">
                       <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivements</div><div className="employeecont">{val.achievement}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">{val.achievement}</div></div>
                     </div>
                     <div className="employeeform_row4">
-                      <div className="employeeform_r2"><div className="headcolor">Capabilitites</div><div className="employeecont">{val.capability}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest}</div></div>
                     </div> 
@@ -512,7 +512,7 @@ function Employeeform(props){
                           <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
                      </Upload>, */}
                    
-                 <input type="file" onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
+                 <input type="file" accept=".pdf" onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
 
               
 

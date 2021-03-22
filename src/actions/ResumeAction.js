@@ -14,7 +14,7 @@ export const InesertResume = (Resume_Form, educationList, experienceList) => asy
         "user_id": localStorage.getItem("user_id"),
         "name": Resume_Form.name.value,
         "type_of_resource": Resume_Form.candidate.value,
-        "gender": Resume_Form.gender.value,
+        "gender": Resume_Form.gender.value === 1 ? "M": "F",
         "dob": moment(Resume_Form.DOB.value).format("YYYY-MM-DD"),
         "ref_email_1": Resume_Form.email1.value,
         "ref_email_2": Resume_Form.email2.value,

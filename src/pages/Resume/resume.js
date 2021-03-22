@@ -385,11 +385,8 @@ function ResumePage() {
         var filtererr = targetkeys.filter(
             (obj) => Resume_Form[obj].error == true
         );
-        console.log(filtererr.length);
-        console.log(educationList.length, "educationList.length")
-        // dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
-        //     handleCancel()
-        // })
+        // console.log(filtererr.length);
+        // console.log(educationList.length, "educationList.length")
         if (educationList.length === 0 && experienceList.length === 0) {
             !educationerr && setEducationerr(true)
             !employererr && setEmployererr(true)
@@ -399,13 +396,9 @@ function ResumePage() {
 
         } else if (educationList.length !== 0 && experienceList.length !== 0 && filtererr.length === 0) {
             // setResumeFrom({ error: false });
-
             dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
                 handleCancel()
             })
-            // dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(() => {
-            //         handleCancel()
-            //     })
         }
 
         setResumeFrom(prevState => ({

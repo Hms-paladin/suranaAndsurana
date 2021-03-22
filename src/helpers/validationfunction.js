@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 checkValidation(textValue,validatorsArray){
   for(var valid in validatorsArray){//check validations through array
   console.log("mystextvalue",validatorsArray[valid].name);
-
+  console.log("RAN",validatorsArray[valid].rangeID);
          if(textValue==""){//check value is empty
       if(validatorsArray[valid].name=='required'){
       return {msg:"Field required",state:false};//validation occurs break the loop & throw the error
@@ -148,10 +148,30 @@ checkValidation(textValue,validatorsArray){
       if (re.test(textValue) == false) {
         return { msg: "Input data exceeds the limit", state: false };
       }
-    }else if (validatorsArray[valid].name == "200Char") {
+    }else if (validatorsArray[valid].name == "200Char" ) { 
       var re =/^.{1,251}$/;
       if (re.test(textValue) == false) {
         return { msg: "Input data exceeds the limit", state: false };
+      }
+    }else if (validatorsArray[valid].name == "Upto5lakh" && validatorsArray[valid].rangeID ===1  )  {
+      if (   textValue >= 500000  ) {
+        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
+      }
+    }else if (validatorsArray[valid].name == "Above20lakh") {
+      if (   textValue <= 2000000  ) {
+        return { msg: "Enter Amount Above 20,00,000 only", state: false };
+      }
+    }else if (validatorsArray[valid].name == "5To10Lakh") {
+      if (   textValue <= 500000  ) {
+        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
+      }
+    }else if (validatorsArray[valid].name == "5To20Lakh") {
+      if (   textValue <= 500000  ) {
+        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
+      }
+    }else if (validatorsArray[valid].name == "10To20Lakh") {
+      if (   textValue <= 500000  ) {
+        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
       }
     }
 
