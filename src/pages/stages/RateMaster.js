@@ -86,7 +86,7 @@ export default function RateMaster() {
       value: "",
       validation: [{ name: "required" },{ name: "allowNumaricOnly" },
       // { name: amountError === 1 ? "Upto5lakh":'' }
-      { name: "Upto5lakh" , rangeID:amountError},
+      // { name: "Upto5lakh" , rangeID:amountError},
     ],
       error: null,
       errmsg: null,
