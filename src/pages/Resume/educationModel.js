@@ -144,6 +144,7 @@ function EducationModel(props) {
                 errmsg={Education_Form.institution.errmsg} />
 
             <Labelbox type="datepicker" placeholder="Year of Passing"
+            //  view ={["year"]}
                 changeData={(data) => checkValidation(data, "yearpassing")}
                 value={Education_Form.yearpassing.value}
                 error={Education_Form.yearpassing.error}

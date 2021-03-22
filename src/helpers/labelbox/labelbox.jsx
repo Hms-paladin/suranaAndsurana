@@ -160,6 +160,7 @@ export default class Labelbox extends Component {
 								placeholder={this.props.placeholder}
 								disableToolbar={this.props.disableToolbar && this.props.disableToolbar}
 								autoOk={true}
+								views={this.props.view ? this.props.view : ["year" , "date" , "month"]}
 								clearable={false}
 								disableUnderline={true}
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
