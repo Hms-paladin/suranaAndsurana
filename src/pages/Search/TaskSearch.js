@@ -28,12 +28,20 @@ import Red from "../../images/red_round.png";
 //TimeSheet Start && Stop  ==>
 import DynModel from '../../component/Model/model';
 import TimesheetStart from '../Search/TimeSheets/timesheetStart';
+import TimesheetStop from '../Search/TimeSheets/timesheetStop';
+
 
 
 function Task() {
     const [page, setPage] = React.useState(2);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [startModelOpen, setStartModelOpen] = useState(false)
+    const [stopModelOpen, setStopModelOpen] = useState(false)
+
+    // Change start,stop Model
+
+    const [changeModel, setChangeModel] = useState(true)
+
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -48,17 +56,22 @@ function Task() {
     function startModel() {
         setStartModelOpen(true)
     }
+    function stopModel(){
+        alert("test")
+        setChangeModel(false)
+    }
 
     return (
         <div>
             <div className="searchfilterflex">
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', }}>
+                    <div style={{ display: 'flex', }}>
                         <p className="task_head">Tasks</p>
-                        <Labelbox type="select"
-                            placeholder="Subordinate"
-                        />
-
+                        <div style={{ width: '200px', }}>
+                            <Grid item xs={8}>
+                                <Labelbox type="select"
+                                    placeholder="Subordinate" /></Grid>
+                        </div>
                     </div>
 
                     <div style={{ display: 'flex' }}>
@@ -76,10 +89,11 @@ function Task() {
                     <Card >
                         <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
-                                <p className="num_align_side">1</p>
+                                <p className="num_align_side" onClick={stopModel}>1</p>
                                 <Divider />
                                 <img src={Clock} className="img_side_align" onClick={startModel} />
-                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimesheetStart />} width={1000}/>
+                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimesheetStart />} width={1000} />
+                                {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={stopModelOpen} handleChangeCloseModel={(bln) => setStopModelOpen(bln)} content={<TimesheetStop />} width={1000} /> */}
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
