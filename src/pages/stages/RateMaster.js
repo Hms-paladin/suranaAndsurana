@@ -28,7 +28,7 @@ export default function RateMaster() {
        
     ]; */
 
-  const rows = [];
+
   const [varRateList, setvarRateList] = useState([]);
   const [projectRange, setprojectRange] = useState({});
   const [projectCourt, setprojectCourt] = useState({});
