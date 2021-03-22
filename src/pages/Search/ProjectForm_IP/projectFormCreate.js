@@ -7,15 +7,22 @@ import Axios from 'axios';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { apiurl } from "../../../utils/baseUrl";
 import { Redirect, Link } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
+import DynModel from '../../../component/Model/model';
+import { getProjectSubType, getProcessType } from '../../../actions/MasterDropdowns';
+import VariableRate from './variableRate';
 
 function ProjectFormCreate(props) {
-  const [pathname, setpathname] = useState(window.location.pathname)
+    const dispatch = useDispatch()
+    const [pathname, setpathname] = useState(window.location.pathname)
     const [ProjectType, setProjectType] = useState({})
     const [ProcessType, setProcessType] = useState({})
     const [FillingType, setFillingType] = useState({})
     const [SubType_Project, setSubType_Project] = useState({})
     const [BillableType, setBillableType] = useState({})
     const [projectUnit, setprojectUnit] = useState({})
+    const [variableid, setVariableid] = useState(false)
+
     const [projectform, setprojectform] = useState({
         project_type: {
             value: "",
@@ -23,7 +30,7 @@ function ProjectFormCreate(props) {
             error: null,
             errmsg: null,
         },
-        project_sub_type: {
+        project_Subtype: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -54,11 +61,9 @@ function ProjectFormCreate(props) {
             errmsg: null,
         },
     })
+
     useEffect(() => {
-        console.log("value", projectform.project_sub_type.value)
-
-        //   project type
-
+       
         Axios({
             method: "GET",
             url: apiurl + 'get_project_type',
@@ -88,33 +93,14 @@ function ProjectFormCreate(props) {
             })
 
 
-        // process type
-        // Axios({
-        //     method: "post",
-        //     url: apiurl + 'get_process_type',
-        //     data: {
-        //         "project_type_id": projectform.project_type.value,
-        //         "sub_project_type_id": projectform.project_sub_type.value
-        //     },
-        // })
-        //     .then((response) => {
-        //         console.log("response", response)
-        //         let processData = []
-        //         response.data.data.map((data) =>
-        //             processData.push({ id: data.process_id, value: data.process })
-        //         )
-        //         setProcessType({ processData })
-
-        //     })
-
         // Filling Type
         // Axios({
         //     method: "post",
-        //     url: apiurl + 'get_process_type',
+        //     url: apiurl + 'get_project_type',
         //     data: {
         //         "project_type_id": projectform.project_type.value,
         //         "sub_project_type_id": projectform.project_sub_type.value,
-        //         "process_id": projectform.process_type.value
+        //         "process_id": projectform.project_type.value
         //     },
         // })
         //     .then((response) => {
@@ -145,27 +131,7 @@ function ProjectFormCreate(props) {
 
     }, [])
 
-    //    projectSub_type api
-    function SubType_Project_Api(data) {
-        //  alert(data)
-        Axios({
-            method: "POST",
-            url: apiurl + 'get_project_sub_type',
-            data: {
-                "project_type_id": data
-            }
-        })
-            .then((response) => {
-                console.log("setProjectSubType", response)
 
-                let projectSubTypeValue = []
-                response.data.data.map((data) =>
-                    projectSubTypeValue.push({ value: data.sub_project_type, id: data.sub_project_type_id })
-                )
-                setSubType_Project({ projectSubTypeValue })
-            })
-
-    }
 
     function checkValidation(data, key, multipleId) {
         // if (key === "project_type") {
@@ -174,7 +140,7 @@ function ProjectFormCreate(props) {
         // if (key === "project_type" || key === "project_sub_type") {
         //     setprojectform(prevState => ({
         //         ...prevState,
-        //         process_type: { value: data }
+        //         project_type: { value: data }
         //     }));
         // }
 
@@ -187,6 +153,18 @@ function ProjectFormCreate(props) {
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
             validation: projectform[key].validation
+        }
+
+        //  projectSubTypeValue
+
+        if (key === "project_type" && data) {
+            dispatch(getProjectSubType(data))
+        }
+
+        if (key === "project_Subtype" && data) {
+            // console.log(data, "projectform.project_type.value")
+            let values = { ProjectType: 1, ProjectSubtype: data }
+            dispatch(getProcessType(values))
         }
 
         // only for multi select (start)
@@ -210,6 +188,13 @@ function ProjectFormCreate(props) {
             ...prevState,
             [key]: dynObj,
         }));
+
+        // variable popup==>
+
+        if (key === "billable_type" && data === 2) {
+            setVariableid(true)
+            console.log(data, "billable_type")
+        }
     };
 
     function onSubmit() {
@@ -243,6 +228,25 @@ function ProjectFormCreate(props) {
         }));
     };
 
+    useEffect(() => {
+        let projectSubTypeValue = []
+        props.ProjectSubType.map((data) =>
+            projectSubTypeValue.push({ value: data.sub_project_type, id: data.sub_project_type_id })
+        )
+        setSubType_Project({ projectSubTypeValue })
+
+    }, [props.ProjectSubType])
+
+    useEffect(() => {
+        let Processtypevalue = []
+        props.ProcessType.map((data) =>
+            Processtypevalue.push({ value: data.process, id: data.process_id })
+        )
+        setProcessType({ Processtypevalue })
+
+    }, [props.ProcessType])
+
+
 
     return (
         <div>
@@ -272,22 +276,32 @@ function ProjectFormCreate(props) {
                         <Labelbox type="select"
                             placeholder={"Project Type "}
                             dropdown={ProjectType.projectTypedata}
-                            changeData={(data) => checkValidation(data, "process_type")}
-                            value={projectform.process_type.value}
-                            error={projectform.process_type.error}
-                            errmsg={projectform.process_type.errmsg}
+                            changeData={(data) => checkValidation(data, "project_type")}
+                            value={projectform.project_type.value}
+                            error={projectform.project_type.error}
+                            errmsg={projectform.project_type.errmsg}
                         />
                     </Grid>
-                    {projectform.process_type.value === 1 ?
+                    {projectform.project_type.value === 1 ?
                         <>
                             <Grid item xs={6} >
                                 <Labelbox type="select"
                                     placeholder={"Project Sub Type"}
+                                    dropdown={SubType_Project.projectSubTypeValue}
+                                    changeData={(data) => checkValidation(data, "project_Subtype")}
+                                    value={projectform.project_Subtype.value}
+                                    error={projectform.project_Subtype.error}
+                                    errmsg={projectform.project_Subtype.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={6} >
                                 <Labelbox type="select"
                                     placeholder={"Process Type"}
+                                    dropdown={ProcessType.Processtypevalue}
+                                    changeData={(data) => checkValidation(data, "process_type")}
+                                    value={projectform.process_type.value}
+                                    error={projectform.process_type.error}
+                                    errmsg={projectform.process_type.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={6} >
@@ -325,7 +339,7 @@ function ProjectFormCreate(props) {
                                 <Grid xs={12} container direction="row" spacing={2}>
 
                                     <Grid item xs={3} >
-                                        <Labelbox type="select"
+                                        <Labelbox type="text"
                                             placeholder={"Base Rate"}
                                         />
                                     </Grid>
@@ -351,7 +365,7 @@ function ProjectFormCreate(props) {
 
                                     <Grid item xs={6} container direction="row" spacing={2}>
                                         <Grid item xs={6} >
-                                            <Labelbox type="select"
+                                            <Labelbox type="text"
                                                 placeholder={"Base Rate"}
                                             />
                                         </Grid>
@@ -381,10 +395,11 @@ function ProjectFormCreate(props) {
                             </Grid>
                             <Grid item xs={6}>
 
+
                             </Grid>
                         </>
                         :
-                        projectform.process_type.value === 6 ?
+                        projectform.project_type.value === 6 ?
                             <>
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
@@ -422,7 +437,7 @@ function ProjectFormCreate(props) {
                                 {projectform?.billable_type?.value === 3 ?
                                     <Grid xs={12} container direction="row" spacing={2}>
                                         <Grid item xs={3} >
-                                            <Labelbox type="select"
+                                            <Labelbox type="text"
                                                 placeholder={"Base Rate"}
                                             />
                                         </Grid>
@@ -446,7 +461,7 @@ function ProjectFormCreate(props) {
                                     (projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4) ?
                                         <Grid item xs={6} container direction="row" spacing={2}>
                                             <Grid item xs={6} >
-                                                <Labelbox type="select"
+                                                <Labelbox type="text"
                                                     placeholder={"Base Rate"}
                                                 />
                                             </Grid>
@@ -480,7 +495,7 @@ function ProjectFormCreate(props) {
                                 </Grid>
                             </>
                             :
-                            (projectform.process_type.value === 2 || projectform.process_type.value === 3 || projectform.process_type.value === 4 || projectform.process_type.value === 5) ?
+                            (projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5) ?
                                 <>
 
 
@@ -516,7 +531,7 @@ function ProjectFormCreate(props) {
                                     {projectform?.billable_type?.value === 3 ?
                                         <Grid xs={12} container direction="row" spacing={2}>
                                             <Grid item xs={3} >
-                                                <Labelbox type="select"
+                                                <Labelbox type="text"
                                                     placeholder={"Base Rate"}
                                                 />
                                             </Grid>
@@ -542,7 +557,7 @@ function ProjectFormCreate(props) {
 
                                             <Grid item xs={6} container direction="row" spacing={2}>
                                                 <Grid item xs={6} >
-                                                    <Labelbox type="select"
+                                                    <Labelbox type="text"
                                                         placeholder={"Base Rate"}
                                                     />
                                                 </Grid>
@@ -589,7 +604,16 @@ function ProjectFormCreate(props) {
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
             </div>
+            <DynModel modelTitle={"Variable Rate"} handleChangeModel={variableid} handleChangeCloseModel={(bln) => setVariableid(bln)} content={<VariableRate />} width={1200} />
         </div>
     )
 }
-export default ProjectFormCreate;
+const mapStateToProps = (state) => (
+    // console.log(state.getOptions.getProcessType, "getProcessType")
+    {
+        ProjectSubType: state.getOptions.getProjectSubType || [],
+        ProcessType: state.getOptions.getProcessType || []
+    }
+);
+
+export default connect(mapStateToProps)(ProjectFormCreate);

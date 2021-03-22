@@ -1,11 +1,11 @@
-import { GET_SKILLS } from '../utils/Constants.js';
+import { GET_PROJECT_TYPE, GET_SKILLS } from '../utils/Constants.js';
 import { GET_TRAITS } from '../utils/Constants.js';
 import { GET_CERTIFICATION } from '../utils/Constants.js';
 import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY } from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE ,GET_PROCESS_TYPE} from '../utils/Constants.js';
 
 const initalState = {
     getSkills: [],
@@ -16,8 +16,10 @@ const initalState = {
     getCapability: [],
     getTalents: [],
     getStatus: [],
-    getQualification:[],
-    getIndustry:[]
+    getQualification: [],
+    getIndustry: [],
+    getProjectSubType: [],
+    getProcessType: [],
 }
 
 export default function (state = initalState, action) {
@@ -40,10 +42,14 @@ export default function (state = initalState, action) {
         case GET_STATUS:
             return { ...state, getStatus: payload }
         case GET_QUALIFICATION:
-            console.log(payload,"payloadpayload")
+            console.log(payload, "payloadpayload")
             return { ...state, getQualification: payload }
         case GET_INDUSTRY:
             return { ...state, getIndustry: payload }
+        case GET_PROJECT_SUB_TYPE:
+            return { ...state, getProjectSubType: payload }
+        case GET_PROCESS_TYPE:
+            return { ...state, getProcessType: payload }
         default:
             return state;
     }

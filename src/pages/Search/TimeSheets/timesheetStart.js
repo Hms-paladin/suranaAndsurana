@@ -7,6 +7,10 @@ import CustomButton from '../../../component/Butttons/button';
 function TimeSheetStartModel(props) {
     const [test, setTest] = useState(false)
 
+    function changeStop(){
+        alert("test")
+    }
+
     return (
         <div className="timeSheetStartContainer">
             <Grid item xs={12} container direction="row" spacing={3}>
@@ -62,7 +66,7 @@ function TimeSheetStartModel(props) {
             </div>
             <div className="customiseButton">
                 <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
-                <CustomButton btnName={"START"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"START"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnclick={props.changeStop}/>
 
             </div>
 
