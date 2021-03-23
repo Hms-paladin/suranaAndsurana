@@ -134,8 +134,8 @@ checkValidation(textValue,validatorsArray){
         return { msg: "Please Enter Alphabets only", state: false };
       }
     }  else if (validatorsArray[valid].name == "PercentageCGPA") {
-      var re = /	^100$|^\d{0,2}(\.\d{1,3})? *%?$/;
-      if (re.test(textValue) == false) {
+      var re = /	^100$|^\d{0,2}(\.\d{1,2})? *%?$/;
+      if (re.test(textValue) == false  || Number(textValue) == "00" ) {
         return { msg: "Please Enter Percentage/CGPA only", state: false };
       }
     } else if (validatorsArray[valid].name == "50Char") {

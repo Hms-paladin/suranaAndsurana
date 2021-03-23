@@ -155,6 +155,7 @@ function handleCancel() {
           changeData={(data) => checkValidation(data, "desgination")}
           dropdown={designationdata.Designation}
         //   value={Interviewschedule.desgination.value}
+        disabled={true}
               value={props.selectedDesignationID}
           error={Interviewschedule.desgination.error}
           errmsg={Interviewschedule.desgination.errmsg}

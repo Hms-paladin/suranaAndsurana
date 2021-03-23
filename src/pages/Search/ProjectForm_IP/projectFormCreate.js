@@ -11,6 +11,29 @@ import { connect, useDispatch } from 'react-redux';
 import DynModel from '../../../component/Model/model';
 import { getProjectSubType, getProcessType } from '../../../actions/MasterDropdowns';
 import VariableRate from '../../stages/RateMaster';
+import EnhancedTable from "../../../component/DynTable/table";
+import AddVarData from '../../../images/addvardata.svg';
+import SuccessIcon from '../../../images/successicon.svg';
+
+
+// Table Data ==>
+
+const header = [
+    { id: 'activity', label: 'Activity' },
+    { id: 'sub_activity', label: 'Sub Activity' },
+    { id: 'amount', label: 'Amount' },
+    { id: 'range', label: 'Range of Project cost' },
+    { id: 'court', label: 'Court' },
+    { id: 'lower_limit', label: 'Lower Limit' },
+    { id: 'upper_limit', label: 'Upper Limit' },
+    { id: 'unit', label: 'Unit of Measurement' },
+    { id: 'designation', label: 'Designation' },
+];
+
+const rows = [
+    { table_name: "Table 1", activity: "Activity 1", lower_limit: "lowerlimit1", upper_limit: "upperlimit1", designation: "designation1", cost: "cost", sub_activity: "Subactivity1", court: "court", measurement: "measurement" }
+
+];
 
 function ProjectFormCreate(props) {
     const dispatch = useDispatch()
@@ -22,6 +45,12 @@ function ProjectFormCreate(props) {
     const [BillableType, setBillableType] = useState({})
     const [projectUnit, setprojectUnit] = useState({})
     const [variableid, setVariableid] = useState(false)
+    const [successmodel, setSuccessmodel] = useState(false)
+    const [searchdata, setSearchdata] = useState()
+    const [addsearchdata, setAddsearchdata] = useState()
+
+
+
 
     const [projectform, setprojectform] = useState({
         project_type: {
@@ -62,8 +91,11 @@ function ProjectFormCreate(props) {
         },
     })
 
+
+
+
     useEffect(() => {
-       
+
         Axios({
             method: "GET",
             url: apiurl + 'get_project_type',
@@ -134,15 +166,6 @@ function ProjectFormCreate(props) {
 
 
     function checkValidation(data, key, multipleId) {
-        // if (key === "project_type") {
-        //     SubType_Project_Api(data)
-        // }
-        // if (key === "project_type" || key === "project_sub_type") {
-        //     setprojectform(prevState => ({
-        //         ...prevState,
-        //         project_type: { value: data }
-        //     }));
-        // }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -193,7 +216,10 @@ function ProjectFormCreate(props) {
 
         if (key === "billable_type" && data === 2) {
             setVariableid(true)
-            console.log(data, "billable_type")
+        }
+
+        function closevariableModel() {
+
         }
     };
 
@@ -247,6 +273,51 @@ function ProjectFormCreate(props) {
     }, [props.ProcessType])
 
 
+    const variablerateModel = () => {
+        function onSearch() {
+            setSearchdata(true)
+            setAddsearchdata(false)
+        }
+
+        function addSearchData() {
+            setAddsearchdata(true)
+            setSearchdata(false)
+            setSuccessmodel(true)
+        }
+
+        return (
+            <div>
+                <VariableRate variablebtnchange={true} variabletablechange={true} />
+                <CustomButton
+                    btnName={"Search"}
+                    btnCustomColor="customPrimary"
+                    custombtnCSS="custom_save"
+                    onBtnClick={onSearch}
+                />
+                {searchdata &&
+                    <div className="addvariableData">
+                        <img src={AddVarData} onClick={addSearchData} />
+
+                    </div>
+                }
+                {addsearchdata &&
+                    <div>
+                        <EnhancedTable
+                            headCells={header}
+                            rows={rows}
+                        />
+
+                    </div>
+                }
+                <DynModel modelTitle={"Success"} handleChangeModel={successmodel} handleChangeCloseModel={(bln) => setSuccessmodel(bln)} content={<div className="successModel">
+                    <img src={SuccessIcon} />
+                    <div>Data Successfully Added in Variable Rate Master</div>
+                </div>} width={400} />
+
+
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -318,6 +389,7 @@ function ProjectFormCreate(props) {
                                 <Labelbox type="select"
                                     placeholder={"Counsel"}
                                 />
+
                             </Grid>
                             <Grid item xs={6} >
                                 <Labelbox type="select"
@@ -456,10 +528,8 @@ function ProjectFormCreate(props) {
                                             />
                                         </Grid>
                                     </Grid>
-
                                     :
                                     (projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4) ?
-
                                         <Grid item xs={6} container direction="row" spacing={2}>
                                             <Grid item xs={6} >
                                                 <Labelbox type="text"
@@ -605,7 +675,7 @@ function ProjectFormCreate(props) {
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
             </div>
-            <DynModel modelTitle={"Variable Rate"} handleChangeModel={variableid} handleChangeCloseModel={(bln) => setVariableid(bln)} content={<VariableRate />} width={1300} />
+            <DynModel modelTitle={"Variable Rate"} handleChangeModel={variableid} handleChangeCloseModel={(bln) => setVariableid(bln)} content={variablerateModel()} width={1300} />
         </div>
     )
 }

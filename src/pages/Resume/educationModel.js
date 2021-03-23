@@ -3,10 +3,8 @@ import './resume.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from "../../component/Butttons/button";
-import { message } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { InesertResume } from "../../actions/ResumeAction"
 import { getQualification } from '../../actions/MasterDropdowns';
 
 
@@ -15,7 +13,7 @@ function EducationModel(props) {
 
     const dispatch = useDispatch()
     const [qualificationList, setQualificationList] = useState([])
-  
+    const [editbtn, setEditbtn] = useState(true);
     const [Education_Form, setEducationForm] = useState({
 
         basicQualification: {
@@ -26,7 +24,7 @@ function EducationModel(props) {
         },
         institution: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphaNumaricOnly" },{ "name": "50Char" }],
+            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }, { "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -38,7 +36,7 @@ function EducationModel(props) {
         },
         percentage: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "PercentageCGPA" }],
+            validation: [{ "name": "required" }, { "name": "PercentageCGPA" }],
             error: null,
             errmsg: null,
         },
@@ -46,7 +44,36 @@ function EducationModel(props) {
 
     })
 
-   
+    useEffect(() => {
+        // setEditEducationrow(props.editEducations)
+        console.log(props.editEducations, "editEducations")
+
+        // setEditEducationid(props.editEducationid)
+        const basicQual = props.editEducations?.qualification
+        const instution = props.editEducations?.institution
+        const Passing = props.editEducations?.year_of_passing
+        const CGPA = props.editEducations?.cgpa
+
+        Education_Form.basicQualification.value = basicQual
+        Education_Form.institution.value = instution
+        Education_Form.yearpassing.value = Passing
+        Education_Form.percentage.value = CGPA
+
+
+        setEducationForm((prevState) => ({
+            ...prevState,
+        }))
+
+
+
+    }, [props.editEducations, props.editEducationid])
+
+    useEffect(() => {
+        setEditbtn(props.editbtn)
+    }, [props])
+
+
+    console.log(Education_Form.basicQualification.value, "Education_Form.basicQualification.value ")
 
     function onSubmit() {
         var mainvalue = {};
@@ -76,7 +103,16 @@ function EducationModel(props) {
         setEducationForm(prevState => ({
             ...prevState
         }));
+
+
     };
+
+    function updateEducation() {
+        Education_Form.institution.value = "";
+        Education_Form.yearpassing.value = "";
+        Education_Form.percentage.value = "";
+
+    }
 
     const handleCancel = () => {
         let ResumeFrom_key = [
@@ -155,7 +191,10 @@ function EducationModel(props) {
                 error={Education_Form.percentage.error}
                 errmsg={Education_Form.percentage.errmsg} />
 
-            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+            {editbtn ? <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                :
+                <CustomButton btnName={"Update"} btnCustomColor="customPrimary" onBtnClick={updateEducation} />
+            }
         </div>
     )
 }

@@ -12,8 +12,10 @@ import ExperienceModel from './experienceModel';
 import PlusIcon from '../../images/plusIcon.svg';
 import DynModel from '../../component/Model/model';
 import moment from "moment";
-
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import './resume.scss'
+import Item from 'antd/lib/list/Item';
 
 
 function ResumePage() {
@@ -26,6 +28,9 @@ function ResumePage() {
     const [employererr, setEmployererr] = useState(false)
     const [educationerr, setEducationerr] = useState(false)
     const [expReq, setExpReq] = useState(false)
+    const [educationid,setEducationid] = useState()
+    const [educationrow, setEducationrow] = useState([])
+
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -428,9 +433,17 @@ function ResumePage() {
         }));
     }
 
-    function showEducationModel() {
+    function showEducationModel(x) {
+        console.log(educationList[x], "educationList")
+        setEducationid(x)
+        setEducationrow(educationList[x])
         setEducationModelOpen(true)
     }
+    console.log(educationid, "educationid")
+
+    console.log(educationrow, "educationrow")
+
+
 
     function showExperienceModel() {
         setExperienceModelOpen(true)
@@ -623,9 +636,10 @@ function ResumePage() {
                             <div><img src={PlusIcon} onClick={showEducationModel} /></div>
                         </div>
                         {educationList.length > 0 && <div className="educationOuterBox">
-                            {educationList.map((data) => {
+                            {educationList.map((data, index) => {
                                 return (
                                     <div className="educationKeyValue">
+
                                         <div className="educationKey">
                                             <div>Qualification</div>
                                             <div>Insitution/University</div>
@@ -642,6 +656,8 @@ function ResumePage() {
                                             <div>{data.year_of_passing}</div>
                                             <div>{data.cgpa}</div>
                                         </div>
+                                        <EditIcon fontSize="small" onClick={() => showEducationModel(index)} />
+                                        <DeleteIcon fontSize="small" />
                                     </div>)
                             })
                             }
@@ -707,11 +723,12 @@ function ResumePage() {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Labelbox type="select"
-                                mode={"multiple"}
+                            <Labelbox type="text"
+                                // mode={"multiple"}
                                 placeholder={"Special Interest"}
-                                dropdown={resumeGetList.interestList}
-                                changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
+                                // dropdown={resumeGetList.interestList}
+                                // changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
+                                changeData={(data) => checkValidation(data, "intrests")}
                                 value={Resume_Form.intrests.value}
                                 error={Resume_Form.intrests.error}
                                 errmsg={Resume_Form.intrests.errmsg}
@@ -853,6 +870,8 @@ function ResumePage() {
                                                 <div>{data.period_to}</div>
                                                 <div>{data.responsible}</div>
                                             </div>
+                                            <EditIcon fontSize="small" />
+                                            <DeleteIcon fontSize="small" />
                                         </div>)
                                 })
                                 }
@@ -870,9 +889,8 @@ function ResumePage() {
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
-                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} content={<EducationModel addEducations={(data) => addEducations(data)} />} />
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  content={<EducationModel editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={true} />} />
                     <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
-
                 </div>
             </div>
         </>

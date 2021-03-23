@@ -194,12 +194,18 @@ function InterviewApprover(props) {
       <div className="interview_head">
         <div>
           <label>
-            Name:<span>{nameAndDesg && nameAndDesg.name}  { props.props_name && props.props_name}</span>
+            Name:<span>
+              {/* {nameAndDesg && nameAndDesg.name}  */}
+             { props.props_name && props.props_name}
+             </span>
           </label>
         </div>
         <div>
           <label>
-            Designation:<span>{nameAndDesg && nameAndDesg.Designation} {props.props_design &&props.props_design}</span>
+            Designation:<span
+            >
+              {/* {nameAndDesg && nameAndDesg.Designation}  */}
+            {props.props_design &&props.props_design}</span>
           </label>
         </div>
       </div>
