@@ -23,6 +23,7 @@ const headCells = [
     { id: 'score', label: 'Score' },
     { id: 'round', label: 'Round' },
     { id: 'result', label: 'Result' },
+    
 
 ];   
 function Hrsearch(props) {
