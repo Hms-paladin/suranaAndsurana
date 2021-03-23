@@ -22,7 +22,7 @@ const headCells = [
     { id: 'language', label: 'Languages Known' },
     { id: 'certification', label: 'Certification' },
     { id: 'specialization', label: 'Specialization' },
-    { id: 'acheivements', label: 'Acheivements' },
+    // { id: 'acheivements', label: 'Acheivements' },
     { id: 'talents', label: 'Talents' },
 
 ];
@@ -228,7 +228,9 @@ function Resumesearch(props) {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female", basic: data.basic_qual, language: data.language, certification: data.certifications, specialization: data.specialization, acheivements: data.achievement, talents: data.talent,
+            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+             basic: data.basic_qual, language: data.language, certification: data.certifications, 
+             specialization: data.specialization, talents: data.talent,
              box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
              checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })

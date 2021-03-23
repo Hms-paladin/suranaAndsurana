@@ -37,7 +37,7 @@ function DynModel(props) {
         },
         propsedDate: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "futureDate" }],
             error: null,
             errmsg: null,
         }, 

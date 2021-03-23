@@ -9,7 +9,9 @@ import Axios from 'axios';
 import { notification } from 'antd';
 import { apiurl } from "../../utils/baseUrl";
 import moment from 'moment'
-export default function StagesMaster(){
+import { connect, useDispatch } from 'react-redux';
+import { getSubStage } from '../../actions/MasterDropdowns';
+const StagesMaster=(props)=>{
     const header = [
        // { id: 'table_name', label: 'Table Name' },
         { id: 'project_type', label: 'Project Type' },
@@ -21,10 +23,11 @@ export default function StagesMaster(){
         { id: 'remainder_days', label: 'Remainder Days' },
       ];
         
-  const rows = [
-     {table_name:"Table 1",project_type:"project 1",sub_project_type:"sub Project1",process_type:"Type1",stage:"Stage 1",sub_stage:"Substage1",no_days:"Number"}
+  // const rows = [
+  //    {table_name:"Table 1",project_type:"project 1",sub_project_type:"sub Project1",process_type:"Type1",stage:"Stage 1",sub_stage:"Substage1",no_days:"Number"}
      
-  ];/*
+  // ];
+  /*
   get_table_names
 get_project_type
 get_project_sub_type
@@ -32,7 +35,7 @@ get_stage_list
 get_sub_stage setsubStage
 insert_stage_master
 */
-
+const dispatch = useDispatch()
 const [StageMasterList,setStageMasterList]=useState([])
 const [projectType,setprojectType]=useState({})
 const [projectSubType,setprojectSubType]=useState({})
@@ -40,7 +43,52 @@ const [Stage,setStage]=useState({})
 const [subStage,setsubStage]=useState({})
 const [processType,setprocessType]=useState({}) 
 const [projectTableName,setprojectTableName]=useState({})
-
+const [disabled,setEnabled ] = useState(true);
+const [stageDisable,setStageEnabled ] = useState(true);
+const [RateMaster, setRateMaster] = useState({
+  project_type: {
+      value: "",
+      validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+  },
+  sub_project_type: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+  },
+  process_type: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+  },
+  stages: {
+      value: "",
+      validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+  },
+  sub_stages: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+  },
+  noOfDays: {
+      value: "",
+      validation: [{ "name": "required" },{ "name": "allowNumaricOnly1" }],
+      error: null,
+      errmsg: null,
+  },
+  compliance: {
+    value: "",
+    validation: [{ "name": "required" },{ "name": "allowNumaricOnly1" }],
+    error: null,
+    errmsg: null,
+},
+})
 const [isLoaded, setIsLoaded] = useState(true);
 useEffect(() => {
         
@@ -59,7 +107,6 @@ url: apiurl + 'get_stage_master',
 
  for (var m = 0; m < stageMasterListData.length; m++) {
   var listarray ={
-   // "table_names" : stageMasterListData[m].project_name,
     "project_type"  : stageMasterListData[m].project_type,
     "sub_project_type" : stageMasterListData[m].sub_project_type,
     "process_type"  : stageMasterListData[m].process,
@@ -100,22 +147,6 @@ url: apiurl + 'get_stage_list',
 }) 
 
 
-
-// sub stage
-Axios({
-method: "GET",
-url: apiurl + 'get_stage_list',
-})
-.then((response) => {
- let substagedata=[]
- response.data.data.map((data)=>
- substagedata.push({value:data.stage,id:data.stage_id})
- )
- setsubStage({substagedata})
-}) 
-
-
-
 // Table Name
 Axios({
 method: "GET",
@@ -128,63 +159,12 @@ url: apiurl + 'get_table_names',
  )
  setprojectTableName({projectTableNamedata})
 }) 
-
-
 setIsLoaded(false);
 }
 
 }) 
 
-   const [RateMaster, setRateMaster] = useState({
-      // table_name: {
-      //     value: "",
-      //     validation: [{ "name": "required" }],
-      //     error: null,
-      //     errmsg: null,
-      // },
-      project_type: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      sub_project_type: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      process_type: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      stages: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      sub_stages: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      noOfDays: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      compliance: {
-        value: "",
-        validation: [{ "name": "required" }],
-        error: null,
-        errmsg: null,
-    },
-  })
+
   const  onSubmit=()=>{
    var mainvalue = {};
    var targetkeys = Object.keys(RateMaster);
@@ -203,10 +183,10 @@ setIsLoaded(false);
     data : {
      // "project_id":RateMaster.table_name.value,
       "project_type_id":RateMaster.project_type.value,
-      "process_id":RateMaster.process_type.value,
-      "sub_project_id":RateMaster.sub_project_type.value,
+      "process_id":RateMaster.process_type.value  || null,
+      "sub_project_id":RateMaster.sub_project_type.value  || null, 
       "stage_id": RateMaster.stages.value,
-      "sub_stage_id":RateMaster.sub_stages.value,
+      "sub_stage_id":RateMaster.sub_stages.value || null,
       "no_of_compliance_days":RateMaster.compliance.value,
       "remainder_days":RateMaster.noOfDays.value,
       "created_on":moment().format('YYYY-MM-DD HH:m:s')   ,
@@ -218,10 +198,12 @@ setIsLoaded(false);
 }) 
     .then((response) => {
         if(response.data.status===1){
+         
             getstageMaster();
             notification.success({
                 message: 'Stage Master Updated Successfully',
               });
+              handleCancel();
             return Promise.resolve();
             }
     }) 
@@ -273,6 +255,18 @@ const getstageMaster = () =>{
 }
 
 function checkValidation(data, key, multipleId) {
+  if(data === 1 && key =="project_type"){
+    setEnabled(false)
+  }else if (data !== 1 && key =="project_type")
+  {setEnabled(true)}
+
+  if (key === "stages" && data) {
+
+    dispatch(getSubStage(data))
+    setStageEnabled(false)
+}else if (data !== 1 && key =="project_type")
+  {setStageEnabled(true)}
+
    var errorcheck = ValidationLibrary.checkValidation(
        data,
        RateMaster[key].validation
@@ -332,9 +326,9 @@ else if (key == "sub_project_type"){
    }));
 }
 const handleCancel = () =>{
-   let From_key = [
-   ]
-
+   let From_key = ["project_type","sub_project_type","process_type","stages","sub_stages","noOfDays","compliance"]
+   setStageEnabled(true)
+   setEnabled(true)
    From_key.map((data)=>{
       RateMaster[data].value = ""
    })
@@ -342,19 +336,20 @@ const handleCancel = () =>{
        ...prevState,
    }));
 }
+useEffect(() => {
+  let substagedata = []
+  props.getSubStage.map((data) =>
+  substagedata.push({ value: data.sub_stage, id: data.sub_stage_id })
+  )
+  setsubStage({substagedata})
+
+}, [props.getSubStage])
 
    
   return(
       <div>
           <Grid container spacing={3} className="stage_firstgrid">
           <Grid item xs={5} spacing={4} direction={"column"}>
-             {/* <Labelbox type="select" placeholder={"Table Name"}
-             dropdown={projectTableName.projectTableNamedata}
-               changeData={(data) => checkValidation(data, "table_name")}
-               value={RateMaster.table_name.value}
-               error={RateMaster.table_name.error}
-               errmsg={RateMaster.table_name.errmsg}
-             /> */}
           </Grid>
           <Grid  item xs={5} spacing={2}>
           </Grid>
@@ -367,6 +362,7 @@ const handleCancel = () =>{
                errmsg={RateMaster.project_type.errmsg}
              />
              <Labelbox type="select" placeholder={"Stage"}
+             
              dropdown={Stage.projectStagedata}
                changeData={(data) => checkValidation(data, "stages")}
                value={RateMaster.stages.value}
@@ -382,6 +378,7 @@ const handleCancel = () =>{
           </Grid>
           <Grid  item xs={4} spacing={2}>
              <Labelbox type="select" placeholder={"Sub Project Type"}
+                   disabled={disabled}
              dropdown={projectSubType.projectSubTypedata}
                changeData={(data) => checkValidation(data, "sub_project_type")}
                value={RateMaster.sub_project_type.value}
@@ -389,6 +386,7 @@ const handleCancel = () =>{
                errmsg={RateMaster.sub_project_type.errmsg}
              />
              <Labelbox type="select" placeholder={"Sub Stage"}
+             disabled={stageDisable}
                changeData={(data) => checkValidation(data, "sub_stages")}
                dropdown={subStage.substagedata}
                value={RateMaster.sub_stages.value}
@@ -400,6 +398,7 @@ const handleCancel = () =>{
           <Grid  item xs={4} spacing={2}>
              <Labelbox type="select" placeholder={"Process Type"}
              dropdown={processType.processTypedata}
+             disabled={disabled}
                changeData={(data) => checkValidation(data, "process_type")}
                value={RateMaster.process_type.value}
                error={RateMaster.process_type.error}
@@ -427,3 +426,10 @@ const handleCancel = () =>{
       </div>
   )
 }
+
+
+const mapStateToProps = (state) => ({
+ getSubStage: state.getOptions.getSubStage || [],
+});
+
+export default connect(mapStateToProps)(StagesMaster);

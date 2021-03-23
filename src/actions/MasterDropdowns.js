@@ -9,7 +9,7 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY ,GET_PROJECT_SUB_TYPE ,GET_PROCESS_TYPE} from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY ,GET_PROJECT_SUB_TYPE ,GET_PROCESS_TYPE,GET_SUB_STAGE,GET_INTERVIEW_APPROVER} from '../utils/Constants.js';
 
 
 export const getSkills = () => async (dispatch) => {
@@ -86,4 +86,20 @@ export const getProcessType = (id) => async (dispatch) => {
         },
     })
     return dispatch(({ type: GET_PROCESS_TYPE, payload: response.data.data }));
+};
+//StageMaster
+export const getSubStage = (id) => async (dispatch) => {
+    const response = await   axios({
+        method: "post",
+        url: apiurl + 'get_sub_stage',
+        data: {
+            "stage_id":id,
+        },
+    })
+    return dispatch(({ type: GET_SUB_STAGE, payload: response.data.data }));
+};
+//HRSchedule Interview Approver
+export const getInterviewApprover = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_interview_approver');
+    return dispatch(({ type: GET_INTERVIEW_APPROVER, payload: response.data.data }));
 };

@@ -37,7 +37,7 @@ function InterviewApprover(props) {
   const [ApproveForm, setApproveForm] = useState({
     final_score: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{ name: "allowNumaricOnly1" },{ name: "custommaxValue",params:100 }],
       error: null,
       errmsg: null,
     },
@@ -100,12 +100,10 @@ function InterviewApprover(props) {
         name: props.interviewData[0].name,
         Designation: props.interviewData[0].designation,
       });
-    console.log(interviewList, "._________interviewList____________");
   }, [props.interviewData]);
-  console.log(Rows, "rows_divya");
+
 
   useEffect(() => {
-    let values = [];
     Axios({
       method: "get",
       url: apiurl + "get_Interview_Status",
@@ -174,6 +172,7 @@ function InterviewApprover(props) {
           props.int_details_id,props.int_props,props.props_resid
         )
       ).then(() => {
+        handleCancel()
         props.handleAproverModelClose();
         props.handleModelClose();
       });

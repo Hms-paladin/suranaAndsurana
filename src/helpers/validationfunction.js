@@ -28,8 +28,15 @@ checkValidation(textValue,validatorsArray){
       }
     }
     else if(validatorsArray[valid].name=='custommaxValue'){
+      console.log("validation",validatorsArray[valid].params)
       if(textValue>validatorsArray[valid].params){
       return {msg:"Value should not greater than "+validatorsArray[valid].params,state:false};//validation occurs break the loop & throw the error
+      }
+    }
+    else if(validatorsArray[valid].name=='customminValue'){
+      console.log("validation",validatorsArray[valid].params)
+      if(textValue<validatorsArray[valid].params){
+      return {msg:"Value should  greater than "+validatorsArray[valid].params,state:false};//validation occurs break the loop & throw the error
       }
     }
     else if(validatorsArray[valid].name=='mobile'){
@@ -59,7 +66,7 @@ checkValidation(textValue,validatorsArray){
       }
     } else if (validatorsArray[valid].name == "allowNumaricOnly1") {
       var re = /^[0-9]*\.?[0-9]*$/;
-      if (re.test(textValue) == false) {
+      if (re.test(textValue) == false  || Number(textValue) == "00") {
         return { msg: "Please Enter Numeric Value only", state: false };
       }
     } else if (validatorsArray[valid].name == "webUrl") {
@@ -152,26 +159,6 @@ checkValidation(textValue,validatorsArray){
       var re =/^.{1,251}$/;
       if (re.test(textValue) == false) {
         return { msg: "Input data exceeds the limit", state: false };
-      }
-    }else if (validatorsArray[valid].name == "Upto5lakh" && validatorsArray[valid].rangeID ===1  )  {
-      if (   textValue >= 500000  ) {
-        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
-      }
-    }else if (validatorsArray[valid].name == "Above20lakh") {
-      if (   textValue <= 2000000  ) {
-        return { msg: "Enter Amount Above 20,00,000 only", state: false };
-      }
-    }else if (validatorsArray[valid].name == "5To10Lakh") {
-      if (   textValue <= 500000  ) {
-        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
-      }
-    }else if (validatorsArray[valid].name == "5To20Lakh") {
-      if (   textValue <= 500000  ) {
-        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
-      }
-    }else if (validatorsArray[valid].name == "10To20Lakh") {
-      if (   textValue <= 500000  ) {
-        return { msg: "Enter Amount Upto 5,00,000 only", state: false };
       }
     }
 

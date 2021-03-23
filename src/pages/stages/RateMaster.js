@@ -39,6 +39,7 @@ export default function RateMaster(props) {
   const [projectDesignation, setprojectDesignation] = useState({});
   const [amountError, setamountError] = useState("");
   const [isLoaded, setIsLoaded] = useState(true);
+  const [disabled,setEnabled ] = useState(true);
   const [RateMaster, setRateMaster] = useState({
     table_name: {
       value: "",
@@ -87,7 +88,8 @@ export default function RateMaster(props) {
       validation: [{ name: "required" },{ name: "allowNumaricOnly" },
       // { name: amountError === 1 ? "Upto5lakh":'' }
       // { name: "Upto5lakh" },
-      { name: "custommaxValue",params:"0" }
+      { name: "custommaxValue",params:"0" },
+      { name: "customminValue",params:"0" }
     ],
       error: null,
       errmsg: null,
@@ -159,12 +161,37 @@ export default function RateMaster(props) {
       ...prevState,
     }));
   };
+
   function checkValidation(data, key, multipleId) {
+  console.log(RateMaster.amount.validation,"RateMaster.amount.validation")
+
     if(data && key =="range_project_cost"){
-      // data ===1? RateMaster.amount.validation[2].params = 200000:""
-      // data ===2? RateMaster.amount.validation[2].params = 100:""
-      // data ===3? RateMaster.amount.validation[2].params = 100:""
-      // data ===5? RateMaster.amount.validation[2].params = 100:""
+      setEnabled(false)
+      RateMaster.amount.value = "";
+      // projectRange.projectRangedata.filter((sl)=> {
+      //   if(data===sl.id){
+      //     switch (true) {
+      //       case sl.value.includes("Upto"):
+      //         RateMaster.amount.validation[2].params = Number((sl.value.slice(5,sl.value.length).replace(/,/g, "")))
+      //         RateMaster.amount.validation[3].params = ""
+
+
+      //         console.log("Upto",Number(sl.value.slice(5,sl.value.length).replace(/,/g, "")),)
+      //         console.log("Upto",sl.value.includes("Upto"))
+      //         break;
+      //       case sl.value.includes("Above"):
+      //         RateMaster.amount.validation[3].params = Number((sl.value.slice(6,sl.value.length).replace(/,/g, "")))
+
+      //         RateMaster.amount.validation[2].params = ""
+
+      //         console.log("Above",Number(sl.value.slice(6,sl.value.length).replace(/,/g, "")),)
+      //         console.log("Above",sl.value.includes("Above"))
+      //         break;  
+      //       default:
+      //         break;
+      //     }
+      //   }
+      // })
 
     }
     var errorcheck = ValidationLibrary.checkValidation(
@@ -206,6 +233,7 @@ export default function RateMaster(props) {
     }));
   }
   const handleCancel = () => {
+    setEnabled(true)
     let From_key = ["table_name","activity","lower_limit","designation","range_project_cost","sub_activity",
     "upper_limit","amount","court","unit_measurement"];
 
@@ -416,6 +444,7 @@ export default function RateMaster(props) {
         </Grid>
         <Grid item xs={4} spacing={2}>
           <Labelbox
+          disabled={disabled}
             type="text"
             placeholder={"Amount"}
             changeData={(data) => checkValidation(data, "amount")}
