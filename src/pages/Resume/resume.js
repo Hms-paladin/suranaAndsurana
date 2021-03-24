@@ -30,7 +30,7 @@ function ResumePage() {
     const [expReq, setExpReq] = useState(false)
     const [educationid,setEducationid] = useState()
     const [educationrow, setEducationrow] = useState([])
-
+    const [onEdit, setOnEdit] = useState(false)
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -425,11 +425,17 @@ function ResumePage() {
         }));
     }
 
-    function showEducationModel(x) {
+    function showEducationModel() {
+
+        setEducationModelOpen(true)}
+     
+    const showEditEducationModel = (x) => {
+        setEducationModelOpen(true)
         console.log(educationList[x], "educationList")
         setEducationid(x)
         setEducationrow(educationList[x])
-        setEducationModelOpen(true)
+           setOnEdit(true)
+
     }
     console.log(educationid, "educationid")
 
@@ -649,7 +655,7 @@ function ResumePage() {
                                             <div>{data.year_of_passing}</div>
                                             <div>{data.cgpa}</div>
                                         </div>
-                                        <EditIcon fontSize="small" onClick={() => showEducationModel(index)} />
+                                        <EditIcon fontSize="small" onClick={() => showEditEducationModel(index)} />
                                         <DeleteIcon fontSize="small" />
                                     </div>)
                             })
@@ -882,7 +888,8 @@ function ResumePage() {
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
-                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  content={<EducationModel editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={true} />} />
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  content={<EducationModel editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={onEdit} onClose={()=>setOnEdit(false)} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} />} />
+                    
                     <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
                 </div>
             </div>
