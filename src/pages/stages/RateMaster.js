@@ -12,15 +12,15 @@ import moment from "moment";
 export default function RateMaster(props) {
   const header = [
     // { id: 'table_names', label: 'Table Name' },
-    { id: "activity", label: "Activity" },
-    { id: "lower_limit", label: "Lower Limit" },
-    { id: "upper_limit", label: "Upper Limit" },
-    { id: "amount", label: "Amount" },
-    { id: "designation", label: "Designation" },
-    { id: "range", label: "Range of Project cost" },
-    { id: "sub_activity", label: "Sub Activity" },
-    { id: "court", label: "Court" },
-    { id: "unit", label: "Unit of Measurement" },
+    { id: 'activity', label: 'Activity' },
+    { id: 'lower_limit', label: 'Lower Limit' },
+    { id: 'upper_limit', label: 'Upper Limit' },
+    { id: 'amount', label: 'Amount' },
+    { id: 'designation', label: 'Designation' },
+    { id: 'range', label: 'Range of Project cost' },
+    { id: 'sub_activity', label: 'Sub Activity' },
+    { id: 'court', label: 'Court' },
+    { id: 'unit', label: 'Unit of Measurement' },
   ];
 
   /*const rows = [
@@ -28,7 +28,6 @@ export default function RateMaster(props) {
        
     ]; */
 
-  const rows = [];
   const [varRateList, setvarRateList] = useState([]);
   const [projectRange, setprojectRange] = useState({});
   const [projectCourt, setprojectCourt] = useState({});
@@ -38,6 +37,8 @@ export default function RateMaster(props) {
   const [projectTableName, setprojectTableName] = useState({});
   const [projectDesignation, setprojectDesignation] = useState({});
   const [amountError, setamountError] = useState("");
+  const [variablebtnchange, setVariablebtnchange] = useState(true)
+  const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled,setEnabled ] = useState(true);
   const [RateMaster, setRateMaster] = useState({
@@ -107,7 +108,15 @@ export default function RateMaster(props) {
       errmsg: null,
     },
   });
+  useEffect(() => {
+    setVariablebtnchange(props.variablebtnchange)
+    setVariabletablechange(props.variabletablechange)
+  }, [props])
+
+
   const onSubmit = () => {
+    console.log(RateMaster,"RateMaster")
+
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
     for (var i in targetkeys) {
@@ -278,7 +287,7 @@ export default function RateMaster(props) {
       setvarRateList({ rateList });
     });
   };
-
+ 
   useEffect(() => {
     if (isLoaded) {
       Axios({
@@ -500,23 +509,32 @@ export default function RateMaster(props) {
             errmsg={RateMaster.designation.errmsg}
           />
         </Grid>
-        <div className="rate_cus_btns">
-          <CustomButton
-            btnName={"Save"}
-            btnCustomColor="customPrimary"
-            custombtnCSS="custom_save"
-            onBtnClick={onSubmit}
-          />
-          <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"     onBtnClick={handleCancel}      />
-        </div>
+        {variablebtnchange ?
+          <div className="rate_cus_btns"></div>
+          :
+          <div className="rate_cus_btns">
+            <CustomButton
+              btnName={"Save"}
+              btnCustomColor="customPrimary"
+              custombtnCSS="custom_save"
+              onBtnClick={onSubmit}
+            />
+            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
+          </div>
+        }
       </Grid>
 
-      <div className="rate_enhanced_table">
-        <EnhancedTable
-          headCells={header}
-          rows={varRateList.length == 0 ? varRateList : varRateList.rateList}
-        />
-      </div>
+      {variabletablechange
+        ? <div className="rate_enhanced_table">
+
+        </div>
+        :
+        <div className="rate_enhanced_table">
+          <EnhancedTable
+            headCells={header}
+            rows={varRateList.length == 0 ? varRateList : varRateList.rateList}
+          />
+        </div>}
     </div>
   );
 }

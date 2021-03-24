@@ -39,11 +39,11 @@ const headCells = [
 ];
 
 const rows = [
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder"  },
   { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
   { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
   { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder"},
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
+  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
 
 ];
 function Projectsearch(props) {
@@ -125,11 +125,12 @@ function Projectsearch(props) {
         </Collapse>
       </div>
       <div className="createTaskbtn">
+        <CustomButton btnName={"Create Adhoc Task"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} />
         <Link to="/projectFormCreate" >
           <CustomButton btnName={"Create Project "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setpathname("/projectFormCreate")} />
         </Link>
       </div>
-      {/* <CustomButton btnName={"Create Project "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setModelOpen(true)} /> */}
+
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
 
 
