@@ -44,7 +44,6 @@ export default function (state = initalState, action) {
         case GET_STATUS:
             return { ...state, getStatus: payload }
         case GET_QUALIFICATION:
-            console.log(payload, "payloadpayload")
             return { ...state, getQualification: payload }
         case GET_INDUSTRY:
             return { ...state, getIndustry: payload }

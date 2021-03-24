@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from "../../component/Butttons/button";
@@ -9,7 +9,11 @@ import Axios from "axios";
 import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
-export default function RateMaster(props) {
+import { connect, useDispatch,useSelector } from "react-redux";
+import {getVariableRateTableData,InsertVariableRate} from "../../actions/VariableRateMaster"
+
+
+const RateMaster=(props)=> {
   const header = [
     // { id: 'table_names', label: 'Table Name' },
 
@@ -25,11 +29,7 @@ export default function RateMaster(props) {
     { id: "unit", label: "Unit of Measurement" },
   ];
 
-  /*const rows = [
-       {table_name:"Table 1",activity:"Activity 1",lower_limit:"lowerlimit1",upper_limit:"upperlimit1",designation:"designation1",cost:"cost",sub_activity:"Subactivity1",court:"court",measurement:"measurement"}
-       
-    ]; */
-
+  const dispatch = useDispatch();
   const [varRateList, setvarRateList] = useState([]);
   const [projectRange, setprojectRange] = useState({});
   const [projectCourt, setprojectCourt] = useState({});
@@ -110,11 +110,40 @@ export default function RateMaster(props) {
       errmsg: null,
     },
   });
+  // const reduxvalue = 
+  //   useSelector((state)=>console.log(state,"reduxvalue"))
+
+  //   const tableDta = reduxvalue.variableRateMaster.getVariableRateTableData;
+
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
-  }, [props])
+  }, [props]);
 
+  useEffect(() => {
+    dispatch(getVariableRateTableData());
+  }, [dispatch]);
+  useEffect(() => {
+    console.log("props.getTableData",props.getTableData)
+        let variableRateList = [];
+    props.getTableData.map((data) => variableRateList.push(data));
+      var rateList = [];
+      for (var m = 0; m < variableRateList.length; m++) {
+        var listarray = {
+          designation: variableRateList[m].designation,
+          activity: variableRateList[m].activity,
+          sub_activity: variableRateList[m].sub_activity,
+          court: variableRateList[m].location,
+          range: variableRateList[m].range,
+          lower_limit: variableRateList[m].lower_limit,
+          upper_limit: variableRateList[m].upper_limit,
+          amount: variableRateList[m].rate,
+          unit: variableRateList[m].unit,
+        };
+        rateList.push(listarray);
+      }
+      setvarRateList({ rateList });
+  }, [props.getTableData])
 
   const onSubmit = () => {
     console.log(RateMaster,"RateMaster")
@@ -137,36 +166,9 @@ export default function RateMaster(props) {
 //     // setRateMaster({ error: true });
 
 // }else if (filtererr.length === 0) {
-    Axios({
-      method: "POST",
-      url: apiurl + "insert_vairable_rate",
-      data: {
-        range_id: RateMaster.range_project_cost.value ||null,
-        location_id: RateMaster.court.value || 0,
-        designation_id: RateMaster.designation.value || 0,
-        activity_id: RateMaster.activity.value,
-        created_on: moment().format("YYYY-MM-DD HH:m:s"),
-        updated_on: moment().format("YYYY-MM-DD HH:m:s"),
-        created_by: localStorage.getItem("empId"),
-        updated_by: localStorage.getItem("empId"),
-        sub_activity_id: RateMaster.sub_activity.value,
-        rate: RateMaster.amount.value,
-        upper_limit: RateMaster.upper_limit.value,
-        lower_limit: RateMaster.lower_limit.value,
-        unit_id: RateMaster.unit_measurement.value,
-        // table_id: RateMaster.table_name.value,
-      },
-    }).then((response) => {
-      if (response.data.status === 1) {
-        getVariablerateMaster();
-        notification.success({
-          message: "Variable Rate Master Updated Successfully",
-        });
-        handleCancel()
-        return Promise.resolve();
-      }
-    });
-  // }
+  dispatch(InsertVariableRate(RateMaster)).then((response)=> {
+    handleCancel();
+  });
 
     setRateMaster((prevState) => ({
       ...prevState,
@@ -174,7 +176,6 @@ export default function RateMaster(props) {
   };
 
   function checkValidation(data, key, multipleId) {
-  console.log(RateMaster.amount.validation,"RateMaster.amount.validation")
 
     if(data && key =="range_project_cost"){
       setEnabled(false)
@@ -215,7 +216,6 @@ export default function RateMaster(props) {
       errmsg: errorcheck.msg,
       validation: RateMaster[key].validation,
     };
-    console.log("ERROE",amountError)
      
     // let multipleIdList = [];
     if (key == "activity") {
@@ -245,8 +245,16 @@ export default function RateMaster(props) {
   }
   const handleCancel = () => {
     setEnabled(true)
-    let From_key = ["table_name","activity","lower_limit","designation","range_project_cost","sub_activity",
-    "upper_limit","amount","court","unit_measurement"];
+    let From_key = [
+      "designation",
+    "activity",
+    "lower_limit",
+    "range_project_cost",
+    "sub_activity",
+    "upper_limit",
+    "amount",
+    "court"
+    ,"unit_measurement"];
 
     From_key.map((data) => {
      
@@ -263,68 +271,37 @@ export default function RateMaster(props) {
     }));
   };
 
-  const getVariablerateMaster = () => {
-    Axios({
-      method: "GET",
-      url: apiurl + "get_variable_rate",
-    }).then((response) => {
-      let variableRateList = [];
-      response.data.data.map((data) => variableRateList.push(data));
-      var rateList = [];
-      for (var m = 0; m < variableRateList.length; m++) {
-        var listarray = {
-          // table_names: variableRateList[m].table_names,
-          designation: variableRateList[m].table_names,
- 
-          activity: variableRateList[m].activity,
-          sub_activity: variableRateList[m].sub_activity,
-          court: variableRateList[m].location,
-          range: variableRateList[m].range,
-          lower_limit: variableRateList[m].lower_limit,
-          upper_limit: variableRateList[m].upper_limit,
-          amount: variableRateList[m].rate,
-          unit: variableRateList[m].unit,
-        };
-        rateList.push(listarray);
-      }
-      setvarRateList({ rateList });
-    });
-  };
  
   useEffect(() => {
     if (isLoaded) {
-      Axios({
-        method: "GET",
-        url: apiurl + "get_variable_rate",
-      }).then((response) => {
-        let variableRateList = [];
-        response.data.data.map((data) => variableRateList.push(data));
-        var rateList = [];
-        for (var m = 0; m < variableRateList.length; m++) {
-          var listarray = {
-            // "table_names": variableRateList[m].table_names,
-           
-          
-            designation: variableRateList[m].designation,
-            activity: variableRateList[m].activity,
-            sub_activity: variableRateList[m].sub_activity,
-            court: variableRateList[m].location,
-            range: variableRateList[m].range,
-            lower_limit: variableRateList[m].lower_limit,
-            upper_limit: variableRateList[m].upper_limit,
-            amount: variableRateList[m].rate,
-            unit: variableRateList[m].unit,
-          };
-          rateList.push(listarray);
-        }
-        setvarRateList({ rateList });
-      });
+      // Axios({
+      //   method: "GET",
+      //   url: apiurl + "get_variable_rate",
+      // }).then((response) => {
+      //   let variableRateList = [];
+      //   response.data.data.map((data) => variableRateList.push(data));
+      //   var rateList = [];
+      //   for (var m = 0; m < variableRateList.length; m++) {
+      //     var listarray = {
+      //       designation: variableRateList[m].designation,
+      //       activity: variableRateList[m].activity,
+      //       sub_activity: variableRateList[m].sub_activity,
+      //       court: variableRateList[m].location,
+      //       range: variableRateList[m].range,
+      //       lower_limit: variableRateList[m].lower_limit,
+      //       upper_limit: variableRateList[m].upper_limit,
+      //       amount: variableRateList[m].rate,
+      //       unit: variableRateList[m].unit,
+      //     };
+      //     rateList.push(listarray);
+      //   }
+      //   setvarRateList({ rateList });
+      // });
 
       // Range
       Axios({
         method: "GET",
         url: apiurl + 'get_range',
-        // url: "http://54.198.55.249:8159/api/v1/get_range",
       }).then((response) => {
         let projectRangedata = [];
         response.data.data.map((data) =>
@@ -431,7 +408,7 @@ export default function RateMaster(props) {
         <Grid item xs={4} spacing={4} direction={"column"}>
         <Labelbox
             type="select"
-            placeholder={"Designation"}
+            placeholder={"Designation*"}
             dropdown={projectDesignation.projectDesignationData}
             changeData={(data) => checkValidation(data, "designation")}
             value={RateMaster.designation.value}
@@ -481,7 +458,7 @@ export default function RateMaster(props) {
           <Labelbox
           // disabled={disabled}
             type="text"
-            placeholder={"Amount"}
+            placeholder={"Amount*"}
             changeData={(data) => checkValidation(data, "amount")}
             value={RateMaster.amount.value}
             error={RateMaster.amount.error}
@@ -511,7 +488,7 @@ export default function RateMaster(props) {
           />
         <Labelbox
             type="select"
-            placeholder={"Unit of Measurement"}
+            placeholder={"Unit of Measurement*"}
             dropdown={projectUnit.projectUnitdata}
             changeData={(data) => checkValidation(data, "unit_measurement")}
             value={RateMaster.unit_measurement.value}
@@ -529,7 +506,7 @@ export default function RateMaster(props) {
               custombtnCSS="custom_save"
               onBtnClick={onSubmit}
             />
-            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
+            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"    onBtnClick={handleCancel}/>
           </div>
         }
       </Grid>
@@ -548,3 +525,13 @@ export default function RateMaster(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => (
+  // console.log(state.variableRateMaster, "getProcessType")
+  {
+      getTableData: state.variableRateMaster.getVariableRateTableData || [],
+
+  }
+);
+
+export default connect(mapStateToProps)(RateMaster);

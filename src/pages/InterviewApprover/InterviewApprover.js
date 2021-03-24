@@ -65,25 +65,7 @@ function InterviewApprover(props) {
 
   useEffect(() => {
        console.log(":props.int_resume_id",props.int_resume_id)
-    Axios({
-      method: 'POST',
-      url: apiurl +'get_to_do_interview_by_id',
-      data:{
-          resume_id:props.int_resume_id
-      }
-  })
-  // .then((response) => {
-  //   let interviewList = [];
-  //   response.data.data.map((data)=>{
-  //     interviewList.push({
-  //       date: moment(data.Date).format("DD-MMM-YYYY"),
-  //       // Id: data.interview_id,
-  //       score: data.score_inital,
-  //       cmts: data.comment,
-  //       viewer: data.interviewer,
-  //     });
-  //   })
-  // })
+
     let interviewList = [];
     props.interviewData.map((data) => {
       interviewList.push({
