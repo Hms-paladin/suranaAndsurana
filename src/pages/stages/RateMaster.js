@@ -162,13 +162,14 @@ const RateMaster=(props)=> {
     var filtererr = targetkeys.filter(
       (obj) => RateMaster[obj].error == true
   );
-//   if (filtererr.length > 0) {
-//     // setRateMaster({ error: true });
+  if (filtererr.length > 0) {
+    // setRateMaster({ error: true });
 
-// }else if (filtererr.length === 0) {
+}else if (filtererr.length === 0) {
   dispatch(InsertVariableRate(RateMaster)).then((response)=> {
     handleCancel();
   });
+}
 
     setRateMaster((prevState) => ({
       ...prevState,
