@@ -12,15 +12,17 @@ import moment from "moment";
 export default function RateMaster(props) {
   const header = [
     // { id: 'table_names', label: 'Table Name' },
-    { id: 'activity', label: 'Activity' },
-    { id: 'lower_limit', label: 'Lower Limit' },
-    { id: 'upper_limit', label: 'Upper Limit' },
-    { id: 'amount', label: 'Amount' },
-    { id: 'designation', label: 'Designation' },
-    { id: 'range', label: 'Range of Project cost' },
-    { id: 'sub_activity', label: 'Sub Activity' },
-    { id: 'court', label: 'Court' },
-    { id: 'unit', label: 'Unit of Measurement' },
+
+  
+    { id: "designation", label: "Designation" },
+    { id: "activity", label: "Activity" },
+    { id: "sub_activity", label: "Sub Activity" },
+    { id: "court", label: "Court" },
+    { id: "range", label: "Range of Project cost" },
+    { id: "lower_limit", label: "Lower Limit" },
+    { id: "upper_limit", label: "Upper Limit" },
+    { id: "amount", label: "Amount" },
+    { id: "unit", label: "Unit of Measurement" },
   ];
 
   /*const rows = [
@@ -50,13 +52,13 @@ export default function RateMaster(props) {
     },
     activity: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     lower_limit: {
       value: "",
-      validation: [{ name: "required" },{ name: "allowNumaricOnly" }],
+      validation: [{ name: "allowNumaricOnly" }],
       error: null,
       errmsg: null,
     },
@@ -68,19 +70,19 @@ export default function RateMaster(props) {
     },
     range_project_cost: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     sub_activity: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     upper_limit: {
       value: "",
-      validation: [{ name: "required" },{ name: "allowNumaricOnly" }],
+      validation: [{ name: "allowNumaricOnly" }],
       error: null,
       errmsg: null,
     },
@@ -89,8 +91,8 @@ export default function RateMaster(props) {
       validation: [{ name: "required" },{ name: "allowNumaricOnly" },
       // { name: amountError === 1 ? "Upto5lakh":'' }
       // { name: "Upto5lakh" },
-      { name: "custommaxValue",params:"0" },
-      { name: "customminValue",params:"0" }
+      // { name: "custommaxValue",params:"0" },
+      // { name: "customminValue",params:"0" }
     ],
       error: null,
       errmsg: null,
@@ -139,9 +141,9 @@ export default function RateMaster(props) {
       method: "POST",
       url: apiurl + "insert_vairable_rate",
       data: {
-        range_id: RateMaster.range_project_cost.value,
+        range_id: RateMaster.range_project_cost.value ||null,
         location_id: RateMaster.court.value || 0,
-        designation_id: RateMaster.designation.value,
+        designation_id: RateMaster.designation.value || 0,
         activity_id: RateMaster.activity.value,
         created_on: moment().format("YYYY-MM-DD HH:m:s"),
         updated_on: moment().format("YYYY-MM-DD HH:m:s"),
@@ -271,15 +273,16 @@ export default function RateMaster(props) {
       var rateList = [];
       for (var m = 0; m < variableRateList.length; m++) {
         var listarray = {
-          table_names: variableRateList[m].table_names,
+          // table_names: variableRateList[m].table_names,
+          designation: variableRateList[m].table_names,
+ 
           activity: variableRateList[m].activity,
+          sub_activity: variableRateList[m].sub_activity,
+          court: variableRateList[m].location,
+          range: variableRateList[m].range,
           lower_limit: variableRateList[m].lower_limit,
           upper_limit: variableRateList[m].upper_limit,
           amount: variableRateList[m].rate,
-          designation: variableRateList[m].table_names,
-          range: variableRateList[m].range,
-          sub_activity: variableRateList[m].sub_activity,
-          court: variableRateList[m].location,
           unit: variableRateList[m].unit,
         };
         rateList.push(listarray);
@@ -300,14 +303,16 @@ export default function RateMaster(props) {
         for (var m = 0; m < variableRateList.length; m++) {
           var listarray = {
             // "table_names": variableRateList[m].table_names,
+           
+          
+            designation: variableRateList[m].designation,
             activity: variableRateList[m].activity,
+            sub_activity: variableRateList[m].sub_activity,
+            court: variableRateList[m].location,
+            range: variableRateList[m].range,
             lower_limit: variableRateList[m].lower_limit,
             upper_limit: variableRateList[m].upper_limit,
             amount: variableRateList[m].rate,
-            designation: variableRateList[m].designation,
-            range: variableRateList[m].range,
-            sub_activity: variableRateList[m].sub_activity,
-            court: variableRateList[m].location,
             unit: variableRateList[m].unit,
           };
           rateList.push(listarray);
@@ -318,8 +323,8 @@ export default function RateMaster(props) {
       // Range
       Axios({
         method: "GET",
-        //url: apiurl + 'get_range',
-        url: "http://54.198.55.249:8159/api/v1/get_range",
+        url: apiurl + 'get_range',
+        // url: "http://54.198.55.249:8159/api/v1/get_range",
       }).then((response) => {
         let projectRangedata = [];
         response.data.data.map((data) =>
@@ -424,7 +429,47 @@ export default function RateMaster(props) {
       <div className="var_rate_master">Variable Rate Master</div>
       <Grid container spacing={6} className="ratemaster_firstgrid">
         <Grid item xs={4} spacing={4} direction={"column"}>
-          <Labelbox
+        <Labelbox
+            type="select"
+            placeholder={"Designation"}
+            dropdown={projectDesignation.projectDesignationData}
+            changeData={(data) => checkValidation(data, "designation")}
+            value={RateMaster.designation.value}
+            error={RateMaster.designation.error}
+            errmsg={RateMaster.designation.errmsg}
+          />
+            <Labelbox
+            type="select"
+            placeholder={"Court"}
+            dropdown={projectCourt.projectCourtdata}
+            changeData={(data) => checkValidation(data, "court")}
+            value={RateMaster.court.value}
+            error={RateMaster.court.error}
+            errmsg={RateMaster.court.errmsg}
+          />
+             <Labelbox
+            type="text"
+            placeholder={"Upper Limit"}
+            changeData={(data) => checkValidation(data, "upper_limit")}
+            value={RateMaster.upper_limit.value}
+            error={RateMaster.upper_limit.error}
+            errmsg={RateMaster.upper_limit.errmsg}
+          />
+      
+      
+       
+        </Grid>
+        <Grid item xs={4} spacing={2}>
+        <Labelbox
+            type="select"
+            placeholder={"Activity"}
+            dropdown={projectActivity.projectActivitydata}
+            changeData={(data) => checkValidation(data, "activity")}
+            value={RateMaster.activity.value}
+            error={RateMaster.activity.error}
+            errmsg={RateMaster.activity.errmsg}
+          />
+              <Labelbox
             type="select"
             placeholder={"Range of project cost "}
             dropdown={projectRange.projectRangedata}
@@ -434,6 +479,20 @@ export default function RateMaster(props) {
             errmsg={RateMaster.range_project_cost.errmsg}
           />
           <Labelbox
+          // disabled={disabled}
+            type="text"
+            placeholder={"Amount"}
+            changeData={(data) => checkValidation(data, "amount")}
+            value={RateMaster.amount.value}
+            error={RateMaster.amount.error}
+            errmsg={RateMaster.amount.errmsg}
+          />
+
+        
+         
+        </Grid>
+        <Grid item xs={4} spacing={2}>
+        <Labelbox
             type="select"
             placeholder={"Sub Activity"}
             dropdown={projectSubActivity.projectSubActivitydata}
@@ -444,34 +503,13 @@ export default function RateMaster(props) {
           />
           <Labelbox
             type="text"
-            placeholder={"Upper Limit"}
-            changeData={(data) => checkValidation(data, "upper_limit")}
-            value={RateMaster.upper_limit.value}
-            error={RateMaster.upper_limit.error}
-            errmsg={RateMaster.upper_limit.errmsg}
+            placeholder={"Lower Limit"}
+            changeData={(data) => checkValidation(data, "lower_limit")}
+            value={RateMaster.lower_limit.value}
+            error={RateMaster.lower_limit.error}
+            errmsg={RateMaster.lower_limit.errmsg}
           />
-        </Grid>
-        <Grid item xs={4} spacing={2}>
-          <Labelbox
-          disabled={disabled}
-            type="text"
-            placeholder={"Amount"}
-            changeData={(data) => checkValidation(data, "amount")}
-            value={RateMaster.amount.value}
-            error={RateMaster.amount.error}
-            errmsg={RateMaster.amount.errmsg}
-          />
-
-          <Labelbox
-            type="select"
-            placeholder={"Court"}
-            dropdown={projectCourt.projectCourtdata}
-            changeData={(data) => checkValidation(data, "court")}
-            value={RateMaster.court.value}
-            error={RateMaster.court.error}
-            errmsg={RateMaster.court.errmsg}
-          />
-          <Labelbox
+        <Labelbox
             type="select"
             placeholder={"Unit of Measurement"}
             dropdown={projectUnit.projectUnitdata}
@@ -479,34 +517,6 @@ export default function RateMaster(props) {
             value={RateMaster.unit_measurement.value}
             error={RateMaster.unit_measurement.error}
             errmsg={RateMaster.unit_measurement.errmsg}
-          />
-        </Grid>
-        <Grid item xs={4} spacing={2}>
-          <Labelbox
-            type="select"
-            placeholder={"Activity"}
-            dropdown={projectActivity.projectActivitydata}
-            changeData={(data) => checkValidation(data, "activity")}
-            value={RateMaster.activity.value}
-            error={RateMaster.activity.error}
-            errmsg={RateMaster.activity.errmsg}
-          />
-          <Labelbox
-            type="text"
-            placeholder={"Lower Limit"}
-            changeData={(data) => checkValidation(data, "lower_limit")}
-            value={RateMaster.lower_limit.value}
-            error={RateMaster.lower_limit.error}
-            errmsg={RateMaster.lower_limit.errmsg}
-          />
-          <Labelbox
-            type="select"
-            placeholder={"Designation"}
-            dropdown={projectDesignation.projectDesignationData}
-            changeData={(data) => checkValidation(data, "designation")}
-            value={RateMaster.designation.value}
-            error={RateMaster.designation.error}
-            errmsg={RateMaster.designation.errmsg}
           />
         </Grid>
         {variablebtnchange ?
