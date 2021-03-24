@@ -369,7 +369,6 @@ function ResumePage() {
     };
 
 
-
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Resume_Form);
@@ -549,7 +548,8 @@ function ResumePage() {
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"State of Domecile *"}
+                                placeholder={
+                                    "State of Domecile *"}
                                 dropdown={resumeGetList.stateList}
                                 changeData={(data) => checkValidation(data, "state")}
                                 value={Resume_Form.state.value}

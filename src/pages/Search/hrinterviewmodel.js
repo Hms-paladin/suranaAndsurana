@@ -42,7 +42,6 @@ const HrInterviewModel=(props)=> {
         }
     })
     useEffect(()=> {
-      console.log(props.selectedId)
         Axios({
             method: 'GET',
             url: apiurl +'get_round',
@@ -56,7 +55,6 @@ const HrInterviewModel=(props)=> {
                    })
                 )
                 setroundDropdownValues({hr_round})
-                console.log(roundDropdownValues.hr_round,"hr_round")
         })
         Axios({
             method: "GET",
@@ -81,10 +79,12 @@ const HrInterviewModel=(props)=> {
     }, [dispatch])
 
 },[])
+// 
 useEffect(() => {
 dispatch(getInterviewApprover());
 }
 ,[])
+// 
 useEffect(() => {
     let InterviewApprover = []
     props.getInterviewApprover.map((data, index) =>
@@ -175,6 +175,7 @@ function handleCancel() {
         <Labelbox
           type="datepicker"
           placeholder="Proposed Date"
+          disablePast={true}
           changeData={(data) => checkValidation(data, "propsedDate")}
           value={Interviewschedule.propsedDate.value}
           error={Interviewschedule.propsedDate.error}

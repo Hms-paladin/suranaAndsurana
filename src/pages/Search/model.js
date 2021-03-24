@@ -191,6 +191,7 @@ function DynModel(props) {
             <LabelBox
               type="datepicker"
               placeholder={"Proposed Date"}
+              disablePast={true}
               changeData={(data) => checkValidation(data, "propsedDate")}
               value={Interviewschedule.propsedDate.value}
               error={Interviewschedule.propsedDate.error}
