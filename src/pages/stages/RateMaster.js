@@ -122,7 +122,7 @@ const RateMaster=(props)=> {
 
   useEffect(() => {
     dispatch(getVariableRateTableData());
-  }, [dispatch]);
+  }, [props]);
   useEffect(() => {
     console.log("props.getTableData",props.getTableData)
         let variableRateList = [];
