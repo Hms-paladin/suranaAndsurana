@@ -102,19 +102,13 @@ function EducationModel(props) {
   // update education details
 
   function updateEducation() {
-
-    // Education_Form = { basicQualification: Education_Form.basicQualification.value }
-    console.log(Education_Form.basicQualification.value, "Education_Form")
-    console.log(Education_Form.institution.value, "Education_Form")
-    console.log(Education_Form.yearpassing.value, "Education_Form")
-    console.log(Education_Form.percentage.value, "Education_Form")
-
-    console.log(Education_Form,"Education_Form")
+    
     setRowchange(Education_Form)
     props.EditEducation(Education_Form, props.editEducationid);
-    // Education_Form.institution.value = "";
-    // Education_Form.yearpassing.value = "";
-    // Education_Form.percentage.value = "";
+    Education_Form.basicQualification.value = "";
+    Education_Form.institution.value = "";
+    Education_Form.yearpassing.value = "";
+    Education_Form.percentage.value = "";
     props.onClose();
     props.handleChangeCloseModel()
   }
