@@ -214,7 +214,9 @@ function ExperienceModel(props) {
                     value={Experience_Form.periodto.value}
                     error={Experience_Form.periodto.error}
                     errmsg={Experience_Form.periodto.errmsg} 
-                    disableFuture={"false"}/>
+                    disableFuture={"false"}
+                    minDate={Experience_Form.periodfrom.value}
+                    />
                 </Grid>
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>

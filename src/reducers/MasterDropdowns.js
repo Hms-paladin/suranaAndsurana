@@ -1,11 +1,11 @@
-import { GET_PROJECT_TYPE, GET_SKILLS } from '../utils/Constants.js';
+import { GET_SKILLS } from '../utils/Constants.js';
 import { GET_TRAITS } from '../utils/Constants.js';
 import { GET_CERTIFICATION } from '../utils/Constants.js';
 import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE ,GET_PROCESS_TYPE,GET_SUB_STAGE,GET_INTERVIEW_APPROVER} from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME ,GET_BILLABLE_TYPE} from '../utils/Constants.js';
 
 const initalState = {
     getSkills: [],
@@ -20,8 +20,13 @@ const initalState = {
     getIndustry: [],
     getProjectSubType: [],
     getProcessType: [],
-    getSubStage:[],
-    getInterviewApprover:[],
+    getSubStage: [],
+    getInterviewApprover: [],
+    getClientType: [],
+    getClient: [],
+    getProjectType: [],
+    getProjectName: [],
+    getBillableType:[],
 }
 
 export default function (state = initalState, action) {
@@ -55,7 +60,17 @@ export default function (state = initalState, action) {
         case GET_SUB_STAGE:
             return { ...state, getSubStage: payload }
         case GET_INTERVIEW_APPROVER:
-            return { ...state, getInterviewApprover: payload }    
+            return { ...state, getInterviewApprover: payload }
+        case GET_CLIENT_TYPE:
+            return { ...state, getClientType: payload }
+        case GET_CLIENT:
+            return { ...state, getClient: payload }
+        case GET_PROJECT_TYPE:
+            return { ...state, getProjectType: payload }
+        case GET_PROJECT_NAME:
+            return { ...state, getProjectName: payload }
+        case GET_BILLABLE_TYPE:
+            return { ...state, getBillableType: payload }
         default:
             return state;
     }
