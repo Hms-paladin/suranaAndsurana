@@ -10,7 +10,7 @@ import { getQualification } from "../../actions/MasterDropdowns";
 function EducationModel(props) {
   const dispatch = useDispatch();
   const [qualificationList, setQualificationList] = useState([]);
-//   const [editbtn, setEditbtn] = useState(true);
+  const [rowchange, setRowchange] = useState([]);
   const [Education_Form, setEducationForm] = useState({
     basicQualification: {
       value: "",
@@ -43,10 +43,6 @@ function EducationModel(props) {
   });
 
   useEffect(() => {
-    // setEditEducationrow(props.editEducations)
-    console.log(props.editEducations, "editEducations");
-
-    // setEditEducationid(props.editEducationid)
     const basicQual = props.editEducations?.qualification;
     const instution = props.editEducations?.institution;
     const Passing = props.editEducations?.year_of_passing;
@@ -60,16 +56,18 @@ function EducationModel(props) {
     setEducationForm((prevState) => ({
       ...prevState,
     }));
+
+    // setRowchange(Education_Form)
+
+    // console.log(Education_Form, "addEducations[props.editEducationid")
+
   }, [props.editEducations, props.editEducationid]);
 
-//   useEffect(() => {
-//     setEditbtn(props.editbtn);
-//   }, [props]);
+  //   useEffect(() => {
+  //     setEditbtn(props.editbtn);
+  //   }, [props]);
 
-  console.log(
-    Education_Form.basicQualification.value,
-    "Education_Form.basicQualification.value "
-  );
+
 
   function onSubmit() {
     var mainvalue = {};
@@ -101,13 +99,27 @@ function EducationModel(props) {
     }));
   }
 
+  // update education details
+
   function updateEducation() {
-    Education_Form.institution.value = "";
-    Education_Form.yearpassing.value = "";
-    Education_Form.percentage.value = "";
-    props.onClose(); 
-    props.handleChangeCloseModel() 
-}
+
+    // Education_Form = { basicQualification: Education_Form.basicQualification.value }
+    console.log(Education_Form.basicQualification.value, "Education_Form")
+    console.log(Education_Form.institution.value, "Education_Form")
+    console.log(Education_Form.yearpassing.value, "Education_Form")
+    console.log(Education_Form.percentage.value, "Education_Form")
+
+    console.log(Education_Form,"Education_Form")
+    setRowchange(Education_Form)
+    props.EditEducation(Education_Form, props.editEducationid);
+    // Education_Form.institution.value = "";
+    // Education_Form.yearpassing.value = "";
+    // Education_Form.percentage.value = "";
+    props.onClose();
+    props.handleChangeCloseModel()
+  }
+
+
 
   const handleCancel = () => {
     let ResumeFrom_key = [
@@ -192,6 +204,7 @@ function EducationModel(props) {
         value={Education_Form.yearpassing.value}
         error={Education_Form.yearpassing.error}
         errmsg={Education_Form.yearpassing.errmsg}
+        disableFuture={true}
       />
 
       <Labelbox
@@ -203,7 +216,7 @@ function EducationModel(props) {
         errmsg={Education_Form.percentage.errmsg}
       />
 
-      {props.editbtn? (
+      {props.editbtn ? (
         <CustomButton
           btnName={"Update"}
           btnCustomColor="customPrimary"

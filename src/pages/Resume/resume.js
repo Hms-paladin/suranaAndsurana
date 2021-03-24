@@ -28,9 +28,10 @@ function ResumePage() {
     const [employererr, setEmployererr] = useState(false)
     const [educationerr, setEducationerr] = useState(false)
     const [expReq, setExpReq] = useState(false)
-    const [educationid,setEducationid] = useState()
+    const [educationid, setEducationid] = useState()
     const [educationrow, setEducationrow] = useState([])
     const [onEdit, setOnEdit] = useState(false)
+    const [test, setTest] = useState([])
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -427,14 +428,15 @@ function ResumePage() {
 
     function showEducationModel() {
 
-        setEducationModelOpen(true)}
-     
+        setEducationModelOpen(true)
+    }
+
     const showEditEducationModel = (x) => {
         setEducationModelOpen(true)
         console.log(educationList[x], "educationList")
         setEducationid(x)
         setEducationrow(educationList[x])
-           setOnEdit(true)
+        setOnEdit(true)
 
     }
     console.log(educationid, "educationid")
@@ -459,6 +461,23 @@ function ResumePage() {
         setEducationerr(false)
     }
 
+    const EditEducation = (data, id) => {
+        console.log(data, id, "datas")
+
+        educationList[id] = {
+            qualification: "1",
+            institution:2,
+            year_of_passing: 3,
+            cgpa: 3,
+            certification_no: '1'
+        }
+        // setTest(data)
+        // setEducationList((prevState)=>({
+        //     ...prevState
+        // }))
+
+    }
+    console.log(educationList, "educationList")
 
 
 
@@ -478,6 +497,8 @@ function ResumePage() {
         setEmployererr(false)
 
     }
+
+
 
     return (
         <>
@@ -634,8 +655,8 @@ function ResumePage() {
                             <div>Education*</div>
                             <div><img src={PlusIcon} onClick={showEducationModel} /></div>
                         </div>
-                        {educationList.length > 0 && <div className="educationOuterBox">
-                            {educationList.map((data, index) => {
+                        {educationList && educationList.length > 0 && <div className="educationOuterBox">
+                            {educationList && educationList.map((data, index) => {
                                 return (
                                     <div className="educationKeyValue">
 
@@ -888,8 +909,10 @@ function ResumePage() {
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
-                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  content={<EducationModel editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={onEdit} onClose={()=>setOnEdit(false)} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} />} />
-                    
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} content={<EducationModel editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={onEdit} onClose={() => setOnEdit(false)} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}
+                        EditEducation={(data, id) => EditEducation(data, id)}
+                    />} />
+
                     <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
                 </div>
             </div>
