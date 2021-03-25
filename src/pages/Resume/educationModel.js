@@ -110,7 +110,7 @@ function EducationModel(props) {
     // Education_Form.yearpassing.value = "";
     // Education_Form.percentage.value = "";
     handleCancel()
-    props.onClose();
+    // props.onClose();
     props.handleChangeCloseModel()
   }
 
