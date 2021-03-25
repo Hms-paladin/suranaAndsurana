@@ -42,6 +42,8 @@ export const InsertVariableRate = (RateMaster) => async dispatch => {
               unit_id: RateMaster.unit_measurement.value || 0,
             },
           }).then((response) => {
+           dispatch( getVariableRateTableData())
+
             if (response.data.status === 1) {
                 dispatch({type:INSERT_VARIABLERATE,payload:true})
               notification.success({

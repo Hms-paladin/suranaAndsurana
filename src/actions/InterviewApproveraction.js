@@ -4,6 +4,8 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import {notification} from 'antd'
 import moment from 'moment'
+import {getHrTaskList} from './TodoListAction'
+
 
 export const Interview = () => async dispatch => {
     try {
@@ -69,6 +71,7 @@ export const InsertApprove = (ApproveForm,optionvalues,Rows,int_details_id,allde
         .then((response)=>{
             console.log(response,"response")
             if(response.data.status===1){
+                dispatch(getHrTaskList())
                 notification.success({
                     message: 'Interview Approve Successfully',
                   });

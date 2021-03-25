@@ -67,7 +67,7 @@ function TodoList(props) {
     const [viewer_id, setviewer_id] = useState([])
     useEffect(() => {
         dispatch(getHrTaskList())
-    }, [props])
+    }, [])
 
     useEffect(() => {
 
