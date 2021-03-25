@@ -39,19 +39,19 @@ function Hrsearch(props) {
     const [test, setTest] = useState(true)
     const [HrSearch_Form, setHrSearchFrom] = useState({
       designation_id: {
-          value: "",
+          value: "0",
           validation: [],
           error: null,
           errmsg: null,
       },
       round: {
-          value: "",
+          value: "0",
           validation: [],
           error: null,
           errmsg: null,
       },
       status_id: {
-          value: "",
+          value: "0",
           validation: [],
           error: null,
           errmsg: null,
@@ -60,178 +60,9 @@ function Hrsearch(props) {
   
     useEffect(()=>{
 
-      dispatch(searchRowdata({
-        "designation_id":"0",
-        "round":"0",
-        "status_id":"0"
-    },[]))
+      dispatch(searchRowdata(HrSearch_Form))
     },[])
 
-useEffect(() => {
-
-  const rowData =[
-    {
-     designation_id:1,
-     designation:"test",
-    result:[
-    {
-    resume_id:1,
-    name:"Brindha",
-    age:"23",
-    gender:"F",
-    basic_quali:"test",
-    interviewed_by:"test",
-    interviewed_date:"test",
-    score:"test",
-    interviewed_date:"test",
-    score:"20",
-    round:"1",
-    result:"selected",designation_id:1,
-    
-    },
-    
-    {
-      resume_id:2,
-      name:"Brins",
-      age:"23",
-      gender:"F",
-      basic_quali:"test",
-      interviewed_by:"test",
-      interviewed_date:"test",
-      score:"test",
-      interviewed_date:"test",
-      score:"20",
-      round:"1",
-      result:"selected",designation_id:1,
-      
-      },    {
-        resume_id:3,
-        name:"Brins",
-        age:"23",
-        gender:"F",
-        basic_quali:"test",
-        interviewed_by:"test",
-        interviewed_date:"test",
-        score:"test",
-        interviewed_date:"test",
-        score:"20",
-        round:"1",
-        result:"selected",designation_id:1,
-        
-        },    {
-          resume_id:4,
-          name:"Brins",
-          age:"23",
-          gender:"F",
-          basic_quali:"test",
-          interviewed_by:"test",
-          interviewed_date:"test",
-          score:"test",
-          interviewed_date:"test",
-          score:"20",
-          round:"1",
-          result:"selected",designation_id:1,
-          
-          },    {
-            resume_id:5,
-            name:"Brins",
-            age:"23",
-            gender:"F",
-            basic_quali:"test",
-            interviewed_by:"test",
-            interviewed_date:"test",
-            score:"test",
-            interviewed_date:"test",
-            score:"20",
-            round:"1",
-            result:"selected",designation_id:1,
-            
-            },    {
-              resume_id:6,
-              name:"Brins",
-              age:"23",
-              gender:"F",
-              basic_quali:"test",
-              interviewed_by:"test",
-              interviewed_date:"test",
-              score:"test",
-              interviewed_date:"test",
-              score:"20",
-              round:"1",
-              result:"selected",designation_id:1,
-              
-              },
-    
-    ]
-    },
-    {
-      designation_id:2,
-      designation:"test2",
-     result:[
-     {
-     resume_id:11,
-     name:"Asraf",
-     age:"23",
-     gender:"M",
-     basic_quali:"test",
-     interviewed_by:"test",
-     interviewed_date:"test",
-     score:"test",
-     interviewed_date:"test",
-     score:"20",
-     round:"1",
-     result:"selected",designation_id:1,
-     
-     },
-     
-     {
-       resume_id:21,
-       name:"Mushraf",
-       age:"23",
-       gender:"M",
-       basic_quali:"test",
-       interviewed_by:"test",
-       interviewed_date:"test",
-       score:"test",
-       interviewed_date:"test",
-       score:"20",
-       round:"1",
-       result:"selected",designation_id:1,
-       
-       },
-     
-     ]
-     },
-
-    ];
-
-     let multipleTable = []
-
-     props.GetRowData.map((data)=>{
-        
-    // rowData.map((data)=>{
- let rowDataList = []
-
-        data.result.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female", 
-            basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: data.interviewed_date, 
-            score: data.score, round: data.round, result: data.result,
-            box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id,data.designation_id)} name={"checked"+data.resume_id}
-             checked={checkList["checked"+data.resume_id]} value={checkList["checked"+data.resume_id]} />
-            })
-        }) 
-       multipleTable.push(
-        <EnhancedTable
-        headCells={headCells}
-         rows={rowDataList}
-         tabletitle={data.designation}
-       />
-       )
-     })
-
-     setMultipleTable(multipleTable)
-
-}, [test])
 const handleCheck = (event,resume_id,designation_id) => {
   console.log("resume_idclicked",resume_id)
   if(selectedCandidateId.includes(resume_id)){
@@ -349,14 +180,33 @@ function checkValidation(data, key) {
     setHRModelOpen(true)
     }
 
-    function onSearch() {
-      dispatch(searchRowdata({
-          "designation_id":HrSearch_Form.designation_id.value ? HrSearch_Form.designation_id.value : "0",
-          "round":HrSearch_Form.round.value ? HrSearch_Form.round.value : "0",
-          "status_id":HrSearch_Form.status_id.value ? HrSearch_Form.status_id.value : "0",
-      
-      }))
-  }
+
+  const onSearch=()=>{
+    dispatch(searchRowdata(HrSearch_Form)).then((response)=> {
+      stateClear();}
+    )}
+
+    const stateClear = () => {
+ 
+      let Form_key = [
+        "designation_id",
+      "round",
+      "status_id",
+     ];
+  
+      Form_key.map((data) => {
+       
+        try {
+          HrSearch_Form[data].value = "0";
+        } catch (error) {
+          throw(error)
+        }
+      });
+     
+      setHrSearchFrom((prevState) => ({
+        ...prevState,
+      }));
+    };
 
     return (
       <div className="hrContainer">

@@ -12,6 +12,7 @@ import getHrTodoList from "./TodoListReducer";
 import interviewApproverTableData from "./interviewApproverReducer"
 import HrSearchRowData from "./HrSearchRowData";
 import variableRateMaster from "./variableRateMaster"
+import projectSearchReducer from "./ProjectSearchReducers"
 
 export default combineReducers({
     getInterviewquestions,
@@ -24,5 +25,5 @@ export default combineReducers({
     getOptions:getResumeSearchDropDownOptions,
     getResumeSearchRowdata,
     getHrTodoList,
-    interviewApproverTableData,HrSearchRowData,variableRateMaster
+    interviewApproverTableData,HrSearchRowData,variableRateMaster,projectSearchReducer
 })

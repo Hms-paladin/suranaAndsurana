@@ -15,6 +15,7 @@ import { Redirect, Link } from 'react-router-dom';
 import AdhocTaskModel from './adhoctask';
 import DynModel from '../../component/Model/model';
 import ValidationLibrary from "../../helpers/validationfunction";
+import {getProjectSearchTableData} from "../../actions/ProjectSearchAction"
 
 
 
@@ -41,17 +42,9 @@ const headCells = [
 
 ];
 
-const rows = [
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
-  { name: 'Ranjith', age: 23, gender: "male", basic: "BE", language: 'tamil', certification: "-", specialization: "Nil", acheivements: 'none', talents: "coder" },
 
-];
 function Projectsearch(props) {
   const [pathname, setpathname] = useState(window.location.pathname)
-
   const [value, setValue] = React.useState(1);
   const [modelOpen, setModelOpen] = useState(false)
   const [clientType, setClientType] = useState({})
@@ -59,37 +52,38 @@ function Projectsearch(props) {
   const [projectType, setProjectType] = useState({})
   const [projectName, setProjectName] = useState({})
   const [billableType, setBillableType] = useState({})
+  const [multiplePanel, setMultiplePanel] = useState([]);
   const dispatch = useDispatch();
-  const [optionvalues, setoptionvalues] = useState([]);
+
 
 
   const [projectform, setprojectform] = useState({
     clienttype: {
-      value: "",
+      value: "0",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     client: {
-      value: "",
+      value: "0",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     projecttype: {
-      value: "",
+      value: "0",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     projectname: {
-      value: "",
+      value: "0",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     billabletype: {
-      value: "",
+      value: "0",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
@@ -97,29 +91,13 @@ function Projectsearch(props) {
 
   })
 
-
   const onChange = e => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
   }
-  useEffect(() => {
-
-    dispatch(ResumeSearchStatus())
-    // get value from redux store
-    console.log(props.ResumeSearchStatus, "ResumeSearchStatus")
-    // console.log(optionvalues,"vbdfg")
-    Axios({
-      method: "get",
-      url: apiurl + "get_Interview_Status",
-    }).then((response) => {
-      setoptionvalues(response.data.data.map((data) => ({
-        name: data.status
-      })))
-    })
-
-  }, [dispatch])
 
   useEffect(() => {
+    dispatch(getProjectSearchTableData(projectform))
     dispatch(getClientType())
     dispatch(getProjectType())
     dispatch(getProjectName())
@@ -127,9 +105,9 @@ function Projectsearch(props) {
 
   }, [])
 
-  // Client Type
+  
   useEffect(() => {
-
+// Client Type
     let ClientType = []
     props.ClientType.map((data) =>
       ClientType.push({ id: data.client_type_id, value: data.client_type })
@@ -218,6 +196,55 @@ function Projectsearch(props) {
 
   }, [props.Client])
 
+  const onSearch=()=>{
+    dispatch(getProjectSearchTableData(projectform)).then((response)=> {
+      stateClear();}
+    )}
+
+    const stateClear = () => {
+ 
+      let Form_key = [
+        "clienttype",
+      "client",
+      "projecttype","projectname","billabletype"
+     ];
+  
+      Form_key.map((data) => {
+       
+        try {
+          projectform[data].value = "0";
+        } catch (error) {
+          throw(error)
+        }
+      });
+     
+      setprojectform((prevState) => ({
+        ...prevState,
+      }));
+    };
+
+  
+  useEffect(() => {
+    let multipleTab = []
+    props.TableData.map((data,index)=>{
+    let rowDataList = []  
+
+       data.project_details.map((data,index) => {
+           rowDataList.push({ ProjectType: data.project_type, ProjectName: data.project_name, ClientType: data.client_type, 
+           ClientName: data.client, BillingType: data.billable_type, Reserved1: data.interviewed_date, 
+           Reserved2: data.score, Reserved3: data.round, Reserved4: data.status,
+           })
+       }) 
+      multipleTab.push(
+          <Panel header={`${data.project_type} (${data.project_details.length})`} key={index+1}>
+    <EnhancedTable headCells={headCells} rows={rowDataList} tabletitle={""} />
+    </Panel>
+      )
+    })
+    setMultiplePanel(multipleTab)
+
+}, [  props.TableData])
+
   return (
     <div>
       <div className="searchflex1">
@@ -271,7 +298,7 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg} />
 
           </div>
-          <Button className="projectsearchgo">Go</Button>
+          <Button className="projectsearchgo"  onClick={onSearch} >Go</Button>
 
         </div>
 
@@ -279,18 +306,7 @@ function Projectsearch(props) {
       </div>
       <div className="projectsearch_collapse">
         <Collapse onChange={callback}>
-          <Panel header="IP Project (5)" key="1">
-            <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-
-          </Panel>
-          <Panel header="Litigation Project (5)" key="2">
-            <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-
-          </Panel>
-          <Panel header="Retainer Project (5)" key="3">
-            <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-
-          </Panel>
+        {multiplePanel}
         </Collapse>
       </div>
       <div className="createTaskbtn">
@@ -310,8 +326,7 @@ function Projectsearch(props) {
 const mapStateToProps = state => (
   // console.log(state,"statestatestate")
   {
-
-    ResumeSearchStatus: state.ResumeSearchStatus,
+    TableData:state.projectSearchReducer.getProjectSearchTableData,
     ClientType: state.getOptions.getClientType,
     Client: state.getOptions.getClient,
     ProjectType: state.getOptions.getProjectType,
