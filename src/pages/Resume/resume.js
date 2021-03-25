@@ -920,7 +920,7 @@ function ResumePage() {
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
-                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => handleFieldNull(bln)} content={<EducationModel nullFieldValue={nullFieldValue} editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={onEdit} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  EditEducation={(data, id) => EditEducation(data, id)} />} />
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => handleFieldNull(bln)} content={<EducationModel nullFieldValue={nullFieldValue} editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={onEdit} handleChangeCloseModel={(bln) => handleFieldNull(bln)}  EditEducation={(data, id) => EditEducation(data, id)} />} />
 
                     <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
                 </div>
