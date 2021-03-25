@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from "react";
+import react, { useState, useEffect, useCallback } from "react";
 import "./resume.scss";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -89,7 +89,7 @@ function EducationModel(props) {
       // setEducationForm({ error: true });
     } else {
       // setEducationForm({ error: false });
-
+      
       props.addEducations(Education_Form);
       handleCancel();
     }
@@ -102,17 +102,23 @@ function EducationModel(props) {
   // update education details
 
   function updateEducation() {
-    
+
     setRowchange(Education_Form)
     props.EditEducation(Education_Form, props.editEducationid);
-    Education_Form.basicQualification.value = "";
-    Education_Form.institution.value = "";
-    Education_Form.yearpassing.value = "";
-    Education_Form.percentage.value = "";
+    // Education_Form.basicQualification.value = "";
+    // Education_Form.institution.value = "";
+    // Education_Form.yearpassing.value = "";
+    // Education_Form.percentage.value = "";
+    handleCancel()
     props.onClose();
     props.handleChangeCloseModel()
   }
 
+
+
+  useEffect(() => {
+    handleCancel()
+  }, [props.nullFieldValue])
 
 
   const handleCancel = () => {
@@ -129,7 +135,7 @@ function EducationModel(props) {
     setEducationForm((prevState) => ({
       ...prevState,
     }));
-  };
+  }
 
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
