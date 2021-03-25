@@ -18,7 +18,12 @@ import logo from '../../images/surana.gif'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Personicon from '../../images/personIcon.svg';
+// import Personicon from '../../images/personIcon.svg';
+import ResumeIcon from '../../images/resume.svg';
+import TodoIcon from '../../images/todoicon.svg';
+import SearchbarIcon from '../../images/searchicon.svg';
+import MasterIcon from '../../images/mastericon.svg';
+
 import { useHistory } from "react-router-dom";
 
 
@@ -69,24 +74,24 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuItems, setMenuItems] = useState(
     [
-      { path: "/resume", title: "Resume" },
-      { path: "/todoList", title: "To Do List" },
+      { path: "/resume", title: "Resume", img: ResumeIcon },
+      { path: "/todoList", title: "To Do List", img: TodoIcon },
       // {path:"/interview",title:"Interview"},
       // { path: "/employeeform", title: "Employee Form" },
-      { path: "/search", title: "Search" },
-  
+      { path: "/search", title: "Search", img: SearchbarIcon },
+
       // { path: "/projectIp", title: "ProjectIp1" },
       // { path: "/projectIp2", title: "ProjectIp2" },
       // { path: "/task", title: "Task" },
       // { path: "/addclient", title: "Add Client" },
       // { path: "/generateinvoice", title: "GenerateInvoice" },
-      
+
       // Litigation :
       // { path: "/litigation", title: "Litigation" },
 
       // variable rate master
-      { path: "/ratemaster", title: "Variable Rate Master" },
-      {path:"/stagesmaster", title: "StageMaster" },
+      { path: "/ratemaster", title: "Variable Rate Master", img: MasterIcon },
+      { path: "/stagesmaster", title: "StageMaster", img: MasterIcon },
     ]
   );
 
@@ -117,8 +122,8 @@ function Navbar(props) {
             <SupervisedUserCircleIcon className="customIcon_header" />
             <div >
               <div className="userName">
-              {JSON.parse(localStorage.getItem("token")).user_name}
-                </div>
+                {JSON.parse(localStorage.getItem("token")).user_name}
+              </div>
               <div className="userPosition">HOD</div>
             </div>
             {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}
@@ -155,7 +160,7 @@ function Navbar(props) {
               <Link to={data.path} onClick={() => setpathname(data.path)}>
                 <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
                   <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
-                  <img src={Personicon} className="menuListIcon" />
+                  <img src={data.img} className="menuListIcon" />
                   <div className="SiderResume_Button">{data.title}</div>
                 </div>
               </Link>
