@@ -9,15 +9,15 @@ import Axios from "axios";
 import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
-import { connect, useDispatch,useSelector } from "react-redux";
-import {getVariableRateTableData,InsertVariableRate} from "../../actions/VariableRateMaster"
+import { connect, useDispatch, useSelector } from "react-redux";
+import { getVariableRateTableData, InsertVariableRate } from "../../actions/VariableRateMaster"
 
 
-const RateMaster=(props)=> {
+const RateMaster = (props) => {
   const header = [
     // { id: 'table_names', label: 'Table Name' },
 
-  
+
     { id: "designation", label: "Designation" },
     { id: "activity", label: "Activity" },
     { id: "sub_activity", label: "Sub Activity" },
@@ -42,7 +42,7 @@ const RateMaster=(props)=> {
   const [variablebtnchange, setVariablebtnchange] = useState(true)
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
-  const [disabled,setEnabled ] = useState(true);
+  const [disabled, setEnabled] = useState(true);
   const [RateMaster, setRateMaster] = useState({
 
     activity: {
@@ -77,18 +77,18 @@ const RateMaster=(props)=> {
     },
     upper_limit: {
       value: "",
-      validation: [{ "name": "allowNumaricOnly" } ,  { "name": "customminValue", "params": "0" }],
+      validation: [{ "name": "allowNumaricOnly" }, { "name": "customminValue", "params": "0" }],
       error: null,
       errmsg: null,
     },
     amount: {
       value: "",
-      validation: [{ name: "required" },{ name: "allowNumaricOnly" },
-      // { name: amountError === 1 ? "Upto5lakh":'' }
-      // { name: "Upto5lakh" },
-      // { name: "custommaxValue",params:"0" },
-      // { name: "customminValue",params:"0" }
-    ],
+      validation: [{ name: "required" }, { name: "allowNumaricOnly" },
+        // { name: amountError === 1 ? "Upto5lakh":'' }
+        // { name: "Upto5lakh" },
+        // { name: "custommaxValue",params:"0" },
+        // { name: "customminValue",params:"0" }
+      ],
       error: null,
       errmsg: null,
     },
@@ -119,29 +119,29 @@ const RateMaster=(props)=> {
     dispatch(getVariableRateTableData());
   }, [dispatch]);
   useEffect(() => {
-    console.log("props.getTableData",props.getTableData)
-        let variableRateList = [];
+    console.log("props.getTableData", props.getTableData)
+    let variableRateList = [];
     props.getTableData.map((data) => variableRateList.push(data));
-      var rateList = [];
-      for (var m = 0; m < variableRateList.length; m++) {
-        var listarray = {
-          designation: variableRateList[m].designation,
-          activity: variableRateList[m].activity,
-          sub_activity: variableRateList[m].sub_activity,
-          court: variableRateList[m].location,
-          range: variableRateList[m].range,
-          lower_limit: variableRateList[m].lower_limit,
-          upper_limit: variableRateList[m].upper_limit,
-          amount: variableRateList[m].rate,
-          unit: variableRateList[m].unit,
-        };
-        rateList.push(listarray);
-      }
-      setvarRateList({ rateList });
+    var rateList = [];
+    for (var m = 0; m < variableRateList.length; m++) {
+      var listarray = {
+        designation: variableRateList[m].designation,
+        activity: variableRateList[m].activity,
+        sub_activity: variableRateList[m].sub_activity,
+        court: variableRateList[m].location,
+        range: variableRateList[m].range,
+        lower_limit: variableRateList[m].lower_limit,
+        upper_limit: variableRateList[m].upper_limit,
+        amount: variableRateList[m].rate,
+        unit: variableRateList[m].unit,
+      };
+      rateList.push(listarray);
+    }
+    setvarRateList({ rateList });
   }, [props.getTableData])
 
   const onSubmit = () => {
-    console.log(RateMaster,"RateMaster")
+    console.log(RateMaster, "RateMaster")
 
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
@@ -156,24 +156,27 @@ const RateMaster=(props)=> {
     }
     var filtererr = targetkeys.filter(
       (obj) => RateMaster[obj].error == true
-  );
-  if (filtererr.length > 0) {
-    // setRateMaster({ error: true });
+    );
+    if (filtererr.length > 0) {
+      // setRateMaster({ error: true });
 
-}else  {
-  dispatch(InsertVariableRate(RateMaster)).then((response)=> {
-    handleCancel();
-  });
-}
+    } else {
+      dispatch(InsertVariableRate(RateMaster)).then((response) => {
+        handleCancel();
+      });
+    }
 
     setRateMaster((prevState) => ({
       ...prevState,
     }));
   };
 
+  console.log(RateMaster.range_project_cost.value, "RateMaster.range_project_cost.value")
+
   function checkValidation(data, key, multipleId) {
 
-    if(data && key =="range_project_cost"){
+
+    if (data && key == "range_project_cost") {
       setEnabled(false)
       RateMaster.amount.value = "";
       // projectRange.projectRangedata.filter((sl)=> {
@@ -227,7 +230,7 @@ const RateMaster=(props)=> {
     // if (data && key == "lower_limit") {
     //   RateMaster[key].validation[1].params = RateMaster.upper_limit.value
     // }
-     
+
     // let multipleIdList = [];
     if (key == "activity") {
       // Sub Activity
@@ -258,31 +261,31 @@ const RateMaster=(props)=> {
     setEnabled(true)
     let From_key = [
       "designation",
-    "activity",
-    "lower_limit",
-    "range_project_cost",
-    "sub_activity",
-    "upper_limit",
-    "amount",
-    "court"
-    ,"unit_measurement"];
+      "activity",
+      "lower_limit",
+      "range_project_cost",
+      "sub_activity",
+      "upper_limit",
+      "amount",
+      "court"
+      , "unit_measurement"];
 
     From_key.map((data) => {
-     
+
       try {
         RateMaster[data].value = "";
-        console.log("mapping",RateMaster[data].value)
+        console.log("mapping", RateMaster[data].value)
       } catch (error) {
-        throw(error)
+        throw (error)
       }
     });
-   
+
     setRateMaster((prevState) => ({
       ...prevState,
     }));
   };
 
- 
+
   useEffect(() => {
     if (isLoaded) {
       // Axios({
@@ -319,6 +322,8 @@ const RateMaster=(props)=> {
           projectRangedata.push({ value: data.range, id: data.range_id })
         );
         setprojectRange({ projectRangedata });
+        console.log(projectRange, "projectRange")
+        console.log(projectRangedata, "projectRange")
       });
 
       // Court
@@ -417,7 +422,7 @@ const RateMaster=(props)=> {
       <div className="var_rate_master">Variable Rate Master</div>
       <Grid container spacing={6} className="ratemaster_firstgrid">
         <Grid item xs={4} spacing={4} direction={"column"}>
-        <Labelbox
+          <Labelbox
             type="select"
             placeholder={"Designation*"}
             dropdown={projectDesignation.projectDesignationData}
@@ -426,7 +431,7 @@ const RateMaster=(props)=> {
             error={RateMaster.designation.error}
             errmsg={RateMaster.designation.errmsg}
           />
-            <Labelbox
+          <Labelbox
             type="select"
             placeholder={"Court"}
             dropdown={projectCourt.projectCourtdata}
@@ -435,7 +440,7 @@ const RateMaster=(props)=> {
             error={RateMaster.court.error}
             errmsg={RateMaster.court.errmsg}
           />
-             <Labelbox
+          <Labelbox
             type="text"
             placeholder={"Upper Limit"}
             changeData={(data) => checkValidation(data, "upper_limit")}
@@ -443,12 +448,9 @@ const RateMaster=(props)=> {
             error={RateMaster.upper_limit.error}
             errmsg={RateMaster.upper_limit.errmsg}
           />
-      
-      
-       
         </Grid>
         <Grid item xs={4} spacing={2}>
-        <Labelbox
+          <Labelbox
             type="select"
             placeholder={"Activity"}
             dropdown={projectActivity.projectActivitydata}
@@ -457,7 +459,7 @@ const RateMaster=(props)=> {
             error={RateMaster.activity.error}
             errmsg={RateMaster.activity.errmsg}
           />
-              <Labelbox
+          <Labelbox
             type="select"
             placeholder={"Range of project cost "}
             dropdown={projectRange.projectRangedata}
@@ -467,7 +469,7 @@ const RateMaster=(props)=> {
             errmsg={RateMaster.range_project_cost.errmsg}
           />
           <Labelbox
-          // disabled={disabled}
+            // disabled={disabled}
             type="text"
             placeholder={"Amount*"}
             changeData={(data) => checkValidation(data, "amount")}
@@ -475,12 +477,9 @@ const RateMaster=(props)=> {
             error={RateMaster.amount.error}
             errmsg={RateMaster.amount.errmsg}
           />
-
-        
-         
         </Grid>
         <Grid item xs={4} spacing={2}>
-        <Labelbox
+          <Labelbox
             type="select"
             placeholder={"Sub Activity"}
             dropdown={projectSubActivity.projectSubActivitydata}
@@ -497,7 +496,7 @@ const RateMaster=(props)=> {
             error={RateMaster.lower_limit.error}
             errmsg={RateMaster.lower_limit.errmsg}
           />
-        <Labelbox
+          <Labelbox
             type="select"
             placeholder={"Unit of Measurement*"}
             dropdown={projectUnit.projectUnitdata}
@@ -517,7 +516,7 @@ const RateMaster=(props)=> {
               custombtnCSS="custom_save"
               onBtnClick={onSubmit}
             />
-            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"    onBtnClick={handleCancel}/>
+            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>
         }
       </Grid>
@@ -539,7 +538,7 @@ const RateMaster=(props)=> {
 
 const mapStateToProps = (state) => (
   {
-      getTableData: state.variableRateMaster.getVariableRateTableData || [],
+    getTableData: state.variableRateMaster.getVariableRateTableData || [],
 
   }
 );
