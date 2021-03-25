@@ -527,6 +527,7 @@ function ResumePage() {
                                 value={Resume_Form.candidate.value}
                                 error={Resume_Form.candidate.error}
                                 errmsg={Resume_Form.candidate.errmsg}
+                                
                             />
                         </Grid>
 
