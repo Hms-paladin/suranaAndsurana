@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
@@ -31,7 +31,7 @@ function ResumePage() {
     const [educationid, setEducationid] = useState()
     const [educationrow, setEducationrow] = useState([])
     const [onEdit, setOnEdit] = useState(false)
-    const [test, setTest] = useState([])
+    const [nullFieldValue, SetNullFieldValue] = useState(false)
     const [Resume_Form, setResumeFrom] = useState({
         // userId: {
         //     value: "",
@@ -454,7 +454,6 @@ function ResumePage() {
         setEducationModelOpen(false)
         setOnEdit(false)
         // onClose()
-
     }
 
     function addEducations(data) {
@@ -468,6 +467,8 @@ function ResumePage() {
         setEducationModelOpen(false)
         setEducationerr(false)
     }
+  console.log(addEducations, "addEducations")
+
 
     const EditEducation = (data, id) => {
         console.log(data, id, "datas")
@@ -504,7 +505,11 @@ function ResumePage() {
 
     }
 
-
+    const handleFieldNull = (bln) => {
+        setEducationModelOpen(bln)
+        SetNullFieldValue(!nullFieldValue)
+        setOnEdit(false)
+    }
 
     return (
         <>
@@ -915,7 +920,7 @@ function ResumePage() {
                             <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
                         </Grid>
                     </Grid>
-                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)} onCancel={closeModel} content={<EducationModel editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)}  onCancel={closeModel} editbtn={onEdit} onClose={() => setOnEdit(false)} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  EditEducation={(data, id) => EditEducation(data, id)} />} />
+                    <DynModel modelTitle={"Education"} handleChangeModel={educationModelOpen} handleChangeCloseModel={(bln) => handleFieldNull(bln)} content={<EducationModel nullFieldValue={nullFieldValue} editEducationid={educationid} editEducations={educationrow} addEducations={(data) => addEducations(data)} editbtn={onEdit} handleChangeCloseModel={(bln) => setEducationModelOpen(bln)}  EditEducation={(data, id) => EditEducation(data, id)} />} />
 
                     <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
                 </div>

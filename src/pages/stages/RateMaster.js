@@ -76,7 +76,7 @@ const RateMaster=(props)=> {
     },
     upper_limit: {
       value: "",
-      validation: [{ name: "allowNumaricOnly" }],
+      validation: [{ "name": "allowNumaricOnly" } ,  { "name": "customminValue", "params": "0" }],
       error: null,
       errmsg: null,
     },
@@ -159,8 +159,7 @@ const RateMaster=(props)=> {
   if (filtererr.length > 0) {
     // setRateMaster({ error: true });
 
-}else {
-  // alert("")
+}else  {
   dispatch(InsertVariableRate(RateMaster)).then((response)=> {
     handleCancel();
   });
@@ -212,6 +211,21 @@ const RateMaster=(props)=> {
       errmsg: errorcheck.msg,
       validation: RateMaster[key].validation,
     };
+
+    // upper Limit Validation==>
+
+    if (data && key == "lower_limit") {
+      RateMaster.upper_limit.validation[1].params = data
+      setRateMaster((prevState) => ({
+        ...prevState,
+      }));
+    }
+
+    // Lower Limit Validation ==>
+
+    // if (data && key == "lower_limit") {
+    //   RateMaster[key].validation[1].params = RateMaster.upper_limit.value
+    // }
      
     // let multipleIdList = [];
     if (key == "activity") {

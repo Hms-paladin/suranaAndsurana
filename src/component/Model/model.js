@@ -25,6 +25,7 @@ function DynModel(props){
         width={props.width ? props.width : 520}
         zIndex={1201}
         onCancel={handleCancel}
+        
         >
          {props.content}
         </Modal>
