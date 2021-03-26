@@ -161,7 +161,7 @@ function ProjectFormCreate(props) {
     })  
     useEffect(() => {
         console.log("value", projectform.project_sub_type.value)
-
+    })
 
 
 
