@@ -184,7 +184,7 @@ insert_stage_master
         // "project_id":RateMaster.table_name.value,
         "project_type_id": RateMaster.project_type.value,
         "process_id": RateMaster.process_type.value || 0,
-        "sub_project_id": RateMaster.sub_project_type.value || 0,
+        "sub_proj_type_id": RateMaster.sub_project_type.value || 0,
         "stage_id": RateMaster.stages.value,
         "sub_stage_id": RateMaster.sub_stages.value || 0,
         "no_of_compliance_days": RateMaster.compliance.value,
@@ -375,10 +375,10 @@ insert_stage_master
             errmsg={RateMaster.stages.errmsg}
           />
           <Labelbox type="text" placeholder={"Remainder Days"}
-            changeData={(data) => checkValidation(data, "compliance")}
-            value={RateMaster.compliance.value}
-            error={RateMaster.compliance.error}
-            errmsg={RateMaster.compliance.errmsg}
+            changeData={(data) => checkValidation(data, "noOfDays")}
+            value={RateMaster.noOfDays.value}
+            error={RateMaster.noOfDays.error}
+            errmsg={RateMaster.noOfDays.errmsg}
           />
         </Grid>
         <Grid item xs={4} spacing={2}>
@@ -399,7 +399,6 @@ insert_stage_master
             errmsg={RateMaster.sub_stages.errmsg}
           />
         </Grid>
-
         <Grid item xs={4} spacing={2}>
           <Labelbox type="select" placeholder={"Process Type"}
             dropdown={processType.processTypedata}
@@ -410,10 +409,11 @@ insert_stage_master
             errmsg={RateMaster.process_type.errmsg}
           />
           <Labelbox type="text" placeholder={"Number of Days"}
-            changeData={(data) => checkValidation(data, "noOfDays")}
-            value={RateMaster.noOfDays.value}
-            error={RateMaster.noOfDays.error}
-            errmsg={RateMaster.noOfDays.errmsg}
+            changeData={(data) => checkValidation(data, "compliance")}
+           
+            value={RateMaster.compliance.value}
+            error={RateMaster.compliance.error}
+            errmsg={RateMaster.compliance.errmsg}
           />
         </Grid>
         {/* <Grid  item xs={4} spacing={2}>
