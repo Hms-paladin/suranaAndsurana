@@ -1,18 +1,28 @@
-import React,{useState} from 'react';
+import react, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import { apiurl } from "../../utils/baseUrl";
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import CustomButton from '../../component/Butttons/button';
 import './addclient.scss';
 import { Label } from '@material-ui/icons';
+import moment from "moment";
+import { notification } from 'antd';
 
 function AddClient(){
     const [resumeGetList, setGetList] = useState({})
+    const [clientName, setClientName] = useState({})
 
+    const [stateList, setstateList] = useState({})
+    const [cityList, setcityList] = useState({})
+    const [selectedFile, setselectedFile] = useState({})
+
+    const [Industry, setIndustry] = useState({})
     const [Addclient_Form, setAddclient_Form] = useState({
         client_name: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],// { "name": "alphabetwithspace" }],
             error: null,
             errmsg: null,
         },
@@ -114,12 +124,102 @@ function AddClient(){
         },
         city: {
             value: "",
-            validation: [{ "name": "alphabetwithspace" }],
+            validation: [],//[{ "name": "alphabetwithspace" }],
             error: null,
             errmsg: null,
         },
     })
+    useEffect(() => {
+        
+        
+            // Client 
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_client_type',
+        })
+            .then((response) => {
+                console.log("response", response)
+                let clientData = []
+                response.data.data.map((data) =>
+                clientData.push({ id: data.client_type_id, value: data.client_type })
+                )
+                setClientName({ clientData })
+            })
 
+            // Industry 
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_s_tbl_m_industry',
+        })
+            .then((response) => {
+                console.log("response", response)
+                let industryData = []
+                response.data.data.map((data) =>
+                industryData.push({ id: data.industry_id, value: data.industry })
+                )
+                setIndustry({ industryData })
+            })
+
+              // Client  name
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_client_type',
+        })
+            .then((response) => {
+                console.log("response", response)
+                let clientData = []
+                response.data.data.map((data) =>
+                clientData.push({ id: data.client_type_id, value: data.client_type })
+                )
+                setClientName({ clientData })
+            })
+
+
+            // Client  type
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_client_type',
+        })
+            .then((response) => {
+                console.log("response", response)
+                let clientData = []
+                response.data.data.map((data) =>
+                clientData.push({ id: data.client_type_id, value: data.client_type })
+                )
+                setClientName({ clientData })
+            })
+
+            // state 
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_s_tbl_m_state',
+        })
+            .then((response) => {
+                console.log("response", response)
+                let stateData = []
+                response.data.data.map((data) =>
+                stateData.push({ id: data.state_id, value: data.state })
+                )
+                setstateList({ stateData })
+            })
+
+             // city 
+        Axios({
+            method: "GET",
+            url: apiurl + 'get_s_tbl_m_city',
+        })
+            .then((response) => {
+                console.log("response", response)
+                let cityData = []
+                response.data.data.map((data) =>
+                cityData.push({ id: data.city_id, value: data.state })
+                )
+                setcityList({ cityData })
+            })
+
+
+
+    }, [])
     function checkValidation(data, key, multipleId) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -164,6 +264,16 @@ function AddClient(){
         //     setAddclient_Form({ error: false });
         // }
     };
+    const handleImagePreview = (e) => {
+       // setselectedFile(URL.createObjectURL(e.target.files[0]))
+       setselectedFile(e.target.files[0])
+        //let image_as_files = e.target.files[0];
+console.log('hh');
+     /*   this.setState({
+            image_preview: image_as_base64,
+            image_file: image_as_files,
+        }) */
+    }
 
     function onSubmit() {
         var mainvalue = {};
@@ -177,6 +287,45 @@ function AddClient(){
             Addclient_Form[targetkeys[i]].errmsg = errorcheck.msg;
             mainvalue[targetkeys[i]] = Addclient_Form[targetkeys[i]].value;
         }
+
+        Axios({
+            method: "POST",
+            url: apiurl + "insert_client",
+            data: {
+                client:Addclient_Form.client_name.value,
+                industry :Addclient_Form.industrty.value,
+                client_type:Addclient_Form.client_type.value,
+                contact_person_1 :Addclient_Form.con_per_1.value,
+                gender :Addclient_Form.gender_1.value,
+                dob :Addclient_Form.DOB_1.value,
+                contact_no:Addclient_Form.con_ph_1.value,
+                email_id:Addclient_Form.email_id_1.value,
+                state:Addclient_Form.state.value,
+                city :Addclient_Form.city.value,
+                address :Addclient_Form.postal_address.value,
+                contact_person_2 :Addclient_Form.cont_per_2.value,
+                ct_gender : Addclient_Form.gender_2.value,
+                ct_dob :Addclient_Form.DOB_2.value,
+                ct_contact_no : Addclient_Form.con_ph_2.value,
+                ct_email_id : Addclient_Form.emai_id_2.value,
+                document_type_id : '', //Addclient_Form.document_name.value,
+                reference_id: 1,
+                file_name_upload :selectedFile,
+                document_name :'',
+              created_on: moment().format("YYYY-MM-DD HH:m:s"),
+              updated_on: moment().format("YYYY-MM-DD HH:m:s"),
+              created_by: localStorage.getItem("empId"),
+              updated_by: localStorage.getItem("empId"),
+            },
+          }).then((response) => {
+            if (response.data.status === 1) {
+              notification.success({
+                message: "Client Details Updated Successfully",
+              });
+              return Promise.resolve();
+            }
+          });
+
         var filtererr = targetkeys.filter(
             (obj) => Addclient_Form[obj].error == true
         );
@@ -202,9 +351,8 @@ function AddClient(){
                     <Grid container spacing={2}>
                       
                         <Grid item xs={12}>
-                            <Labelbox type="select"
-                                placeholder={"Client Name"}
-                                changeData={(data) => checkValidation(data, "client_name")}
+                            <Labelbox type="text"
+                                placeholder={"Client Name"} changeData={(data) => checkValidation(data, "client_name")}
                                 value={Addclient_Form.client_name.value}
                                 error={Addclient_Form.client_name.error}
                                 errmsg={Addclient_Form.client_name.errmsg}
@@ -214,7 +362,7 @@ function AddClient(){
                         
                             <Grid item xs={12} >
                             <Labelbox type="select"
-                                placeholder={"Industry"}
+                                placeholder={"Industry"} dropdown={Industry.industryData}
                                 // dropdown={resumeGetList.candidateList}
                                 changeData={(data) => checkValidation(data, "industrty")}
                                 value={Addclient_Form.industrty.value}
@@ -243,7 +391,7 @@ function AddClient(){
                                 <div className="genderDobFlex">
                                     <Labelbox type="select"
                                         placeholder={"Gender"}
-                                        dropdown={[{ id: "1", value: "Male" }, { id: "2", value: "Female" }]}
+                                        dropdown={[{ id: "M", value: "Male" }, { id: "F", value: "Female" }]}
                                         changeData={(data) => checkValidation(data, "gender_1")}
                                         value={Addclient_Form.gender_1.value}
                                         error={Addclient_Form.gender_1.error}
@@ -305,7 +453,8 @@ function AddClient(){
   </Grid> 
                         </div>
                         
-                    <div style={{marginLeft:'10px'}}>  <input type="file"/></div>
+                    <div style={{marginLeft:'10px'}}>  <input type="file" 
+                    onChange={handleImagePreview}/></div>
                   
               
                 </div>    
@@ -330,7 +479,7 @@ function AddClient(){
                         <Grid item xs={12}>
                             <Labelbox type="select"
                                 placeholder={"Client Type"}
-                                // dropdown={resumeGetList.traitsList}
+                                dropdown={clientName.clientData}
                                 changeData={(data) => checkValidation(data, "client_type")}
                                 value={Addclient_Form.client_type.value}
                                 error={Addclient_Form.client_type.error}
@@ -356,7 +505,7 @@ function AddClient(){
                                 <div className="genderDobFlex">
                                     <Labelbox type="select"
                                         placeholder={"Gender"}
-                                        dropdown={[{ id: "1", value: "Male" }, { id: "2", value: "Female" }]}
+                                        dropdown={[{ id: "M", value: "Male" }, { id: "F", value: "Female" }]}
                                         changeData={(data) => checkValidation(data, "gender_2")}
                                         value={Addclient_Form.gender_2.value}
                                         error={Addclient_Form.gender_2.error}
@@ -398,7 +547,7 @@ function AddClient(){
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"State"}
+                                placeholder={"State"} dropdown={stateList.stateData}
                                 changeData={(data) => checkValidation(data, "state")}
                                 value={Addclient_Form.state.value}
                                 error={Addclient_Form.state.error}
@@ -407,7 +556,7 @@ function AddClient(){
                         </Grid>
                         <Grid item xs={12}>
                             <Labelbox type="select"
-                                placeholder={"City"}
+                                placeholder={"City"} dropdown={cityList.cityData}
                                 changeData={(data) => checkValidation(data, "city")}
                                 value={Addclient_Form.city.value}
                                 error={Addclient_Form.city.error}
