@@ -458,19 +458,8 @@ console.log('hh');
                   
               
                 </div>    
-              <Grid container spacing={2} md={12}>
-                  <Grid md={2} style={{color:'#023e7d'}}>POA  </Grid>
-                  <Grid md={2} style={{color:'#023e7d'}}>File Name  </Grid>
-                 </Grid> 
-
-                 <Grid container spacing={2} md={12}>
-                 <Grid md={2} >Field 1  </Grid>
-                 <Grid md={2} >Field 1  </Grid>
-                </Grid> 
-                <Grid container spacing={2} md={12}>
-                <Grid md={2} >Field 2  </Grid>
-                <Grid md={2} >Field 2 </Grid>
-               </Grid> 
+              {/* <Grid 
+               */}
 
                     </Grid>
                 </div>
