@@ -9,7 +9,7 @@ import { apiurl } from "../../../utils/baseUrl";
 import { Redirect, Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import DynModel from '../../../component/Model/model';
-import { getProjectSubType, getProcessType } from '../../../actions/MasterDropdowns';
+import { getProjectSubType, getProcessType, getFilingType } from '../../../actions/MasterDropdowns';
 import VariableRate from '../../stages/RateMaster';
 import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from '../../../images/addvardata.svg';
@@ -47,10 +47,6 @@ function ProjectFormCreate(props) {
     
 
     const [ProcessType, setProcessType] = useState({})
-    const [FillingType, setFillingType] = useState({})
-    const [clientName, setClientName] = useState({})
-    const [clientType, setClientType] = useState({})
-    const [projectRange, setprojectRange] = useState({});
     const [SubType_Project, setSubType_Project] = useState({})
     const [BillableType, setBillableType] = useState({})
     const [projectUnit, setprojectUnit] = useState({})
@@ -58,7 +54,7 @@ function ProjectFormCreate(props) {
     const [successmodel, setSuccessmodel] = useState(false)
     const [searchdata, setSearchdata] = useState()
     const [addsearchdata, setAddsearchdata] = useState()
-
+    const [filingType, setFilingType] = useState({})
 
 
 
@@ -99,7 +95,7 @@ function ProjectFormCreate(props) {
             error: null,
             errmsg: null,
         },
-        filling_type: {
+        filing_type: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -219,76 +215,6 @@ function ProjectFormCreate(props) {
                 )
                 setBillableType({ BillableData })
             })
-
-            // filling type
-            Axios({
-                method: "POST",
-                url: apiurl + 'get_filing_type',
-                data:{
-                    "project_type_id":projectform.project_type.value,
-                    "sub_project_type_id":projectform.project_sub_type.value,
-                    "process_id":projectform.process_type.value
-                    
-                }
-                })
-                .then((response) => {
-                 let fillingTypedata=[]
-                 response.data.data.map((data)=>
-                 fillingTypedata.push({value:data.sub_project_type,id:data.sub_project_type_id})
-                 )
-                 setfillingType({fillingTypedata})
-                }) 
-
-                // Client  name
-        Axios({
-            method: "GET",
-            url: apiurl + 'get_client_list',
-        })
-            .then((response) => {
-                console.log("response", response)
-                let clientNameData = []
-                response.data.data.map((data) =>
-                clientNameData.push({ id: data.client_id, value: data.client })
-                )
-                setClientName({ clientNameData })
-            })
-
-        // Filling Type
-        // Axios({
-        //     method: "post",
-        //     url: apiurl + 'get_project_type',
-        //     data: {
-        //         "project_type_id": projectform.project_type.value,
-        //         "sub_project_type_id": projectform.project_sub_type.value,
-        //         "process_id": projectform.project_type.value
-        //     },
-        // })
-        //     .then((response) => {
-        //         console.log("response", response)
-        //         let fillingData = []
-        //         response.data.data.map((data) =>
-        //             fillingData.push({ id: data.process_id, value: data.process })
-        //         )
-        //         setFillingType({ fillingData })
-
-        //     })
-        // 
-
-
-            // Client 
-        Axios({
-            method: "GET",
-            url: apiurl + 'get_client_type',
-        })
-            .then((response) => {
-                console.log("response", response)
-                let clientData = []
-                response.data.data.map((data) =>
-                clientData.push({ id: data.client_type_id, value: data.client_type })
-                )
-                setClientType({ clientData })
-            })
-
         // Unit of Measurement 
         Axios({
             method: "GET",
@@ -358,10 +284,18 @@ function ProjectFormCreate(props) {
             dispatch(getProjectSubType(data))
         }
 
+        //Process type
+
         if (key === "project_Subtype" && data) {
-            // console.log(data, "projectform.project_type.value")
-            let values = { ProjectType: 1, ProjectSubtype: data }
+            let values = { ProjectType: projectform.project_type.value, ProjectSubtype: data }
             dispatch(getProcessType(values))
+        }
+
+        // Filing type
+
+        if (key === "process_type" && data) {
+            let values = { ProjectType: projectform.project_type.value, ProjectSubtype: projectform.project_Subtype.value, ProcessType: data }
+            dispatch(getFilingType(values))
         }
 
         // only for multi select (start)
@@ -434,10 +368,6 @@ function ProjectFormCreate(props) {
 
         if (key === "billable_type" && data === 2) {
             setVariableid(true)
-        }
-
-        function closevariableModel() {
-
         }
     };
 
@@ -523,23 +453,30 @@ function ProjectFormCreate(props) {
     };
 
     useEffect(() => {
+        // ProjectSubType
         let projectSubTypeValue = []
         props.ProjectSubType.map((data) =>
             projectSubTypeValue.push({ value: data.sub_project_type, id: data.sub_project_type_id })
         )
         setSubType_Project({ projectSubTypeValue })
 
-    }, [props.ProjectSubType])
-
-    useEffect(() => {
+        //  ProcessType
         let Processtypevalue = []
         props.ProcessType.map((data) =>
-            Processtypevalue.push({ value: data.process, id: data.process_id })
+        Processtypevalue.push({ value: data.process, id: data.process_id })
         )
+        console.log("test",Processtypevalue)
         setProcessType({ Processtypevalue })
 
-    }, [props.ProcessType])
+        //filing type
 
+        let FilingType = []
+        props.FilingType.map((data) =>
+            FilingType.push({ value: data.filing_type, id: data.filing_type_id })
+        )
+        setFilingType({ FilingType })
+
+    }, [props.ProjectSubType, props.ProcessType, props.FilingType])
 
     const variablerateModel = () => {
         function onSearch() {
@@ -657,11 +594,11 @@ function ProjectFormCreate(props) {
                             <Grid item xs={6} >
                                 <Labelbox type="select"
                                     placeholder={"Filling Type"}
-                                    dropdown={fillingType.fillingTypedata}
-                                    changeData={(data) => checkValidation(data, "filling_type")}
-                                    value={projectform.filling_type.value}
-                                    error={projectform.filling_type.error}
-                                    errmsg={projectform.filling_type.errmsg}
+                                    dropdown={filingType.FilingType}
+                                    changeData={(data) => checkValidation(data, "filing_type")}
+                                    value={projectform.filing_type.value}
+                                    error={projectform.filing_type.error}
+                                    errmsg={projectform.filing_type.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={6} >
@@ -794,11 +731,11 @@ function ProjectFormCreate(props) {
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
                                         placeholder={"Filling Type"}
-                                        dropdown={fillingType.fillingTypedata}
-                                    changeData={(data) => checkValidation(data, "filling_type")}
-                                    value={projectform.filling_type.value}
-                                    error={projectform.filling_type.error}
-                                    errmsg={projectform.filling_type.errmsg}
+                                        dropdown={filingType.FilingType}
+                                        changeData={(data) => checkValidation(data, "filing_type")}
+                                        value={projectform.filing_type.value}
+                                        error={projectform.filing_type.error}
+                                        errmsg={projectform.filing_type.errmsg}
                                     />
                                 </Grid>
                                 <Grid item xs={6} >
@@ -1078,7 +1015,9 @@ const mapStateToProps = (state) => (
     // console.log(state.getOptions.getProcessType, "getProcessType")
     {
         ProjectSubType: state.getOptions.getProjectSubType || [],
-        ProcessType: state.getOptions.getProcessType || []
+        ProcessType: state.getOptions.getProcessType || [],
+        FilingType: state.getOptions.getFilingType || []
+
     }
 );
 

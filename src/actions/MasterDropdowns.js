@@ -2,14 +2,14 @@ import axios from "axios";
 import { apiurl } from "../utils/baseUrl.js";
 
 
-import {  GET_SKILLS } from '../utils/Constants.js';
+import { GET_SKILLS } from '../utils/Constants.js';
 import { GET_TRAITS } from '../utils/Constants.js';
 import { GET_CERTIFICATION } from '../utils/Constants.js';
 import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT,GET_PROJECT_TYPE ,GET_PROJECT_NAME,GET_BILLABLE_TYPE} from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE } from '../utils/Constants.js';
 
 
 export const getSkills = () => async (dispatch) => {
@@ -121,6 +121,20 @@ export const getProcessType = (id) => async (dispatch) => {
     })
     return dispatch(({ type: GET_PROCESS_TYPE, payload: response.data.data }));
 };
+
+export const getFilingType = (id) => async (dispatch) => {
+    const response = await axios({
+        method: "post",
+        url: apiurl + 'get_filing_type',
+        data: {
+            "project_type_id": id.ProjectType,
+            "sub_project_type_id": id.ProjectSubtype,
+            "process_id": id.ProcessType
+        },
+    })
+    return dispatch(({ type: GET_FILING_TYPE, payload: response.data.data }));
+};
+
 //StageMaster
 export const getSubStage = (id) => async (dispatch) => {
     const response = await axios({

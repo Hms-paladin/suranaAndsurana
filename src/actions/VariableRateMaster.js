@@ -1,23 +1,28 @@
-import { GET_VARIABLERATE_TABLE_DATA,INSERT_VARIABLERATE } from "../utils/Constants";
+import { GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
 
 export const getVariableRateTableData = () => async dispatch => {
-    try {
+  try {
 
-        axios({
-            method: 'GET',
-            url: apiurl +'get_variable_rate',
-        })
-        .then((response) => {
-            dispatch({type:GET_VARIABLERATE_TABLE_DATA,payload:response.data.data})
-        })
-        
-    } catch (err) {
-        
-    }
+    axios({
+      method: 'GET',
+      url: apiurl + 'get_variable_rate',
+    })
+      .then((response) => {
+        dispatch(
+          {
+            type: GET_VARIABLERATE_TABLE_DATA,
+            payload: response.data.data
+          }
+        )
+      })
+
+  } catch (err) {
+
+  }
 }
 
 export const InsertVariableRate = (RateMaster) => async dispatch => {
