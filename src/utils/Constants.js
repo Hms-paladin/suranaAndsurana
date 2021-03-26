@@ -49,6 +49,9 @@ export const GET_FILING_TYPE = "GET_FILING_TYPE";
 // AddClient
 export const ADD_CLIENT = "ADD_CLIENT";
 
+export const GET_EMPLOYEE_LIST = "GET_EMPLOYEE_LIST";
+export const GET_PROJECT_COST_RANGE = "GET_PROJECT_COST_RANGE";
+export const GET_CLIENT_LIST = "GET_CLIENT_LIST";
 
 // HrSearch
 export const GET_HRSEARCH_ROWDATA = "GET_HRSEARCH_ROWDATA"

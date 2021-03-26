@@ -9,7 +9,7 @@ import { apiurl } from "../../../utils/baseUrl";
 import { Redirect, Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import DynModel from '../../../component/Model/model';
-import { getProjectSubType, getProcessType, getFilingType } from '../../../actions/MasterDropdowns';
+import { getProjectSubType, getProcessType, getFilingType, getEmployeeList, getProjectCostRange, getClientlist } from '../../../actions/MasterDropdowns';
 import VariableRate from '../../stages/RateMaster';
 import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from '../../../images/addvardata.svg';
@@ -59,17 +59,21 @@ function ProjectFormCreate(props) {
     const [searchdata, setSearchdata] = useState()
     const [addsearchdata, setAddsearchdata] = useState()
     const [filingType, setFilingType] = useState({})
+    const [employeeList, setEmployeeList] = useState({})
+    const [projectCostRange, setProjectCostRange] = useState({})
+    const [client, setClient] = useState({})
 
 
 
     const [attorneylist, setattorneylist] = useState({})
     const [projectform, setprojectform] = useState({
-        client_det: {
+        client: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
-        },project_name: {
+        },
+        project_type: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -105,62 +109,48 @@ function ProjectFormCreate(props) {
             error: null,
             errmsg: null,
         },
+        employeelist: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        counsel: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        hod_attorny: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        DDRA: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        DRA: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
         unit_measurement: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
-        },attorney: {
+        },
+        projectcostrange: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
-        },counsel: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },range_project_cost: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-          },baseRate: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },limit: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },additional_rate: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-          }
-          ,comments: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-          }
-          ,directAttorney: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-          },deputyAttorney: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-          }
-    })  
-    useEffect(() => {
-        console.log("value", projectform.project_sub_type.value)
+        },
     })
 
 
@@ -181,30 +171,6 @@ function ProjectFormCreate(props) {
             console.log({ projectTypedata }, " {projectTypedata}")
         })
 
-        //attorney
-        Axios({
-            method: "GET",
-            url: apiurl + 'get_employee_list',
-        }).then((response) => {
-            console.log(response.data.data, " response.data.data")
-            let attorneydata = []
-            response.data.data.map((data) =>
-            attorneydata.push({ value: data.name, id: data.emp_id })
-            )
-            setattorneylist({ attorneydata })
-        })
-
-        // Range
-      Axios({
-        method: "GET",
-        url: apiurl + 'get_range',
-      }).then((response) => {
-        let projectRangedata = [];
-        response.data.data.map((data) =>
-          projectRangedata.push({ value: data.range, id: data.range_id })
-        );
-        setprojectRange({ projectRangedata });
-      });
 
         // billable type
         Axios({
@@ -219,6 +185,10 @@ function ProjectFormCreate(props) {
                 )
                 setBillableType({ BillableData })
             })
+
+
+
+
         // Unit of Measurement 
         Axios({
             method: "GET",
@@ -234,6 +204,13 @@ function ProjectFormCreate(props) {
             
 
         //
+
+    }, [])
+
+    useEffect(() => {
+        dispatch(getEmployeeList())
+        dispatch(getProjectCostRange())
+        dispatch(getClientlist())
 
     }, [])
 
@@ -282,6 +259,7 @@ function ProjectFormCreate(props) {
             validation: projectform[key].validation
         }
 
+
         //  projectSubTypeValue
 
         if (key === "project_type" && data) {
@@ -301,6 +279,8 @@ function ProjectFormCreate(props) {
             let values = { ProjectType: projectform.project_type.value, ProjectSubtype: projectform.project_Subtype.value, ProcessType: data }
             dispatch(getFilingType(values))
         }
+
+
 
         // only for multi select (start)
 
@@ -457,6 +437,14 @@ function ProjectFormCreate(props) {
     };
 
     useEffect(() => {
+
+        // Client 
+        let Client = []
+        props.Client.map((data) =>
+            Client.push({ value: data.client, id: data.client_id })
+        )
+        setClient({ Client })
+
         // ProjectSubType
         let projectSubTypeValue = []
         props.ProjectSubType.map((data) =>
@@ -467,9 +455,9 @@ function ProjectFormCreate(props) {
         //  ProcessType
         let Processtypevalue = []
         props.ProcessType.map((data) =>
-        Processtypevalue.push({ value: data.process, id: data.process_id })
+            Processtypevalue.push({ value: data.process, id: data.process_id })
         )
-        console.log("test",Processtypevalue)
+        console.log("test", Processtypevalue)
         setProcessType({ Processtypevalue })
 
         //filing type
@@ -480,7 +468,24 @@ function ProjectFormCreate(props) {
         )
         setFilingType({ FilingType })
 
-    }, [props.ProjectSubType, props.ProcessType, props.FilingType])
+        //hod/attony, Counsel ,DRA and DDRA 
+        let EmployeeList = []
+        props.EmployeeList.map((data) =>
+            EmployeeList.push({ value: data.name, id: data.emp_id })
+        )
+        setEmployeeList({ EmployeeList })
+
+        // Project Cost Range
+
+        let ProjectCostRange = []
+        props.ProjectCostRange.map((data) =>
+            ProjectCostRange.push({ value: data.range, id: data.range_id })
+        )
+        setProjectCostRange({ ProjectCostRange })
+
+
+
+    }, [props.Client, props.ProjectSubType, props.ProcessType, props.FilingType, props.EmployeeList, props.ProjectCostRange])
 
     const variablerateModel = () => {
         function onSearch() {
@@ -535,11 +540,13 @@ function ProjectFormCreate(props) {
             <div className="projectFormContent">
                 <Grid item xs={12} container direction="row" justify="center" spacing={2} >
                     <Grid item xs={4}  >
-                        <Labelbox type="select" dropdown={clientName.clientNameData}
-                            placeholder={"Client"} 
-                            value={projectform.client_det.value}
-                            error={projectform.client_det.error}
-                            errmsg={projectform.client_det.errmsg}
+                        <Labelbox type="select"
+                            placeholder={"Client"}
+                            dropdown={client.Client}
+                            changeData={(data) => checkValidation(data, "client")}
+                            value={projectform.client.value}
+                            error={projectform.client.error}
+                            errmsg={projectform.client.errmsg}
                         />
                     </Grid>
                     <Grid item xs={2}>
@@ -607,22 +614,22 @@ function ProjectFormCreate(props) {
                             </Grid>
                             <Grid item xs={6} >
                                 <Labelbox type="select"
-                                    placeholder={"HOD/Attorney"} 
-                                    dropdown={attorneylist.attorneydata}
-                                    changeData={(data) => checkValidation(data, "attorney")}
-                                    value={projectform.attorney.value}
-                                    error={projectform.attorney.error}
-                                    errmsg={projectform.attorney.errmsg}
+                                    placeholder={"HOD/Attorney"}
+                                    dropdown={employeeList.EmployeeList}
+                                    changeData={(data) => checkValidation(data, "hod_attorny")}
+                                    value={projectform.hod_attorny.value}
+                                    error={projectform.hod_attorny.error}
+                                    errmsg={projectform.hod_attorny.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={6} >
                                 <Labelbox type="select"
                                     placeholder={"Counsel"}
-                                    dropdown={attorneylist.attorneydata}
+                                    dropdown={employeeList.EmployeeList}
                                     changeData={(data) => checkValidation(data, "counsel")}
-                                    value={projectform.counsel.value}
-                                    error={projectform.counsel.error}
-                                    errmsg={projectform.counsel.errmsg}
+                                    value={projectform.employeelist.value}
+                                    error={projectform.employeelist.error}
+                                    errmsg={projectform.employeelist.errmsg}
                                 />
 
                             </Grid>
@@ -638,12 +645,12 @@ function ProjectFormCreate(props) {
                             </Grid>
                             <Grid item xs={6} >
                                 <Labelbox type="select"
-                                    placeholder={"Project Cost Range"} 
-                                    dropdown={projectRange.projectRangedata}
-            changeData={(data) => checkValidation(data, "range_project_cost")}
-            value={projectform.range_project_cost.value}
-            error={projectform.range_project_cost.error}
-            errmsg={projectform.range_project_cost.errmsg}
+                                    placeholder={"Project Cost Range"}
+                                    dropdown={projectCostRange.ProjectCostRange}
+                                    changeData={(data) => checkValidation(data, "projectcostrange")}
+                                    value={projectform.projectcostrange.value}
+                                    error={projectform.projectcostrange.error}
+                                    errmsg={projectform.projectcostrange.errmsg}
                                 />
                             </Grid>
                             {projectform.billable_type.value === 3 ?
@@ -745,22 +752,22 @@ function ProjectFormCreate(props) {
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
                                         placeholder={"Deputy Direct Responsible Attorney"}
-                                        dropdown={attorneylist.attorneydata}
-                                    changeData={(data) => checkValidation(data, "attorney")}
-                                    value={projectform.deputyAttorney.value}
-                                    error={projectform.deputyAttorney.error}
-                                    errmsg={projectform.deputyAttorney.errmsg}
+                                        dropdown={employeeList.EmployeeList}
+                                        changeData={(data) => checkValidation(data, "DDRA")}
+                                        value={projectform.employeelist.value}
+                                        error={projectform.employeelist.error}
+                                        errmsg={projectform.employeelist.errmsg}
                                     />
                                 </Grid>
 
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
                                         placeholder={"Direct Responsible Attorney"}
-                                        dropdown={attorneylist.attorneydata}
-                                    changeData={(data) => checkValidation(data, "attorney")}
-                                    value={projectform.directAttorney.value}
-                                    error={projectform.directAttorney.error}
-                                    errmsg={projectform.directAttorney.errmsg}
+                                        dropdown={employeeList.EmployeeList}
+                                        changeData={(data) => checkValidation(data, "DRA")}
+                                        value={projectform.employeelist.value}
+                                        error={projectform.employeelist.error}
+                                        errmsg={projectform.employeelist.errmsg}
                                     />
                                 </Grid>
                                 <Grid item xs={6} >
@@ -778,11 +785,11 @@ function ProjectFormCreate(props) {
                                 <Grid item xs={6} >
                                     <Labelbox type="select"
                                         placeholder={"Project Cost Range"}
-                                        dropdown={projectRange.projectRangedata}
-            changeData={(data) => checkValidation(data, "range_project_cost")}
-            value={projectform.range_project_cost.value}
-            error={projectform.range_project_cost.error}
-            errmsg={projectform.range_project_cost.errmsg}
+                                        dropdown={projectCostRange.ProjectCostRange}
+                                        changeData={(data) => checkValidation(data, "projectcostrange")}
+                                        value={projectform.projectcostrange.value}
+                                        error={projectform.projectcostrange.error}
+                                        errmsg={projectform.projectcostrange.errmsg}
                                     />
                                 </Grid>
                                 {projectform?.billable_type?.value === 3 ?
@@ -870,35 +877,34 @@ function ProjectFormCreate(props) {
                                 <>
 
 
-<Grid item xs={6} >
-                                <Labelbox type="select"
-                                    placeholder={"HOD/Attorney"} 
-                                    dropdown={attorneylist.attorneydata}
-                                    changeData={(data) => checkValidation(data, "attorney")}
-                                    value={projectform.attorney.value}
-                                    error={projectform.attorney.error}
-                                    errmsg={projectform.attorney.errmsg}
-                                />
-                            </Grid>
-                            <Grid item xs={6} >
-                                <Labelbox type="select"
-                                    placeholder={"Counsel"}
-                                    dropdown={attorneylist.attorneydata}
-                                    changeData={(data) => checkValidation(data, "counsel")}
-                                    value={projectform.counsel.value}
-                                    error={projectform.counsel.error}
-                                    errmsg={projectform.counsel.errmsg}
-                                />
-                                
-                            </Grid>
+                                    <Grid item xs={6} >
+                                        <Labelbox type="select"
+                                            placeholder={"Counsel"}
+                                            dropdown={employeeList.EmployeeList}
+                                            changeData={(data) => checkValidation(data, "counsel")}
+                                            value={projectform.employeelist.value}
+                                            error={projectform.employeelist.error}
+                                            errmsg={projectform.employeelist.errmsg}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <Labelbox type="select"
+                                            placeholder={"HOD/Attorney"}
+                                            dropdown={employeeList.EmployeeList}
+                                            changeData={(data) => checkValidation(data, "hod_attorny")}
+                                            value={projectform.hod_attorny.value}
+                                            error={projectform.hod_attorny.error}
+                                            errmsg={projectform.hod_attorny.errmsg}
+                                        />
+                                    </Grid>
                                     <Grid item xs={6} >
                                         <Labelbox type="select"
                                             placeholder={"Project Cost Range"}
-                                            dropdown={projectRange.projectRangedata}
-            changeData={(data) => checkValidation(data, "range_project_cost")}
-            value={projectform.range_project_cost.value}
-            error={projectform.range_project_cost.error}
-            errmsg={projectform.range_project_cost.errmsg}
+                                            dropdown={projectCostRange.ProjectCostRange}
+                                            changeData={(data) => checkValidation(data, "projectcostrange")}
+                                            value={projectform.projectcostrange.value}
+                                            error={projectform.projectcostrange.error}
+                                            errmsg={projectform.projectcostrange.errmsg}
                                         />
                                     </Grid>
                                     <Grid item xs={6} >
@@ -1020,7 +1026,10 @@ const mapStateToProps = (state) => (
     {
         ProjectSubType: state.getOptions.getProjectSubType || [],
         ProcessType: state.getOptions.getProcessType || [],
-        FilingType: state.getOptions.getFilingType || []
+        FilingType: state.getOptions.getFilingType || [],
+        EmployeeList: state.getOptions.getEmployeeList || [],
+        ProjectCostRange: state.getOptions.getProjectCostRange || [],
+        Client: state.getOptions.getClientlist,
 
     }
 );

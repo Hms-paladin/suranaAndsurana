@@ -10,6 +10,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
+import NoDataFound from '../../images/noDatas.svg';
 
 import "./table.scss";
 
@@ -206,40 +207,47 @@ export default function EnhancedTable(props) {
             headCells={props.headCells}
           />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                const isItemSelected = isSelected(row.name);
+            {rows.length > 0 ?
+              stableSort(rows, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const isItemSelected = isSelected(row.name);
 
-                let keys = Object.keys(row);
-                let arrval = [];
-                for (var m = 0; m < keys.length; m++) {
-                  arrval.push(
-                    <TableCell keys={index + "" + m} align="left">
-                      {row[keys[m]] ? row[keys[m]] : "---"}
-                    </TableCell>
-                  );
-                }
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.name)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={index}
-                    selected={isItemSelected}
-                  >
-                    {props.EnableSno && (
-                      <TableCell align="center">
-                        {rowsPerPage * page + index + 1}
+                  let keys = Object.keys(row);
+                  let arrval = [];
+                  for (var m = 0; m < keys.length; m++) {
+                    arrval.push(
+                      <TableCell keys={index + "" + m} align="left">
+                        {row[keys[m]] ? row[keys[m]] : "---"}
                       </TableCell>
-                    )}
-                    {arrval}
-                  </TableRow>
-                );
-              })}
+                    );
+                  }
+
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row.name)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={index}
+                      selected={isItemSelected}
+                    >
+                      {props.EnableSno && (
+                        <TableCell align="center">
+                          {rowsPerPage * page + index + 1}
+                        </TableCell>
+                      )}
+                      {arrval}
+                    </TableRow>
+                  );
+                })
+              :
+              <TableCell colSpan={12} className="nodatafound">
+                <img src={NoDataFound} />
+                <div className="nodatatext">No Data Found</div>
+
+              </TableCell>}
             {emptyRows > 0 && (
               <TableRow style={{ height: 33 * emptyRows }}>
                 <TableCell colSpan={6} />
