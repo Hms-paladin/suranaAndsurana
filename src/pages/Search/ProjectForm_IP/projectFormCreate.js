@@ -47,6 +47,10 @@ function ProjectFormCreate(props) {
     
 
     const [ProcessType, setProcessType] = useState({})
+    const [FillingType, setFillingType] = useState({})
+    const [clientName, setClientName] = useState({})
+    const [clientType, setClientType] = useState({})
+    const [projectRange, setprojectRange] = useState({});
     const [SubType_Project, setSubType_Project] = useState({})
     const [BillableType, setBillableType] = useState({})
     const [projectUnit, setprojectUnit] = useState({})

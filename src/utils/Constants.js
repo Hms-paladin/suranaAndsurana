@@ -46,6 +46,9 @@ export const GET_PROJECT_SEARCH_TABLEDATA = "GET_PROJECT_SEARCH_TABLEDATA";
 //Project form create
 
 export const GET_FILING_TYPE = "GET_FILING_TYPE";
+// AddClient
+export const ADD_CLIENT = "ADD_CLIENT";
+
 
 // HrSearch
 export const GET_HRSEARCH_ROWDATA = "GET_HRSEARCH_ROWDATA"
