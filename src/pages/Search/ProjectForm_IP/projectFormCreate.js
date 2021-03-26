@@ -14,7 +14,8 @@ import VariableRate from '../../stages/RateMaster';
 import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from '../../../images/addvardata.svg';
 import SuccessIcon from '../../../images/successicon.svg';
-
+import moment from "moment";
+import { notification } from 'antd';
 
 // Table Data ==>
 
@@ -35,8 +36,7 @@ const rows = [
 
 ];
 
-import moment from "moment";
-import { notification } from 'antd';
+
 function ProjectFormCreate(props) {
     const dispatch = useDispatch()
     const [pathname, setpathname] = useState(window.location.pathname)
