@@ -43,6 +43,9 @@ export const GET_BILLABLE_TYPE = "GET_BILLABLE_TYPE";
 
 export const GET_PROJECT_SEARCH_TABLEDATA = "GET_PROJECT_SEARCH_TABLEDATA";
 
+//Project form create
+
+export const GET_FILING_TYPE = "GET_FILING_TYPE";
 
 // HrSearch
 export const GET_HRSEARCH_ROWDATA = "GET_HRSEARCH_ROWDATA"

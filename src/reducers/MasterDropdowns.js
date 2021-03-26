@@ -5,7 +5,7 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME ,GET_BILLABLE_TYPE} from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE } from '../utils/Constants.js';
 
 const initalState = {
     getSkills: [],
@@ -26,7 +26,8 @@ const initalState = {
     getClient: [],
     getProjectType: [],
     getProjectName: [],
-    getBillableType:[],
+    getBillableType: [],
+    getFilingType: [],
 }
 
 export default function (state = initalState, action) {
@@ -70,6 +71,8 @@ export default function (state = initalState, action) {
             return { ...state, getProjectName: payload }
         case GET_BILLABLE_TYPE:
             return { ...state, getBillableType: payload }
+        case GET_FILING_TYPE:
+            return { ...state, getFilingType: payload }
         default:
             return state;
     }
