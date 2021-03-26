@@ -512,7 +512,7 @@ function ResumePage() {
     }
 
     return (
-        <>
+        <div>
             <Grid item xs={12} className="ContentTitle">
                 Add Resume
             </Grid>
@@ -926,7 +926,7 @@ function ResumePage() {
                     <DynModel modelTitle={"Experience"} handleChangeModel={experienceModelOpen} handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)} width={700} content={<ExperienceModel addExperience={(data) => addExperience(data)} />} />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default ResumePage;
