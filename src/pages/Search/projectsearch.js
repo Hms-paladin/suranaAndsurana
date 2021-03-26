@@ -28,17 +28,12 @@ function callback(key) {
 
 const { Option } = Select;
 const headCells = [
-  { id: 'name', label: 'Project Type' },
-  { id: 'age', label: 'Project Name' },
-  { id: 'gender', label: 'Client Type' },
-  { id: 'basic', label: 'Client Name' },
-  { id: 'language', label: 'Billing Type' },
-  { id: 'certification', label: 'Reserved' },
-  { id: 'specialization', label: 'Reserved' },
-  { id: 'acheivements', label: 'Reserved' },
-  { id: 'talents', label: 'Reserved' },
-  { id: 'radio', label: '' },
-
+  { id: 'projectname', label: 'Project Name' },
+  { id: 'clientname', label: 'Client Name' },
+  { id: 'subprojectype', label: 'Sub Project Type' },
+  { id: 'processtype', label: 'Process Type' },
+  { id: 'fillingtype', label: 'Filling Type' },
+  { id: 'billabletype', label: 'Billable Type' },
 
 ];
 

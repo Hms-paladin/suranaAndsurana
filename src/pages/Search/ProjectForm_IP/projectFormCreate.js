@@ -14,6 +14,8 @@ import VariableRate from '../../stages/RateMaster';
 import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from '../../../images/addvardata.svg';
 import SuccessIcon from '../../../images/successicon.svg';
+import { InsertIpProject } from "../../../actions/ProjectformAction";
+
 
 
 // Table Data ==>
@@ -51,6 +53,7 @@ function ProjectFormCreate(props) {
     const [employeeList, setEmployeeList] = useState({})
     const [projectCostRange, setProjectCostRange] = useState({})
     const [client, setClient] = useState({})
+
 
 
 
@@ -128,6 +131,12 @@ function ProjectFormCreate(props) {
             errmsg: null,
         },
         projectcostrange: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        projectname: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -263,8 +272,7 @@ function ProjectFormCreate(props) {
         }
     };
 
-    function onSubmit() {
-
+    function onsubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(projectform);
         for (var i in targetkeys) {
@@ -276,21 +284,46 @@ function ProjectFormCreate(props) {
             projectform[targetkeys[i]].errmsg = errorcheck.msg;
             mainvalue[targetkeys[i]] = projectform[targetkeys[i]].value;
         }
+
         var filtererr = targetkeys.filter(
             (obj) => projectform[obj].error == true
         );
-        console.log(filtererr.length);
-        if (filtererr.length > 0) {
-            // setpostData({ error: true });
-        } else {
-            // setpostData({ error: false });
+        console.log(filtererr.length, "filtererr");
+        // if (filtererr.length < 0) {
+        //     // setpostData({ error: true });
+        // } else {
+        // setpostData({ error: false });
+        alert("test")
+        dispatch(InsertIpProject(projectform)).then((response) => {
+            handleCancel();
+        })
+        // );
 
 
-        }
+        // }
 
 
-        projectform(prevState => ({
+        setprojectform(prevState => ({
             ...prevState
+        }));
+    };
+
+
+    const handleCancel = () => {
+        let From_key = ["client", "project_type", "project_Subtype", "billable_type", "process_type", "filing_type", "employeelist", "counsel", "hod_attorny", "unit_measurement", "projectcostrange", "projectname"]
+
+        From_key.map((data) => {
+
+            try {
+                projectform[data].value = "";
+                console.log("mapping", projectform[data].value)
+            } catch (error) {
+                throw (error)
+            }
+        });
+
+        setprojectform((prevState) => ({
+            ...prevState,
         }));
     };
 
@@ -418,6 +451,10 @@ function ProjectFormCreate(props) {
                     <Grid item xs={6}>
                         <Labelbox type="text"
                             placeholder={"Project Name "}
+                            changeData={(data) => checkValidation(data, "projectname")}
+                            value={projectform.projectname.value}
+                            error={projectform.projectname.error}
+                            errmsg={projectform.projectname.errmsg}
                         />
                     </Grid>
                     <Grid item xs={6} >
@@ -476,7 +513,7 @@ function ProjectFormCreate(props) {
                                 <Labelbox type="select"
                                     placeholder={"Counsel"}
                                     dropdown={employeeList.EmployeeList}
-                                    changeData={(data) => checkValidation(data, "counsel")}
+                                    changeData={(data) => checkValidation(data, "employeelist")}
                                     value={projectform.employeelist.value}
                                     error={projectform.employeelist.error}
                                     errmsg={projectform.employeelist.errmsg}
@@ -632,6 +669,11 @@ function ProjectFormCreate(props) {
                                         <Grid item xs={3} >
                                             <Labelbox type="select"
                                                 placeholder={"Unit of Measurement"}
+                                                dropdown={projectUnit.projectUnitdata}
+                                                changeData={(data) => checkValidation(data, "unit_measurement")}
+                                                value={projectform.unit_measurement.value}
+                                                error={projectform.unit_measurement.error}
+                                                errmsg={projectform.unit_measurement.errmsg}
                                             />
                                         </Grid>
                                         <Grid item xs={3} >
@@ -741,6 +783,11 @@ function ProjectFormCreate(props) {
                                             <Grid item xs={3} >
                                                 <Labelbox type="select"
                                                     placeholder={"Unit of Measurement"}
+                                                    dropdown={projectUnit.projectUnitdata}
+                                                    changeData={(data) => checkValidation(data, "unit_measurement")}
+                                                    value={projectform.unit_measurement.value}
+                                                    error={projectform.unit_measurement.error}
+                                                    errmsg={projectform.unit_measurement.errmsg}
                                                 />
                                             </Grid>
                                             <Grid item xs={3} >
@@ -803,7 +850,7 @@ function ProjectFormCreate(props) {
             </div>
 
             <div className="customFormbtn">
-                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnclick={onsubmit} />
+                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onsubmit} />
                 <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
             </div>
