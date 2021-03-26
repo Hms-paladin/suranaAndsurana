@@ -1,9 +1,8 @@
-import { ADD_CLIENT} from "../utils/Constants";
+import { ADD_CLIENT,ADD_CLIENT_DOCUMENT} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-
 
 
 export const InsertClient = (Addclient_Form,Document_Form) => async dispatch => {
@@ -37,11 +36,8 @@ export const InsertClient = (Addclient_Form,Document_Form) => async dispatch => 
             },
           }).then((response) => {
             if (response.data.status === 1) {
-                dispatch({type:ADD_CLIENT,payload:response.data.data})
-                dispatch(InsertClientDocument(Document_Form,response.data.data.client_id))
-            //   notification.success({
-            //     message: "Client Details Updated Successfully",
-            //   });
+                dispatch({type:ADD_CLIENT,payload:response.data.status})
+                dispatch(InsertClientDocument(Document_Form,Addclient_Form,response.data.data.client_id))
               return Promise.resolve();
             }
           });
@@ -50,26 +46,27 @@ export const InsertClient = (Addclient_Form,Document_Form) => async dispatch => 
         
     }
 }
-export const InsertClientDocument = (Document_Form,id) => async dispatch => {
+export const InsertClientDocument = (Document_Form,Addclient_Form,id) => async dispatch => {
+
+
+    var DocumentData = new FormData();
+    DocumentData.set("client_id",id)
+    DocumentData.set("POA",Addclient_Form.poa_name.value || "TEST")
+    DocumentData.append("file_name_upload",Document_Form)
+    DocumentData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
+    DocumentData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
+    DocumentData.set("created_by",localStorage.getItem("empId"))
+    DocumentData.set("updated_by",localStorage.getItem("empId"))
+
     try {
         axios({
             method: "POST",
-            url: apiurl + "insert_client_document",headers:{                                                                                                                                                                                                                                                                                                                                                                                                                                               
-                  'Content-Type': 'multipart/form-data',                                                                                                                                                                                                               
-                 } ,
-            data: {
-              client_id: id,
-              POA: "Testing File",
-              file_name_upload: Document_Form,
-              created_on: moment().format("YYYY-MM-DD HH:m:s"),
-              updated_on: moment().format("YYYY-MM-DD HH:m:s"),
-              created_by: localStorage.getItem("empId"),
-              updated_by: localStorage.getItem("empId"),
-            },
+            url: apiurl + "insert_client_document" ,
+            data: DocumentData,headers: { "Content-Type": "multipart/form-data" },
           }).then((response) => {
             if (response.data.status === 1) {
-                // dispatch({type:ADD_CLIENT,payload:response.data.data})
-
+                dispatch({type:ADD_CLIENT_DOCUMENT,payload:response.data.status})
+                console.log("Testing",Document_Form)
               notification.success({
                 message: "Client Details Updated Successfully",
               });

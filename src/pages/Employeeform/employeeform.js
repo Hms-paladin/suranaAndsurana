@@ -450,7 +450,7 @@ function Employeeform(props){
                           <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
                      </Upload>, */}
                    
-                 <input type="file" accept=".pdf" onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
+                 <input type="file"  onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
 
               
 

@@ -11,18 +11,42 @@ import moment from "moment";
 import { notification } from "antd";
 import {InsertClient} from "../../actions/AddClientAction"
 import PublishIcon from '@material-ui/icons/Publish';
-import { useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { Upload, message, Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+
+
+
 
 function AddClient() {
+  const [selectedFile, setselectedFile] = useState([]);
+
+    const props = {
+        name: 'file',
+        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+        headers: {
+          authorization: 'authorization-text',
+        },
+    onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log("uploading",info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+
+          message.success(`${info.file.name} file uploaded successfully`);
+          setselectedFile(info.file.originFileObj);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
     const dispatch = useDispatch();
-  const [resumeGetList, setGetList] = useState({});
   const [clientName, setClientName] = useState({});
 
   const [stateList, setstateList] = useState({});
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
 
-  const [selectedFile, setselectedFile] = useState({});
   const [Addclient_Form, setAddclient_Form] = useState({
     client_name: {
       value: "",
@@ -71,13 +95,6 @@ function AddClient() {
       value: "",
       valueById: "",
       validation: [{ name: "required" },{ name: "custommaxLength",params:"250" }],
-      error: null,
-      errmsg: null,
-    },
-    comp_name: {
-      value: "",
-      valueById: "",
-      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -130,9 +147,16 @@ function AddClient() {
       validation: [{ name: "required" }], 
       error: null,
       errmsg: null,
-    },
+    }, 
+    poa_name: {
+        value: "",
+        validation:  [],
+        error: null,
+        errmsg: null,
+      }
   });
-  useEffect(() => {
+useEffect(() => {
+
     // Client
     Axios({
       method: "GET",
@@ -159,18 +183,6 @@ function AddClient() {
       setIndustry({ industryData });
     });
 
-    // Client  name
-    Axios({
-      method: "GET",
-      url: apiurl + "get_client_type",
-    }).then((response) => {
-      console.log("response", response);
-      let clientData = [];
-      response.data.data.map((data) =>
-        clientData.push({ id: data.client_type_id, value: data.client_type })
-      );
-      setClientName({ clientData });
-    });
 
     // Client  type
     Axios({
@@ -255,10 +267,11 @@ function AddClient() {
     // }
   }
   const handleImagePreview = (e) => {
+  
     // setselectedFile(URL.createObjectURL(e.target.files[0]))
-    setselectedFile(e.target.files[0]);
+    setselectedFile(e.target.files[0].name);
+    console.log("testringhh",e.target.value)
     //let image_as_files = e.target.files[0];
-    console.log("hh");
     /*   this.setState({
             image_preview: image_as_base64,
             image_file: image_as_files,
@@ -282,20 +295,44 @@ function AddClient() {
       (obj) => Addclient_Form[obj].error == true
     );
     // console.log(filtererr.length);
-    // if (filtererr.length > 0) {
-    //   // setAddclient_Form({ error: true });
-    // } else {
-        dispatch(InsertClient(Addclient_Form,selectedFile))
-    // }
+    if (filtererr.length > 0) {
+      // setAddclient_Form({ error: true });
+    } else {
+        dispatch(InsertClient(Addclient_Form,selectedFile)).then((response) => {
+            onStateClear()
+        })
+    }
 
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
   }
 
-  const onStateClear =()=>{
-      console.log("")
-  }
+  const onStateClear = () => {
+    let From_key = [
+      "poa_name",
+      "city",
+      "state",
+      "emai_id_2",
+      "con_ph_2",
+            "DOB_2","gender_2","cont_per_2","client_type","postal_address","email_id_1","con_ph_1",
+            "DOB_1","gender_1","con_per_1","industrty","client_name"]
+
+
+    From_key.map((data) => {
+
+      try {
+        Addclient_Form[data].value = "";
+        console.log("mapping", Addclient_Form[data].value)
+      } catch (error) {
+        throw (error)
+      }
+    });
+    setselectedFile("")
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+    }));
+  };
 
   return (
     <div>
@@ -317,8 +354,6 @@ function AddClient() {
                 errmsg={Addclient_Form.client_name.errmsg}
               />
             </Grid>
-            {/* <div > */}
-
             <Grid item xs={12}>
               <Labelbox
                 type="select"
@@ -343,7 +378,6 @@ function AddClient() {
                   errmsg={Addclient_Form.con_per_1.errmsg}
                 />
               </Grid>
-
               <Grid item xs={12} container direction="row" alignItems="center">
                 <Grid item xs={6}>
                   <div className="genderDobFlex">
@@ -399,7 +433,6 @@ function AddClient() {
                 />
               </Grid>
             </Grid>
-
             <Grid item xs={12} className="textarea_height">
               <Labelbox
                 type="textarea"
@@ -416,17 +449,24 @@ function AddClient() {
                   <Labelbox
                     type="text"
                     placeholder="Name of Power Attorney"
+                    changeData={(data) => checkValidation(data, "poa_name")}
+                    value={Addclient_Form.poa_name.value}
+                    error={Addclient_Form.poa_name.error}
+                    errmsg={Addclient_Form.poa_name.errmsg}
                   ></Labelbox>
                 </Grid>
               </div>
 
               <div style={{ marginLeft: "10px" }}>
                 {" "}
-                <input type="file" onChange={handleImagePreview} />
+                {/* <input type="file" onChange={handleImagePreview} /> */}
+                <Upload {...props}>
+    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+  </Upload>,
                 {/* <PublishIcon/> */}
               </div>
             </div>
-            <Grid container spacing={2} md={12}>
+            {/* <Grid container spacing={2} md={12}>
               <Grid md={2} style={{ color: "#023e7d" }}>
                 POA{" "}
               </Grid>
@@ -442,7 +482,7 @@ function AddClient() {
             <Grid container spacing={2} md={12}>
               <Grid md={2}>Field 2 </Grid>
               <Grid md={2}>Field 2 </Grid>
-            </Grid>
+            </Grid> */}
           </Grid>
         </div>
         <div className="rightContainer_client">
@@ -567,4 +607,13 @@ function AddClient() {
     </div>
   );
 }
-export default AddClient;
+
+
+const mapStateToProps = (state) => (
+    {
+        // getTableData: state.variableRateMaster.getVariableRateTableData || [],
+        // getInsertStatus: state.AddClientReducer.addClientDocumentStatus ,
+    }
+  );
+  
+  export default connect(mapStateToProps)(AddClient);
