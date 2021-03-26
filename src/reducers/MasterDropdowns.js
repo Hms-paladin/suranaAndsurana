@@ -5,7 +5,7 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE } from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE, GET_EMPLOYEE_LIST, GET_CLIENT_LIST, GET_PROJECT_COST_RANGE } from '../utils/Constants.js';
 
 const initalState = {
     getSkills: [],
@@ -28,6 +28,9 @@ const initalState = {
     getProjectName: [],
     getBillableType: [],
     getFilingType: [],
+    getEmployeeList: [],
+    getProjectCostRange: [],
+    getClientlist: [],
 }
 
 export default function (state = initalState, action) {
@@ -73,6 +76,12 @@ export default function (state = initalState, action) {
             return { ...state, getBillableType: payload }
         case GET_FILING_TYPE:
             return { ...state, getFilingType: payload }
+        case GET_EMPLOYEE_LIST:
+            return { ...state, getEmployeeList: payload }
+        case GET_PROJECT_COST_RANGE:
+            return { ...state, getProjectCostRange: payload }
+        case GET_CLIENT_LIST:
+            return { ...state, getClientlist: payload }
         default:
             return state;
     }

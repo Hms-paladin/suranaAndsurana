@@ -9,7 +9,7 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE } from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE, GET_EMPLOYEE_LIST ,GET_CLIENT_LIST,GET_PROJECT_COST_RANGE} from '../utils/Constants.js';
 
 
 export const getSkills = () => async (dispatch) => {
@@ -134,6 +134,27 @@ export const getFilingType = (id) => async (dispatch) => {
     })
     return dispatch(({ type: GET_FILING_TYPE, payload: response.data.data }));
 };
+
+// get_employee_list (API) ==> Hod/Attony,Counsel,DRA and DDRA using with one api
+
+export const getEmployeeList = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_employee_list');
+    return dispatch(({ type: GET_EMPLOYEE_LIST, payload: response.data.data }));
+};
+
+export const getProjectCostRange = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_range');
+    return dispatch(({ type: GET_PROJECT_COST_RANGE, payload: response.data.data }));
+};
+
+
+export const getClientlist = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_client_list');
+    return dispatch(({ type: GET_CLIENT_LIST, payload: response.data.data }));
+};
+
+
+
 
 //StageMaster
 export const getSubStage = (id) => async (dispatch) => {

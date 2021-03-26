@@ -15,7 +15,7 @@ import { Redirect, Link } from 'react-router-dom';
 import AdhocTaskModel from './adhoctask';
 import DynModel from '../../component/Model/model';
 import ValidationLibrary from "../../helpers/validationfunction";
-import {getProjectSearchTableData} from "../../actions/ProjectSearchAction"
+import { getProjectSearchTableData } from "../../actions/ProjectSearchAction"
 
 
 
@@ -105,9 +105,9 @@ function Projectsearch(props) {
 
   }, [])
 
-  
+
   useEffect(() => {
-// Client Type
+    // Client Type
     let ClientType = []
     props.ClientType.map((data) =>
       ClientType.push({ id: data.client_type_id, value: data.client_type })
@@ -196,54 +196,57 @@ function Projectsearch(props) {
 
   }, [props.Client])
 
-  const onSearch=()=>{
-    dispatch(getProjectSearchTableData(projectform)).then((response)=> {
-      stateClear();}
-    )}
+  const onSearch = () => {
+    dispatch(getProjectSearchTableData(projectform)).then((response) => {
+      stateClear();
+    }
+    )
+  }
 
-    const stateClear = () => {
- 
-      let Form_key = [
-        "clienttype",
+  const stateClear = () => {
+
+    let Form_key = [
+      "clienttype",
       "client",
-      "projecttype","projectname","billabletype"
-     ];
-  
-      Form_key.map((data) => {
-       
-        try {
-          projectform[data].value = "0";
-        } catch (error) {
-          throw(error)
-        }
-      });
-     
-      setprojectform((prevState) => ({
-        ...prevState,
-      }));
-    };
+      "projecttype", "projectname", "billabletype"
+    ];
 
-  
+    Form_key.map((data) => {
+
+      try {
+        projectform[data].value = "0";
+      } catch (error) {
+        throw (error)
+      }
+    });
+
+    setprojectform((prevState) => ({
+      ...prevState,
+    }));
+  };
+
+
   useEffect(() => {
     let multipleTab = []
-    props.TableData.map((data,index)=>{
-    let rowDataList = []  
+    props.TableData.map((data, index) => {
+      let rowDataList = []
 
-       data.project_details.map((data,index) => {
-           rowDataList.push({ ProjectType: data.project_type, ProjectName: data.project_name, ClientType: data.client_type, 
-           ClientName: data.client, BillingType: data.billable_type, Reserved1: data.interviewed_date, 
-           Reserved2: data.score, Reserved3: data.round, Reserved4: data.status,
-           })
-       }) 
+      data.project_details.map((data, index) => {
+        rowDataList.push({
+          ProjectType: data.project_type, ProjectName: data.project_name, ClientType: data.client_type,
+          ClientName: data.client, BillingType: data.billable_type, Reserved1: data.interviewed_date,
+          Reserved2: data.score, Reserved3: data.round, Reserved4: data.status,
+        })
+      })
       multipleTab.push(
-          <Panel header={`${data.project_type} (${data.project_details.length})`} key={index+1}>
-    <EnhancedTable headCells={headCells} rows={rowDataList} tabletitle={""} />
-    </Panel>
+        <Panel header={`${data.project_type} (${data.project_details.length})`} key={index + 1}>
+          <EnhancedTable headCells={headCells} rows={rowDataList} tabletitle={""} />
+        </Panel>
       )
     })
     setMultiplePanel(multipleTab)
 
-}, [  props.TableData])
+  }, [props.TableData])
 
   return (
     <div>
@@ -298,7 +301,7 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg} />
 
           </div>
-          <Button className="projectsearchgo"  onClick={onSearch} >Go</Button>
+          <Button className="projectsearchgo" onClick={onSearch} >Go</Button>
 
         </div>
 
@@ -306,7 +309,7 @@ function Projectsearch(props) {
       </div>
       <div className="projectsearch_collapse">
         <Collapse onChange={callback}>
-        {multiplePanel}
+          {multiplePanel}
         </Collapse>
       </div>
       <div className="createTaskbtn">
@@ -326,7 +329,7 @@ function Projectsearch(props) {
 const mapStateToProps = state => (
   // console.log(state,"statestatestate")
   {
-    TableData:state.projectSearchReducer.getProjectSearchTableData,
+    TableData: state.projectSearchReducer.getProjectSearchTableData,
     ClientType: state.getOptions.getClientType,
     Client: state.getOptions.getClient,
     ProjectType: state.getOptions.getProjectType,
