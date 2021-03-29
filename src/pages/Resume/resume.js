@@ -365,7 +365,7 @@ function ResumePage() {
           });
         })
       )
-      .catch((errors) => {});
+      .catch((errors) => { });
   }, []);
 
   function checkValidation(data, key, multipleId) {
@@ -795,33 +795,69 @@ function ResumePage() {
         </div>
         <div className="rightContainer">
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Skills"}
-                dropdown={resumeGetList.skillsList}
-                changeData={(data) =>
-                  checkValidation(data, "skills", resumeGetList.skillsList)
-                }
-                value={Resume_Form.skills.value}
-                error={Resume_Form.skills.error}
-                errmsg={Resume_Form.skills.errmsg}
-              />
+            <Grid
+              item
+              xs={12}
+              container
+              direction="row"
+              className="spaceBtGrid"
+              alignItems="center"
+            >
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Skills"}
+                  dropdown={resumeGetList.skillsList}
+                  changeData={(data) =>
+                    checkValidation(data, "skills", resumeGetList.skillsList)
+                  }
+                  value={Resume_Form.skills.value}
+                  error={Resume_Form.skills.error}
+                  errmsg={Resume_Form.skills.errmsg}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Traits"}
+                  dropdown={resumeGetList.traitsList}
+                  changeData={(data) =>
+                    checkValidation(data, "Traits", resumeGetList.traitsList)
+                  }
+                  value={Resume_Form.Traits.value}
+                  error={Resume_Form.Traits.error}
+                  errmsg={Resume_Form.Traits.errmsg}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Traits"}
-                dropdown={resumeGetList.traitsList}
-                changeData={(data) =>
-                  checkValidation(data, "Traits", resumeGetList.traitsList)
-                }
-                value={Resume_Form.Traits.value}
-                error={Resume_Form.Traits.error}
-                errmsg={Resume_Form.Traits.errmsg}
-              />
+            <Grid
+              item
+              xs={12}
+              container
+              direction="row"
+              className="spaceBtGrid"
+              alignItems="center"
+            >
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Capabilities"}
+
+                  value={""}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Achievement"}
+
+                  value={""}
+                />
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Labelbox
