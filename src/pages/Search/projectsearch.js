@@ -230,9 +230,9 @@ function Projectsearch(props) {
         rowDataList.push({
           ProjectName: data.project_name,
           ClientName: data.client,
-          SubProjectType:data.sub_project_type,
+          SubProjectType: data.sub_project_type,
           Process: data.process, ClientType: data.client_type,
-           BillingType: data.billable_type, 
+          BillingType: data.billable_type,
         })
       })
       multipleTab.push(
@@ -304,6 +304,7 @@ function Projectsearch(props) {
 
 
       </div>
+      
       <div className="projectsearch_collapse">
         <Collapse onChange={callback}>
           {multiplePanel}
