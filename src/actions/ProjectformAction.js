@@ -33,7 +33,7 @@ export const InsertIpProject = (projectform) => async dispatch => {
                 client_id: projectform.client.value || 0,
                 project_type_id:projectform.project_type.value || 0,
                 project_name: projectform.projectname.value|| 0,
-                //ipproject
+                //
                 sub_project_id: projectform.project_Subtype.value ||0,
                 process_id: projectform.process_type.value|| 0,
                 file_type_id: projectform.filing_type.value|| 0,

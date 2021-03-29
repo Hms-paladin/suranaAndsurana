@@ -615,12 +615,7 @@ function ProjectFormCreate(props) {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"}   changeData={(data) =>
-                        checkValidation(data, "limit")
-                      }
-                      value={projectform.limit.value}
-                      error={projectform.limit.error}
-                      errmsg={projectform.limit.errmsg} /> />
+                    <Labelbox type="text" placeholder={"Limit"} />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
