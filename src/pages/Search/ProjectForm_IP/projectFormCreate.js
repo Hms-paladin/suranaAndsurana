@@ -251,6 +251,14 @@ function ProjectFormCreate(props) {
 
     if (key === "project_type" && data) {
       dispatch(getProjectSubType(data));
+      if(data === 6){
+        let values = {
+          ProjectType: data,
+          ProjectSubtype: "0",
+          ProcessType: "0",
+        };
+        dispatch(getFilingType(values)) 
+      }
     }
 
     //Process type
@@ -686,7 +694,7 @@ function ProjectFormCreate(props) {
           ) : projectform.project_type.value === 6 ? (
             <>
               <Grid item xs={6}>
-                <Labelbox
+              <Labelbox
                   type="select"
                   placeholder={"Filling Type"}
                   dropdown={filingType.FilingType}
@@ -701,7 +709,7 @@ function ProjectFormCreate(props) {
                   type="select"
                   placeholder={"Deputy Direct Responsible Attorney"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "DDRA")}
+                  changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg}
@@ -713,7 +721,7 @@ function ProjectFormCreate(props) {
                   type="select"
                   placeholder={"Direct Responsible Attorney"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "DRA")}
+                  changeData={(data) => checkValidation(data, "employeelist")}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg}

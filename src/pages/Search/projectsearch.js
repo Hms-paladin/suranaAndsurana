@@ -238,8 +238,9 @@ function Projectsearch(props) {
           ProjectName: data.project_name,
           ClientName: data.client,
           SubProjectType:data.sub_project_type,
-          Process: data.process, ClientType: data.client_type,
-           BillingType: data.billable_type, 
+          Process: data.process,
+          filing_type: data.filing_type,
+          BillingType: data.billable_type, 
         })
       })
       multipleTab.push(
