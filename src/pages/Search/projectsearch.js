@@ -228,9 +228,11 @@ function Projectsearch(props) {
 
       data.project_details.map((data, index) => {
         rowDataList.push({
-          ProjectType: data.project_type, ProjectName: data.project_name, ClientType: data.client_type,
-          ClientName: data.client, BillingType: data.billable_type, Reserved1: data.interviewed_date,
-          Reserved2: data.score, Reserved3: data.round, Reserved4: data.status,
+          ProjectName: data.project_name,
+          ClientName: data.client,
+          SubProjectType:data.sub_project_type,
+          Process: data.process, ClientType: data.client_type,
+           BillingType: data.billable_type, 
         })
       })
       multipleTab.push(
