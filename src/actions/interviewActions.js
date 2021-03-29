@@ -4,7 +4,7 @@ import axios from "axios";
 import { notification } from 'antd';
 import moment from 'moment'
 
-
+import { getHrTaskList } from "./TodoListAction";
 
 
 export const getInterviewquestions = () => async dispatch => {
@@ -46,14 +46,9 @@ export const InsertInterviewquestions =(postData,id,data,round)=> async dispatch
                 "round":round
             }
         })
-        // .then((response)=> {
-        //     // dispatch({type:POST_INTERVIEW_QUESTIONS,payload:response})
-          
-        // }) 
          .then(function (response) {
-            console.log(response,"response")
-            // moment(Resume_Form.startDate).format("YYYY-MM-DD, hh:mm:ss")
             if(response.data.status===1){
+                dispatch(getHrTaskList())
             notification.success({
                 message: 'Scores Updated Successfully',
               });

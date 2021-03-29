@@ -47,7 +47,7 @@ const workflowheadCells = [
 
 ];
 
-const workFlow = [{ id: 1, requestedby: "Francis", requestedon: "11-jan-2020", approvedby: "Winston", startdateon: "12-jan-2020" }]
+// const workFlow = [{ id: 1, requestedby: "Francis", requestedon: "11-jan-2020", approvedby: "Winston", startdateon: "12-jan-2020" }]
 
 
 
@@ -67,7 +67,7 @@ function TodoList(props) {
     const [viewer_id, setviewer_id] = useState([])
     useEffect(() => {
         dispatch(getHrTaskList())
-    }, [props])
+    }, [])
 
     useEffect(() => {
 
@@ -179,13 +179,13 @@ function TodoList(props) {
             content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
 
            </div>
-            {/* ___________________________________________________________________________ */}
+            {/* __________________________________________________________________________ */}
             <div>
                 <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project task"} />
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
             </div>
             <div>
-                <EnhancedTable headCells={workflowheadCells} rows={workFlow} tabletitle={"Project task"} />
+                <EnhancedTable headCells={workflowheadCells} rows={[]} tabletitle={"Project task"} />
             </div>
         </div>
     )

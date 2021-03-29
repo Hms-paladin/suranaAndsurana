@@ -9,7 +9,7 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY } from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE, GET_EMPLOYEE_LIST ,GET_CLIENT_LIST,GET_PROJECT_COST_RANGE} from '../utils/Constants.js';
 
 
 export const getSkills = () => async (dispatch) => {
@@ -60,4 +60,115 @@ export const getQualification = () => async (dispatch) => {
 export const getIndustry = () => async (dispatch) => {
     const response = await axios.get(apiurl + '/get_s_tbl_m_industry');
     return dispatch(({ type: GET_INDUSTRY, payload: response.data.data }));
+};
+
+// Project Search dropdown 
+
+export const getClientType = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_client_type');
+    return dispatch(({ type: GET_CLIENT_TYPE, payload: response.data.data }));
+};
+
+
+export const getClient = (id) => async (dispatch) => {
+    const response = await axios({
+        method: "post",
+        url: apiurl + 'get_client',
+        data: {
+            "client_id": id,
+        },
+    })
+    return dispatch(({ type: GET_CLIENT, payload: response.data.data }));
+};
+
+export const getProjectType = () => async (dispatch) => {
+    const response = await axios.get(apiurl + 'get_project_type');
+    return dispatch(({ type: GET_PROJECT_TYPE, payload: response.data.data }));
+};
+
+export const getProjectName = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_project_name');
+    return dispatch(({ type: GET_PROJECT_NAME, payload: response.data.data }));
+};
+
+
+export const getBillableType = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_billable_type');
+    return dispatch(({ type: GET_BILLABLE_TYPE, payload: response.data.data }));
+};
+
+// Project form Create:
+
+export const getProjectSubType = (id) => async (dispatch) => {
+    const response = await axios({
+        method: "post",
+        url: apiurl + 'get_project_sub_type',
+        data: {
+            "project_type_id": id,
+        },
+    })
+    return dispatch(({ type: GET_PROJECT_SUB_TYPE, payload: response.data.data }));
+};
+
+export const getProcessType = (id) => async (dispatch) => {
+    const response = await axios({
+        method: "post",
+        url: apiurl + 'get_process_type',
+        data: {
+            "project_type_id": id.ProjectType,
+            "sub_project_type_id": id.ProjectSubtype
+        },
+    })
+    return dispatch(({ type: GET_PROCESS_TYPE, payload: response.data.data }));
+};
+
+export const getFilingType = (id) => async (dispatch) => {
+    const response = await axios({
+        method: "post",
+        url: apiurl + 'get_filing_type',
+        data: {
+            "project_type_id": id.ProjectType,
+            "sub_project_type_id": id.ProjectSubtype,
+            "process_id": id.ProcessType
+        },
+    })
+    return dispatch(({ type: GET_FILING_TYPE, payload: response.data.data }));
+};
+
+// get_employee_list (API) ==> Hod/Attony,Counsel,DRA and DDRA using with one api
+
+export const getEmployeeList = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_employee_list');
+    return dispatch(({ type: GET_EMPLOYEE_LIST, payload: response.data.data }));
+};
+
+export const getProjectCostRange = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_range');
+    return dispatch(({ type: GET_PROJECT_COST_RANGE, payload: response.data.data }));
+};
+
+
+export const getClientlist = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_client_list');
+    return dispatch(({ type: GET_CLIENT_LIST, payload: response.data.data }));
+};
+
+
+
+
+//StageMaster
+export const getSubStage = (id) => async (dispatch) => {
+    const response = await axios({
+        method: "post",
+        url: apiurl + 'get_sub_stage',
+        data: {
+            "stage_id": id,
+        },
+    })
+    return dispatch(({ type: GET_SUB_STAGE, payload: response.data.data }));
+};
+//HRSchedule Interview Approver
+export const getInterviewApprover = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_interview_approver');
+    return dispatch(({ type: GET_INTERVIEW_APPROVER, payload: response.data.data }));
 };

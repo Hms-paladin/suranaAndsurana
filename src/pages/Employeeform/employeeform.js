@@ -9,8 +9,11 @@ import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 import {notification} from 'antd';
 import moment from "moment";
+import { getHrTaskList } from "../../actions/TodoListAction";
+import { useDispatch } from "react-redux";
 
 function Employeeform(props){
+    const dispatch = useDispatch();
     const [getDetails,setgetDetails]=useState([])
     const [getdata, setgetData]= useState([])
     const [dept, setdept]= useState({})
@@ -46,13 +49,13 @@ function Employeeform(props){
         },
         supervisor_email: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "email" }],
             error: null,
             errmsg: null,
         },
         supervisor_ph: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "mobile" }],
             error: null,
             errmsg: null,
         },
@@ -179,78 +182,12 @@ function Employeeform(props){
              )
              setEmpFrom(prevState => ({
                 ...prevState,
-                    supervisor_email:{value:empData[0].supervisor_email},
+                    supervisor_email:{value:empData[0].email_addr},
                     supervisor_ph:{value:empData[0].con_ph_no}
             }));
         })
      }
     function InsertApi(){
-
-        // var formData = new FormData();
-        //         formData.set("name","")
-        //         formData.set("type_of_resource","")
-        //         formData.set("gender","")
-        //         formData.set("dob","")
-        //         formData.set("bas_qual","")
-        //         formData.set("add_quali_1","")
-        //         formData.set("add_quali_2","")
-        //         formData.set("institution","")
-        //         formData.set("last_employer","")
-        //         formData.set("start_date","")
-        //         formData.set("end_date","")
-        //         formData.set("skills","")
-        //         formData.set("traits","")
-        //         formData.set("certification","")
-        //         formData.set("specialization","")
-        //         formData.set("achievement","")
-        //         formData.set("capabilities","")
-        //         formData.set("talents","")
-        //         formData.set("special_interest","")
-        //         formData.append("con_ph_no",EmpForm.supervisor_ph.value)
-        //         formData.set("email_addr","")
-        //         formData.set("address","")
-        //         formData.set("state_of_domecile","")
-        //         formData.set("city","")
-        //         formData.set("status","")
-        //         formData.set("lang_known","")
-        //         formData.set("industry","")
-        //         formData.set("designation",EmpForm.desgination.value)
-        //         formData.set("doj",EmpForm.date_of_birth.value)
-        //         formData.set("supervisor",EmpForm.supervisor_name.value)
-        //         formData.set("email",EmpForm.EmpOfficialEmail.value)
-        //         formData.set("supervisor_name","")
-        //         formData.set("supervisor_email",EmpForm.supervisor_email.value)
-        //         formData.set("official_email",EmpForm.EmpOfficialEmail.value)
-        //         formData.set("official_contact",EmpForm.EmpOfficialContact.value)
-        //         formData.set("department",EmpForm.department.value)
-        //         formData.set("employee__code",EmpForm.employee_code.value)
-        //         formData.append("upload_document",file)
-        //         formData.set("biometric_data","")
-        //         formData.set("approved_by",2)
-        //         formData.set("approved_date","2021-02-26")
-        //         formData.set("is_interviewer",1)
-        //         formData.set("created_on","2021-02-18 02:24:35")
-        //         formData.set("updated_on","2021-02-18 02:24:35")
-        //         formData.set("created_by",3)
-        //         formData.set("updated_by",1)
-        //         formData.set("ip_address","Adress")
-
-        // Axios({
-        //     method:"POST",
-        //     url:apiurl+"insert_employee",
-        //     header: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json'
-        //       }
-        //       ,data:JSON.stringify(formData),
-        //       headers: { "Content-Type": "multipart/form-data" },
-            
-        // })
-        // const dataFile = new FormData();
-        // dataFile.append('userName', 'Fred');
-        // dataFile.append('image', "imageFile"); 
-        // formData.append("employee__code",EmpForm.employee_code.value)
-        // formData.append("upload_document",file)
         const getEmployeeFormDetails = getDetails[0] || []
 
         var formData = new FormData();
@@ -314,6 +251,7 @@ function Employeeform(props){
                 notification.success({
                     message: 'Record Added Successfully',
                   });
+                  dispatch(getHrTaskList())
                 }
                
         })
@@ -403,10 +341,10 @@ function Employeeform(props){
                     <div className="employeeform_row3">
                       <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivements</div><div className="employeecont">{val.achievement}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">{val.achievement}</div></div>
                     </div>
                     <div className="employeeform_row4">
-                      <div className="employeeform_r2"><div className="headcolor">Capabilitites</div><div className="employeecont">{val.capability}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest}</div></div>
                     </div> 
@@ -512,7 +450,7 @@ function Employeeform(props){
                           <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
                      </Upload>, */}
                    
-                 <input type="file" onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
+                 <input type="file"  onChange={onFileChange} id="pdfupload"/> <PublishIcon/>
 
               
 

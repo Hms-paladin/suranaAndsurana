@@ -115,6 +115,7 @@
 .formdiv .ant-select-selection-selected-value {
   margin-left: -3px !important;
   font-size: 13px !important;
+  padding-right: 35px !important;
 }
 .formdiv .ant-select-search--inline .ant-select-search__field {
   border: none;

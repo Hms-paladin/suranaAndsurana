@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 checkValidation(textValue,validatorsArray){
   for(var valid in validatorsArray){//check validations through array
   console.log("mystextvalue",validatorsArray[valid].name);
-
+  console.log("RAN",validatorsArray[valid].rangeID);
          if(textValue==""){//check value is empty
       if(validatorsArray[valid].name=='required'){
       return {msg:"Field required",state:false};//validation occurs break the loop & throw the error
@@ -28,8 +28,15 @@ checkValidation(textValue,validatorsArray){
       }
     }
     else if(validatorsArray[valid].name=='custommaxValue'){
-      if(textValue>validatorsArray[valid].params){
+      console.log("validation",validatorsArray[valid].params)
+      if(parseInt(textValue)>parseInt(validatorsArray[valid].params)){
       return {msg:"Value should not greater than "+validatorsArray[valid].params,state:false};//validation occurs break the loop & throw the error
+      }
+    }
+    else if(validatorsArray[valid].name=='customminValue'){
+      console.log("validation",validatorsArray[valid].params)
+      if(parseInt(textValue)<parseInt(validatorsArray[valid].params)){
+      return {msg:"Value should  greater than "+validatorsArray[valid].params,state:false};//validation occurs break the loop & throw the error
       }
     }
     else if(validatorsArray[valid].name=='mobile'){
@@ -59,7 +66,7 @@ checkValidation(textValue,validatorsArray){
       }
     } else if (validatorsArray[valid].name == "allowNumaricOnly1") {
       var re = /^[0-9]*\.?[0-9]*$/;
-      if (re.test(textValue) == false) {
+      if (re.test(textValue) == false  || Number(textValue) == "00") {
         return { msg: "Please Enter Numeric Value only", state: false };
       }
     } else if (validatorsArray[valid].name == "webUrl") {
@@ -148,7 +155,7 @@ checkValidation(textValue,validatorsArray){
       if (re.test(textValue) == false) {
         return { msg: "Input data exceeds the limit", state: false };
       }
-    }else if (validatorsArray[valid].name == "200Char") {
+    }else if (validatorsArray[valid].name == "200Char" ) { 
       var re =/^.{1,251}$/;
       if (re.test(textValue) == false) {
         return { msg: "Input data exceeds the limit", state: false };

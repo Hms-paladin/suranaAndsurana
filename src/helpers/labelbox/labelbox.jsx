@@ -160,6 +160,7 @@ export default class Labelbox extends Component {
 								placeholder={this.props.placeholder}
 								disableToolbar={this.props.disableToolbar && this.props.disableToolbar}
 								autoOk={true}
+								views={this.props.view ? this.props.view : ["year", "date", "month"]}
 								clearable={false}
 								disableUnderline={true}
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
@@ -265,10 +266,13 @@ export default class Labelbox extends Component {
 						className={`${data.error && "selectbrdred brdnone"} ${this.props.mode !== "multiple" && "selectAdjustHeight"} selectbox`}
 						showSearch
 						mode={this.props.mode ? this.props.mode : false}
-						value={selectValue?selectValue:this.props.placeholder}
+						value={selectValue ? selectValue : this.props.placeholder}
 						suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
 						placeholder={this.props.placeholder}
 						optionFilterProp="label"
+						filterOption={(input, option) =>
+							option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+						}
 						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
 							if (this.props.mode === "multiple") {

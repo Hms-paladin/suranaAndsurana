@@ -13,9 +13,9 @@ export const searchRowdata = (data) => async dispatch => {
             method: 'POST',
             url: apiurl +'get_hr_resume_search',
             data:{
-                 "designation_id":data.designation_id,
-                 "round":data.round,
-                 "status_id":data.status_id
+                 "designation_id":data.designation_id.value,
+                 "round":data.round.value,
+                 "status_id":data.status_id.value
                 }
         })
         .then((response) => {

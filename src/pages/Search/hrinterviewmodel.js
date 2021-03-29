@@ -7,11 +7,14 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
+import {getInterviewApprover} from "../../actions/MasterDropdowns";
 
-function HrInterviewModel(props) {
+const HrInterviewModel=(props)=> {
     const dispatch = useDispatch();
     const[roundDropdownValues,setroundDropdownValues] =useState({})
     const [interviewerdata, setinterviewerdata] = useState([]);
+    const [interviewApprover, setInterviewApprover] = useState([]);
+    const [finalRound, setFinalRound] = useState(false);
     const [designationdata, setdesignationdata] = useState([]);
     const [Interviewschedule, setInterviewschedule] = useState({
         desgination: {
@@ -28,7 +31,7 @@ function HrInterviewModel(props) {
         },
         propsedDate: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "futureDate" }],
             error: null,
             errmsg: null,
         },     round: {
@@ -39,7 +42,6 @@ function HrInterviewModel(props) {
         }
     })
     useEffect(()=> {
-      console.log("asraf",props.selectedId)
         Axios({
             method: 'GET',
             url: apiurl +'get_round',
@@ -53,7 +55,6 @@ function HrInterviewModel(props) {
                    })
                 )
                 setroundDropdownValues({hr_round})
-                console.log(roundDropdownValues.hr_round,"hr_round")
         })
         Axios({
             method: "GET",
@@ -72,21 +73,33 @@ function HrInterviewModel(props) {
                 let Interviewer = []
                 response.data.data.map((data, index) =>
                     Interviewer.push({ id: data.emp_id, value: data.name }))
-    
                 setinterviewerdata({ Interviewer })
     
             })
-
-
-
     }, [dispatch])
 
 },[])
-
+// 
+useEffect(() => {
+dispatch(getInterviewApprover());
+}
+,[])
+// 
+useEffect(() => {
+    let InterviewApprover = []
+    props.getInterviewApprover.map((data, index) =>
+    InterviewApprover.push({ id: data.emp_id, value: data.name }))
+        setInterviewApprover({ InterviewApprover })
+    }
+    ,[props.getInterviewApprover])
 // ____________________
 
 function checkValidation(data, key, multipleId) {
 
+    if(data==27 && key ==="round"){
+        setFinalRound(true)
+    }
+   
     var errorcheck = ValidationLibrary.checkValidation(
         data,
         Interviewschedule[key].validation
@@ -97,6 +110,7 @@ function checkValidation(data, key, multipleId) {
         errmsg: errorcheck.msg,
         validation: Interviewschedule[key].validation
     }
+
     setInterviewschedule(prevState => ({
         ...prevState,
         [key]: dynObj,
@@ -135,7 +149,6 @@ function onSubmit() {
 
 
 function handleCancel() {
-    // setVisible(false)
     props.handleChangeCloseModel(false)
 }
     return (
@@ -154,7 +167,6 @@ function handleCancel() {
           placeholder="Designation"
           changeData={(data) => checkValidation(data, "desgination")}
           dropdown={designationdata.Designation}
-        //   value={Interviewschedule.desgination.value}
         disabled={true}
               value={props.selectedDesignationID}
           error={Interviewschedule.desgination.error}
@@ -163,6 +175,7 @@ function handleCancel() {
         <Labelbox
           type="datepicker"
           placeholder="Proposed Date"
+          disablePast={true}
           changeData={(data) => checkValidation(data, "propsedDate")}
           value={Interviewschedule.propsedDate.value}
           error={Interviewschedule.propsedDate.error}
@@ -172,7 +185,8 @@ function handleCancel() {
           type="select"
           placeholder="Interviewer"
           changeData={(data) => checkValidation(data, "interviewer")}
-          dropdown={interviewerdata.Interviewer}
+        //   dropdown={interviewerdata.Interviewer}
+          dropdown={ finalRound? interviewApprover.InterviewApprover:interviewerdata.Interviewer}
           value={Interviewschedule.interviewer.value}
           error={Interviewschedule.interviewer.error}
           errmsg={Interviewschedule.interviewer.errmsg}
@@ -188,4 +202,13 @@ function handleCancel() {
       </div>
     );
 }
-export default HrInterviewModel;
+
+const mapStateToProps = (state) => (
+    // console.log(state.getOptions.getInterviewApprover, "getProcessType")
+    {
+        getInterviewApprover: state.getOptions.getInterviewApprover || [],
+
+    }
+);
+
+export default connect(mapStateToProps)(HrInterviewModel);

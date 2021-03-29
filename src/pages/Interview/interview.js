@@ -42,7 +42,7 @@ function InerviewScreen(props) {
     },
     initial_score: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{ name: "allowNumaricOnly1" },{ name: "custommaxValue",params:100 }],
       error: null,
       errmsg: null,
     },
@@ -209,8 +209,7 @@ function InerviewScreen(props) {
           candDetails.CandList[0].round
         )
       ).then(() => {
-        props.handleAproverModelClose();
-        // props.refresh();
+        props.handleAproverModelClose()
       });
     }
 

@@ -5,7 +5,7 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
-import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY } from '../utils/Constants.js';
+import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE, GET_EMPLOYEE_LIST, GET_CLIENT_LIST, GET_PROJECT_COST_RANGE } from '../utils/Constants.js';
 
 const initalState = {
     getSkills: [],
@@ -16,8 +16,21 @@ const initalState = {
     getCapability: [],
     getTalents: [],
     getStatus: [],
-    getQualification:[],
-    getIndustry:[]
+    getQualification: [],
+    getIndustry: [],
+    getProjectSubType: [],
+    getProcessType: [],
+    getSubStage: [],
+    getInterviewApprover: [],
+    getClientType: [],
+    getClient: [],
+    getProjectType: [],
+    getProjectName: [],
+    getBillableType: [],
+    getFilingType: [],
+    getEmployeeList: [],
+    getProjectCostRange: [],
+    getClientlist: [],
 }
 
 export default function (state = initalState, action) {
@@ -40,10 +53,35 @@ export default function (state = initalState, action) {
         case GET_STATUS:
             return { ...state, getStatus: payload }
         case GET_QUALIFICATION:
-            console.log(payload,"payloadpayload")
             return { ...state, getQualification: payload }
         case GET_INDUSTRY:
             return { ...state, getIndustry: payload }
+        case GET_PROJECT_SUB_TYPE:
+            return { ...state, getProjectSubType: payload }
+        case GET_PROCESS_TYPE:
+            return { ...state, getProcessType: payload }
+        case GET_SUB_STAGE:
+            return { ...state, getSubStage: payload }
+        case GET_INTERVIEW_APPROVER:
+            return { ...state, getInterviewApprover: payload }
+        case GET_CLIENT_TYPE:
+            return { ...state, getClientType: payload }
+        case GET_CLIENT:
+            return { ...state, getClient: payload }
+        case GET_PROJECT_TYPE:
+            return { ...state, getProjectType: payload }
+        case GET_PROJECT_NAME:
+            return { ...state, getProjectName: payload }
+        case GET_BILLABLE_TYPE:
+            return { ...state, getBillableType: payload }
+        case GET_FILING_TYPE:
+            return { ...state, getFilingType: payload }
+        case GET_EMPLOYEE_LIST:
+            return { ...state, getEmployeeList: payload }
+        case GET_PROJECT_COST_RANGE:
+            return { ...state, getProjectCostRange: payload }
+        case GET_CLIENT_LIST:
+            return { ...state, getClientlist: payload }
         default:
             return state;
     }

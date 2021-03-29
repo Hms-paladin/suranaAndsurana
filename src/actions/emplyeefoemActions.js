@@ -3,7 +3,6 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
 export const getemplyoeeformid = ()=> async dispatch =>{
-    alert("actions")
     try{
         axios({
             method:'GET',

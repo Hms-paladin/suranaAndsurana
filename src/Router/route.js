@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link ,Switch} from "react-router-dom";
 
 import PrivateRoute from './PrivateRoute';
 
 // components path
 import Navbar from "../component/Navbar/navbar.js";
-
 // pages
 import Dashboard from "../pages/Dashboard/dashboard.js";
 import Resume from "../pages/Resume/resume.js";
@@ -35,6 +34,7 @@ function Routes(props) {
 
     return (
         <Navbar>
+            <Switch>
             <PrivateRoute path="/resume" component={Resume} exact />
             <PrivateRoute path="/dashboard" component={Dashboard} exact />
             <PrivateRoute path="/interview" component={Interview} exact />
@@ -58,7 +58,7 @@ function Routes(props) {
             {/* Litigation */}
 
             <PrivateRoute path="/litigation" component={Litigation} exact />
-
+            </Switch>
         </Navbar>
     );
 }

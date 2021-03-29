@@ -199,6 +199,7 @@ function ExperienceModel(props) {
                     error={Experience_Form.designation.error}
                     errmsg={Experience_Form.designation.errmsg} />
                 </Grid>
+                
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox  type="datepicker" placeholder="Period From"
@@ -213,7 +214,9 @@ function ExperienceModel(props) {
                     value={Experience_Form.periodto.value}
                     error={Experience_Form.periodto.error}
                     errmsg={Experience_Form.periodto.errmsg} 
-                    disableFuture={"false"}/>
+                    disableFuture={"false"}
+                    minDate={Experience_Form.periodfrom.value}
+                    />
                 </Grid>
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
