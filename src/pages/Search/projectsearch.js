@@ -28,6 +28,24 @@ function callback(key) {
 
 const { Option } = Select;
 const headCells = [
+  { id: 'ProjectName', label: 'Project Name' },
+  { id: 'clientname', label: 'Client Name' },
+  { id: 'subprojectype', label: 'Sub Project Type' },
+  { id: 'processtype', label: 'Process Type' },
+  { id: 'fillingtype', label: 'Filling Type' },
+  { id: 'billabletype', label: 'Billable Type' },
+
+];
+const litigationHead = [
+  { id: 'projectname', label: 'Project Name' },
+  { id: 'clientname', label: 'Client Name' },
+  { id: 'subprojectype', label: 'DRA' },
+  { id: 'processtype', label: 'DDRA' },
+  { id: 'fillingtype', label: 'Filling Type' },
+  { id: 'billabletype', label: 'Billable Type' },
+
+];
+const OtherHead = [
   { id: 'projectname', label: 'Project Name' },
   { id: 'clientname', label: 'Client Name' },
   { id: 'subprojectype', label: 'Sub Project Type' },
@@ -234,6 +252,13 @@ function Projectsearch(props) {
       let rowDataList = []
 
       data.project_details.map((data, index) => {
+      //   var rowdataListobj = {}
+
+      //   if( data.project_name){
+      //   rowdataListobj["project_name"] = data.project_name
+      // }
+
+      //   rowDataList.push(rowdataListobj)
         rowDataList.push({
           ProjectName: data.project_name,
           ClientName: data.client,
@@ -243,6 +268,7 @@ function Projectsearch(props) {
           BillingType: data.billable_type, 
         })
       })
+
       multipleTab.push(
         <Panel header={`${data.project_type} (${data.project_details.length})`} key={index + 1}>
           <EnhancedTable headCells={headCells} rows={rowDataList} tabletitle={""} />

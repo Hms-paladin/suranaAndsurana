@@ -709,10 +709,10 @@ function ProjectFormCreate(props) {
                   type="select"
                   placeholder={"Deputy Direct Responsible Attorney"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "hod_attorny")}
-                  value={projectform.employeelist.value}
-                  error={projectform.employeelist.error}
-                  errmsg={projectform.employeelist.errmsg}
+                  changeData={(data) => checkValidation(data, "counsel")}
+                  value={projectform.counsel.value}
+                  error={projectform.counsel.error}
+                  errmsg={projectform.counsel.errmsg}
                 />
               </Grid>
 
