@@ -277,6 +277,7 @@ function Projectsearch(props) {
       )
     })
     setMultiplePanel(multipleTab)
+    
 
   }, [props.TableData])
 
