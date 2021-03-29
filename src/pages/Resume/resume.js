@@ -365,7 +365,7 @@ function ResumePage() {
           });
         })
       )
-      .catch((errors) => {});
+      .catch((errors) => { });
   }, []);
 
   function checkValidation(data, key, multipleId) {
@@ -503,14 +503,19 @@ function ResumePage() {
 
   const showEditEducationModel = (x) => {
     setEducationModelOpen(true);
-    console.log(educationList[x], "educationList");
     setEducationid(x);
     setEducationrow(educationList[x]);
     setOnEdit(true);
   };
-  console.log(educationid, "educationid");
+  const showDeleteEducationModel = (x) => {
+    console.log(educationList[x], "educationList");
+    if (x > -1) {
+      educationList.splice(x, 1);
+    }
+    setEducationrow([...educationList])
 
-  console.log(educationrow, "educationrow");
+
+  }
 
   function showExperienceModel() {
     setExperienceModelOpen(true);
@@ -537,7 +542,6 @@ function ResumePage() {
     setEducationModelOpen(false);
     setEducationerr(false);
   }
-  console.log(addEducations, "addEducations");
 
   const EditEducation = (data, id) => {
     console.log(data, id, "datas");
@@ -785,7 +789,7 @@ function ResumePage() {
                           fontSize="small"
                           onClick={() => showEditEducationModel(index)}
                         />
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="small" onClick={() => showDeleteEducationModel(index)} />
                       </div>
                     );
                   })}
@@ -795,33 +799,68 @@ function ResumePage() {
         </div>
         <div className="rightContainer">
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Skills"}
-                dropdown={resumeGetList.skillsList}
-                changeData={(data) =>
-                  checkValidation(data, "skills", resumeGetList.skillsList)
-                }
-                value={Resume_Form.skills.value}
-                error={Resume_Form.skills.error}
-                errmsg={Resume_Form.skills.errmsg}
-              />
+            <Grid
+              item
+              xs={12}
+              container
+              direction="row"
+              className="spaceBtGrid"
+              alignItems="center"
+            >
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Skills"}
+                  dropdown={resumeGetList.skillsList}
+                  changeData={(data) =>
+                    checkValidation(data, "skills", resumeGetList.skillsList)
+                  }
+                  value={Resume_Form.skills.value}
+                  error={Resume_Form.skills.error}
+                  errmsg={Resume_Form.skills.errmsg}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Traits"}
+                  dropdown={resumeGetList.traitsList}
+                  changeData={(data) =>
+                    checkValidation(data, "Traits", resumeGetList.traitsList)
+                  }
+                  value={Resume_Form.Traits.value}
+                  error={Resume_Form.Traits.error}
+                  errmsg={Resume_Form.Traits.errmsg}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Traits"}
-                dropdown={resumeGetList.traitsList}
-                changeData={(data) =>
-                  checkValidation(data, "Traits", resumeGetList.traitsList)
-                }
-                value={Resume_Form.Traits.value}
-                error={Resume_Form.Traits.error}
-                errmsg={Resume_Form.Traits.errmsg}
-              />
+            <Grid
+              item
+              xs={12}
+              container
+              direction="row"
+              className="spaceBtGrid"
+              alignItems="center"
+            >
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Capabilities"}
+                // dropdown={resumeGetList.traitsList}
+
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Achivements"}
+                // dropdown={resumeGetList.traitsList}
+                />
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Labelbox

@@ -7,7 +7,7 @@ import EnhancedTable from "../../component/DynTable/table";
 import { apiurl } from '../../utils/baseUrl'
 import { useDispatch, connect } from "react-redux";
 import { ResumeSearchStatus } from "../../actions/ResumeSearchAction";
-import { getClientType, getClient, getProjectType, getProjectName, getBillableType,getClientlist } from '../../actions/MasterDropdowns';
+import { getClientType, getClient, getProjectType, getProjectName, getBillableType, getClientlist } from '../../actions/MasterDropdowns';
 import Axios from 'axios';
 import { Collapse } from 'antd';
 import CustomButton from "../../component/Butttons/button";
@@ -16,7 +16,7 @@ import AdhocTaskModel from './adhoctask';
 import DynModel from '../../component/Model/model';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getProjectSearchTableData } from "../../actions/ProjectSearchAction"
-
+import ProjectIp from '../Project IP1/projectIp';
 
 
 
@@ -129,10 +129,10 @@ function Projectsearch(props) {
     setClientType({ ClientType })
     //Client List
     let Client = []
-      props.Client.map((data) =>
-        Client.push({ value: data.client, id: data.client_id })
-      )
-      setClient({ Client })
+    props.Client.map((data) =>
+      Client.push({ value: data.client, id: data.client_id })
+    )
+    setClient({ Client })
 
     //Project Type
     let ProjectType = []
@@ -159,7 +159,7 @@ function Projectsearch(props) {
     setBillableType({ BillableType })
 
 
-  }, [props.ClientType,props.Client, props.ProjectType, props.ProjectName, props.BillableType])
+  }, [props.ClientType, props.Client, props.ProjectType, props.ProjectName, props.BillableType])
 
 
 
@@ -252,20 +252,20 @@ function Projectsearch(props) {
       let rowDataList = []
 
       data.project_details.map((data, index) => {
-      //   var rowdataListobj = {}
+        //   var rowdataListobj = {}
 
-      //   if( data.project_name){
-      //   rowdataListobj["project_name"] = data.project_name
-      // }
+        //   if( data.project_name){
+        //   rowdataListobj["project_name"] = data.project_name
+        // }
 
-      //   rowDataList.push(rowdataListobj)
+        //   rowDataList.push(rowdataListobj)
         rowDataList.push({
-          ProjectName: data.project_name,
+          ProjectName: <Link to='/projectIp'>{data.project_name}</Link>,
           ClientName: data.client,
-          SubProjectType:data.sub_project_type,
+          SubProjectType: data.sub_project_type,
           Process: data.process,
           filing_type: data.filing_type,
-          BillingType: data.billable_type, 
+          BillingType: data.billable_type,
         })
       })
 
