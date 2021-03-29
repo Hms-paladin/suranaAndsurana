@@ -30,6 +30,7 @@ export const InsertIpProject = (projectform) => async dispatch => {
             method: "POST",
             url: apiurl + "insert_project_form",
             data: {
+                project_type_id:projectform.project_type.value,
                 client_id: projectform.client.value,
                 sub_project_id: projectform.project_Subtype.value,
                 process_id: projectform.process_type.value,
