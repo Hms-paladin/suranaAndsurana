@@ -7,7 +7,7 @@ import EnhancedTable from "../../component/DynTable/table";
 import { apiurl } from '../../utils/baseUrl'
 import { useDispatch, connect } from "react-redux";
 import { ResumeSearchStatus } from "../../actions/ResumeSearchAction";
-import { getClientType, getClient, getProjectType, getProjectName, getBillableType } from '../../actions/MasterDropdowns';
+import { getClientType, getClient, getProjectType, getProjectName, getBillableType,getClientlist } from '../../actions/MasterDropdowns';
 import Axios from 'axios';
 import { Collapse } from 'antd';
 import CustomButton from "../../component/Butttons/button";
@@ -94,6 +94,7 @@ function Projectsearch(props) {
   useEffect(() => {
     dispatch(getProjectSearchTableData(projectform))
     dispatch(getClientType())
+    dispatch(getClientlist())
     dispatch(getProjectType())
     dispatch(getProjectName())
     dispatch(getBillableType())
@@ -108,6 +109,12 @@ function Projectsearch(props) {
       ClientType.push({ id: data.client_type_id, value: data.client_type })
     )
     setClientType({ ClientType })
+    //Client List
+    let Client = []
+      props.Client.map((data) =>
+        Client.push({ value: data.client, id: data.client_id })
+      )
+      setClient({ Client })
 
     //Project Type
     let ProjectType = []
@@ -134,7 +141,7 @@ function Projectsearch(props) {
     setBillableType({ BillableType })
 
 
-  }, [props.ClientType, props.ProjectType, props.ProjectName, props.BillableType])
+  }, [props.ClientType,props.Client, props.ProjectType, props.ProjectName, props.BillableType])
 
 
 
@@ -153,9 +160,9 @@ function Projectsearch(props) {
 
     //  projectSubTypeValue
 
-    if (key === "clienttype" && data) {
-      dispatch(getClient(data))
-    }
+    // if (key === "clienttype" && data) {
+    //   dispatch(getClient(data))
+    // }
 
 
     // only for multi select (start)
@@ -182,14 +189,14 @@ function Projectsearch(props) {
   }
 
 
-  useEffect(() => {
-    let Client = []
-    props.Client.map((data) =>
-      Client.push({ value: data.client, id: data.client_id })
-    )
-    setClient({ Client })
+  // useEffect(() => {
+  //   let Client = []
+  //   props.Client.map((data) =>
+  //     Client.push({ value: data.client, id: data.client_id })
+  //   )
+  //   setClient({ Client })
 
-  }, [props.Client])
+  // }, [props.Client])
 
   const onSearch = () => {
     dispatch(getProjectSearchTableData(projectform)).then((response) => {
@@ -328,7 +335,7 @@ const mapStateToProps = state => (
   {
     TableData: state.projectSearchReducer.getProjectSearchTableData,
     ClientType: state.getOptions.getClientType,
-    Client: state.getOptions.getClient,
+    Client: state.getOptions.getClientlist,
     ProjectType: state.getOptions.getProjectType,
     ProjectName: state.getOptions.getProjectName,
     BillableType: state.getOptions.getBillableType,
