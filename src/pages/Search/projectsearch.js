@@ -265,6 +265,7 @@ function Projectsearch(props) {
           SubProjectType: data.sub_project_type,
           Process: data.process,
           filing_type: data.filing_type,
+          ClientType: data.client_type,
           BillingType: data.billable_type,
         })
       })
@@ -338,6 +339,7 @@ function Projectsearch(props) {
 
 
       </div>
+      
       <div className="projectsearch_collapse">
         <Collapse onChange={callback}>
           {multiplePanel}
