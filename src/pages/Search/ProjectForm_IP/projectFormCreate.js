@@ -81,13 +81,14 @@ function ProjectFormCreate(props) {
       error: null,
       errmsg: null,
     },
-    project_Subtype: {
+    projectname: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
-    billable_type: {
+    //IP
+    project_Subtype: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
@@ -105,31 +106,19 @@ function ProjectFormCreate(props) {
       error: null,
       errmsg: null,
     },
-    employeelist: {
-      value: "",
-      validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    },
-    counsel: {
-      value: "",
-      validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    },
     hod_attorny: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
-    DDRA: {
+    employeelist: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
-    DRA: {
+    billable_type: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
@@ -142,12 +131,6 @@ function ProjectFormCreate(props) {
       errmsg: null,
     },
     projectcostrange: {
-      value: "",
-      validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    },
-    projectname: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
@@ -350,11 +333,10 @@ function ProjectFormCreate(props) {
       "process_type",
       "filing_type",
       "employeelist",
-      "counsel",
       "hod_attorny",
       "unit_measurement",
       "projectcostrange",
-      "projectname",
+      "projectname","process_type","comments","baseRate","limit","additionalRate"
     ];
 
     From_key.map((data) => {
@@ -633,7 +615,12 @@ function ProjectFormCreate(props) {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"} />
+                    <Labelbox type="text" placeholder={"Limit"}   changeData={(data) =>
+                        checkValidation(data, "limit")
+                      }
+                      value={projectform.limit.value}
+                      error={projectform.limit.error}
+                      errmsg={projectform.limit.errmsg} /> />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -704,22 +691,22 @@ function ProjectFormCreate(props) {
                   errmsg={projectform.filing_type.errmsg}
                 />
               </Grid>
-              <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Deputy Direct Responsible Attorney"}
-                  dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "counsel")}
-                  value={projectform.counsel.value}
-                  error={projectform.counsel.error}
-                  errmsg={projectform.counsel.errmsg}
-                />
-              </Grid>
 
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
                   placeholder={"Direct Responsible Attorney"}
+                  dropdown={employeeList.EmployeeList}
+                  changeData={(data) => checkValidation(data, "hod_attorny")}
+                  value={projectform.hod_attorny.value}
+                  error={projectform.hod_attorny.error}
+                  errmsg={projectform.hod_attorny.errmsg}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  placeholder={"Deputy Direct Responsible Attorney"}
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "employeelist")}
                   value={projectform.employeelist.value}
@@ -727,6 +714,7 @@ function ProjectFormCreate(props) {
                   errmsg={projectform.employeelist.errmsg}
                 />
               </Grid>
+
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
@@ -850,7 +838,7 @@ function ProjectFormCreate(props) {
                   type="select"
                   placeholder={"Counsel"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "counsel")}
+                  changeData={(data) => checkValidation(data, "employeelist")}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg}

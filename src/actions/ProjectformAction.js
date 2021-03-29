@@ -30,21 +30,26 @@ export const InsertIpProject = (projectform) => async dispatch => {
             method: "POST",
             url: apiurl + "insert_project_form",
             data: {
-                project_type_id:projectform.project_type.value || 0,
                 client_id: projectform.client.value || 0,
+                project_type_id:projectform.project_type.value || 0,
+                project_name: projectform.projectname.value|| 0,
+                //ipproject
                 sub_project_id: projectform.project_Subtype.value ||0,
                 process_id: projectform.process_type.value|| 0,
                 file_type_id: projectform.filing_type.value|| 0,
-                project_name: projectform.projectname.value|| 0,
                 billable_type_id: projectform.billable_type.value || 0,
+                //
                 created_on: moment().format("YYYY-MM-DD HH:m:s"),
                 updated_on: moment().format("YYYY-MM-DD HH:m:s"),
                 created_by: localStorage.getItem("empId"),
                 updated_by: localStorage.getItem("empId"),
+                //
                 unit_of_measure: projectform.unit_measurement.value||0,
                 project_name:  projectform.projectname.value||0 ,
+                //
                 councel_id: projectform.employeelist.value || 0,
                 hod_hr_id: projectform.hod_attorny.value || 0,
+                //
                 range_id: projectform.projectcostrange.value || 0,
                 ip_address: "1233",
                 comments:projectform.comments.value || 0 ,
