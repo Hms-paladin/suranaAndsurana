@@ -6,244 +6,6 @@ import CustomButton from "../../../component/Butttons/button";
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { apiurl } from "../../../utils/baseUrl";
-import { Redirect, Link } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
-import DynModel from '../../../component/Model/model';
-import { getProjectSubType, getProcessType, getFilingType, getEmployeeList, getProjectCostRange, getClientlist } from '../../../actions/MasterDropdowns';
-import VariableRate from '../../stages/RateMaster';
-import EnhancedTable from "../../../component/DynTable/table";
-import AddVarData from '../../../images/addvardata.svg';
-import SuccessIcon from '../../../images/successicon.svg';
-import { InsertIpProject } from "../../../actions/ProjectformAction";
-
-
-
-// Table Data ==>
-
-const header = [
-    { id: 'activity', label: 'Activity' },
-    { id: 'sub_activity', label: 'Sub Activity' },
-    { id: 'amount', label: 'Amount' },
-    { id: 'range', label: 'Range of Project cost' },
-    { id: 'court', label: 'Court' },
-    { id: 'lower_limit', label: 'Lower Limit' },
-    { id: 'upper_limit', label: 'Upper Limit' },
-    { id: 'unit', label: 'Unit of Measurement' },
-    { id: 'designation', label: 'Designation' },
-];
-
-const rows = [
-    { table_name: "Table 1", activity: "Activity 1", lower_limit: "lowerlimit1", upper_limit: "upperlimit1", designation: "designation1", cost: "cost", sub_activity: "Subactivity1", court: "court", measurement: "measurement" }
-
-];
-
-function ProjectFormCreate(props) {
-    const dispatch = useDispatch()
-    const [pathname, setpathname] = useState(window.location.pathname)
-    const [ProjectType, setProjectType] = useState({})
-    const [ProcessType, setProcessType] = useState({})
-    const [SubType_Project, setSubType_Project] = useState({})
-    const [BillableType, setBillableType] = useState({})
-    const [projectUnit, setprojectUnit] = useState({})
-    const [variableid, setVariableid] = useState(false)
-    const [successmodel, setSuccessmodel] = useState(false)
-    const [searchdata, setSearchdata] = useState()
-    const [addsearchdata, setAddsearchdata] = useState()
-    const [filingType, setFilingType] = useState({})
-    const [employeeList, setEmployeeList] = useState({})
-    const [projectCostRange, setProjectCostRange] = useState({})
-    const [client, setClient] = useState({})
-
-
-
-
-    const [projectform, setprojectform] = useState({
-        client: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        project_type: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        project_Subtype: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        billable_type: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        process_type: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        filing_type: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        employeelist: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        counsel: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        hod_attorny: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        DDRA: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        DRA: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        unit_measurement: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        projectcostrange: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-        projectname: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
-    })
-
-
-
-
-    useEffect(() => {
-
-        Axios({
-            method: "GET",
-            url: apiurl + 'get_project_type',
-        }).then((response) => {
-            // SubType_Project_Api()
-            console.log(response.data.data, " response.data.data")
-            let projectTypedata = []
-            response.data.data.map((data) =>
-                projectTypedata.push({ value: data.project_type, id: data.project_type_id })
-            )
-            setProjectType({ projectTypedata })
-            console.log({ projectTypedata }, " {projectTypedata}")
-        })
-
-
-        // billable type
-        Axios({
-            method: "GET",
-            url: apiurl + 'get_billable_type',
-        })
-            .then((response) => {
-                console.log("response", response)
-                let BillableData = []
-                response.data.data.map((data) =>
-                    BillableData.push({ id: data.billable_type_id, value: data.billable_type })
-                )
-                setBillableType({ BillableData })
-            })
-
-
-
-
-        // Unit of Measurement 
-        Axios({
-            method: "GET",
-            url: apiurl + 'get_unit_of_measure',
-        })
-            .then((response) => {
-                let projectUnitdata = []
-                response.data.data.map((data) =>
-                    projectUnitdata.push({ value: data.unit, id: data.unit_id })
-                )
-                setprojectUnit({ projectUnitdata })
-            })
-
-        //
-
-    }, [])
-
-    useEffect(() => {
-        dispatch(getEmployeeList())
-        dispatch(getProjectCostRange())
-        dispatch(getClientlist())
-
-    }, [])
-
-
-
-    function checkValidation(data, key, multipleId) {
-
-        var errorcheck = ValidationLibrary.checkValidation(
-            data,
-            projectform[key].validation
-        );
-        let dynObj = {
-            value: data,
-            error: !errorcheck.state,
-            errmsg: errorcheck.msg,
-            validation: projectform[key].validation
-        }
-
-
-        //  projectSubTypeValue
-
-        if (key === "project_type" && data) {
-            dispatch(getProjectSubType(data))
-        }
-
-        //Process type
-
-        if (key === "project_Subtype" && data) {
-            let values = { ProjectType: projectform.project_type.value, ProjectSubtype: data }
-            dispatch(getProcessType(values))
-        }
-
-        // Filing type
-
-        if (key === "process_type" && data) {
-            let values = { ProjectType: projectform.project_type.value, ProjectSubtype: projectform.project_Subtype.value, ProcessType: data }
-            dispatch(getFilingType(values))
-        }
-
-
-
-        // only for multi select (start)
 import { Redirect, Link } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import DynModel from "../../../component/Model/model";
@@ -260,7 +22,7 @@ import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from "../../../images/addvardata.svg";
 import SuccessIcon from "../../../images/successicon.svg";
 import { InsertIpProject } from "../../../actions/ProjectformAction";
-
+import PlusIcon from "../../../images/plusIcon.svg";
 // Table Data ==>
 
 const header = [
@@ -305,6 +67,9 @@ function ProjectFormCreate(props) {
   const [employeeList, setEmployeeList] = useState({});
   const [projectCostRange, setProjectCostRange] = useState({});
   const [client, setClient] = useState({});
+
+  const [notfoundmodel, setNotfoundmodel] = useState(false);
+  const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
 
   const [projectform, setprojectform] = useState({
     client: {
@@ -505,44 +270,6 @@ function ProjectFormCreate(props) {
 
     // only for multi select (start)
 
-        setprojectform(prevState => ({
-            ...prevState,
-            [key]: dynObj,
-        }));
-
-        // variable popup==>
-
-        if (key === "billable_type" && data === 2) {
-            setVariableid(true)
-        }
-    };
-
-    function onsubmit() {
-        var mainvalue = {};
-        var targetkeys = Object.keys(projectform);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                projectform[targetkeys[i]].value,
-                projectform[targetkeys[i]].validation
-            );
-            projectform[targetkeys[i]].error = !errorcheck.state;
-            projectform[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = projectform[targetkeys[i]].value;
-        }
-
-        var filtererr = targetkeys.filter(
-            (obj) => projectform[obj].error == true
-        );
-        console.log(filtererr.length, "filtererr");
-        // if (filtererr.length < 0) {
-        //     // setpostData({ error: true });
-        // } else {
-        // setpostData({ error: false });
-        alert("test")
-        dispatch(InsertIpProject(projectform)).then((response) => {
-            handleCancel();
-        })
-        // );
     let multipleIdList = [];
 
     if (multipleId) {
@@ -562,10 +289,13 @@ function ProjectFormCreate(props) {
       [key]: dynObj,
     }));
 
-        // }
+    // variable popup==>
 
     if (key === "billable_type" && data === 2) {
-      setVariableid(true);
+      setVarRatePlusIcon(true);
+      // setVariableid(true);
+    }else{
+      setVarRatePlusIcon(false);
     }
   }
 
@@ -582,10 +312,6 @@ function ProjectFormCreate(props) {
       mainvalue[targetkeys[i]] = projectform[targetkeys[i]].value;
     }
 
-        setprojectform(prevState => ({
-            ...prevState
-        }));
-    };
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
     console.log(filtererr.length, "filtererr");
     // if (filtererr.length < 0) {
@@ -616,7 +342,7 @@ function ProjectFormCreate(props) {
       "hod_attorny",
       "unit_measurement",
       "projectcostrange",
-      "projectname","process_type","comments","baseRate","limit","additionalRate"
+      "projectname", "process_type", "comments", "baseRate", "limit", "additionalRate"
     ];
 
     From_key.map((data) => {
@@ -694,127 +420,13 @@ function ProjectFormCreate(props) {
     function onSearch() {
       setSearchdata(true);
       setAddsearchdata(false);
+      setNotfoundmodel(true);
     }
 
     function addSearchData() {
       setAddsearchdata(true);
       setSearchdata(false);
       setSuccessmodel(true);
-    }
-
-    const handleCancel = () => {
-        let From_key = ["client", "project_type", "project_Subtype", "billable_type", "process_type", "filing_type", "employeelist", "counsel", "hod_attorny", "unit_measurement", "projectcostrange", "projectname"]
-
-        From_key.map((data) => {
-
-            try {
-                projectform[data].value = "";
-                console.log("mapping", projectform[data].value)
-            } catch (error) {
-                throw (error)
-            }
-        });
-
-        setprojectform((prevState) => ({
-            ...prevState,
-        }));
-    };
-
-    useEffect(() => {
-
-        // Client 
-        let Client = []
-        props.Client.map((data) =>
-            Client.push({ value: data.client, id: data.client_id })
-        )
-        setClient({ Client })
-
-        // ProjectSubType
-        let projectSubTypeValue = []
-        props.ProjectSubType.map((data) =>
-            projectSubTypeValue.push({ value: data.sub_project_type, id: data.sub_project_type_id })
-        )
-        setSubType_Project({ projectSubTypeValue })
-
-        //  ProcessType
-        let Processtypevalue = []
-        props.ProcessType.map((data) =>
-            Processtypevalue.push({ value: data.process, id: data.process_id })
-        )
-        console.log("test", Processtypevalue)
-        setProcessType({ Processtypevalue })
-
-        //filing type
-
-        let FilingType = []
-        props.FilingType.map((data) =>
-            FilingType.push({ value: data.filing_type, id: data.filing_type_id })
-        )
-        setFilingType({ FilingType })
-
-        //hod/attony, Counsel ,DRA and DDRA 
-        let EmployeeList = []
-        props.EmployeeList.map((data) =>
-            EmployeeList.push({ value: data.name, id: data.emp_id })
-        )
-        setEmployeeList({ EmployeeList })
-
-        // Project Cost Range
-
-        let ProjectCostRange = []
-        props.ProjectCostRange.map((data) =>
-            ProjectCostRange.push({ value: data.range, id: data.range_id })
-        )
-        setProjectCostRange({ ProjectCostRange })
-
-
-
-    }, [props.Client, props.ProjectSubType, props.ProcessType, props.FilingType, props.EmployeeList, props.ProjectCostRange])
-
-    const variablerateModel = () => {
-        function onSearch() {
-            setSearchdata(true)
-            setAddsearchdata(false)
-        }
-
-        function addSearchData() {
-            setAddsearchdata(true)
-            setSearchdata(false)
-            setSuccessmodel(true)
-        }
-
-        return (
-            <div>
-                <VariableRate variablebtnchange={true} variabletablechange={true} />
-                <CustomButton
-                    btnName={"Search"}
-                    btnCustomColor="customPrimary"
-                    custombtnCSS="custom_save"
-                    onBtnClick={onSearch}
-                />
-                {searchdata &&
-                    <div className="addvariableData">
-                        <img src={AddVarData} onClick={addSearchData} />
-
-                    </div>
-                }
-                {addsearchdata &&
-                    <div>
-                        <EnhancedTable
-                            headCells={header}
-                            rows={rows}
-                        />
-
-                    </div>
-                }
-                <DynModel modelTitle={"Success"} handleChangeModel={successmodel} handleChangeCloseModel={(bln) => setSuccessmodel(bln)} content={<div className="successModel">
-                    <img src={SuccessIcon} />
-                    <div>Data Successfully Added in Variable Rate Master</div>
-                </div>} width={400} />
-
-
-            </div>
-        )
     }
 
     return (
@@ -845,6 +457,33 @@ function ProjectFormCreate(props) {
               <img src={SuccessIcon} />
               <div>Data Successfully Added in Variable Rate Master</div>
             </div>
+          }
+          width={400}
+        />
+        <DynModel
+          modelTitle={"Billing Criteria Not Found"}
+          handleChangeModel={notfoundmodel}
+          handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
+          content={
+            <div className="successModel">
+
+              <div> <label className="notfound_label">Do You Want To Continue ?</label></div>
+              <div className="customNotFoundbtn">
+                <CustomButton
+                  btnName={"Yes"}
+                  btnCustomColor="customPrimary"
+                  custombtnCSS={"btnNotFound"}
+                  onBtnClick={()=>setNotfoundmodel(false)}
+                />
+                <CustomButton
+                 btnName={"No "} 
+                 btnCustomColor="customPrimary"
+                 custombtnCSS={"btnNotFound"}
+                 onBtnClick={()=>setNotfoundmodel(false)}
+                  />
+              </div>
+            </div>
+
           }
           width={400}
         />
@@ -976,7 +615,10 @@ function ProjectFormCreate(props) {
                   value={projectform.billable_type.value}
                   error={projectform.billable_type.error}
                   errmsg={projectform.billable_type.errmsg}
+                  
                 />
+              {(varRatePlusIcon===true)? <div style={{display: 'flex',justifyContent: 'flex-end'}}><img src={PlusIcon} style={{cursor: 'pointer',width:19}} onClick={()=>setVariableid(true)} /></div>:''}
+               
               </Grid>
               <Grid item xs={6}>
                 <Labelbox
@@ -1396,4 +1038,4 @@ const mapStateToProps = (state) =>
   Client: state.getOptions.getClientlist,
 });
 
-export default connect(mapStateToProps)(ProjectFormCreate)
+export default connect(mapStateToProps)(ProjectFormCreate);

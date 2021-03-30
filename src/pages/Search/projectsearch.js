@@ -406,7 +406,7 @@ function Projectsearch(props) {
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>
   );
-}
+} 
 const mapStateToProps = (state) =>
 // console.log(state,"statestatestate")
 ({

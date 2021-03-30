@@ -514,10 +514,6 @@ function ResumePage() {
     }
     setEducationrow([...educationList])
 
-    setResumeFrom((prevState) => ({
-      ...prevState,
-    }));
-  }
 
   }
 
@@ -1150,5 +1146,5 @@ function ResumePage() {
       </div>
     </div>
   );
-
+}
 export default ResumePage;

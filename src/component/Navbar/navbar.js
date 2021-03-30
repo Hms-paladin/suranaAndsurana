@@ -92,6 +92,7 @@ function Navbar(props) {
       // variable rate master
       { path: "/ratemaster", title: "Variable Rate Master", img: MasterIcon },
       { path: "/stagesmaster", title: "StageMaster", img: MasterIcon },
+      { path: "/usergroups", title: "User Groups", img: MasterIcon },
     ]
   );
 

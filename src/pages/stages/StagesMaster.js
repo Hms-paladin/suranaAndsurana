@@ -410,6 +410,7 @@ insert_stage_master
           />
           <Labelbox type="text" placeholder={"Number of Days"}
             changeData={(data) => checkValidation(data, "compliance")}
+
             value={RateMaster.compliance.value}
             error={RateMaster.compliance.error}
             errmsg={RateMaster.compliance.errmsg}
