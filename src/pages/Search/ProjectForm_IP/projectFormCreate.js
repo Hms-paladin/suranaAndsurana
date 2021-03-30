@@ -137,32 +137,32 @@ function ProjectFormCreate(props) {
       errmsg: null,
     },
     comments: {
-        value: "",
-        validation: [{ name: "required" }],
-        error: null,
-        errmsg: null,
-      },
+      value: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
     baseRate: {
-        value: "",
-        validation: [{ name: "required" }],
-        error: null,
-        errmsg: null,
-      },
-      limit: {
-        value: "0",
-        validation: [{ name: "required" }],
-        error: null,
-        errmsg: null,
-      },
-      additionalRate: {
-        value: "",
-        validation: [{ name: "required" }],
-        error: null,
-        errmsg: null,
-      },
+      value: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
+    limit: {
+      value: "0",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
+    additionalRate: {
+      value: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
 
   });
- 
+
   useEffect(() => {
     Axios({
       method: "GET",
@@ -234,13 +234,13 @@ function ProjectFormCreate(props) {
 
     if (key === "project_type" && data) {
       dispatch(getProjectSubType(data));
-      if(data === 6){
+      if (data === 6) {
         let values = {
           ProjectType: data,
           ProjectSubtype: "0",
           ProcessType: "0",
         };
-        dispatch(getFilingType(values)) 
+        dispatch(getFilingType(values))
       }
     }
 
@@ -599,14 +599,14 @@ function ProjectFormCreate(props) {
               {projectform.billable_type.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Base Rate"} 
-                       changeData={(data) =>
+                    <Labelbox type="text" placeholder={"Base Rate"}
+                      changeData={(data) =>
                         checkValidation(data, "baseRate")
                       }
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg} 
-                      />
+                      errmsg={projectform.baseRate.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -635,12 +635,12 @@ function ProjectFormCreate(props) {
                 projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <Labelbox type="text" placeholder={"Base Rate"}  changeData={(data) =>
-                        checkValidation(data, "baseRate")
-                      }
+                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
+                      checkValidation(data, "baseRate")
+                    }
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}  />
+                      errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={6}>
                     <Labelbox
@@ -662,12 +662,12 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <div className="projectFormComments">
                   <Labelbox type="textarea" placeholder={"Comments"}
-                      changeData={(data) =>
-                        checkValidation(data, "comments")
-                      }
-                      value={projectform.comments.value}
-                      error={projectform.comments.error}
-                      errmsg={projectform.comments.errmsg}
+                    changeData={(data) =>
+                      checkValidation(data, "comments")
+                    }
+                    value={projectform.comments.value}
+                    error={projectform.comments.error}
+                    errmsg={projectform.comments.errmsg}
                   />
                 </div>
               </Grid>
@@ -676,7 +676,7 @@ function ProjectFormCreate(props) {
           ) : projectform.project_type.value === 6 ? (
             <>
               <Grid item xs={6}>
-              <Labelbox
+                <Labelbox
                   type="select"
                   placeholder={"Filling Type"}
                   dropdown={filingType.FilingType}
@@ -738,12 +738,12 @@ function ProjectFormCreate(props) {
               {projectform?.billable_type?.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Base Rate"}  changeData={(data) =>
-                        checkValidation(data, "baseRate")
-                      }
+                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
+                      checkValidation(data, "baseRate")
+                    }
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}  />
+                      errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -759,9 +759,9 @@ function ProjectFormCreate(props) {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"}     changeData={(data) =>
-                        checkValidation(data, "limit")
-                      }
+                    <Labelbox type="text" placeholder={"Limit"} changeData={(data) =>
+                      checkValidation(data, "limit")
+                    }
                       value={projectform.limit.value}
                       error={projectform.limit.error}
                       errmsg={projectform.limit.errmsg} />
@@ -784,12 +784,12 @@ function ProjectFormCreate(props) {
                 projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <Labelbox type="text" placeholder={"Base Rate"}  changeData={(data) =>
-                        checkValidation(data, "baseRate")
-                      }
+                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
+                      checkValidation(data, "baseRate")
+                    }
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}  />
+                      errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={6}>
                     <Labelbox
@@ -811,13 +811,13 @@ function ProjectFormCreate(props) {
 
               <Grid item xs={6}>
                 <div className="projectFormComments">
-                  <Labelbox type="textarea" placeholder={"Comments"}  
-                            changeData={(data) =>
-                                checkValidation(data, "comments")
-                              }
-                              value={projectform.comments.value}
-                              error={projectform.comments.error}
-                              errmsg={projectform.comments.errmsg}/>
+                  <Labelbox type="textarea" placeholder={"Comments"}
+                    changeData={(data) =>
+                      checkValidation(data, "comments")
+                    }
+                    value={projectform.comments.value}
+                    error={projectform.comments.error}
+                    errmsg={projectform.comments.errmsg} />
                 </div>
               </Grid>
 
@@ -874,17 +874,27 @@ function ProjectFormCreate(props) {
                   errmsg={projectform.billable_type.errmsg}
                 />
               </Grid>
-              <Grid item xs={6}></Grid>
+              <Grid item xs={6}>
+                <div className="projectFormComments">
+                  <Labelbox type="textarea" placeholder={"Comments"}
+                    changeData={(data) =>
+                      checkValidation(data, "comments")
+                    }
+                    value={projectform.comments.value}
+                    error={projectform.comments.error}
+                    errmsg={projectform.comments.errmsg} />
+                </div>
+              </Grid>
 
               {projectform?.billable_type?.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Base Rate"}  changeData={(data) =>
-                        checkValidation(data, "baseRate")
-                      }
+                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
+                      checkValidation(data, "baseRate")
+                    }
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}  />
+                      errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -900,8 +910,8 @@ function ProjectFormCreate(props) {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"} 
-                     changeData={(data) =>
+                    <Labelbox type="text" placeholder={"Limit"}
+                      changeData={(data) =>
                         checkValidation(data, "limit")
                       }
                       value={projectform.limit.value}
@@ -920,18 +930,19 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.additionalRate.errmsg}
                     />
                   </Grid>
+
                 </Grid>
               ) : projectform.billable_type.value === 5 ||
                 projectform.billable_type.value === 1 ||
                 projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <Labelbox type="text" placeholder={"Base Rate"}  changeData={(data) =>
-                        checkValidation(data, "baseRate")
-                      }
+                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
+                      checkValidation(data, "baseRate")
+                    }
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}  />
+                      errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={6}>
                     <Labelbox
@@ -951,17 +962,7 @@ function ProjectFormCreate(props) {
                 <Grid item xs={6}></Grid>
               )}
 
-              <Grid item xs={6}>
-                <div className="projectFormComments">
-                  <Labelbox type="textarea" placeholder={"Comments"} 
-                            changeData={(data) =>
-                                checkValidation(data, "comments")
-                              }
-                              value={projectform.comments.value}
-                              error={projectform.comments.error}
-                              errmsg={projectform.comments.errmsg} />
-                </div>
-              </Grid>
+
               <Grid item xs={6}></Grid>
             </>
           ) : (
@@ -990,14 +991,14 @@ function ProjectFormCreate(props) {
   );
 }
 const mapStateToProps = (state) =>
-  // console.log(state.getOptions.getProcessType, "getProcessType")
-  ({
-    ProjectSubType: state.getOptions.getProjectSubType || [],
-    ProcessType: state.getOptions.getProcessType || [],
-    FilingType: state.getOptions.getFilingType || [],
-    EmployeeList: state.getOptions.getEmployeeList || [],
-    ProjectCostRange: state.getOptions.getProjectCostRange || [],
-    Client: state.getOptions.getClientlist,
-  });
+// console.log(state.getOptions.getProcessType, "getProcessType")
+({
+  ProjectSubType: state.getOptions.getProjectSubType || [],
+  ProcessType: state.getOptions.getProcessType || [],
+  FilingType: state.getOptions.getFilingType || [],
+  EmployeeList: state.getOptions.getEmployeeList || [],
+  ProjectCostRange: state.getOptions.getProjectCostRange || [],
+  Client: state.getOptions.getClientlist,
+});
 
 export default connect(mapStateToProps)(ProjectFormCreate);

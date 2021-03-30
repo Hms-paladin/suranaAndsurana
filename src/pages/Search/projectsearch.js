@@ -22,7 +22,8 @@ import { Redirect, Link } from "react-router-dom";
 import AdhocTaskModel from "./adhoctask";
 import DynModel from "../../component/Model/model";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { getProjectSearchTableData } from "../../actions/ProjectSearchAction";
+import { getProjectSearchTableData } from "../../actions/ProjectSearchAction"
+import ProjectIp from '../Project IP1/projectIp';
 
 const { Panel } = Collapse;
 
@@ -245,9 +246,26 @@ function Projectsearch(props) {
       let ipProjectDataList = [];
 
       data.project_details.map((data, index) => {
+        //   var rowdataListobj = {}
+
+        //   if( data.project_name){
+        //   rowdataListobj["project_name"] = data.project_name
+        // }
+
+        //   rowDataList.push(rowdataListobj)
+        //   rowDataList.push({
+        //     ProjectName: <Link to='/projectIp'>{data.project_name}</Link>,
+        //     ClientName: data.client,
+        //     SubProjectType: data.sub_project_type,
+        //     Process: data.process,
+        //     filing_type: data.filing_type,
+        //     ClientType: data.client_type,
+        //     BillingType: data.billable_type,
+        //   })
+        // })
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
-          rowdataListobj["ProjectName"] = data.project_name;
+          rowdataListobj["ProjectName"] = <Link to='/projectIp'>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["SubProjectType"] = data.sub_project_type;
           rowdataListobj["Process"] = data.process;
@@ -281,8 +299,8 @@ function Projectsearch(props) {
               data.project_type_id === 1
                 ? ipProjectHead
                 : data.project_type_id === 6
-                ? litigationHead
-                : OtherHead
+                  ? litigationHead
+                  : OtherHead
             }
             rows={ipProjectDataList}
             tabletitle={""}
@@ -358,6 +376,7 @@ function Projectsearch(props) {
           </Button>
         </div>
       </div>
+
       <div className="projectsearch_collapse">
         <Collapse onChange={callback}>{multiplePanel}</Collapse>
       </div>
@@ -389,14 +408,14 @@ function Projectsearch(props) {
   );
 } 
 const mapStateToProps = (state) =>
-  // console.log(state,"statestatestate")
-  ({
-    TableData: state.projectSearchReducer.getProjectSearchTableData,
-    ClientType: state.getOptions.getClientType,
-    Client: state.getOptions.getClientlist,
-    ProjectType: state.getOptions.getProjectType,
-    ProjectName: state.getOptions.getProjectName,
-    BillableType: state.getOptions.getBillableType,
-  });
+// console.log(state,"statestatestate")
+({
+  TableData: state.projectSearchReducer.getProjectSearchTableData,
+  ClientType: state.getOptions.getClientType,
+  Client: state.getOptions.getClientlist,
+  ProjectType: state.getOptions.getProjectType,
+  ProjectName: state.getOptions.getProjectName,
+  BillableType: state.getOptions.getBillableType,
+});
 
 export default connect(mapStateToProps)(Projectsearch);

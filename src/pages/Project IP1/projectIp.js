@@ -6,6 +6,8 @@ import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction";
 import { Tabs } from 'antd';
+import TabIcons from '../../component/TradeMarkTabIcons/trademarktabIcons';
+
 
 // IP Tabs:
 import TradeMarkTab from './TradeMark/trademark_Tab';
@@ -274,9 +276,15 @@ function ProjectIp() {
                     </div>
 
                 </Grid>
+            
+            </div>
+            <div>Intellectual Property</div>
+            <div className="projectTypedef">
+                <div>Trade Mark</div>
+                <div><TabIcons /></div>
             </div>
            
-            <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
+            {/* <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
                 <TabPane tab="Intellectual Property" key="1">
                     <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
                         <TabPane tab="Trade Mark" key="1">
@@ -295,7 +303,7 @@ function ProjectIp() {
                 </TabPane>
 
             </Tabs>
-
+ */}
 
         </div>
     )
