@@ -43,6 +43,7 @@ const RateMaster = (props) => {
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
+  const [amountDis,setAmountDis] =useState(false);
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -118,6 +119,7 @@ const RateMaster = (props) => {
     dispatch(getVariableRateTableData());
   }, []);
   useEffect(() => {
+
     console.log("props.getTableData", props.getTableData)
     let variableRateList = [];
     props.getTableData.map((data) => variableRateList.push(data));
@@ -416,6 +418,10 @@ const RateMaster = (props) => {
     }
   });
 
+  useEffect(()=>{
+setAmountDis(false)
+  },[props.variableRateCall])
+
   return (
     <div>
       <div className="var_rate_master">Variable Rate Master</div>
@@ -466,7 +472,7 @@ const RateMaster = (props) => {
             value={RateMaster.range_project_cost.value}
             error={RateMaster.range_project_cost.error}
             errmsg={RateMaster.range_project_cost.errmsg}
-          />
+          />{amountDis?
           <Labelbox
             // disabled={disabled}
             type="text"
@@ -476,6 +482,7 @@ const RateMaster = (props) => {
             error={RateMaster.amount.error}
             errmsg={RateMaster.amount.errmsg}
           />
+        :""  }
         </Grid>
         <Grid item xs={4} spacing={2}>
           <Labelbox

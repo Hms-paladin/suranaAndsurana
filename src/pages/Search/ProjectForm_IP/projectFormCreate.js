@@ -67,6 +67,7 @@ function ProjectFormCreate(props) {
   const [employeeList, setEmployeeList] = useState({});
   const [projectCostRange, setProjectCostRange] = useState({});
   const [client, setClient] = useState({});
+  const [variableRateCall,setVariableRateCall] = useState(false);
 
   const [projectform, setprojectform] = useState({
     client: {
@@ -414,6 +415,7 @@ function ProjectFormCreate(props) {
     function onSearch() {
       setSearchdata(true);
       setAddsearchdata(false);
+      setVariableRateCall(!variableRateCall)
     }
 
     function addSearchData() {
@@ -424,7 +426,7 @@ function ProjectFormCreate(props) {
 
     return (
       <div>
-        <VariableRate variablebtnchange={true} variabletablechange={true} />
+        <VariableRate variablebtnchange={true} variabletablechange={true}  variableRateCall={variableRateCall} />
         <CustomButton
           btnName={"Search"}
           btnCustomColor="customPrimary"
