@@ -24,7 +24,7 @@ import StagesMaster from '../pages/stages/StagesMaster'
 import AddHearing from '../pages/task/AddHearing'
 import RateMaster from '../pages/stages/RateMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
-
+import UserGroups from '../pages/UserGroups/usergroups'
 //Litigation :
 
 import Litigation from '../pages/Litigation/litigation';
@@ -58,6 +58,8 @@ function Routes(props) {
             {/* Litigation */}
 
             <PrivateRoute path="/litigation" component={Litigation} exact />
+
+            <PrivateRoute path="/usergroups" component={UserGroups} exact />
             </Switch>
         </Navbar>
     );

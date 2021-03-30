@@ -22,7 +22,7 @@ import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from "../../../images/addvardata.svg";
 import SuccessIcon from "../../../images/successicon.svg";
 import { InsertIpProject } from "../../../actions/ProjectformAction";
-
+import PlusIcon from "../../../images/plusIcon.svg";
 // Table Data ==>
 
 const header = [
@@ -68,6 +68,9 @@ function ProjectFormCreate(props) {
   const [projectCostRange, setProjectCostRange] = useState({});
   const [client, setClient] = useState({});
   const [variableRateCall,setVariableRateCall] = useState(false);
+
+  const [notfoundmodel, setNotfoundmodel] = useState(false);
+  const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
 
   const [projectform, setprojectform] = useState({
     client: {
@@ -290,7 +293,10 @@ function ProjectFormCreate(props) {
     // variable popup==>
 
     if (key === "billable_type" && data === 2) {
-      setVariableid(true);
+      setVarRatePlusIcon(true);
+      // setVariableid(true);
+    }else{
+      setVarRatePlusIcon(false);
     }
   }
 
@@ -337,7 +343,7 @@ function ProjectFormCreate(props) {
       "hod_attorny",
       "unit_measurement",
       "projectcostrange",
-      "projectname","process_type","comments","baseRate","limit","additionalRate"
+      "projectname", "process_type", "comments", "baseRate", "limit", "additionalRate"
     ];
 
     From_key.map((data) => {
@@ -416,6 +422,7 @@ function ProjectFormCreate(props) {
       setSearchdata(true);
       setAddsearchdata(false);
       // setVariableRateCall(!variableRateCall)
+      setNotfoundmodel(true);
     }
 
     function addSearchData() {
@@ -446,6 +453,33 @@ function ProjectFormCreate(props) {
               <img src={SuccessIcon} />
               <div>Data Successfully Added in Variable Rate Master</div>
             </div>
+          }
+          width={400}
+        />
+        <DynModel
+          modelTitle={"Billing Criteria Not Found"}
+          handleChangeModel={notfoundmodel}
+          handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
+          content={
+            <div className="successModel">
+
+              <div> <label className="notfound_label">Do You Want To Continue ?</label></div>
+              <div className="customNotFoundbtn">
+                <CustomButton
+                  btnName={"Yes"}
+                  btnCustomColor="customPrimary"
+                  custombtnCSS={"btnNotFound"}
+                  onBtnClick={()=>setNotfoundmodel(false)}
+                />
+                <CustomButton
+                 btnName={"No "} 
+                 btnCustomColor="customPrimary"
+                 custombtnCSS={"btnNotFound"}
+                 onBtnClick={()=>setNotfoundmodel(false)}
+                  />
+              </div>
+            </div>
+
           }
           width={400}
         />
@@ -579,7 +613,10 @@ alert("hi")
                   value={projectform.billable_type.value}
                   error={projectform.billable_type.error}
                   errmsg={projectform.billable_type.errmsg}
+                  
                 />
+              {(varRatePlusIcon===true)? <div style={{display: 'flex',justifyContent: 'flex-end'}}><img src={PlusIcon} style={{cursor: 'pointer',width:19}} onClick={()=>setVariableid(true)} /></div>:''}
+               
               </Grid>
               <Grid item xs={6}>
                 <Labelbox
