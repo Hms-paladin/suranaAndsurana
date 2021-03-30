@@ -78,13 +78,13 @@ insert_stage_master
     },
     noOfDays: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "allowNumaricOnly1" }],
+      validation: [{ "name": "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly1" }],
       error: null,
       errmsg: null,
     },
     compliance: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly1" }],
+      validation: [{ "name": "required" }, { "name": "allowNumaricOnly1" }],
       error: null,
       errmsg: null,
     },
@@ -279,8 +279,8 @@ insert_stage_master
 
     // no.of Days Validation==>
 
-    if (data && key == "compliance") {
-      RateMaster[key].validation[1].params = RateMaster.noOfDays.value
+    if (data && key == "noOfDays") {
+      RateMaster[key].validation[1].params = RateMaster.compliance.value
     }
 
 
@@ -410,7 +410,6 @@ insert_stage_master
           />
           <Labelbox type="text" placeholder={"Number of Days"}
             changeData={(data) => checkValidation(data, "compliance")}
-           
             value={RateMaster.compliance.value}
             error={RateMaster.compliance.error}
             errmsg={RateMaster.compliance.errmsg}

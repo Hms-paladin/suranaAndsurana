@@ -503,14 +503,23 @@ function ResumePage() {
 
   const showEditEducationModel = (x) => {
     setEducationModelOpen(true);
-    console.log(educationList[x], "educationList");
     setEducationid(x);
     setEducationrow(educationList[x]);
     setOnEdit(true);
   };
-  console.log(educationid, "educationid");
+  const showDeleteEducationModel = (x) => {
+    console.log(educationList[x], "educationList");
+    if (x > -1) {
+      educationList.splice(x, 1);
+    }
+    setEducationrow([...educationList])
 
-  console.log(educationrow, "educationrow");
+    setResumeFrom((prevState) => ({
+      ...prevState,
+    }));
+  }
+
+  }
 
   function showExperienceModel() {
     setExperienceModelOpen(true);
@@ -537,7 +546,6 @@ function ResumePage() {
     setEducationModelOpen(false);
     setEducationerr(false);
   }
-  console.log(addEducations, "addEducations");
 
   const EditEducation = (data, id) => {
     console.log(data, id, "datas");
@@ -785,7 +793,7 @@ function ResumePage() {
                           fontSize="small"
                           onClick={() => showEditEducationModel(index)}
                         />
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="small" onClick={() => showDeleteEducationModel(index)} />
                       </div>
                     );
                   })}
@@ -845,17 +853,16 @@ function ResumePage() {
                   type="select"
                   mode={"multiple"}
                   placeholder={"Capabilities"}
+                // dropdown={resumeGetList.traitsList}
 
-                  value={""}
                 />
               </Grid>
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
                   mode={"multiple"}
-                  placeholder={"Achievement"}
-
-                  value={""}
+                  placeholder={"Achivements"}
+                // dropdown={resumeGetList.traitsList}
                 />
               </Grid>
             </Grid>
@@ -1143,5 +1150,5 @@ function ResumePage() {
       </div>
     </div>
   );
-}
+
 export default ResumePage;

@@ -108,13 +108,13 @@ function AddClient() {
     cont_per_2: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" },{ name: "custommaxLength",params:"50" },{ "name": "alphabetwithspace" }],
+      validation: [{ name: "custommaxLength",params:"50" },{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     gender_2: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -126,13 +126,13 @@ function AddClient() {
     },
     con_ph_2: {
       value: "",
-      validation: [{name:"mobile"}],
+      validation: [],
       error: null,
       errmsg: null,
     },
     emai_id_2: {
       value: "",
-      validation: [{ name: "required" },{ name: "custommaxLength",params:"100" },{ "name": "email" }],
+      validation: [{ name: "custommaxLength",params:"100" },{ "name": "email" }],
       error: null,
       errmsg: null,
     },
