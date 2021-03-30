@@ -415,7 +415,7 @@ function ProjectFormCreate(props) {
     function onSearch() {
       setSearchdata(true);
       setAddsearchdata(false);
-      setVariableRateCall(!variableRateCall)
+      // setVariableRateCall(!variableRateCall)
     }
 
     function addSearchData() {
@@ -426,13 +426,7 @@ function ProjectFormCreate(props) {
 
     return (
       <div>
-        <VariableRate variablebtnchange={true} variabletablechange={true}  variableRateCall={variableRateCall} />
-        <CustomButton
-          btnName={"Search"}
-          btnCustomColor="customPrimary"
-          custombtnCSS="custom_save"
-          onBtnClick={onSearch}
-        />
+        <VariableRate variablebtnchange={true} variabletablechange={true}  />
         {searchdata && (
           <div className="addvariableData">
             <img src={AddVarData} onClick={addSearchData} />
@@ -458,7 +452,9 @@ function ProjectFormCreate(props) {
       </div>
     );
   };
-
+useEffect(()=>{
+alert("hi")
+},[props.searchVariableRate])
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -1001,6 +997,8 @@ const mapStateToProps = (state) =>
   EmployeeList: state.getOptions.getEmployeeList || [],
   ProjectCostRange: state.getOptions.getProjectCostRange || [],
   Client: state.getOptions.getClientlist,
+  searchVariableRate: state.variableRateMaster.searchVariableRate ,
+
 });
 
 export default connect(mapStateToProps)(ProjectFormCreate);

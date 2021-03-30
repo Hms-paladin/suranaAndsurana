@@ -10,7 +10,7 @@ import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getVariableRateTableData, InsertVariableRate } from "../../actions/VariableRateMaster"
+import { getVariableRateTableData, InsertVariableRate,SearchVariableRate } from "../../actions/VariableRateMaster"
 
 
 const RateMaster = (props) => {
@@ -43,7 +43,7 @@ const RateMaster = (props) => {
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
-  const [amountDis,setAmountDis] =useState(false);
+  const [amountDis,setAmountDis] =useState(true);
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -113,7 +113,11 @@ const RateMaster = (props) => {
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
-  }, [props]);
+    setAmountDis(false)
+  }, [props.variabletablechange,props.variablebtnchange]);
+  useEffect(() => {
+    setAmountDis(false)
+  }, [props.variableRateCall]);
 
   useEffect(() => {
     dispatch(getVariableRateTableData());
@@ -417,10 +421,10 @@ const RateMaster = (props) => {
       setIsLoaded(false);
     }
   });
+const onSearch=()=>{
+  dispatch(SearchVariableRate(RateMaster))
+}
 
-  useEffect(()=>{
-setAmountDis(false)
-  },[props.variableRateCall])
 
   return (
     <div>
@@ -472,7 +476,7 @@ setAmountDis(false)
             value={RateMaster.range_project_cost.value}
             error={RateMaster.range_project_cost.error}
             errmsg={RateMaster.range_project_cost.errmsg}
-          />{amountDis?
+          />{amountDis &&
           <Labelbox
             // disabled={disabled}
             type="text"
@@ -482,7 +486,7 @@ setAmountDis(false)
             error={RateMaster.amount.error}
             errmsg={RateMaster.amount.errmsg}
           />
-        :""  }
+         }
         </Grid>
         <Grid item xs={4} spacing={2}>
           <Labelbox
@@ -513,7 +517,12 @@ setAmountDis(false)
           />
         </Grid>
         {variablebtnchange ?
-          <div className="rate_cus_btns"></div>
+          <div className="rate_cus_btns"><CustomButton
+          btnName={"Search"}
+          btnCustomColor="customPrimary"
+          custombtnCSS="custom_save"
+          onBtnClick={onSearch}
+        /> </div>
           :
           <div className="rate_cus_btns">
             <CustomButton
