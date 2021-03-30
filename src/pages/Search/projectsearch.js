@@ -252,34 +252,25 @@ function Projectsearch(props) {
         //   rowdataListobj["project_name"] = data.project_name
         // }
 
-        //   rowDataList.push(rowdataListobj)
-        //   rowDataList.push({
-        //     ProjectName: <Link to='/projectIp'>{data.project_name}</Link>,
-        //     ClientName: data.client,
-        //     SubProjectType: data.sub_project_type,
-        //     Process: data.process,
-        //     filing_type: data.filing_type,
-        //     ClientType: data.client_type,
-        //     BillingType: data.billable_type,
-        //   })
-        // })
+       
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
-          rowdataListobj["ProjectName"] = <Link to='/projectIp'>{data.project_name}</Link>;
+          let currentData={}
+          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["SubProjectType"] = data.sub_project_type;
           rowdataListobj["Process"] = data.process;
           rowdataListobj["filing_type"] = data.filing_type;
           rowdataListobj["BillingType"] = data.billable_type;
         } else if (data.project_type_id === 6) {
-          rowdataListobj["ProjectName"] = data.project_name;
+          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["HR_name"] = data.HR_name;
           rowdataListobj["councel_name"] = data.councel_name;
           rowdataListobj["filing_type"] = data.filing_type;
           rowdataListobj["BillingType"] = data.billable_type;
         } else {
-          rowdataListobj["ProjectName"] = data.project_name;
+          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["SubProjectType"] = data.councel_name;
           rowdataListobj["HR_name"] = data.HR_name;

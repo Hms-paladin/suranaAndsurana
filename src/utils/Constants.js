@@ -69,3 +69,5 @@ export const GET_SUB_STAGE = "GET_SUB_STAGE";
 // VariableRateMaster
 export const GET_VARIABLERATE_TABLE_DATA = "GET_VARIABLERATE_TABLE_DATA";
 export const INSERT_VARIABLERATE = "INSERT_VARIABLERATE";
+// ProjectsFillingFinal
+export const GET_PROJECT_DETAILS = "GET_PROJECT_DETAILS";
