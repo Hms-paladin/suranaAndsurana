@@ -92,7 +92,9 @@ function TodoList(props) {
                 showId = data.int_status_id
                 showName = "int_status_id"
             }
-            hrList.push({ id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{showId}</div>, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: data.designation, candidates: data.no_of_candidates })
+            hrList.push({ id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
+             interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, 
+             designation: data.designation, candidates: data.no_of_candidates })
         })
         setHrTodoList(hrList)
 
