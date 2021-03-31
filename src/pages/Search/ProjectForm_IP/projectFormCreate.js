@@ -68,7 +68,7 @@ function ProjectFormCreate(props) {
   const [projectCostRange, setProjectCostRange] = useState({});
   const [client, setClient] = useState({});
   const [variableRateCall,setVariableRateCall] = useState(false);
-
+  const[addTableData,setAddTableData]=useState()
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
 
@@ -431,6 +431,8 @@ function ProjectFormCreate(props) {
       setSuccessmodel(true);
     }
 
+ 
+
     return (
       <div>
         <VariableRate variablebtnchange={true} variabletablechange={true}  />
@@ -441,7 +443,7 @@ function ProjectFormCreate(props) {
         )}
         {addsearchdata && (
           <div>
-            <EnhancedTable headCells={header} rows={rows} />
+            <EnhancedTable headCells={header} rows={addTableData.showVariableTableData} />
           </div>
         )}
         <DynModel
@@ -486,9 +488,34 @@ function ProjectFormCreate(props) {
       </div>
     );
   };
-useEffect(()=>{
-alert("hi")
-},[props.searchVariableRate])
+  useEffect(()=>{
+    // props.searchVariableRate.lenght === 0 && setNotfoundmodel(false)
+    let showVariableTableData=[];
+    if(props.lenghtData >= 0 ){
+      setAddsearchdata(true);
+    props.searchVariableRate.map((data,k)=>{
+      showVariableTableData.push({
+        designation:data.designation,
+        activity:data.activity,
+        sub_activity:data.sub_activity,
+        court:data.location,
+        costRange:data.range,
+        lowerLimit:data.lower_limit,
+        upperLimit:data.upper_limit,
+        amount:  data.amount,
+        UOM:data.unit
+       })
+    })
+
+  }else{
+    alert("hello")
+  }
+  setAddTableData({showVariableTableData})
+  console.log(props.lenghtData,"//")
+  
+   
+  },[props.searchVariableRate,props.lenghtData])
+
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -1035,7 +1062,7 @@ const mapStateToProps = (state) =>
   ProjectCostRange: state.getOptions.getProjectCostRange || [],
   Client: state.getOptions.getClientlist,
   searchVariableRate: state.variableRateMaster.searchVariableRate ,
-
+  lenghtData: state.variableRateMaster.lengthData ,
 });
 
 export default connect(mapStateToProps)(ProjectFormCreate);

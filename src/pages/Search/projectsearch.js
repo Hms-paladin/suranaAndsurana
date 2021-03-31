@@ -246,23 +246,6 @@ function Projectsearch(props) {
       let ipProjectDataList = [];
 
       data.project_details.map((data, index) => {
-        //   var rowdataListobj = {}
-
-        //   if( data.project_name){
-        //   rowdataListobj["project_name"] = data.project_name
-        // }
-
-        //   rowDataList.push(rowdataListobj)
-        //   rowDataList.push({
-        //     ProjectName: <Link to='/projectIp'>{data.project_name}</Link>,
-        //     ClientName: data.client,
-        //     SubProjectType: data.sub_project_type,
-        //     Process: data.process,
-        //     filing_type: data.filing_type,
-        //     ClientType: data.client_type,
-        //     BillingType: data.billable_type,
-        //   })
-        // })
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
           rowdataListobj["ProjectName"] = <Link to='/projectIp'>{data.project_name}</Link>;

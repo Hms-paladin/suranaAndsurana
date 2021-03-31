@@ -43,7 +43,7 @@ const RateMaster = (props) => {
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
-  const [amountDis,setAmountDis] =useState(true);
+  // const [amountDis,setAmountDis] =useState(true);
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -105,19 +105,14 @@ const RateMaster = (props) => {
       errmsg: null,
     },
   });
-  // const reduxvalue = 
-  //   useSelector((state)=>console.log(state,"reduxvalue"))
-
-  //   const tableDta = reduxvalue.variableRateMaster.getVariableRateTableData;
-
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
-    setAmountDis(false)
+    // setAmountDis(false)
   }, [props.variabletablechange,props.variablebtnchange]);
-  useEffect(() => {
-    setAmountDis(false)
-  }, [props.variableRateCall]);
+  // useEffect(() => {
+  //   // setAmountDis(false)
+  // }, [props.variableRateCall]);
 
   useEffect(() => {
     dispatch(getVariableRateTableData());
@@ -422,7 +417,33 @@ const RateMaster = (props) => {
     }
   });
 const onSearch=()=>{
-  dispatch(SearchVariableRate(RateMaster))
+  // var mainvalue = {};
+  // var targetkeys = Object.keys(RateMaster);
+  // for (var i in targetkeys) {
+  //   var errorcheck = ValidationLibrary.checkValidation(
+  //     RateMaster[targetkeys[i]].value,
+  //     RateMaster[targetkeys[i]].validation
+  //   );
+  //   RateMaster[targetkeys[i]].error = !errorcheck.state;
+  //   RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
+  //   mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
+  // }
+  // var filtererr = targetkeys.filter(
+//     (obj) => RateMaster[obj].error === true
+// );
+// if (filtererr.length > 0) {
+  // setRateMaster({ error: true });
+
+  // } else {
+    dispatch(SearchVariableRate(RateMaster))
+    .then((response) => {
+      handleCancel();
+  })
+
+  setRateMaster((prevState) => ({
+    ...prevState,
+  }));
+  
 }
 
 
@@ -476,7 +497,7 @@ const onSearch=()=>{
             value={RateMaster.range_project_cost.value}
             error={RateMaster.range_project_cost.error}
             errmsg={RateMaster.range_project_cost.errmsg}
-          />{amountDis &&
+          />
           <Labelbox
             // disabled={disabled}
             type="text"
@@ -486,7 +507,7 @@ const onSearch=()=>{
             error={RateMaster.amount.error}
             errmsg={RateMaster.amount.errmsg}
           />
-         }
+         
         </Grid>
         <Grid item xs={4} spacing={2}>
           <Labelbox

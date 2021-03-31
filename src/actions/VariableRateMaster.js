@@ -81,6 +81,7 @@ export const SearchVariableRate = (RateMaster) => async dispatch => {
           },
         }).then((response) => {
           if (response.data.status === 1) {
+            // console.log(response.data.data.length,"//")
               dispatch({type:SEARCH_VARIABLERATE,payload:response.data.data})
             return Promise.resolve();
           }
