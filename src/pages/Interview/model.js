@@ -67,7 +67,7 @@ function DynModelView(props){
                     <div className="Employee_formdiv">
                        <div className="employeeform_row1">
                           <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name?val.name:"-"}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Employee ID</div><div className="employeecont">{val.user_id?val.user_id:""}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id?val.resume_id:""}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?moment(val.dob).format("DD-MMM-YYYY"):"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 ||"M" ? "Male": "Female"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual?val.bas_qual:"-"}</div></div>

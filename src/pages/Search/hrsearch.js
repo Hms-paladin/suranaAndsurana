@@ -14,6 +14,7 @@ import Eyes from "../../images/neweye.svg";
 import DynModelView from "../Interview/model";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl";
+import moment from 'moment';
 
 const headCells = [
   { id:"view",label:"View"},
@@ -144,7 +145,7 @@ useEffect(() => {
               className="viewCandidatesList"
               onClick={()=>viewCandidate(data.resume_id)}
             />,name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female", 
-            basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: data.interviewed_date, 
+            basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date:moment(data.interviewed_date).format('DD-MM-YYYY') , 
             score: data.score, round: data.round, result: data.status,
             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id,data.designation_id)} name={"checked"+data.resume_id}
              checked={checkList["checked"+data.resume_id]} value={checkList["checked"+data.resume_id]} />
