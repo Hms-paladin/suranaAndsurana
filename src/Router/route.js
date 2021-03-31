@@ -49,7 +49,7 @@ function Routes(props) {
             <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
             {/* Ip TradeMark */}
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
-            <PrivateRoute path="/projectIp" component={ProjectIp1} exact />
+            <PrivateRoute path="/projectIp/:rowId" component={ProjectIp1} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
             <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
             <PrivateRoute path="/addhearing" component={AddHearing} exact />

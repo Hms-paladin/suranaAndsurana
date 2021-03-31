@@ -17,6 +17,7 @@ function ExperienceModel(props) {
     const dispatch = useDispatch()
     const [city, setCity] = useState([])
     const [industryOptions, setIndustryOptions] = useState([])
+    const [rowchange, setRowchange] = useState([]);
     const [Experience_Form, setExperienceForm] = useState({
 
         industry: {
@@ -27,7 +28,7 @@ function ExperienceModel(props) {
         },
         companyname: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "50Char" }],
+            validation: [{ "name": "required" }, { "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -39,13 +40,13 @@ function ExperienceModel(props) {
         },
         department: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetwithspace" },{ "name": "50Char" }],
+            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }, { "name": "50Char" }],
             error: null,
             errmsg: null,
         },
         designation: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "alphabetwithspace" },{ "name": "50Char" }],
+            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }, { "name": "50Char" }],
             error: null,
             errmsg: null,
         },
@@ -71,19 +72,65 @@ function ExperienceModel(props) {
 
 
     })
-    useEffect(()=>{  
-        Axios({
-       method: "get",
-       url: apiurl + "get_s_tbl_m_city",
-     }).then((response) => {
-       let cityList = [];
-       response.data.data.map((data, index) =>
-       cityList.push({ value: data.state, id: data.city_id })
-       );
-       setCity( cityList );
-     });
 
-   },[])
+    useEffect(() => {
+        const industry = props.editExperiences?.type_of_industry;
+        const compName = props.editExperiences?.company_name;
+        const city = props.editExperiences?.city;
+        const dept = props.editExperiences?.department;
+        const desig = props.editExperiences?.designation;
+        const periodFrm = props.editExperiences?.period_from;
+        const periodTo = props.editExperiences?.period_to;
+        const respons = props.editExperiences?.responsible;
+
+
+
+        Experience_Form.industry.value = industry;
+        Experience_Form.companyname.value = compName;
+        Experience_Form.city.value = city;
+        Experience_Form.department.value = dept;
+        Experience_Form.designation.value = desig;
+        Experience_Form.periodfrom.value = periodFrm;
+        Experience_Form.periodto.value = periodTo;
+        Experience_Form.responsibilities.value = respons;
+
+        setExperienceForm((prevState) => ({
+            ...prevState,
+        }));
+        console.log(props.editExperiences, "props.editExperienceid")
+
+
+    }, [props.editExperiences, props.editExperienceid]);
+
+    //update experience details==>
+
+    function updateExperience() {
+        setRowchange(Experience_Form)
+        props.EditExperience(Experience_Form, props.editExperienceid);
+        handleCancel()
+        props.handleChangeCloseModel()
+    }
+
+
+    useEffect(() => {
+        handleCancel()
+    }, [props.nullFieldValueExp])
+
+
+
+    useEffect(() => {
+        Axios({
+            method: "get",
+            url: apiurl + "get_s_tbl_m_city",
+        }).then((response) => {
+            let cityList = [];
+            response.data.data.map((data, index) =>
+                cityList.push({ value: data.state, id: data.city_id })
+            );
+            setCity(cityList);
+        });
+
+    }, [])
 
     function onSubmit() {
         var mainvalue = {};
@@ -147,7 +194,7 @@ function ExperienceModel(props) {
         }));
 
     };
-    
+
     useEffect(() => {
         dispatch(getIndustry())
     }, [])
@@ -199,24 +246,24 @@ function ExperienceModel(props) {
                     error={Experience_Form.designation.error}
                     errmsg={Experience_Form.designation.errmsg} />
                 </Grid>
-                
+
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={6}> <Labelbox  type="datepicker" placeholder="Period From"
+                <Grid item xs={6}> <Labelbox type="datepicker" placeholder="Period From"
                     changeData={(data) => checkValidation(data, "periodfrom")}
                     value={Experience_Form.periodfrom.value}
                     error={Experience_Form.periodfrom.error}
-                    errmsg={Experience_Form.periodfrom.errmsg} 
-                    disableFuture ={"false"}/>
+                    errmsg={Experience_Form.periodfrom.errmsg}
+                    disableFuture={"false"} />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="datepicker" placeholder="Period To"
                     changeData={(data) => checkValidation(data, "periodto")}
                     value={Experience_Form.periodto.value}
                     error={Experience_Form.periodto.error}
-                    errmsg={Experience_Form.periodto.errmsg} 
+                    errmsg={Experience_Form.periodto.errmsg}
                     disableFuture={"false"}
                     minDate={Experience_Form.periodfrom.value}
-                    />
+                />
                 </Grid>
             </Grid>
             <Grid item xs={12} container direction="row" spacing={2}>
@@ -232,7 +279,16 @@ function ExperienceModel(props) {
 
             </Grid>
 
-            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+            {props.editbtn ? (
+                <CustomButton
+                    btnName={"Update"}
+                    btnCustomColor="customPrimary"
+                    onBtnClick={updateExperience}
+                />
+            ) : (
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+            )}
+
         </div>
     )
 }

@@ -28,9 +28,13 @@ function ResumePage() {
   const [educationerr, setEducationerr] = useState(false);
   const [expReq, setExpReq] = useState(false);
   const [educationid, setEducationid] = useState();
+  const [experienceid, setExperienceid] = useState();
   const [educationrow, setEducationrow] = useState([]);
+  const [experiencerow, setExperiencerow] = useState([]);
   const [onEdit, setOnEdit] = useState(false);
   const [nullFieldValue, SetNullFieldValue] = useState(false);
+  const [nullFieldValueExp, SetNullFieldValueExp] = useState(false);
+
   const [Resume_Form, setResumeFrom] = useState({
     // userId: {
     //     value: "",
@@ -217,6 +221,8 @@ function ResumePage() {
     let eleven = apiurl + "get_s_tbl_m_city";
     let twevel = apiurl + "get_s_tbl_m_language";
     let thirteen = apiurl + "get_s_tbl_m_industry";
+    let fourteen = apiurl + "get_s_tbl_m_achievement";
+
 
     const requestOne = axios.get(one);
     const requestTwo = axios.get(two);
@@ -231,6 +237,7 @@ function ResumePage() {
     const requestEleven = axios.get(eleven);
     const requestTwevel = axios.get(twevel);
     const requestThirteen = axios.get(thirteen);
+    const requestFourteen = axios.get(fourteen);
 
     axios
       .all([
@@ -247,6 +254,7 @@ function ResumePage() {
         requestEleven,
         requestTwevel,
         requestThirteen,
+        requestFourteen,
       ])
       .then(
         axios.spread((...responses) => {
@@ -263,6 +271,8 @@ function ResumePage() {
           const responseEleven = responses[10].data.data;
           const responseTwevel = responses[11].data.data;
           const responseThirteen = responses[12].data.data;
+          const responseFourteen = responses[13].data.data;
+
 
           let candidateList = [];
           let qualificationList = [];
@@ -277,6 +287,7 @@ function ResumePage() {
           let cityList = [];
           let languagesList = [];
           let industryList = [];
+          let achivements = [];
 
           responseOne.map((data, index) => {
             candidateList.push({
@@ -348,6 +359,11 @@ function ResumePage() {
             industryList.push({ value: data.industry, id: data.industry_id });
           });
 
+          responseFourteen.map((data, index) => {
+            achivements.push({ value: data.industry, id: data.industry_id });
+          });
+
+
           setGetList({
             candidateList,
             qualificationList,
@@ -362,6 +378,7 @@ function ResumePage() {
             cityList,
             languagesList,
             industryList,
+            achivements,
           });
         })
       )
@@ -517,16 +534,13 @@ function ResumePage() {
 
   }
 
-  function showExperienceModel() {
-    setExperienceModelOpen(true);
-  }
 
-  function closeModel() {
-    alert("test");
-    setEducationModelOpen(false);
-    setOnEdit(false);
-    // onClose()
-  }
+  // function closeModel() {
+  //   alert("test");
+  //   setEducationModelOpen(false);
+  //   setOnEdit(false);
+  // onClose()
+  // }
 
   function addEducations(data) {
     setEducationList([
@@ -555,7 +569,26 @@ function ResumePage() {
     };
   };
 
-  console.log(educationList, "educationList");
+  const handleFieldNull = (bln) => {
+    setEducationModelOpen(bln);
+    SetNullFieldValue(!nullFieldValue);
+    setOnEdit(false);
+  };
+
+  //Experience Model
+
+
+  function showExperienceModel() {
+    setExperienceModelOpen(true);
+  }
+
+  const showEditExperienceModel = (y) => {
+    setExperienceModelOpen(true);
+    setExperienceid(y);
+    setExperiencerow(experienceList[y]);
+    setOnEdit(true);
+
+  }
 
   function addExperience(data) {
     setExperienceList([
@@ -575,9 +608,36 @@ function ResumePage() {
     setEmployererr(false);
   }
 
-  const handleFieldNull = (bln) => {
-    setEducationModelOpen(bln);
-    SetNullFieldValue(!nullFieldValue);
+  const EditExperience = (data, id) => {
+    console.log(data, id, "datas");
+
+    experienceList[id] = {
+      type_of_industry: data.industry.value,
+      company_name: data.companyname.value,
+      city: data.city.value,
+      department: data.department.value,
+      designation: data.designation.value,
+      period_from: data.periodfrom.value,
+      period_to: data.periodto.value,
+      responsible: data.responsibilities.value,
+    };
+  };
+
+  const showDeleteExperienceModel = (y) => {
+    console.log(experienceList[y], "educationList");
+    if (y > -1) {
+      experienceList.splice(y, 1);
+    }
+    setExperiencerow([...experienceList])
+
+
+  }
+
+
+
+  const handleFieldNullExp = (bln) => {
+    setExperienceModelOpen(bln);
+    SetNullFieldValueExp(!nullFieldValueExp);
     setOnEdit(false);
   };
 
@@ -1063,7 +1123,7 @@ function ResumePage() {
               </div>
               {experienceList.length > 0 && (
                 <div className="experienceOuterBox">
-                  {experienceList.map((data) => {
+                  {experienceList.map((data, index) => {
                     return (
                       <div className="experienceKeyValue">
                         <div className="experienceKey">
@@ -1092,8 +1152,8 @@ function ResumePage() {
                           <div>{data.period_to}</div>
                           <div>{data.responsible}</div>
                         </div>
-                        <EditIcon fontSize="small" />
-                        <DeleteIcon fontSize="small" />
+                        <EditIcon fontSize="small" onClick={() => showEditExperienceModel(index)} />
+                        <DeleteIcon fontSize="small" onClick={() => showDeleteExperienceModel(index)} />
                       </div>
                     );
                   })}
@@ -1136,10 +1196,17 @@ function ResumePage() {
           <DynModel
             modelTitle={"Experience"}
             handleChangeModel={experienceModelOpen}
-            handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)}
+            handleChangeCloseModel={(bln) => handleFieldNullExp(bln)}
             width={700}
             content={
-              <ExperienceModel addExperience={(data) => addExperience(data)} />
+              <ExperienceModel addExperience={(data) => addExperience(data)}
+                nullFieldValueExp={nullFieldValueExp}
+                editExperienceid={experienceid}
+                editExperiences={experiencerow}
+                editbtn={onEdit}
+                handleChangeCloseModel={(bln) => handleFieldNullExp(bln)}
+                EditExperience={(data, id) => EditExperience(data, id)}
+              />
             }
           />
         </div>

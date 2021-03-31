@@ -246,23 +246,31 @@ function Projectsearch(props) {
       let ipProjectDataList = [];
 
       data.project_details.map((data, index) => {
+        //   var rowdataListobj = {}
+
+        //   if( data.project_name){
+        //   rowdataListobj["project_name"] = data.project_name
+        // }
+
+       
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
-          rowdataListobj["ProjectName"] = <Link to='/projectIp'>{data.project_name}</Link>;
+          let currentData={}
+          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["SubProjectType"] = data.sub_project_type;
           rowdataListobj["Process"] = data.process;
           rowdataListobj["filing_type"] = data.filing_type;
           rowdataListobj["BillingType"] = data.billable_type;
         } else if (data.project_type_id === 6) {
-          rowdataListobj["ProjectName"] = data.project_name;
+          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["HR_name"] = data.HR_name;
           rowdataListobj["councel_name"] = data.councel_name;
           rowdataListobj["filing_type"] = data.filing_type;
           rowdataListobj["BillingType"] = data.billable_type;
         } else {
-          rowdataListobj["ProjectName"] = data.project_name;
+          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["SubProjectType"] = data.councel_name;
           rowdataListobj["HR_name"] = data.HR_name;
