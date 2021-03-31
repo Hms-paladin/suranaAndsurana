@@ -63,7 +63,7 @@ function ExperienceModel(props) {
         },
         responsibilities: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "200Char" }],
+            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "200"}],
             error: null,
             errmsg: null,
         },
