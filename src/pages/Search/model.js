@@ -49,10 +49,28 @@ function DynModel(props) {
         }
     })
 
-    function handleCancel() {
-        setVisible(false)
-        props.handleChangeCloseModel(false)
-    }
+    const stateClear = () => {
+ 
+      let Form_key = [
+        "desgination",
+      "interviewer",
+      "propsedDate","round"
+     ];
+  
+      Form_key.map((data) => {
+       
+        try {
+          Interviewschedule[data].value = "";
+        } catch (error) {
+          throw(error)
+        }
+      });
+      setVisible(false)
+      props.handleChangeCloseModel(false)
+      setInterviewschedule((prevState) => ({
+        ...prevState,
+      }));
+    };
 
     function checkValidation(data, key, multipleId) {
 
@@ -95,8 +113,8 @@ function DynModel(props) {
         console.log(filtererr.length);
         if (filtererr.length > 0) {
         } else {
-            dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then(()=>{
-                handleCancel()
+            dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then((response) => {
+              stateClear()
             })
         }
 
@@ -161,7 +179,7 @@ function DynModel(props) {
         footer={null}
         width={props.width ? props.width : 520}
         zIndex={1201}
-        onCancel={handleCancel}
+        onCancel={stateClear}
       >
         <div className="interviewdetailformdiv">
           <div className="interviewdetailform">

@@ -10,10 +10,13 @@ import DynModel from '../../component/Model/model';
 import HrInterviewModel from './hrinterviewmodel.js';
 import { useDispatch, connect } from "react-redux";
 import Axios from 'axios';
+import Eyes from "../../images/neweye.svg";
+import DynModelView from "../Interview/model";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl";
 
 const headCells = [
+  { id:"view",label:"View"},
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
@@ -35,7 +38,8 @@ function Hrsearch(props) {
     const [checkList, setCheckedList] = useState({})
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
     const [deignationID, setDeignationID] = useState([]);
-    const [hrSearchList, setGetList] = useState({})
+    const [viewId,setViewId]=useState("")
+    const [candidateViewModel,setCandidateViewModel] =useState(false)
     const [test, setTest] = useState(true)
     const [HrSearch_Form, setHrSearchFrom] = useState({
       designation_id: {
@@ -64,19 +68,16 @@ function Hrsearch(props) {
     },[])
 
 const handleCheck = (event,resume_id,designation_id) => {
-  console.log("resume_idclicked",resume_id)
   if(selectedCandidateId.includes(resume_id)){
       selectedCandidateId.map((data,index)=>{
           if ( data === resume_id) { 
               selectedCandidateId.splice(index, 1);
-              console.log("selectedCandidateIdif",selectedCandidateId) 
           }
       })
 
   }else{
     selectedCandidateId.push(resume_id)
     setDeignationID(designation_id)
-    console.log("selectedCandidateIdelse",selectedCandidateId) 
   }
      
     setCheckedList(
@@ -85,8 +86,11 @@ const handleCheck = (event,resume_id,designation_id) => {
           [event.target.name]: !checkList[event.target.name],
       })
   )
-  console.log(checkList,"setCheckedList")
   setTest(!test)
+}
+const viewCandidate=(id)=>{
+  setViewId(id)
+  setCandidateViewModel(true)
 }
     useEffect(()=> {
       
@@ -127,7 +131,6 @@ const handleCheck = (event,resume_id,designation_id) => {
               });
 
     }, [dispatch])
-    // setGetList({hr_round},{ Designation },{ interview_status })
 
 },[])
 useEffect(() => {
@@ -136,7 +139,11 @@ useEffect(() => {
  let rowDataList = []
 
         data.result.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female", 
+            rowDataList.push({view:  <img
+              src={Eyes}
+              className="viewCandidatesList"
+              onClick={()=>viewCandidate(data.resume_id)}
+            />,name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female", 
             basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: data.interviewed_date, 
             score: data.score, round: data.round, result: data.status,
             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id,data.designation_id)} name={"checked"+data.resume_id}
@@ -267,6 +274,12 @@ function checkValidation(data, key) {
             }
           />
         </div>
+        <DynModelView
+                modelTitle={"Candidate's Details"}
+                handleChangeModel={candidateViewModel}
+                handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
+                res_data_id={viewId}
+              />
       </div>
     );
 }

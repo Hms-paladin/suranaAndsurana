@@ -11,10 +11,12 @@ import { getSkills, getTraits, getCertification, getAchievement, getSpecilizatio
 import Axios from 'axios';
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
+import Eyes from "../../images/neweye.svg";
 import DynModelView from "../Interview/model";
 import './search.scss'
 
 const headCells = [
+    { id:"view",label:"View"},
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
@@ -34,7 +36,7 @@ function Resumesearch(props) {
     const [modelOpen, setModelOpen] = useState(false)
 
 
-    const [value, setValue] = React.useState();
+    // const [value, setValue] = React.useState();  
     const [optionvalues, setoptionvalues] = useState([]);
     const [resumeSearchList, setGetList] = useState({})
     const [rows, setRowData] = useState([])
@@ -228,14 +230,17 @@ function Resumesearch(props) {
       const viewCandidate=(id)=>{
         setViewId(id)
         setCandidateViewModel(true)
-        console.log("//",id)
       }
 
     useEffect(() => {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name:<span onClick={()=>viewCandidate(data.resume_id)}> {data.name}</span>, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+            rowDataList.push({ view:  <img
+                src={Eyes}
+                className="viewCandidatesList"
+                onClick={()=>viewCandidate(data.resume_id)}
+              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
              basic: data.basic_qual, language: data.language, certification: data.certifications, 
              specialization: data.specialization, talents: data.talent,
              box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 

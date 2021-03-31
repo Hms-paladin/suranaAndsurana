@@ -34,7 +34,7 @@ const HrInterviewModel=(props)=> {
             validation: [{ "name": "required" },{ "name": "futureDate" }],
             error: null,
             errmsg: null,
-        },     round: {
+        },round: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -136,9 +136,8 @@ function onSubmit() {
     if (filtererr.length > 0) {
     } else {
         dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then(()=>{
-            // handleCancel()
-            // setVisible(false)
-            props.handleChangeCloseModel(false)
+            stateClear()
+            // props.handleChangeCloseModel(false)
         })
     }
 
@@ -146,11 +145,28 @@ function onSubmit() {
         ...prevState
     }));
 };
+const stateClear = () => {
+ 
+    let Form_key = [
+      "desgination",
+    "interviewer",
+    "propsedDate","round"
+   ];
 
-
-function handleCancel() {
+    Form_key.map((data) => {
+     
+      try {
+        Interviewschedule[data].value = "";
+      } catch (error) {
+        throw(error)
+      }
+    });
     props.handleChangeCloseModel(false)
-}
+    setInterviewschedule((prevState) => ({
+      ...prevState,
+    }));
+  };
+
     return (
       <div>
         <Labelbox
