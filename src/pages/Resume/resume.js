@@ -670,6 +670,7 @@ function ResumePage() {
     setOnEdit(false);
   };
 
+
   return (
     <div>
       <Grid item xs={12} className="ContentTitle">
