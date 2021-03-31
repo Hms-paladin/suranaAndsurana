@@ -133,28 +133,7 @@ function RectificationFiled(){
         }
     return(
         <div className="container">
-            <div style={{display:'flex', justifyContent:'flex-end'}}>
-            <div style={{margin:'5px'}}>
-              <img src={Checklist} />
-              <p>CHECKLIST</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Stage} />
-              <p>STAGE</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Task} />
-              <p>TASKS</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Application} />
-              <p>APPLICATION</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Application} />
-              <p>STAGE MONITOR</p>
-            </div>
-         </div>
+          
             <Grid  container spacing={2}   >
                 <Grid item md={2}>
                     <Labelbox  type="select"
@@ -221,11 +200,10 @@ function RectificationFiled(){
                     />
                 </Grid>
            </Grid>   
-           <div className="ipdesign_savebtn" direction="row" justify="center">
-                <CustomButton  btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}/>
-                <CustomButton  btnName={"cancel"} btnCustomColor="customPrimary"/>
-           </div>
-                   
+           <div className="custombtnOposition">
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+            </div>
         </div>
     )
 }

@@ -8,7 +8,7 @@ import Stage from "../../../../images/stage.png";
 import Task from "../../../../images/task.png";
 import Application from "../../../../images/application.png";
 
-function CancelDefended(){
+function CancelDefended() {
     const [CancelDefended, setCancelDefended] = useState({
         client_responten: {
             value: "",
@@ -38,7 +38,7 @@ function CancelDefended(){
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
-             errmsg: null,
+            errmsg: null,
         },
         comments: {
             value: "",
@@ -66,11 +66,11 @@ function CancelDefended(){
             errmsg: errorcheck.msg,
             validation: CancelDefended[key].validation
         }
-    
+
         // only for multi select (start)
-    
+
         let multipleIdList = []
-    
+
         if (multipleId) {
             multipleId.map((item) => {
                 for (let i = 0; i < data.length; i++) {
@@ -82,7 +82,7 @@ function CancelDefended(){
             dynObj.valueById = multipleIdList.toString()
         }
         // (end)
-    
+
         setCancelDefended(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -98,8 +98,8 @@ function CancelDefended(){
         //     setResumeFrom({ error: false });
         // }
     };
-    
-        function onSubmit(){   
+
+    function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(CancelDefended);
         for (var i in targetkeys) {
@@ -119,115 +119,96 @@ function CancelDefended(){
             // setCancelDefended({ error: true });
         } else {
             // setCancelDefended({ error: false });
-            
+
             // dispatch(InesertResume(CancelDefended)).then(()=>{
             //     handleCancel()
             // })
         }
-    
+
         setCancelDefended(prevState => ({
             ...prevState
         }));
-    
-    
-        }
-    return(
+
+
+    }
+    return (
         <div className="container">
-                       <div style={{display:'flex', justifyContent:'flex-end'}}>
-            <div style={{margin:'5px'}}>
-              <img src={Checklist} />
-              <p>CHECKLIST</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Stage} />
-              <p>STAGE</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Task} />
-              <p>TASKS</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Application} />
-              <p>APPLICATION</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Application} />
-              <p>STAGE MONITOR</p>
-            </div>
-         </div>
-            <Grid  container spacing={2}   >
+
+            <Grid container spacing={2}   >
                 <Grid item md={2}>
-                    <Labelbox  type="select"
-                    placeholder={"Client Respondent"}
-                    changeData={(data) => checkValidation(data, "client_respontent")}
-                    value={CancelDefended.client_responten.value}
-                    error={CancelDefended.client_responten.error}
-                    errmsg={CancelDefended.client_responten.errmsg}
+                    <Labelbox type="select"
+                        placeholder={"Client Respondent"}
+                        changeData={(data) => checkValidation(data, "client_respontent")}
+                        value={CancelDefended.client_responten.value}
+                        error={CancelDefended.client_responten.error}
+                        errmsg={CancelDefended.client_responten.errmsg}
                     />
                 </Grid>
                 <Grid item md={2}>
-                    <Labelbox  type="text"
-                    placeholder={"Design Number"}
-                    changeData={(data) => checkValidation(data, "des_number")}
-                    value={CancelDefended.des_number.value}
-                    error={CancelDefended.des_number.error}
-                    errmsg={CancelDefended.des_number.errmsg}
+                    <Labelbox type="text"
+                        placeholder={"Design Number"}
+                        changeData={(data) => checkValidation(data, "des_number")}
+                        value={CancelDefended.des_number.value}
+                        error={CancelDefended.des_number.error}
+                        errmsg={CancelDefended.des_number.errmsg}
                     />
                 </Grid>
                 <Grid item md={2}>
-                    <Labelbox  type="text"
-                    placeholder={"Petitioner"}
-                    changeData={(data) => checkValidation(data, "petitioner")}
-                    value={CancelDefended.petitioner.value}
-                    error={CancelDefended.petitioner.error}
-                    errmsg={CancelDefended.petitioner.errmsg}
+                    <Labelbox type="text"
+                        placeholder={"Petitioner"}
+                        changeData={(data) => checkValidation(data, "petitioner")}
+                        value={CancelDefended.petitioner.value}
+                        error={CancelDefended.petitioner.error}
+                        errmsg={CancelDefended.petitioner.errmsg}
                     />
                 </Grid>
                 <Grid item md={2}>
-                    <Labelbox  type="text"
-                    placeholder={"Petitioner Rep"}
-                    changeData={(data) => checkValidation(data, "petitioner_rep")}
-                    value={CancelDefended.petitioner_rep.value}
-                    error={CancelDefended.petitioner_rep.error}
-                    errmsg={CancelDefended.petitioner_rep.errmsg}
+                    <Labelbox type="text"
+                        placeholder={"Petitioner Rep"}
+                        changeData={(data) => checkValidation(data, "petitioner_rep")}
+                        value={CancelDefended.petitioner_rep.value}
+                        error={CancelDefended.petitioner_rep.error}
+                        errmsg={CancelDefended.petitioner_rep.errmsg}
                     />
                 </Grid>
-                <Grid item md={3}/>
+                <Grid item md={3} />
                 <Grid item md={2} >
-                   <Labelbox  type="select"
-                    placeholder={"Status"}
-                    changeData={(data) => checkValidation(data, "status")}
-                    value={CancelDefended.status.value}
-                    error={CancelDefended.status.error}
-                    errmsg={CancelDefended.status.errmsg}
+                    <Labelbox type="select"
+                        placeholder={"Status"}
+                        changeData={(data) => checkValidation(data, "status")}
+                        value={CancelDefended.status.value}
+                        error={CancelDefended.status.error}
+                        errmsg={CancelDefended.status.errmsg}
                     />
                 </Grid>
                 <Grid item md={4} >
-                   <Labelbox  type="text"
-                    placeholder={"Comments"}
-                    changeData={(data) => checkValidation(data, "comments")}
-                    value={CancelDefended.comments.value}
-                    error={CancelDefended.comments.error}
-                    errmsg={CancelDefended.comments.errmsg}
+                    <Labelbox type="text"
+                        placeholder={"Comments"}
+                        changeData={(data) => checkValidation(data, "comments")}
+                        value={CancelDefended.comments.value}
+                        error={CancelDefended.comments.error}
+                        errmsg={CancelDefended.comments.errmsg}
                     />
                 </Grid>
                 <Grid item md={2} >
-                   <Labelbox  type="datepicker"
-                    placeholder={"Application Date"}
-                    changeData={(data) => checkValidation(data, "app_date")}
-                    value={CancelDefended.app_date.value}
-                    error={CancelDefended.app_date.error}
-                    errmsg={CancelDefended.app_date.errmsg}
+                    <Labelbox type="datepicker"
+                        placeholder={"Application Date"}
+                        changeData={(data) => checkValidation(data, "app_date")}
+                        value={CancelDefended.app_date.value}
+                        error={CancelDefended.app_date.error}
+                        errmsg={CancelDefended.app_date.errmsg}
                     />
                 </Grid>
 
-              
-           </Grid>   
-           <div className="ipdesign_savebtn" direction="row" justify="center">
-                <CustomButton  btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}/>
-                <CustomButton  btnName={"cancel"} btnCustomColor="customPrimary"/>
-           </div>
-                   
+
+            </Grid>
+
+            <div className="custombtnOposition">
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+            </div>
+
+
         </div>
     )
 }

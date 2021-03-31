@@ -205,6 +205,20 @@ function ResumePage() {
       error: null,
       errmsg: null,
     },
+    achivements: {
+      value: "",
+      valueById: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
+    capability: {
+      value: "",
+      valueById: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
   });
 
   useEffect(() => {
@@ -222,6 +236,7 @@ function ResumePage() {
     let twevel = apiurl + "get_s_tbl_m_language";
     let thirteen = apiurl + "get_s_tbl_m_industry";
     let fourteen = apiurl + "get_s_tbl_m_achievement";
+    let fifteen = apiurl + "get_s_tbl_m_capability";
 
 
     const requestOne = axios.get(one);
@@ -238,6 +253,8 @@ function ResumePage() {
     const requestTwevel = axios.get(twevel);
     const requestThirteen = axios.get(thirteen);
     const requestFourteen = axios.get(fourteen);
+    const requestFifteen = axios.get(fifteen);
+
 
     axios
       .all([
@@ -255,6 +272,7 @@ function ResumePage() {
         requestTwevel,
         requestThirteen,
         requestFourteen,
+        requestFifteen,
       ])
       .then(
         axios.spread((...responses) => {
@@ -272,6 +290,8 @@ function ResumePage() {
           const responseTwevel = responses[11].data.data;
           const responseThirteen = responses[12].data.data;
           const responseFourteen = responses[13].data.data;
+          const requestFifteen = responses[14].data.data;
+
 
 
           let candidateList = [];
@@ -287,7 +307,9 @@ function ResumePage() {
           let cityList = [];
           let languagesList = [];
           let industryList = [];
-          let achivements = [];
+          let achivementsList = [];
+          let capabilityList = [];
+
 
           responseOne.map((data, index) => {
             candidateList.push({
@@ -360,9 +382,13 @@ function ResumePage() {
           });
 
           responseFourteen.map((data, index) => {
-            achivements.push({ value: data.achievement, id: data.achievement_id });
+            achivementsList.push({ value: data.achievement, id: data.achievement_id });
+          });
+          requestFifteen.map((data, index) => {
+            capabilityList.push({ value: data.capability, id: data.capability_id });
           });
 
+          console.log(capabilityList,"capabilitycapability")
 
           setGetList({
             candidateList,
@@ -378,7 +404,8 @@ function ResumePage() {
             cityList,
             languagesList,
             industryList,
-            achivements,
+            achivementsList,
+            capabilityList,
           });
         })
       )
@@ -502,6 +529,8 @@ function ResumePage() {
       "name2",
       "linkedin",
       "twitter",
+      "achivements",
+      "capability",
     ];
 
     ResumeFrom_key.map((data) => {
@@ -558,7 +587,6 @@ function ResumePage() {
   }
 
   const EditEducation = (data, id) => {
-    console.log(data, id, "datas");
 
     educationList[id] = {
       qualification: data.basicQualification.value,
@@ -591,6 +619,8 @@ function ResumePage() {
   }
 
   function addExperience(data) {
+    console.log(data, "addExperience");
+
     setExperienceList([
       ...experienceList,
       {
@@ -609,7 +639,6 @@ function ResumePage() {
   }
 
   const EditExperience = (data, id) => {
-    console.log(data, id, "datas");
 
     experienceList[id] = {
       type_of_industry: data.industry.value,
@@ -680,8 +709,8 @@ function ResumePage() {
                     type="select"
                     placeholder={"Gender *"}
                     dropdown={[
-                      { id: "1", value: "Male" },
-                      { id: "2", value: "Female" },
+                      { id: 1, value: "Male" },
+                      { id: 2, value: "Female" },
                     ]}
                     changeData={(data) => checkValidation(data, "gender")}
                     value={Resume_Form.gender.value}
@@ -909,7 +938,17 @@ function ResumePage() {
                   type="select"
                   mode={"multiple"}
                   placeholder={"Capabilities"}
-                // dropdown={resumeGetList.traitsList}
+                  dropdown={resumeGetList.capabilityList}
+                  changeData={(data) =>
+                    checkValidation(
+                      data,
+                      "capability",
+                      resumeGetList.capabilityList
+                    )
+                  }
+                  value={Resume_Form.capability.value}
+                  error={Resume_Form.capability.error}
+                  errmsg={Resume_Form.capability.errmsg}
 
                 />
               </Grid>
@@ -918,7 +957,17 @@ function ResumePage() {
                   type="select"
                   mode={"multiple"}
                   placeholder={"Achivements"}
-                // dropdown={resumeGetList.achivements}
+                  dropdown={resumeGetList.achivementsList}
+                  changeData={(data) =>
+                    checkValidation(
+                      data,
+                      "achivements",
+                      resumeGetList.achivementsList
+                    )
+                  }
+                  value={Resume_Form.achivements.value}
+                  error={Resume_Form.achivements.error}
+                  errmsg={Resume_Form.achivements.errmsg}
                 />
               </Grid>
             </Grid>
@@ -1145,7 +1194,12 @@ function ResumePage() {
                             })}
                           </div>
                           <div>{data.company_name}</div>
-                          <div>{data.city}</div>
+                          <div> {resumeGetList.cityList.map((getName) => {
+                            if (data.city === getName.id) {
+                              return getName.value;
+                            }
+                          })}</div>
+
                           <div>{data.department}</div>
                           <div>{data.designation}</div>
                           <div>{data.period_from}</div>
