@@ -1,7 +1,6 @@
 import react, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import './projectIp.scss';
-import CopyRight from '../Project IP1/CopyRight'
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
@@ -9,11 +8,9 @@ import { InesertResume } from "../../actions/ResumeAction";
 import { Tabs } from 'antd';
 import TabIcons from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction"
-
-// IP Tabs:
-import TradeMarkTab from './TradeMark/trademark_Tab';
-import Patent from '../Project IP1/Patent/Patent'
-import Design from '../Project IP1/Design/design';
+import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
+import DynModel from '../../component/Model/model';
+import Stages from '../stages/stageicon';
 
 
 // IP Project:
@@ -31,6 +28,20 @@ import ApplicationPCT from '../Project IP1/Patent/ApplicationPCT';
 import OppositionFilled from '../Project IP1/Patent/OppositionFilled';
 import OppositionDefended from '../Project IP1/Patent/OppositionDefended';
 
+// 3.Design 
+
+import ApplicationIndiaFiling from '../Project IP1/Design/Application/IndiaFilling';
+import ApplicationInternationalFiling from '../Project IP1/Design/Application/InternationalFilling';
+import CancelDefended from '../Project IP1/Design/Cancellation/CancelDefended';
+import CancelFiled from '../Project IP1/Design/Cancellation/CancelFiled';
+import RectificationDefended from '../Project IP1/Design/Rectification/RectificationDefended';
+import RectificationFiled from '../Project IP1/Design/Rectification/RectificationFiled';
+
+// 4.copyRight
+
+import CopyRights from '../Project IP1/CopyRight';
+
+
 
 
 
@@ -39,6 +50,11 @@ const { TabPane } = Tabs;
 function ProjectIp(props) {
     const dispatch = useDispatch()
     const [projectDetails, setProjectDetails] = useState({})
+    const [modelOpen, setModelOpen] = useState(false)
+    const [task, setTask] = useState(true)
+    const [stage, setStage] = useState(false)
+    const [stageMonitor, setStageMonitor] = useState(false)
+
 
     function callback(key) {
         console.log(key);
@@ -253,6 +269,36 @@ function ProjectIp(props) {
 
     };
 
+    const modelContent = () => {
+        return (
+            <ProjectTaskModel />
+        )
+    }
+
+    function projectTaskModel(boxName) {
+        if (boxName === "TASKS") {
+            setModelOpen(true)
+        }
+        else if (boxName === "STAGE") {
+            setStage(true)
+            setTask(false)
+
+        }
+        else if (boxName === "STAGE  MONITOR") {
+            setStageMonitor(true)
+            setTask(false)
+            setStage(false)
+
+        }
+        else if (boxName === "APPLICATION") {
+            setStage(false)
+
+        }
+
+
+    }
+
+
     return (
         <div>
             <div className="projectIpContainer">
@@ -323,31 +369,70 @@ function ProjectIp(props) {
                 <div>Intellectual Property</div>
                 <div className="projectTypedef">
                     <div>{props.ProjectDetails[0] && props.ProjectDetails[0].sub_project_type}</div>
-                    <div><TabIcons /></div>
-                    {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "India Filing" && <Trade1 />
-                    }
-                    {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "International Filing" && <Trade2 />
+                    <div><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
+                    {/* TradeMark */}
+                    {stage ?
+                        <Stages />
+                        :
+                        <div>{
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "India Filing" && <Trade1 />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "International Filing" && <Trade2 />
 
-                    }
-                    {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Defended" && <Trade4 />
-                    }
-                    {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Domestic" && <ApplicationDomestic />
-                    }
-                    {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Foreign" && <ApplicationForeign />
-                    }
-                    {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "PCT" && <ApplicationPCT />
-                    }
-                     {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Filed" && <OppositionFilled />
-                    }
-                     {
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Defended" && <OppositionDefended />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Filed" && <Trade3 />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Defended" && <Trade4 />
+                            }
+                            {/* Patent */}
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Domestic" && <ApplicationDomestic />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Foreign" && <ApplicationForeign />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "PCT" && <ApplicationPCT />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Filed" && <OppositionFilled />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Patent" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Defended" && <OppositionDefended />
+                            }
+
+                            {/* Design */}
+
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Domestic" && <ApplicationIndiaFiling />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Foreign" && <ApplicationInternationalFiling />
+
+                            }
+
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Cancellation" && props.ProjectDetails[0].filing_type === "Filed" && <CancelFiled />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Cancellation" && props.ProjectDetails[0].filing_type === "Defended" && <CancelDefended />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <RectificationFiled />
+                            }
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <RectificationDefended />
+                            }
+
+                            {/* CopyRight */}
+                            {
+                                props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights />
+                            }
+                        </div>
                     }
                 </div>
 

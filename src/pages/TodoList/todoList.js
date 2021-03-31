@@ -16,7 +16,7 @@ import "./todoList.scss"
 // Hr Task:
 
 const headCells = [
-    { id: 'id', label: 'Interview ID' },
+    { id: 'id', label: 'Task' },
     { id: 'interviewDate', label: 'Interview date' },
     { id: 'designation', label: 'Designation' },
     { id: 'candidates', label: 'No. of Candidates' }
