@@ -413,6 +413,7 @@ function InerviewScreen(props) {
                   handleAproverModelClose={(bln) => setAppModelOpen(bln)}
                   handleModelClose={props.handleAproverModelClose}
                   int_resume_id={selectedCandidateId}
+                  task_id={props.interviewer_id.task_id}
                 />
               }
             />

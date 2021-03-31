@@ -21,7 +21,7 @@ function DynModelView(props){
             method:"POST",
             url: apiurl + 'get_candidate_details_by_id',         
             data:{
-                "resume_id":props.data_id&&props.data_id.resume_id
+                "resume_id": props.res_data_id ||  props.data_id&&props.data_id.resume_id
             }
         })
         .then((response)=>{

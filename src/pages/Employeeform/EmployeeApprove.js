@@ -9,6 +9,7 @@ import CustomButton from '../../component/Butttons/button';
 import {notification} from 'antd'
 import { BottomNavigationAction } from '@material-ui/core';
 import moment from 'moment';
+import { getHrTaskList } from "../../actions/TodoListAction";
  function EmployeeApprove(props){
     const dispatch = useDispatch();
     const [employee,setemployee]=useState([])
@@ -54,6 +55,7 @@ const InsertEmployee=(data)=>{
     }).then((response)=>{
         if(response.data.status==1){
             props.closemodal()
+dispatch(getHrTaskList())
             notification.success({
                 message: `Employee approved successfully`,
                 placement: "topRight",

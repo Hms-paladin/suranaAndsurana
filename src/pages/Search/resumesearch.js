@@ -11,7 +11,7 @@ import { getSkills, getTraits, getCertification, getAchievement, getSpecilizatio
 import Axios from 'axios';
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
-
+import DynModelView from "../Interview/model";
 import './search.scss'
 
 const headCells = [
@@ -41,6 +41,8 @@ function Resumesearch(props) {
     const [checkList, setCheckedList] = useState({})
     const [test, setTest] = useState(true)
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
+    const [viewId,setViewId]=useState("")
+    const [candidateViewModel,setCandidateViewModel] =useState(false)
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -223,12 +225,17 @@ function Resumesearch(props) {
         )
         setTest(!test)
       }
+      const viewCandidate=(id)=>{
+        setViewId(id)
+        setCandidateViewModel(true)
+        console.log("//",id)
+      }
 
     useEffect(() => {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+            rowDataList.push({ name:<span onClick={()=>viewCandidate(data.resume_id)}> {data.name}</span>, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
              basic: data.basic_qual, language: data.language, certification: data.certifications, 
              specialization: data.specialization, talents: data.talent,
              box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
@@ -348,6 +355,12 @@ function Resumesearch(props) {
             <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} /> 
 
             </div>
+            <DynModelView
+                modelTitle={"Candidate's Details"}
+                handleChangeModel={candidateViewModel}
+                handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
+                res_data_id={viewId}
+              />
                     </div>
        
 

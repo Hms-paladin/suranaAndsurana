@@ -360,7 +360,7 @@ function ResumePage() {
           });
 
           responseFourteen.map((data, index) => {
-            achivements.push({ value: data.industry, id: data.industry_id });
+            achivements.push({ value: data.achievement, id: data.achievement_id });
           });
 
 
@@ -918,7 +918,7 @@ function ResumePage() {
                   type="select"
                   mode={"multiple"}
                   placeholder={"Achivements"}
-                // dropdown={resumeGetList.traitsList}
+                // dropdown={resumeGetList.achivements}
                 />
               </Grid>
             </Grid>

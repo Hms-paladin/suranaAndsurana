@@ -44,7 +44,7 @@ export const interviewApproverTableData = (id) => async dispatch => {
 }
 
  
-export const InsertApprove = (ApproveForm,optionvalues,Rows,int_details_id,alldet,res_id) => async dispatch => {
+export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res_id,task_id) => async dispatch => {
     console.log("optionvalues",int_details_id)
     try {
         axios({
@@ -65,7 +65,8 @@ export const InsertApprove = (ApproveForm,optionvalues,Rows,int_details_id,allde
                 "created_by":localStorage.getItem("empId"),
                 "updated_by":localStorage.getItem("empId"),
                 "ip_address":"123",
-                "int_detail_id":int_details_id
+                "int_detail_id":int_details_id,
+                "task_id":task_id
             }
         })
         .then((response)=>{

@@ -64,7 +64,7 @@ function InterviewApprover(props) {
   }, []);
 
   useEffect(() => {
-       console.log(":props.int_resume_id",props.int_resume_id)
+       console.log(":props.int_resume_id",props)
 
     let interviewList = [];
     props.interviewData.map((data) => {
@@ -121,7 +121,7 @@ function InterviewApprover(props) {
     From_key.map((data) => {
       ApproveForm[data].value = "";
     });
-    ApproveForm((prevState) => ({
+    setApproveForm((prevState) => ({
       ...prevState,
     }));
   };
@@ -150,8 +150,10 @@ function InterviewApprover(props) {
         InsertApprove(
           ApproveForm,
           optionvalues,
-          Rows,
-          props.int_details_id,props.int_props,props.props_resid
+          props.int_details_id,
+          props.int_props,
+          props.props_resid,
+          props.task_id
         )
       ).then(() => {
         handleCancel()
@@ -165,6 +167,7 @@ function InterviewApprover(props) {
     }));
   }
   console.log(props.int_resume_id && props.int_resume_id.resume_id, "prop");
+  console.log("//",props.task_id)
 
   return (
     <div className="interviewapprove_root">
