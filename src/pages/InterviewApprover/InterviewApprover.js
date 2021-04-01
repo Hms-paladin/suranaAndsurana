@@ -26,7 +26,7 @@ function InterviewApprover(props) {
     { label: "Date" },
     { label: "Initial Score" },
     { label: "Comments" },
-    { label: "Interviewer" },
+    { label: "Interviewer" },   { label: "Round" },   { label: "Status" },
   ];
 
   const [modelOpen, setModelOpen] = useState(false);
@@ -74,6 +74,7 @@ function InterviewApprover(props) {
         score: data.score_inital,
         cmts: data.comment,
         viewer: data.interviewer,
+        round:"",status:"",
       });
     });
     setRows(interviewList);
@@ -166,8 +167,7 @@ function InterviewApprover(props) {
       ...prevState,
     }));
   }
-  console.log(props.int_resume_id && props.int_resume_id.resume_id, "prop");
-  console.log("//",props.task_id)
+
 
   return (
     <div className="interviewapprove_root">
@@ -178,7 +178,7 @@ function InterviewApprover(props) {
       <div className="interview_head">
         <div>
           <label>
-            Name:<span>
+            Name : <span>
               {/* {nameAndDesg && nameAndDesg.name}  */}
              { props.props_name && props.props_name}
              </span>
@@ -186,7 +186,7 @@ function InterviewApprover(props) {
         </div>
         <div>
           <label>
-            Designation:<span
+            Designation : <span
             >
               {/* {nameAndDesg && nameAndDesg.Designation}  */}
             {props.props_design &&props.props_design}</span>
@@ -206,6 +206,7 @@ function InterviewApprover(props) {
           <Labelbox
             type="select"
             placeholder="Interview Status"
+            disabled={true}
             dropdown={optionvalues.interview_status}
             changeData={(data) => checkValidation(data, "init_status")}
             value={ApproveForm.init_status.value}

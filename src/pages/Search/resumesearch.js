@@ -24,7 +24,7 @@ const headCells = [
     { id: 'language', label: 'Languages Known' },
     { id: 'certification', label: 'Certification' },
     { id: 'specialization', label: 'Specialization' },
-    // { id: 'acheivements', label: 'Acheivements' },
+    { id: 'acheivements', label: 'Acheivements' },
     { id: 'talents', label: 'Talents' },
 
 ];
@@ -201,9 +201,6 @@ function Resumesearch(props) {
         })
 
         setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList })
-
-
-
     }, [props.GetOptions])
 
 
@@ -242,13 +239,12 @@ function Resumesearch(props) {
                 onClick={()=>viewCandidate(data.resume_id)}
               />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
              basic: data.basic_qual, language: data.language, certification: data.certifications, 
-             specialization: data.specialization, talents: data.talent,
+             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
              box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
              checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
 
         setRowData(rowDataList)
-        console.log("resumeSearchList.skillList", resumeSearchList.skillList)
     }, [props.GetRowData, test])
 
     function onSearch() {

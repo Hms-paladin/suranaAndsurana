@@ -151,7 +151,7 @@ function ResumePage() {
     },
     intrests: {
       value: "",
-      valueById: "",
+      // valueById: "",
       validation: [],
       error: null,
       errmsg: null,

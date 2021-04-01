@@ -9,12 +9,7 @@ function DynModelView(props){
     const [visible, setVisible] = React.useState(false);
     const [getdata, setgetData]= useState([])
     const [res_id,setres_id]=useState({})
-  
-  
-    
-    const [getres_id,setgetres_id]=useState("")
     useEffect(()=>{
-      console.log(props.data_id&&props.data_id.resume_id,"divya")
       setres_id(props.data_id&&props.data_id.resume_id)
       console.log(res_id,"id")
         Axios({
@@ -22,7 +17,7 @@ function DynModelView(props){
             url: apiurl + 'get_candidate_details_by_id',         
             data:{
                 "resume_id": props.res_data_id ||  props.data_id&&props.data_id.resume_id
-            }
+            }   
         })
         .then((response)=>{
             setgetData(response.data.data)
@@ -40,7 +35,7 @@ function DynModelView(props){
         // }))
         
        
-    },[props])
+    },[ props.res_data_id ])
 
     function handleCancel() {
         setVisible(false)
@@ -99,12 +94,12 @@ function DynModelView(props){
                     <div className="employeeform_row5">
                       <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr:"-"}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.email_addr:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.postal_addr:"-"}</div></div>
                     </div>
                     <div className="employeeform_row6">
                       <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city:"-"}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Status of the Candidate</div><div className="employeecont">{val.status_resource ? val.status_resource:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known:"-"}</div></div>
                     </div>     
                 </div>

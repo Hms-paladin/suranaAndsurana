@@ -153,13 +153,17 @@ function InerviewScreen(props) {
     if (key === "init_status" && "Selected" !== initId.value) {
       // setFinal(false)
       setAppModelOpen(false);
+      setFinal(false)
     }
     if (key === "init_status" && "Selected" === initId.value) {
-      // setFinal(true)
+      // setFinal(true) 
       console.log("init_status", int_details)
       int_details.Intview_data[0].approver !== null &&  int_details.Intview_data[0].round == 27
-        ? setAppModelOpen(true)
+        ?
+          setAppModelOpen(true) 
+          // setFinal(false)
         : setAppModelOpen(false);
+        setFinal(true)
 
       // postData.final_score.validation = [{ "name": "required" }]
       // setpostData(prevState => ({
