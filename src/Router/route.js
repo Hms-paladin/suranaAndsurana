@@ -24,11 +24,18 @@ import StagesMaster from '../pages/stages/StagesMaster'
 import AddHearing from '../pages/task/AddHearing'
 import RateMaster from '../pages/stages/RateMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
-import UserGroups from '../pages/UserGroups/usergroups'
-//Litigation :
 
+//Litigation :
 import Litigation from '../pages/Litigation/litigation';
 
+//User Groups :
+import UserGroups from '../pages/UserGroups/usergroups'
+
+//Group Control:
+import GroupControl from '../pages/GroupControl/groupcontrol' 
+
+//Group Control:
+import StageMonitering from '../pages/stages/StageMonitering' 
 
 function Routes(props) {
 
@@ -56,10 +63,13 @@ function Routes(props) {
             <PrivateRoute path="/ratemaster" component={RateMaster} exact />
 
             {/* Litigation */}
-
             <PrivateRoute path="/litigation" component={Litigation} exact />
-
+             {/* User Groups */}
             <PrivateRoute path="/usergroups" component={UserGroups} exact />
+             {/*  Group Control */}
+             <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
+             {/*  Steg Monitering */}
+             <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
             </Switch>
         </Navbar>
     );

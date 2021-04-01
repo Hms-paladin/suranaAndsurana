@@ -29,14 +29,14 @@ const UserGroups = (props) => {
         var groupList = [];
 
         var listarray = {
-          "project_type": "Kaveri",
-          "sub_project_type":"Interviewer,Employee",
+          "employee": "Kaveri",
+          "group":"Interviewer,Employee",
           "process_type": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
         }
         groupList.push(listarray);
         listarray = {
-          "project_type": "Pradish",
-          "sub_project_type": "Interviewer,Employee",
+          "employee": "Pradish",
+          "group": "Interviewer,Employee",
           "process_type": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
         }
         groupList.push(listarray);
@@ -66,6 +66,7 @@ const UserGroups = (props) => {
  
   return (
     <div>
+      <div className="user_groups">User Groups</div>
     <Grid container spacing={2} className="ratemaster_firstgrid">
         <Grid
           item
@@ -92,7 +93,7 @@ const UserGroups = (props) => {
           />
           </Grid>
         </Grid>
-        <div style={{display: 'flex',justifyContent: 'flex-end'}}>
+        <div style={{display: 'flex',justifyContent: 'flex-end',marginLeft: 15}}>
           <img src={PlusIcon} style={{cursor: 'pointer',width:19,marginTop: -23}}  />
           </div>
        
@@ -123,7 +124,7 @@ const UserGroups = (props) => {
                   onBtnClick={()=>setUsergroupmodel(false)}
                 />
                 <CustomButton
-                 btnName={"Cancel "} 
+                 btnName={"Cancel"} 
                  custombtnCSS={"btnUsergroup"}
                  onBtnClick={()=>setUsergroupmodel(false)}
                   />
