@@ -103,7 +103,7 @@ function InerviewScreen(props) {
         date: moment(data.prop_date_time).format("DD-MM-YYYY"),
         designation: data.designation,
          candiates: data.total_number_candidates,
-         approver:data.approver
+         approver:data.approver,   round: data.round
 
         })
       );
@@ -156,7 +156,8 @@ function InerviewScreen(props) {
     }
     if (key === "init_status" && "Selected" === initId.value) {
       // setFinal(true)
-      int_details.Intview_data[0].approver !== null
+      console.log("init_status", int_details)
+      int_details.Intview_data[0].approver !== null &&  int_details.Intview_data[0].round == 27
         ? setAppModelOpen(true)
         : setAppModelOpen(false);
 

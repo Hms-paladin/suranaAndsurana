@@ -98,7 +98,10 @@ function checkValidation(data, key, multipleId) {
 
     if(data==27 && key ==="round"){
         setFinalRound(true)
-    }
+    }else{
+        setFinalRound(false)
+      }
+  
    
     var errorcheck = ValidationLibrary.checkValidation(
         data,
