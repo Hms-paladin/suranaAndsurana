@@ -4,9 +4,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import "./search.scss";
 import { Radio, Select } from "antd";
 import EnhancedTable from "../../component/DynTable/table";
-import { apiurl } from "../../utils/baseUrl";
 import { useDispatch, connect } from "react-redux";
-import { ResumeSearchStatus } from "../../actions/ResumeSearchAction";
 import {
   getClientType,
   getClient,

@@ -2,32 +2,28 @@ import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
 import '../Project IP1/Patent/Patent.scss'
 import CustomButton from '../../component/Butttons/button';
-import Tabs from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import DynModel from '../../component/Model/model';
-import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
-
-export default function CopyRight() {
-    const [modelOpen, setModelOpen] = useState(false)
+import { Upload } from 'antd';
+import PublishIcon from '@material-ui/icons/Publish';
 
 
+export default function CopyRight(props) {
 
-    function projectTaskModel(boxName) {
-        boxName === "TASKS" && setModelOpen(true)
-    }
-    const modelContent = () => {
-        return (
-            <ProjectTaskModel />
-        )
-    }
+
     return (
         <div >
-            <Tabs   onChangeTabBox={(data) => projectTaskModel(data)} />
-            <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
             <div className="copyright_div">
-                <Labelbox type="text" placeholder={"Name of Opponent"} />
-                <Labelbox type="datepicker" placeholder={"Opposition Filled Date"} />
-                <Labelbox type="text" placeholder={"Upload Image"} />
+                <Labelbox type="text" placeholder={"Title"} />
+                <Labelbox type="datepicker" placeholder={"Type of work"} />
+                <div className="uploadbox_div"  >
+                    <div>
+                        <Upload {...props} className="uploadbox_tag"
+                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                            <div className="upload_file_inside" ><label>Upload Image</label><PublishIcon /></div>
+                        </Upload>,
+                                     </div>
+                </div>
                 <Labelbox type="text" placeholder={"Reference"} />
                 <Labelbox type="text" placeholder={"Status"} />
             </div>

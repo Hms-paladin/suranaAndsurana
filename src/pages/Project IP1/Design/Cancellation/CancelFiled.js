@@ -22,7 +22,7 @@ function CancelFiled() {
             error: null,
             errmsg: null,
         },
-        responetent: {
+        petitioner: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
@@ -134,9 +134,9 @@ function CancelFiled() {
     return (
         <div className="container">
 
+            <Grid container direction={"column"}>
+                <Grid item xs={12} md={12} className="app_cont_domestic">
 
-            <Grid container spacing={2}   >
-                <Grid item md={2}>
                     <Labelbox type="select"
                         placeholder={"Client Petitioner"}
                         changeData={(data) => checkValidation(data, "client_petition")}
@@ -144,8 +144,7 @@ function CancelFiled() {
                         error={CancelFiled.client_petition.error}
                         errmsg={CancelFiled.client_petition.errmsg}
                     />
-                </Grid>
-                <Grid item md={2}>
+
                     <Labelbox type="text"
                         placeholder={"Design Number"}
                         changeData={(data) => checkValidation(data, "des_num")}
@@ -153,17 +152,15 @@ function CancelFiled() {
                         error={CancelFiled.des_num.error}
                         errmsg={CancelFiled.des_num.errmsg}
                     />
-                </Grid>
-                <Grid item md={2}>
+
                     <Labelbox type="text"
-                        placeholder={"Responent"}
-                        changeData={(data) => checkValidation(data, "responetent")}
-                        value={CancelFiled.responetent.value}
-                        error={CancelFiled.responetent.error}
-                        errmsg={CancelFiled.responetent.errmsg}
+                        placeholder={"Petitioner"}
+                        changeData={(data) => checkValidation(data, "petitioner")}
+                        value={CancelFiled.petitioner.value}
+                        error={CancelFiled.petitioner.error}
+                        errmsg={CancelFiled.petitioner.errmsg}
                     />
-                </Grid>
-                <Grid item md={2}>
+
                     <Labelbox type="text"
                         placeholder={"Responent Rep"}
                         changeData={(data) => checkValidation(data, "res_rep")}
@@ -171,9 +168,7 @@ function CancelFiled() {
                         error={CancelFiled.res_rep.error}
                         errmsg={CancelFiled.res_rep.errmsg}
                     />
-                </Grid>
-                <Grid item md={3} />
-                <Grid item md={2} >
+
                     <Labelbox type="select"
                         placeholder={"Status"}
                         changeData={(data) => checkValidation(data, "status")}
@@ -181,8 +176,7 @@ function CancelFiled() {
                         error={CancelFiled.status.error}
                         errmsg={CancelFiled.status.errmsg}
                     />
-                </Grid>
-                <Grid item md={4} >
+
                     <Labelbox type="text"
                         placeholder={"Comments"}
                         changeData={(data) => checkValidation(data, "comments")}
@@ -190,18 +184,19 @@ function CancelFiled() {
                         error={CancelFiled.comments.error}
                         errmsg={CancelFiled.comments.errmsg}
                     />
-                </Grid>
-                <Grid item md={2} >
-                    <Labelbox type="datepicker"
+
+                    {/* <Labelbox type="datepicker"
                         placeholder={"Application Date"}
                         changeData={(data) => checkValidation(data, "app_date")}
                         value={CancelFiled.app_date.value}
                         error={CancelFiled.app_date.error}
                         errmsg={CancelFiled.app_date.errmsg}
-                    />
-                </Grid>
+                    /> */}
 
+
+                </Grid>
             </Grid>
+
 
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"TMopositionbuttons"} />

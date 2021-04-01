@@ -242,250 +242,183 @@ function TradeMark() {
 
     };
     return (
+
+
         <div className="tradeMarkContainer">
-            
-            <div>
-                <Grid item xs={12} container direction="row" spacing={1} >
-                    <Grid item xs={4} container direction="column" spacing={2}  >
-                        <Grid item xs={12} container direction="row" spacing={1}>
-                            <Grid item xs={4} >
-                                <Labelbox type="select"
-                                    placeholder={" Status"} />
-                            </Grid>
-                            <Grid item xs={2} >
-                                <Labelbox type="text"
-                                    placeholder={" Mark"}
-                                    changeData={(data) => checkValidation(data, "mark")}
-                                    value={Trade_Mark.mark.value}
-                                    error={Trade_Mark.mark.error}
-                                    errmsg={Trade_Mark.mark.errmsg} />
-                            </Grid>
-                            <Grid item xs={6} >
-                                <div className="uploadbox" >
-                                    <div>
-                                        <Upload {...props} className="uploadbox_tag"
-                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+            <Grid container direction={"column"}>
+                <Grid item xs={12} md={12} className="app_cont_domestic">
+                    <Labelbox type="select"
+                        placeholder={" Status"} />
 
-                                            <div className="upload_file_inside"><label>Upload Image</label><PublishIcon /></div>
-                                        </Upload>,
+                    <Labelbox type="text"
+                        placeholder={" Mark"}
+                        changeData={(data) => checkValidation(data, "mark")}
+                        value={Trade_Mark.mark.value}
+                        error={Trade_Mark.mark.error}
+                        errmsg={Trade_Mark.mark.errmsg} />
+
+                    <div className="uploadbox" >
+                        <div>
+                            <Upload {...props} className="uploadbox_tag"
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                <div className="upload_file_inside"><label>Upload</label><PublishIcon /></div>
+                            </Upload>,
                                      </div>
-                                </div>
+                    </div>
 
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Labelbox type="text"
-                                placeholder={" Goods and Description"}
-                                changeData={(data) => checkValidation(data, "goodsdescription")}
-                                value={Trade_Mark.goodsdescription.value}
-                                error={Trade_Mark.goodsdescription.error}
-                                errmsg={Trade_Mark.goodsdescription.errmsg} />
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={4} container direction="column" spacing={2}>
-                        <Grid item xs={12} container direction="row" spacing={1}>
-                            <Grid item xs={6} >
-                                <Labelbox type="text"
-                                    placeholder={" Application Number "}
-                                    changeData={(data) => checkValidation(data, "applicationNumber")}
-                                    value={Trade_Mark.applicationNumber.value}
-                                    error={Trade_Mark.applicationNumber.error}
-                                    errmsg={Trade_Mark.applicationNumber.errmsg} />
-                            </Grid>
-                            <Grid item xs={6} >
-                                <Labelbox type="datepicker"
-                                    placeholder={" Application Date "}
-                                    disableFuture={true}
-                                    changeData={(data) => checkValidation(data, "applicationdate")}
-                                    value={Trade_Mark.applicationdate.value}
-                                    error={Trade_Mark.applicationdate.error}
-                                    errmsg={Trade_Mark.applicationdate.errmsg} />
-                            </Grid>
+                    <Labelbox type="text"
+                        placeholder={" Application Number "}
+                        changeData={(data) => checkValidation(data, "applicationNumber")}
+                        value={Trade_Mark.applicationNumber.value}
+                        error={Trade_Mark.applicationNumber.error}
+                        errmsg={Trade_Mark.applicationNumber.errmsg} />
 
-                        </Grid>
-                        <Grid item xs={12} container direction="row" spacing={1}>
-                            <Grid item xs={6} >
-                                <Labelbox type="select"
-                                    placeholder={" Usage Details "} />
-                            </Grid>
-                            <Grid item xs={6} >
-                                <Labelbox type="datepicker"
-                                    placeholder={" Used From Date "}
-                                    disableFuture={true}
-                                    changeData={(data) => checkValidation(data, "usefromdate")}
-                                    value={Trade_Mark.usefromdate.value}
-                                    error={Trade_Mark.usefromdate.error}
-                                    errmsg={Trade_Mark.usefromdate.errmsg} />
-                            </Grid>
+                    <Labelbox type="datepicker"
+                        placeholder={" Application Date "}
+                        disableFuture={true}
+                        changeData={(data) => checkValidation(data, "applicationdate")}
+                        value={Trade_Mark.applicationdate.value}
+                        error={Trade_Mark.applicationdate.error}
+                        errmsg={Trade_Mark.applicationdate.errmsg} />
 
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={4} container direction="column" spacing={2}>
+                    <Labelbox type="select"
+                        placeholder={" Class"} />
+                    <div className="projectFormComments">
+                        <Labelbox type="textarea"
+                            placeholder={" Goods and Services Description"}
+                            changeData={(data) => checkValidation(data, "goodsdescription")}
+                            value={Trade_Mark.goodsdescription.value}
+                            error={Trade_Mark.goodsdescription.error}
+                            errmsg={Trade_Mark.goodsdescription.errmsg} />
+                    </div>
 
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={" Class"} />
-                        </Grid>
+                    <Labelbox type="select"
+                        placeholder={" Usage Details "} />
 
-                        <Grid item xs={12} >
-                            <Labelbox type="text"
-                                placeholder={" IP India Status"}
-                                changeData={(data) => checkValidation(data, "indiaStatus")}
-                                value={Trade_Mark.indiaStatus.value}
-                                error={Trade_Mark.indiaStatus.error}
-                                errmsg={Trade_Mark.indiaStatus.errmsg} />
-                        </Grid>
+                    <Labelbox type="datepicker"
+                        placeholder={"  Date of Use "}
+                        disableFuture={true}
+                        changeData={(data) => checkValidation(data, "usefromdate")}
+                        value={Trade_Mark.usefromdate.value}
+                        error={Trade_Mark.usefromdate.error}
+                        errmsg={Trade_Mark.usefromdate.errmsg} />
 
+                    <Labelbox type="text"
+                        placeholder={" IP India Status"}
+                        changeData={(data) => checkValidation(data, "indiaStatus")}
+                        value={Trade_Mark.indiaStatus.value}
+                        error={Trade_Mark.indiaStatus.error}
+                        errmsg={Trade_Mark.indiaStatus.errmsg} />
 
+                    <Labelbox type="datepicker"
+                        placeholder={" Next Renewal "}
+                        changeData={(data) => checkValidation(data, "nextRenewal")}
+                        value={Trade_Mark.indiaStatus.value}
+                        error={Trade_Mark.indiaStatus.error}
+                        errmsg={Trade_Mark.indiaStatus.errmsg}
+                    />
 
-                    </Grid>
-                    <Grid item xs={12} container direction="row" spacing={2}>
-                        <Grid item xs={2} >
-                            <Labelbox type="datepicker"
-                                placeholder={" Next Renewal "}
-                                changeData={(data) => checkValidation(data, "nextRenewal")}
-                                value={Trade_Mark.indiaStatus.value}
-                                error={Trade_Mark.indiaStatus.error}
-                                errmsg={Trade_Mark.indiaStatus.errmsg}
-                            />
-                        </Grid>
-                        <Grid item xs={3} >
-                            <Labelbox type="textarea"
-                                placeholder={" comments"}
-                                changeData={(data) => checkValidation(data, "comments")}
-                                value={Trade_Mark.comments.value}
-                                error={Trade_Mark.comments.error}
-                                errmsg={Trade_Mark.comments.errmsg} />
-                        </Grid>
-                        <Grid item xs={3} >
-                            <Labelbox type="text"
-                                placeholder={" Internal Status"}
-                                changeData={(data) => checkValidation(data, "internalstutus")}
-                                value={Trade_Mark.internalstutus.value}
-                                error={Trade_Mark.internalstutus.error}
-                                errmsg={Trade_Mark.internalstutus.errmsg} />
-                        </Grid>
-                        <Grid item xs={4} >
-                            <Labelbox type="text"
-                                placeholder={" Allotment"}
-                                changeData={(data) => checkValidation(data, "allotment")}
-                                value={Trade_Mark.allotment.value}
-                                error={Trade_Mark.allotment.error}
-                                errmsg={Trade_Mark.allotment.errmsg} />
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={4} container direction="column" spacing={2}>
-                        <Grid item xs={10} >
-                        <div className="uploadbox" >
-                                    <div>
-                                        <Upload {...props} className="uploadbox_tag"
-                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+                    <Labelbox type="textarea"
+                        placeholder={" comments"}
+                        changeData={(data) => checkValidation(data, "comments")}
+                        value={Trade_Mark.comments.value}
+                        error={Trade_Mark.comments.error}
+                        errmsg={Trade_Mark.comments.errmsg} />
 
-                                            <div className="upload_file_inside"><label>Order</label><PublishIcon /></div>
-                                        </Upload>,
+                    <Labelbox type="text"
+                        placeholder={" Internal Status"}
+                        changeData={(data) => checkValidation(data, "internalstutus")}
+                        value={Trade_Mark.internalstutus.value}
+                        error={Trade_Mark.internalstutus.error}
+                        errmsg={Trade_Mark.internalstutus.errmsg} />
+
+                    <Labelbox type="text"
+                        placeholder={" Allotment"}
+                        changeData={(data) => checkValidation(data, "allotment")}
+                        value={Trade_Mark.allotment.value}
+                        error={Trade_Mark.allotment.error}
+                        errmsg={Trade_Mark.allotment.errmsg} />
+
+                    <div className="uploadbox" >
+                        <div>
+                            <Upload {...props} className="uploadbox_tag"
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                <div className="upload_file_inside"><label>Order</label><PublishIcon /></div>
+                            </Upload>,
                                      </div>
-                                </div>
-                            {/* <Labelbox type="text"
-                                placeholder={" Order"}
-                                changeData={(data) => checkValidation(data, "order")}
-                                value={Trade_Mark.order.value}
-                                error={Trade_Mark.order.error}
-                                errmsg={Trade_Mark.order.errmsg} /> */}
-                        </Grid>
+                    </div>
 
-                        <Grid item xs={12} container direction="row" spacing={1}>
-                            <Grid item xs={6} >
-                                <Labelbox type="text"
-                                    placeholder={" TMJ Number "}
-                                    changeData={(data) => checkValidation(data, "tmjNumber")}
-                                    value={Trade_Mark.tmjNumber.value}
-                                    error={Trade_Mark.tmjNumber.error}
-                                    errmsg={Trade_Mark.tmjNumber.errmsg} />
-                            </Grid>
-                            <Grid item xs={6} >
-                                <Labelbox type="datepicker"
-                                    placeholder={" TMJ Date"}
-                                    disableFuture={true}
-                                    changeData={(data) => checkValidation(data, "tnjDate")}
-                                    value={Trade_Mark.tnjDate.value}
-                                    error={Trade_Mark.tnjDate.error}
-                                    errmsg={Trade_Mark.tnjDate.errmsg}
-                                />
-                            </Grid>
+                    <Labelbox type="text"
+                        placeholder={" Amendment"}
+                        changeData={(data) => checkValidation(data, "amendment")}
+                        value={Trade_Mark.amendment.value}
+                        error={Trade_Mark.amendment.error}
+                        errmsg={Trade_Mark.amendment.errmsg} />
 
-                        </Grid>
+                    <Labelbox type="text"
+                        placeholder={" Priority Details"}
+                        changeData={(data) => checkValidation(data, "prioritydetails")}
+                        value={Trade_Mark.prioritydetails.value}
+                        error={Trade_Mark.prioritydetails.error}
+                        errmsg={Trade_Mark.prioritydetails.errmsg} />
 
-                        <Grid item xs={12} >
-                            <Labelbox type="datepicker"
-                                placeholder={" Certificate Date"}
-                                disableFuture={true}
-                                changeData={(data) => checkValidation(data, "certificatedate")}
-                                value={Trade_Mark.certificatedate.value}
-                                error={Trade_Mark.certificatedate.error}
-                                errmsg={Trade_Mark.certificatedate.errmsg} />
-                        </Grid>
+                    <Labelbox type="text"
+                        placeholder={" TMJ Number "}
+                        changeData={(data) => checkValidation(data, "tmjNumber")}
+                        value={Trade_Mark.tmjNumber.value}
+                        error={Trade_Mark.tmjNumber.error}
+                        errmsg={Trade_Mark.tmjNumber.errmsg} />
 
+                    <Labelbox type="datepicker"
+                        placeholder={" TMJ Date"}
+                        disableFuture={true}
+                        changeData={(data) => checkValidation(data, "tnjDate")}
+                        value={Trade_Mark.tnjDate.value}
+                        error={Trade_Mark.tnjDate.error}
+                        errmsg={Trade_Mark.tnjDate.errmsg}
+                    />
 
+                    <Labelbox type="text"
+                        placeholder={" Journal Extract"}
+                        changeData={(data) => checkValidation(data, "journalextract")}
+                        value={Trade_Mark.journalextract.value}
+                        error={Trade_Mark.journalextract.error}
+                        errmsg={Trade_Mark.journalextract.errmsg} />
 
-                    </Grid>
-                    <Grid item xs={4} container direction="column" spacing={2}>
+                    <Labelbox type="select"
+                        placeholder={" POA"} />
 
-                        <Grid item xs={12} >
-                            <Labelbox type="text"
-                                placeholder={" Amendment"}
-                                changeData={(data) => checkValidation(data, "amendment")}
-                                value={Trade_Mark.amendment.value}
-                                error={Trade_Mark.amendment.error}
-                                errmsg={Trade_Mark.amendment.errmsg} />
-                        </Grid>
+                    <Labelbox type="datepicker"
+                        placeholder={" Certificate Date"}
+                        disableFuture={true}
+                        changeData={(data) => checkValidation(data, "certificatedate")}
+                        value={Trade_Mark.certificatedate.value}
+                        error={Trade_Mark.certificatedate.error}
+                        errmsg={Trade_Mark.certificatedate.errmsg} />
 
-                        <Grid item xs={12} >
-                            <Labelbox type="text"
-                                placeholder={" Journal Extract"}
-                                changeData={(data) => checkValidation(data, "journalextract")}
-                                value={Trade_Mark.journalextract.value}
-                                error={Trade_Mark.journalextract.error}
-                                errmsg={Trade_Mark.journalextract.errmsg} />
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Labelbox type="datepicker"
-                                placeholder={" Renewal Certificate Date"}
-                                disableFuture={true}
-                                changeData={(data) => checkValidation(data, "renewalcertificateDate")}
-                                value={Trade_Mark.applicationdate.value}
-                                error={Trade_Mark.applicationdate.error}
-                                errmsg={Trade_Mark.applicationdate.errmsg} />
-                        </Grid>
+                    <Labelbox type="datepicker"
+                        placeholder={" Renewal Certificate Date"}
+                        disableFuture={true}
+                        changeData={(data) => checkValidation(data, "renewalcertificateDate")}
+                        value={Trade_Mark.applicationdate.value}
+                        error={Trade_Mark.applicationdate.error}
+                        errmsg={Trade_Mark.applicationdate.errmsg} />
 
 
-
-                    </Grid>
-                    <Grid item xs={4} container direction="column" spacing={2}>
-
-                        <Grid item xs={12} >
-                            <Labelbox type="text"
-                                placeholder={" Priority Details"}
-                                changeData={(data) => checkValidation(data, "prioritydetails")}
-                                value={Trade_Mark.prioritydetails.value}
-                                error={Trade_Mark.prioritydetails.error}
-                                errmsg={Trade_Mark.prioritydetails.errmsg} />
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Labelbox type="select"
-                                placeholder={" POA"} />
-                        </Grid>
-                        <Grid item xs={12} container justify="center" >
-                            <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
-                            <CustomButton btnName={"CANCEL"} />
-
-                        </Grid>
-
-                    </Grid>
                 </Grid>
 
-            </div>
+            </Grid>
+            <Grid item xs={12} container justify="flex-end" >
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
 
-          
+            </Grid>
+
+
+
+
         </div>
 
     )

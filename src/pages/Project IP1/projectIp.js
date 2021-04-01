@@ -11,6 +11,7 @@ import { getProjectDetails } from "../../actions/ProjectFillingFinalAction"
 import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import DynModel from '../../component/Model/model';
 import Stages from '../stages/stageicon';
+import TimeSheets from '../Search/TimeSheets/timesheetStart';
 
 
 // IP Project:
@@ -54,6 +55,9 @@ function ProjectIp(props) {
     const [task, setTask] = useState(true)
     const [stage, setStage] = useState(false)
     const [stageMonitor, setStageMonitor] = useState(false)
+    const [timeSheet, setTimeSheet] = useState(false)
+    const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
+
 
 
     function callback(key) {
@@ -275,6 +279,12 @@ function ProjectIp(props) {
         )
     }
 
+    const timesheetmodelContent = () => {
+        return (
+            <TimeSheets />
+        )
+    }
+
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
             setModelOpen(true)
@@ -292,6 +302,10 @@ function ProjectIp(props) {
         }
         else if (boxName === "APPLICATION") {
             setStage(false)
+
+        }
+        else if (boxName === "TIME SHEET") {
+            setTimesheetModelOpen(true)
 
         }
 
@@ -366,18 +380,23 @@ function ProjectIp(props) {
                     )
                 })}
 
-                <div>Intellectual Property</div>
+
                 <div className="projectTypedef">
-                    <div>{props.ProjectDetails[0] && props.ProjectDetails[0].sub_project_type}</div>
-                    <div><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <div className="projectTypeHeader">
+                        Intellectual Property -  <div> {props.ProjectDetails[0] && props.ProjectDetails[0].sub_project_type}</div>
+                    </div>
+                    <div className="TabIconsview"><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
+
+
                     {/* TradeMark */}
                     {stage ?
                         <Stages />
                         :
                         <div>{
                             props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "India Filing" && <Trade1 />
-                            }
+                        }
                             {
                                 props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "International Filing" && <Trade2 />
 
