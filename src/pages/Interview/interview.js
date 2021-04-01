@@ -33,6 +33,7 @@ function InerviewScreen(props) {
   const [appModelOpen, setAppModelOpen] = useState(false);
   const [canDesig, setCandDesig] = useState(false);
   const [canName, setcanName] = useState("");
+  const [dropDownSel, setdropDownSel] = useState(false);
   const [postData, setpostData] = useState({
     init_status: {
       value: "",
@@ -81,13 +82,6 @@ function InerviewScreen(props) {
 
     // for candiate post api
     // dispatch(GetCandiateDetails())
-    console.log(props, "cand_id");
-
-    console.log(
-      props.interviewer_id && props.interviewer_id.int_details_id,
-      "cand_id"
-    );
-    console.log(props.interviewer_id && props.interviewer_id, "cand_id");
     Axios({
       method: "POST",
       url: apiurl + "get_selected_candidates",
@@ -156,15 +150,15 @@ function InerviewScreen(props) {
       setFinal(false)
     }
     if (key === "init_status" && "Selected" === initId.value) {
-      // setFinal(true) 
-      console.log("init_status", int_details)
-      int_details.Intview_data[0].approver !== null &&  int_details.Intview_data[0].round == 27
-        ?
-          setAppModelOpen(true) 
-          // setFinal(false)
-        : setAppModelOpen(false);
-        setFinal(true)
 
+     if( int_details.Intview_data[0].approver !== null &&  int_details.Intview_data[0].round == 27)
+        {
+          setdropDownSel(true)
+          setAppModelOpen(true) 
+
+         }else{ setAppModelOpen(false);
+        setFinal(true)
+         }
       // postData.final_score.validation = [{ "name": "required" }]
       // setpostData(prevState => ({
       //     ...prevState,
@@ -419,6 +413,7 @@ function InerviewScreen(props) {
                   handleModelClose={props.handleAproverModelClose}
                   int_resume_id={selectedCandidateId}
                   task_id={props.interviewer_id.task_id}
+                  sel_appr_drop={dropDownSel}
                 />
               }
             />

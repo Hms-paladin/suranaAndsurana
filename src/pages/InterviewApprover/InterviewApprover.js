@@ -48,7 +48,7 @@ function InterviewApprover(props) {
       errmsg: null,
     },
     init_status: {
-      value: "",
+      value: 3,
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
@@ -64,17 +64,14 @@ function InterviewApprover(props) {
   }, []);
 
   useEffect(() => {
-       console.log(":props.int_resume_id",props)
-
     let interviewList = [];
     props.interviewData.map((data) => {
       interviewList.push({
         date: moment(data.Date).format("DD-MMM-YYYY"),
-        // Id: data.interview_id,
         score: data.score_inital,
         cmts: data.comment,
         viewer: data.interviewer,
-        round:"",status:"",
+        // round:"",status:"",
       });
     });
     setRows(interviewList);
@@ -146,7 +143,6 @@ function InterviewApprover(props) {
       // setResumeFrom({ error: true });
     } else {
       // setResumeFrom({ error: false });
-      console.log("props.int_details_id", props.int_details_id);
       dispatch(
         InsertApprove(
           ApproveForm,
