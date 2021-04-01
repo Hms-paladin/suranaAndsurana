@@ -183,7 +183,7 @@ function Employeeform(props) {
             setEmpFrom(prevState => ({
                 ...prevState,
                     supervisor_email:{value:empData[0].official_email},
-                    supervisor_ph:{value:empData[0].con_ph_no}
+                    supervisor_ph:{value:empData[0].official_contact}
             }));
         })
     }

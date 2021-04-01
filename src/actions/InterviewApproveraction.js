@@ -42,16 +42,13 @@ export const interviewApproverTableData = (id) => async dispatch => {
         
     }
 }
-
- 
 export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res_id,task_id) => async dispatch => {
-    console.log("optionvalues",int_details_id)
     try {
         axios({
             method: 'POST',
             url: apiurl + "insert_approve_status",
             data:{
-                "status":optionvalues.Id,
+                "status":3|| optionvalues.Id,
                 "score":ApproveForm.final_score.value,
                 "reviewer":localStorage.getItem("empId"),
                 "approval":"1",
