@@ -10,13 +10,14 @@ function DynModelView(props){
     const [getdata, setgetData]= useState([])
     const [res_id,setres_id]=useState({})
     useEffect(()=>{
+      console.log(props,"propsprops")
       setres_id(props.data_id&&props.data_id.resume_id)
-      console.log(res_id,"id")
+      console.log( props.data_id,"//")
         Axios({
             method:"POST",
             url: apiurl + 'get_candidate_details_by_id',         
             data:{
-                "resume_id": props.res_data_id ||  props.data_id&&props.data_id.resume_id
+                "resume_id": props.res_data_id ||  props.data_id && props.data_id.resume_id
             }   
         })
         .then((response)=>{

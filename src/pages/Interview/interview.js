@@ -128,15 +128,16 @@ function InerviewScreen(props) {
   }, [props]);
 
   function ViewCandiate(id) {
-    setModelOpen(true);
     setdata_id(
       cand_data.find((data) => {
         return id == data.resume_id;
       })
     );
-    setdata_id((prevState) => ({
-      ...prevState,
-    }));
+    // setdata_id((prevState) => ({
+    //   ...prevState,
+    // }));
+    setModelOpen(true);
+
   }
 
   function checkValidation(data, key) {
@@ -291,6 +292,7 @@ function InerviewScreen(props) {
               justify="left"
               alignItems="left"
             >
+              {console.log(cand_data,"cand")}
               {
                 // cand_data.length===0&& cand_data.length>=0&&
                 cand_data &&
@@ -317,23 +319,25 @@ function InerviewScreen(props) {
                           {data && data.name}
                         </Grid>
                         <Grid item xs={2}>
+                          {console.log(data,"testdata")}
                           <img
                             src={Eyes}
                             className="viewCandidatesList"
-                            onClick={() => ViewCandiate(data && data.resume_id)}
+                            onClick={() => ViewCandiate(data.resume_id)}
                           />
                         </Grid>
                       </Grid>
                     );
                   })
               }
+              {console.log(data_id,"data_id")}
 
-              <DynModelView
+              {data_id.resume_id && <DynModelView
                 modelTitle={"Candidate's Details"}
                 handleChangeModel={modelOpen}
                 handleChangeCloseModel={(bln) => setModelOpen(bln)}
                 data_id={data_id}
-              />
+              />}
             </Grid>
           </div>
         </Grid>
@@ -414,6 +418,7 @@ function InerviewScreen(props) {
                   int_resume_id={selectedCandidateId}
                   task_id={props.interviewer_id.task_id}
                   sel_appr_drop={dropDownSel}
+                  // res_data_id={}
                 />
               }
             />

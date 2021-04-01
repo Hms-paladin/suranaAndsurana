@@ -115,6 +115,7 @@ function TodoList(props) {
 
 
     function openModelFunc(name, id) {
+        console.log(name,id,"result")
 
         if (name === "interviewer_id") {
             setApproveOpen(true)

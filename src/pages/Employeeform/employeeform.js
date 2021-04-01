@@ -18,7 +18,6 @@ function Employeeform(props) {
     const [getdata, setgetData] = useState([])
     const [dept, setdept] = useState({})
     const [sup_name, setsup_name] = useState({})
-    const [name, setname] = useState({})
     const [file, setfile] = useState("")
     const [taskId, setTaskId] = useState("")
     const [fileList, setfileList] = useState("")

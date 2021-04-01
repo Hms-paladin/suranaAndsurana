@@ -767,7 +767,7 @@ function ResumePage() {
             <Grid item xs={12}>
               <Labelbox
                 type="select"
-                placeholder={"State of Domecile *"}
+                placeholder={"State of Domicile *"}
                 dropdown={resumeGetList.stateList}
                 changeData={(data) => checkValidation(data, "state")}
                 value={Resume_Form.state.value}
@@ -957,7 +957,7 @@ function ResumePage() {
                 <Labelbox
                   type="select"
                   mode={"multiple"}
-                  placeholder={"Achivements"}
+                  placeholder={"Achievements"}
                   dropdown={resumeGetList.achivementsList}
                   changeData={(data) =>
                     checkValidation(
