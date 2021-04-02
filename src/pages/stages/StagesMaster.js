@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
-import './StagesMaster.scss'
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
-import Axios from 'axios';
-import { notification } from 'antd';
-import { apiurl } from "../../utils/baseUrl";
-import moment from 'moment'
 import { connect, useDispatch } from 'react-redux';
-import { getSubStage } from '../../actions/MasterDropdowns';
+import {getStageMasterTableData,InsertStageMaster} from '../../actions/StageMasterAction'
+import {getProjectType,getProjectSubType,getProcessType,getStageList, getSubStage } from '../../actions/MasterDropdowns';
+import './StagesMaster.scss'
 const StagesMaster = (props) => {
   const header = [
-    // { id: 'table_name', label: 'Table Name' },
     { id: 'project_type', label: 'Project Type' },
     { id: 'sub_project_type', label: 'Sub Project Type' },
     { id: 'process_type', label: 'Process Type' },
@@ -22,19 +18,6 @@ const StagesMaster = (props) => {
     { id: 'no_days', label: 'Number of Days' },
     { id: 'remainder_days', label: 'Remainder Days' },
   ];
-
-  // const rows = [
-  //    {table_name:"Table 1",project_type:"project 1",sub_project_type:"sub Project1",process_type:"Type1",stage:"Stage 1",sub_stage:"Substage1",no_days:"Number"}
-
-  // ];
-  /*
-  get_table_names
-get_project_type
-get_project_sub_type
-get_stage_list
-get_sub_stage setsubStage
-insert_stage_master
-*/
   const dispatch = useDispatch()
   const [StageMasterList, setStageMasterList] = useState([])
   const [projectType, setprojectType] = useState({})
@@ -42,7 +25,6 @@ insert_stage_master
   const [Stage, setStage] = useState({})
   const [subStage, setsubStage] = useState({})
   const [processType, setprocessType] = useState({})
-  const [projectTableName, setprojectTableName] = useState({})
   const [disabled, setEnabled] = useState(true);
   const [stageDisable, setStageEnabled] = useState(true);
   const [RateMaster, setRateMaster] = useState({
@@ -89,80 +71,71 @@ insert_stage_master
       errmsg: null,
     },
   })
-  const [isLoaded, setIsLoaded] = useState(true);
+
+
   useEffect(() => {
+    dispatch(getStageMasterTableData());
+    dispatch(getProjectType());
+    dispatch(getStageList());
+  }, []);
 
-    if (isLoaded) {
-      Axios({
-        method: "GET",
-        url: apiurl + 'get_stage_master',
-      })
-        .then((response) => {
-          let stageMasterListData = []
-          response.data.data.map((data) =>
-            stageMasterListData.push(data)
+  useEffect(() => {
+    //stageTableData
+    let stageMasterListData = []
+    props.getTableData.map((data) =>
+    stageMasterListData.push(data)
+  )
+  var rateList = [];
 
-          )
-          var rateList = [];
-
-          for (var m = 0; m < stageMasterListData.length; m++) {
-            var listarray = {
-              "project_type": stageMasterListData[m].project_type,
-              "sub_project_type": stageMasterListData[m].sub_project_type,
-              "process_type": stageMasterListData[m].process,
-              "stage": stageMasterListData[m].stage,
-              "sub_stage": stageMasterListData[m].sub_stage,
-              "noOfdays": stageMasterListData[m].no_of_compliance_days,
-              "reminderDays": stageMasterListData[m].remainder_days,
-            }
-            rateList.push(listarray);
-          }
-          setStageMasterList({ rateList })
-        })
-
-      // project type
-      Axios({
-        method: "GET",
-        url: apiurl + 'get_project_type',
-      })
-        .then((response) => {
-          let projectTypedata = []
-          response.data.data.map((data) =>
-            projectTypedata.push({ value: data.project_type, id: data.project_type_id })
-          )
-          setprojectType({ projectTypedata })
-        })
-
-      // Stage
-      Axios({
-        method: "GET",
-        url: apiurl + 'get_stage_list',
-      })
-        .then((response) => {
-          let projectStagedata = []
-          response.data.data.map((data) =>
-            projectStagedata.push({ value: data.stage, id: data.stage_id })
-          )
-          setStage({ projectStagedata })
-        })
-
-
-      // Table Name
-      Axios({
-        method: "GET",
-        url: apiurl + 'get_table_names',
-      })
-        .then((response) => {
-          let projectTableNamedata = []
-          response.data.data.map((data) =>
-            projectTableNamedata.push({ value: data.table_names, id: data.table_id })
-          )
-          setprojectTableName({ projectTableNamedata })
-        })
-      setIsLoaded(false);
+  for (var m = 0; m < stageMasterListData.length; m++) {
+    var listarray = {
+      "project_type": stageMasterListData[m].project_type,
+      "sub_project_type": stageMasterListData[m].sub_project_type,
+      "process_type": stageMasterListData[m].process,
+      "stage": stageMasterListData[m].stage,
+      "sub_stage": stageMasterListData[m].sub_stage,
+      "noOfdays": stageMasterListData[m].no_of_compliance_days,
+      "reminderDays": stageMasterListData[m].remainder_days,
     }
+    rateList.push(listarray);
+  }
+  setStageMasterList({ rateList })
 
-  })
+  //ProjectType
+  let projectTypedata = []
+  props.ProjectType.map((data) =>
+    projectTypedata.push({ value: data.project_type, id: data.project_type_id })
+  )
+  setprojectType({ projectTypedata })
+  //StageList
+  let projectStagedata = []
+  props.StageList.map((data) =>
+    projectStagedata.push({ value: data.stage, id: data.stage_id })
+  )
+  setStage({ projectStagedata })
+  },[props.getTableData,props. ProjectType,props.StageList])
+
+  useEffect(() => {
+    //ProjectSubtype
+    let projectSubTypedata = []
+    props.ProjectSubtype.map((data) =>
+      projectSubTypedata.push({ value: data.sub_project_type, id: data.sub_project_type_id })
+    )
+    setprojectSubType({ projectSubTypedata })
+    //ProcessType
+    let processTypedata = []
+    props.ProcessType.map((data) =>
+      processTypedata.push({ value: data.process, id: data.process_id })
+    )
+    setprocessType({ processTypedata })
+    //SubStage
+    let substagedata = []
+    props.getSubStage.map((data) =>
+      substagedata.push({ value: data.sub_stage, id: data.sub_stage_id })
+    )
+    setsubStage({ substagedata })
+
+  }, [props.ProcessType,props.ProcessType,props.getSubStage])
 
 
   const onSubmit = () => {
@@ -177,46 +150,16 @@ insert_stage_master
       RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
     }
-    Axios({
-      method: "POST",
-      url: apiurl + 'insert_stage_master',
-      data: {
-        // "project_id":RateMaster.table_name.value,
-        "project_type_id": RateMaster.project_type.value,
-        "process_id": RateMaster.process_type.value || 0,
-        "sub_proj_type_id": RateMaster.sub_project_type.value || 0,
-        "stage_id": RateMaster.stages.value,
-        "sub_stage_id": RateMaster.sub_stages.value || 0,
-        "no_of_compliance_days": RateMaster.compliance.value,
-        "remainder_days": RateMaster.noOfDays.value,
-        "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-        "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-        "created_by": localStorage.getItem("empId"),
-        "updated_by": localStorage.getItem("empId"),
-      }
 
-    })
-      .then((response) => {
-        if (response.data.status === 1) {
-
-          getstageMaster();
-          notification.success({
-            message: 'Stage Master Updated Successfully',
-          });
-          handleCancel();
-          return Promise.resolve();
-        }
-      })
-    var filtererr = targetkeys.filter(
+    let filtererr = targetkeys.filter(
       (obj) => RateMaster[obj].error == true
     );
-    console.log(filtererr.length);
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
 
     } else {
+      dispatch(InsertStageMaster(RateMaster));
       // setResumeFrom({ error: false });
-
     }
     setRateMaster(prevState => ({
       ...prevState
@@ -225,46 +168,31 @@ insert_stage_master
 
   };
 
-  const getstageMaster = () => {
-    Axios({
-      method: "GET",
-      url: apiurl + 'get_stage_master',
-    })
-      .then((response) => {
-        let stageMasterListData = []
-        response.data.data.map((data) =>
-          stageMasterListData.push(data)
-
-        )
-        var rateList = [];
-        for (var m = 0; m < stageMasterListData.length; m++) {
-          var listarray = {
-            //"table_names" : stageMasterListData[m].project_name,
-            "project_type": stageMasterListData[m].project_type,
-            "sub_project_type": stageMasterListData[m].sub_project_type,
-            "process_type": stageMasterListData[m].process,
-            "stage": stageMasterListData[m].stage,
-            "sub_stage": stageMasterListData[m].sub_stage,
-            "noOfdays": stageMasterListData[m].no_of_compliance_days,
-            "reminderDays": stageMasterListData[m].remainder_days,
-          }
-          rateList.push(listarray);
-        }
-        setStageMasterList({ rateList })
-      })
-  }
-
   function checkValidation(data, key, multipleId) {
+    //_____________________
+    if(data && key == "project_type"){
+      dispatch(getProjectSubType(data))
     if (data === 1 && key == "project_type") {
       setEnabled(false)
-    } else if (data !== 1 && key == "project_type") { setEnabled(true) }
-
+    } else if (data !== 1 && key == "project_type")
+     { setEnabled(true) }
+  }
+     //________________________________________________________________
+     if (key == "sub_project_type" && data) {
+      //process type
+      dispatch(getProcessType({
+        ProjectType:RateMaster.project_type.value,ProjectSubtype:data
+      }))
+    }
+    //________________________________________________________________
     if (key === "stages" && data) {
-
       dispatch(getSubStage(data))
       setStageEnabled(false)
     } else if (data !== 1 && key == "project_type") { setStageEnabled(true) }
 
+    if (data && key == "noOfDays") {
+      RateMaster[key].validation[1].params = RateMaster.compliance.value
+    }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       RateMaster[key].validation
@@ -275,55 +203,6 @@ insert_stage_master
       errmsg: errorcheck.msg,
       validation: RateMaster[key].validation
     }
-    let multipleIdList = []
-
-    // no.of Days Validation==>
-
-    if (data && key == "noOfDays") {
-      RateMaster[key].validation[1].params = RateMaster.compliance.value
-    }
-
-
-    if (key == "project_type") {
-
-      // Sub project type
-      Axios({
-        method: "POST",
-        url: apiurl + 'get_project_sub_type',
-        data: {
-          "project_type_id": data
-        }
-      })
-        .then((response) => {
-          let projectSubTypedata = []
-          response.data.data.map((data) =>
-            projectSubTypedata.push({ value: data.sub_project_type, id: data.sub_project_type_id })
-          )
-          setprojectSubType({ projectSubTypedata })
-        })
-    }
-    else if (key == "sub_project_type") {
-      //process type
-      Axios({
-        method: "POST",
-        url: apiurl + 'get_process_type',
-        data: {
-          "project_type_id": RateMaster.project_type.value,
-          "sub_project_type_id": data
-        }
-      })
-        .then((response) => {
-          let processTypedata = []
-          response.data.data.map((data) =>
-            processTypedata.push({ value: data.process, id: data.process_id })
-          )
-          setprocessType({ processTypedata })
-        })
-
-    }
-
-
-
     setRateMaster(prevState => ({
       ...prevState,
       [key]: dynObj,
@@ -341,14 +220,6 @@ insert_stage_master
       ...prevState,
     }));
   }
-  useEffect(() => {
-    let substagedata = []
-    props.getSubStage.map((data) =>
-      substagedata.push({ value: data.sub_stage, id: data.sub_stage_id })
-    )
-    setsubStage({ substagedata })
-
-  }, [props.getSubStage])
 
 
   return (
@@ -426,7 +297,8 @@ insert_stage_master
       </Grid>
       <div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
-          rows={StageMasterList.length == 0 ? StageMasterList : StageMasterList.rateList} />
+          rows={StageMasterList.length == 0 ? StageMasterList :StageMasterList.rateList}
+          />
       </div>
     </div>
   )
@@ -434,6 +306,11 @@ insert_stage_master
 
 
 const mapStateToProps = (state) => ({
+  getTableData:state.StageMasterReducer.getStageMasterTableData || [] ,
+  ProjectType: state.getOptions.getProjectType || [],
+  StageList: state.getOptions.getStageList || [],
+  ProcessType: state.getOptions.getProcessType || [],
+  ProjectSubtype: state.getOptions.getProjectSubType || [],
   getSubStage: state.getOptions.getSubStage || [],
 });
 

@@ -232,17 +232,17 @@ function Resumesearch(props) {
     useEffect(() => {
         let rowDataList = []
 
-        props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ view:  <img
-                src={Eyes}
-                className="viewCandidatesList"
-                onClick={()=>viewCandidate(data.resume_id)}
-              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-             basic: data.basic_qual, language: data.language, certification: data.certifications, 
-             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
-             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
-             checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
-        })
+        // props.GetRowData && props.GetRowData.map((data,index) => {
+        //     rowDataList.push({ view:  <img
+        //         src={Eyes}
+        //         className="viewCandidatesList"
+        //         onClick={()=>viewCandidate(data.resume_id)}
+        //       />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+        //      basic: data.basic_qual, language: data.language, certification: data.certifications, 
+        //      specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
+        //      box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
+        //      checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+        // })
 
         setRowData(rowDataList)
     }, [props.GetRowData, test])

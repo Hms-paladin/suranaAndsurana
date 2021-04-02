@@ -19,6 +19,7 @@ import { tr } from "date-fns/locale";
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
 
 function InerviewScreen(props) {
+
   const dispatch = useDispatch();
   const [modelOpen, setModelOpen] = useState(false);
   const [getdata, setgetData] = useState([]);
@@ -53,12 +54,6 @@ function InerviewScreen(props) {
       error: null,
       errmsg: null,
     },
-    final_score: {
-      value: "0",
-      // validation: [],
-      error: null,
-      errmsg: null,
-    },
   });
 
   useEffect(() => {
@@ -79,9 +74,6 @@ function InerviewScreen(props) {
     }).then((response) => {
       setgetData(response.data.data);
     });
-
-    // for candiate post api
-    // dispatch(GetCandiateDetails())
     Axios({
       method: "POST",
       url: apiurl + "get_selected_candidates",
@@ -119,10 +111,6 @@ function InerviewScreen(props) {
       //     ({id:data.int_details_id})
       //     // propsdata.push(data)
       //     )}))
-      console.log(
-        "______response.data.data[0].output_______",
-        response.data.data[0].output
-      );
       setint_details({ Intview_data });
     });
   }, [props]);
@@ -360,7 +348,7 @@ function InerviewScreen(props) {
             <div className="score_div">
               <Labelbox
                 type="text"
-                placeholder="Initial Score"
+                placeholder="Score"
                 changeData={(data) => checkValidation(data, "initial_score")}
                 value={postData.initial_score.value}
                 error={postData.initial_score.error}
@@ -377,20 +365,6 @@ function InerviewScreen(props) {
                 errmsg={postData.comment.errmsg}
               />
             </div>
-            {final === true ? (
-              <div className="score_div">
-                <Labelbox
-                  type="text"
-                  placeholder="Final Score"
-                  changeData={(data) => checkValidation(data, "final_score")}
-                  value={postData.final_score.value}
-                  // error={postData.final_score.error}
-                  // errmsg={postData.final_score.errmsg}
-                />
-              </div>
-            ) : (
-              ""
-            )}
             <div style={{ textAlign: "end" }}>
               <CustomButton
                 btnName={"Save"}

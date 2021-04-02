@@ -67,8 +67,8 @@ function DynModelView(props){
                           <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?moment(val.dob).format("DD-MMM-YYYY"):"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 ||"M" ? "Male": "Female"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual?val.bas_qual:"-"}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1 ?val.add_quali_1:"-"}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2?val.add_quali_2:"-"}</div></div>
+                          {/* <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1 ?val.add_quali_1:"-"}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2?val.add_quali_2:"-"}</div></div> */}
                        </div>
                     <div className="employeeform_row2">
                         <div className="employeeform_row2flex1">

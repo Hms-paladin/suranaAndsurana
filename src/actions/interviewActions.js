@@ -33,7 +33,7 @@ export const InsertInterviewquestions =(postData,id,data,round)=> async dispatch
                 "comment":postData.comment.value,
                 "score_inital":postData.initial_score.value,
                 "score_reviewer":localStorage.getItem("empId"),
-                "final_score":postData.final_score.value,
+                // "final_score":postData.final_score.value,
                 "status":postData.init_status.value,
                 "int_details_id":data.int_details_id    ,
                 "resume_id":id,
