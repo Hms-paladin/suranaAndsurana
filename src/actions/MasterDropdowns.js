@@ -9,9 +9,35 @@ import { GET_ACHIEVEMENT } from '../utils/Constants.js';
 import { GET_SPECILIZATION } from '../utils/Constants.js';
 import { GET_CAPABILITY } from '../utils/Constants.js';
 import { GET_TALENTS } from '../utils/Constants.js';
+import { GET_RESOURCE_TYPE,GET_INSTITUTE,GET_SPECIAL_INTEREST,GET_STATE,GET_CITY,GET_LANGUAGES } from '../utils/Constants.js';
 import { GET_STATUS, GET_QUALIFICATION, GET_INDUSTRY, GET_PROJECT_SUB_TYPE, GET_PROCESS_TYPE, GET_STAGELIST ,GET_SUB_STAGE, GET_INTERVIEW_APPROVER, GET_CLIENT_TYPE, GET_CLIENT, GET_PROJECT_TYPE, GET_PROJECT_NAME, GET_BILLABLE_TYPE, GET_FILING_TYPE, GET_EMPLOYEE_LIST ,GET_CLIENT_LIST,GET_PROJECT_COST_RANGE} from '../utils/Constants.js';
 
-
+//_________________________________
+export const getResourceType = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_s_tbl_m_resource_type');
+    return dispatch(({ type: GET_RESOURCE_TYPE, payload: response.data.data }));
+};
+export const getInstitute = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_s_tbl_m_institute');
+    return dispatch(({ type: GET_INSTITUTE, payload: response.data.data }));
+};
+export const getSpecialInterest = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_s_tbl_m_special_interest');
+    return dispatch(({ type: GET_SPECIAL_INTEREST, payload: response.data.data }));
+};
+export const getStates = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_s_tbl_m_state');
+    return dispatch(({ type: GET_STATE, payload: response.data.data }));
+};
+export const getCity = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_s_tbl_m_city');
+    return dispatch(({ type: GET_CITY, payload: response.data.data }));
+};
+export const getLanguages = () => async (dispatch) => {
+    const response = await axios.get(apiurl + '/get_s_tbl_m_language');
+    return dispatch(({ type: GET_LANGUAGES, payload: response.data.data }));
+};
+//___________________________
 export const getSkills = () => async (dispatch) => {
     const response = await axios.get(apiurl + '/get_s_tbl_m_skills');
     return dispatch(({ type: GET_SKILLS, payload: response.data.data }));

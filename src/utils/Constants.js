@@ -14,6 +14,12 @@ export const GET_CANDIDATES_DETAILS = "GET_CANDIDATES_DETAILS"
 export const INSERT_RESUME = "INSERT_RESUME"
 
 // masterDropdrop
+export const GET_RESOURCE_TYPE = "GET_RESOURCE_TYPE";
+export const GET_INSTITUTE = "GET_INSTITUTE";
+export const GET_SPECIAL_INTEREST = "GET_SPECIAL_INTEREST";
+export const GET_STATE = "GET_STATE";
+export const GET_CITY = "GET_CITY";
+export const GET_LANGUAGES = "GET_LANGUAGES";
 export const GET_SKILLS = "GET_SKILLS"
 export const GET_TRAITS = "GET_TRAITS"
 export const GET_CERTIFICATION = "GET_CERTIFICATION"
