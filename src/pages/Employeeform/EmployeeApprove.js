@@ -13,7 +13,6 @@ import { getHrTaskList } from "../../actions/TodoListAction";
  function EmployeeApprove(props){
     const dispatch = useDispatch();
     const [employee,setemployee]=useState([])
-    const [resume_id,setresume_id]=useState("")
     const [status,setStatus] = useState()
     
 useEffect(()=>{

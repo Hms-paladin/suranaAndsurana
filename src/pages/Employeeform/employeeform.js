@@ -5,13 +5,14 @@ import { Upload, message } from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
 import Axios from 'axios';
 import { apiurl } from '../../utils/baseUrl'
-import './employeeform.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 import { notification } from 'antd';
 import moment from "moment";
 import { getHrTaskList } from "../../actions/TodoListAction";
-import { useDispatch } from "react-redux";
-
+import { connect, useDispatch } from "react-redux";
+import {getDesignationList,getDepartment,getInterviewers} from '../../actions/MasterDropdowns'
+import {GetCandiateDetails,GetEmployeeDetails} from '../../actions/CandidateAndEmployeeDetails'
+import './employeeform.scss'
 function Employeeform(props) {
     const dispatch = useDispatch();
     const [getDetails, setgetDetails] = useState([])
@@ -19,7 +20,6 @@ function Employeeform(props) {
     const [dept, setdept] = useState({})
     const [sup_name, setsup_name] = useState({})
     const [file, setfile] = useState("")
-    const [taskId, setTaskId] = useState("")
     const [fileList, setfileList] = useState("")
     const [EmpForm, setEmpFrom] = useState({
         desgination: {
@@ -78,114 +78,78 @@ function Employeeform(props) {
         },
     })
 
-    function checkValidation(data, key, multipleId) {
-        console.log("key", key);
-        console.log("data>>", data);
+//Dropdowns
+    useEffect(() => {
+     dispatch(getDesignationList());
+     dispatch(getDepartment());
+     dispatch(getInterviewers());
+    }, [])
+//CandidateDetails
+    useEffect(() => {
+        dispatch(GetCandiateDetails(props.emp_form_id.int_status_id));
+    }, [ props.emp_form_id])
+//SETCandidateDetails
+    useEffect(() => {
+        setgetDetails(props.getCandidatesDetails)
+    }, [ props.getCandidatesDetails])
+//SETDropdowns 
+    useEffect(() => {
+      let Designation = [];
+      props.getDesignationList.map((data, index) =>
+        Designation.push({ id: data.designation_id, value: data.designation })
+      );
+      setgetData({ Designation });
 
-        if (key === "supervisor_name") {
-            Sup_nameGetId(data)
+      let Department = [];
+      props.getDepartment.map((data, index) =>
+        Department.push({ id: data.department_id, value: data.department })
+      );
+      setdept({ Department });
+      let Supervisor = [];
+      props.getInterviewersList.map((data, index) =>
+        Supervisor.push({ id: data.emp_id, value: data.name })
+      );
+      setsup_name({ Supervisor });
+    }, [
+      props.getDesignationList,
+      props.getDepartment,
+      props.getInterviewersList,
+    ]);
+//SETEmployeeDetails  
+function Sup_nameGetId(data) {
+    Axios({
+        method: "post",
+        header: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        url: apiurl + "get_employee_by_id",
+        data: {
+            "emp_id": data
         }
-        var errorcheck = ValidationLibrary.checkValidation(
-            data,
-            EmpForm[key].validation
-        );
-        let dynObj = {
-            value: data,
-            error: !errorcheck.state,
-            errmsg: errorcheck.msg,
-            validation: EmpForm[key].validation
-        }
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueId = multipleIdList.toString()
-        }
-        // (end)
-
+    }).then((response) => {
+        let empData = []
+        response.data.data.map((data, index) =>
+            empData.push(data)
+        )
         setEmpFrom(prevState => ({
             ...prevState,
-            [key]: dynObj,
-
+                supervisor_email:{value:empData[0].official_email},
+                supervisor_ph:{value:empData[0].official_contact}
         }));
-    }
-    useEffect(() => {
-
-        Axios({
-            method: 'POST',
-            url: apiurl + 'get_candidate_details_by_id',
-            data: {
-                "resume_id": props.emp_form_id && props.emp_form_id.int_status_id
-            },
-
-        })
-            .then((response) => {
-                setgetDetails(response.data.data)
-
-            })
-            .catch((error) => {
-
-            })
-        Axios({
-            method: "get",
-            url: apiurl + "get_s_tbl_m_designation",
-        }).then((response) => {
-            let Designation = []
-            response.data.data.map((data, index) =>
-                Designation.push({ id: data.designation_id, value: data.designation })
-            )
-            setgetData({ Designation })
-        })
-        Axios({
-            method: "get",
-            url: apiurl + "get_department",
-        }).then((response) => {
-            let Department = []
-            response.data.data.map((data, index) =>
-                Department.push({ id: data.department_id, value: data.department })
-            )
-            setdept({ Department })
-        })
-        Axios({
-            method: "get",
-            url: apiurl + "get_interviewers",
-        }).then((response) => {
-            let Supervisor = []
-            response.data.data.map((data, index) =>
-                Supervisor.push({ id: data.emp_id, value: data.name })
-            )
-            setsup_name({ Supervisor })
-        })
-    }, [props])
-    function Sup_nameGetId(data) {
-        Axios({
-            method: "post",
-            header: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            url: apiurl + "get_employee_by_id",
-            data: {
-                "emp_id": data
-            }
-        }).then((response) => {
-            let empData = []
-            response.data.data.map((data, index) =>
-                empData.push(data)
-            )
-            setEmpFrom(prevState => ({
-                ...prevState,
-                    supervisor_email:{value:empData[0].official_email},
-                    supervisor_ph:{value:empData[0].official_contact}
-            }));
-        })
-    }
+    })
+}  
+    // useEffect(() => {
+    //     let empData = []
+    //     props.getEmployeeDetails.map((data, index) =>
+    //             empData.push(data)
+    //         )
+    //         setEmpFrom(prevState => ({
+    //             ...prevState,
+    //                 supervisor_email:{value:empData[0].official_email || ""},
+    //                 supervisor_ph:{value:empData[0].official_contact || ""}
+    //         }));
+    // }, [props.getEmployeeDetails])
     function InsertApi() {
         const getEmployeeFormDetails = getDetails[0] || []
 
@@ -272,7 +236,6 @@ function Employeeform(props) {
         var filtererr = targetkeys.filter(
             (obj) => EmpForm[obj].error == true
         );
-        console.log(filtererr.length);
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
 
@@ -306,14 +269,49 @@ function Employeeform(props) {
         setfile(e.target.files[0].name)
 
     }
-    console.log(props, "emp_props")
 
+
+    function checkValidation(data, key, multipleId) {
+        if (data && key === "supervisor_name") {
+            
+            Sup_nameGetId(data)
+            // dispatch(GetEmployeeDetails(data))
+        }
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            EmpForm[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: EmpForm[key].validation
+        }
+        let multipleIdList = []
+
+        if (multipleId) {
+            multipleId.map((item) => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i] === item.value) {
+                        multipleIdList.push(item.id)
+                    }
+                }
+            })
+            dynObj.valueId = multipleIdList.toString()
+        }
+        // (end)
+
+        setEmpFrom(prevState => ({
+            ...prevState,
+            [key]: dynObj,
+
+        }));
+    }
     return (
 
         <div>
             <div style={{ marginBottom: "10px", fontSize: '16px', fontWeight: "600" }}>Employee form</div>
             {getDetails.map((val, index) => {
-                console.log(val, "vall")
                 return (
                     <div className="Employee_formdiv">
                         <div className="employeeform_row1">
@@ -445,26 +443,26 @@ function Employeeform(props) {
                     //   onChange= {(info)=>handleChange(info) } 
                     //   fileList={fileListData}
                     >
-                      
                           <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
                      </Upload>, */}
-
-                    <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf" onChange={onFileChange} id="pdfupload" /> <PublishIcon />
-
-
-
-
-
+                    <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf" 
+                    onChange={onFileChange} id="pdfupload" /> <PublishIcon />
                 </div>
 
             </div>
             <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div>
-
-
         </div>
     )
 }
 
+const mapStateToProps = (state) => (
+    {
+  getDesignationList: state.getOptions.getDesignationList  || [],
+  getDepartment: state.getOptions.getDepartment  || [],
+  getInterviewersList: state.getOptions.getInterviewersList  || [],
+  getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails  || [],
+  getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails  || [],
+    }
+);
 
-
-export default Employeeform;
+export default connect(mapStateToProps)(Employeeform);

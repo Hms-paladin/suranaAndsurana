@@ -7,7 +7,7 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-import {getInterviewApprover} from "../../actions/MasterDropdowns";
+import {getInterviewApprover,getDesignationList} from "../../actions/MasterDropdowns";
 
 const HrInterviewModel=(props)=> {
     const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const HrInterviewModel=(props)=> {
             response.data.data.map((data, index) =>
                 Designation.push({ id: data.designation_id, value: data.designation }))
     
-            setdesignationdata({ Designation })
+            // setdesignationdata({ Designation })
 
             Axios({
                 method: "get",
@@ -81,6 +81,7 @@ const HrInterviewModel=(props)=> {
 },[])
 // 
 useEffect(() => {
+dispatch(getDesignationList());
 dispatch(getInterviewApprover());
 }
 ,[])
@@ -90,8 +91,14 @@ useEffect(() => {
     props.getInterviewApprover.map((data, index) =>
     InterviewApprover.push({ id: data.emp_id, value: data.name }))
         setInterviewApprover({ InterviewApprover })
+
+        let Designation = []
+        props.getDesignationList.map((data, index) =>
+        Designation.push({ id: data.designation_id, value: data.designation })
+      )
+      setdesignationdata({ Designation })
     }
-    ,[props.getInterviewApprover])
+    ,[props.getInterviewApprover, props.getDesignationList])
 // ____________________
 
 function checkValidation(data, key, multipleId) {
@@ -101,8 +108,6 @@ function checkValidation(data, key, multipleId) {
     }else{
         setFinalRound(false)
       }
-  
-   
     var errorcheck = ValidationLibrary.checkValidation(
         data,
         Interviewschedule[key].validation
@@ -226,6 +231,7 @@ const mapStateToProps = (state) => (
     // console.log(state.getOptions.getInterviewApprover, "getProcessType")
     {
         getInterviewApprover: state.getOptions.getInterviewApprover || [],
+        getDesignationList: state.getOptions.getDesignationList  || [],
 
     }
 );

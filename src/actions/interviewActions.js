@@ -3,7 +3,6 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
 import moment from 'moment'
-
 import { getHrTaskList } from "./TodoListAction";
 
 
@@ -16,15 +15,12 @@ export const getInterviewquestions = () => async dispatch => {
         .then((response) => {
             dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
         })
-        
     } catch (err) {
-        
     }
 }
 
 export const InsertInterviewquestions =(postData,id,data,round)=> async dispatch =>{
     try {
-        console.log(postData,"obj")
         axios({
             method:'POST',
             url:apiurl + 'insert_interview_scores',
@@ -33,7 +29,6 @@ export const InsertInterviewquestions =(postData,id,data,round)=> async dispatch
                 "comment":postData.comment.value,
                 "score_inital":postData.initial_score.value,
                 "score_reviewer":localStorage.getItem("empId"),
-                // "final_score":postData.final_score.value,
                 "status":postData.init_status.value,
                 "int_details_id":data.int_details_id    ,
                 "resume_id":id,
@@ -71,7 +66,6 @@ export const GetCandiateDetails = () => async dispatch => {
             }
         })
         .then((response) => {
-            console.log(response.data.data,"candiate")
             dispatch({type:GET_CANDIDATES_DETAILS,payload:response.data.data})
         })
         

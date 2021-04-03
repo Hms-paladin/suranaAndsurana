@@ -4,7 +4,7 @@ import { GET_CERTIFICATION } from "../utils/Constants.js";
 import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
-import { GET_TALENTS } from "../utils/Constants.js";
+import { GET_TALENTS,GET_DESIGNATION_LIST,GET_DEPARTMENT,GET_INTERVIEWERS_LIST,GET_INTERVIEW_STATUS } from "../utils/Constants.js";
 import {
   GET_STATUS,
   GET_QUALIFICATION,
@@ -63,6 +63,7 @@ const initalState = {
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
+  getDesignationList:[],getDepartment:[],getInterviewersList:[],getInterviewStatus:[],
 };
 
 export default function (state = initalState, action) {
@@ -79,7 +80,7 @@ export default function (state = initalState, action) {
     case GET_CITY:
       return { ...state, getCity: payload };
     case GET_LANGUAGES:
-      return { ...state, GET_LANGUAGES: payload };
+      return { ...state, getLanguages: payload };
     case GET_SKILLS:
       return { ...state, getSkills: payload };
     case GET_TRAITS:
@@ -122,6 +123,14 @@ export default function (state = initalState, action) {
       return { ...state, getFilingType: payload };
     case GET_EMPLOYEE_LIST:
       return { ...state, getEmployeeList: payload };
+      case GET_DESIGNATION_LIST:
+        return { ...state, getDesignationList: payload }; 
+        case GET_DEPARTMENT:
+          return { ...state, getDepartment: payload };   
+          case GET_INTERVIEWERS_LIST:
+            return { ...state, getInterviewersList: payload };  
+            case GET_INTERVIEW_STATUS:
+              return { ...state, getInterviewStatus: payload }; 
     case GET_PROJECT_COST_RANGE:
       return { ...state, getProjectCostRange: payload };
     case GET_CLIENT_LIST:

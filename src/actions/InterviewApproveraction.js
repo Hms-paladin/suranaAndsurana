@@ -15,7 +15,6 @@ export const Interview = () => async dispatch => {
             url: apiurl +'/get_questions',
         })
         .then((response) => {
-            console.log(response.data.data,"datacheck")
             dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
         })
         

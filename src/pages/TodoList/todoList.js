@@ -194,9 +194,11 @@ function TodoList(props) {
     )
 }
 
-const mapStateToProps = state => ({
-    getHrTodoList: state.getHrTodoList
-})
+const mapStateToProps = state => (
+    {
+    getHrTodoList: state.getHrTodoList.getHrToDoListTableData ||[]
+}
+)
 
 export default connect(mapStateToProps)(TodoList);
 

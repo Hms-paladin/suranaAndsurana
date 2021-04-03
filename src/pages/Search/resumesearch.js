@@ -8,7 +8,6 @@ import { apiurl } from '../../utils/baseUrl';
 import { useDispatch, connect } from "react-redux";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
 import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus } from "../../actions/MasterDropdowns";
-import Axios from 'axios';
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Eyes from "../../images/neweye.svg";
@@ -34,9 +33,6 @@ function Resumesearch(props) {
 
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
-
-
-    // const [value, setValue] = React.useState();  
     const [optionvalues, setoptionvalues] = useState([]);
     const [resumeSearchList, setGetList] = useState({})
     const [rows, setRowData] = useState([])
@@ -232,17 +228,17 @@ function Resumesearch(props) {
     useEffect(() => {
         let rowDataList = []
 
-        // props.GetRowData && props.GetRowData.map((data,index) => {
-        //     rowDataList.push({ view:  <img
-        //         src={Eyes}
-        //         className="viewCandidatesList"
-        //         onClick={()=>viewCandidate(data.resume_id)}
-        //       />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-        //      basic: data.basic_qual, language: data.language, certification: data.certifications, 
-        //      specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
-        //      box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
-        //      checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
-        // })
+        props.GetRowData && props.GetRowData.map((data,index) => {
+            rowDataList.push({ view:  <img
+                src={Eyes}
+                className="viewCandidatesList"
+                onClick={()=>viewCandidate(data.resume_id)}
+              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+             basic: data.basic_qual, language: data.language, certification: data.certifications, 
+             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
+             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
+             checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+        })
 
         setRowData(rowDataList)
     }, [props.GetRowData, test])
@@ -262,8 +258,6 @@ function Resumesearch(props) {
 
     return (
         <div>
-
-
             <div>
                 <div className="searchBoxContainer">
                     <Grid container spacing={3}>
@@ -378,7 +372,3 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps)(Resumesearch);
-
-
-//  <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-//             <div className="searchinterviewbtn"><Button onClick={() => setModelOpen(true)} >Interview Details</Button></div>/

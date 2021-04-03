@@ -22,7 +22,6 @@ export const ResumeSearchStatus = () => async dispatch => {
 }
 
 export const searchRowdata = (data) => async dispatch => {
-    console.log(data,"actiondata")
     try {
         axios({
             method: 'POST',
