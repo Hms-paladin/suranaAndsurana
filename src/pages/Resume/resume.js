@@ -320,10 +320,10 @@ const ResumePage = (props) => {
     props.getLanguages.map((data, index) => {
       languagesList.push({ value: data.language, id: data.language_id });
     });
-    // let industryList = [];
-    // responseThirteen.map((data, index) => {
-    //   industryList.push({ value: data.industry, id: data.industry_id });
-    // });
+    let industryList = [];
+    props.getIndustry.map((data, index) => {
+      industryList.push({ value: data.industry, id: data.industry_id });
+    });
     let achivementsList = [];
     props.getAchievement.map((data, index) => {
       achivementsList.push({
@@ -349,7 +349,7 @@ const ResumePage = (props) => {
       stateList,
       cityList,
       languagesList,
-      // industryList,
+      industryList,
       achivementsList,
       capabilityList,
     });
