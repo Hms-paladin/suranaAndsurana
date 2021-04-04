@@ -158,6 +158,8 @@ function TodoList(props) {
    const onNewPageClear=(bln)=>{
     setStateClear(!stateClear);
     setInerviewScreen(bln);
+    setEmployeeFormOpen(bln);
+    setApproveOpen(bln);
 
    }
     return (
@@ -172,13 +174,13 @@ function TodoList(props) {
               handleAproverModelClose={(bln) => onNewPageClear(bln)}  stateClear={stateClear} />} />
 
     {/*EmployeeForm after  selected in interview approve     */}
-            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
-             content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
+            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1100}
+             content={<Employeeform closemodal={(bln) => onNewPageClear(bln)} emp_form_id={Employee_Data} stateClear={stateClear} />} />
 
     {/*EmployeeApprove after  value entered in employee form     */}
     
-            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} 
-            content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
+            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} 
+            content={<EmployeeApprove closemodal={(bln) => onNewPageClear(bln)} emp_viewer_id={viewer_id} stateClear={stateClear} />} />
 
            </div>
             {/* __________________________________________________________________________ */}

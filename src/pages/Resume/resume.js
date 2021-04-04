@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { apiurl } from "../../utils/baseUrl";
-import axios from "axios";
 import { useDispatch, connect } from "react-redux";
 import CustomButton from "../../component/Butttons/button";
 import { InesertResume } from "../../actions/ResumeAction";

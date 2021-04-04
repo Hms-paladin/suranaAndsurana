@@ -23,8 +23,8 @@ function Employeeform(props) {
     const [fileList, setfileList] = useState("")
     const [EmpForm, setEmpFrom] = useState({
         desgination: {
-            value: "",
-            validation: [{ "name": "required" }],
+            value: props.emp_form_id.designation_id,
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -86,6 +86,8 @@ function Employeeform(props) {
     }, [])
 //CandidateDetails
     useEffect(() => {
+        console.log("empform",props.emp_form_id)
+        EmpForm.desgination.value=props.emp_form_id.designation_id
         dispatch(GetCandiateDetails(props.emp_form_id.int_status_id));
     }, [ props.emp_form_id])
 //SETCandidateDetails
@@ -153,14 +155,14 @@ function Sup_nameGetId(data) {
     function InsertApi() {
         const getEmployeeFormDetails = getDetails[0] || []
 
-        var formData = new FormData();
-        formData.append("name", getEmployeeFormDetails.name)
-        //         formData.append("type_of_resource",getEmployeeFormDetails.type_of_resource)
-        formData.append("gender", getEmployeeFormDetails.gender)
-        //         formData.append("dob",getEmployeeFormDetails.dob)
-        //         formData.append("bas_qual",getEmployeeFormDetails.bas_qual)
-        //         formData.append("add_quali_1",getEmployeeFormDetails.add_quali_1)
-        //         formData.append("add_quali_2",getEmployeeFormDetails.add_quali_2)
+        let formData = new FormData();
+        formData.append("name", getEmployeeFormDetails.name);
+        // formData.append("type_of_resource",getEmployeeFormDetails.type_of_resource)
+        formData.append("gender", getEmployeeFormDetails.gender);
+        // formData.append("dob",getEmployeeFormDetails.dob)
+        // formData.append("bas_qual",getEmployeeFormDetails.bas_qual)
+        // formData.append("add_quali_1",getEmployeeFormDetails.add_quali_1)
+        // formData.append("add_quali_2",getEmployeeFormDetails.add_quali_2)
         // formData.append("institution",getEmployeeFormDetails.institution)
         // formData.append("last_employer",getEmployeeFormDetails.last_employer)
         // formData.append("start_date",getEmployeeFormDetails.last_empr_start_date)
@@ -179,29 +181,32 @@ function Sup_nameGetId(data) {
         // formData.append("state_of_domecile",getEmployeeFormDetails.state_of_domecile)
         // formData.append("city",getEmployeeFormDetails.city)
         // formData.append("status",getEmployeeFormDetails.status_resource)
-        formData.append("lang_known", getEmployeeFormDetails.lang_known)
-        formData.append("industry", getEmployeeFormDetails.industry)
-        formData.append("designation", EmpForm.desgination.value)
-        formData.append("doj", EmpForm.date_of_birth.value)
-        formData.append("supervisor", EmpForm.supervisor_name.value)
-        formData.append("email", EmpForm.EmpOfficialEmail.value)
-        formData.append("supervisor_name", "")
-        formData.append("supervisor_email", EmpForm.supervisor_email.value)
-        formData.append("official_email", EmpForm.EmpOfficialEmail.value)
-        formData.append("official_contact", EmpForm.EmpOfficialContact.value)
-        formData.append("department", EmpForm.department.value)
-        formData.append("employee__code", EmpForm.employee_code.value)
-        formData.append("upload_document", file)
-        formData.append("biometric_data", "notes")
-        formData.append("approved_by", localStorage.getItem("empId"))
-        formData.append("approved_date", moment().format('YYYY-MM-DD HH:m:s'))
-        formData.append("is_interviewer", localStorage.getItem("user_id"))
-        formData.append("created_on", moment().format('YYYY-MM-DD HH:m:s'))
-        formData.append("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
-        formData.append("created_by", localStorage.getItem("empId"))
-        formData.append("updated_by", localStorage.getItem("empId"))
-        formData.append("ip_address", "Adress")
-        formData.append("task_id", props.emp_form_id && props.emp_form_id.task_id)
+        formData.append("lang_known", getEmployeeFormDetails.lang_known);
+        formData.append("industry", getEmployeeFormDetails.industry);
+        formData.append("designation", EmpForm.desgination.value);
+        formData.append("doj", EmpForm.date_of_birth.value);
+        formData.append("supervisor", EmpForm.supervisor_name.value);
+        formData.append("email", EmpForm.EmpOfficialEmail.value);
+        formData.append("supervisor_name", "");
+        formData.append("supervisor_email", EmpForm.supervisor_email.value);
+        formData.append("official_email", EmpForm.EmpOfficialEmail.value);
+        formData.append("official_contact", EmpForm.EmpOfficialContact.value);
+        formData.append("department", EmpForm.department.value);
+        formData.append("employee__code", EmpForm.employee_code.value);
+        formData.append("upload_document", file);
+        formData.append("biometric_data", "notes");
+        formData.append("approved_by", localStorage.getItem("empId"));
+        formData.append("approved_date", moment().format("YYYY-MM-DD HH:m:s"));
+        formData.append("is_interviewer", localStorage.getItem("user_id"));
+        formData.append("created_on", moment().format("YYYY-MM-DD HH:m:s"));
+        formData.append("updated_on", moment().format("YYYY-MM-DD HH:m:s"));
+        formData.append("created_by", localStorage.getItem("empId"));
+        formData.append("updated_by", localStorage.getItem("empId"));
+        formData.append("ip_address", "Adress");
+        formData.append(
+          "task_id",
+          props.emp_form_id && props.emp_form_id.task_id
+        );
         Axios({
             method: "post",
             url: apiurl + "insert_employee",
@@ -253,21 +258,23 @@ function Sup_nameGetId(data) {
 
     const handleCancel = () => {
         let From_key = [
-            "desgination", "date_of_birth", "supervisor_name", "supervisor_email", "supervisor_ph", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department"
+            "date_of_birth", "supervisor_name", "supervisor_email", "supervisor_ph", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department"
         ]
 
         From_key.map((data) => {
             EmpForm[data].value = ""
         })
+        From_key.map((data) => {
+            EmpForm[data].error = null
+        })
         setEmpFrom(prevState => ({
             ...prevState,
         }));
+
     }
     function onFileChange(e) {
-        console.log("sdfjsdhfjdshflsdf", e.target.files[0].name)
         setfileList(e.target.files[0])
         setfile(e.target.files[0].name)
-
     }
 
 
@@ -307,6 +314,10 @@ function Sup_nameGetId(data) {
 
         }));
     }
+
+    useEffect(() => {
+        handleCancel()
+      }, [props.stateClear])
     return (
 
         <div>
@@ -363,6 +374,7 @@ function Sup_nameGetId(data) {
             <div className="employeeform_row7">
                 <div>
                     <Labelbox type="select" placeholder="Designation"
+                        disabled={true}
                         dropdown={getdata.Designation}
                         changeData={(data) => checkValidation(data, "desgination")}
                         value={EmpForm.desgination.value}

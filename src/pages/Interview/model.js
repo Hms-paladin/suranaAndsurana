@@ -74,8 +74,8 @@ function DynModelView(props){
                         <div className="employeeform_row2flex1">
                           <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">{val.institution ? val.institution:"-"}</div></div>
                           <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">{val.last_employer ? val.last_employer:"-"}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{moment(val.last_empr_start_date).format("DD-MMM-YYYY")}</div></div>
-                          <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{moment(val.last_empr_end_date).format("DD-MMM-YYYY")}</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{ val.last_empr_start_date? moment(val.last_empr_start_date).format("DD-MMM-YYYY"):"--" }</div></div>
+                          <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{val.last_empr_end_date? moment(val.last_empr_end_date).format("DD-MMM-YYYY"): "--"}</div></div>
                         </div>
                         <div className="employeeform_row2flex2">
                           <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills ? val.skills:"-"}</div></div>
@@ -100,8 +100,9 @@ function DynModelView(props){
                     <div className="employeeform_row6">
                       <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city:"-"}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource:"-"}</div></div>
+                      
                     </div>     
                 </div>
                 )  
