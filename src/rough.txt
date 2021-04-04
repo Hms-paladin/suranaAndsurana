@@ -1,3 +1,52 @@
-props.ProjectDetails.map((data) =>
-        //     ProjectDetailsdata.push({ projectName: data.project_name, clientName: data.client, projectType: data.project_type, projectSubType: data.sub_project_type, processType: data.process, fillingType: data.filing_type, billableType: data.billable_type, hodAttorny: data.hod_hr_id, counsel: data.councel })
-        // );
+/   useEffect(() => {
+//     dispatch(getSelectedCandidates(props.interviewer_id.int_details_id))
+//   }, [ props.interviewer_id])
+
+//   useEffect(() => {
+//    console.log("Sel",props.getSelectedCandidates)
+// let InterviewData={}
+// let CandidatesList=[]
+// props.getSelectedCandidates.map(
+//   (data) => (InterviewData["id"] = data.int_details_id,
+//              InterviewData["date"] =  moment(data.prop_date_time).format("DD-MM-YYYY"),
+//              InterviewData["designation"] = data.designation, 
+//              InterviewData["candidates"] = data.total_number_candidates,
+//              InterviewData["approver"] = data.approver, InterviewData["round"] = data.round
+//         )
+// );
+// setInterviewDetails(InterviewData)
+
+// props.getSelectedCandidates.map((data)=> 
+// CandidatesList.push({
+//        details:data.output
+// })      
+// )
+// console.log("output",candDetails)
+
+// setCandDetails( CandidatesList );
+//    let Intview_data = [];
+//    props.getSelectedCandidates.map((data) =>
+//         Intview_data.push({
+//           id: data.int_details_id,
+//           date: moment(data.prop_date_time).format("DD-MM-YYYY"),
+//           designation: data.designation,
+//           candiates: data.total_number_candidates,
+//           approver: data.approver,
+//           round: data.round,
+//         })
+//       );
+//       let CandList = [];
+//       props.getSelectedCandidates.map((data) =>
+//         CandList.push({
+//           date: data.prop_date_time,
+//           designation: data.designation,
+//           designationID: data.prop_designation,
+//           round: data.round,
+//         })
+//       );
+
+//       setCandDesig(props.getSelectedCandidates.designation);
+//       // setCandDetails({ CandList });
+//       setcand_data(props.getSelectedCandidates.output);
+//       setint_details({ Intview_data });
+//   }, [ props.getSelectedCandidates])

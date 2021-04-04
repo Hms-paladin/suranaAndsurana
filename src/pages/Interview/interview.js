@@ -6,7 +6,6 @@ import DynModelView from "./model";
 import DynModel from "../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
 import { GetCandiateDetails } from "../../actions/interviewActions";
-import { Button } from "@material-ui/core";
 import CustomButton from "../../component/Butttons/button";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
@@ -63,6 +62,7 @@ function InerviewScreen(props) {
   useEffect(() => {
     dispatch(getInterviewStatus());
     dispatch(getInterviewQuestions());
+ 
   }, []);
   useEffect(() => {
     let interview_status = [];
@@ -75,49 +75,47 @@ function InerviewScreen(props) {
     setgetData(props.getQuestions);
   }, [props.getInterviewStatus,props.getQuestions]);
   useEffect(() => {
-    dispatch(getSelectedCandidates(props.interviewer_id.int_details_id))
-  }, [ props.interviewer_id])
-
-  useEffect(() => {
-   console.log("Sel",props.getSelectedCandidates)
-let InterviewData={}
-let CandidatesList=[]
-props.getSelectedCandidates.map(
-  (data) => (InterviewData["id"] = data.int_details_id,
-             InterviewData["date"] =  moment(data.prop_date_time).format("DD-MM-YYYY"),
-             InterviewData["designation"] = data.designation, 
-             InterviewData["candidates"] = data.total_number_candidates,
-             InterviewData["approver"] = data.approver, InterviewData["round"] = data.round
-        )
-);
-setInterviewDetails(InterviewData)
-
-   let Intview_data = [];
-   props.getSelectedCandidates.map((data) =>
+    Axios({
+      method: "POST",
+      url: apiurl + "get_selected_candidates",
+      data: {
+        int_detail_id:
+          props.interviewer_id && props.interviewer_id.int_details_id,
+      },
+    }).then((response) => {
+      const Intview_data = [];
+      response.data.data.map((data) =>
         Intview_data.push({
-          id: data.int_details_id,
-          date: moment(data.prop_date_time).format("DD-MM-YYYY"),
-          designation: data.designation,
-          candiates: data.total_number_candidates,
-          approver: data.approver,
-          round: data.round,
-        })
-      );
-      let CandList = [];
-      props.getSelectedCandidates.map((data) =>
-        CandList.push({
-          date: data.prop_date_time,
-          designation: data.designation,
-          designationID: data.prop_designation,
-          round: data.round,
-        })
-      );
+        id:data.int_details_id,
+        date: moment(data.prop_date_time).format("DD-MM-YYYY"),
+        designation: data.designation,
+         candiates: data.total_number_candidates,
+         approver:data.approver,
+         round:data.round
 
-      setCandDesig(props.getSelectedCandidates.designation);
-      setCandDetails({ CandList });
-      setcand_data(props.getSelectedCandidates.output);
+        })
+      );
+      const CandList=[];
+      response.data.data.map((data) =>
+      CandList.push({
+     date:data.prop_date_time,
+          designation: data.designation,    designationID: data.prop_designation,
+          round:data.round
+    })
+       );
+      
+       setCandDesig(response.data.data[0].designation)
+       setCandDetails({CandList})
+      setcand_data(response.data.data[0].output);
+      // setint_details(props.interviewer_id.map((data,index)=>{
+      //     // console.log("datacheck",data),
+      //     return(
+      //     ({id:data.int_details_id})
+      //     // propsdata.push(data)
+      //     )}))
       setint_details({ Intview_data });
-  }, [ props.getSelectedCandidates])
+    });
+  }, [props]);
 
   function ViewCandiate(id) {
     setdata_id(
@@ -125,9 +123,9 @@ setInterviewDetails(InterviewData)
         return id == data.resume_id;
       })
     );
-    // setdata_id((prevState) => ({
-    //   ...prevState,
-    // }));
+    setdata_id((prevState) => ({
+      ...prevState,
+    }));
     setModelOpen(true);
   }
 
@@ -172,6 +170,28 @@ setInterviewDetails(InterviewData)
     }));
   }
 
+  useEffect(() => {
+    setComments(false);
+    onStateClear();
+    setSelectedCandidateId("");
+    setcanName("");
+  }, [props.stateClear])
+
+const onStateClear=()=>{
+ let InterviewState = [
+      "init_status",
+      "initial_score",
+      "comment"
+    ];
+
+    InterviewState.map((data) => {
+      postData[data].value = "";
+    });
+    setpostData((prevState) => ({
+      ...prevState,
+    }));
+}
+
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(postData);
@@ -184,8 +204,7 @@ setInterviewDetails(InterviewData)
       postData[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = postData[targetkeys[i]].value;
     }
-    var filtererr = targetkeys.filter((obj) => postData[obj].error == true);
-    console.log(filtererr.length);
+    let filtererr = targetkeys.filter((obj) => postData[obj].error == true);
     if (filtererr.length > 0) {
       // setpostData({ error: true });
     } else {
@@ -199,6 +218,7 @@ setInterviewDetails(InterviewData)
         )
       ).then(() => {
         props.handleAproverModelClose();
+        onStateClear();
       });
     }
 
@@ -227,19 +247,26 @@ setInterviewDetails(InterviewData)
         <Grid item xs={5}>
           <div className="interviewTitle">Interview Date</div>
           <div className="interview_cont">
-          {interviewDetails.date?interviewDetails.date:'--' }
+          {/* {interviewDetails.date?interviewDetails.date:'--' } */}
+          {int_details.Intview_data ? int_details.Intview_data[0].date : "-"}
           </div>
         </Grid>
         <Grid item xs={3}>
           <div className="interviewTitle">Designation</div>
           <div className="interview_cont">
-          {interviewDetails.designation?interviewDetails.designation:'--' }
+          {/* {interviewDetails.designation?interviewDetails.designation:'--' } */}
+          {int_details.Intview_data
+              ? int_details.Intview_data[0].designation
+              : "-"}
           </div>
         </Grid>
         <Grid item xs={4}>
           <div className="interviewTitle">No of Candidates</div>
           <div className="interview_cont">
-          {interviewDetails.candidates?interviewDetails.candidates:'--' }
+          {/* {interviewDetails.candidates?interviewDetails.candidates:'--' } */}
+          {int_details.Intview_data
+              ? int_details.Intview_data[0].candiates
+              : "-"}
           </div>
         </Grid>
       </Grid>
@@ -301,7 +328,6 @@ setInterviewDetails(InterviewData)
                           {data && data.name}
                         </Grid>
                         <Grid item xs={2}>
-                          {console.log(data, "testdata")}
                           <img
                             src={Eyes}
                             className="viewCandidatesList"
@@ -381,11 +407,12 @@ setInterviewDetails(InterviewData)
                   int_details_id={
                     int_details.Intview_data && int_details.Intview_data[0].id
                   }
-                  handleAproverModelClose={(bln) => setAppModelOpen(bln)}
-                  handleModelClose={props.handleAproverModelClose}
                   int_resume_id={selectedCandidateId}
                   task_id={props.interviewer_id.task_id}
                   sel_appr_drop={dropDownSel}
+                  //______________________
+                  handleAproverModelClose={(bln) => setAppModelOpen(bln)}
+                  handleModelClose={props.handleAproverModelClose}
                 />
               }
             />

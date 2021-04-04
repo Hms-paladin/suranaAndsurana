@@ -55,6 +55,7 @@ function TodoList(props) {
 
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
+    const [stateClear,setStateClear] =useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
     const [unblockuserActive, setUnblockuserActive] = useState(false)
@@ -97,10 +98,6 @@ function TodoList(props) {
              designation: data.designation, candidates: data.no_of_candidates })
         })
         setHrTodoList(hrList)
-
-
-
-
     }, [props.getHrTodoList,])
 
     useEffect(() => {
@@ -115,8 +112,6 @@ function TodoList(props) {
 
 
     function openModelFunc(name, id) {
-        console.log(name,id,"result")
-
         if (name === "interviewer_id") {
             setApproveOpen(true)
             let int_viewer_id = props.getHrTodoList.find((val) => {
@@ -160,7 +155,11 @@ function TodoList(props) {
         setUnblockuserActive(true)
     }
 
+   const onNewPageClear=(bln)=>{
+    setStateClear(!stateClear);
+    setInerviewScreen(bln);
 
+   }
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
@@ -168,9 +167,9 @@ function TodoList(props) {
                 {/* ___________________________________________________________________________ */}
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
        {/*InrerviewScreen after  Schedule     */}
-            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1000}
              content={<InerviewScreen interviewer_id={can_int_id}
-              handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
+              handleAproverModelClose={(bln) => onNewPageClear(bln)}  stateClear={stateClear} />} />
 
     {/*EmployeeForm after  selected in interview approve     */}
             <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}

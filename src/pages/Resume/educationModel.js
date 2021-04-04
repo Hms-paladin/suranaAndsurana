@@ -151,7 +151,6 @@ function EducationModel(props) {
   }, []);
 
   useEffect(() => {
-    console.log(props.getOptions, "getOptions");
 
     const qualificationList = [];
 
