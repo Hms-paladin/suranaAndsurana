@@ -60,7 +60,11 @@ function ProjectFormCreate(props) {
   const[addTableData,setAddTableData]=useState()
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
-
+  const [prpjectSearchCreate,setPrpjectSearchCreate] =useState({
+    amount:{
+      value:""
+    }
+  })
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
