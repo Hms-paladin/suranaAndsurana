@@ -68,9 +68,6 @@ function ExperienceModel(props) {
             error: null,
             errmsg: null,
         },
-
-
-
     })
 
     useEffect(() => {
@@ -97,9 +94,6 @@ function ExperienceModel(props) {
         setExperienceForm((prevState) => ({
             ...prevState,
         }));
-        console.log(props.editExperiences, "props.editExperienceid")
-
-
     }, [props.editExperiences, props.editExperienceid]);
 
     //update experience details==>

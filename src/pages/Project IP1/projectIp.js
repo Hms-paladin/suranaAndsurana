@@ -12,6 +12,7 @@ import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import DynModel from '../../component/Model/model';
 import Stages from '../stages/stageicon';
 import TimeSheets from '../Search/TimeSheets/timesheetStart';
+import OPEModel from './opemodel';
 
 
 // IP Project:
@@ -57,6 +58,8 @@ function ProjectIp(props) {
     const [stageMonitor, setStageMonitor] = useState(false)
     const [timeSheet, setTimeSheet] = useState(false)
     const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
+    const [opeModelOpen, setOpeModelOpen] = useState(false)
+
 
 
 
@@ -285,6 +288,12 @@ function ProjectIp(props) {
         )
     }
 
+    const opeModel=()=>{
+        return(
+            <OPEModel />
+        )
+    }
+
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
             setModelOpen(true)
@@ -292,21 +301,20 @@ function ProjectIp(props) {
         else if (boxName === "STAGE") {
             setStage(true)
             setTask(false)
-
         }
         else if (boxName === "STAGE  MONITOR") {
             setStageMonitor(true)
             setTask(false)
             setStage(false)
-
         }
         else if (boxName === "APPLICATION") {
             setStage(false)
-
         }
         else if (boxName === "TIME SHEET") {
             setTimesheetModelOpen(true)
-
+        }
+        else if (boxName === "OPE") {
+            setOpeModelOpen(true)
         }
 
 
@@ -388,6 +396,7 @@ function ProjectIp(props) {
                     <div className="TabIconsview"><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
 
 
                     {/* TradeMark */}

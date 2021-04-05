@@ -13,7 +13,6 @@ export const GetProject_Type = () => async dispatch => {
             url: apiurl + 'get_project_type',
         })
             .then((response) => {
-                console.log(response.data.data, "datacheck")
                 dispatch({ type: GET_PROJECT_TYPE, payload: response.data.data })
             })
 

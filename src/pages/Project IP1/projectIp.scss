@@ -134,3 +134,31 @@
     margin: 10px;
     border-radius: 15px;
 }
+
+// ope Model ==>
+
+.opeHeader{
+    display: flex;
+    justify-content: space-around;
+    color: #000000;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.opeFields{
+    margin-top: 35px;
+}
+
+.opeComments{
+    margin-top: 20px;
+}
+
+.opeComments .formdiv .brdrcls{
+    height: 120px;
+}
+
+.opebtn{
+    text-align: center;
+    margin-top: 10px;
+}
+

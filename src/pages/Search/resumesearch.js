@@ -22,11 +22,11 @@ const headCells = [
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
-    { id: 'basic', label: 'Basic Quailification' },
+    { id: 'basic', label: ' Qualification' },
     { id: 'language', label: 'Languages Known' },
     { id: 'certification', label: 'Certification' },
     { id: 'specialization', label: 'Specialization' },
-    // { id: 'acheivements', label: 'Acheivements' },
+    { id: 'acheivements', label: 'Achievements' },
     { id: 'talents', label: 'Talents' },
 
 ];
@@ -36,9 +36,6 @@ function Resumesearch(props) {
     const [pathname, setpathname] = useState(window.location.pathname);
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
-
-
-    // const [value, setValue] = React.useState();  
     const [optionvalues, setoptionvalues] = useState([]);
     const [resumeSearchList, setGetList] = useState({})
     const [rows, setRowData] = useState([])
@@ -203,9 +200,6 @@ function Resumesearch(props) {
         })
 
         setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList })
-
-
-
     }, [props.GetOptions])
 
 
@@ -237,22 +231,19 @@ function Resumesearch(props) {
     useEffect(() => {
         let rowDataList = []
 
-        props.GetRowData && props.GetRowData.map((data, index) => {
-            rowDataList.push({
-                view: <img
-                    src={Eyes}
-                    className="viewCandidatesList"
-                    onClick={() => viewCandidate(data.resume_id)}
-                />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-                basic: data.basic_qual, language: data.language, certification: data.certifications,
-                specialization: data.specialization, talents: data.talent,
-                box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id)} name={"checked" + index}
-                    checked={checkList["checked" + index]} value={checkList["checked" + index]} />
-            })
+        props.GetRowData && props.GetRowData.map((data,index) => {
+            rowDataList.push({ view:  <img
+                src={Eyes}
+                className="viewCandidatesList"
+                onClick={()=>viewCandidate(data.resume_id)}
+              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+             basic: data.basic_qual, language: data.language, certification: data.certifications, 
+             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
+             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
+             checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
 
         setRowData(rowDataList)
-        console.log("resumeSearchList.skillList", resumeSearchList.skillList)
     }, [props.GetRowData, test])
 
     function onSearch() {
@@ -270,8 +261,6 @@ function Resumesearch(props) {
 
     return (
         <div>
-
-
             <div>
                 <div className="searchBoxContainer">
                     <Grid container spacing={2}>
@@ -380,7 +369,3 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps)(Resumesearch);
-
-
-//  <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-//             <div className="searchinterviewbtn"><Button onClick={() => setModelOpen(true)} >Interview Details</Button></div>/

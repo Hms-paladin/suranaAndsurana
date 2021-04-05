@@ -119,7 +119,6 @@ const RateMaster = (props) => {
   }, []);
   useEffect(() => {
 
-    console.log("props.getTableData", props.getTableData)
     let variableRateList = [];
     props.getTableData.map((data) => variableRateList.push(data));
     var rateList = [];

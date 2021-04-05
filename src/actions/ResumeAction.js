@@ -25,7 +25,7 @@ export const InesertResume = (Resume_Form, educationList, experienceList) => asy
         "certifications": Resume_Form.certifications.valueById,
         "specialization": Resume_Form.specializations.valueById,
         "talent": Resume_Form.talents.valueById,
-        "special_interest": Resume_Form.intrests.valueById,
+        "special_interest": Resume_Form.intrests.value,
         "con_ph_no": Resume_Form.contactPhone.value,
         "email_addr": Resume_Form.emailId.value,
         "postal_addr": Resume_Form.mailAddress.value,

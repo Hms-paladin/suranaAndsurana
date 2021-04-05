@@ -138,17 +138,25 @@ export default function EnhancedTable(props) {
 
   React.useEffect(() => {
     setRows(props.rows);
-    props.rows.map((row) => console.log("================ ====", row.age));
   }, [props]);
 
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = rows.map((n) => n.name);
-  //     setSelected(newSelecteds);
-  //     return;
+  // React.useEffect(() => {
+  //   for(let i=0;i<(props.rows.length/rowsPerPage);i++){
+  //     page
+  //     setPage(i) 
+  //     console.log(i,"testlength")
   //   }
-  //   setSelected([]);
-  // };
+    
+  // }, [props.rows]);
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = rows.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);

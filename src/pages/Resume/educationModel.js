@@ -151,7 +151,6 @@ function EducationModel(props) {
   }, []);
 
   useEffect(() => {
-    console.log(props.getOptions, "getOptions");
 
     const qualificationList = [];
 
@@ -190,7 +189,8 @@ function EducationModel(props) {
       <Labelbox
         type="datepicker"
         placeholder="Year of Passing"
-        //  view ={["year"]}
+         view ={["year"]}
+         format={'yyyy'}
         changeData={(data) => checkValidation(data, "yearpassing")}
         value={Education_Form.yearpassing.value}
         error={Education_Form.yearpassing.error}

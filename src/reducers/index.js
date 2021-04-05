@@ -14,6 +14,8 @@ import HrSearchRowData from "./HrSearchRowData";
 import variableRateMaster from "./variableRateMaster"
 import projectSearchReducer from "./ProjectSearchReducers"
 import ProjectFillingFinalReducer from "./ProjectFillingFinalReducer"
+import StageMasterReducer from "./StageMasterReducer"
+import CandidateAndEmployeeDetails from "./CandidateAndEmployeeDetails"
 export default combineReducers({
     getInterviewquestions,
     ResumeSearchStatus,
@@ -25,5 +27,6 @@ export default combineReducers({
     getOptions:getResumeSearchDropDownOptions,
     getResumeSearchRowdata,
     getHrTodoList,
-    interviewApproverTableData,HrSearchRowData,variableRateMaster,projectSearchReducer,ProjectFillingFinalReducer
+    interviewApproverTableData,HrSearchRowData,
+    variableRateMaster,projectSearchReducer,ProjectFillingFinalReducer,StageMasterReducer,CandidateAndEmployeeDetails
 })
