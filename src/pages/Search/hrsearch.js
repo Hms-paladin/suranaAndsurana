@@ -21,7 +21,7 @@ const headCells = [
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
-    { id: 'basicqualification', label: 'Basic Qualification' },
+    { id: 'basicqualification', label: 'Qualification' },
     { id: 'interviewedby', label: 'Interviewed by' },
     { id: 'intervieweddate', label: 'Interviewed Date' },
     { id: 'score', label: 'Score' },

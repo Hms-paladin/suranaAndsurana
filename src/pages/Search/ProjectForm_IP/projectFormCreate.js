@@ -26,30 +26,19 @@ import PlusIcon from "../../../images/plusIcon.svg";
 // Table Data ==>
 
 const header = [
+  { id: "designation", label: "Designation" },
   { id: "activity", label: "Activity" },
   { id: "sub_activity", label: "Sub Activity" },
-  { id: "amount", label: "Amount" },
-  { id: "range", label: "Range of Project cost" },
   { id: "court", label: "Court" },
+  { id: "range", label: "Range of Project cost" },
   { id: "lower_limit", label: "Lower Limit" },
   { id: "upper_limit", label: "Upper Limit" },
+  { id: "amount", label: "Amount" },
   { id: "unit", label: "Unit of Measurement" },
-  { id: "designation", label: "Designation" },
+ 
 ];
 
-const rows = [
-  {
-    table_name: "Table 1",
-    activity: "Activity 1",
-    lower_limit: "lowerlimit1",
-    upper_limit: "upperlimit1",
-    designation: "designation1",
-    cost: "cost",
-    sub_activity: "Subactivity1",
-    court: "court",
-    measurement: "measurement",
-  },
-];
+
 
 function ProjectFormCreate(props) {
   const dispatch = useDispatch();
@@ -502,7 +491,12 @@ function ProjectFormCreate(props) {
         costRange:data.range,
         lowerLimit:data.lower_limit,
         upperLimit:data.upper_limit,
-        amount:  data.amount,
+        amount:  <Labelbox
+        type="text"
+        placeholder={"Amount"}
+        // changeData={(data) => checkValidation(data, "project_type")}
+        value={data.Amount} disabled={true}
+      />  ,
         UOM:data.unit
        })
     })
