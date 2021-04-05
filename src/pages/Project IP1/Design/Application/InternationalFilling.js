@@ -22,6 +22,12 @@ function InternationalFilling() {
       error: null,
       errmsg: null,
     },
+    client_ref: {
+      value: "",
+      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      error: null,
+      errmsg: null,
+    },
     applicant: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],

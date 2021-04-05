@@ -1,0 +1,72 @@
+.group_control {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+/////usergroup model////
+.btnUsergroup{
+    width: 13%;
+    font-weight: bold;
+}
+.customUsergroupbtn{
+    margin: 20px;
+    justify-content: center;
+    display: flex;
+}
+.usergroup_label{
+    color: black;
+    font-size: 18px;
+    font-weight: 1000 !important;
+}
+.groupcontrolDiv{
+    height: 82px;
+    margin: 10px 30px 0 30px !important;
+    text-align: center;
+    margin: 0px;
+    border: 1px solid #1587fb; 
+    border-radius: 4px;
+    padding: 10px;
+}
+.usergroupcheckboxDiv {
+    display: flex;
+}
+.btnUsergroup{
+    width: 90px;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+   
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 500px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 0%;
+    margin-left: -60px;
+    box-shadow: 0 0 3.5px 0px grey;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(255, 255, 255) transparent transparent transparent;
+    // box-shadow: 0 0 3.5px 0px grey;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

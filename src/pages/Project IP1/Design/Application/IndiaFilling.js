@@ -3,10 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
-import Checklist from "../../../../images/checklist.png";
-import Stage from "../../../../images/stage.png";
-import Task from "../../../../images/task.png";
-import Application from "../../../../images/application.png";
+
 
 function IndiaFilling() {
   const [IndiaForm, setIndiaForm] = useState({

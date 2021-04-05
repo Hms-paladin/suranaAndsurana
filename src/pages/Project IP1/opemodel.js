@@ -12,11 +12,7 @@ import { InesertResume } from "../../actions/ResumeAction";
 
 
 function OpeModel() {
-
-
     const dispatch = useDispatch()
-
-
     const [OPE_Model, setResumeFrom] = useState({
 
         amount: {
@@ -151,7 +147,7 @@ function OpeModel() {
                 </Grid>
 
                 <div className="opeComments">
-                    
+
                     <Labelbox type="textarea" placeholder={"comments"} />
                 </div>
                 <div className="opebtn">
