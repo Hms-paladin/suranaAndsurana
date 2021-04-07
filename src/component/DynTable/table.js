@@ -137,6 +137,7 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(() => {
+    console.log("rowss",props.rows)
     setRows(props.rows);
   }, [props]);
 
@@ -223,7 +224,8 @@ export default function EnhancedTable(props) {
 
                   let keys = Object.keys(row);
                   let arrval = [];
-                  for (var m = 0; m < keys.length; m++) {
+                  // let idLenght= props.idLenght? props.idLenght:0
+                  for (var m = 0; m < keys.length ; m++) {
                     arrval.push(
                       <TableCell keys={index + "" + m} align="left">
                         {row[keys[m]] ? row[keys[m]] : "---"}

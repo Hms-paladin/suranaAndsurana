@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import CustomButton from "../../component/Butttons/button";
-import "./addclient.scss";
 import { Label } from "@material-ui/icons";
 import moment from "moment";
 import { notification } from "antd";
@@ -14,7 +13,7 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { connect, useDispatch } from "react-redux";
 import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
+import "./addclient.scss";
 
 
 

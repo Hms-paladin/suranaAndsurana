@@ -23,6 +23,7 @@ import AddVarData from "../../../images/addvardata.svg";
 import SuccessIcon from "../../../images/successicon.svg";
 import { InsertIpProject } from "../../../actions/ProjectformAction";
 import PlusIcon from "../../../images/plusIcon.svg";
+import DeleteIcon from "@material-ui/icons/Delete";
 // Table Data ==>
 
 const header = [
@@ -35,7 +36,19 @@ const header = [
   { id: "upper_limit", label: "Upper Limit" },
   { id: "amount", label: "Amount" },
   { id: "unit", label: "Unit of Measurement" },
- 
+  { id: "add", label: "Add" },
+];
+const headers = [
+  { id: "designation", label: "Designation" },
+  { id: "activity", label: "Activity" },
+  { id: "sub_activity", label: "Sub Activity" },
+  { id: "court", label: "Court" },
+  { id: "range", label: "Range of Project cost" },
+  { id: "lower_limit", label: "Lower Limit" },
+  { id: "upper_limit", label: "Upper Limit" },
+  { id: "amount", label: "Amount" },
+  { id: "unit", label: "Unit of Measurement" },
+  { id: "del", label: "Delete" },
 ];
 
 
@@ -57,11 +70,13 @@ function ProjectFormCreate(props) {
   const [projectCostRange, setProjectCostRange] = useState({});
   const [client, setClient] = useState({});
   const [variableRateCall,setVariableRateCall] = useState(false);
+  const [totalData,setTotalData] = useState({})
   const[addTableData,setAddTableData]=useState()
+  const[addTempTableData,setAddTempTableData]=useState([])
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
-  const [prpjectSearchCreate,setPrpjectSearchCreate] =useState({
-    amount:{
+  const [projectSearchCreate,setPrpjectSearchCreate] =useState({
+    amountSearch:{
       value:""
     }
   })
@@ -215,6 +230,14 @@ function ProjectFormCreate(props) {
     dispatch(getClientlist());
   }, []);
 
+  const onchangeAmount =(data,key)=>{
+    if(key==="amountSearch" && data){
+      setPrpjectSearchCreate((prevState) => ({
+        ...prevState,
+        [key]: {value:data},
+      }));
+    }
+  }
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -282,6 +305,7 @@ function ProjectFormCreate(props) {
       ...prevState,
       [key]: dynObj,
     }));
+    
 
     // variable popup==>
 
@@ -312,7 +336,7 @@ function ProjectFormCreate(props) {
     //     // setpostData({ error: true });
     // } else {
     // setpostData({ error: false });
-    dispatch(InsertIpProject(projectform)).then((response) => {
+    dispatch(InsertIpProject(projectform,addTempTableData)).then((response) => {
       handleCancel();
     });
     // );
@@ -435,9 +459,14 @@ function ProjectFormCreate(props) {
           </div>
         )}
         {addsearchdata && (
+          <>
           <div>
-            <EnhancedTable headCells={header} rows={addTableData.showVariableTableData} />
+            <EnhancedTable headCells={header} rows={totalData && totalData.showVariableTable} />
           </div>
+       {addTempTableData.length !==0 ?      <div>
+            {/* <EnhancedTable headCells={headers} rows={totalData.showVariableTable} idLenght={1} /> */}
+          </div>:""}
+          </>
         )}
         <DynModel
           modelTitle={"Success"}
@@ -482,12 +511,15 @@ function ProjectFormCreate(props) {
     );
   };
   useEffect(()=>{
-    // props.searchVariableRate.lenght === 0 && setNotfoundmodel(false)
-    let showVariableTableData=[];
-    if(props.lenghtData >= 0 ){
-      setAddsearchdata(true);
-    props.searchVariableRate.map((data,k)=>{
-      showVariableTableData.push({
+    let TotalData={
+      showVariableTable:[],
+      sendVariableData:[] 
+    }
+    setAddsearchdata(true);
+    setNotfoundmodel(false);
+    props.searchVariableRate.map((data)=>{
+      projectSearchCreate.amountSearch.value=data.Amount
+      TotalData.showVariableTable.push({
         designation:data.designation,
         activity:data.activity,
         sub_activity:data.sub_activity,
@@ -498,22 +530,63 @@ function ProjectFormCreate(props) {
         amount:  <Labelbox
         type="text"
         placeholder={"Amount"}
-        // changeData={(data) => checkValidation(data, "project_type")}
-        value={data.Amount} disabled={true}
+        changeData={(data) => onchangeAmount(data, "amountSearch")}
+        value={projectSearchCreate.amountSearch.value}
       />  ,
-        UOM:data.unit
+        UOM:data.unit,add:<img src={PlusIcon} 
+        style={{cursor: 'pointer',width:19}}
+        //  onClick={()=>addTempTable(data)} 
+         />
        })
+       TotalData.sendVariableData.push({
+        designation_id:data.designation_id,
+        activity_id:data.activity_id,
+        sub_activity_id:data.sub_activity_id,
+        location_id:data.location_id,
+        range_id:data.range_id,
+        lowerLimit:data.lower_limit,
+        upperLimit:data.upper_limit,
+        base_rate:  projectSearchCreate.amountSearch.value,
+        unit_of_measure:data.unit_id  })
     })
-
-  }else{
-    alert("hello")
-  }
-  setAddTableData({showVariableTableData})
-  console.log(props.lenghtData,"//")
-  
-   
+    console.log("consredole",{totalData})
+    setTotalData({TotalData})
+    console.log("consredole",totalData)
+      setAddsearchdata(true);
+      setNotfoundmodel(false);
+  // setAddTableData({showVariableTableData})  
   },[props.searchVariableRate,props.lenghtData])
+  //----------
+ const addTempTable=(data)=>{
+   console.log("senddata",data)
+   const TabLen = addTempTableData.length
+      // addTempTableData.push({  
+      //       designation:data.designation,
+      //       activity:data.activity,
+      //       sub_activity:data.sub_activity,
+      //       court:data.location,
+      //       costRange:data.range,
+      //       lowerLimit:data.lower_limit,
+      //       upperLimit:data.upper_limit,
+      //       amount:  data.Amount ,
+      //       UOM:data.unit,
+      //       del: <DeleteIcon style={{cursor: 'pointer',width:19}}
+      //       fontSize="small"
+      //       onClick={()=>onDelete(TabLen)} />, 
+    
+      // })
+      // setAddTempTableData([...addTempTableData])
+    }
 
+    const onDelete=(val)=>{        
+        //  if (val > -1) {
+        //   addTempTableData.splice(val, 1);
+        //  }
+        //  setAddTempTableData([...addTempTableData])
+        console.log("ss")
+    }
+
+ 
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -641,7 +714,7 @@ function ProjectFormCreate(props) {
                   
                 />
               {(varRatePlusIcon===true)? <div style={{display: 'flex',justifyContent: 'flex-end'}}><img src={PlusIcon} style={{cursor: 'pointer',width:19}} onClick={()=>setVariableid(true)} /></div>:''}
-               
+               {varRatePlusIcon===true && addTempTableData.length !== 0 ?`(variableRateSelected(${addTempTableData.length}))` :""}
               </Grid>
               <Grid item xs={6}>
                 <Labelbox

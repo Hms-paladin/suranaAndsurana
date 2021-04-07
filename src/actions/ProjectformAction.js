@@ -22,9 +22,9 @@ export const GetProject_Type = () => async dispatch => {
 }
 
 
-export const InsertIpProject = (projectform) => async dispatch => {
+export const InsertIpProject = (projectform,VariableRate) => async dispatch => {
     try {
-
+console.log(VariableRate,"variable_rate")
         axios({
             method: "POST",
             url: apiurl + "insert_project_form",
@@ -55,6 +55,8 @@ export const InsertIpProject = (projectform) => async dispatch => {
                 base_rate: projectform.baseRate.value || 0 ,
                 limit_in_hours:  projectform.limit.value || 0 ,
                 additional_rate:  projectform.additionalRate.value || 0 ,
+                //VariableRate
+                variable_rate:VariableRate||[]
             },
         }).then((response) => {
             if (response.data.status === 1) {

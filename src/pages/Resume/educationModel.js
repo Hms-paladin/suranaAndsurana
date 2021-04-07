@@ -80,7 +80,6 @@ function EducationModel(props) {
     var filtererr = targetkeys.filter(
       (obj) => Education_Form[obj].error == true
     );
-    console.log(filtererr.length);
     if (filtererr.length > 0) {
       // setEducationForm({ error: true });
     } else {
