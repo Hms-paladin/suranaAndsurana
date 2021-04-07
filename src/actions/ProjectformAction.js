@@ -47,7 +47,7 @@ console.log(VariableRate,"variable_rate")
                 project_name:  projectform.projectname.value||0 ,
                 //
                 councel_id: projectform.employeelist.value || 0,
-                hod_hr_id: projectform.hod_attorny.value || 0,
+                hod_hr_id: projectform.employeelist.value || 0,
                 //
                 range_id: projectform.projectcostrange.value || 0,
                 ip_address: "1233",

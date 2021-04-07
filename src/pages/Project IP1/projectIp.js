@@ -186,15 +186,16 @@ function ProjectIp(props) {
 
     let { rowId } = useParams()
     useEffect(() => {
-        console.log("test", rowId)
+        console.log("testrowId", rowId)
         dispatch(getProjectDetails(rowId))
     }, [])
     useEffect(() => {
 
         setProjectDetails(props.ProjectDetails);
-        console.log("test", projectDetails)
 
     }, [props.ProjectDetails])
+    console.log("testrowId", projectDetails)
+
 
     function onSubmit() {
         var mainvalue = {};
@@ -370,7 +371,7 @@ function ProjectIp(props) {
                                     </div>
                                     <div className="projectIpdata">
                                         <div className="projectTitle">HOD / Attorney</div>
-                                        <div>{data.hod_hr_id}</div>
+                                        <div>{data.HR}</div>
                                     </div>
                                     <div className="projectIpdata">
                                         <div className="projectTitle">counsel</div>
@@ -401,7 +402,7 @@ function ProjectIp(props) {
                     <div className="TabIconsview"><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
+                    <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
 
 
                     {/* TradeMark */}

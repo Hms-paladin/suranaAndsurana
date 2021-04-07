@@ -135,12 +135,14 @@ checkValidation(textValue,validatorsArray){
           return { msg: "Please Enter Future Date", state: false };
         }
       }
-    } else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
-      var re = /^[ A-Za-z_@./#&+-]\z*$/;
-      if (re.test(textValue) == false) {
-        return { msg: "Please Enter Alphabets only", state: false };
-      }
-    }  else if (validatorsArray[valid].name == "PercentageCGPA") {
+    }
+    //  else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
+    //   var re = /^[ A-Za-z_@./#&+-]\z*$/;
+    //   if (re.test(textValue) == false) {
+    //     return { msg: "Please Enter Alphabets only", state: false };
+    //   }
+    // } 
+     else if (validatorsArray[valid].name == "PercentageCGPA") {
       var re = /	^100$|^\d{0,2}(\.\d{1,2})? *%?$/;
       if (re.test(textValue) == false  || Number(textValue) == "00" ) {
         return { msg: "Please Enter Percentage/CGPA only", state: false };
@@ -160,7 +162,13 @@ checkValidation(textValue,validatorsArray){
       if (re.test(textValue) == false) {
         return { msg: "Input data exceeds the limit", state: false };
       }
+    }else if (validatorsArray[valid].name == "alphabetsandSpecialChar" ) { 
+      var re =/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+      if (re.test(textValue) == false) {
+        return { msg: " Invalid Input ", state: false };
+      }
     }
+
 
     }
     return {msg:"",state:true};//if no error throw empty message
