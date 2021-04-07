@@ -22,13 +22,13 @@ function CancelDefended() {
             error: null,
             errmsg: null,
         },
-        petitioner: {
+        respondent: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
             errmsg: null,
         },
-        petitioner_rep: {
+        respondent_rep: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
@@ -133,9 +133,10 @@ function CancelDefended() {
     }
     return (
         <div className="container">
+            <Grid container direction={"column"}>
+                <Grid item xs={12} md={12} className="app_cont_domestic">
 
-            <Grid container spacing={2}   >
-                <Grid item md={2}>
+
                     <Labelbox type="select"
                         placeholder={"Client Respondent"}
                         changeData={(data) => checkValidation(data, "client_respontent")}
@@ -143,8 +144,7 @@ function CancelDefended() {
                         error={CancelDefended.client_responten.error}
                         errmsg={CancelDefended.client_responten.errmsg}
                     />
-                </Grid>
-                <Grid item md={2}>
+
                     <Labelbox type="text"
                         placeholder={"Design Number"}
                         changeData={(data) => checkValidation(data, "des_number")}
@@ -152,27 +152,23 @@ function CancelDefended() {
                         error={CancelDefended.des_number.error}
                         errmsg={CancelDefended.des_number.errmsg}
                     />
-                </Grid>
-                <Grid item md={2}>
+
                     <Labelbox type="text"
-                        placeholder={"Petitioner"}
-                        changeData={(data) => checkValidation(data, "petitioner")}
-                        value={CancelDefended.petitioner.value}
-                        error={CancelDefended.petitioner.error}
-                        errmsg={CancelDefended.petitioner.errmsg}
+                        placeholder={"Respondent"}
+                        changeData={(data) => checkValidation(data, "respondent")}
+                        value={CancelDefended.respondent.value}
+                        error={CancelDefended.respondent.error}
+                        errmsg={CancelDefended.respondent.errmsg}
                     />
-                </Grid>
-                <Grid item md={2}>
+
                     <Labelbox type="text"
-                        placeholder={"Petitioner Rep"}
-                        changeData={(data) => checkValidation(data, "petitioner_rep")}
-                        value={CancelDefended.petitioner_rep.value}
-                        error={CancelDefended.petitioner_rep.error}
-                        errmsg={CancelDefended.petitioner_rep.errmsg}
+                        placeholder={"respondent Rep"}
+                        changeData={(data) => checkValidation(data, "respondent_rep")}
+                        value={CancelDefended.respondent_rep.value}
+                        error={CancelDefended.respondent_rep.error}
+                        errmsg={CancelDefended.respondent_rep.errmsg}
                     />
-                </Grid>
-                <Grid item md={3} />
-                <Grid item md={2} >
+
                     <Labelbox type="select"
                         placeholder={"Status"}
                         changeData={(data) => checkValidation(data, "status")}
@@ -180,8 +176,6 @@ function CancelDefended() {
                         error={CancelDefended.status.error}
                         errmsg={CancelDefended.status.errmsg}
                     />
-                </Grid>
-                <Grid item md={4} >
                     <Labelbox type="text"
                         placeholder={"Comments"}
                         changeData={(data) => checkValidation(data, "comments")}
@@ -189,18 +183,16 @@ function CancelDefended() {
                         error={CancelDefended.comments.error}
                         errmsg={CancelDefended.comments.errmsg}
                     />
-                </Grid>
-                <Grid item md={2} >
-                    <Labelbox type="datepicker"
+                    {/* <Labelbox type="datepicker"
                         placeholder={"Application Date"}
                         changeData={(data) => checkValidation(data, "app_date")}
                         value={CancelDefended.app_date.value}
                         error={CancelDefended.app_date.error}
                         errmsg={CancelDefended.app_date.errmsg}
-                    />
+                    /> */}
+
+
                 </Grid>
-
-
             </Grid>
 
             <div className="custombtnOposition">

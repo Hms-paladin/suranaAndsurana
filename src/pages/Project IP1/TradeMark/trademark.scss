@@ -6,6 +6,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    bottom: 10px;
+    
     path{
         fill:#023E7D;
     }
@@ -32,6 +35,8 @@
         display: flex;
         align-items: center;
         padding: 1px;
+        margin-right: 8px;
+        margin-left: 3px;
     }
     
 }
@@ -87,6 +92,9 @@ bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    bottom: 10px;
+    
     path{
         fill:#023E7D;
     }
@@ -112,6 +120,8 @@ bottom: 20px;
         display: flex;
         align-items: center;
         padding: 1px;
+        margin-right: 8px;
+        margin-left: 3px;
     }
     
 }

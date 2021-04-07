@@ -3,10 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
-import Checklist from "../../../../images/checklist.png";
-import Stage from "../../../../images/stage.png";
-import Task from "../../../../images/task.png";
-import Application from "../../../../images/application.png";
+
 
 function IndiaFilling() {
   const [IndiaForm, setIndiaForm] = useState({
@@ -64,7 +61,7 @@ function IndiaFilling() {
       error: null,
       errmsg: null,
     },
-    associate: {
+    applicant: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
       error: null,
@@ -176,10 +173,8 @@ function IndiaFilling() {
   }
   return (
     <div className="container">
-      
-
-      <Grid container spacing={2}   >
-        <Grid item md={2}>
+      <Grid container direction={"column"}>
+        <Grid item xs={12} md={12} className="app_cont_domestic">
           <Labelbox type="text"
             placeholder={"File cover"}
             changeData={(data) => checkValidation(data, "file_cover")}
@@ -187,8 +182,15 @@ function IndiaFilling() {
             error={IndiaForm.file_cover.error}
             errmsg={IndiaForm.file_cover.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
+
+          <Labelbox type="select"
+            placeholder={"applicant"}
+            changeData={(data) => checkValidation(data, "applicant")}
+            value={IndiaForm.applicant.value}
+            error={IndiaForm.applicant.error}
+            errmsg={IndiaForm.applicant.errmsg}
+          />
+
           <Labelbox type="select"
             placeholder={"Our Reference"}
             changeData={(data) => checkValidation(data, "our_ref")}
@@ -196,45 +198,8 @@ function IndiaFilling() {
             error={IndiaForm.our_ref.error}
             errmsg={IndiaForm.our_ref.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
-          <Labelbox type="select"
-            placeholder={"Applicant"}
-            changeData={(data) => checkValidation(data, "applicant")}
-            value={IndiaForm.applicant.value}
-            error={IndiaForm.applicant.error}
-            errmsg={IndiaForm.applicant.errmsg}
-          />
-        </Grid>
-        <Grid item md={2}>
-          <Labelbox type="select"
-            placeholder={"Country"}
-            changeData={(data) => checkValidation(data, "country")}
-            value={IndiaForm.country.value}
-            error={IndiaForm.country.error}
-            errmsg={IndiaForm.country.errmsg}
-          />
-        </Grid>
-        <Grid item md={2}>
-          <Labelbox type="select"
-            placeholder={"Class"}
-            changeData={(data) => checkValidation(data, "class")}
-            value={IndiaForm.class.value}
-            error={IndiaForm.class.error}
-            errmsg={IndiaForm.class.errmsg}
-          />
-        </Grid>
-        <Grid md={2} />
-        <Grid item md={2}>
-          <Labelbox type="text"
-            placeholder={"Title"}
-            changeData={(data) => checkValidation(data, "title")}
-            value={IndiaForm.title.value}
-            error={IndiaForm.title.error}
-            errmsg={IndiaForm.title.errmsg}
-          />
-        </Grid>
-        <Grid item md={2}>
+
+
           <Labelbox type="select"
             placeholder={"Client Reference"}
             changeData={(data) => checkValidation(data, "client_ref")}
@@ -242,8 +207,7 @@ function IndiaFilling() {
             error={IndiaForm.client_ref.error}
             errmsg={IndiaForm.client_ref.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
+
           <Labelbox type="text"
             placeholder={"Application Number"}
             changeData={(data) => checkValidation(data, "app_num")}
@@ -251,8 +215,7 @@ function IndiaFilling() {
             error={IndiaForm.app_num.error}
             errmsg={IndiaForm.app_num.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
+
           <Labelbox type="datepicker"
             placeholder={"Application Date"}
             changeData={(data) => checkValidation(data, "app_date")}
@@ -260,35 +223,40 @@ function IndiaFilling() {
             error={IndiaForm.app_date.error}
             errmsg={IndiaForm.app_date.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
+
           <Labelbox type="select"
-            placeholder={"Associate"}
-            changeData={(data) => checkValidation(data, "associate")}
-            value={IndiaForm.associate.value}
-            error={IndiaForm.associate.error}
-            errmsg={IndiaForm.associate.errmsg}
+            placeholder={"Applicant"}
+            changeData={(data) => checkValidation(data, "applicant")}
+            value={IndiaForm.applicant.value}
+            error={IndiaForm.applicant.error}
+            errmsg={IndiaForm.applicant.errmsg}
           />
-        </Grid>
-        <Grid item md={4}>
-          <Labelbox type="textarea"
-            placeholder={"Comments"}
-            changeData={(data) => checkValidation(data, "comments")}
-            value={IndiaForm.comments.value}
-            error={IndiaForm.comments.error}
-            errmsg={IndiaForm.comments.errmsg}
+
+          <Labelbox type="text"
+            placeholder={"Title"}
+            changeData={(data) => checkValidation(data, "title")}
+            value={IndiaForm.title.value}
+            error={IndiaForm.title.error}
+            errmsg={IndiaForm.title.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
+
           <Labelbox type="select"
-            placeholder={"Status"}
-            changeData={(data) => checkValidation(data, "status")}
-            value={IndiaForm.status.value}
-            error={IndiaForm.status.error}
-            errmsg={IndiaForm.status.errmsg}
+            placeholder={"Class"}
+            changeData={(data) => checkValidation(data, "class")}
+            value={IndiaForm.class.value}
+            error={IndiaForm.class.error}
+            errmsg={IndiaForm.class.errmsg}
           />
-        </Grid>
-        <Grid item md={2}>
+
+
+          <Labelbox type="select"
+            placeholder={"Country"}
+            changeData={(data) => checkValidation(data, "country")}
+            value={IndiaForm.country.value}
+            error={IndiaForm.country.error}
+            errmsg={IndiaForm.country.errmsg}
+          />
+
           <Labelbox type="select"
             placeholder={"priority Country"}
             changeData={(data) => checkValidation(data, "priority_country")}
@@ -297,8 +265,7 @@ function IndiaFilling() {
             errmsg={IndiaForm.priority_country.errmsg}
 
           />
-        </Grid>
-        <Grid item md={2}>
+
           <Labelbox type="datepicker"
             placeholder={"priority Date"}
             changeData={(data) => checkValidation(data, "priority_date")}
@@ -306,16 +273,36 @@ function IndiaFilling() {
             error={IndiaForm.priority_date.error}
             errmsg={IndiaForm.priority_date.errmsg}
           />
+
+          <Labelbox type="select"
+            placeholder={"Status"}
+            changeData={(data) => checkValidation(data, "status")}
+            value={IndiaForm.status.value}
+            error={IndiaForm.status.error}
+            errmsg={IndiaForm.status.errmsg}
+          />
+
+
+          <Labelbox type="textarea"
+            placeholder={"Comments"}
+            changeData={(data) => checkValidation(data, "comments")}
+            value={IndiaForm.comments.value}
+            error={IndiaForm.comments.error}
+            errmsg={IndiaForm.comments.errmsg}
+          />
+
+
+          <Labelbox type="datepicker"
+            placeholder={"Renewal Date"}
+           
+          />
         </Grid>
-
-
-
-        <div className="custombtnOposition">
-          <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={SubmitFunction} custombtnCSS={"TMopositionbuttons"} />
-          <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
-        </div>
-
       </Grid>
+      <div className="custombtnOposition">
+        <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={SubmitFunction} custombtnCSS={"TMopositionbuttons"} />
+        <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+      </div>
+
 
 
     </div>

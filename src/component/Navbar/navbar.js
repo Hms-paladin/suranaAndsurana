@@ -74,7 +74,6 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuItems, setMenuItems] = useState(
     [
-      { path: "/resume", title: "Resume", img: ResumeIcon },
       { path: "/todoList", title: "To Do List", img: TodoIcon },
       // {path:"/interview",title:"Interview"},
       // { path: "/employeeform", title: "Employee Form" },
@@ -91,8 +90,12 @@ function Navbar(props) {
 
       // variable rate master
       { path: "/ratemaster", title: "Variable Rate Master", img: MasterIcon },
-      { path: "/stagesmaster", title: "Stage Master", img: MasterIcon },
-      // { path: "/usergroups", title: "User Groups", img: MasterIcon },
+      { path: "/stagesmaster", title: "StageMaster", img: MasterIcon },
+      // user groups
+      { path: "/usergroups", title: "User Groups", img: MasterIcon },
+      // group control
+      { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+      // stage monitering
     ]
   );
 

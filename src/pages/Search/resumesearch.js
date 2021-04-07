@@ -4,8 +4,8 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Radio, Select, Checkbox } from 'antd';
 import EnhancedTable from '../../component/DynTable/table';
 import DynModel from './model';
-import { apiurl } from '../../utils/baseUrl';
 import { useDispatch, connect } from "react-redux";
+import { Redirect, Link } from "react-router-dom";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
 import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus } from "../../actions/MasterDropdowns";
 import CustomButton from "../../component/Butttons/button";
@@ -13,9 +13,12 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import Eyes from "../../images/neweye.svg";
 import DynModelView from "../Interview/model";
 import './search.scss'
+import ResumeForm from '../Resume/resume';
+
+
 
 const headCells = [
-    { id:"view",label:"View"},
+    { id: "view", label: "View" },
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
@@ -30,7 +33,7 @@ const headCells = [
 
 function Resumesearch(props) {
 
-
+    const [pathname, setpathname] = useState(window.location.pathname);
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
     const [optionvalues, setoptionvalues] = useState([]);
@@ -39,8 +42,8 @@ function Resumesearch(props) {
     const [checkList, setCheckedList] = useState({})
     const [test, setTest] = useState(true)
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
-    const [viewId,setViewId]=useState("")
-    const [candidateViewModel,setCandidateViewModel] =useState(false)
+    const [viewId, setViewId] = useState("")
+    const [candidateViewModel, setCandidateViewModel] = useState(false)
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -219,11 +222,11 @@ function Resumesearch(props) {
             })
         )
         setTest(!test)
-      }
-      const viewCandidate=(id)=>{
+    }
+    const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
-      }
+    }
 
     useEffect(() => {
         let rowDataList = []
@@ -260,7 +263,7 @@ function Resumesearch(props) {
         <div>
             <div>
                 <div className="searchBoxContainer">
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
                         <Grid item xs={3}>
                             <Labelbox type="select"
                                 placeholder="Skills"
@@ -327,22 +330,16 @@ function Resumesearch(props) {
                             />
                         </Grid>
                         <Grid container item xs={3} >
-                            <Grid item xs={9}>
-                                {/* <Labelbox type="select"
-                                placeholder="Status"
-                                dropdown={resumeSearchList.statusList}
-                                changeData={(data) => checkValidation(data, "status", resumeSearchList.statusList)}
-                                value={ResumeSearch_Form.status.value}
-                                mode="multiple"
-                            /> */}
-                            </Grid>
-                            <Grid item xs={3}>
+
+                            <Grid item xs={4}>
                                 <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
 
                             </Grid>
-                            {/* <Grid item xs={3}>
-                                <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} />
-                            </Grid> */}
+                            <Grid item xs={8}>
+                                <Link to='resume'>
+                                    <CustomButton btnName={"CreateResume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}   onBtnClick={() => setpathname("/projectFormCreate")} />
+                                </Link>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </div>
@@ -359,9 +356,9 @@ function Resumesearch(props) {
                 handleChangeModel={candidateViewModel}
                 handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
                 res_data_id={viewId}
-              />
-                    </div>
-       
+            />
+        </div>
+
 
     )
 }
