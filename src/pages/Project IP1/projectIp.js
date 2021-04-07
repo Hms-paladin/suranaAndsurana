@@ -44,6 +44,10 @@ import RectificationFiled from '../Project IP1/Design/Rectification/Rectificatio
 
 import CopyRights from '../Project IP1/CopyRight';
 
+// Litigation  ==>
+import LitigationAddcase from '../Litigation/litigation';
+
+
 
 
 
@@ -466,14 +470,15 @@ function ProjectIp(props) {
                         {
                             props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights />
                         }
+
+                        {/*  */}
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" &&  <LitigationAddcase />
+                        }
                     </div>}
 
-                    {/* 
-                    {stage ?
-                        <Stages />
-                        :
-                       
-                    } */}
+                    
                 </div>
 
 

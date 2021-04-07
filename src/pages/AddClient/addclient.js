@@ -458,7 +458,7 @@ useEffect(() => {
                 </Grid>
               </div>
 
-              <div style={{ marginLeft: "10px" }}>
+              <div className="uploadfileSpace">
                 {" "}
                 {/* <input type="file" onChange={handleImagePreview} /> */}
                 <Upload {...props}>

@@ -16,7 +16,7 @@ const StagesMaster = (props) => {
     { id: 'stage', label: 'Stage' },
     { id: 'sub_stage', label: 'Sub Stage' },
     { id: 'no_days', label: 'Number of Days' },
-    { id: 'remainder_days', label: 'Remainder Days' },
+    { id: 'reminder_days', label: 'Reminder Days' },
   ];
   const dispatch = useDispatch()
   const [StageMasterList, setStageMasterList] = useState([])
@@ -245,7 +245,7 @@ const StagesMaster = (props) => {
             error={RateMaster.stages.error}
             errmsg={RateMaster.stages.errmsg}
           />
-          <Labelbox type="text" placeholder={"Remainder Days"}
+          <Labelbox type="text" placeholder={"Reminder Days"}
             changeData={(data) => checkValidation(data, "noOfDays")}
             value={RateMaster.noOfDays.value}
             error={RateMaster.noOfDays.error}
