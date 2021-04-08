@@ -28,6 +28,8 @@ const headCells = [
     { id: 'specialization', label: 'Specialization' },
     { id: 'acheivements', label: 'Achievements' },
     { id: 'talents', label: 'Talents' },
+    { id: 'experience', label: 'Experience' },
+
 
 ];
 
@@ -115,7 +117,8 @@ function Resumesearch(props) {
             "specialization_id": "",
             "capability_id": "",
             "talent_id": "",
-            "status_id": ""
+            "status_id": "",
+            "experience":""
         }))
     }, [])
 
@@ -238,7 +241,7 @@ function Resumesearch(props) {
                 onClick={()=>viewCandidate(data.resume_id)}
               />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
              basic: data.basic_qual, language: data.language, certification: data.certifications, 
-             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
+             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,experience:data.experience,
              box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
              checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
@@ -255,7 +258,9 @@ function Resumesearch(props) {
             "specialization_id": ResumeSearch_Form.specialization.valueById ? ResumeSearch_Form.specialization.valueById : "",
             "capability_id": ResumeSearch_Form.capabilities.valueById ? ResumeSearch_Form.capabilities.valueById : "",
             "talent_id": ResumeSearch_Form.talents.valueById ? ResumeSearch_Form.talents.valueById : "",
-            "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
+            "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : "",
+            // "experience": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
+
         }))
     }
 
