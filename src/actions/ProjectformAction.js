@@ -56,7 +56,7 @@ console.log(VariableRate,"variable_rate")
                 limit_in_hours:  projectform.limit.value || 0 ,
                 additional_rate:  projectform.additionalRate.value || 0 ,
                 //VariableRate
-                variable_rate:VariableRate||[]
+                variable_rate:VariableRate||0,
             },
         }).then((response) => {
             if (response.data.status === 1) {

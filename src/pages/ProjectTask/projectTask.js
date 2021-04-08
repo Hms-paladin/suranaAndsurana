@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from "react";
 import './projectTask.scss'
 import Grid from '@material-ui/core/Grid';
 import { Radio } from 'antd';
@@ -9,7 +9,8 @@ import CustomButton from '../../component/Butttons/button';
 import DynModel from '../../component/Model/model';
 import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
-
+import { connect, useDispatch } from "react-redux";
+import { getActivity } from "../../actions/projectTaskAction";
 
 
 const headCells = [
@@ -30,6 +31,7 @@ const headCells = [
 
 
 function ProjectTask() {
+    const dispatch = useDispatch();
     const [value, setValue] = useState(2);
     const [modelOpen, setModelOpen] = useState(false)
     const [taskModelOpen, setTaskModelOpen] = useState(false)
@@ -69,6 +71,10 @@ function ProjectTask() {
         },
         
     })
+
+    useEffect(() => {
+        dispatch(getActivity());
+      }, []);
 
     function checkValidation(data, key, multipleId) {
 

@@ -214,7 +214,7 @@ const ResumePage = (props) => {
     },
     achivements: {
       value: "",
-      validation: [{ name: "required" }, { name: "alphabetsandSpecialChar" }],
+      // validation: [{ name: "required" }, { name: "alphabetsandSpecialChar" }],
       error: null,
       errmsg: null,
     },
@@ -222,7 +222,7 @@ const ResumePage = (props) => {
     capability: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" },],
+      // validation: [{ name: "required" },],
       error: null,
       errmsg: null,
     },
@@ -392,7 +392,7 @@ const ResumePage = (props) => {
       [key]: dynObj,
     }));
   }
-  console.log(Resume_Form.candidate.value,"Resume_Form.candidate.value")
+  console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
 
 
   function onSubmit() {
@@ -418,7 +418,7 @@ const ResumePage = (props) => {
       // setResumeFrom({ error: true });
     } else if (
       educationList.length !== 0 &&
-      (experienceList.length !== 0 || Resume_Form.candidate.value === 1)  &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0
     ) {
       // setResumeFrom({ error: false });
@@ -1097,8 +1097,8 @@ const ResumePage = (props) => {
                   <img src={PlusIcon} onClick={showExperienceModel} />
                 </div>
               </div>
-              { experienceList.length > 0 && (
-               
+              {experienceList.length > 0 && (
+
                 <div className="experienceOuterBox">
                   {experienceList.map((data, index) => {
                     return (
