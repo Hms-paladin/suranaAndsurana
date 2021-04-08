@@ -182,7 +182,7 @@ function AddDataModel() {
                             error={Litigation_Form.interimdetails.error}
                             errmsg={Litigation_Form.interimdetails.errmsg} />
                     </div>
-                    <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
 
                 </div>
 

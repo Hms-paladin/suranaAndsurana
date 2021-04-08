@@ -13,7 +13,7 @@ import {
   GET_INSTITUTE,
   GET_SPECIAL_INTEREST,
   GET_STATE,
-  GET_CITY,
+  GET_CITY,GET_TRADE_MARK_STATUS,
   GET_LANGUAGES,GET_DESIGNATION_LIST,GET_DEPARTMENT,GET_INTERVIEWERS_LIST,GET_INTERVIEW_STATUS
 } from "../utils/Constants.js";
 import {
@@ -33,7 +33,7 @@ import {
   GET_FILING_TYPE,
   GET_EMPLOYEE_LIST,
   GET_CLIENT_LIST,
-  GET_PROJECT_COST_RANGE,
+  GET_PROJECT_COST_RANGE,GET_COURT_LOCATION
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -245,4 +245,25 @@ export const getInterviewApprover = () => async (dispatch) => {
     type: GET_INTERVIEW_APPROVER,
     payload: response.data.data,
   });
+};
+
+export const getLocation= () => async dispatch => {
+  try {
+
+      axios({
+          method: 'GET',
+          url: apiurl +'get_court'
+      })
+      .then((response) => {
+          dispatch({type:GET_COURT_LOCATION,payload:response.data.data})
+      })
+      
+  } catch (err) {
+      
+  }
+}
+
+export const getTradeMarkStatus = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_trade_mark_status");
+  return dispatch({ type: GET_TRADE_MARK_STATUS, payload: response.data.data });
 };
