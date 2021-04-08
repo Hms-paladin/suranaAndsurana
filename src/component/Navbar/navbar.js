@@ -84,7 +84,7 @@ function Navbar(props) {
       // { path: "/projectIp2", title: "ProjectIp2" },
       // { path: "/task", title: "Task" },
       // { path: "/addclient", title: "Add Client" },
-      // { path: "/generateinvoice", title: "GenerateInvoice" },
+      { path: "/generateinvoice", title: "GenerateInvoice" },
 
       // Litigation :
       // { path: "/litigation", title: "Litigation" },
@@ -113,7 +113,7 @@ function Navbar(props) {
         <Grid spacing={2} item xs={12} container direction="row" justify="center" alignItems="center" display="flex" >
           <Grid item xs={6} container justify="left" alignItems="baseline" className="Header_Title" >
             <span className="highlightedtitle">L</span>egal <span className="highlightedtitle">P</span>ractice <span className="highlightedtitle">M</span>anagement <span className="highlightedtitle">S</span>ystem
-    </Grid>
+          </Grid>
 
           <Grid item xs={3} container alignItems="center">
             <div className="headerName"></div>
