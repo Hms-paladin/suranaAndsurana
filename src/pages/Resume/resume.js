@@ -214,15 +214,15 @@ const ResumePage = (props) => {
     },
     achivements: {
       value: "",
-      valueById: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }, { name: "alphabetsandSpecialChar" }],
       error: null,
       errmsg: null,
     },
+
     capability: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" },],
       error: null,
       errmsg: null,
     },
@@ -392,6 +392,8 @@ const ResumePage = (props) => {
       [key]: dynObj,
     }));
   }
+  console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
+
 
   function onSubmit() {
     var mainvalue = {};
@@ -416,7 +418,7 @@ const ResumePage = (props) => {
       // setResumeFrom({ error: true });
     } else if (
       educationList.length !== 0 &&
-      experienceList.length !== 0 &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0
     ) {
       // setResumeFrom({ error: false });
@@ -867,7 +869,7 @@ const ResumePage = (props) => {
                   errmsg={Resume_Form.capability.errmsg}
                 />
               </Grid>
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <Labelbox
                   type="select"
                   mode={"multiple"}
@@ -880,6 +882,16 @@ const ResumePage = (props) => {
                       resumeGetList.achivementsList
                     )
                   }
+                  value={Resume_Form.achivements.value}
+                  error={Resume_Form.achivements.error}
+                  errmsg={Resume_Form.achivements.errmsg}
+                />
+              </Grid> */}
+              <Grid item xs={6}>
+                <Labelbox
+                  type="text"
+                  placeholder={"Achievements"}
+                  changeData={(data) => checkValidation(data, "achivements")}
                   value={Resume_Form.achivements.value}
                   error={Resume_Form.achivements.error}
                   errmsg={Resume_Form.achivements.errmsg}
@@ -1076,7 +1088,7 @@ const ResumePage = (props) => {
             >
               {Resume_Form.candidate.value !== 1 && employererr && (
                 <span className="errmsgClrResume">
-                  Please Add Perivous Employer
+                  Please Add Previous Employer
                 </span>
               )}
               <div className="experienceList">
@@ -1086,6 +1098,7 @@ const ResumePage = (props) => {
                 </div>
               </div>
               {experienceList.length > 0 && (
+
                 <div className="experienceOuterBox">
                   {experienceList.map((data, index) => {
                     return (

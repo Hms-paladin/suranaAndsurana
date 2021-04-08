@@ -328,7 +328,7 @@ function Sup_nameGetId(data) {
                         <div className="employeeform_row1">
                             <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name}</div></div>
                             <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id}</div></div>
-                            <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob}</div></div>
+                            <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?moment(val.dob).format("DD-MMM-YYYY"):"-"}</div></div>
                             <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === "M" ? "Male" : "Female"}</div></div>
                             <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual}</div></div>
                             {/* <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>

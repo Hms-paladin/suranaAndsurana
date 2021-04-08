@@ -263,7 +263,7 @@ function Resumesearch(props) {
         <div>
             <div>
                 <div className="searchBoxContainer">
-                    <Grid container spacing={2}>
+                    <Grid container spacing={3}>
                         <Grid item xs={3}>
                             <Labelbox type="select"
                                 placeholder="Skills"
@@ -337,7 +337,7 @@ function Resumesearch(props) {
                             </Grid>
                             <Grid item xs={8}>
                                 <Link to='resume'>
-                                    <CustomButton btnName={"CreateResume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}   onBtnClick={() => setpathname("/projectFormCreate")} />
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}   onBtnClick={() => setpathname("/projectFormCreate")} />
                                 </Link>
                             </Grid>
                         </Grid>

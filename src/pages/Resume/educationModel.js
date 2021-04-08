@@ -22,8 +22,9 @@ function EducationModel(props) {
       value: "",
       validation: [
         { name: "required" },
-        { name: "alphabetwithspace" },
+        // { name: "alphabetwithspace" },
         { name: "50Char" },
+        // { name: "alphabetsandSpecialChar" }
       ],
       error: null,
       errmsg: null,
@@ -73,6 +74,8 @@ function EducationModel(props) {
         Education_Form[targetkeys[i]].value,
         Education_Form[targetkeys[i]].validation
       );
+      console.log(Education_Form[targetkeys[i]].validation,"Education_Form[targetkeys[i]].validation")
+
       Education_Form[targetkeys[i]].error = !errorcheck.state;
       Education_Form[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = Education_Form[targetkeys[i]].value;

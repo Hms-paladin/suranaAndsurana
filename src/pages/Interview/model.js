@@ -46,7 +46,7 @@ function DynModelView(props){
     React.useEffect(()=>{
         setVisible(props.handleChangeModel)
     },[props.handleChangeModel])
-  
+  console.log(props.handleChangeModel,"props.handleChangeModel")
     return(
         <Modal
         className="modelContainer"
@@ -85,7 +85,7 @@ function DynModelView(props){
                     <div className="employeeform_row3">
                       <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications? val.certifications:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization? val.specialization:"-"}</div></div>
-                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">{val.achievement ? val.achievement:"-"}</div></div>
+                      <div className="employeeform_r2 traitsdiv"><div className="headcolor">Achievements</div><div className="employeecont">{val.achievement ? val.achievement:"-"}</div></div>
                     </div>
                     <div className="employeeform_row4">
                       <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability ? val.capability:"-"}</div></div>
@@ -98,7 +98,7 @@ function DynModelView(props){
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.postal_addr:"-"}</div></div>
                     </div>
                     <div className="employeeform_row6">
-                      <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile:"-"}</div></div>
+                      <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known:"-"}</div></div>
                       <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource:"-"}</div></div>

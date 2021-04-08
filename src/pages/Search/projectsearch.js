@@ -22,6 +22,7 @@ import DynModel from "../../component/Model/model";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getProjectSearchTableData } from "../../actions/ProjectSearchAction"
 import ProjectIp from '../Project IP1/projectIp';
+import LitigationAddcase from '../Litigation/litigation';
 
 const { Panel } = Collapse;
 

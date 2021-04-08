@@ -415,8 +415,10 @@ function ProjectFormCreate(props) {
     let EmployeeList = [];
     props.EmployeeList.map((data) =>
       EmployeeList.push({ value: data.name, id: data.emp_id })
+
     );
     setEmployeeList({ EmployeeList });
+
 
     // Project Cost Range
 

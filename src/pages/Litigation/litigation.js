@@ -1,6 +1,6 @@
 import react, { useState } from 'react';
 import './litigation.scss';
-import { Tabs, Radio } from 'antd';
+import { Tabs, Radio, Divider } from 'antd';
 import Grid from '@material-ui/core/Grid';
 import Tabcontent from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -102,7 +102,7 @@ function Litigation() {
             error: null,
             errmsg: null,
         },
-       
+
     })
 
     function onSubmit() {
@@ -138,7 +138,7 @@ function Litigation() {
 
     const handleCancel = () => {
         let ResumeFrom_key = [
-            "internalcaseno", "status", "courtname","casetype","courtcaseno","ddra","hearingdate","duedate","subcase","suitvalue"
+            "internalcaseno", "status", "courtname", "casetype", "courtcaseno", "ddra", "hearingdate", "duedate", "subcase", "suitvalue"
         ]
 
         ResumeFrom_key.map((data) => {
@@ -186,239 +186,168 @@ function Litigation() {
     };
 
 
-   
+
 
 
     return (
         <div>
-            <div className="litigationContaoner">
-                <Grid item xs={12}>
-                    <div className="litigationFields">
-                        <div className="litigationData">
-                            <div className="litigationTitle">Project Name</div>
-                            <div>Name</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">Client Name</div>
-                            <div>Name</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">Project type</div>
-                            <div>J0450</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">Project Sub type</div>
-                            <div>J0450</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">Process type</div>
-                            <div>J0450</div>
-                        </div>
-                    </div>
-
-                </Grid>
-                <Grid item xs={12}>
-                    <div className="litigationFields">
-                        <div className="litigationData">
-                            <div className="litigationTitle">Filling Type</div>
-                            <div>Name</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">Billable Type</div>
-                            <div>Name</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">DRA</div>
-                            <div>J0450</div>
-                        </div>
-                        <div className="litigationData">
-                            <div className="litigationTitle">DDRA</div>
-                            <div>J0450</div>
-                        </div>
-
-                    </div>
-                </Grid>
-                <Grid item xs={12}>
-                    <div className="litigationFields">
-                        <div className="litigationData">
-                            <div className="litigationTitle">Comments</div>
-                            <div>text</div>
-                        </div>
-                    </div>
-
-                </Grid>
+            <div className="litigationHeader">
+                <div className="addCase">Add Case</div>
             </div>
-            <Tabs defaultActiveKey="1" type="card" className="litigationTabs">
-                <TabPane tab="Litigation" key="1">
-                    <div className="litigationHeader">
-                        <div className="addCase">Add Case</div>
-                        <Tabcontent className="IconsHeader" />
+            <Grid item xs={12} container direction="row" spacing={2}>
+                <Grid item xs={4} container direction="column" spacing={2} >
+                    <Labelbox type="text" placeholder={"Internal Case No."}
+                        changeData={(data) => checkValidation(data, "prioritydetails")}
+                        value={Litigation_Form.internalcaseno.value}
+                        error={Litigation_Form.internalcaseno.error}
+                        errmsg={Litigation_Form.internalcaseno.errmsg} />
+
+                    <Labelbox type="select" placeholder={"Status"}
+                        changeData={(data) => checkValidation(data, "status")}
+                        value={Litigation_Form.status.value}
+                        error={Litigation_Form.status.error}
+                        errmsg={Litigation_Form.status.errmsg} />
+
+                    <Labelbox type="select" placeholder={"Court Name"}
+                        changeData={(data) => checkValidation(data, "courtname")}
+                        value={Litigation_Form.courtname.value}
+                        error={Litigation_Form.courtname.error}
+                        errmsg={Litigation_Form.courtname.errmsg} />
+
+                    <Labelbox type="select" placeholder={"Case Type"}
+                        changeData={(data) => checkValidation(data, "casetype")}
+                        value={Litigation_Form.casetype.value}
+                        error={Litigation_Form.casetype.error}
+                        errmsg={Litigation_Form.casetype.errmsg} />
+
+                    <Labelbox type="text" placeholder={"Court Case No."}
+                        changeData={(data) => checkValidation(data, "courtcaseno")}
+                        value={Litigation_Form.courtcaseno.value}
+                        error={Litigation_Form.courtcaseno.error}
+                        errmsg={Litigation_Form.courtcaseno.errmsg} />
+
+                    <Labelbox type="select" placeholder={"DDRA"}
+                        changeData={(data) => checkValidation(data, "ddra")}
+                        value={Litigation_Form.ddra.value}
+                        error={Litigation_Form.ddra.error}
+                        errmsg={Litigation_Form.ddra.errmsg} />
+
+                    <div className="litigationDatepicker" >
+                        <div > <Labelbox type="datepicker" placeholder={"Next Hearing Date"}
+                            changeData={(data) => checkValidation(data, "hearingdate")}
+                            value={Litigation_Form.hearingdate.value}
+                            error={Litigation_Form.hearingdate.error}
+                            errmsg={Litigation_Form.hearingdate.errmsg} />
+                        </div>
+                        <div > <Labelbox type="datepicker" placeholder={"Due Date"}
+                            changeData={(data) => checkValidation(data, "duedate")}
+                            value={Litigation_Form.duedate.value}
+                            error={Litigation_Form.duedate.error}
+                            errmsg={Litigation_Form.duedate.errmsg} />
+                        </div>
+                    </div>
+                    <Labelbox type="select" placeholder={"Sub case"}
+                        changeData={(data) => checkValidation(data, "subcase")}
+                        value={Litigation_Form.subcase.value}
+                        error={Litigation_Form.subcase.error}
+                        errmsg={Litigation_Form.subcase.errmsg} />
+
+                    <Labelbox type="text" placeholder={"Suit Value (Numeric)"}
+                        changeData={(data) => checkValidation(data, "suitvalue")}
+                        value={Litigation_Form.suitvalue.value}
+                        error={Litigation_Form.suitvalue.error}
+                        errmsg={Litigation_Form.suitvalue.errmsg} />
+
+
+                </Grid>
+
+                <Grid item xs={8} container direction="row"  >
+                    <div className="litigationScroller">
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">Our Counsel</div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
+
+                            </div>
+                        </div>
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">External Counsel</div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
+
+                            </div>
+                        </div>
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">Opposite Party </div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
+
+                            </div>
+                        </div>
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">Opposite Party Counsel</div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
+
+                            </div>
+                        </div>
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">Opposite Party Counsel</div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
+                            </div>
+                        </div>
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">Adjournment</div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                            </div>
+                        </div>
+                        <div className="litigationCounsel">
+                            <div className="ourCounselTitle">Interim</div>
+                            <div className="ourCounselFields">
+                                <div>Name</div>
+                                <div>Phone No</div>
+                                <div>Email ID</div>
+                                <div>Address</div>
+                                <img src={AddIcon} onClick={() => setLitigationInterim(true)} />
+                            </div>
+                        </div>
+                    </div>
+                    <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={<AddDataModel />} />
+                    <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationInterim} handleChangeCloseModel={(bln) => setLitigationInterim(bln)} content={<InterimModel />} />
+                    <div className="customAddcasebtn">
+                        <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onSubmit} />
+
+                        <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
 
 
                     </div>
-                    <Grid item xs={12} container direction="row" spacing={2}>
-                        <Grid item xs={4} container direction="column" spacing={2} >
-                            <Labelbox type="text" placeholder={"Internal Case No."}
-                                changeData={(data) => checkValidation(data, "prioritydetails")}
-                                value={Litigation_Form.internalcaseno.value}
-                                error={Litigation_Form.internalcaseno.error}
-                                errmsg={Litigation_Form.internalcaseno.errmsg} />
-
-                             <Labelbox type="select" placeholder={"Status"}
-                                changeData={(data) => checkValidation(data, "status")}
-                                value={Litigation_Form.status.value}
-                                error={Litigation_Form.status.error}
-                                errmsg={Litigation_Form.status.errmsg} />
-
-                           <Labelbox type="select" placeholder={"Court Name"}
-                                changeData={(data) => checkValidation(data, "courtname")}
-                                value={Litigation_Form.courtname.value}
-                                error={Litigation_Form.courtname.error}
-                                errmsg={Litigation_Form.courtname.errmsg} />
-
-                            <Labelbox type="select" placeholder={"Case Type"}
-                                changeData={(data) => checkValidation(data, "casetype")}
-                                value={Litigation_Form.casetype.value}
-                                error={Litigation_Form.casetype.error}
-                                errmsg={Litigation_Form.casetype.errmsg} />
-
-                            <Labelbox type="text" placeholder={"Court Case No."}
-                                changeData={(data) => checkValidation(data, "courtcaseno")}
-                                value={Litigation_Form.courtcaseno.value}
-                                error={Litigation_Form.courtcaseno.error}
-                                errmsg={Litigation_Form.courtcaseno.errmsg} />
-
-                            <Labelbox type="select" placeholder={"DDRA"}
-                                changeData={(data) => checkValidation(data, "ddra")}
-                                value={Litigation_Form.ddra.value}
-                                error={Litigation_Form.ddra.error}
-                                errmsg={Litigation_Form.ddra.errmsg} />
-
-                            <Grid item xs={12} container direction="row" >
-                                <Grid xs={6} > <Labelbox type="datepicker" placeholder={"Next Hearing Date"}
-                                    changeData={(data) => checkValidation(data, "hearingdate")}
-                                    value={Litigation_Form.hearingdate.value}
-                                    error={Litigation_Form.hearingdate.error}
-                                    errmsg={Litigation_Form.hearingdate.errmsg} />
-                                </Grid>
-                                <Grid xs={6} > <Labelbox type="datepicker" placeholder={"Due Date"}
-                                    changeData={(data) => checkValidation(data, "duedate")}
-                                    value={Litigation_Form.duedate.value}
-                                    error={Litigation_Form.duedate.error}
-                                    errmsg={Litigation_Form.duedate.errmsg} />
-                                </Grid>
-
-
-                            </Grid>
-                            <Labelbox type="select" placeholder={"Sub case"}
-                                changeData={(data) => checkValidation(data, "subcase")}
-                                value={Litigation_Form.subcase.value}
-                                error={Litigation_Form.subcase.error}
-                                errmsg={Litigation_Form.subcase.errmsg} />
-
-                            <Labelbox type="text" placeholder={"Suit Value (Numeric)"}
-                                changeData={(data) => checkValidation(data, "suitvalue")}
-                                value={Litigation_Form.suitvalue.value}
-                                error={Litigation_Form.suitvalue.error}
-                                errmsg={Litigation_Form.suitvalue.errmsg} /> 
-
-
-                        </Grid>
-
-                        <Grid item xs={8} container direction="row"  >
-                            <div className="litigationScroller">
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">Our Counsel</div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                                    </div>
-                                </div>
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">External Counsel</div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                                    </div>
-                                </div>
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">Opposite Party </div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                                    </div>
-                                </div>
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">Opposite Party Counsel</div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                                    </div>
-                                </div>
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">Opposite Party Counsel</div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-                                    </div>
-                                </div>
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">Adjournment</div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                    </div>
-                                </div>
-                                <div className="litigationCounsel">
-                                    <div className="ourCounselTitle">Interim</div>
-                                    <div className="ourCounselFields">
-                                        <div>Name</div>
-                                        <div>Phone No</div>
-                                        <div>Email ID</div>
-                                        <div>Address</div>
-                                        <img src={AddIcon} onClick={() => setLitigationInterim(true)} />
-                                    </div>
-                                </div>
-                            </div>
-                            <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={<AddDataModel />} />
-                            <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationInterim} handleChangeCloseModel={(bln) => setLitigationInterim(bln)} content={<InterimModel />} />
-                            <div className="customAddcasebtn">
-                                <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onSubmit} />
-
-                                <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
-
-
-                            </div>
-                        </Grid>
-
-                    </Grid>
-
-
-                </TabPane>
-
-            </Tabs>
-
+                </Grid>
+            </Grid>
         </div>
     )
 }

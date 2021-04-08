@@ -120,24 +120,31 @@
     }
 }
 
+.litigationDatepicker{
+   display: flex;
+   >div{
+       margin:3px 5px;
+   }
+}
+
 
 
 // Scroll bar Design ==>
 
-//   .litigationScroller::-webkit-scrollbar-track {
-//     border: 1px solid #023e7d;
-//     padding: 4px 0;
-//     background-color: white;
-//     border-radius: 0px 10px 10px 0px;
-//   }
+  .litigationScroller::-webkit-scrollbar-track {
+    border: 1px solid #023e7d;
+    padding: 4px 0;
+    background-color: white;
+    border-radius: 0px 10px 10px 0px;
+  }
   
-//   .litigationScroller::-webkit-scrollbar {
-//     width: 20px;
-//   }
+  .litigationScroller::-webkit-scrollbar {
+    width: 20px;
+  }
   
-//   .litigationScroller::-webkit-scrollbar-thumb {
-//     border-radius:0px 10px 10px 0px;
-//     box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-//     background-color: rgba(2, 62, 125, 0.25);;
-//     border: 1px solid #023e7d;
-//   }
+  .litigationScroller::-webkit-scrollbar-thumb {
+    border-radius:0px 10px 10px 0px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: rgba(2, 62, 125, 0.25);;
+    border: 1px solid #023e7d;
+  }

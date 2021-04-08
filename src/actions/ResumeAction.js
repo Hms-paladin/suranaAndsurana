@@ -45,7 +45,7 @@ export const InesertResume = (Resume_Form, educationList, experienceList) => asy
         "created_by": localStorage.getItem("empId"),
         "updated_by": localStorage.getItem("empId"),
         "ip_address": "123",
-        "achievement":Resume_Form.achivements.valueById,
+        "achievement":Resume_Form.achivements.value,
         "capability": Resume_Form.capability.valueById,
       }
     })
