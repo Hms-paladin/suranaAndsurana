@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import CustomButton from "../../component/Butttons/button";
-import "./addclient.scss";
 import { Label } from "@material-ui/icons";
 import moment from "moment";
 import { notification } from "antd";
@@ -14,33 +13,13 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { connect, useDispatch } from "react-redux";
 import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
+import "./addclient.scss";
 
 
 
 function AddClient() {
-  const [selectedFile, setselectedFile] = useState([]);
+  const dispatch = useDispatch();
 
-    const props = {
-        name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        headers: {
-          authorization: 'authorization-text',
-        },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log("uploading",info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-
-          message.success(`${info.file.name} file uploaded successfully`);
-          setselectedFile(info.file.originFileObj);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
-    const dispatch = useDispatch();
   const [clientName, setClientName] = useState({});
 
   const [stateList, setstateList] = useState({});
@@ -108,13 +87,13 @@ function AddClient() {
     cont_per_2: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" },{ name: "custommaxLength",params:"50" },{ "name": "alphabetwithspace" }],
+      validation: [{ name: "custommaxLength",params:"50" },{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     gender_2: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -126,13 +105,13 @@ function AddClient() {
     },
     con_ph_2: {
       value: "",
-      validation: [{name:"mobile"}],
+      validation: [],
       error: null,
       errmsg: null,
     },
     emai_id_2: {
       value: "",
-      validation: [{ name: "required" },{ name: "custommaxLength",params:"100" },{ "name": "email" }],
+      validation: [{ name: "custommaxLength",params:"100" },{ "name": "email" }],
       error: null,
       errmsg: null,
     },
@@ -155,6 +134,28 @@ function AddClient() {
         errmsg: null,
       }
   });
+  const [selectedFile, setselectedFile] = useState([]);
+
+  const props = {
+      name: 'file',
+      // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      // headers: {
+      //   authorization: 'authorization-text',
+      // },
+  onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log("uploading",info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+
+        message.success(`${info.file.name} file uploaded successfully`);
+        setselectedFile(info.file.originFileObj);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
 useEffect(() => {
 
     // Client
@@ -457,7 +458,7 @@ useEffect(() => {
                 </Grid>
               </div>
 
-              <div style={{ marginLeft: "10px" }}>
+              <div className="uploadfileSpace">
                 {" "}
                 {/* <input type="file" onChange={handleImagePreview} /> */}
                 <Upload {...props}>

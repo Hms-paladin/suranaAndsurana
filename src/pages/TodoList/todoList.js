@@ -16,7 +16,7 @@ import "./todoList.scss"
 // Hr Task:
 
 const headCells = [
-    { id: 'id', label: 'Interview ID' },
+    { id: 'id', label: 'Task' },
     { id: 'interviewDate', label: 'Interview date' },
     { id: 'designation', label: 'Designation' },
     { id: 'candidates', label: 'No. of Candidates' }
@@ -55,6 +55,7 @@ function TodoList(props) {
 
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
+    const [stateClear,setStateClear] =useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
     const [inerviewScreen, setInerviewScreen] = useState(false)
     const [unblockuserActive, setUnblockuserActive] = useState(false)
@@ -92,13 +93,11 @@ function TodoList(props) {
                 showId = data.int_status_id
                 showName = "int_status_id"
             }
-            hrList.push({ id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{showId}</div>, interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, designation: data.designation, candidates: data.no_of_candidates })
+            hrList.push({ id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
+             interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null, 
+             designation: data.designation, candidates: data.no_of_candidates })
         })
         setHrTodoList(hrList)
-
-
-
-
     }, [props.getHrTodoList,])
 
     useEffect(() => {
@@ -113,7 +112,6 @@ function TodoList(props) {
 
 
     function openModelFunc(name, id) {
-
         if (name === "interviewer_id") {
             setApproveOpen(true)
             let int_viewer_id = props.getHrTodoList.find((val) => {
@@ -157,7 +155,13 @@ function TodoList(props) {
         setUnblockuserActive(true)
     }
 
+   const onNewPageClear=(bln)=>{
+    setStateClear(!stateClear);
+    setInerviewScreen(bln);
+    setEmployeeFormOpen(bln);
+    setApproveOpen(bln);
 
+   }
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
@@ -165,18 +169,18 @@ function TodoList(props) {
                 {/* ___________________________________________________________________________ */}
             <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
        {/*InrerviewScreen after  Schedule     */}
-            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => setInerviewScreen(bln)} width={1000}
+            <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen}  handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1000}
              content={<InerviewScreen interviewer_id={can_int_id}
-              handleAproverModelClose={(bln) => setInerviewScreen(bln)}  />} />
+              handleAproverModelClose={(bln) => onNewPageClear(bln)}  stateClear={stateClear} />} />
 
     {/*EmployeeForm after  selected in interview approve     */}
-            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => setEmployeeFormOpen(bln)} width={1100}
-             content={<Employeeform closemodal={(bln) => setEmployeeFormOpen(bln)} emp_form_id={Employee_Data}/>} />
+            <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1100}
+             content={<Employeeform closemodal={(bln) => onNewPageClear(bln)} emp_form_id={Employee_Data} stateClear={stateClear} />} />
 
     {/*EmployeeApprove after  value entered in employee form     */}
     
-            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => setApproveOpen(bln)} 
-            content={<EmployeeApprove closemodal={(bln) => setApproveOpen(bln)} emp_viewer_id={viewer_id}/>} />
+            <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} 
+            content={<EmployeeApprove closemodal={(bln) => onNewPageClear(bln)} emp_viewer_id={viewer_id} stateClear={stateClear} />} />
 
            </div>
             {/* __________________________________________________________________________ */}
@@ -191,9 +195,11 @@ function TodoList(props) {
     )
 }
 
-const mapStateToProps = state => ({
-    getHrTodoList: state.getHrTodoList
-})
+const mapStateToProps = state => (
+    {
+    getHrTodoList: state.getHrTodoList.getHrToDoListTableData ||[]
+}
+)
 
 export default connect(mapStateToProps)(TodoList);
 

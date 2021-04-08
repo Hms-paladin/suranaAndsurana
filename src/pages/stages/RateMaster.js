@@ -10,7 +10,7 @@ import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getVariableRateTableData, InsertVariableRate } from "../../actions/VariableRateMaster"
+import { getVariableRateTableData, InsertVariableRate,SearchVariableRate } from "../../actions/VariableRateMaster"
 
 
 const RateMaster = (props) => {
@@ -43,6 +43,7 @@ const RateMaster = (props) => {
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
+  // const [amountDis,setAmountDis] =useState(true);
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -104,21 +105,20 @@ const RateMaster = (props) => {
       errmsg: null,
     },
   });
-  // const reduxvalue = 
-  //   useSelector((state)=>console.log(state,"reduxvalue"))
-
-  //   const tableDta = reduxvalue.variableRateMaster.getVariableRateTableData;
-
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
-  }, [props]);
+    // setAmountDis(false)
+  }, [props.variabletablechange,props.variablebtnchange]);
+  // useEffect(() => {
+  //   // setAmountDis(false)
+  // }, [props.variableRateCall]);
 
   useEffect(() => {
     dispatch(getVariableRateTableData());
   }, []);
   useEffect(() => {
-    console.log("props.getTableData", props.getTableData)
+
     let variableRateList = [];
     props.getTableData.map((data) => variableRateList.push(data));
     var rateList = [];
@@ -415,6 +415,39 @@ const RateMaster = (props) => {
       setIsLoaded(false);
     }
   });
+const onSearch=()=>{
+  // var mainvalue = {};
+  // var targetkeys = Object.keys(RateMaster);
+  // for (var i in targetkeys) {
+  //   var errorcheck = ValidationLibrary.checkValidation(
+  //     RateMaster[targetkeys[i]].value,
+  //     RateMaster[targetkeys[i]].validation
+  //   );
+  //   RateMaster[targetkeys[i]].error = !errorcheck.state;
+  //   RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
+  //   mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
+  // }
+  // var filtererr = targetkeys.filter(
+//     (obj) => RateMaster[obj].error === true
+// );
+// if (filtererr.length > 0) {
+  // setRateMaster({ error: true });
+
+  // } else {
+    dispatch(SearchVariableRate(RateMaster))
+    .then((response) => {
+      handleCancel();
+        props.setShowSearchTable()
+
+     
+  })
+
+  setRateMaster((prevState) => ({
+    ...prevState,
+  }));
+  
+}
+
 
   return (
     <div>
@@ -476,6 +509,7 @@ const RateMaster = (props) => {
             error={RateMaster.amount.error}
             errmsg={RateMaster.amount.errmsg}
           />
+         
         </Grid>
         <Grid item xs={4} spacing={2}>
           <Labelbox
@@ -506,7 +540,12 @@ const RateMaster = (props) => {
           />
         </Grid>
         {variablebtnchange ?
-          <div className="rate_cus_btns"></div>
+          <div className="rate_cus_btns"><CustomButton
+          btnName={"Search"}
+          btnCustomColor="customPrimary"
+          custombtnCSS="custom_save"
+          onBtnClick={onSearch}
+        /> </div>
           :
           <div className="rate_cus_btns">
             <CustomButton

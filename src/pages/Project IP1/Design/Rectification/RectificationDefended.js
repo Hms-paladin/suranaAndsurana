@@ -8,7 +8,7 @@ import Stage from "../../../../images/stage.png";
 import Task from "../../../../images/task.png";
 import Application from "../../../../images/application.png";
 
-function RectificationDefended(){
+function RectificationDefended() {
     const [RectificationDefended, setRectificationDefended] = useState({
         client_respontent: {
             value: "",
@@ -22,13 +22,13 @@ function RectificationDefended(){
             error: null,
             errmsg: null,
         },
-        petitioner: {
+        respondent: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
             errmsg: null,
         },
-        petitioner_rep: {
+        respondent_rep: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
@@ -38,7 +38,7 @@ function RectificationDefended(){
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
-             errmsg: null,
+            errmsg: null,
         },
         comments: {
             value: "",
@@ -66,11 +66,11 @@ function RectificationDefended(){
             errmsg: errorcheck.msg,
             validation: RectificationDefended[key].validation
         }
-    
+
         // only for multi select (start)
-    
+
         let multipleIdList = []
-    
+
         if (multipleId) {
             multipleId.map((item) => {
                 for (let i = 0; i < data.length; i++) {
@@ -82,7 +82,7 @@ function RectificationDefended(){
             dynObj.valueById = multipleIdList.toString()
         }
         // (end)
-    
+
         setRectificationDefended(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -98,8 +98,8 @@ function RectificationDefended(){
         //     setResumeFrom({ error: false });
         // }
     };
-    
-        function onSubmit(){   
+
+    function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(RectificationDefended);
         for (var i in targetkeys) {
@@ -119,113 +119,73 @@ function RectificationDefended(){
             // setRectificationDefended({ error: true });
         } else {
             // setRectificationDefended({ error: false });
-            
+
             // dispatch(InesertResume(RectificationDefended)).then(()=>{
             //     handleCancel()
             // })
         }
-    
+
         setRectificationDefended(prevState => ({
             ...prevState
         }));
-    
-    
-        }
-    return(
+
+
+    }
+    return (
         <div className="container">
-            <div style={{display:'flex', justifyContent:'flex-end'}}>
-            <div style={{margin:'5px'}}>
-              <img src={Checklist} />
-              <p>CHECKLIST</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Stage} />
-              <p>STAGE</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Task} />
-              <p>TASKS</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Application} />
-              <p>APPLICATION</p>
-            </div>
-            <div style={{margin:'5px'}}>
-              <img src={Application} />
-              <p>STAGE MONITOR</p>
-            </div>
-         </div>
-            <Grid  container spacing={2}   >
-                <Grid item md={2}>
-                    <Labelbox  type="select"
-                    placeholder={"Client Respondent"}
-                    changeData={(data) => checkValidation(data, "client_respontent")}
-                    value={RectificationDefended.client_respontent.value}
-                    error={RectificationDefended.client_respontent.error}
-                    errmsg={RectificationDefended.client_respontent.errmsg}
-                    />
-                </Grid>
-                <Grid item md={2}>
-                    <Labelbox  type="text"
-                    placeholder={"Design Number"}
-                    changeData={(data) => checkValidation(data, "des_number")}
-                    value={RectificationDefended.des_number.value}
-                    error={RectificationDefended.des_number.error}
-                    errmsg={RectificationDefended.des_number.errmsg}
-                    />
-                </Grid>
-                <Grid item md={2}>
-                    <Labelbox  type="text"
-                    placeholder={"Petitioner"}
-                    changeData={(data) => checkValidation(data, "petitioner")}
-                    value={RectificationDefended.petitioner.value}
-                    error={RectificationDefended.petitioner.error}
-                    errmsg={RectificationDefended.petitioner.errmsg}
-                    />
-                </Grid>
-                <Grid item md={2}>
-                    <Labelbox  type="text"
-                    placeholder={"Petitioner Rep"}
-                    changeData={(data) => checkValidation(data, "petitioner_rep")}
-                    value={RectificationDefended.petitioner_rep.value}
-                    error={RectificationDefended.petitioner_rep.error}
-                    errmsg={RectificationDefended.petitioner_rep.errmsg}
-                    />
-                </Grid>
-                <Grid item md={3}/>
-                <Grid item md={2} >
-                   <Labelbox  type="select"
-                    placeholder={"Status"}
-                    changeData={(data) => checkValidation(data, "status")}
-                    value={RectificationDefended.status.value}
-                    error={RectificationDefended.status.error}
-                    errmsg={RectificationDefended.status.errmsg}
-                    />
-                </Grid>
-                <Grid item md={4} >
-                   <Labelbox  type="text"
-                    placeholder={"Comments"}
-                    changeData={(data) => checkValidation(data, "comments")}
-                    value={RectificationDefended.comments.value}
-                    error={RectificationDefended.comments.error}
-                    errmsg={RectificationDefended.comments.errmsg}
-                    />
-                </Grid>
-                <Grid item md={2} >
-                   <Labelbox  type="datepicker"
-                    placeholder={"Application Date"}
-                    changeData={(data) => checkValidation(data, "app_date")}
-                    value={RectificationDefended.app_date.value}
-                    error={RectificationDefended.app_date.error}
-                    errmsg={RectificationDefended.app_date.errmsg}
-                    />
-                </Grid>              
-           </Grid>   
-           <div className="ipdesign_savebtn" direction="row" justify="center">
-                <CustomButton  btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit}/>
-                <CustomButton  btnName={"cancel"} btnCustomColor="customPrimary"/>
-           </div>
+            <Grid container direction={"column"}>
+                <Grid item xs={12} md={12} className="app_cont_domestic">
+
                    
+
+                    <Labelbox type="text"
+                        placeholder={"Design Number"}
+                        changeData={(data) => checkValidation(data, "des_number")}
+                        value={RectificationDefended.des_number.value}
+                        error={RectificationDefended.des_number.error}
+                        errmsg={RectificationDefended.des_number.errmsg}
+                    />
+
+                    <Labelbox type="text"
+                        placeholder={"Respondent"}
+                        changeData={(data) => checkValidation(data, "respondent")}
+                        value={RectificationDefended.respondent.value}
+                        error={RectificationDefended.respondent.error}
+                        errmsg={RectificationDefended.respondent.errmsg}
+                    />
+
+                    <Labelbox type="text"
+                        placeholder={"Petitioner Rep"}
+                        changeData={(data) => checkValidation(data, "respondent_rep")}
+                        value={RectificationDefended.respondent_rep.value}
+                        error={RectificationDefended.respondent_rep.error}
+                        errmsg={RectificationDefended.respondent_rep.errmsg}
+                    />
+
+                    <Labelbox type="select"
+                        placeholder={"Status"}
+                        changeData={(data) => checkValidation(data, "status")}
+                        value={RectificationDefended.status.value}
+                        error={RectificationDefended.status.error}
+                        errmsg={RectificationDefended.status.errmsg}
+                    />
+
+                    <Labelbox type="text"
+                        placeholder={"Comments"}
+                        changeData={(data) => checkValidation(data, "comments")}
+                        value={RectificationDefended.comments.value}
+                        error={RectificationDefended.comments.error}
+                        errmsg={RectificationDefended.comments.errmsg}
+                    />
+
+                   
+                </Grid>
+            </Grid>
+            <div className="custombtnOposition">
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+            </div>
+
         </div>
     )
 }

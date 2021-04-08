@@ -22,8 +22,9 @@ function EducationModel(props) {
       value: "",
       validation: [
         { name: "required" },
-        { name: "alphabetwithspace" },
+        // { name: "alphabetwithspace" },
         { name: "50Char" },
+        // { name: "alphabetsandSpecialChar" }
       ],
       error: null,
       errmsg: null,
@@ -56,11 +57,7 @@ function EducationModel(props) {
     setEducationForm((prevState) => ({
       ...prevState,
     }));
-
-    // setRowchange(Education_Form)
-
-    // console.log(Education_Form, "addEducations[props.editEducationid")
-
+  
   }, [props.editEducations, props.editEducationid]);
 
   //   useEffect(() => {
@@ -77,6 +74,8 @@ function EducationModel(props) {
         Education_Form[targetkeys[i]].value,
         Education_Form[targetkeys[i]].validation
       );
+      console.log(Education_Form[targetkeys[i]].validation,"Education_Form[targetkeys[i]].validation")
+
       Education_Form[targetkeys[i]].error = !errorcheck.state;
       Education_Form[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = Education_Form[targetkeys[i]].value;
@@ -84,7 +83,6 @@ function EducationModel(props) {
     var filtererr = targetkeys.filter(
       (obj) => Education_Form[obj].error == true
     );
-    console.log(filtererr.length);
     if (filtererr.length > 0) {
       // setEducationForm({ error: true });
     } else {
@@ -105,12 +103,7 @@ function EducationModel(props) {
 
     setRowchange(Education_Form)
     props.EditEducation(Education_Form, props.editEducationid);
-    // Education_Form.basicQualification.value = "";
-    // Education_Form.institution.value = "";
-    // Education_Form.yearpassing.value = "";
-    // Education_Form.percentage.value = "";
     handleCancel()
-    // props.onClose();
     props.handleChangeCloseModel()
   }
 
@@ -160,7 +153,6 @@ function EducationModel(props) {
   }, []);
 
   useEffect(() => {
-    console.log(props.getOptions, "getOptions");
 
     const qualificationList = [];
 
@@ -199,7 +191,8 @@ function EducationModel(props) {
       <Labelbox
         type="datepicker"
         placeholder="Year of Passing"
-        //  view ={["year"]}
+         view ={["year"]}
+         format={'yyyy'}
         changeData={(data) => checkValidation(data, "yearpassing")}
         value={Education_Form.yearpassing.value}
         error={Education_Form.yearpassing.error}

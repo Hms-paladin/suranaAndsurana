@@ -15,7 +15,6 @@ export const Interview = () => async dispatch => {
             url: apiurl +'/get_questions',
         })
         .then((response) => {
-            console.log(response.data.data,"datacheck")
             dispatch({type:GET_INTERVIEW_QUESTIONS,payload:response.data.data})
         })
         
@@ -42,16 +41,13 @@ export const interviewApproverTableData = (id) => async dispatch => {
         
     }
 }
-
- 
-export const InsertApprove = (ApproveForm,optionvalues,Rows,int_details_id,alldet,res_id) => async dispatch => {
-    console.log("optionvalues",int_details_id)
+export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res_id,task_id) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl + "insert_approve_status",
             data:{
-                "status":optionvalues.Id,
+                "status":3|| optionvalues.Id,
                 "score":ApproveForm.final_score.value,
                 "reviewer":localStorage.getItem("empId"),
                 "approval":"1",
@@ -65,7 +61,8 @@ export const InsertApprove = (ApproveForm,optionvalues,Rows,int_details_id,allde
                 "created_by":localStorage.getItem("empId"),
                 "updated_by":localStorage.getItem("empId"),
                 "ip_address":"123",
-                "int_detail_id":int_details_id
+                "int_detail_id":int_details_id,
+                "task_id":task_id
             }
         })
         .then((response)=>{

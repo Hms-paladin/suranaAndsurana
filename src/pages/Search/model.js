@@ -10,7 +10,7 @@ import { GetDesignation } from "../../actions/GetDesignationActions";
 import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-
+import {getInterviewApprover} from "../../actions/MasterDropdowns";
 import './search.scss'
 
 
@@ -20,6 +20,8 @@ function DynModel(props) {
     const [visible, setVisible] = React.useState(false);
     const [interviewerdata, setinterviewerdata] = useState([]);
     const [designationdata, setdesignationdata] = useState([]);
+    const [finalRound, setFinalRound] = useState(false);
+    const [interviewApprover, setInterviewApprover] = useState([]);
     // const [selectedCandidateId, setSelectedCandidateId] = useState();
 
     const [Interviewschedule, setInterviewschedule] = useState({
@@ -48,14 +50,49 @@ function DynModel(props) {
             errmsg: null,
         }
     })
-
-    function handleCancel() {
-        setVisible(false)
-        props.handleChangeCloseModel(false)
-    }
+    useEffect(() => {
+      dispatch(getInterviewApprover());
+      }
+      ,[])
+    const stateClear = () => {
+ 
+      let Form_key = [
+        "desgination",
+      "interviewer",
+      "propsedDate","round"
+     ];
+  
+      Form_key.map((data) => {
+       
+        try {
+          Interviewschedule[data].value = "";
+        } catch (error) {
+          throw(error)
+        }
+      });
+      setVisible(false)
+      props.handleChangeCloseModel(false)
+      setInterviewschedule((prevState) => ({
+        ...prevState,
+      }));
+    };
+    useEffect(() => {
+      let InterviewApprover = []
+      props.getInterviewApprover.map((data, index) =>
+      InterviewApprover.push({ id: data.emp_id, value: data.name }))
+          setInterviewApprover({ InterviewApprover })
+      }
+      ,[props.getInterviewApprover])
 
     function checkValidation(data, key, multipleId) {
 
+      if(data==27 && key ==="round"){
+        setFinalRound(true)
+    }else{
+      setFinalRound(false)
+    }
+
+       
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Interviewschedule[key].validation
@@ -95,8 +132,8 @@ function DynModel(props) {
         console.log(filtererr.length);
         if (filtererr.length > 0) {
         } else {
-            dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then(()=>{
-                handleCancel()
+            dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then((response) => {
+              stateClear()
             })
         }
 
@@ -161,7 +198,7 @@ function DynModel(props) {
         footer={null}
         width={props.width ? props.width : 520}
         zIndex={1201}
-        onCancel={handleCancel}
+        onCancel={stateClear}
       >
         <div className="interviewdetailformdiv">
           <div className="interviewdetailform">
@@ -202,7 +239,8 @@ function DynModel(props) {
             <LabelBox
               type="select"
               placeholder={"Interviewer"}
-              dropdown={interviewerdata.Interviewer}
+              // dropdown={interviewerdata.Interviewer}
+               dropdown={ finalRound? interviewApprover.InterviewApprover:interviewerdata.Interviewer}
               changeData={(data) => checkValidation(data, "interviewer")}
               value={Interviewschedule.interviewer.value}
               error={Interviewschedule.interviewer.error}
@@ -222,4 +260,13 @@ function DynModel(props) {
     );
 }
 
-export default DynModel;
+const mapStateToProps = (state) => (
+  // console.log(state.getOptions.getInterviewApprover, "getProcessType")
+  {
+      getInterviewApprover: state.getOptions.getInterviewApprover || [],
+
+  }
+);
+
+export default connect(mapStateToProps)(DynModel);
+// export default DynModel;

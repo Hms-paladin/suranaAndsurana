@@ -160,17 +160,18 @@ export default class Labelbox extends Component {
 								placeholder={this.props.placeholder}
 								disableToolbar={this.props.disableToolbar && this.props.disableToolbar}
 								autoOk={true}
-								views={this.props.view ? this.props.view : ["year", "date", "month"]}
+								views={this.props.view && this.props.view}
 								clearable={false}
 								disableUnderline={true}
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
 								disablePast={this.props.disablePast && this.props.disablePast}
 								minDate={this.props.minDate && this.props.minDate}
 								inputVariant="outlined"
-								format="dd-MMM-yyyy"
+								format={this.props.format ? this.props.format : "dd-MMM-yyyy"}
 								margin="normal"
 								id="date-picker-inline"
 								// value={this.state.selecteddate}
+								InputProps={{ readOnly: true }}
 								value={this.props.value === "" ? null : this.props.value}
 								onChange={(date) => this.datepickerChange(date)}
 

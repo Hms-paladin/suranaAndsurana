@@ -26,9 +26,16 @@ import RateMaster from '../pages/stages/RateMaster'
 import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
 
 //Litigation :
-
 import Litigation from '../pages/Litigation/litigation';
 
+//User Groups :
+import UserGroups from '../pages/UserGroups/usergroups'
+
+//Group Control:
+import GroupControl from '../pages/GroupControl/groupcontrol' 
+
+//Group Control:
+import StageMonitering from '../pages/stages/StageMonitering' 
 
 function Routes(props) {
 
@@ -49,15 +56,20 @@ function Routes(props) {
             <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
             {/* Ip TradeMark */}
             <PrivateRoute path="/projectTask" component={ProjectTask} exact />
-            <PrivateRoute path="/projectIp" component={ProjectIp1} exact />
+            <PrivateRoute path="/projectIp/:rowId" component={ProjectIp1} exact />
             <PrivateRoute path="/stageicon" component={Stages} exact />
             <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
             <PrivateRoute path="/addhearing" component={AddHearing} exact />
             <PrivateRoute path="/ratemaster" component={RateMaster} exact />
 
             {/* Litigation */}
-
             <PrivateRoute path="/litigation" component={Litigation} exact />
+             {/* User Groups */}
+            <PrivateRoute path="/usergroups" component={UserGroups} exact />
+             {/*  Group Control */}
+             <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
+             {/*  Steg Monitering */}
+             <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
             </Switch>
         </Navbar>
     );

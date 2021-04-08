@@ -1,6 +1,5 @@
 import react, { useState } from 'react';
 // import './tradeMarkOposition1.scss';
-import TabsTcons from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import { Upload, message, Button, Icon } from 'antd';
@@ -201,7 +200,7 @@ function TradeMarkOposition1() {
 
                         <Grid item xs={6} >
                             <Labelbox type="text"
-                                placeholder={" Our Refernce"}
+                                placeholder={" Our Reference"}
                                 changeData={(data) => checkValidation(data, "ourReference")}
                                 value={Trade_Mark.ourReference.value}
                                 error={Trade_Mark.ourReference.error}
@@ -229,7 +228,7 @@ function TradeMarkOposition1() {
                     </Grid>
                     <Grid item xs={12} >
                         <Labelbox type="text"
-                            placeholder={" Aplicant"}
+                            placeholder={" Applicant"}
                             changeData={(data) => checkValidation(data, "aplicant")}
                             value={Trade_Mark.aplicant.value}
                             error={Trade_Mark.aplicant.error}
@@ -237,7 +236,7 @@ function TradeMarkOposition1() {
                     </Grid>
 
                 </Grid>
-                <Grid item xs={4} container direction="column" spacing={3}>
+                <Grid item xs={4} container direction="column" spacing={2}>
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={6} >
                             <Labelbox type="text"

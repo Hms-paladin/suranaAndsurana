@@ -4,43 +4,46 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Radio, Select, Checkbox } from 'antd';
 import EnhancedTable from '../../component/DynTable/table';
 import DynModel from './model';
-import { apiurl } from '../../utils/baseUrl';
 import { useDispatch, connect } from "react-redux";
+import { Redirect, Link } from "react-router-dom";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
 import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus } from "../../actions/MasterDropdowns";
-import Axios from 'axios';
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
-
+import Eyes from "../../images/neweye.svg";
+import DynModelView from "../Interview/model";
 import './search.scss'
+import ResumeForm from '../Resume/resume';
+
+
 
 const headCells = [
+    { id: "view", label: "View" },
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
-    { id: 'basic', label: 'Basic Quailification' },
+    { id: 'basic', label: ' Qualification' },
     { id: 'language', label: 'Languages Known' },
     { id: 'certification', label: 'Certification' },
     { id: 'specialization', label: 'Specialization' },
-    // { id: 'acheivements', label: 'Acheivements' },
+    { id: 'acheivements', label: 'Achievements' },
     { id: 'talents', label: 'Talents' },
 
 ];
 
 function Resumesearch(props) {
 
-  
+    const [pathname, setpathname] = useState(window.location.pathname);
     const dispatch = useDispatch();
-    const [ modelOpen, setModelOpen ] = useState(false)
-
-    
-    const [value, setValue] = React.useState();
+    const [modelOpen, setModelOpen] = useState(false)
     const [optionvalues, setoptionvalues] = useState([]);
     const [resumeSearchList, setGetList] = useState({})
-    const [rows,setRowData] = useState([])
+    const [rows, setRowData] = useState([])
     const [checkList, setCheckedList] = useState({})
     const [test, setTest] = useState(true)
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
+    const [viewId, setViewId] = useState("")
+    const [candidateViewModel, setCandidateViewModel] = useState(false)
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -92,7 +95,7 @@ function Resumesearch(props) {
         },
     })
 
-   
+
 
     useEffect(() => {
         dispatch(getSkills())
@@ -197,47 +200,51 @@ function Resumesearch(props) {
         })
 
         setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList })
-
-        
-
     }, [props.GetOptions])
 
 
-      const handleCheck = (event,resume_id) => {
-        if(selectedCandidateId.includes(resume_id)){
-            selectedCandidateId.map((data,index)=>{
-                if ( data === resume_id) { 
-                    selectedCandidateId.splice(index, 1); 
+    const handleCheck = (event, resume_id) => {
+        if (selectedCandidateId.includes(resume_id)) {
+            selectedCandidateId.map((data, index) => {
+                if (data === resume_id) {
+                    selectedCandidateId.splice(index, 1);
                 }
             })
 
-        }else{
-          selectedCandidateId.push(resume_id)
+        } else {
+            selectedCandidateId.push(resume_id)
         }
 
-          setCheckedList(
+        setCheckedList(
             prevState => ({
                 ...prevState,
                 [event.target.name]: !checkList[event.target.name],
             })
         )
         setTest(!test)
-      }
+    }
+    const viewCandidate = (id) => {
+        setViewId(id)
+        setCandidateViewModel(true)
+    }
 
     useEffect(() => {
         let rowDataList = []
 
         props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+            rowDataList.push({ view:  <img
+                src={Eyes}
+                className="viewCandidatesList"
+                onClick={()=>viewCandidate(data.resume_id)}
+              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
              basic: data.basic_qual, language: data.language, certification: data.certifications, 
-             specialization: data.specialization, talents: data.talent,
+             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
              box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
              checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
         })
 
         setRowData(rowDataList)
-        console.log("resumeSearchList.skillList",resumeSearchList.skillList)
-    }, [props.GetRowData,test])
+    }, [props.GetRowData, test])
 
     function onSearch() {
         dispatch(searchRowdata({
@@ -254,102 +261,104 @@ function Resumesearch(props) {
 
     return (
         <div>
-            
-
-           <div>
-           <div className="searchBoxContainer">
-                <Grid container spacing={3}>
-                    <Grid item xs={3}>
-                        <Labelbox type="select"
-                            placeholder="Skills"
-                            dropdown={resumeSearchList.skillList}
-                            changeData={(data) => checkValidation(data, "skills", resumeSearchList.skillList)}
-                            value={ResumeSearch_Form.skills.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Labelbox type="select"
-                            placeholder="Traits"
-                            dropdown={resumeSearchList.traitsList}
-                            changeData={(data) => checkValidation(data, "traits", resumeSearchList.traitsList)}
-                            value={ResumeSearch_Form.traits.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Labelbox type="select"
-                            placeholder="Certifications"
-                            dropdown={resumeSearchList.certificationList}
-                            changeData={(data) => checkValidation(data, "certification", resumeSearchList.certificationList)}
-                            value={ResumeSearch_Form.certification.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Labelbox type="select"
-                            placeholder="Achivements"
-                            dropdown={resumeSearchList.achievementList}
-                            changeData={(data) => checkValidation(data, "acheivements", resumeSearchList.achievementList)}
-                            value={ResumeSearch_Form.acheivements.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                    <Grid item xs={3}>
-                        <Labelbox type="select"
-                            placeholder="Specialization"
-                            dropdown={resumeSearchList.specilizationList}
-                            changeData={(data) => checkValidation(data, "specialization", resumeSearchList.specilizationList)}
-                            value={ResumeSearch_Form.specialization.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Labelbox type="select"
-                            placeholder="Capabilities"
-                            dropdown={resumeSearchList.capabilityList}
-                            changeData={(data) => checkValidation(data, "capabilities", resumeSearchList.capabilityList)}
-                            value={ResumeSearch_Form.capabilities.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Labelbox type="select"
-                            placeholder="Talents"
-                            dropdown={resumeSearchList.talentList}
-                            changeData={(data) => checkValidation(data, "talents", resumeSearchList.talentList)}
-                            value={ResumeSearch_Form.talents.value}
-                            mode="multiple"
-                        />
-                    </Grid>
-                    <Grid container item xs={3} >
-                        <Grid item xs={9}>
-                            {/* <Labelbox type="select"
-                                placeholder="Status"
-                                dropdown={resumeSearchList.statusList}
-                                changeData={(data) => checkValidation(data, "status", resumeSearchList.statusList)}
-                                value={ResumeSearch_Form.status.value}
-                                mode="multiple"
-                            /> */}
-                        </Grid>
+            <div>
+                <div className="searchBoxContainer">
+                    <Grid container spacing={3}>
                         <Grid item xs={3}>
-                            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
+                            <Labelbox type="select"
+                                placeholder="Skills"
+                                dropdown={resumeSearchList.skillList}
+                                changeData={(data) => checkValidation(data, "skills", resumeSearchList.skillList)}
+                                value={ResumeSearch_Form.skills.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid item xs={3} >
+                            <Labelbox type="select"
+                                placeholder="Traits"
+                                dropdown={resumeSearchList.traitsList}
+                                changeData={(data) => checkValidation(data, "traits", resumeSearchList.traitsList)}
+                                value={ResumeSearch_Form.traits.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid item xs={3} >
+                            <Labelbox type="select"
+                                placeholder="Certifications"
+                                dropdown={resumeSearchList.certificationList}
+                                changeData={(data) => checkValidation(data, "certification", resumeSearchList.certificationList)}
+                                value={ResumeSearch_Form.certification.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid item xs={3} >
+                            <Labelbox type="select"
+                                placeholder="Achivements"
+                                dropdown={resumeSearchList.achievementList}
+                                changeData={(data) => checkValidation(data, "acheivements", resumeSearchList.achievementList)}
+                                value={ResumeSearch_Form.acheivements.value}
+                                mode="multiple"
+                            />
                         </Grid>
                     </Grid>
-                </Grid>
-            </div>
-            <div className="resume_searchtable">
-            <EnhancedTable headCells={headCells} rows={rows && rows} />
-            </div>
-            <div className="searchinterviewbtn"> 
-            <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary"  custombtnCSS={"goSearchbtn"}  onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div> 
-            <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} /> 
+                    <Grid container spacing={3}>
+                        <Grid item xs={3}>
+                            <Labelbox type="select"
+                                placeholder="Specialization"
+                                dropdown={resumeSearchList.specilizationList}
+                                changeData={(data) => checkValidation(data, "specialization", resumeSearchList.specilizationList)}
+                                value={ResumeSearch_Form.specialization.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid item xs={3} >
+                            <Labelbox type="select"
+                                placeholder="Capabilities"
+                                dropdown={resumeSearchList.capabilityList}
+                                changeData={(data) => checkValidation(data, "capabilities", resumeSearchList.capabilityList)}
+                                value={ResumeSearch_Form.capabilities.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid item xs={3} >
+                            <Labelbox type="select"
+                                placeholder="Talents"
+                                dropdown={resumeSearchList.talentList}
+                                changeData={(data) => checkValidation(data, "talents", resumeSearchList.talentList)}
+                                value={ResumeSearch_Form.talents.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid container item xs={3} >
+
+                            <Grid item xs={4}>
+                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
+
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Link to='resume'>
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}   onBtnClick={() => setpathname("/projectFormCreate")} />
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </div>
+                <div className="resume_searchtable">
+                    <EnhancedTable headCells={headCells} rows={rows && rows} />
+                </div>
+                <div className="searchinterviewbtn">
+                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div>
+                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} />
 
             </div>
-                    </div>
-       
+            <DynModelView
+                modelTitle={"Candidate's Details"}
+                handleChangeModel={candidateViewModel}
+                handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
+                res_data_id={viewId}
+            />
+        </div>
+
 
     )
 }
@@ -360,7 +369,3 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps)(Resumesearch);
-
-
-//  <EnhancedTable headCells={headCells} rows={rows} tabletitle={""} />
-//             <div className="searchinterviewbtn"><Button onClick={() => setModelOpen(true)} >Interview Details</Button></div>/

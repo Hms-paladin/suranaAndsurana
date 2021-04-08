@@ -22,7 +22,6 @@ export const ResumeSearchStatus = () => async dispatch => {
 }
 
 export const searchRowdata = (data) => async dispatch => {
-    console.log(data,"actiondata")
     try {
         axios({
             method: 'POST',
@@ -39,8 +38,6 @@ export const searchRowdata = (data) => async dispatch => {
                 }
         })
         .then((response) => {
-            console.log(response.data.data,"ddood")
-
             dispatch({type:GET_RESUMESEARCH_ROWDATA,payload:response.data.data})
         })
         

@@ -1,4 +1,4 @@
-import { GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE } from "../utils/Constants";
+import { GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE,SEARCH_VARIABLERATE } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -61,4 +61,33 @@ export const InsertVariableRate = (RateMaster) => async dispatch => {
     } catch (err) {
         
     }
+}
+
+export const SearchVariableRate = (RateMaster) => async dispatch => {
+  try {
+
+      axios({
+          method: "POST",
+          url: apiurl + "variable_rate_search",
+          data: {
+            range_id: RateMaster.range_project_cost.value ||0,
+            location_id: RateMaster.court.value || 0,
+            designation_id: RateMaster.designation.value || 0,
+            activity_id: RateMaster.activity.value ||0 ,
+            sub_activity_id:RateMaster.sub_activity.value ||0,
+            upper_limit: RateMaster.upper_limit.value || 0,
+            lower_limit: RateMaster.lower_limit.value || 0,
+            unit_id: RateMaster.unit_measurement.value || 0,
+          },
+        }).then((response) => {
+          if (response.data.status === 1) {
+            // console.log(response.data.data.length,"//")
+              dispatch({type:SEARCH_VARIABLERATE,payload:response.data.data})
+            return Promise.resolve();
+          }
+        });
+      
+  } catch (err) {
+      
+  }
 }

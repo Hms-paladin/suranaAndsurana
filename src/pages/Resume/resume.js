@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { apiurl } from "../../utils/baseUrl";
-import axios from "axios";
 import { useDispatch, connect } from "react-redux";
 import CustomButton from "../../component/Butttons/button";
 import { InesertResume } from "../../actions/ResumeAction";
@@ -14,10 +12,25 @@ import DynModel from "../../component/Model/model";
 import moment from "moment";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {
+  getResourceType,
+  getInstitute,
+  getSpecialInterest,
+  getStates,
+  getCity,
+  getLanguages,
+  getSkills,
+  getTraits,
+  getCertification,
+  getAchievement,
+  getSpecilization,
+  getCapability,
+  getTalents,
+  getIndustry,
+} from "../../actions/MasterDropdowns";
 import "./resume.scss";
-import Item from "antd/lib/list/Item";
 
-function ResumePage() {
+const ResumePage = (props) => {
   const dispatch = useDispatch();
   const [resumeGetList, setGetList] = useState({});
   const [educationModelOpen, setEducationModelOpen] = useState(false);
@@ -28,16 +41,14 @@ function ResumePage() {
   const [educationerr, setEducationerr] = useState(false);
   const [expReq, setExpReq] = useState(false);
   const [educationid, setEducationid] = useState();
+  const [experienceid, setExperienceid] = useState();
   const [educationrow, setEducationrow] = useState([]);
+  const [experiencerow, setExperiencerow] = useState([]);
   const [onEdit, setOnEdit] = useState(false);
   const [nullFieldValue, SetNullFieldValue] = useState(false);
+  const [nullFieldValueExp, SetNullFieldValueExp] = useState(false);
+
   const [Resume_Form, setResumeFrom] = useState({
-    // userId: {
-    //     value: "",
-    //     validation: [{ "name": "required"}],
-    //     error: null,
-    //     errmsg: null,
-    // },
     name: {
       value: "",
       validation: [{ name: "required" }, { name: "50Char" }],
@@ -147,7 +158,7 @@ function ResumePage() {
     },
     intrests: {
       value: "",
-      valueById: "",
+      // valueById: "",
       validation: [],
       error: null,
       errmsg: null,
@@ -201,172 +212,146 @@ function ResumePage() {
       error: null,
       errmsg: null,
     },
+    achivements: {
+      value: "",
+      // validation: [{ name: "required" }, { name: "alphabetsandSpecialChar" }],
+      error: null,
+      errmsg: null,
+    },
+
+    capability: {
+      value: "",
+      valueById: "",
+      // validation: [{ name: "required" },],
+      error: null,
+      errmsg: null,
+    },
   });
 
   useEffect(() => {
-    let one = apiurl + "get_s_tbl_m_resource_type";
-    let two = apiurl + "get_s_tbl_m_qual";
-    let three = apiurl + "get_s_tbl_m_institute";
-    let four = apiurl + "get_s_tbl_m_skills";
-    let five = apiurl + "get_s_tbl_m_traits";
-    let six = apiurl + "get_s_tbl_m_certification";
-    let seven = apiurl + "get_s_tbl_m_specialization";
-    let eight = apiurl + "get_s_tbl_m_talents";
-    let nine = apiurl + "get_s_tbl_m_special_interest";
-    let ten = apiurl + "get_s_tbl_m_state";
-    let eleven = apiurl + "get_s_tbl_m_city";
-    let twevel = apiurl + "get_s_tbl_m_language";
-    let thirteen = apiurl + "get_s_tbl_m_industry";
-
-    const requestOne = axios.get(one);
-    const requestTwo = axios.get(two);
-    const requestThree = axios.get(three);
-    const requestFour = axios.get(four);
-    const requestFive = axios.get(five);
-    const requestSix = axios.get(six);
-    const requestSeven = axios.get(seven);
-    const requestEight = axios.get(eight);
-    const requestNine = axios.get(nine);
-    const requestTen = axios.get(ten);
-    const requestEleven = axios.get(eleven);
-    const requestTwevel = axios.get(twevel);
-    const requestThirteen = axios.get(thirteen);
-
-    axios
-      .all([
-        requestOne,
-        requestTwo,
-        requestThree,
-        requestFour,
-        requestFive,
-        requestSix,
-        requestSeven,
-        requestEight,
-        requestNine,
-        requestTen,
-        requestEleven,
-        requestTwevel,
-        requestThirteen,
-      ])
-      .then(
-        axios.spread((...responses) => {
-          const responseOne = responses[0].data.data;
-          const responseTwo = responses[1].data.data;
-          const responseThree = responses[2].data.data;
-          const responseFour = responses[3].data.data;
-          const responseFive = responses[4].data.data;
-          const responseSix = responses[5].data.data;
-          const responseSeven = responses[6].data.data;
-          const responseEight = responses[7].data.data;
-          const responseNine = responses[8].data.data;
-          const responseTen = responses[9].data.data;
-          const responseEleven = responses[10].data.data;
-          const responseTwevel = responses[11].data.data;
-          const responseThirteen = responses[12].data.data;
-
-          let candidateList = [];
-          let qualificationList = [];
-          let institutionList = [];
-          let skillsList = [];
-          let traitsList = [];
-          let certificateList = [];
-          let specilalizaionsList = [];
-          let talentList = [];
-          let interestList = [];
-          let stateList = [];
-          let cityList = [];
-          let languagesList = [];
-          let industryList = [];
-
-          responseOne.map((data, index) => {
-            candidateList.push({
-              value: data.resource_type,
-              id: data.resource_type_id,
-            });
-          });
-
-          responseTwo.map((data, index) => {
-            qualificationList.push({
-              value: data.qual_name,
-              id: data.qualification_id,
-            });
-          });
-
-          responseThree.map((data, index) => {
-            institutionList.push({
-              value: data.institute,
-              id: data.institute_id,
-            });
-          });
-
-          responseFour.map((data, index) => {
-            skillsList.push({ value: data.skill_name, id: data.skill_id });
-          });
-
-          responseFive.map((data, index) => {
-            traitsList.push({ value: data.traits, id: data.traitTable });
-          });
-
-          responseSix.map((data, index) => {
-            certificateList.push({
-              value: data.certification,
-              id: data.certification_id,
-            });
-          });
-
-          responseSeven.map((data, index) => {
-            specilalizaionsList.push({
-              value: data.specilization,
-              id: data.specialization_id,
-            });
-          });
-
-          responseEight.map((data, index) => {
-            talentList.push({ value: data.talent, id: data.talent_id });
-          });
-
-          responseNine.map((data, index) => {
-            interestList.push({
-              value: data.special_interest,
-              id: data.SpecInterest_id,
-            });
-          });
-
-          responseTen.map((data, index) => {
-            stateList.push({ value: data.state, id: data.state_id });
-          });
-
-          responseEleven.map((data, index) => {
-            cityList.push({ value: data.state, id: data.city_id });
-          });
-
-          responseTwevel.map((data, index) => {
-            languagesList.push({ value: data.language, id: data.language_id });
-          });
-
-          responseThirteen.map((data, index) => {
-            industryList.push({ value: data.industry, id: data.industry_id });
-          });
-
-          setGetList({
-            candidateList,
-            qualificationList,
-            institutionList,
-            skillsList,
-            traitsList,
-            certificateList,
-            specilalizaionsList,
-            talentList,
-            interestList,
-            stateList,
-            cityList,
-            languagesList,
-            industryList,
-          });
-        })
-      )
-      .catch((errors) => {});
+    dispatch(getResourceType());
+    dispatch(getInstitute());
+    dispatch(getSpecialInterest());
+    dispatch(getStates());
+    dispatch(getCity());
+    dispatch(getLanguages());
+    dispatch(getSkills());
+    dispatch(getTraits());
+    dispatch(getCertification());
+    dispatch(getAchievement());
+    dispatch(getSpecilization());
+    dispatch(getCapability());
+    dispatch(getTalents());
+    dispatch(getIndustry());
+    dispatch(getTalents());
   }, []);
+
+  useEffect(() => {
+    let candidateList = [];
+    props.getResourcesType.map((data, index) => {
+      candidateList.push({
+        value: data.resource_type,
+        id: data.resource_type_id,
+      });
+    });
+
+    let qualificationList = [];
+    props.getQualification.map((data, index) => {
+      qualificationList.push({
+        value: data.qual_name,
+        id: data.qualification_id,
+      });
+    });
+
+    let institutionList = [];
+
+    props.getInstitute.map((data, index) => {
+      institutionList.push({
+        value: data.institute,
+        id: data.institute_id,
+      });
+    });
+    let skillsList = [];
+    props.getSkills.map((data, index) => {
+      skillsList.push({ value: data.skill_name, id: data.skill_id });
+    });
+    let traitsList = [];
+    props.getTraits.map((data, index) => {
+      traitsList.push({ value: data.traits, id: data.traitTable });
+    });
+    let certificateList = [];
+    props.getCertification.map((data, index) => {
+      certificateList.push({
+        value: data.certification,
+        id: data.certification_id,
+      });
+    });
+    let specilalizaionsList = [];
+    props.getSpecilization.map((data, index) => {
+      specilalizaionsList.push({
+        value: data.specilization,
+        id: data.specialization_id,
+      });
+    });
+    let talentList = [];
+    props.getTalents.map((data, index) => {
+      talentList.push({ value: data.talent, id: data.talent_id });
+    });
+
+    let interestList = [];
+    props.getSpecialInterest.map((data, index) => {
+      interestList.push({
+        value: data.special_interest,
+        id: data.SpecInterest_id,
+      });
+    });
+    let stateList = [];
+    props.getState.map((data, index) => {
+      stateList.push({ value: data.state, id: data.state_id });
+    });
+    let cityList = [];
+    props.getCity.map((data, index) => {
+      cityList.push({ value: data.state, id: data.city_id });
+    });
+
+    let languagesList = [];
+    props.getLanguages.map((data, index) => {
+      languagesList.push({ value: data.language, id: data.language_id });
+    });
+    let industryList = [];
+    props.getIndustry.map((data, index) => {
+      industryList.push({ value: data.industry, id: data.industry_id });
+    });
+    let achivementsList = [];
+    props.getAchievement.map((data, index) => {
+      achivementsList.push({
+        value: data.achievement,
+        id: data.achievement_id,
+      });
+    });
+    let capabilityList = [];
+    props.getCapability.map((data, index) => {
+      capabilityList.push({ value: data.capability, id: data.capability_id });
+    });
+
+    setGetList({
+      candidateList,
+      qualificationList,
+      institutionList,
+      skillsList,
+      traitsList,
+      certificateList,
+      specilalizaionsList,
+      talentList,
+      interestList,
+      stateList,
+      cityList,
+      languagesList,
+      industryList,
+      achivementsList,
+      capabilityList,
+    });
+  }, [props]);
 
   function checkValidation(data, key, multipleId) {
     if (data !== 1 && key === "candidate") {
@@ -406,17 +391,9 @@ function ResumePage() {
       ...prevState,
       [key]: dynObj,
     }));
-    // var filtererr = targetkeys.filter(
-    //     (obj) =>
-    //         Resume_Form[obj].error == true ||
-    //         Resume_Form[obj].error == null
-    // );
-    // if (filtererr.length > 0) {
-    //     setResumeFrom({ error: true, errordummy: false });
-    // } else {
-    //     setResumeFrom({ error: false });
-    // }
   }
+  console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
+
 
   function onSubmit() {
     var mainvalue = {};
@@ -441,7 +418,7 @@ function ResumePage() {
       // setResumeFrom({ error: true });
     } else if (
       educationList.length !== 0 &&
-      experienceList.length !== 0 &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0
     ) {
       // setResumeFrom({ error: false });
@@ -485,6 +462,8 @@ function ResumePage() {
       "name2",
       "linkedin",
       "twitter",
+      "achivements",
+      "capability",
     ];
 
     ResumeFrom_key.map((data) => {
@@ -503,25 +482,17 @@ function ResumePage() {
 
   const showEditEducationModel = (x) => {
     setEducationModelOpen(true);
-    console.log(educationList[x], "educationList");
     setEducationid(x);
     setEducationrow(educationList[x]);
     setOnEdit(true);
   };
-  console.log(educationid, "educationid");
-
-  console.log(educationrow, "educationrow");
-
-  function showExperienceModel() {
-    setExperienceModelOpen(true);
-  }
-
-  function closeModel() {
-    alert("test");
-    setEducationModelOpen(false);
-    setOnEdit(false);
-    // onClose()
-  }
+  const showDeleteEducationModel = (x) => {
+    console.log(educationList[x], "educationList");
+    if (x > -1) {
+      educationList.splice(x, 1);
+    }
+    setEducationrow([...educationList]);
+  };
 
   function addEducations(data) {
     setEducationList([
@@ -537,11 +508,8 @@ function ResumePage() {
     setEducationModelOpen(false);
     setEducationerr(false);
   }
-  console.log(addEducations, "addEducations");
 
   const EditEducation = (data, id) => {
-    console.log(data, id, "datas");
-
     educationList[id] = {
       qualification: data.basicQualification.value,
       institution: data.institution.value,
@@ -551,9 +519,28 @@ function ResumePage() {
     };
   };
 
-  console.log(educationList, "educationList");
+  const handleFieldNull = (bln) => {
+    setEducationModelOpen(bln);
+    SetNullFieldValue(!nullFieldValue);
+    setOnEdit(false);
+  };
+
+  //Experience Model
+
+  function showExperienceModel() {
+    setExperienceModelOpen(true);
+  }
+
+  const showEditExperienceModel = (y) => {
+    setExperienceModelOpen(true);
+    setExperienceid(y);
+    setExperiencerow(experienceList[y]);
+    setOnEdit(true);
+  };
 
   function addExperience(data) {
+    console.log(data, "addExperience");
+
     setExperienceList([
       ...experienceList,
       {
@@ -571,9 +558,30 @@ function ResumePage() {
     setEmployererr(false);
   }
 
-  const handleFieldNull = (bln) => {
-    setEducationModelOpen(bln);
-    SetNullFieldValue(!nullFieldValue);
+  const EditExperience = (data, id) => {
+    experienceList[id] = {
+      type_of_industry: data.industry.value,
+      company_name: data.companyname.value,
+      city: data.city.value,
+      department: data.department.value,
+      designation: data.designation.value,
+      period_from: data.periodfrom.value,
+      period_to: data.periodto.value,
+      responsible: data.responsibilities.value,
+    };
+  };
+
+  const showDeleteExperienceModel = (y) => {
+    console.log(experienceList[y], "educationList");
+    if (y > -1) {
+      experienceList.splice(y, 1);
+    }
+    setExperiencerow([...experienceList]);
+  };
+
+  const handleFieldNullExp = (bln) => {
+    setExperienceModelOpen(bln);
+    SetNullFieldValueExp(!nullFieldValueExp);
     setOnEdit(false);
   };
 
@@ -616,8 +624,8 @@ function ResumePage() {
                     type="select"
                     placeholder={"Gender *"}
                     dropdown={[
-                      { id: "1", value: "Male" },
-                      { id: "2", value: "Female" },
+                      { id: 1, value: "Male" },
+                      { id: 2, value: "Female" },
                     ]}
                     changeData={(data) => checkValidation(data, "gender")}
                     value={Resume_Form.gender.value}
@@ -673,7 +681,7 @@ function ResumePage() {
             <Grid item xs={12}>
               <Labelbox
                 type="select"
-                placeholder={"State of Domecile *"}
+                placeholder={"State of Domicile *"}
                 dropdown={resumeGetList.stateList}
                 changeData={(data) => checkValidation(data, "state")}
                 value={Resume_Form.state.value}
@@ -785,7 +793,10 @@ function ResumePage() {
                           fontSize="small"
                           onClick={() => showEditEducationModel(index)}
                         />
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon
+                          fontSize="small"
+                          onClick={() => showDeleteEducationModel(index)}
+                        />
                       </div>
                     );
                   })}
@@ -795,33 +806,97 @@ function ResumePage() {
         </div>
         <div className="rightContainer">
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Skills"}
-                dropdown={resumeGetList.skillsList}
-                changeData={(data) =>
-                  checkValidation(data, "skills", resumeGetList.skillsList)
-                }
-                value={Resume_Form.skills.value}
-                error={Resume_Form.skills.error}
-                errmsg={Resume_Form.skills.errmsg}
-              />
+            <Grid
+              item
+              xs={12}
+              container
+              direction="row"
+              className="spaceBtGrid"
+              alignItems="center"
+            >
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Skills"}
+                  dropdown={resumeGetList.skillsList}
+                  changeData={(data) =>
+                    checkValidation(data, "skills", resumeGetList.skillsList)
+                  }
+                  value={Resume_Form.skills.value}
+                  error={Resume_Form.skills.error}
+                  errmsg={Resume_Form.skills.errmsg}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Traits"}
+                  dropdown={resumeGetList.traitsList}
+                  changeData={(data) =>
+                    checkValidation(data, "Traits", resumeGetList.traitsList)
+                  }
+                  value={Resume_Form.Traits.value}
+                  error={Resume_Form.Traits.error}
+                  errmsg={Resume_Form.Traits.errmsg}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Traits"}
-                dropdown={resumeGetList.traitsList}
-                changeData={(data) =>
-                  checkValidation(data, "Traits", resumeGetList.traitsList)
-                }
-                value={Resume_Form.Traits.value}
-                error={Resume_Form.Traits.error}
-                errmsg={Resume_Form.Traits.errmsg}
-              />
+            <Grid
+              item
+              xs={12}
+              container
+              direction="row"
+              className="spaceBtGrid"
+              alignItems="center"
+            >
+              <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Capabilities"}
+                  dropdown={resumeGetList.capabilityList}
+                  changeData={(data) =>
+                    checkValidation(
+                      data,
+                      "capability",
+                      resumeGetList.capabilityList
+                    )
+                  }
+                  value={Resume_Form.capability.value}
+                  error={Resume_Form.capability.error}
+                  errmsg={Resume_Form.capability.errmsg}
+                />
+              </Grid>
+              {/* <Grid item xs={6}>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Achievements"}
+                  dropdown={resumeGetList.achivementsList}
+                  changeData={(data) =>
+                    checkValidation(
+                      data,
+                      "achivements",
+                      resumeGetList.achivementsList
+                    )
+                  }
+                  value={Resume_Form.achivements.value}
+                  error={Resume_Form.achivements.error}
+                  errmsg={Resume_Form.achivements.errmsg}
+                />
+              </Grid> */}
+              <Grid item xs={6}>
+                <Labelbox
+                  type="text"
+                  placeholder={"Achievements"}
+                  changeData={(data) => checkValidation(data, "achivements")}
+                  value={Resume_Form.achivements.value}
+                  error={Resume_Form.achivements.error}
+                  errmsg={Resume_Form.achivements.errmsg}
+                />
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Labelbox
@@ -1013,7 +1088,7 @@ function ResumePage() {
             >
               {Resume_Form.candidate.value !== 1 && employererr && (
                 <span className="errmsgClrResume">
-                  Please Add Perivous Employer
+                  Please Add Previous Employer
                 </span>
               )}
               <div className="experienceList">
@@ -1023,8 +1098,9 @@ function ResumePage() {
                 </div>
               </div>
               {experienceList.length > 0 && (
+
                 <div className="experienceOuterBox">
-                  {experienceList.map((data) => {
+                  {experienceList.map((data, index) => {
                     return (
                       <div className="experienceKeyValue">
                         <div className="experienceKey">
@@ -1046,15 +1122,29 @@ function ResumePage() {
                             })}
                           </div>
                           <div>{data.company_name}</div>
-                          <div>{data.city}</div>
+                          <div>
+                            {" "}
+                            {resumeGetList.cityList.map((getName) => {
+                              if (data.city === getName.id) {
+                                return getName.value;
+                              }
+                            })}
+                          </div>
+
                           <div>{data.department}</div>
                           <div>{data.designation}</div>
                           <div>{data.period_from}</div>
                           <div>{data.period_to}</div>
                           <div>{data.responsible}</div>
                         </div>
-                        <EditIcon fontSize="small" />
-                        <DeleteIcon fontSize="small" />
+                        <EditIcon
+                          fontSize="small"
+                          onClick={() => showEditExperienceModel(index)}
+                        />
+                        <DeleteIcon
+                          fontSize="small"
+                          onClick={() => showDeleteExperienceModel(index)}
+                        />
                       </div>
                     );
                   })}
@@ -1097,15 +1187,43 @@ function ResumePage() {
           <DynModel
             modelTitle={"Experience"}
             handleChangeModel={experienceModelOpen}
-            handleChangeCloseModel={(bln) => setExperienceModelOpen(bln)}
+            handleChangeCloseModel={(bln) => handleFieldNullExp(bln)}
             width={700}
             content={
-              <ExperienceModel addExperience={(data) => addExperience(data)} />
+              <ExperienceModel
+                addExperience={(data) => addExperience(data)}
+                nullFieldValueExp={nullFieldValueExp}
+                editExperienceid={experienceid}
+                editExperiences={experiencerow}
+                editbtn={onEdit}
+                handleChangeCloseModel={(bln) => handleFieldNullExp(bln)}
+                EditExperience={(data, id) => EditExperience(data, id)}
+              />
             }
           />
         </div>
       </div>
     </div>
   );
-}
-export default ResumePage;
+};
+
+const mapStateToProps = (state) => ({
+  getResourcesType: state.getOptions.getResourcesType || [],
+  getInstitute: state.getOptions.getInstitute || [],
+  getSpecialInterest: state.getOptions.getSpecialInterest || [],
+  getState: state.getOptions.getState || [],
+  getCity: state.getOptions.getCity || [],
+  getLanguages: state.getOptions.getLanguages || [],
+  getSkills: state.getOptions.getSkills || [],
+  getTraits: state.getOptions.getTraits || [],
+  getCertification: state.getOptions.getCertification || [],
+  getAchievement: state.getOptions.getAchievement || [],
+  getSpecilization: state.getOptions.getSpecilization || [],
+  getCapability: state.getOptions.getCapability || [],
+  getTalents: state.getOptions.getTalents || [],
+  getStatus: state.getOptions.getStatus || [],
+  getQualification: state.getOptions.getQualification || [],
+  getIndustry: state.getOptions.getIndustry || [],
+});
+
+export default connect(mapStateToProps)(ResumePage);

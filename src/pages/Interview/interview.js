@@ -6,15 +6,16 @@ import DynModelView from "./model";
 import DynModel from "../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
 import { GetCandiateDetails } from "../../actions/interviewActions";
-import { Button } from "@material-ui/core";
 import CustomButton from "../../component/Butttons/button";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InsertInterviewquestions } from "../../actions/interviewActions";
+import { getInterviewStatus } from "../../actions/MasterDropdowns";
+import {getInterviewQuestions,getSelectedCandidates} from '../../actions/TodoListAction'
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import Axios from "axios";
-import { tr } from "date-fns/locale";
+
 // Model
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
 
@@ -28,11 +29,12 @@ function InerviewScreen(props) {
   const [optionvalues, setoptionvalues] = useState({});
   const [selectedCandidateId, setSelectedCandidateId] = useState();
   const [comments, setComments] = useState(false);
-  const [final, setFinal] = useState(false);
   const [candDetails, setCandDetails] = useState([]);
   const [appModelOpen, setAppModelOpen] = useState(false);
   const [canDesig, setCandDesig] = useState(false);
   const [canName, setcanName] = useState("");
+  const [dropDownSel, setdropDownSel] = useState(false);
+  const [interviewDetails,setInterviewDetails] = useState({})
   const [postData, setpostData] = useState({
     init_status: {
       value: "",
@@ -42,7 +44,11 @@ function InerviewScreen(props) {
     },
     initial_score: {
       value: "",
-      validation: [{ name: "required" },{ name: "allowNumaricOnly1" },{ name: "custommaxValue",params:100 }],
+      validation: [
+        { name: "required" },
+        { name: "allowNumaricOnly1" },
+        { name: "custommaxValue", params: 100 },
+      ],
       error: null,
       errmsg: null,
     },
@@ -52,42 +58,23 @@ function InerviewScreen(props) {
       error: null,
       errmsg: null,
     },
-    final_score: {
-      value: "0",
-      // validation: [],
-      error: null,
-      errmsg: null,
-    },
   });
-
   useEffect(() => {
-    Axios({
-      method: "get",
-      url: apiurl + "get_Interview_Status",
-    }).then((response) => {
-      let interview_status = [];
-      response.data.data.map((data, index) =>
-        interview_status.push({ value: data.status, id: data.status_id })
-      );
-      setoptionvalues({ interview_status });
-    });
-
-    Axios({
-      method: "GET",
-      url: apiurl + "/get_questions",
-    }).then((response) => {
-      setgetData(response.data.data);
-    });
-
-    // for candiate post api
-    // dispatch(GetCandiateDetails())
-    console.log(props, "cand_id");
-
-    console.log(
-      props.interviewer_id && props.interviewer_id.int_details_id,
-      "cand_id"
+    dispatch(getInterviewStatus());
+    dispatch(getInterviewQuestions());
+ 
+  }, []);
+  useEffect(() => {
+    let interview_status = [];
+    props.getInterviewStatus.map((data, index) =>
+      interview_status.push({ value: data.status, id: data.status_id })
     );
-    console.log(props.interviewer_id && props.interviewer_id, "cand_id");
+    setoptionvalues({ interview_status });
+
+    //Questions
+    setgetData(props.getQuestions);
+  }, [props.getInterviewStatus,props.getQuestions]);
+  useEffect(() => {
     Axios({
       method: "POST",
       url: apiurl + "get_selected_candidates",
@@ -103,7 +90,8 @@ function InerviewScreen(props) {
         date: moment(data.prop_date_time).format("DD-MM-YYYY"),
         designation: data.designation,
          candiates: data.total_number_candidates,
-         approver:data.approver
+         approver:data.approver,
+         round:data.round
 
         })
       );
@@ -125,16 +113,11 @@ function InerviewScreen(props) {
       //     ({id:data.int_details_id})
       //     // propsdata.push(data)
       //     )}))
-      console.log(
-        "______response.data.data[0].output_______",
-        response.data.data[0].output
-      );
       setint_details({ Intview_data });
     });
   }, [props]);
 
   function ViewCandiate(id) {
-    setModelOpen(true);
     setdata_id(
       cand_data.find((data) => {
         return id == data.resume_id;
@@ -143,6 +126,7 @@ function InerviewScreen(props) {
     setdata_id((prevState) => ({
       ...prevState,
     }));
+    setModelOpen(true);
   }
 
   function checkValidation(data, key) {
@@ -151,15 +135,18 @@ function InerviewScreen(props) {
     });
 
     if (key === "init_status" && "Selected" !== initId.value) {
-      // setFinal(false)
       setAppModelOpen(false);
     }
     if (key === "init_status" && "Selected" === initId.value) {
-      // setFinal(true)
-      int_details.Intview_data[0].approver !== null
-        ? setAppModelOpen(true)
-        : setAppModelOpen(false);
-
+      if (
+        int_details.Intview_data[0].approver !== null &&
+        int_details.Intview_data[0].round == 27
+      ) {
+        setdropDownSel(true);
+        setAppModelOpen(true);
+      } else {
+        setAppModelOpen(false);
+      }
       // postData.final_score.validation = [{ "name": "required" }]
       // setpostData(prevState => ({
       //     ...prevState,
@@ -183,6 +170,28 @@ function InerviewScreen(props) {
     }));
   }
 
+  useEffect(() => {
+    setComments(false);
+    onStateClear();
+    setSelectedCandidateId("");
+    setcanName("");
+  }, [props.stateClear])
+
+const onStateClear=()=>{
+ let InterviewState = [
+      "init_status",
+      "initial_score",
+      "comment"
+    ];
+
+    InterviewState.map((data) => {
+      postData[data].value = "";
+    });
+    setpostData((prevState) => ({
+      ...prevState,
+    }));
+}
+
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(postData);
@@ -195,8 +204,7 @@ function InerviewScreen(props) {
       postData[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = postData[targetkeys[i]].value;
     }
-    var filtererr = targetkeys.filter((obj) => postData[obj].error == true);
-    console.log(filtererr.length);
+    let filtererr = targetkeys.filter((obj) => postData[obj].error == true);
     if (filtererr.length > 0) {
       // setpostData({ error: true });
     } else {
@@ -209,7 +217,8 @@ function InerviewScreen(props) {
           candDetails.CandList[0].round
         )
       ).then(() => {
-        props.handleAproverModelClose()
+        props.handleAproverModelClose();
+        onStateClear();
       });
     }
 
@@ -218,14 +227,12 @@ function InerviewScreen(props) {
     }));
   }
 
-  const selectCandidate = (id,name) => {
+  const selectCandidate = (id, name) => {
     setSelectedCandidateId(id);
     setComments(true);
-    setcanName(name)
-
+    setcanName(name);
   };
-  console.log(props, "props");
-// const
+  // const
   return (
     <div>
       <Grid
@@ -240,13 +247,15 @@ function InerviewScreen(props) {
         <Grid item xs={5}>
           <div className="interviewTitle">Interview Date</div>
           <div className="interview_cont">
-            {int_details.Intview_data ? int_details.Intview_data[0].date : "-"}
+          {/* {interviewDetails.date?interviewDetails.date:'--' } */}
+          {int_details.Intview_data ? int_details.Intview_data[0].date : "-"}
           </div>
         </Grid>
         <Grid item xs={3}>
           <div className="interviewTitle">Designation</div>
           <div className="interview_cont">
-            {int_details.Intview_data
+          {/* {interviewDetails.designation?interviewDetails.designation:'--' } */}
+          {int_details.Intview_data
               ? int_details.Intview_data[0].designation
               : "-"}
           </div>
@@ -254,7 +263,8 @@ function InerviewScreen(props) {
         <Grid item xs={4}>
           <div className="interviewTitle">No of Candidates</div>
           <div className="interview_cont">
-            {int_details.Intview_data
+          {/* {interviewDetails.candidates?interviewDetails.candidates:'--' } */}
+          {int_details.Intview_data
               ? int_details.Intview_data[0].candiates
               : "-"}
           </div>
@@ -321,20 +331,21 @@ function InerviewScreen(props) {
                           <img
                             src={Eyes}
                             className="viewCandidatesList"
-                            onClick={() => ViewCandiate(data && data.resume_id)}
+                            onClick={() => ViewCandiate(data.resume_id)}
                           />
                         </Grid>
                       </Grid>
                     );
                   })
               }
-
-              <DynModelView
-                modelTitle={"Candidate's Details"}
-                handleChangeModel={modelOpen}
-                handleChangeCloseModel={(bln) => setModelOpen(bln)}
-                data_id={data_id}
-              />
+              {data_id.resume_id && (
+                <DynModelView
+                  modelTitle={"Candidate's Details"}
+                  handleChangeModel={modelOpen}
+                  handleChangeCloseModel={(bln) => setModelOpen(bln)}
+                  data_id={data_id}
+                />
+              )}
             </Grid>
           </div>
         </Grid>
@@ -357,7 +368,7 @@ function InerviewScreen(props) {
             <div className="score_div">
               <Labelbox
                 type="text"
-                placeholder="Initial Score"
+                placeholder="Score"
                 changeData={(data) => checkValidation(data, "initial_score")}
                 value={postData.initial_score.value}
                 error={postData.initial_score.error}
@@ -374,20 +385,6 @@ function InerviewScreen(props) {
                 errmsg={postData.comment.errmsg}
               />
             </div>
-            {final === true ? (
-              <div className="score_div">
-                <Labelbox
-                  type="text"
-                  placeholder="Final Score"
-                  changeData={(data) => checkValidation(data, "final_score")}
-                  value={postData.final_score.value}
-                  // error={postData.final_score.error}
-                  // errmsg={postData.final_score.errmsg}
-                />
-              </div>
-            ) : (
-              ""
-            )}
             <div style={{ textAlign: "end" }}>
               <CustomButton
                 btnName={"Save"}
@@ -410,9 +407,12 @@ function InerviewScreen(props) {
                   int_details_id={
                     int_details.Intview_data && int_details.Intview_data[0].id
                   }
+                  int_resume_id={selectedCandidateId}
+                  task_id={props.interviewer_id.task_id}
+                  sel_appr_drop={dropDownSel}
+                  //______________________
                   handleAproverModelClose={(bln) => setAppModelOpen(bln)}
                   handleModelClose={props.handleAproverModelClose}
-                  int_resume_id={selectedCandidateId}
                 />
               }
             />
@@ -428,6 +428,9 @@ function InerviewScreen(props) {
 const mapStateToProps = (state) => ({
   getInterviewquestions: state,
   GetCandiateDetails: state.getcandiate,
+  getInterviewStatus: state.getOptions.getInterviewStatus || [],
+  getQuestions: state.getHrTodoList.getQuestions ||[],
+  getSelectedCandidates: state.getHrTodoList.getSelectedCandidates ||[]
 });
 
 export default connect(mapStateToProps)(InerviewScreen);

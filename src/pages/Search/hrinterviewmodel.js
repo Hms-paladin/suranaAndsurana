@@ -7,7 +7,7 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-import {getInterviewApprover} from "../../actions/MasterDropdowns";
+import {getInterviewApprover,getDesignationList} from "../../actions/MasterDropdowns";
 
 const HrInterviewModel=(props)=> {
     const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const HrInterviewModel=(props)=> {
             validation: [{ "name": "required" },{ "name": "futureDate" }],
             error: null,
             errmsg: null,
-        },     round: {
+        },round: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -64,7 +64,7 @@ const HrInterviewModel=(props)=> {
             response.data.data.map((data, index) =>
                 Designation.push({ id: data.designation_id, value: data.designation }))
     
-            setdesignationdata({ Designation })
+            // setdesignationdata({ Designation })
 
             Axios({
                 method: "get",
@@ -81,6 +81,7 @@ const HrInterviewModel=(props)=> {
 },[])
 // 
 useEffect(() => {
+dispatch(getDesignationList());
 dispatch(getInterviewApprover());
 }
 ,[])
@@ -90,16 +91,23 @@ useEffect(() => {
     props.getInterviewApprover.map((data, index) =>
     InterviewApprover.push({ id: data.emp_id, value: data.name }))
         setInterviewApprover({ InterviewApprover })
+
+        let Designation = []
+        props.getDesignationList.map((data, index) =>
+        Designation.push({ id: data.designation_id, value: data.designation })
+      )
+      setdesignationdata({ Designation })
     }
-    ,[props.getInterviewApprover])
+    ,[props.getInterviewApprover, props.getDesignationList])
 // ____________________
 
 function checkValidation(data, key, multipleId) {
 
     if(data==27 && key ==="round"){
         setFinalRound(true)
-    }
-   
+    }else{
+        setFinalRound(false)
+      }
     var errorcheck = ValidationLibrary.checkValidation(
         data,
         Interviewschedule[key].validation
@@ -136,9 +144,8 @@ function onSubmit() {
     if (filtererr.length > 0) {
     } else {
         dispatch(InesertInterviewDetails(Interviewschedule,props.selectedId)).then(()=>{
-            // handleCancel()
-            // setVisible(false)
-            props.handleChangeCloseModel(false)
+            stateClear()
+            // props.handleChangeCloseModel(false)
         })
     }
 
@@ -146,11 +153,28 @@ function onSubmit() {
         ...prevState
     }));
 };
+const stateClear = () => {
+ 
+    let Form_key = [
+      "desgination",
+    "interviewer",
+    "propsedDate","round"
+   ];
 
-
-function handleCancel() {
+    Form_key.map((data) => {
+     
+      try {
+        Interviewschedule[data].value = "";
+      } catch (error) {
+        throw(error)
+      }
+    });
     props.handleChangeCloseModel(false)
-}
+    setInterviewschedule((prevState) => ({
+      ...prevState,
+    }));
+  };
+
     return (
       <div>
         <Labelbox
@@ -207,6 +231,7 @@ const mapStateToProps = (state) => (
     // console.log(state.getOptions.getInterviewApprover, "getProcessType")
     {
         getInterviewApprover: state.getOptions.getInterviewApprover || [],
+        getDesignationList: state.getOptions.getDesignationList  || [],
 
     }
 );
