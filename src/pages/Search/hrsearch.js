@@ -137,7 +137,7 @@ const viewCandidate=(id)=>{
 useEffect(() => {
      let multipleTable = []
      props.GetRowData.map((data)=>{
- let rowDataList = []
+     let rowDataList = []
 
         data.result.map((data,index) => {
             rowDataList.push({view:  <img

@@ -235,6 +235,7 @@ function ProjectFormCreate(props) {
     }
   };
   function checkValidation(data, key, multipleId) {
+    console.log(data,"onchangeValue")
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
@@ -245,6 +246,8 @@ function ProjectFormCreate(props) {
       errmsg: errorcheck.msg,
       validation: projectform[key].validation,
     };
+    // console.log(projectform.project_type.value, "projectform.client.value")
+
 
     //  projectSubTypeValue
 

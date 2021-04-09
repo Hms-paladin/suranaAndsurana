@@ -253,7 +253,7 @@ function TradeMarkOposition1() {
                                     <Upload {...props} className="uploadbox_tag" 
                                         action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
-                                        <div className="upload_file_inside" ><label>Upload Image</label><PublishIcon /></div>
+                                        <div className="upload_file_inside" ><label>Upload</label><PublishIcon /></div>
                                     </Upload>,
                                      </div>
                             </div>

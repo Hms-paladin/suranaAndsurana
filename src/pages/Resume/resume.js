@@ -572,7 +572,6 @@ const ResumePage = (props) => {
   };
 
   const showDeleteExperienceModel = (y) => {
-    console.log(experienceList[y], "educationList");
     if (y > -1) {
       experienceList.splice(y, 1);
     }

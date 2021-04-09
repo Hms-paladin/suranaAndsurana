@@ -63,6 +63,8 @@ function ProjectIp(props) {
     const [projecttypes, setProjecttypes] = useState(true)
     const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
     const [opeModelOpen, setOpeModelOpen] = useState(false)
+    const [idDetails, setidDetails] = useState({})
+
 
 
 
@@ -184,21 +186,19 @@ function ProjectIp(props) {
 
     })
 
-    // useEffect(()=>{
-    //     useParams()
-    // },[])
 
     let { rowId } = useParams()
     useEffect(() => {
-        console.log("testrowId", rowId)
         dispatch(getProjectDetails(rowId))
     }, [])
     useEffect(() => {
-
         setProjectDetails(props.ProjectDetails);
-
+        props.ProjectDetails.length > 0 && setidDetails({
+            project_id:props.ProjectDetails[0].project_id,
+            client_id:props.ProjectDetails[0].client_id,
+        })
     }, [props.ProjectDetails])
-    console.log("testrowId", projectDetails)
+
 
 
     function onSubmit() {
@@ -474,7 +474,7 @@ function ProjectIp(props) {
                         {/*  */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" &&  <LitigationAddcase />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" &&  <LitigationAddcase id_Props={idDetails} />
                         }
                     </div>}
 
