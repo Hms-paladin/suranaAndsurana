@@ -118,7 +118,7 @@ function Resumesearch(props) {
             "capability_id": "",
             "talent_id": "",
             "status_id": "",
-            "experience":""
+            "experience": ""
         }))
     }, [])
 
@@ -233,17 +233,18 @@ function Resumesearch(props) {
 
     useEffect(() => {
         let rowDataList = []
-
-        props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ view:  <img
-                src={Eyes}
-                className="viewCandidatesList"
-                onClick={()=>viewCandidate(data.resume_id)}
-              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-             basic: data.basic_qual, language: data.language, certification: data.certifications, 
-             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,experience:data.experience,
-             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
-             checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+        props.GetRowData && props.GetRowData.map((data, index) => {
+            rowDataList.push({
+                view: <img
+                    src={Eyes}
+                    className="viewCandidatesList"
+                    onClick={() => viewCandidate(data.resume_id)}
+                />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+                basic: data.basic_qual, language: data.language, certification: data.certifications,
+                specialization: data.specialization, acheivements: data.achievement, talents: data.talent, experience: data.experience,
+                box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id)} name={"checked" + index}
+                    checked={checkList["checked" + index]} value={checkList["checked" + index]} />
+            })
         })
 
         setRowData(rowDataList)
@@ -342,7 +343,7 @@ function Resumesearch(props) {
                             </Grid>
                             <Grid item xs={8}>
                                 <Link to='resume'>
-                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}   onBtnClick={() => setpathname("/projectFormCreate")} />
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"} onBtnClick={() => setpathname("/projectFormCreate")} />
                                 </Link>
                             </Grid>
                         </Grid>

@@ -4,25 +4,9 @@ import { GET_CERTIFICATION } from "../utils/Constants.js";
 import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
-import { GET_TALENTS,GET_DESIGNATION_LIST,GET_DEPARTMENT,GET_INTERVIEWERS_LIST,GET_INTERVIEW_STATUS } from "../utils/Constants.js";
+import { GET_TALENTS, GET_DESIGNATION_LIST, GET_DEPARTMENT, GET_INTERVIEWERS_LIST, GET_INTERVIEW_STATUS } from "../utils/Constants.js";
 import {
-  GET_STATUS,
-  GET_QUALIFICATION,
-  GET_INDUSTRY,
-  GET_STAGELIST,
-  GET_PROJECT_SUB_TYPE,
-  GET_PROCESS_TYPE,
-  GET_SUB_STAGE,
-  GET_INTERVIEW_APPROVER,
-  GET_CLIENT_TYPE,
-  GET_CLIENT,
-  GET_PROJECT_TYPE,
-  GET_PROJECT_NAME,
-  GET_BILLABLE_TYPE,
-  GET_FILING_TYPE,
-  GET_EMPLOYEE_LIST,
-  GET_CLIENT_LIST,
-  GET_PROJECT_COST_RANGE,GET_COURT_LOCATION,GET_TRADE_MARK_STATUS
+  GET_STATUS,  GET_QUALIFICATION,  GET_INDUSTRY,  GET_STAGELIST,  GET_PROJECT_SUB_TYPE,  GET_PROCESS_TYPE,  GET_SUB_STAGE,  GET_INTERVIEW_APPROVER,  GET_CLIENT_TYPE,  GET_CLIENT,  GET_PROJECT_TYPE,  GET_PROJECT_NAME, GET_BILLABLE_TYPE,  GET_FILING_TYPE,  GET_EMPLOYEE_LIST,  GET_CLIENT_LIST, GET_PROJECT_COST_RANGE, GET_COURT_LOCATION, GET_TRADE_MARK_STATUS
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -31,6 +15,8 @@ import {
   GET_STATE,
   GET_CITY,
   GET_LANGUAGES,
+  GET_ACTIVITY,
+  GET_SUBACTIVITY,
 } from "../utils/Constants.js";
 const initalState = {
   getResourcesType: [],
@@ -63,7 +49,7 @@ const initalState = {
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
-  getDesignationList:[],getDepartment:[],getInterviewersList:[],getInterviewStatus:[],getCourtLocation:[],GET_TRADE_MARK_STATUS:[]
+  getDesignationList: [], getDepartment: [], getInterviewersList: [], getInterviewStatus: [], getCourtLocation: [], GET_TRADE_MARK_STATUS: [], getActivity: [], getSubactivity: [],
 };
 
 export default function (state = initalState, action) {
@@ -123,24 +109,28 @@ export default function (state = initalState, action) {
       return { ...state, getFilingType: payload };
     case GET_EMPLOYEE_LIST:
       return { ...state, getEmployeeList: payload };
-      case GET_DESIGNATION_LIST:
-        return { ...state, getDesignationList: payload }; 
-        case GET_DEPARTMENT:
-          return { ...state, getDepartment: payload };   
-          case GET_INTERVIEWERS_LIST:
-            return { ...state, getInterviewersList: payload };  
-            case GET_INTERVIEW_STATUS:
-              return { ...state, getInterviewStatus: payload }; 
-              case GET_COURT_LOCATION:
-                return { ...state, getCourtLocation: payload }; 
-                case GET_TRADE_MARK_STATUS:
-                return { ...state, getTradeMarkStatus: payload }; 
+    case GET_DESIGNATION_LIST:
+      return { ...state, getDesignationList: payload };
+    case GET_DEPARTMENT:
+      return { ...state, getDepartment: payload };
+    case GET_INTERVIEWERS_LIST:
+      return { ...state, getInterviewersList: payload };
+    case GET_INTERVIEW_STATUS:
+      return { ...state, getInterviewStatus: payload };
+    case GET_COURT_LOCATION:
+      return { ...state, getCourtLocation: payload };
+    case GET_TRADE_MARK_STATUS:
+      return { ...state, getTradeMarkStatus: payload };
     case GET_PROJECT_COST_RANGE:
       return { ...state, getProjectCostRange: payload };
     case GET_CLIENT_LIST:
       return { ...state, getClientlist: payload };
     case GET_STAGELIST:
       return { ...state, getStageList: payload };
+    case GET_ACTIVITY:
+      return { ...state, getActivity: payload };
+    case GET_SUBACTIVITY:
+      return { ...state, getSubactivity: payload };
     default:
       return state;
   }
