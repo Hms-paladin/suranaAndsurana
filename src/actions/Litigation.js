@@ -1,4 +1,4 @@
-import { INSERT_LITIGATION } from "../utils/Constants";
+import { INSERT_LITIGATION,GET_LITIGATION ,UPDATE_LITIGATION_DETAILS} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -31,7 +31,7 @@ export const InsertLitigation = (Litigation_Form,IdDetails) => async dispatch =>
             },
           }).then((response) => {
             if (response.data.status === 1) {
-                dispatch({type:INSERT_LITIGATION,payload:response.data.data})
+                dispatch({type:INSERT_LITIGATION,payload:response.data.status})
               notification.success({
                 message: "Litigation Updated Successfully",
               });
@@ -44,3 +44,23 @@ export const InsertLitigation = (Litigation_Form,IdDetails) => async dispatch =>
     }
 }
 
+export const GetLitigation = (ProjectID) => async dispatch => {
+  try {
+
+      axios({
+          method: "POST",
+          url: apiurl + "get_litigation",
+          data: 
+          {
+            project_id:ProjectID||0
+        },
+        }).then((response) => {
+          if (response.data.status === 1) {
+              dispatch({type:GET_LITIGATION,payload:response.data.data})
+          }
+        });
+      
+  } catch (err) {
+      
+  }
+}

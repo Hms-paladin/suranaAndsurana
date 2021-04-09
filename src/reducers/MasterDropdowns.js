@@ -22,7 +22,7 @@ import {
   GET_FILING_TYPE,
   GET_EMPLOYEE_LIST,
   GET_CLIENT_LIST,
-  GET_PROJECT_COST_RANGE,GET_COURT_LOCATION,GET_TRADE_MARK_STATUS
+  GET_PROJECT_COST_RANGE,GET_COURT_LOCATION,GET_TRADE_MARK_STATUS,GET_CASE_TYPE,GET_SUB_CASE_TYPE
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -63,7 +63,8 @@ const initalState = {
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
-  getDesignationList:[],getDepartment:[],getInterviewersList:[],getInterviewStatus:[],getCourtLocation:[],GET_TRADE_MARK_STATUS:[]
+  getDesignationList:[],getDepartment:[],getInterviewersList:[],getInterviewStatus:[],getCourtLocation:[],GET_TRADE_MARK_STATUS:[],
+  getCaseType:[],getSubCaseType:[]
 };
 
 export default function (state = initalState, action) {
@@ -135,6 +136,10 @@ export default function (state = initalState, action) {
                 return { ...state, getCourtLocation: payload }; 
                 case GET_TRADE_MARK_STATUS:
                 return { ...state, getTradeMarkStatus: payload }; 
+                case GET_CASE_TYPE:
+                  return { ...state, getCaseType: payload }; 
+                  case GET_SUB_CASE_TYPE:
+                    return { ...state, getSubCaseType: payload };
     case GET_PROJECT_COST_RANGE:
       return { ...state, getProjectCostRange: payload };
     case GET_CLIENT_LIST:

@@ -197,7 +197,6 @@ function ProjectIp(props) {
             project_id:props.ProjectDetails[0].project_id,
             client_id:props.ProjectDetails[0].client_id,
         })
-        console.log("projectdetails",props.ProjectDetails)
     }, [props.ProjectDetails])
 
 

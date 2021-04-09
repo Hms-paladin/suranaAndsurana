@@ -14,7 +14,7 @@ import {
   GET_SPECIAL_INTEREST,
   GET_STATE,
   GET_CITY,GET_TRADE_MARK_STATUS,
-  GET_LANGUAGES,GET_DESIGNATION_LIST,GET_DEPARTMENT,GET_INTERVIEWERS_LIST,GET_INTERVIEW_STATUS
+  GET_LANGUAGES,GET_DESIGNATION_LIST,GET_DEPARTMENT,GET_INTERVIEWERS_LIST,GET_INTERVIEW_STATUS,GET_CASE_TYPE,GET_SUB_CASE_TYPE
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -267,3 +267,18 @@ export const getTradeMarkStatus = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_trade_mark_status");
   return dispatch({ type: GET_TRADE_MARK_STATUS, payload: response.data.data });
 };
+export const getCaseType = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_case_type");
+  return dispatch({ type: GET_CASE_TYPE, payload: response.data.data });
+};
+export const getSubCaseType = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_sub_case",
+    data: {
+      client_id: id,
+    },
+  });
+  return dispatch({ type: GET_SUB_CASE_TYPE, payload: response.data.data });
+};
+

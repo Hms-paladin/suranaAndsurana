@@ -13,8 +13,8 @@ import { message } from 'antd';
 import DynModel from '../../component/Model/model';
 import AddDataModel from './adddataModel';
 import InterimModel from './interimModel';
-import { getEmployeeList, getLocation, getTradeMarkStatus } from '../../actions/MasterDropdowns';
-import { InsertLitigation } from '../../actions/Litigation';
+import { getCaseType, getEmployeeList, getLocation, getSubCaseType, getTradeMarkStatus } from '../../actions/MasterDropdowns';
+import { GetLitigation, InsertLitigation } from '../../actions/Litigation';
 
 const { TabPane } = Tabs;
 
@@ -25,23 +25,11 @@ const Litigation=(props)=> {
     const [employeeList, setEmployeeList] = useState({}); const [locationslList, setlocationslList] = useState({});
     const [tradeMarkStatus, setTradeMarkStatus] = useState({});
     const [IdDetails, setIdDetails] = useState({});
-    // const props = {
-    //     name: 'file',
-    //     action: '//jsonplaceholder.typicode.com/posts/',
-    //     headers: {
-    //         authorization: 'authorization-text',
-    //     },
-    //     onChange(info) {
-    //         if (info.file.status !== 'uploading') {
-    //             console.log(info.file, info.fileList);
-    //         }
-    //         if (info.file.status === 'done') {
-    //             message.success(`${info.file.name} file uploaded successfully`);
-    //         } else if (info.file.status === 'error') {
-    //             message.error(`${info.file.name} file upload failed.`);
-    //         }
-    //     },
-    // };
+    const [CaseType, setCaseType] = useState({});
+    const [SubCaseType, setSubCaseType] = useState({});
+    const [LitigationCaseDetails, setLitigationCaseDetails] = useState([]);
+    const [LitigationCase, setLitigationCase] = useState();
+    
     const [Litigation_Form, setLitigationForm] = useState({
         internalcaseno: {
             value: "",
@@ -109,12 +97,50 @@ const Litigation=(props)=> {
         dispatch(getEmployeeList());
         dispatch(getLocation());
         dispatch(getTradeMarkStatus());
-       
+       dispatch(getCaseType());
       }, []);
       useEffect(() => {
         console.log("id_Props",props.id_Props)
         setIdDetails(props.id_Props)
+        dispatch(getSubCaseType(props.id_Props.client_id))
+        dispatch(GetLitigation(props.id_Props.project_id))
       }, [props.id_Props])
+
+      useEffect(() => {
+        let subCaseType = [];
+        props.getSubCaseType.map((data) =>
+          subCaseType.push({ value: data.sub_case, id: data.case_id })
+        );
+        setSubCaseType({subCaseType})
+        //______________
+    
+      
+        let MultipleSet = props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case_details.map((data) => {
+            let rowDataList= data?.liti_details?.map((val) =>{
+                return(
+                    <div className="ourCounselFields">
+                    <div>{val.name}</div>
+                    <div>{val.phone_no}</div>
+                    <div>{val.email_id}</div>
+                    <div>{val.address}</div>
+                    <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
+                </div>
+                   )
+            })
+           return(
+               <div className="litigationCounsel">
+        <div className="ourCounselTitle">{data.liti_councel}</div>
+        <div className="ourCounselFields">
+                            </div>
+             {rowDataList}
+       </div>
+          )
+        })
+        setLitigationCaseDetails(MultipleSet)
+        console.log(MultipleSet,"multipleSet")
+
+        console.log("setLitigationCaseDetails",props.getLitigationDetails[0])
+      }, [props.getSubCaseType,props.getLitigationDetails])
       useEffect(() => {
         //hod/attony, Counsel ,DRA and DDRA
         let EmployeeList = [];
@@ -135,8 +161,14 @@ const Litigation=(props)=> {
             id: data.status_id })
         )
         setTradeMarkStatus({ tradeMark })
+        let caseType = []
+        props.getCaseType.map((data) =>
+        caseType.push({ value: data.case_type,
+            id: data.case_type_id })
+        )
+        setCaseType({ caseType })
       }, [
-        props.EmployeeList,props.getCourtLocation,props.getTradeMarkStatus
+        props.EmployeeList,props.getCourtLocation,props.getTradeMarkStatus,props.getCaseType
       ]);
     function onSubmit() {
         // var mainvalue = {};
@@ -246,6 +278,7 @@ const Litigation=(props)=> {
                         errmsg={Litigation_Form.courtname.errmsg} />
 
                     <Labelbox type="select" placeholder={"Case Type"}
+                    dropdown={CaseType.caseType}
                         changeData={(data) => checkValidation(data, "casetype")}
                         value={Litigation_Form.casetype.value}
                         error={Litigation_Form.casetype.error}
@@ -280,6 +313,7 @@ const Litigation=(props)=> {
                         </div>
                     </div>
                     <Labelbox type="select" placeholder={"Sub case"}
+                    dropdown={SubCaseType.subCaseType}
                         changeData={(data) => checkValidation(data, "subcase")}
                         value={Litigation_Form.subcase.value}
                         error={Litigation_Form.subcase.error}
@@ -296,7 +330,7 @@ const Litigation=(props)=> {
 
                 <Grid item xs={8} container direction="row"  >
                     <div className="litigationScroller">
-                        <div className="litigationCounsel">
+                        {/* <div className="litigationCounsel">
                             <div className="ourCounselTitle">Our Counsel</div>
                             <div className="ourCounselFields">
                                 <div>Name</div>
@@ -358,8 +392,8 @@ const Litigation=(props)=> {
                                 <div>Email ID</div>
                                 <div>Address</div>
                             </div>
-                        </div>
-                        <div className="litigationCounsel">
+                        </div>*/}
+                        {/* <div className="litigationCounsel"> 
                             <div className="ourCounselTitle">Interim</div>
                             <div className="ourCounselFields">
                                 <div>Name</div>
@@ -368,7 +402,8 @@ const Litigation=(props)=> {
                                 <div>Address</div>
                                 <img src={AddIcon} onClick={() => setLitigationInterim(true)} />
                             </div>
-                        </div>
+                        </div> */}
+                        {LitigationCaseDetails}
                     </div>
                     <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={<AddDataModel />} />
                     <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationInterim} handleChangeCloseModel={(bln) => setLitigationInterim(bln)} content={<InterimModel />} />
@@ -388,6 +423,9 @@ const mapStateToProps = (state) => ({
     EmployeeList: state.getOptions.getEmployeeList || [],
     getCourtLocation: state.getOptions.getCourtLocation || [],
     getTradeMarkStatus: state.getOptions.getTradeMarkStatus || [],
+    getCaseType: state.getOptions.getCaseType || [],
+    getSubCaseType: state.getOptions.getSubCaseType || [],
+    getLitigationDetails:state.LitigationReducer.getLitigation || []
   });
   
   export default connect(mapStateToProps)(Litigation);
