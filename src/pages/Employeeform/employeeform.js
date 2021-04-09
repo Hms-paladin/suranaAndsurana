@@ -326,7 +326,7 @@ function Employeeform(props) {
 
         <div>
             <div style={{ marginBottom: "10px", fontSize: '16px', fontWeight: "600" }}>Employee form</div>
-            {getDetails.length > 0 && getDetails.map((val, index) => {
+            {getDetails && getDetails.length > 0 && getDetails.map((val, index) => {
                 return (
                     <div className="Employee_formdiv">
 

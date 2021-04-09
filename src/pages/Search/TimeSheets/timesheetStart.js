@@ -293,73 +293,7 @@ function TimeSheetStartModel(props) {
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
                         <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnclick={submitstart} />
                     </div>
-                    {/* <Grid item xs={12} container direction="row" spacing={3}>
-                        <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>IP Project</Grid>
-                            <Grid item xs={12}>
-                                <Labelbox type="select"
-                                    placeholder={"Activity"}
-                                // changeData={(data) =>
-                                //     checkValidation(data, "timepickerDeadline")
-                                // }
-                                // value={TIME_SHEET.timepickerDeadline.value}
-                                // error={TIME_SHEET.timepickerDeadline.error}
-                                // errmsg={TIME_SHEET.timepickerDeadline.errmsg}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>Priority</Grid>
-                        </Grid>
-                        <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>Project Name </Grid>
-                            <Grid item xs={12}>First Cut Draft</Grid>
-                            <Grid item xs={12}>Tag</Grid>
-
-                        </Grid>
-                        <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>Johnson & Johnson</Grid>
-                            <Grid item xs={12}>Assign To</Grid>
-                            <Grid item xs={12}>Description</Grid>
-
-                        </Grid>
-
-                    </Grid>
-                    <div className="timeSheetDatesFormat">
-                        <Grid item xs={12} container direction="row" spacing={5}>
-
-                            <Grid item xs={5} container direction="row" justify="center" spacing={4}>
-                                <Grid item xs={6}>(5-Mar-2021)</Grid>
-                                <Grid item xs={6}>3.20 PM</Grid>
-
-                            </Grid>
-                            <Grid item xs={7} container direction="row" spacing={5}>
-
-                                <Grid item xs={6}>
-                                    <Labelbox type="datepicker"
-                                        placeholder={"Deadline"}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Labelbox type="timepicker"
-                                        placeholder={"Deadline"}
-                                        changeData={(data) =>
-                                            checkValidation(data, "timepickerDeadline")
-                                        }
-                                        value={TIME_SHEET.timepickerDeadline.value}
-                                        error={TIME_SHEET.timepickerDeadline.error}
-                                        errmsg={TIME_SHEET.timepickerDeadline.errmsg}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </div>
-                    <div className="timeSheetComments">
-                        <Labelbox type="textarea" placeholder={"comments"} />
-                    </div>
-                    <div className="customiseButton">
-                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
-                        <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnclick={submitstart} />
-
-                    </div> */}
+                  
                 </div>
             }
 
