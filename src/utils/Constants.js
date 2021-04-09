@@ -95,6 +95,8 @@ export const INSERT_TASK ="INSERT_TASK";
 export const INSERT_ADHOC_TASK ="INSERT_ADHOC_TASK";
 export const GET_LOCATION ="GET_LOCATION";
 export const GET_ASSIGN_TO ="GET_ASSIGN_TO";
+export const GET_SUBACTIVITY ="GET_SUBACTIVITY";
+
 
 //Litigation
 export const GET_LITIGATION ="GET_LITIGATION";
