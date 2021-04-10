@@ -20,6 +20,9 @@ import { withStyles} from '@material-ui/core/styles';
 const TabIcons = [{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
 const HtmlTooltip = withStyles((theme) => ({
+    arrow: {
+        color: theme.palette.common.white,
+      },
     tooltip: {
       backgroundColor: 'white',
       color: 'rgba(0, 0, 0, 0.87)',
