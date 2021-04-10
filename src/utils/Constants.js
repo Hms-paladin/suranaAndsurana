@@ -108,3 +108,8 @@ export const UPDATE_LITIGATION_DETAILS ="UPDATE_LITIGATION_DETAILS";
 
 export const GET_LEAVETYPE ="GET_LEAVETYPE";
 
+
+// IPProject
+export const GET_CLASS = "GET_CLASS";
+export const GET_COUNTRY = "GET_COUNTRY"; 
+export const GET_IPSTATUS = "GET_IPSTATUS";

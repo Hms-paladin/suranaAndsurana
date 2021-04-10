@@ -100,7 +100,6 @@ const Litigation=(props)=> {
        dispatch(getCaseType());
       }, []);
       useEffect(() => {
-
         setIdDetails(props.id_Props)
         dispatch(getSubCaseType(props.id_Props.client_id))
         dispatch(GetLitigation(props.id_Props.project_id))
@@ -155,7 +154,7 @@ const Litigation=(props)=> {
         let MultipleCouncelValue=[]
 
                    
-            employeeList.EmployeeList.map((total)=>{
+            employeeList?.EmployeeList.map((total)=>{
                 strArr && strArr[0].map((id)=>{
                     if(total.id === parseInt(id)) { 
 

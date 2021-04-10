@@ -1,101 +1,115 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
+import { useSelector, useDispatch } from 'react-redux';
+import { getClass, getCountry, getIPStatus } from "../../../../actions/IPDropdown.js";
+import { InsertDesign } from "../../../../actions/InsertDesign";
 
 
-function IndiaFilling() {
+function IndiaFilling(props) {
   const [IndiaForm, setIndiaForm] = useState({
     file_cover: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    our_ref: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     associate: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
-    country: {
+    our_ref: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    class: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    title: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     client_ref: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     app_num: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }, { "name": "alphaNumaricOnly" }],
       error: null,
       errmsg: null,
     },
     app_date: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     applicant: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
-    comments: {
+    title: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
-    status: {
+    class: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
+    country: {
+      value: "",
+      validation: [],
       error: null,
       errmsg: null,
     },
     priority_country: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     priority_date: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
+    status: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
+    comments: {
+      value: "",
+      validation: [{ "name": "alphabetwithspace" }],
+      error: null,
+      errmsg: null,
+    },
+    renewal_date: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null
+    }
   })
-
+  const [indFilGetList, setIndFilGetList] = useState({
+    getClassList: [],
+    getCountryList: [],
+    getStatusList: []
+  })
+  const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+  const dispatch = useDispatch();
 
   function checkValidation(data, key, multipleId) {
-
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       IndiaForm[key].validation
@@ -106,37 +120,10 @@ function IndiaFilling() {
       errmsg: errorcheck.msg,
       validation: IndiaForm[key].validation
     }
-
-    // only for multi select (start)
-
-    let multipleIdList = []
-
-    if (multipleId) {
-      multipleId.map((item) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i] === item.value) {
-            multipleIdList.push(item.id)
-          }
-        }
-      })
-      dynObj.valueById = multipleIdList.toString()
-    }
-    // (end)
-
     setIndiaForm(prevState => ({
       ...prevState,
       [key]: dynObj,
     }));
-    // var filtererr = targetkeys.filter(
-    //     (obj) =>
-    //         IndiaForm[obj].error == true ||
-    //         IndiaForm[obj].error == null
-    // );
-    // if (filtererr.length > 0) {
-    //     setResumeFrom({ error: true, errordummy: false });
-    // } else {
-    //     setResumeFrom({ error: false });
-    // }
   };
 
   function SubmitFunction() {
@@ -156,21 +143,56 @@ function IndiaFilling() {
     );
     console.log(filtererr.length);
     if (filtererr.length > 0) {
-      // setIndiaForm({ error: true });
     } else {
-      // setIndiaForm({ error: false });
-
-      // dispatch(InesertResume(IndiaForm)).then(()=>{
-      //     handleCancel()
-      // })
+      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0])).then(() => {
+        handleCancel()
+      })
     }
 
     setIndiaForm(prevState => ({
       ...prevState
     }));
-
-
   }
+
+  const handleCancel = () => {
+    let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
+
+    indiaFil_key.map((data) => {
+      IndiaForm[data].value = "";
+    });
+    setIndiaForm((prevState) => ({
+      ...prevState,
+    }));
+  };
+
+  useEffect(() => {
+    dispatch(getClass());
+    dispatch(getCountry());
+    dispatch(getIPStatus());
+  }, [])
+
+  useEffect(() => {
+
+    const getClassList = []
+    const getCountryList = []
+    const getStatusList = []
+
+
+    DesignDropDowns.getClass.map((data) => {
+      getClassList.push({ id: data.class_id, value: data.class })
+    })
+    DesignDropDowns.getCountry.map((data) => {
+      getCountryList.push({ id: data.country_id, value: data.country })
+    })
+    DesignDropDowns.getIPStatus.map((data) => {
+      getStatusList.push({ id: data.status_id, value: data.Status })
+    })
+
+    setIndFilGetList({ getClassList, getCountryList, getStatusList })
+  }, [DesignDropDowns])
+
+  console.log(indFilGetList, "indFilGetList")
+
   return (
     <div className="container">
       <Grid container direction={"column"}>
@@ -182,7 +204,6 @@ function IndiaFilling() {
             error={IndiaForm.file_cover.error}
             errmsg={IndiaForm.file_cover.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Associate"}
             changeData={(data) => checkValidation(data, "associate")}
@@ -190,7 +211,6 @@ function IndiaFilling() {
             error={IndiaForm.associate.error}
             errmsg={IndiaForm.associate.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Our Reference"}
             changeData={(data) => checkValidation(data, "our_ref")}
@@ -198,8 +218,6 @@ function IndiaFilling() {
             error={IndiaForm.our_ref.error}
             errmsg={IndiaForm.our_ref.errmsg}
           />
-
-
           <Labelbox type="text"
             placeholder={"Client Reference"}
             changeData={(data) => checkValidation(data, "client_ref")}
@@ -207,7 +225,6 @@ function IndiaFilling() {
             error={IndiaForm.client_ref.error}
             errmsg={IndiaForm.client_ref.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Application Number"}
             changeData={(data) => checkValidation(data, "app_num")}
@@ -215,7 +232,6 @@ function IndiaFilling() {
             error={IndiaForm.app_num.error}
             errmsg={IndiaForm.app_num.errmsg}
           />
-
           <Labelbox type="datepicker"
             placeholder={"Application Date"}
             changeData={(data) => checkValidation(data, "app_date")}
@@ -223,7 +239,6 @@ function IndiaFilling() {
             error={IndiaForm.app_date.error}
             errmsg={IndiaForm.app_date.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Applicant"}
             changeData={(data) => checkValidation(data, "applicant")}
@@ -231,7 +246,6 @@ function IndiaFilling() {
             error={IndiaForm.applicant.error}
             errmsg={IndiaForm.applicant.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Title"}
             changeData={(data) => checkValidation(data, "title")}
@@ -239,33 +253,30 @@ function IndiaFilling() {
             error={IndiaForm.title.error}
             errmsg={IndiaForm.title.errmsg}
           />
-
           <Labelbox type="select"
             placeholder={"Class"}
+            dropdown={indFilGetList.getClassList}
             changeData={(data) => checkValidation(data, "class")}
             value={IndiaForm.class.value}
             error={IndiaForm.class.error}
             errmsg={IndiaForm.class.errmsg}
           />
-
-
           <Labelbox type="select"
             placeholder={"Country"}
+            dropdown={indFilGetList.getCountryList}
             changeData={(data) => checkValidation(data, "country")}
             value={IndiaForm.country.value}
             error={IndiaForm.country.error}
             errmsg={IndiaForm.country.errmsg}
           />
-
           <Labelbox type="select"
             placeholder={"priority Country"}
+            dropdown={indFilGetList.getCountryList}
             changeData={(data) => checkValidation(data, "priority_country")}
             value={IndiaForm.priority_country.value}
             error={IndiaForm.priority_country.error}
             errmsg={IndiaForm.priority_country.errmsg}
-
           />
-
           <Labelbox type="datepicker"
             placeholder={"priority Date"}
             changeData={(data) => checkValidation(data, "priority_date")}
@@ -273,16 +284,14 @@ function IndiaFilling() {
             error={IndiaForm.priority_date.error}
             errmsg={IndiaForm.priority_date.errmsg}
           />
-
           <Labelbox type="select"
             placeholder={"Status"}
+            dropdown={indFilGetList.getStatusList}
             changeData={(data) => checkValidation(data, "status")}
             value={IndiaForm.status.value}
             error={IndiaForm.status.error}
             errmsg={IndiaForm.status.errmsg}
           />
-
-
           <Labelbox type="textarea"
             placeholder={"Comments"}
             changeData={(data) => checkValidation(data, "comments")}
@@ -290,22 +299,21 @@ function IndiaFilling() {
             error={IndiaForm.comments.error}
             errmsg={IndiaForm.comments.errmsg}
           />
-
-
           <Labelbox type="datepicker"
             placeholder={"Renewal Date"}
-           
+            changeData={(data) => checkValidation(data, "renewal_date")}
+            value={IndiaForm.renewal_date.value}
+            error={IndiaForm.renewal_date.error}
+            errmsg={IndiaForm.renewal_date.errmsg}
           />
         </Grid>
       </Grid>
       <div className="custombtnOposition">
         <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={SubmitFunction} custombtnCSS={"TMopositionbuttons"} />
-        <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+        <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} onBtnClick={handleCancel} />
       </div>
-
-
-
     </div>
   )
 }
+
 export default IndiaFilling;
