@@ -45,6 +45,7 @@ import {
   GET_COURT_LOCATION,
   GET_ACTIVITY,
   GET_SUBACTIVITY,
+  GET_LEAVETYPE,
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -305,3 +306,12 @@ export const getSubactivity = (id) => async (dispatch) => {
   });
   return dispatch({ type: GET_SUBACTIVITY, payload: response.data.data });
 };
+
+// Leave Update
+
+
+export const getLeaveType = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_leave_type");
+  return dispatch({ type: GET_LEAVETYPE, payload: response.data.data });
+};
+
