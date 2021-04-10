@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link ,Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import PrivateRoute from './PrivateRoute';
 
@@ -32,14 +32,18 @@ import Litigation from '../pages/Litigation/litigation';
 import UserGroups from '../pages/UserGroups/usergroups'
 
 //Group Control:
-import GroupControl from '../pages/GroupControl/groupcontrol' 
+import GroupControl from '../pages/GroupControl/groupcontrol'
 
 //Group Control:
-import StageMonitering from '../pages/stages/StageMonitering' 
+import StageMonitering from '../pages/stages/StageMonitering'
 
 // Leave Update:
 import LeaveUpdate from '../pages/Leaves/leaveupdate';
 import LeaveForm from '../pages/Leaves/leaveform';
+
+//DashBoard
+
+import DashboardNew from '../pages/Dashboard/dashboardnew';
 
 
 
@@ -48,38 +52,39 @@ function Routes(props) {
     return (
         <Navbar>
             <Switch>
-            <PrivateRoute path="/resume" component={Resume} exact />
-            <PrivateRoute path="/dashboard" component={Dashboard} exact />
-            <PrivateRoute path="/interview" component={Interview} exact />
-            <PrivateRoute path="/employeeform" component={Employeeform} exact />
-            <PrivateRoute path="/todolist" component={TodoList} exact />
-            <PrivateRoute path="/search" component={Search} exact />
-            <PrivateRoute path="/task" component = {Task} exact />
-            <PrivateRoute path ="/addclient" component = {AddClient} exact/>
-            <PrivateRoute path ="/generateinvoice" component={ GenerateInvoice } exact/>
+                <PrivateRoute path="/resume" component={Resume} exact />
+                <PrivateRoute path="/dashboard" component={Dashboard} exact />
+                <PrivateRoute path="/interview" component={Interview} exact />
+                <PrivateRoute path="/employeeform" component={Employeeform} exact />
+                <PrivateRoute path="/todolist" component={TodoList} exact />
+                <PrivateRoute path="/search" component={Search} exact />
+                <PrivateRoute path="/task" component={Task} exact />
+                <PrivateRoute path="/addclient" component={AddClient} exact />
+                <PrivateRoute path="/generateinvoice" component={GenerateInvoice} exact />
 
-            {/* Create Project Form */}
-            <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
-            {/* Ip TradeMark */}
-            <PrivateRoute path="/projectTask" component={ProjectTask} exact />
-            <PrivateRoute path="/projectIp/:rowId" component={ProjectIp1} exact />
-            <PrivateRoute path="/stageicon" component={Stages} exact />
-            <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
-            <PrivateRoute path="/addhearing" component={AddHearing} exact />
-            <PrivateRoute path="/ratemaster" component={RateMaster} exact />
+                {/* Create Project Form */}
+                <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
+                {/* Ip TradeMark */}
+                <PrivateRoute path="/projectTask" component={ProjectTask} exact />
+                <PrivateRoute path="/projectIp/:rowId" component={ProjectIp1} exact />
+                <PrivateRoute path="/stageicon" component={Stages} exact />
+                <PrivateRoute path="/stagesmaster" component={StagesMaster} exact />
+                <PrivateRoute path="/addhearing" component={AddHearing} exact />
+                <PrivateRoute path="/ratemaster" component={RateMaster} exact />
 
-            {/* Litigation */}
-            <PrivateRoute path="/litigation" component={Litigation} exact />
-             {/* User Groups */}
-            <PrivateRoute path="/usergroups" component={UserGroups} exact />
-             {/*  Group Control */}
-             <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
-             {/*  Steg Monitering */}
-             <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
+                {/* Litigation */}
+                <PrivateRoute path="/litigation" component={Litigation} exact />
+                {/* User Groups */}
+                <PrivateRoute path="/usergroups" component={UserGroups} exact />
+                {/*  Group Control */}
+                <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
+                {/*  Steg Monitering */}
+                <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
 
-             {/* Leaves Update */}
-             <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
-             <PrivateRoute path="/leaveform" component={LeaveForm} exact />
+                {/* Leaves Update */}
+                <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
+                <PrivateRoute path="/leaveform" component={LeaveForm} exact />
+                <PrivateRoute path="/dashboardnew" component={DashboardNew} exact />
 
 
             </Switch>

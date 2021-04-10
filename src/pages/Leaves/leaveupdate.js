@@ -9,15 +9,15 @@ import './leaveupdate.scss';
 
 const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
-    { id: 'previousbalance', label: 'Previoue balance' },
+    { id: 'previousbalance', label: 'Previous Balance' },
     { id: 'eligible', label: 'Eligible' },
-    { id: 'currentbalance', label: 'Current balance' }
+    { id: 'currentbalance', label: 'Current Balance' }
 ];
 
 const rows = [
-    { leavetype: "Causel leave", previousbalance: '02', eligible: 10, currentbalance: "12", img: <img src={Edit} className="editImage" /> },
-    { leavetype: "Annual leave", previousbalance: '02', eligible: 10, currentbalance: "12", img: <img src={Edit} className="editImage" /> },
-    { leavetype: "On duty", previousbalance: '02', eligible: 10, currentbalance: "12", img: <img src={Edit} className="editImage" /> }
+    { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
+    { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
+    { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
 ]
 
 function LeaveUpdate() {
@@ -98,9 +98,9 @@ function LeaveUpdate() {
         <div>
             <div className="leaveMainHeader">Leave Balance Update</div>
             <div className="leaveFields">
-                <Grid item xs={12} container direction="row" spacing={3}>
+                <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={3}>
-                        <div>From</div>
+                        <div className="leaveFieldheading">From</div>
                         <div>
                             <Labelbox type="datepicker"
                                 changeData={(data) =>
@@ -112,7 +112,7 @@ function LeaveUpdate() {
                         </div>
                     </Grid>
                     <Grid item xs={3}>
-                        <div>To</div>
+                        <div className="leaveFieldheading">To</div>
                         <div>
                             <Labelbox type="datepicker"
                                 changeData={(data) =>
@@ -124,19 +124,19 @@ function LeaveUpdate() {
                         </div>
                     </Grid>
                     <Grid item xs={3}>
-                        <div>Employee Id</div>
+                        <div className="leaveFieldheading">Employee Id</div>
                         <div>
                             <Labelbox type="text" />
                         </div>
                     </Grid>
                     <Grid item xs={3}>
-                        <div>Name</div>
+                        <div className="leaveFieldheading">Name</div>
                         <div>
                             Rajesh
                         </div>
                     </Grid>
                     <Grid item xs={3}>
-                        <div>Leave type</div>
+                        <div className="leaveFieldheading">Leave Type</div>
                         <div>
                             <Labelbox type="timepicker"
                                 changeData={(data) =>
@@ -148,14 +148,14 @@ function LeaveUpdate() {
                         </div>
                     </Grid>
                     <Grid item xs={3}>
-                        <div>Add No.of Days</div>
+                        <div className="leaveFieldheading">Add No.of Days</div>
                         <div>
                             <Labelbox type="text" />
                         </div>
                     </Grid>
                     <Grid item xs={5} container direction="row" spacing={2}>
                         <Grid item xs={4}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit}/>
                         </Grid>
                         <Grid item xs={4}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />

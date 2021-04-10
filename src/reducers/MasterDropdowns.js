@@ -42,7 +42,9 @@ import {
   GET_CITY,
   GET_LANGUAGES,
   GET_ACTIVITY,
-  GET_SUBACTIVITY,GET_LITIGATION_COUNSEL
+  GET_SUBACTIVITY,
+  GET_LITIGATION_COUNSEL,
+  GET_LEAVETYPE,
 } from "../utils/Constants.js";
 const initalState = {
   getResourcesType: [],
@@ -84,7 +86,9 @@ const initalState = {
   getCaseType: [],
   getSubCaseType: [],
   getActivity: [],
-  getSubactivity: [],getLitigationCounsel:[],
+  getSubactivity: [],
+  getLitigationCounsel: [],
+  getLeaveType: [],
 };
 
 export default function (state = initalState, action) {
@@ -170,8 +174,10 @@ export default function (state = initalState, action) {
       return { ...state, getActivity: payload };
     case GET_SUBACTIVITY:
       return { ...state, getSubactivity: payload };
-      case GET_LITIGATION_COUNSEL:
-        return { ...state, getLitigationCounsel: payload };
+    case GET_LITIGATION_COUNSEL:
+      return { ...state, getLitigationCounsel: payload };
+    case GET_LEAVETYPE:
+      return { ...state, getLeaveType: payload };
     default:
       return state;
   }
