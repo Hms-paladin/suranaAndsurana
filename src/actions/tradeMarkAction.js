@@ -57,7 +57,7 @@ export const getUsageDetails= () => async dispatch => {
 
         axios({
             method: 'GET',
-            url: apiurl +'get_activity'
+            url: apiurl +'get_trade_mark_usage_details'
         })
         .then((response) => {
             dispatch({type:GET_TRADEMARK_USAGE_DETS,payload:response.data.data})

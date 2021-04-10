@@ -10,6 +10,7 @@ import CustomButton from '../../../component/Butttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Upload, message, Button, Icon } from 'antd';
+import moment from 'moment'
 import { getTradeMarkStatus,getClassDetails,getPoaDetails,
     getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
 
@@ -60,8 +61,8 @@ setpoaList({ POADetailsData })
 
 let tmUsageDetailsData = []
     properties.tmUsageDetailsList.map((data) =>
-    tmUsageDetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    tmUsageDetailsData.push({ value: data.status,
+    id: data.status_id })
 )
 setusageDetList({ tmUsageDetailsData })
 
@@ -73,15 +74,16 @@ setusageDetList({ tmUsageDetailsData })
   
     const props = {
         name: 'file',
-        action: '//jsonplaceholder.typicode.com/posts/',
-        headers: {
-            authorization: 'authorization-text',
-        },
+       // action: '//jsonplaceholder.typicode.com/posts/',
+      //  headers: {
+       //     authorization: 'authorization-text',
+       // },
         onChange(info) {
             if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
+                setselectedFile(info.file.originFileObj);
                 message.success(`${info.file.name} file uploaded successfully`);
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
@@ -280,12 +282,42 @@ setusageDetList({ tmUsageDetailsData })
             (obj) => TradeMarkForm[obj].error == true
         ); 
         console.log(filtererr.length);
+        let params  = {
+            "project_id" :TradeMarkForm.project_id.value,
+             "status_id" :TradeMarkForm.status_id.value,
+              "class_id" :TradeMarkForm.class_id.value,
+             "usage_details_id":TradeMarkForm.usage_details_id.value,
+              "mark_id":TradeMarkForm.mark_id.value,
+               "application_no" :TradeMarkForm.application_no.value,
+                "application_date":TradeMarkForm.application_date.value, 
+            "upload_image" :selectedFile,
+             "goods_description":TradeMarkForm.goods_description.value,
+              "usage_from_date":TradeMarkForm.usage_from_date.value,
+               "comments":TradeMarkForm.comments.value,
+                "internal_status":TradeMarkForm.internal_status.value,
+                 "allotment":TradeMarkForm.allotment.value,
+             "ip_india_status":TradeMarkForm.ip_india_status.value,
+              "amendment":TradeMarkForm.amendment.value,
+               "orders":TradeMarkForm.orders.value,
+                "priority_details":TradeMarkForm.priority_details.value,
+                 "tmj_number":TradeMarkForm.tmj_number.value,
+                  "tmj_date":TradeMarkForm.tmj_date.value,
+                   "journel_extract":TradeMarkForm.journel_extract.value,
+              "poa":TradeMarkForm.poa.value, 
+              "certificate_date":TradeMarkForm.certificate_date.value,
+               "renewal_certificate_date":TradeMarkForm.renewal_certificate_date.value,
+               "created_by" :localStorage.getItem("empId"),
+                "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+                 "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+                 "updated_by" :localStorage.getItem("empId"),
+               "ip_address" :"ddf"
+        }
         if (filtererr.length > 0) {
             // setTradeMarkForm({ error: true });
         } else {
             // setTradeMarkForm({ error: false });
 
-            dispatch(insertTradeMark(TradeMarkForm)).then(() => {
+            dispatch(insertTradeMark(params)).then(() => {
                 handleCancel()
             })
         }
@@ -296,7 +328,7 @@ setusageDetList({ tmUsageDetailsData })
     };
 
     const handleCancel = () => {
-        let ResumeFrom_key = [
+        let From_key = [
             "project_id", "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date", 
             "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
              "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
@@ -304,9 +336,14 @@ setusageDetList({ tmUsageDetailsData })
                "ip_address"
         ]
 
-      /*  ResumeFrom_key.map((data) => {
-            TradeMarkForm[data].value = ""
-        }) */
+        From_key.map((data) => {
+            try {
+                TradeMarkForm[data].value = "";
+              console.log("mapping", TradeMarkForm[data].value);
+            } catch (error) {
+              throw error;
+            }
+          });
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
@@ -368,7 +405,7 @@ setusageDetList({ tmUsageDetailsData })
 
                     <div className="uploadbox" >
                         <div>
-                            <Upload {...props} className="uploadbox_tag"
+                            <Upload {...props} className="uploadbox_tag" data={"upload1"}
                                 action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                 <div className="upload_file_inside"><label>Upload</label><PublishIcon /></div>
@@ -429,7 +466,7 @@ dropdown={classDetList.classDetailsData}  />
 
                     <Labelbox type="datepicker"
                         placeholder={" Next Renewal "}
-                        changeData={(data) => checkValidation(data, "nextRenewall")}
+                        changeData={(data) => checkValidation(data, "nextRenewal")}
                         value={TradeMarkForm.nextRenewal.value}
                         error={TradeMarkForm.nextRenewal.error}
                         errmsg={TradeMarkForm.nextRenewal.errmsg}
@@ -515,15 +552,15 @@ dropdown={poaList.POADetailsData}
                     <Labelbox type="datepicker"
                         placeholder={" Certificate Date"}
                         disableFuture={true}
-                        changeData={(data) => checkValidation(data, "certificatedate")}
-                        value={TradeMarkForm.renewal_certificate_date.value}
-                        error={TradeMarkForm.renewal_certificate_date.error}
-                        errmsg={TradeMarkForm.renewal_certificate_date.errmsg} />
+                        changeData={(data) => checkValidation(data, "certificate_date")}
+                        value={TradeMarkForm.certificate_date.value}
+                        error={TradeMarkForm.certificate_date.error}
+                        errmsg={TradeMarkForm.certificate_date.errmsg} />
 
                     <Labelbox type="datepicker"
                         placeholder={" Renewal Certificate Date"}
                         disableFuture={true}
-                        changeData={(data) => checkValidation(data, "certificate_date")}
+                        changeData={(data) => checkValidation(data, "renewal_certificate_date")}
                         value={TradeMarkForm.certificate_date.value}
                         error={TradeMarkForm.certificate_date.error}
                         errmsg={TradeMarkForm.certificate_date.errmsg} />
