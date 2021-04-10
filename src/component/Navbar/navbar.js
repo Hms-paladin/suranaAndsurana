@@ -23,6 +23,14 @@ import ResumeIcon from '../../images/resume.svg';
 import TodoIcon from '../../images/todoicon.svg';
 import SearchbarIcon from '../../images/searchicon.svg';
 import MasterIcon from '../../images/mastericon.svg';
+import Generateinvoice from '../../images/generateinvoice.svg';
+import Variableratemaster from '../../images/variableratemaster.svg';
+import Stagemaster from '../../images/stagemaster.svg';
+import Usergroups from '../../images/usergroups.svg';
+
+
+
+
 
 import { useHistory } from "react-router-dom";
 
@@ -79,24 +87,17 @@ function Navbar(props) {
       // {path:"/interview",title:"Interview"},
       // { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search", img: SearchbarIcon },
-
-      // { path: "/projectIp", title: "ProjectIp1" },
-      // { path: "/projectIp2", title: "ProjectIp2" },
-      // { path: "/task", title: "Task" },
-      // { path: "/addclient", title: "Add Client" },
-      { path: "/generateinvoice", title: "GenerateInvoice" },
-
-      // Litigation :
-      // { path: "/litigation", title: "Litigation" },
-
+      { path: "/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
       // variable rate master
-      { path: "/ratemaster", title: "Variable Rate Master", img: MasterIcon },
-      { path: "/stagesmaster", title: "StageMaster", img: MasterIcon },
+      { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+      { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
       // user groups
-      { path: "/usergroups", title: "User Groups", img: MasterIcon },
+      { path: "/usergroups", title: "User Groups", img: Usergroups },
       // group control
       { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
-      { path: "/leaveupdate", title: "LeaveUpdate", img: MasterIcon },
+      { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
+      { path: "/leaveform", title: "Leave Form", img: MasterIcon },
+
 
       // stage monitering
     ]

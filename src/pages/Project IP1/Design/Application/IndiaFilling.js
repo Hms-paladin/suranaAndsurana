@@ -19,7 +19,7 @@ function IndiaFilling() {
       error: null,
       errmsg: null,
     },
-    applicant: {
+    associate: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
       error: null,
@@ -183,15 +183,15 @@ function IndiaFilling() {
             errmsg={IndiaForm.file_cover.errmsg}
           />
 
-          <Labelbox type="select"
-            placeholder={"applicant"}
-            changeData={(data) => checkValidation(data, "applicant")}
-            value={IndiaForm.applicant.value}
-            error={IndiaForm.applicant.error}
-            errmsg={IndiaForm.applicant.errmsg}
+          <Labelbox type="text"
+            placeholder={"Associate"}
+            changeData={(data) => checkValidation(data, "associate")}
+            value={IndiaForm.associate.value}
+            error={IndiaForm.associate.error}
+            errmsg={IndiaForm.associate.errmsg}
           />
 
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Our Reference"}
             changeData={(data) => checkValidation(data, "our_ref")}
             value={IndiaForm.our_ref.value}
@@ -200,7 +200,7 @@ function IndiaFilling() {
           />
 
 
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Client Reference"}
             changeData={(data) => checkValidation(data, "client_ref")}
             value={IndiaForm.client_ref.value}
@@ -224,7 +224,7 @@ function IndiaFilling() {
             errmsg={IndiaForm.app_date.errmsg}
           />
 
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Applicant"}
             changeData={(data) => checkValidation(data, "applicant")}
             value={IndiaForm.applicant.value}

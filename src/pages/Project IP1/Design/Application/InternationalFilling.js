@@ -28,13 +28,19 @@ function InternationalFilling() {
       error: null,
       errmsg: null,
     },
-    applicant: {
+    associate: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     country: {
+      value: "",
+      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      error: null,
+      errmsg: null,
+    },
+    applicant: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
       error: null,
@@ -206,15 +212,15 @@ function InternationalFilling() {
             errmsg={InternationlForm.file_cover.errmsg}
           />
 
-          <Labelbox type="select"
-            placeholder={"applicant"}
-            changeData={(data) => checkValidation(data, "applicant")}
-            value={InternationlForm.applicant.value}
-            error={InternationlForm.applicant.error}
-            errmsg={InternationlForm.applicant.errmsg}
+          <Labelbox type="text"
+            placeholder={"Associate"}
+            changeData={(data) => checkValidation(data, "associate")}
+            value={InternationlForm.associate.value}
+            error={InternationlForm.associate.error}
+            errmsg={InternationlForm.associate.errmsg}
           />
 
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Our Reference"}
             changeData={(data) => checkValidation(data, "our_ref")}
             value={InternationlForm.our_ref.value}
@@ -223,7 +229,7 @@ function InternationalFilling() {
           />
 
 
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Client Reference"}
             changeData={(data) => checkValidation(data, "client_ref")}
             value={InternationlForm.client_ref.value}
@@ -247,7 +253,7 @@ function InternationalFilling() {
             errmsg={InternationlForm.app_date.errmsg}
           />
 
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Applicant"}
             changeData={(data) => checkValidation(data, "applicant")}
             value={InternationlForm.applicant.value}
