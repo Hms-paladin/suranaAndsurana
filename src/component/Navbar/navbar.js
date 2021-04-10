@@ -96,6 +96,8 @@ function Navbar(props) {
       { path: "/usergroups", title: "User Groups", img: MasterIcon },
       // group control
       { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+      { path: "/leaveupdate", title: "LeaveUpdate", img: MasterIcon },
+
       // stage monitering
     ]
   );
