@@ -123,15 +123,25 @@ const Litigation=(props)=> {
                     <div>{val.phone_no}</div>
                     <div>{val.email_id}</div>
                     <div>{val.address}</div>
-                    <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-                </div>
+                   </div>
                    )
             })
            return(
-               <div className="litigationCounsel">
-        <div className="ourCounselTitle">{data.liti_councel}</div>
-             {rowDataList}
-       </div>
+               <>
+            {rowDataList && rowDataList.length>0  &&     
+            <div className="litigationCounsel">
+            <div className="ourCounselTitle ourCounselHead"> <span>{data.liti_councel}</span> <img src={AddIcon} 
+            style={{height:"20px"}}
+          onClick={data.liti_councel_id !==5 ? () => setLitigationCounsel(true):() => setLitigationInterim(true)} 
+           
+            
+             /></div>
+                {rowDataList}
+            </div>
+       
+       }
+
+       </>
           )
         })
         setLitigationCaseDetails(MultipleSet)
@@ -236,8 +246,6 @@ const Litigation=(props)=> {
             })
             dynObj.valueById = multipleIdList.toString()
         }
-        // (end)
-
         setLitigationForm(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -325,77 +333,17 @@ const Litigation=(props)=> {
 
                 <Grid item xs={8} container direction="row"  >
                     <div className="litigationScroller">
-                        {/* <div className="litigationCounsel">
-                            <div className="ourCounselTitle">Our Counsel</div>
-                            <div className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                            </div>
-                        </div>
-                        <div className="litigationCounsel">
-                            <div className="ourCounselTitle">External Counsel</div>
-                            <div className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                            </div>
-                        </div>
-                        <div className="litigationCounsel">
-                            <div className="ourCounselTitle">Opposite Party </div>
-                            <div className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                            </div>
-                        </div>
-                        <div className="litigationCounsel">
-                            <div className="ourCounselTitle">Opposite Party Counsel</div>
-                            <div className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-
-                            </div>
-                        </div>
-                        <div className="litigationCounsel">
-                            <div className="ourCounselTitle">Opposite Party Counsel</div>
-                            <div className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                                <img src={AddIcon} onClick={() => setLitigationCounsel(true)} />
-                            </div>
-                        </div>
-                        <div className="litigationCounsel">
-                            <div className="ourCounselTitle">Adjournment</div>
-                            <div className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                            </div>
-                        </div>*/}
-                        {/* <div className="litigationCounsel"> 
+{/*           
+                        <div className="litigationCounsel"> 
                             <div className="ourCounselTitle">Interim</div>
-                            <div className="ourCounselFields">
+                            <div  className="ourCounselFields">
+                            <span className="ourCounselFields">
                                 <div>Name</div>
                                 <div>Phone No</div>
                                 <div>Email ID</div>
                                 <div>Address</div>
-                                <img src={AddIcon} onClick={() => setLitigationInterim(true)} />
+                            </span>
+                            <span ><img src={AddIcon} style={{height:"25px"}} onClick={() => setLitigationInterim(true)} /></span>
                             </div>
                         </div> */}
                         {LitigationCaseDetails}

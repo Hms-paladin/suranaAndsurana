@@ -7,27 +7,10 @@ import { useDispatch, connect } from "react-redux";
 import { InesertResume } from "../../actions/ResumeAction";
 import CustomButton from "../../component/Butttons/button";
 import { message } from 'antd';
+import { InsertLitigationDetails } from '../../actions/Litigation';
 
 function AddDataModel() {
-    const props = {
-        name: 'file',
-        action: '//jsonplaceholder.typicode.com/posts/',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
     const dispatch = useDispatch()
-
 
     const [Litigation_Form, setResumeFrom] = useState({
 
@@ -86,7 +69,7 @@ function AddDataModel() {
         } else {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Litigation_Form)).then(() => {
+            dispatch(InsertLitigationDetails(Litigation_Form)).then(() => {
                 handleCancel()
             })
         }
@@ -163,11 +146,12 @@ function AddDataModel() {
                         error={Litigation_Form.name.error}
                         errmsg={Litigation_Form.name.errmsg} />
 
-                    <Labelbox type="number" placeholder={"Phone No"}
+                    <Labelbox type="text" placeholder={"Phone No"}
                         changeData={(data) => checkValidation(data, "phoneno")}
                         value={Litigation_Form.phoneno.value}
                         error={Litigation_Form.phoneno.error}
                         errmsg={Litigation_Form.phoneno.errmsg} />
+   
 
                     <Labelbox type="text" placeholder={"Email Id"}
                         changeData={(data) => checkValidation(data, "emailid")}
@@ -183,7 +167,7 @@ function AddDataModel() {
                             errmsg={Litigation_Form.address.errmsg} />
                     </div>
 
-                    <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
 
                 </div>
 

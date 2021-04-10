@@ -52,11 +52,48 @@ export const GetLitigation = (ProjectID) => async dispatch => {
           url: apiurl + "get_litigation",
           data: 
           {
-            project_id:ProjectID||0
+            project_id:ProjectID||0,
         },
         }).then((response) => {
           if (response.data.status === 1) {
               dispatch({type:GET_LITIGATION,payload:response.data.data})
+          }
+        });
+      
+  } catch (err) {
+      
+  }
+}
+
+export const InsertLitigationDetails = (Litigation_Form) => async dispatch => {
+  try {
+      axios({
+          method: "POST",
+          url: apiurl + "get_litigation_councel",
+          data: 
+            {
+               litigation_id:"1",
+               liti_councel_id:"1",
+               name:"sam",
+               phone_no:"9344120434",
+               email_id:"sam@gmail.com",
+               address:"chennai",
+               interim_name:"visu",
+               interim_appln_no:"123",
+               interim_application_date:"2021-02-01",
+               interim_details:"chennai",
+             created_on: moment().format("YYYY-MM-DD HH:m:s"),
+             updated_on: moment().format("YYYY-MM-DD HH:m:s"),
+             created_by: localStorage.getItem("empId"),
+             updated_by: localStorage.getItem("empId"),
+          },
+        }).then((response) => {
+          if (response.data.status === 1) {
+              dispatch({type:UPDATE_LITIGATION_DETAILS,payload:response.data.data})
+            notification.success({
+              message: "Litigation Details Added Successfully",
+            });
+            return Promise.resolve();
           }
         });
       
