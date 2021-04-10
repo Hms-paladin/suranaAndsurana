@@ -1,4 +1,5 @@
-import { GET_ACTIVITY, GET_PRIORITY,GET_TAG,INSERT_TASK,INSERT_ADHOC_TASK,GET_ASSIGN_TO,GET_LOCATION}  from '../utils/Constants.js'
+import { GET_ACTIVITY, GET_PRIORITY,GET_TAG,INSERT_TASK,INSERT_ADHOC_TASK,
+    GET_ASSIGN_TO,GET_LOCATION,INSERT_TIME_SHEET}  from '../utils/Constants.js'
 
 const intialState = {
     getActivityList: [], prioritysList:[],tagsList:[],insertTask :[], insertAdhocTask :[] ,  assignToLists :[],locationLists :[]
@@ -21,6 +22,8 @@ export default function (state = intialState, action) {
             return  { ...state, assignToLists: payload }
             case GET_LOCATION:
             return  { ...state, locationLists: payload }
+            case INSERT_TIME_SHEET:
+                return  { ...state, insertTask: payload }
         default:
             return state;
     }

@@ -1,5 +1,5 @@
 
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
 import './trademark.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
@@ -10,12 +10,66 @@ import CustomButton from '../../../component/Butttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Upload, message, Button, Icon } from 'antd';
+import { getTradeMarkStatus,getClassDetails,getPoaDetails,
+    getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
 
 
 
 
-function TradeMark() {
 
+function TradeMark(properties) {
+
+
+    const [tradeStatusList, settradeStatusList] = useState({})
+    const [classDetList, setclassDetList] = useState({})
+    const [poaList, setpoaList] = useState({})
+    const [usageDetList, setusageDetList] = useState({})
+
+    useEffect(() => {
+        dispatch(getTradeMarkStatus());
+        dispatch(getClassDetails());
+        dispatch(getPoaDetails());
+        dispatch(getUsageDetails());
+        
+        
+      }, []);
+
+    useEffect(() => {
+
+        let tradeStatusData = []
+        properties.tradeStatusList.map((data) =>
+    tradeStatusData.push({ value: data.activity,
+        id: data.activity_id })
+    )
+    settradeStatusList({ tradeStatusData })
+    
+    let classDetailsData = []
+    properties.classDetailsList.map((data) =>
+    classDetailsData.push({ value: data.activity,
+    id: data.activity_id })
+)
+setclassDetList({ classDetailsData })
+
+let POADetailsData = []
+    properties.POAList.map((data) =>
+    POADetailsData.push({ value: data.activity,
+    id: data.activity_id })
+)
+setpoaList({ POADetailsData })
+
+let tmUsageDetailsData = []
+    properties.tmUsageDetailsList.map((data) =>
+    tmUsageDetailsData.push({ value: data.activity,
+    id: data.activity_id })
+)
+setusageDetList({ tmUsageDetailsData })
+
+}, [
+    properties.tradeStatusList,properties.classDetailsList,properties.POAList,properties.tmUsageDetailsList
+  ]);
+
+
+  
     const props = {
         name: 'file',
         action: '//jsonplaceholder.typicode.com/posts/',
@@ -37,8 +91,13 @@ function TradeMark() {
 
 
     const [Trade_Mark, setResumeFrom] = useState({
-
-        mark: {
+        tradestatus: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        mark_id: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -165,7 +224,7 @@ function TradeMark() {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Trade_Mark);
-        for (var i in targetkeys) {
+      /*  for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
                 Trade_Mark[targetkeys[i]].value,
                 Trade_Mark[targetkeys[i]].validation
@@ -173,17 +232,17 @@ function TradeMark() {
             Trade_Mark[targetkeys[i]].error = !errorcheck.state;
             Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
             mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
-        }
+        } */
         var filtererr = targetkeys.filter(
             (obj) => Trade_Mark[obj].error == true
-        );
+        ); 
         console.log(filtererr.length);
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
         } else {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Trade_Mark)).then(() => {
+            dispatch(insertTradeMark(Trade_Mark)).then(() => {
                 handleCancel()
             })
         }
@@ -198,9 +257,9 @@ function TradeMark() {
             "mark", "projecttype", "goodsdescription", "internalstutus", "basicQualification", "additionalQualification1", "additionalQualification2", "institution", "lastEmployer", "startDate", "endDate", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "industry"
         ]
 
-        ResumeFrom_key.map((data) => {
+      /*  ResumeFrom_key.map((data) => {
             Trade_Mark[data].value = ""
-        })
+        }) */
         setResumeFrom(prevState => ({
             ...prevState,
         }));
@@ -248,14 +307,17 @@ function TradeMark() {
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
                     <Labelbox type="select"
-                        placeholder={" Status"} />
-
+                        placeholder={" Status"} changeData={(data) => checkValidation(data, "tradestatus")}
+                dropdown={tradeStatusList.tradeStatusData} 
+                value={Trade_Mark.tradestatus.value}
+                error={Trade_Mark.tradestatus.error}
+                errmsg={Trade_Mark.tradestatus.errmsg}/>
                     <Labelbox type="text"
                         placeholder={" Mark"}
-                        changeData={(data) => checkValidation(data, "mark")}
-                        value={Trade_Mark.mark.value}
-                        error={Trade_Mark.mark.error}
-                        errmsg={Trade_Mark.mark.errmsg} />
+                        changeData={(data) => checkValidation(data, "mark_id")}
+                        value={Trade_Mark.mark_id.value}
+                        error={Trade_Mark.mark_id.error}
+                        errmsg={Trade_Mark.mark_id.errmsg} />
 
                     <div className="uploadbox" >
                         <div>
@@ -283,7 +345,9 @@ function TradeMark() {
                         errmsg={Trade_Mark.applicationdate.errmsg} />
 
                     <Labelbox type="select"
-                        placeholder={" Class"} />
+                        placeholder={" Class"}
+                        
+dropdown={classDetList.classDetailsData}  />
                     <div className="projectFormComments">
                         <Labelbox type="textarea"
                             placeholder={" Goods and Services Description"}
@@ -294,7 +358,8 @@ function TradeMark() {
                     </div>
 
                     <Labelbox type="select"
-                        placeholder={" Usage Details "} />
+                        placeholder={" Usage Details "} 
+                        dropdown={usageDetList.tmUsageDetailsData}/>
 
                     <Labelbox type="datepicker"
                         placeholder={"  Date of Use "}
@@ -388,7 +453,10 @@ function TradeMark() {
                         errmsg={Trade_Mark.journalextract.errmsg} />
 
                     <Labelbox type="select"
-                        placeholder={" POA"} />
+                        placeholder={" POA"} 
+                        
+dropdown={poaList.POADetailsData}
+/>
 
                     <Labelbox type="datepicker"
                         placeholder={" Certificate Date"}
@@ -423,5 +491,16 @@ function TradeMark() {
 
     )
 }
+const mapStateToProps = (state) =>
+// console.log(state.getOptions.getProcessType, "getProcessType")
+({
+    
+    tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
+    classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
+    POAList: state.tradeMarkReducer.getPOAList || [],
+    tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
+    countriesList : state.tradeMarkReducer.getCountryList || [],
+});
 
-export default TradeMark;
+//export default connect(mapStateToProps)(ProjectTaskModel);
+export default connect(mapStateToProps)(TradeMark);

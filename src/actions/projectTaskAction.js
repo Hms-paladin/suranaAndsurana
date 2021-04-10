@@ -1,4 +1,5 @@
-import { GET_ACTIVITY,GET_TAG,GET_PRIORITY,INSERT_TASK,INSERT_ADHOC_TASK,GET_LOCATION,GET_ASSIGN_TO } from "../utils/Constants";
+import { GET_ACTIVITY,GET_TAG,GET_PRIORITY,INSERT_TASK,INSERT_ADHOC_TASK,
+    GET_LOCATION,GET_ASSIGN_TO,INSERT_TIME_SHEET } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -60,6 +61,9 @@ export const inserTask = (params) => async dispatch => {
             data: params
           }).then((response) => {
             if (response.data.status === 1) {
+                notification.success({
+                    message: "Task added Successfully",
+                  });
                 dispatch({type:INSERT_TASK,payload:response.data.status})
               return Promise.resolve();
             }
@@ -70,7 +74,7 @@ export const inserTask = (params) => async dispatch => {
     }
 }
 
-export const insertAdhocTask = (params) => async dispatch => {
+export const insertAdhocTask = (params,timeSheetParams) => async dispatch => {
     try {
         axios({
             method: 'POST',
@@ -78,7 +82,35 @@ export const insertAdhocTask = (params) => async dispatch => {
             data: params
           }).then((response) => {
             if (response.data.status === 1) {
+                var msg = response.data.msg;
+                notification.success({
+                    message: msg != "" ? msg : "Adhoc Task added Successfully",
+                  });
                 dispatch({type:INSERT_ADHOC_TASK,payload:response.data.status})
+                dispatch(insertTimeSheet(timeSheetParams,'id'))
+              return Promise.resolve();
+            }
+          });
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertTimeSheet= (params,id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_start_time',
+            data: params
+          }).then((response) => {
+            if (response.data.status === 1) {
+                var msg = response.data.msg;
+                notification.success({
+                    message: "Time sheet updated",
+                  });
+                dispatch({type:INSERT_TIME_SHEET,payload:response.data.status})
+                
               return Promise.resolve();
             }
           });
