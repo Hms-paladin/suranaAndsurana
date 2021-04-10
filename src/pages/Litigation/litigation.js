@@ -130,16 +130,11 @@ const Litigation=(props)=> {
            return(
                <div className="litigationCounsel">
         <div className="ourCounselTitle">{data.liti_councel}</div>
-        <div className="ourCounselFields">
-                            </div>
              {rowDataList}
        </div>
           )
         })
         setLitigationCaseDetails(MultipleSet)
-        console.log(MultipleSet,"multipleSet")
-
-        console.log("setLitigationCaseDetails",props.getLitigationDetails[0])
       }, [props.getSubCaseType,props.getLitigationDetails])
       useEffect(() => {
         //hod/attony, Counsel ,DRA and DDRA

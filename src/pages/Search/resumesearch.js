@@ -299,7 +299,7 @@ function Resumesearch(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <Labelbox type="select"
-                                placeholder="Achivements"
+                                placeholder="Achievements"
                                 dropdown={resumeSearchList.achievementList}
                                 changeData={(data) => checkValidation(data, "acheivements", resumeSearchList.achievementList)}
                                 value={ResumeSearch_Form.acheivements.value}

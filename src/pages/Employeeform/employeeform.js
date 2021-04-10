@@ -321,7 +321,6 @@ function Employeeform(props) {
         handleCancel()
     }, [props.stateClear])
 
-    console.log(getDetails, "getDetails")
     return (
 
         <div>
