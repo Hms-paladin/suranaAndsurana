@@ -10,8 +10,9 @@ import { notification } from 'antd';
 import moment from "moment";
 import { getHrTaskList } from "../../actions/TodoListAction";
 import { connect, useDispatch } from "react-redux";
-import {getDesignationList,getDepartment,getInterviewers} from '../../actions/MasterDropdowns'
-import {GetCandiateDetails,GetEmployeeDetails} from '../../actions/CandidateAndEmployeeDetails'
+import { getDesignationList, getDepartment, getInterviewers } from '../../actions/MasterDropdowns'
+import { GetCandiateDetails, GetEmployeeDetails } from '../../actions/CandidateAndEmployeeDetails';
+import DynModelView from '../Interview/model';
 import './employeeform.scss'
 function Employeeform(props) {
     const dispatch = useDispatch();
@@ -78,69 +79,70 @@ function Employeeform(props) {
         },
     })
 
-//Dropdowns
+    //Dropdowns
     useEffect(() => {
-     dispatch(getDesignationList());
-     dispatch(getDepartment());
-     dispatch(getInterviewers());
+        dispatch(getDesignationList());
+        dispatch(getDepartment());
+        dispatch(getInterviewers());
     }, [])
-//CandidateDetails
+    //CandidateDetails
     useEffect(() => {
-        console.log("empform",props.emp_form_id)
-        EmpForm.desgination.value=props.emp_form_id.designation_id
+        EmpForm.desgination.value = props.emp_form_id.designation_id
         dispatch(GetCandiateDetails(props.emp_form_id.int_status_id));
-    }, [ props.emp_form_id])
-//SETCandidateDetails
+    }, [props.emp_form_id])
+    //SETCandidateDetails
     useEffect(() => {
-        setgetDetails(props.getCandidatesDetails)
-    }, [ props.getCandidatesDetails])
-//SETDropdowns 
-    useEffect(() => {
-      let Designation = [];
-      props.getDesignationList.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data.designation })
-      );
-      setgetData({ Designation });
+        setgetDetails(props.getCandidatesDetails[0])
+        console.log("empformempform", props.getCandidatesDetails)
 
-      let Department = [];
-      props.getDepartment.map((data, index) =>
-        Department.push({ id: data.department_id, value: data.department })
-      );
-      setdept({ Department });
-      let Supervisor = [];
-      props.getInterviewersList.map((data, index) =>
-        Supervisor.push({ id: data.emp_id, value: data.name })
-      );
-      setsup_name({ Supervisor });
+    }, [props.getCandidatesDetails])
+    //SETDropdowns 
+    useEffect(() => {
+        let Designation = [];
+        props.getDesignationList.map((data, index) =>
+            Designation.push({ id: data.designation_id, value: data.designation })
+        );
+        setgetData({ Designation });
+
+        let Department = [];
+        props.getDepartment.map((data, index) =>
+            Department.push({ id: data.department_id, value: data.department })
+        );
+        setdept({ Department });
+        let Supervisor = [];
+        props.getInterviewersList.map((data, index) =>
+            Supervisor.push({ id: data.emp_id, value: data.name })
+        );
+        setsup_name({ Supervisor });
     }, [
-      props.getDesignationList,
-      props.getDepartment,
-      props.getInterviewersList,
+        props.getDesignationList,
+        props.getDepartment,
+        props.getInterviewersList,
     ]);
-//SETEmployeeDetails  
-function Sup_nameGetId(data) {
-    Axios({
-        method: "post",
-        header: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        url: apiurl + "get_employee_by_id",
-        data: {
-            "emp_id": data
-        }
-    }).then((response) => {
-        let empData = []
-        response.data.data.map((data, index) =>
-            empData.push(data)
-        )
-        setEmpFrom(prevState => ({
-            ...prevState,
-                supervisor_email:{value:empData[0].official_email},
-                supervisor_ph:{value:empData[0].official_contact}
-        }));
-    })
-}  
+    //SETEmployeeDetails  
+    function Sup_nameGetId(data) {
+        Axios({
+            method: "post",
+            header: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: apiurl + "get_employee_by_id",
+            data: {
+                "emp_id": data
+            }
+        }).then((response) => {
+            let empData = []
+            response.data.data.map((data, index) =>
+                empData.push(data)
+            )
+            setEmpFrom(prevState => ({
+                ...prevState,
+                supervisor_email: { value: empData[0].official_email },
+                supervisor_ph: { value: empData[0].official_contact }
+            }));
+        })
+    }
     // useEffect(() => {
     //     let empData = []
     //     props.getEmployeeDetails.map((data, index) =>
@@ -204,8 +206,8 @@ function Sup_nameGetId(data) {
         formData.append("updated_by", localStorage.getItem("empId"));
         formData.append("ip_address", "Adress");
         formData.append(
-          "task_id",
-          props.emp_form_id && props.emp_form_id.task_id
+            "task_id",
+            props.emp_form_id && props.emp_form_id.task_id
         );
         Axios({
             method: "post",
@@ -280,7 +282,7 @@ function Sup_nameGetId(data) {
 
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
-            
+
             Sup_nameGetId(data)
             // dispatch(GetEmployeeDetails(data))
         }
@@ -317,55 +319,105 @@ function Sup_nameGetId(data) {
 
     useEffect(() => {
         handleCancel()
-      }, [props.stateClear])
+    }, [props.stateClear])
+
     return (
 
         <div>
             <div style={{ marginBottom: "10px", fontSize: '16px', fontWeight: "600" }}>Employee form</div>
-            {getDetails.map((val, index) => {
+            {getDetails && getDetails.length > 0 && getDetails.map((val, index) => {
                 return (
                     <div className="Employee_formdiv">
-                        <div className="employeeform_row1">
-                            <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name}</div></div>
-                            <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id}</div></div>
-                            <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob?moment(val.dob).format("DD-MMM-YYYY"):"-"}</div></div>
-                            <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === "M" ? "Male" : "Female"}</div></div>
-                            <div className="employeeform_r1"><div className="headcolor">Basic Qualification</div><div className="employeecont">{val.bas_qual}</div></div>
-                            {/* <div className="employeeform_r1"><div className="headcolor">Additional Qualification 1</div><div className="employeecont">{val.add_quali_1}</div></div>
-                            <div className="employeeform_r1"><div className="headcolor">Additional Qualification 2</div><div className="employeecont">{val.add_quali_2}</div></div> */}
-                        </div>
+
                         <div className="employeeform_row2">
                             <div className="employeeform_row2flex1">
-                                <div className="employeeform_r1"><div className="headcolor">Institution</div><div className="employeecont">{val.institution}</div></div>
-                                <div className="employeeform_r1"><div className="headcolor">Last Employer</div><div className="employeecont">{val.last_employer}</div></div>
-                                <div className="employeeform_r1"><div className="headcolor">Start Date</div><div className="employeecont">{val.last_empr_start_date}</div></div>
-                                <div className="employeeform_r1"><div className="headcolor">End Date</div><div className="employeecont">{val.last_empr_end_date}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id ? val.resume_id : ""}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row2flex2">
-                                <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills}</div></div>
-                                <div className="employeeform_r2 traitsdiv"><div className="headcolor">Traits</div><div className="employeecont">{val.traits}</div></div>
+                                <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills ? val.skills : "-"}</div></div>
+                                <div className="employeeform_r2 traitsdiv"><div className="headcolor">Traits</div><div className="employeecont">{val.traits ? val.traits : "-"}</div></div>
                             </div>
                         </div>
+                        <div className="tableHeading">Education</div>
+                        <div className="employeeform_row2">
+
+                            <div className="educationtable">
+                                <div className="educationHeader">
+                                    <div>S.No</div>
+                                    <div>Qualification</div>
+                                    <div>Institution/University</div>
+                                    <div>Year of Passing</div>
+                                    <div >Percentage/CGPA</div>
+                                </div>
+                                {val.qualification.map((values, index) => {
+                                    return (
+                                        <div className="educationRow">
+                                            <div>{index + 1}</div>
+                                            <div>{values.qual_name}</div>
+                                            <div>{values.institution}</div>
+                                            <div>{values.year_of_passing}</div>
+                                            <div className="educcatiocgpa">{values.cgpa}</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        {val.type_of_resource !== 'Intern' && <div className="expDetailes">
+                            <div className="tableHeading">Previous Employer Details</div>
+                            <div className="educationtable">
+                                <div className="EmployeeHeader">
+                                    <div>S.No</div>
+                                    <div>Type of Industry</div>
+                                    <div>Company Name</div>
+                                    <div>City</div>
+                                    <div>Department</div>
+                                    <div>Designation</div>
+                                    <div>Period From</div>
+                                    <div>Period To</div>
+                                </div>
+                                {val.experience.map((values, index) => {
+                                    return (
+                                        <div className="EmployeeRow">
+                                            <div>{index + 1}</div>
+                                            <div>{values.industry}</div>
+                                            <div>{values.company_name}</div>
+                                            <div>{values.city}</div>
+                                            <div>{values.department_id}</div>
+                                            <div>{values.designation_id}</div>
+                                            <div>{values.period_from}</div>
+                                            <div>{values.period_to}</div>
+                                        </div>
+
+                                    )
+                                })}
+
+                            </div>
+                        </div>}
                         <div className="employeeform_row3">
-                            <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Acheivement</div><div className="employeecont">{val.achievement}</div></div>
+                            <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications ? val.certifications : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization ? val.specialization : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Achievements</div><div className="employeecont">{val.achievement ? val.achievement : "-"}</div></div>
                         </div>
                         <div className="employeeform_row4">
-                            <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest}</div></div>
+                            <div className="employeeform_r2"><div className="headcolor">Capabilities</div><div className="employeecont">{val.capability ? val.capability : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Talents</div><div className="employeecont">{val.talent ? val.talent : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Special Interest/Hobby</div><div className="employeecont">{val.special_interest ? val.special_interest : "-"}</div></div>
                         </div>
                         <div className="employeeform_row5">
-                            <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr}</div></div>
+                            <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>
                         </div>
                         <div className="employeeform_row6">
-                            <div className="employeeform_r2"><div className="headcolor">State of Domecile</div><div className="employeecont">{val.state_of_domecile}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Status of the Candidate</div><div className="employeecont">{val.status_resource}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known}</div></div>
+                            <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource : "-"}</div></div>
+
                         </div>
                     </div>
                 )
@@ -457,8 +509,8 @@ function Sup_nameGetId(data) {
                     >
                           <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
                      </Upload>, */}
-                    <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf" 
-                    onChange={onFileChange} id="pdfupload" /> <PublishIcon />
+                    <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+                        onChange={onFileChange} id="pdfupload" /> <PublishIcon />
                 </div>
 
             </div>
@@ -469,11 +521,11 @@ function Sup_nameGetId(data) {
 
 const mapStateToProps = (state) => (
     {
-  getDesignationList: state.getOptions.getDesignationList  || [],
-  getDepartment: state.getOptions.getDepartment  || [],
-  getInterviewersList: state.getOptions.getInterviewersList  || [],
-  getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails  || [],
-  getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails  || [],
+        getDesignationList: state.getOptions.getDesignationList || [],
+        getDepartment: state.getOptions.getDepartment || [],
+        getInterviewersList: state.getOptions.getInterviewersList || [],
+        getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails || [],
+        getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
     }
 );
 

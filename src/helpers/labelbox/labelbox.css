@@ -184,7 +184,8 @@
 .formdiv .MuiFormControl-marginNormal path {
   color: #023e7d;
   z-index: 1;
-  padding-right: 7px;
+  padding: 0px;
+  margin: 7px;
 }
 
 .formdiv .MuiOutlinedInput-adornedEnd {
@@ -221,4 +222,10 @@
 
 .MuiPickersToolbar-toolbar h4 {
   font-size: 20px !important;
+}
+
+/* time Picker */
+
+.labelboxTimePicker{
+  width: 21px;
 }

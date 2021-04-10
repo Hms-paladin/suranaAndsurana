@@ -37,6 +37,12 @@ import GroupControl from '../pages/GroupControl/groupcontrol'
 //Group Control:
 import StageMonitering from '../pages/stages/StageMonitering' 
 
+// Leave Update:
+import LeaveUpdate from '../pages/Leaves/leaveupdate';
+import LeaveForm from '../pages/Leaves/leaveform';
+
+
+
 function Routes(props) {
 
     return (
@@ -70,6 +76,12 @@ function Routes(props) {
              <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
              {/*  Steg Monitering */}
              <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
+
+             {/* Leaves Update */}
+             <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
+             <PrivateRoute path="/leaveform" component={LeaveForm} exact />
+
+
             </Switch>
         </Navbar>
     );

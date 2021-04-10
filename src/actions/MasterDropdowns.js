@@ -14,7 +14,15 @@ import {
   GET_SPECIAL_INTEREST,
   GET_STATE,
   GET_CITY,
-  GET_LANGUAGES,GET_DESIGNATION_LIST,GET_DEPARTMENT,GET_INTERVIEWERS_LIST,GET_INTERVIEW_STATUS
+  GET_TRADE_MARK_STATUS,
+  GET_LANGUAGES,
+  GET_DESIGNATION_LIST,
+  GET_DEPARTMENT,
+  GET_INTERVIEWERS_LIST,
+  GET_INTERVIEW_STATUS,
+  GET_CASE_TYPE,
+  GET_SUB_CASE_TYPE,
+
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -34,6 +42,9 @@ import {
   GET_EMPLOYEE_LIST,
   GET_CLIENT_LIST,
   GET_PROJECT_COST_RANGE,
+  GET_COURT_LOCATION,
+  GET_ACTIVITY,
+  GET_SUBACTIVITY,
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -113,23 +124,23 @@ export const getIndustry = () => async (dispatch) => {
 };
 
 export const getDepartment = () => async (dispatch) => {
-    const response = await axios.get(apiurl + "/get_department");
-    return dispatch({ type: GET_DEPARTMENT, payload: response.data.data });
-  };
+  const response = await axios.get(apiurl + "/get_department");
+  return dispatch({ type: GET_DEPARTMENT, payload: response.data.data });
+};
 
-  export const getInterviewers = () => async (dispatch) => {
-    const response = await axios.get(apiurl + "/get_interviewers");
-    return dispatch({ type: GET_INTERVIEWERS_LIST, payload: response.data.data });
-  };  
+export const getInterviewers = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_interviewers");
+  return dispatch({ type: GET_INTERVIEWERS_LIST, payload: response.data.data });
+};
 //HR-->ToDoList
 export const getInterviewStatus = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_Interview_Status");
   return dispatch({ type: GET_INTERVIEW_STATUS, payload: response.data.data });
 };
 export const getDesignationList = () => async (dispatch) => {
-    const response = await axios.get(apiurl + "/get_s_tbl_m_designation");
-    return dispatch({ type: GET_DESIGNATION_LIST, payload: response.data.data });
-  };
+  const response = await axios.get(apiurl + "/get_s_tbl_m_designation");
+  return dispatch({ type: GET_DESIGNATION_LIST, payload: response.data.data });
+};
 
 // Project Search dropdown
 
@@ -245,4 +256,52 @@ export const getInterviewApprover = () => async (dispatch) => {
     type: GET_INTERVIEW_APPROVER,
     payload: response.data.data,
   });
+};
+
+export const getLocation = () => async (dispatch) => {
+  try {
+    axios({
+      method: "GET",
+      url: apiurl + "get_court",
+    }).then((response) => {
+      dispatch({ type: GET_COURT_LOCATION, payload: response.data.data });
+    });
+  } catch (err) {}
+};
+
+export const getTradeMarkStatus = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_trade_mark_status");
+  return dispatch({ type: GET_TRADE_MARK_STATUS, payload: response.data.data });
+};
+export const getCaseType = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_case_type");
+  return dispatch({ type: GET_CASE_TYPE, payload: response.data.data });
+};
+export const getSubCaseType = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_sub_case",
+    data: {
+      client_id: id,
+    },
+  });
+  return dispatch({ type: GET_SUB_CASE_TYPE, payload: response.data.data });
+};
+
+// TimeSheet==>
+
+export const getActivity = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_activity");
+  return dispatch({ type: GET_ACTIVITY, payload: response.data.data });
+};
+
+export const getSubactivity = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_sub_activity",
+    data: {
+      activity_id: id.Activity,
+    },
+  });
+  return dispatch({ type: GET_SUBACTIVITY, payload: response.data.data });
 };
