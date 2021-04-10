@@ -29,7 +29,6 @@ const Litigation=(props)=> {
     const [SubCaseType, setSubCaseType] = useState({});
     const [LitigationCaseDetails, setLitigationCaseDetails] = useState([]);
     const [LitigationCase, setLitigationCase] = useState();
-    
     const [Litigation_Form, setLitigationForm] = useState({
         internalcaseno: {
             value: "",
@@ -62,8 +61,9 @@ const Litigation=(props)=> {
             errmsg: null,
         },
         ddra: {
-            value: "", valueById: "",
-            validation: [{ "name": "required" },],
+            value: "",
+            valueById: "",
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -100,7 +100,7 @@ const Litigation=(props)=> {
        dispatch(getCaseType());
       }, []);
       useEffect(() => {
-        console.log("id_Props",props.id_Props)
+
         setIdDetails(props.id_Props)
         dispatch(getSubCaseType(props.id_Props.client_id))
         dispatch(GetLitigation(props.id_Props.project_id))
@@ -114,7 +114,9 @@ const Litigation=(props)=> {
         setSubCaseType({subCaseType})
         //______________
     
-      
+    }, [props.getSubCaseType])
+
+    useEffect(() => {  
         let MultipleSet = props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case_details.map((data) => {
             let rowDataList= data?.liti_details?.map((val) =>{
                 return(
@@ -128,24 +130,63 @@ const Litigation=(props)=> {
             })
            return(
                <>
-            {rowDataList && rowDataList.length>0  &&     
+            {rowDataList && rowDataList.length>0  &&      
             <div className="litigationCounsel">
             <div className="ourCounselTitle ourCounselHead"> <span>{data.liti_councel}</span> <img src={AddIcon} 
             style={{height:"20px"}}
-          onClick={data.liti_councel_id !==5 ? () => setLitigationCounsel(true):() => setLitigationInterim(true)} 
-           
-            
+          onClick={setLitigationCounselModel} 
              /></div>
                 {rowDataList}
             </div>
-       
        }
-
-       </>
+       </>  
+    
           )
         })
         setLitigationCaseDetails(MultipleSet)
-      }, [props.getSubCaseType,props.getLitigationDetails])
+// ____________________________________
+    let caseDetails=props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0];
+    if(props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0]){
+        const strArr = []
+        const string = caseDetails.responsible_attorney
+        const usingSplit = strArr.push((string.split(",")))
+        
+        // const PrefillCounsel=[]
+        let MultipleCouncelValue=[]
+
+                   
+            employeeList.EmployeeList.map((total)=>{
+                strArr && strArr[0].map((id)=>{
+                    if(total.id === parseInt(id)) { 
+
+                        MultipleCouncelValue.push(total.value)
+                        }
+                  
+                   })
+            })  
+
+           console.log("checking",MultipleCouncelValue)
+
+        
+        
+    Litigation_Form["internalcaseno"].value =caseDetails.internal_case_no
+    Litigation_Form["status"].value = caseDetails.status_id
+    Litigation_Form["courtname"].value = caseDetails.court_id
+    Litigation_Form["casetype"].value = caseDetails.case_type_id
+    Litigation_Form["courtcaseno"].value = caseDetails.court_case_no
+    Litigation_Form["ddra"].value =  MultipleCouncelValue
+    Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date
+    Litigation_Form["duedate"].value = caseDetails.due_date
+    Litigation_Form["subcase"].value = caseDetails.sub_case
+    Litigation_Form["suitvalue"].value = caseDetails.suit_value
+    }
+    setLitigationForm(prevState => ({
+        ...prevState
+    }));
+    
+     setLitigationCase(caseDetails)
+        //________________________________
+      }, [props.getLitigationDetails])
       useEffect(() => {
         //hod/attony, Counsel ,DRA and DDRA
         let EmployeeList = [];
@@ -175,6 +216,10 @@ const Litigation=(props)=> {
       }, [
         props.EmployeeList,props.getCourtLocation,props.getTradeMarkStatus,props.getCaseType
       ]);
+
+      const setLitigationCounselModel=()=>{
+        setLitigationCounsel(true)
+      }
     function onSubmit() {
         // var mainvalue = {};
         // var targetkeys = Object.keys(Litigation_Form);
@@ -220,6 +265,8 @@ const Litigation=(props)=> {
     }
 
     function checkValidation(data, key, multipleId) {
+
+
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -296,7 +343,7 @@ const Litigation=(props)=> {
                     <Labelbox type="select" placeholder={"DDRA"}
                     mode={"multiple"}
                    dropdown={employeeList.EmployeeList}
-                        changeData={(data) => checkValidation(data, "ddra")}
+                        changeData={(data) => checkValidation(data, "ddra",employeeList.EmployeeList)}
                         value={Litigation_Form.ddra.value}
                         error={Litigation_Form.ddra.error}
                         errmsg={Litigation_Form.ddra.errmsg} />
@@ -333,23 +380,10 @@ const Litigation=(props)=> {
 
                 <Grid item xs={8} container direction="row"  >
                     <div className="litigationScroller">
-{/*           
-                        <div className="litigationCounsel"> 
-                            <div className="ourCounselTitle">Interim</div>
-                            <div  className="ourCounselFields">
-                            <span className="ourCounselFields">
-                                <div>Name</div>
-                                <div>Phone No</div>
-                                <div>Email ID</div>
-                                <div>Address</div>
-                            </span>
-                            <span ><img src={AddIcon} style={{height:"25px"}} onClick={() => setLitigationInterim(true)} /></span>
-                            </div>
-                        </div> */}
+
                         {LitigationCaseDetails}
                     </div>
-                    <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={<AddDataModel />} />
-                    <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationInterim} handleChangeCloseModel={(bln) => setLitigationInterim(bln)} content={<InterimModel />} />
+                    <DynModel modelTitle={"Litigation Details"} handleChangeModel={litigationCounsel} handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} content={<AddDataModel  Litigation_ID={LitigationCase && LitigationCase.ligitation_id}  handleChangeCloseModel={(bln) => setLitigationCounsel(bln)} />} />
                     <div className="customAddcasebtn">
                         <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onSubmit} />
 

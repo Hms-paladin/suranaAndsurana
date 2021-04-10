@@ -44,7 +44,7 @@ import {
   GET_PROJECT_COST_RANGE,
   GET_COURT_LOCATION,
   GET_ACTIVITY,
-  GET_SUBACTIVITY,
+  GET_SUBACTIVITY,GET_LITIGATION_COUNSEL
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -304,4 +304,10 @@ export const getSubactivity = (id) => async (dispatch) => {
     },
   });
   return dispatch({ type: GET_SUBACTIVITY, payload: response.data.data });
+};
+
+//Litigation
+export const getLitigationCounsel = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_litigation_councel");
+  return dispatch({ type: GET_LITIGATION_COUNSEL, payload: response.data.data });
 };

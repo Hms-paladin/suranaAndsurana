@@ -65,23 +65,25 @@ export const GetLitigation = (ProjectID) => async dispatch => {
   }
 }
 
-export const InsertLitigationDetails = (Litigation_Form) => async dispatch => {
+
+export const InsertLitigationDetails = (data,id) => async dispatch => {
+  console.log("litiid",id)
   try {
       axios({
           method: "POST",
-          url: apiurl + "get_litigation_councel",
+          url: apiurl + "insert_litigation_detail",
           data: 
             {
-               litigation_id:"1",
-               liti_councel_id:"1",
-               name:"sam",
-               phone_no:"9344120434",
-               email_id:"sam@gmail.com",
-               address:"chennai",
-               interim_name:"visu",
-               interim_appln_no:"123",
-               interim_application_date:"2021-02-01",
-               interim_details:"chennai",
+               litigation_id:id || 0,
+               liti_councel_id:data.counsel.value || 0 ,
+               name:data.name.value  || 0,
+               phone_no:data.phoneno.value || 0,
+               email_id:data.emailid.value  || 0,
+               address:data.address.value ||0,
+               interim_name:data.interimname.value||0,
+               interim_appln_no:data.interimapplicationno.value||0,
+               interim_application_date:data.interimapplicationdate.value||0,
+               interim_details:data.interimdetails.value||0,
              created_on: moment().format("YYYY-MM-DD HH:m:s"),
              updated_on: moment().format("YYYY-MM-DD HH:m:s"),
              created_by: localStorage.getItem("empId"),
