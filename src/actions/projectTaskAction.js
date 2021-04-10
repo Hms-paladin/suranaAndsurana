@@ -53,7 +53,7 @@ export const getPriorityList= () => async dispatch => {
     }
 }
 
-export const inserTask = (params) => async dispatch => {
+export const inserTask = (params,timeSheetParams) => async dispatch => {
     try {
         axios({
             method: 'POST',
@@ -65,6 +65,7 @@ export const inserTask = (params) => async dispatch => {
                     message: "Task added Successfully",
                   });
                 dispatch({type:INSERT_TASK,payload:response.data.status})
+                dispatch(insertTimeSheet(timeSheetParams,'id'))
               return Promise.resolve();
             }
           });
@@ -74,7 +75,7 @@ export const inserTask = (params) => async dispatch => {
     }
 }
 
-export const insertAdhocTask = (params,timeSheetParams) => async dispatch => {
+export const insertAdhocTask = (params) => async dispatch => {
     try {
         axios({
             method: 'POST',
@@ -87,8 +88,7 @@ export const insertAdhocTask = (params,timeSheetParams) => async dispatch => {
                     message: msg != "" ? msg : "Adhoc Task added Successfully",
                   });
                 dispatch({type:INSERT_ADHOC_TASK,payload:response.data.status})
-                dispatch(insertTimeSheet(timeSheetParams,'id'))
-              return Promise.resolve();
+                return Promise.resolve();
             }
           });
         

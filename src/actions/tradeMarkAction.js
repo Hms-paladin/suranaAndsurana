@@ -9,7 +9,7 @@ export const getTradeMarkStatus= () => async dispatch => {
 
         axios({
             method: 'GET',
-            url: apiurl +'get_activity'
+            url: apiurl +'get_trade_mark_status'
         })
         .then((response) => {
             dispatch({type:GET_TRADEMARKSTATUS,payload:response.data.data})
@@ -73,7 +73,7 @@ export const getCountryDetails= () => async dispatch => {
 
         axios({
             method: 'GET',
-            url: apiurl +'get_activity'
+            url: apiurl +'get_country'
         })
         .then((response) => {
             dispatch({type:GET_COUNTRY,payload:response.data.data})

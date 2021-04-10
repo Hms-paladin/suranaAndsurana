@@ -8,6 +8,7 @@ import { useDispatch, connect } from "react-redux";
 import { getActivity,getPriorityList,getTagList,inserTask,getAssignedTo,getLocation } from "../../../actions/projectTaskAction";
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
+import dateFormat from 'dateformat';
 
 
 function TimeSheetStartModel(props) {
@@ -164,7 +165,7 @@ function TimeSheetStartModel(props) {
             "emp_id":localStorage.getItem("empId"),
             "task_id":"111",
             "start_date":timeSheetForm.fromDate.value,
-            "start_time":timeSheetForm.startTime.value,
+            "start_time":dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment":timeSheetForm.description.value,
             "created_by":localStorage.getItem("empId"),
         }
@@ -244,31 +245,9 @@ function TimeSheetStartModel(props) {
         }
         var filtererr = targetkeys.filter((obj) => timeSheetForm[obj].error == true);
         
-        var data ={
-            "project_id":"71",
-            "activiity_id":timeSheetForm.activity.value,
-            "sub_activity_id":timeSheetForm.subActivity.value,
-            "assignee_id":timeSheetForm.assignTo.value,
-            "start_date":timeSheetForm.fromDate.value,
-            "end_date":timeSheetForm.toDate.value,
-            "assigned_by":localStorage.getItem("empId"),
-            "priority":timeSheetForm.priority.value,
-            "description":timeSheetForm.description.value,
-            "tag":timeSheetForm.tag.value
-        }
-        var timesheetData = {
-            "emp_id":localStorage.getItem("empId"),
-            "task_id":"111",
-            "start_date":timeSheetForm.fromDate.value,
-            "start_time":timeSheetForm.startTime.value,
-            "comment":"Go to start qoek",
-            "created_by":localStorage.getItem("empId"),
-        }
+       
         if (filtererr.length > 0) {
         } else{
-            dispatch(inserTask(data,timesheetData)).then((response) => {
-                handleCancel();
-              })
         }
 
         settimeSheetForm((prevState) => ({
