@@ -39,6 +39,8 @@ import StageMonitering from '../pages/stages/StageMonitering'
 
 // Leave Update:
 import LeaveUpdate from '../pages/Leaves/leaveupdate';
+import LeaveForm from '../pages/Leaves/leaveform';
+
 
 
 function Routes(props) {
@@ -77,6 +79,8 @@ function Routes(props) {
 
              {/* Leaves Update */}
              <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
+             <PrivateRoute path="/leaveform" component={LeaveForm} exact />
+
 
             </Switch>
         </Navbar>

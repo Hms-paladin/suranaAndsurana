@@ -137,7 +137,7 @@ function CancelFiled() {
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
 
-                    <Labelbox type="select"
+                    <Labelbox type="text"
                         placeholder={"Client Petitioner"}
                         changeData={(data) => checkValidation(data, "client_petition")}
                         value={CancelFiled.client_petition.value}
