@@ -25,7 +25,7 @@ function TradeMark(properties) {
     const [poaList, setpoaList] = useState({})
     const [usageDetList, setusageDetList] = useState({})
     const [selectedFile, setselectedFile] = useState([]);
-    const [selectedFile, setselectedFile] = useState([]);
+    const [selectedFile1, setselectedFile1] = useState([]);
     useEffect(() => {
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
