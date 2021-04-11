@@ -92,6 +92,9 @@ export const insertTradeMark = (params) => async dispatch => {
             data: params
           }).then((response) => {
             if (response.data.status === 1) {
+                notification.success({
+                    message: "Trade Mark added sucessfully",
+                  });
                 dispatch({type:INSERT_TRADE_MARK,payload:response.data.status})
               return Promise.resolve();
             }
