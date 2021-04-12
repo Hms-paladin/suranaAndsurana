@@ -110,7 +110,9 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        projectTask.push({ id: <div className="ProjectTaskId" onClick={unblockUser} onClick={() => setLeaveapprovemodel(true)} >01</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021" })
+        projectTask.push({ id: <div className="ProjectTaskId" onClick={unblockUser} 
+        // onClick={() => setLeaveapprovemodel(true)}
+         >01</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021" })
 
         setProjectTodoList(projectTask)
     }, [])

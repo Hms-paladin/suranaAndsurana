@@ -34,7 +34,7 @@ import UserGroups from '../pages/UserGroups/usergroups'
 //Group Control:
 import GroupControl from '../pages/GroupControl/groupcontrol'
 
-//Group Control:
+//Stage Monitering:
 import StageMonitering from '../pages/stages/StageMonitering'
 
 // Leave Update:
@@ -45,6 +45,8 @@ import LeaveForm from '../pages/Leaves/leaveform';
 
 import DashboardNew from '../pages/Dashboard/dashboardnew';
 
+//KPI:
+import KPI from '../pages/KPI/KPI'
 
 
 
@@ -79,8 +81,11 @@ function Routes(props) {
                 <PrivateRoute path="/usergroups" component={UserGroups} exact />
                 {/*  Group Control */}
                 <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
-                {/*  Steg Monitering */}
+                {/*  Stage Monitering */}
                 <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
+
+                 {/* KPI */}
+                 <PrivateRoute path="/kpi" component={KPI} exact />
 
                 {/* Leaves Update */}
                 <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
