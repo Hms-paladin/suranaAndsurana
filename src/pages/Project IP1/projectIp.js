@@ -479,9 +479,6 @@ function ProjectIp(props) {
 
                         {/*  */}
 
-                        {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" &&  <LitigationAddcase id_Props={idDetails} />
-                        }
                     </div>}
 
                 </div>

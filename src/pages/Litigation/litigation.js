@@ -148,13 +148,13 @@ const Litigation=(props)=> {
     if(props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0]){
         const strArr = []
         const string = caseDetails.responsible_attorney
-        const usingSplit = strArr.push((string.split(",")))
+        strArr.push((string.split(",")))
         
         // const PrefillCounsel=[]
         let MultipleCouncelValue=[]
 
-                   
-            employeeList?.EmployeeList.map((total)=>{
+            if(caseDetails){       
+        employeeList&&  employeeList?.EmployeeList.map((total)=>{
                 strArr && strArr[0].map((id)=>{
                     if(total.id === parseInt(id)) { 
 
@@ -163,21 +163,17 @@ const Litigation=(props)=> {
                   
                    })
             })  
-
-           console.log("checking",MultipleCouncelValue)
-
-        
-        
-    Litigation_Form["internalcaseno"].value =caseDetails.internal_case_no
-    Litigation_Form["status"].value = caseDetails.status_id
-    Litigation_Form["courtname"].value = caseDetails.court_id
-    Litigation_Form["casetype"].value = caseDetails.case_type_id
-    Litigation_Form["courtcaseno"].value = caseDetails.court_case_no
-    Litigation_Form["ddra"].value =  MultipleCouncelValue
-    Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date
-    Litigation_Form["duedate"].value = caseDetails.due_date
-    Litigation_Form["subcase"].value = caseDetails.sub_case
-    Litigation_Form["suitvalue"].value = caseDetails.suit_value
+        }
+    Litigation_Form["internalcaseno"].value =caseDetails.internal_case_no || 0
+    Litigation_Form["status"].value = caseDetails.status_id|| 0
+    Litigation_Form["courtname"].value = caseDetails.court_id|| 0
+    Litigation_Form["casetype"].value = caseDetails.case_type_id|| 0
+    Litigation_Form["courtcaseno"].value = caseDetails.court_case_no|| 0
+    Litigation_Form["ddra"].value =  MultipleCouncelValue|| 0
+    Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date|| 0
+    Litigation_Form["duedate"].value = caseDetails.due_date|| 0
+    Litigation_Form["subcase"].value = caseDetails.sub_case|| 0
+    Litigation_Form["suitvalue"].value = caseDetails.suit_value|| 0
     }
     setLitigationForm(prevState => ({
         ...prevState
