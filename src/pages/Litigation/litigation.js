@@ -169,7 +169,7 @@ const Litigation=(props)=> {
     Litigation_Form["courtname"].value = caseDetails.court_id|| 0
     Litigation_Form["casetype"].value = caseDetails.case_type_id|| 0
     Litigation_Form["courtcaseno"].value = caseDetails.court_case_no|| 0
-    Litigation_Form["ddra"].value =  MultipleCouncelValue|| 0
+    Litigation_Form["ddra"].value =  MultipleCouncelValue|| ""
     Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date|| 0
     Litigation_Form["duedate"].value = caseDetails.due_date|| 0
     Litigation_Form["subcase"].value = caseDetails.sub_case|| 0
