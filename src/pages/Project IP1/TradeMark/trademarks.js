@@ -1,5 +1,6 @@
 
 import react, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import './trademark.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
@@ -10,9 +11,11 @@ import CustomButton from '../../../component/Butttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Upload, message, Button, Icon } from 'antd';
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
 import moment from 'moment'
 import { getTradeMarkStatus,getClassDetails,getPoaDetails,
     getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
+      
 
 
 
@@ -27,6 +30,9 @@ function TradeMark(properties) {
     const [usageDetList, setusageDetList] = useState({})
     const [selectedFile, setselectedFile] = useState([]);
     const [selectedFile1, setselectedFile1] = useState([]);
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
+
     useEffect(() => {
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
@@ -70,6 +76,17 @@ setusageDetList({ tmUsageDetailsData })
     properties.tradeStatusList,properties.classDetailsList,properties.POAList,properties.tmUsageDetailsList
   ]);
 
+  let { rowId } = useParams()
+  useEffect(() => {
+      dispatch(getProjectDetails(rowId))
+  }, [])
+  useEffect(() => {
+      setProjectDetails(properties.ProjectDetails);
+      properties.ProjectDetails.length > 0 && setidDetails({
+          project_id:properties.ProjectDetails[0].project_id,
+          client_id:properties.ProjectDetails[0].client_id,
+      })
+  }, [properties.ProjectDetails])
 
   
     const props = {
@@ -283,7 +300,7 @@ setusageDetList({ tmUsageDetailsData })
         ); 
         console.log(filtererr.length);
         let params  = {
-            "project_id" :TradeMarkForm.project_id.value,
+            "project_id" :1,//TradeMarkForm.project_id.value,
              "status_id" :TradeMarkForm.status_id.value,
               "class_id" :TradeMarkForm.class_id.value,
              "usage_details_id":TradeMarkForm.usage_details_id.value,
@@ -591,6 +608,7 @@ const mapStateToProps = (state) =>
     POAList: state.tradeMarkReducer.getPOAList || [],
     tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
     countriesList : state.tradeMarkReducer.getCountryList || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 //export default connect(mapStateToProps)(ProjectTaskModel);
