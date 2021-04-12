@@ -48,7 +48,7 @@ export default class Labelbox extends Component {
 		var timeformat = dateFormat(time, "hh:MM:ss");
 		console.log("timeformat", timeformat)
 		this.setState({ selectedtime: time });
-		this.props.changeData && this.props.changeData(timeformat, time);
+		this.props.changeData && this.props.changeData(time, timeformat);
 	};
 
 	componentWillReceiveProps(props) {
@@ -193,6 +193,8 @@ export default class Labelbox extends Component {
 
 			}
 
+			console.log(this.props.value,"this.props.value")
+
 			const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
 			return (
@@ -204,13 +206,15 @@ export default class Labelbox extends Component {
 						<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<KeyboardTimePicker
 								margin="normal"
+								inputVariant="outlined"
 								id="time-picker"
-								value={this.props.value}
+								value={this.props.value || new Date()}
 								onChange={(time) => this.timepickerChange(time)}
 								KeyboardButtonProps={{
 									'aria-label': 'change time',
 								}}
-								suffixIcon={<img src={TimerIcon} />}
+								InputProps={{ readOnly: true }}
+								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker" />}
 							/>
 						</MuiPickersUtilsProvider>
 						{
@@ -276,10 +280,12 @@ export default class Labelbox extends Component {
 						}
 						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
-							if (this.props.mode === "multiple") {
-								return (<Option key={index} value={item.value}>{item.value}</Option>)
-							} else {
-								return (<Option key={index} value={item.id}>{item.value}</Option>)
+							if (item.value) {
+								if (this.props.mode === "multiple") {
+									return (<Option key={index} value={item.value}>{item.value}</Option>)
+								} else {
+									return (<Option key={index} value={item.id}>{item.value}</Option>)
+								}
 							}
 						})
 							: null

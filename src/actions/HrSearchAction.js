@@ -3,9 +3,6 @@ import {GET_HRSEARCH_ROWDATA } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
-
-
-
 export const searchRowdata = (data) => async dispatch => {
     console.log(data,"actiondata")
     try {

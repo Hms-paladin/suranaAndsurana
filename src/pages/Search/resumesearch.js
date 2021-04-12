@@ -28,6 +28,8 @@ const headCells = [
     { id: 'specialization', label: 'Specialization' },
     { id: 'acheivements', label: 'Achievements' },
     { id: 'talents', label: 'Talents' },
+    { id: 'experience', label: 'Experience' },
+
 
 ];
 
@@ -115,7 +117,8 @@ function Resumesearch(props) {
             "specialization_id": "",
             "capability_id": "",
             "talent_id": "",
-            "status_id": ""
+            "status_id": "",
+            "experience": ""
         }))
     }, [])
 
@@ -230,17 +233,18 @@ function Resumesearch(props) {
 
     useEffect(() => {
         let rowDataList = []
-
-        props.GetRowData && props.GetRowData.map((data,index) => {
-            rowDataList.push({ view:  <img
-                src={Eyes}
-                className="viewCandidatesList"
-                onClick={()=>viewCandidate(data.resume_id)}
-              />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-             basic: data.basic_qual, language: data.language, certification: data.certifications, 
-             specialization: data.specialization, acheivements:data.achievement,talents: data.talent,
-             box:<Checkbox onClick={(event)=>handleCheck(event,data.resume_id)} name={"checked"+index} 
-             checked={checkList["checked"+index]} value={checkList["checked"+index]} /> })
+        props.GetRowData && props.GetRowData.map((data, index) => {
+            rowDataList.push({
+                view: <img
+                    src={Eyes}
+                    className="viewCandidatesList"
+                    onClick={() => viewCandidate(data.resume_id)}
+                />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+                basic: data.basic_qual, language: data.language, certification: data.certifications,
+                specialization: data.specialization, acheivements: data.achievement, talents: data.talent, experience: data.experience,
+                box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id)} name={"checked" + index}
+                    checked={checkList["checked" + index]} value={checkList["checked" + index]} />
+            })
         })
 
         setRowData(rowDataList)
@@ -255,7 +259,9 @@ function Resumesearch(props) {
             "specialization_id": ResumeSearch_Form.specialization.valueById ? ResumeSearch_Form.specialization.valueById : "",
             "capability_id": ResumeSearch_Form.capabilities.valueById ? ResumeSearch_Form.capabilities.valueById : "",
             "talent_id": ResumeSearch_Form.talents.valueById ? ResumeSearch_Form.talents.valueById : "",
-            "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
+            "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : "",
+            // "experience": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
+
         }))
     }
 
@@ -293,7 +299,7 @@ function Resumesearch(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <Labelbox type="select"
-                                placeholder="Achivements"
+                                placeholder="Achievements"
                                 dropdown={resumeSearchList.achievementList}
                                 changeData={(data) => checkValidation(data, "acheivements", resumeSearchList.achievementList)}
                                 value={ResumeSearch_Form.acheivements.value}
@@ -337,7 +343,7 @@ function Resumesearch(props) {
                             </Grid>
                             <Grid item xs={8}>
                                 <Link to='resume'>
-                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}   onBtnClick={() => setpathname("/projectFormCreate")} />
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"} onBtnClick={() => setpathname("/projectFormCreate")} />
                                 </Link>
                             </Grid>
                         </Grid>

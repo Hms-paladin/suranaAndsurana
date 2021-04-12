@@ -61,7 +61,7 @@ export const InesertResume = (Resume_Form, educationList, experienceList) => asy
 
   } catch (err) {
     notification.error({
-      message: 'Record Not Added',
+      message: 'Something Went Wrong,Record Not Added',
     });
   }
 }

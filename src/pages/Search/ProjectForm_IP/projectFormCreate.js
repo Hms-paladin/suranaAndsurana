@@ -51,8 +51,6 @@ const headers = [
   { id: "del", label: "Delete" },
 ];
 
-
-
 function ProjectFormCreate(props) {
   const dispatch = useDispatch();
   const [pathname, setpathname] = useState(window.location.pathname);
@@ -69,17 +67,16 @@ function ProjectFormCreate(props) {
   const [employeeList, setEmployeeList] = useState({});
   const [projectCostRange, setProjectCostRange] = useState({});
   const [client, setClient] = useState({});
-  const [variableRateCall,setVariableRateCall] = useState(false);
-  const [totalData,setTotalData] = useState({})
-  const[addTableData,setAddTableData]=useState()
-  const[addTempTableData,setAddTempTableData]=useState([])
+  const [addTableData, setAddTableData] = useState();
+  const [showVariableTable, setShowVariableTable] = useState([]);
+  const [sendVariableData, setSendVariableData] = useState([]);
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
-  const [projectSearchCreate,setPrpjectSearchCreate] =useState({
-    amountSearch:{
-      value:""
-    }
-  })
+  const [projectSearchCreate, setPrpjectSearchCreate] = useState({
+    amountSearch: {
+      value: "",
+    },
+  });
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -172,7 +169,6 @@ function ProjectFormCreate(props) {
       error: null,
       errmsg: null,
     },
-
   });
 
   useEffect(() => {
@@ -230,15 +226,16 @@ function ProjectFormCreate(props) {
     dispatch(getClientlist());
   }, []);
 
-  const onchangeAmount =(data,key)=>{
-    if(key==="amountSearch" && data){
+  const onchangeAmount = (data, key) => {
+    if (key === "amountSearch" && data) {
       setPrpjectSearchCreate((prevState) => ({
         ...prevState,
-        [key]: {value:data},
+        [key]: { value: data },
       }));
     }
-  }
+  };
   function checkValidation(data, key, multipleId) {
+    console.log(data,"onchangeValue")
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
@@ -249,6 +246,8 @@ function ProjectFormCreate(props) {
       errmsg: errorcheck.msg,
       validation: projectform[key].validation,
     };
+    // console.log(projectform.project_type.value, "projectform.client.value")
+
 
     //  projectSubTypeValue
 
@@ -260,7 +259,7 @@ function ProjectFormCreate(props) {
           ProjectSubtype: "0",
           ProcessType: "0",
         };
-        dispatch(getFilingType(values))
+        dispatch(getFilingType(values));
       }
     }
 
@@ -305,14 +304,14 @@ function ProjectFormCreate(props) {
       ...prevState,
       [key]: dynObj,
     }));
-    
 
     // variable popup==>
 
     if (key === "billable_type" && data === 2) {
       setVarRatePlusIcon(true);
       // setVariableid(true);
-    }else{
+    } 
+    else if(key === "billable_type" && data !== 2)  {
       setVarRatePlusIcon(false);
     }
   }
@@ -331,18 +330,15 @@ function ProjectFormCreate(props) {
     }
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
-    console.log(filtererr.length, "filtererr");
     // if (filtererr.length < 0) {
     //     // setpostData({ error: true });
     // } else {
     // setpostData({ error: false });
-    dispatch(InsertIpProject(projectform,addTempTableData)).then((response) => {
-      handleCancel();
-    });
-    // );
-
-    // }
-
+    dispatch(InsertIpProject(projectform, sendVariableData)).then(
+      (response) => {
+        handleCancel();
+      }
+    );
     setprojectform((prevState) => ({
       ...prevState,
     }));
@@ -360,7 +356,12 @@ function ProjectFormCreate(props) {
       "hod_attorny",
       "unit_measurement",
       "projectcostrange",
-      "projectname", "process_type", "comments", "baseRate", "limit", "additionalRate"
+      "projectname",
+      "process_type",
+      "comments",
+      "baseRate",
+      "limit",
+      "additionalRate",
     ];
 
     From_key.map((data) => {
@@ -371,7 +372,9 @@ function ProjectFormCreate(props) {
         throw error;
       }
     });
-
+    setSendVariableData([]);
+    setShowVariableTable([]);
+    setAddTableData([]);
     setprojectform((prevState) => ({
       ...prevState,
     }));
@@ -435,7 +438,11 @@ function ProjectFormCreate(props) {
     props.EmployeeList,
     props.ProjectCostRange,
   ]);
-
+  function addSearchData() {
+    setAddsearchdata(true);
+    setSearchdata(false);
+    setSuccessmodel(true);
+  }
   const variablerateModel = () => {
     function onSearch() {
       setSearchdata(true);
@@ -450,11 +457,14 @@ function ProjectFormCreate(props) {
       setSuccessmodel(true);
     }
 
- 
-
     return (
       <div>
-        <VariableRate variablebtnchange={true} variabletablechange={true}  />
+        <VariableRate
+          variablebtnchange={true}
+          variabletablechange={true}
+          setShowSearchTable={() => setAddsearchdata(true)}
+          setNoSearchResult={() => setNotfoundmodel(true)}
+        />
         {searchdata && (
           <div className="addvariableData">
             <img src={AddVarData} onClick={addSearchData} />
@@ -462,12 +472,19 @@ function ProjectFormCreate(props) {
         )}
         {addsearchdata && (
           <>
-          <div>
-            <EnhancedTable headCells={header} rows={totalData && totalData.showVariableTable} />
-          </div>
-       {addTempTableData.length !==0 ?      <div>
-            {/* <EnhancedTable headCells={headers} rows={totalData.showVariableTable} idLenght={1} /> */}
-          </div>:""}
+            <div>
+              <EnhancedTable
+                headCells={header}
+                rows={addTableData.searchVariableTableData ||[]} 
+              />
+            </div>
+            {showVariableTable.length !== 0 ? (
+              <div>
+                <EnhancedTable headCells={headers} rows={showVariableTable || []} />
+              </div>
+            ) : (
+              ""
+            )}
           </>
         )}
         <DynModel
@@ -488,107 +505,121 @@ function ProjectFormCreate(props) {
           handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
           content={
             <div className="successModel">
-
-              <div> <label className="notfound_label">Do You Want To Continue ?</label></div>
+              <div>
+                {" "}
+                <label className="notfound_label">
+                  Do You Want To Continue ?
+                </label>
+              </div>
               <div className="customNotFoundbtn">
                 <CustomButton
                   btnName={"Yes"}
                   btnCustomColor="customPrimary"
                   custombtnCSS={"btnNotFound"}
-                  onBtnClick={()=>setNotfoundmodel(false)}
+                  onBtnClick={() => setNotfoundmodel(false)}
                 />
                 <CustomButton
-                 btnName={"No "} 
-                 btnCustomColor="customPrimary"
-                 custombtnCSS={"btnNotFound"}
-                 onBtnClick={()=>setNotfoundmodel(false)}
-                  />
+                  btnName={"No "}
+                  btnCustomColor="customPrimary"
+                  custombtnCSS={"btnNotFound"}
+                  onBtnClick={() => setNotfoundmodel(false)}
+                />
               </div>
             </div>
-
           }
           width={400}
         />
       </div>
     );
   };
-  useEffect(()=>{
-    let TotalData={
-      showVariableTable:[],
-      sendVariableData:[] 
-    }
-    setAddsearchdata(true);
-    setNotfoundmodel(false);
-    props.searchVariableRate.map((data)=>{
-      projectSearchCreate.amountSearch.value=data.Amount
-      TotalData.showVariableTable.push({
-        designation:data.designation,
-        activity:data.activity,
-        sub_activity:data.sub_activity,
-        court:data.location,
-        costRange:data.range,
-        lowerLimit:data.lower_limit,
-        upperLimit:data.upper_limit,
-        amount:  <Labelbox
-        type="text"
-        placeholder={"Amount"}
-        changeData={(data) => onchangeAmount(data, "amountSearch")}
-        value={projectSearchCreate.amountSearch.value}
-      />  ,
-        UOM:data.unit,add:<img src={PlusIcon} 
-        style={{cursor: 'pointer',width:19}}
-        //  onClick={()=>addTempTable(data)} 
-         />
-       })
-       TotalData.sendVariableData.push({
-        designation_id:data.designation_id,
-        activity_id:data.activity_id,
-        sub_activity_id:data.sub_activity_id,
-        location_id:data.location_id,
-        range_id:data.range_id,
-        lowerLimit:data.lower_limit,
-        upperLimit:data.upper_limit,
-        base_rate:  projectSearchCreate.amountSearch.value,
-        unit_of_measure:data.unit_id  })
-    })
-    console.log("consredole",{totalData})
-    setTotalData({TotalData})
-    console.log("consredole",totalData)
-      setAddsearchdata(true);
+  // {console.log("props.lenght",props.lenghtData)}
+  useEffect(() => {
+
+    {console.log("props.lenght",props.lenghtData)}
+    if(props.lenghtData !== 0){
+      let searchVariableTableData = [];
       setNotfoundmodel(false);
-  // setAddTableData({showVariableTableData})  
-  },[props.searchVariableRate,props.lenghtData])
-  //----------
- const addTempTable=(data)=>{
-   console.log("senddata",data)
-   const TabLen = addTempTableData.length
-      // addTempTableData.push({  
-      //       designation:data.designation,
-      //       activity:data.activity,
-      //       sub_activity:data.sub_activity,
-      //       court:data.location,
-      //       costRange:data.range,
-      //       lowerLimit:data.lower_limit,
-      //       upperLimit:data.upper_limit,
-      //       amount:  data.Amount ,
-      //       UOM:data.unit,
-      //       del: <DeleteIcon style={{cursor: 'pointer',width:19}}
-      //       fontSize="small"
-      //       onClick={()=>onDelete(TabLen)} />, 
+      props.searchVariableRate.map((data) => {
+        projectSearchCreate.amountSearch.value = data.Amount;
+        searchVariableTableData.push({
+          designation: data.designation,
+          activity: data.activity,
+          sub_activity: data.sub_activity,
+          court: data.location,
+          costRange: data.range,
+          lowerLimit: data.lower_limit,
+          upperLimit: data.upper_limit,
+          amount: (
+            <Labelbox
+              type="text"
+              placeholder={"Amount"}
+              changeData={(data) => onchangeAmount(data, "amountSearch")}
+              value={projectSearchCreate.amountSearch.value}
+            />
+          ),
+          UOM: data.unit,
+          add: (
+            <img
+              src={PlusIcon}
+              style={{ cursor: "pointer", width: 19 }}
+              onClick={() => addTempTable(data)}
+            />
+          ),
+        });
+      });
+      setAddTableData({ searchVariableTableData });
+    }else{
+      setAddsearchdata(false);
+      setNotfoundmodel(true)
+    }
     
-      // })
-      // setAddTempTableData([...addTempTableData])
-    }
+  }, [props.searchVariableRate, props.lenghtData]);
+  //----------
+  const addTempTable = (data) => {
 
-    const onDelete=(val)=>{        
-        //  if (val > -1) {
-        //   addTempTableData.splice(val, 1);
-        //  }
-        //  setAddTempTableData([...addTempTableData])
-        console.log("ss")
-    }
+    const TabLen = showVariableTable.length;
+    showVariableTable.push({
+      designation: data.designation,
+      activity: data.activity,
+      sub_activity: data.sub_activity,
+      court: data.location,
+      costRange: data.range,
+      lowerLimit: data.lower_limit,
+      upperLimit: data.upper_limit,
+      amount: data.Amount,
+      UOM: data.unit,
+      del: (
+        <DeleteIcon
+          style={{ cursor: "pointer", width: 19 }}
+          fontSize="small"
+          onClick={() => onDelete(TabLen)}
+        />
+      ),
+    });
+    setShowVariableTable([...showVariableTable]);
+    sendVariableData.push({
+      designation_id: data.designation_id,
+      activity_id: data.activity_id,
+      sub_activity_id: data.sub_activity_id,
+      location_id: data.location_id,
+      range_id: data.range_id,
+      lowerLimit: data.lower_limit,
+      upperLimit: data.upper_limit,
+      base_rate: projectSearchCreate.amountSearch.value,
+      unit_of_measure: data.unit_id,
+    });
+    setSendVariableData([...sendVariableData]);
+  };
 
- 
+  const onDelete = (i) => {
+    if (i > -1) {
+      showVariableTable.splice(i, 1);
+      sendVariableData.splice(i, 1);
+    }
+    setShowVariableTable([...showVariableTable]);
+    setSendVariableData([...sendVariableData]);
+  };
+
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -713,10 +744,23 @@ function ProjectFormCreate(props) {
                   value={projectform.billable_type.value}
                   error={projectform.billable_type.error}
                   errmsg={projectform.billable_type.errmsg}
-                  
                 />
-              {(varRatePlusIcon===true)? <div style={{display: 'flex',justifyContent: 'flex-end'}}><img src={PlusIcon} style={{cursor: 'pointer',width:19}} onClick={()=>setVariableid(true)} /></div>:''}
-               {varRatePlusIcon===true && addTempTableData.length !== 0 ?`(variableRateSelected(${addTempTableData.length}))` :""}
+                {varRatePlusIcon === true ? (
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <img
+                      src={PlusIcon}
+                      style={{ cursor: "pointer", width: 19 }}
+                      onClick={() => setVariableid(true)}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+                {varRatePlusIcon === true
+                  ? showVariableTable.length !== 0
+                    ? `Variable Rate Selected(${showVariableTable.length})`
+                    : ""
+                  : ""}
               </Grid>
               <Grid item xs={6}>
                 <Labelbox
@@ -734,10 +778,10 @@ function ProjectFormCreate(props) {
               {projectform.billable_type.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Base Rate"}
-                      changeData={(data) =>
-                        checkValidation(data, "baseRate")
-                      }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
                       errmsg={projectform.baseRate.errmsg}
@@ -770,12 +814,14 @@ function ProjectFormCreate(props) {
                 projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
-                      checkValidation(data, "baseRate")
-                    }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg} />
+                      errmsg={projectform.baseRate.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <Labelbox
@@ -796,10 +842,10 @@ function ProjectFormCreate(props) {
               )}
               <Grid item xs={6}>
                 <div className="projectFormComments">
-                  <Labelbox type="textarea" placeholder={"Comments"}
-                    changeData={(data) =>
-                      checkValidation(data, "comments")
-                    }
+                  <Labelbox
+                    type="textarea"
+                    placeholder={"Comments"}
+                    changeData={(data) => checkValidation(data, "comments")}
                     value={projectform.comments.value}
                     error={projectform.comments.error}
                     errmsg={projectform.comments.errmsg}
@@ -873,12 +919,14 @@ function ProjectFormCreate(props) {
               {projectform?.billable_type?.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
-                      checkValidation(data, "baseRate")
-                    }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg} />
+                      errmsg={projectform.baseRate.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -894,12 +942,14 @@ function ProjectFormCreate(props) {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"} changeData={(data) =>
-                      checkValidation(data, "limit")
-                    }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Limit"}
+                      changeData={(data) => checkValidation(data, "limit")}
                       value={projectform.limit.value}
                       error={projectform.limit.error}
-                      errmsg={projectform.limit.errmsg} />
+                      errmsg={projectform.limit.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -919,12 +969,14 @@ function ProjectFormCreate(props) {
                 projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
-                      checkValidation(data, "baseRate")
-                    }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg} />
+                      errmsg={projectform.baseRate.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <Labelbox
@@ -946,13 +998,14 @@ function ProjectFormCreate(props) {
 
               <Grid item xs={6}>
                 <div className="projectFormComments">
-                  <Labelbox type="textarea" placeholder={"Comments"}
-                    changeData={(data) =>
-                      checkValidation(data, "comments")
-                    }
+                  <Labelbox
+                    type="textarea"
+                    placeholder={"Comments"}
+                    changeData={(data) => checkValidation(data, "comments")}
                     value={projectform.comments.value}
                     error={projectform.comments.error}
-                    errmsg={projectform.comments.errmsg} />
+                    errmsg={projectform.comments.errmsg}
+                  />
                 </div>
               </Grid>
 
@@ -1011,25 +1064,28 @@ function ProjectFormCreate(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="projectFormComments">
-                  <Labelbox type="textarea" placeholder={"Comments"}
-                    changeData={(data) =>
-                      checkValidation(data, "comments")
-                    }
+                  <Labelbox
+                    type="textarea"
+                    placeholder={"Comments"}
+                    changeData={(data) => checkValidation(data, "comments")}
                     value={projectform.comments.value}
                     error={projectform.comments.error}
-                    errmsg={projectform.comments.errmsg} />
+                    errmsg={projectform.comments.errmsg}
+                  />
                 </div>
               </Grid>
 
               {projectform?.billable_type?.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
-                      checkValidation(data, "baseRate")
-                    }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg} />
+                      errmsg={projectform.baseRate.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -1045,13 +1101,14 @@ function ProjectFormCreate(props) {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"}
-                      changeData={(data) =>
-                        checkValidation(data, "limit")
-                      }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Limit"}
+                      changeData={(data) => checkValidation(data, "limit")}
                       value={projectform.limit.value}
                       error={projectform.limit.error}
-                      errmsg={projectform.limit.errmsg} />
+                      errmsg={projectform.limit.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
@@ -1065,19 +1122,20 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.additionalRate.errmsg}
                     />
                   </Grid>
-
                 </Grid>
               ) : projectform.billable_type.value === 5 ||
                 projectform.billable_type.value === 1 ||
                 projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <Labelbox type="text" placeholder={"Base Rate"} changeData={(data) =>
-                      checkValidation(data, "baseRate")
-                    }
+                    <Labelbox
+                      type="text"
+                      placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg} />
+                      errmsg={projectform.baseRate.errmsg}
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <Labelbox
@@ -1096,7 +1154,6 @@ function ProjectFormCreate(props) {
               ) : (
                 <Grid item xs={6}></Grid>
               )}
-
 
               <Grid item xs={6}></Grid>
             </>
@@ -1126,16 +1183,15 @@ function ProjectFormCreate(props) {
   );
 }
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
-({
-  ProjectSubType: state.getOptions.getProjectSubType || [],
-  ProcessType: state.getOptions.getProcessType || [],
-  FilingType: state.getOptions.getFilingType || [],
-  EmployeeList: state.getOptions.getEmployeeList || [],
-  ProjectCostRange: state.getOptions.getProjectCostRange || [],
-  Client: state.getOptions.getClientlist,
-  searchVariableRate: state.variableRateMaster.searchVariableRate ,
-  lenghtData: state.variableRateMaster.lengthData ,
-});
+  ({
+    ProjectSubType: state.getOptions.getProjectSubType || [],
+    ProcessType: state.getOptions.getProcessType || [],
+    FilingType: state.getOptions.getFilingType || [],
+    EmployeeList: state.getOptions.getEmployeeList || [],
+    ProjectCostRange: state.getOptions.getProjectCostRange || [],
+    Client: state.getOptions.getClientlist,
+    searchVariableRate: state.variableRateMaster.searchVariableRate,
+    lenghtData: state.variableRateMaster.lengthData,
+  });
 
 export default connect(mapStateToProps)(ProjectFormCreate);

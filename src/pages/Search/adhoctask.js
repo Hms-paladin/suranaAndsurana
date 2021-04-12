@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
 import '../ProjectTask/projectTask.scss';
 import Grid from '@material-ui/core/Grid';
 import { Radio } from 'antd';
@@ -9,9 +9,13 @@ import CustomButton from '../../component/Butttons/button';
 import DynModel from '../../component/Model/model';
 import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
+import { getTagList, insertAdhocTask,getAssignedTo } from "../../actions/projectTaskAction";
+import { connect, useDispatch } from "react-redux";
 
-function AdhocTask() {
-
+function AdhocTask(props) {
+    const dispatch = useDispatch();
+    const [taggList, settaggList] = useState({})
+    const [assignedToLists, setassignedToLists] = useState({}) 
     const [adhoc_Form, setadhoc_Form] = useState({
         task_description: {
             value: "",
@@ -45,6 +49,31 @@ function AdhocTask() {
         },
 
     })
+
+    useEffect(() => {
+        dispatch(getTagList());
+        dispatch(getAssignedTo());
+        
+      }, []);
+
+      useEffect(() => {
+    let tagTypeData = []
+    props.tagsList.map((data) =>
+    tagTypeData.push({ value: data.status,
+        id: data.status_id })
+    )
+    settaggList({ tagTypeData })
+
+    let assignedToData = []
+    props.assignToList.map((data) =>
+    assignedToData.push({ value: data.name,
+        id: data.emp_id })
+    )
+    setassignedToLists({ assignedToData })
+
+      }, [
+        props.tagsList,,props.assignToList
+      ]);
 
     function checkValidation(data, key, multipleId) {
 
@@ -105,7 +134,18 @@ function AdhocTask() {
             // setadhoc_Form({ error: false });
 
         }
-
+        var data ={
+            "start_date":adhoc_Form.start_date.value,
+            "end_date":adhoc_Form.end_date.value,
+            "tag":adhoc_Form.tag.value,
+            "assignee_id":adhoc_Form.assigned_task.value, 
+            "assigned_by":localStorage.getItem("empId"),
+            "description":adhoc_Form.task_description.value
+        }
+        dispatch(insertAdhocTask(data)).then((response) => {
+            console.log("Insert");
+            //onStateClear()
+        })
         setadhoc_Form(prevState => ({
             ...prevState
         }));
@@ -153,6 +193,7 @@ function AdhocTask() {
                 <Grid item xs={5} >
                     <Labelbox type="select"
                         placeholder={"Tag"}
+                        dropdown={taggList.tagTypeData}
                         changeData={(data) => checkValidation(data, "tag")}
                         value={adhoc_Form.tag.value}
                         error={adhoc_Form.tag.error}
@@ -163,6 +204,7 @@ function AdhocTask() {
                 <Grid item xs={5} >
                     <Labelbox type="select"
                         placeholder={"Assigned To"}
+                        dropdown={assignedToLists.assignedToData}
                         changeData={(data) => checkValidation(data, "assigned_task")}
                         value={adhoc_Form.assigned_task.value}
                         error={adhoc_Form.assigned_task.error}
@@ -184,4 +226,12 @@ function AdhocTask() {
     )
 }
 
-export default AdhocTask;
+const mapStateToProps = (state) =>
+// console.log(state.getOptions.getProcessType, "getProcessType")
+({
+    
+    tagsList: state.projectTasksReducer.tagsList || [],
+    assignToList: state.projectTasksReducer.assignToLists || [],
+});
+
+export default connect(mapStateToProps)(AdhocTask);

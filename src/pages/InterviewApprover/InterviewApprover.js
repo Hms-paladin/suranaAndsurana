@@ -71,7 +71,7 @@ function InterviewApprover(props) {
         score: data.score_inital,
         cmts: data.comment,
         viewer: data.interviewer,
-        // round:"",status:"",
+        round:data.round,status:data.status,
       });
     });
     setRows(interviewList);

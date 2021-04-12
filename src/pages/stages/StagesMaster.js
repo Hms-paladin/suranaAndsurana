@@ -135,7 +135,7 @@ const StagesMaster = (props) => {
     )
     setsubStage({ substagedata })
 
-  }, [props.ProcessType,props.ProcessType,props.getSubStage])
+  }, [props.ProcessType,props.ProcessType,props.getSubStage,props.ProjectSubtype])
 
 
   const onSubmit = () => {

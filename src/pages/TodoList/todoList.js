@@ -196,7 +196,7 @@ function TodoList(props) {
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
             </div>
             <div>
-                <EnhancedTable headCells={workflowheadCells} rows={[]} tabletitle={"Project task"} />
+                <EnhancedTable headCells={workflowheadCells} rows={[]} tabletitle={"Other task"} />
             </div>
 
 

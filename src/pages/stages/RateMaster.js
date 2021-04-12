@@ -437,6 +437,9 @@ const onSearch=()=>{
     dispatch(SearchVariableRate(RateMaster))
     .then((response) => {
       handleCancel();
+        props.setShowSearchTable()
+
+     
   })
 
   setRateMaster((prevState) => ({
