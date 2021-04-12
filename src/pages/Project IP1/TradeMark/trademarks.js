@@ -47,15 +47,15 @@ function TradeMark(properties) {
     
     let classDetailsData = []
     properties.classDetailsList.map((data) =>
-    classDetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    classDetailsData.push({ value: data.class,
+    id: data.class_id })
 )
 setclassDetList({ classDetailsData })
 
 let POADetailsData = []
     properties.POAList.map((data) =>
-    POADetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    POADetailsData.push({ value: data.POA,
+    id: data.client_id })
 )
 setpoaList({ POADetailsData })
 
@@ -287,7 +287,7 @@ setusageDetList({ tmUsageDetailsData })
              "status_id" :TradeMarkForm.status_id.value,
              "mark_id":TradeMarkForm.mark_id.value,
              "upload_image" :selectedFile,
-              "class_id" :"1",//TradeMarkForm.class_id.value,
+              "class_id" :TradeMarkForm.class_id.value,
               "application_no" :TradeMarkForm.application_no.value,
                 "application_date":TradeMarkForm.application_date.value, 
              "usage_details_id":TradeMarkForm.usage_details_id.value,

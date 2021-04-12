@@ -24,8 +24,12 @@ export const getClassDetails= () => async dispatch => {
     try {
 
         axios({
-            method: 'GET',
-            url: apiurl +'get_activity'
+            method: 'POST',
+            url: apiurl +'get_class',
+            data :{
+                "class_type" :1
+
+            }
         })
         .then((response) => {
             dispatch({type:GET_CLASS_DETS,payload:response.data.data})
@@ -40,8 +44,11 @@ export const getPoaDetails= () => async dispatch => {
     try {
 
         axios({
-            method: 'GET',
-            url: apiurl +'get_activity'
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : {
+                "client_id":"3"
+            }
         })
         .then((response) => {
             dispatch({type:GET_POA,payload:response.data.data})
