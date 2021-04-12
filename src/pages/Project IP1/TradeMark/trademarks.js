@@ -53,15 +53,15 @@ function TradeMark(properties) {
     
     let classDetailsData = []
     properties.classDetailsList.map((data) =>
-    classDetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    classDetailsData.push({ value: data.class,
+    id: data.class_id })
 )
 setclassDetList({ classDetailsData })
 
 let POADetailsData = []
     properties.POAList.map((data) =>
-    POADetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    POADetailsData.push({ value: data.POA,
+    id: data.client_id })
 )
 setpoaList({ POADetailsData })
 
@@ -300,22 +300,22 @@ setusageDetList({ tmUsageDetailsData })
         ); 
         console.log(filtererr.length);
         let params  = {
-            "project_id" :1,//TradeMarkForm.project_id.value,
+            "project_id" :"71",//radeMarkForm.project_id.value,
              "status_id" :TradeMarkForm.status_id.value,
+             "mark_id":TradeMarkForm.mark_id.value,
+             "upload_image" :selectedFile,
               "class_id" :TradeMarkForm.class_id.value,
-             "usage_details_id":TradeMarkForm.usage_details_id.value,
-              "mark_id":TradeMarkForm.mark_id.value,
-               "application_no" :TradeMarkForm.application_no.value,
+              "application_no" :TradeMarkForm.application_no.value,
                 "application_date":TradeMarkForm.application_date.value, 
-            "upload_image" :selectedFile,
+             "usage_details_id":TradeMarkForm.usage_details_id.value,
              "goods_description":TradeMarkForm.goods_description.value,
               "usage_from_date":TradeMarkForm.usage_from_date.value,
+              "ip_india_status":TradeMarkForm.ip_india_status.value,
                "comments":TradeMarkForm.comments.value,
                 "internal_status":TradeMarkForm.internal_status.value,
                  "allotment":TradeMarkForm.allotment.value,
-             "ip_india_status":TradeMarkForm.ip_india_status.value,
               "amendment":TradeMarkForm.amendment.value,
-               "orders":TradeMarkForm.orders.value,
+              // "orders":TradeMarkForm.orders.value,
                 "priority_details":TradeMarkForm.priority_details.value,
                  "tmj_number":TradeMarkForm.tmj_number.value,
                   "tmj_date":TradeMarkForm.tmj_date.value,
@@ -448,7 +448,13 @@ setusageDetList({ tmUsageDetailsData })
                     <Labelbox type="select"
                         placeholder={" Class"}
                         
-dropdown={classDetList.classDetailsData}  />
+dropdown={classDetList.classDetailsData}  
+changeData={(data) => checkValidation(data, "class_id")}
+                value={TradeMarkForm.class_id.value}
+                error={TradeMarkForm.class_id.error}
+                errmsg={TradeMarkForm.class_id.errmsg}
+                
+                />
                     <div className="projectFormComments">
                         <Labelbox type="textarea"
                             placeholder={" Goods and Services Description"}
@@ -578,9 +584,9 @@ dropdown={poaList.POADetailsData}
                         placeholder={" Renewal Certificate Date"}
                         disableFuture={true}
                         changeData={(data) => checkValidation(data, "renewal_certificate_date")}
-                        value={TradeMarkForm.certificate_date.value}
-                        error={TradeMarkForm.certificate_date.error}
-                        errmsg={TradeMarkForm.certificate_date.errmsg} />
+                        value={TradeMarkForm.renewal_certificate_date.value}
+                        error={TradeMarkForm.renewal_certificate_date.error}
+                        errmsg={TradeMarkForm.renewal_certificate_date.errmsg} />
 
 
                 </Grid>
@@ -588,7 +594,7 @@ dropdown={poaList.POADetailsData}
             </Grid>
             <Grid item xs={12} container justify="flex-end" >
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="timeSheetButtons" />
-                <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"CANCEL"}  onBtnClick={handleCancel}  custombtnCSS="timeSheetButtons" />
 
             </Grid>
 
