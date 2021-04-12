@@ -32,17 +32,23 @@ function TradeMark(properties) {
     const [selectedFile1, setselectedFile1] = useState([]);
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
-
+    let { rowId } = useParams()
     useEffect(() => {
+        dispatch(getProjectDetails(rowId))
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        dispatch(getPoaDetails());
+        dispatch(getPoaDetails(idDetails.client_id));
         dispatch(getUsageDetails());
         
         
       }, []);
 
     useEffect(() => {
+        setProjectDetails(properties.ProjectDetails);
+        properties.ProjectDetails.length > 0 && setidDetails({
+            project_id:properties.ProjectDetails[0].project_id,
+            client_id:properties.ProjectDetails[0].client_id,
+        })
 
         let tradeStatusData = []
         properties.tradeStatusList.map((data) =>
@@ -72,12 +78,12 @@ let tmUsageDetailsData = []
 )
 setusageDetList({ tmUsageDetailsData })
 
-}, [
+}, [properties.ProjectDetails,
     properties.tradeStatusList,properties.classDetailsList,properties.POAList,properties.tmUsageDetailsList
   ]);
 
-  let { rowId } = useParams()
-  useEffect(() => {
+  
+  /*useEffect(() => {
       dispatch(getProjectDetails(rowId))
   }, [])
   useEffect(() => {
@@ -88,7 +94,7 @@ setusageDetList({ tmUsageDetailsData })
       })
   }, [properties.ProjectDetails])
 
-  
+  */
     const props = {
         name: 'file',
        // action: '//jsonplaceholder.typicode.com/posts/',
@@ -300,11 +306,10 @@ setusageDetList({ tmUsageDetailsData })
         ); 
         console.log(filtererr.length);
         let params  = {
-            "project_id" :"71",//radeMarkForm.project_id.value,
+            "project_id" :idDetails.project_id,//"71",//radeMarkForm.project_id.value,
              "status_id" :TradeMarkForm.status_id.value,
              "mark_id":TradeMarkForm.mark_id.value,
              "upload_image" :selectedFile,
-              "class_id" :TradeMarkForm.class_id.value,
               "application_no" :TradeMarkForm.application_no.value,
                 "application_date":TradeMarkForm.application_date.value, 
              "usage_details_id":TradeMarkForm.usage_details_id.value,
@@ -320,7 +325,6 @@ setusageDetList({ tmUsageDetailsData })
                  "tmj_number":TradeMarkForm.tmj_number.value,
                   "tmj_date":TradeMarkForm.tmj_date.value,
                    "journel_extract":TradeMarkForm.journel_extract.value,
-              "poa":TradeMarkForm.poa.value, 
               "certificate_date":TradeMarkForm.certificate_date.value,
                "renewal_certificate_date":TradeMarkForm.renewal_certificate_date.value,
                "created_by" :localStorage.getItem("empId"),
@@ -328,6 +332,12 @@ setusageDetList({ tmUsageDetailsData })
                  "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
                  "updated_by" :localStorage.getItem("empId"),
                "ip_address" :"ddf"
+        }
+        if(TradeMarkForm.poa.value != ""){
+            params["poa"] =TradeMarkForm.poa.value;
+        }
+        if(TradeMarkForm.class_id.value != ""){
+            params["class_id"] =TradeMarkForm.class_id.value;
         }
         if (filtererr.length > 0) {
             // setTradeMarkForm({ error: true });

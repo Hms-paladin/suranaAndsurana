@@ -5,102 +5,91 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+import { useParams } from "react-router-dom";
+import { getTradeMarkStatus,getCountryDetails,
+  } from "../../../actions/tradeMarkAction";
+import {insertPatent} from  "../../../actions/PatentAction";
+import moment from 'moment'
 
-
-
-export default function ApplicationPCT() {
+function ApplicationPCT(props) {
+  const [projectDetails, setProjectDetails] = useState({})
+  const [idDetails, setidDetails] = useState({})
   const dispatch = useDispatch()
-  const [App_PCT, setResumeFrom] = useState({
+  const [tradeStatusList, settradeStatusList] = useState({})
+  const [countryDetList, setcountryDetList] = useState({})
+  const [patentForm, setpatentForm] = useState({
 
     file_cover: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     our_ref: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     associate: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    country: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     deadline: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    title: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     client_ref: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     app_num: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     app_date: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    applicant: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     comments: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     status: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     priority_country: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     priority_num: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
 
     priority_date: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
@@ -111,33 +100,88 @@ export default function ApplicationPCT() {
 
   })
 
+  let { rowId } = useParams()
+  useEffect(() => {
+    dispatch(getProjectDetails(rowId))
+    dispatch(getTradeMarkStatus());
+    dispatch(getCountryDetails());
+    
+  }, []);
+
+  useEffect(() => {
+    setProjectDetails(props.ProjectDetails);
+    props.ProjectDetails.length > 0 && setidDetails({
+        project_id:props.ProjectDetails[0].project_id,
+        client_id:props.ProjectDetails[0].client_id,
+    })
+
+    let tradeStatusData = []
+    props.tradeStatusList.map((data) =>
+tradeStatusData.push({ value: data.Status,
+    id: data.status_id })
+)
+settradeStatusList({ tradeStatusData })
+
+let countryListsData = []
+props.countriesList.map((data) =>
+countryListsData.push({ value: data.country,
+id: data.country_id })
+) 
+setcountryDetList({ countryListsData })
+
+
+
+}, [props.ProjectDetails,
+props.tradeStatusList,props.countriesList
+]);
+
   function onSubmit() {
     var mainvalue = {};
-    var targetkeys = Object.keys(App_PCT);
+    var targetkeys = Object.keys(patentForm);
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
-        App_PCT[targetkeys[i]].value,
-        App_PCT[targetkeys[i]].validation
+        patentForm[targetkeys[i]].value,
+        patentForm[targetkeys[i]].validation
       );
-      App_PCT[targetkeys[i]].error = !errorcheck.state;
-      App_PCT[targetkeys[i]].errmsg = errorcheck.msg;
-      mainvalue[targetkeys[i]] = App_PCT[targetkeys[i]].value;
+      patentForm[targetkeys[i]].error = !errorcheck.state;
+      patentForm[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = patentForm[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter(
-      (obj) => App_PCT[obj].error == true
+      (obj) => patentForm[obj].error == true
     );
     console.log(filtererr.length);
-    if (filtererr.length > 0) {
-      // setResumeFrom({ error: true });
-    } else {
-      // setResumeFrom({ error: false });
+    let params ={
+      "file_cover":patentForm.file_cover.value,
+      "associate":patentForm.associate.value,
+      "our_reference":patentForm.our_ref.value,
+      "client_reference":patentForm.client_ref.value,
+      "application_no":patentForm.app_num.value,
+      "application_date":patentForm.app_date.value,
+      "priority_country":patentForm.priority_country.value,
+      "priority_application_no":patentForm.priority_num.value,
+      "priority_date":patentForm.priority_date.value,
+      "status_id":patentForm.status.value,
+      "comments":patentForm.comments.value,
+      "dead_line":patentForm.deadline.value,
+      "created_by" :localStorage.getItem("empId"),
+      "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+      "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+      "updated_by" :localStorage.getItem("empId"),
+      }
 
-      dispatch(InesertResume(App_PCT)).then(() => {
-        handleCancel()
+    
+    if (filtererr.length > 0) {
+      // setpatentForm({ error: true });
+    } else {
+      // setpatentForm({ error: false });
+
+      dispatch(insertPatent(params)).then(() => {
+        //handleCancel()
       })
     }
 
-    setResumeFrom(prevState => ({
+    setpatentForm(prevState => ({
       ...prevState
     }));
   };
@@ -148,9 +192,9 @@ export default function ApplicationPCT() {
     ]
 
     ResumeFrom_key.map((data) => {
-      App_PCT[data].value = ""
+      patentForm[data].value = ""
     })
-    setResumeFrom(prevState => ({
+    setpatentForm(prevState => ({
       ...prevState,
     }));
   }
@@ -159,13 +203,13 @@ export default function ApplicationPCT() {
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
-      App_PCT[key].validation
+      patentForm[key].validation
     );
     let dynObj = {
       value: data,
       error: !errorcheck.state,
       errmsg: errorcheck.msg,
-      validation: App_PCT[key].validation
+      validation: patentForm[key].validation
     }
 
     // only for multi select (start)
@@ -184,7 +228,7 @@ export default function ApplicationPCT() {
     }
     // (end)
 
-    setResumeFrom(prevState => ({
+    setpatentForm(prevState => ({
       ...prevState,
       [key]: dynObj,
     }));
@@ -196,68 +240,78 @@ export default function ApplicationPCT() {
         <Grid item xs={12} md={12} className="app_cont_domestic">
           <Labelbox type="text" placeholder={"File Cover"}
             changeData={(data) => checkValidation(data, "file_cover")}
-            value={App_PCT.file_cover.value}
-            error={App_PCT.file_cover.error}
-            errmsg={App_PCT.file_cover.errmsg} />
+            value={patentForm.file_cover.value}
+            error={patentForm.file_cover.error}
+            errmsg={patentForm.file_cover.errmsg} />
 
           <Labelbox type="text" placeholder={"Associate"}
             changeData={(data) => checkValidation(data, "associate")}
-            value={App_PCT.associate.value}
-            error={App_PCT.associate.error}
-            errmsg={App_PCT.associate.errmsg} />
+            value={patentForm.associate.value}
+            error={patentForm.associate.error}
+            errmsg={patentForm.associate.errmsg} />
 
           <Labelbox type="text" placeholder={"Our Reference"}
             changeData={(data) => checkValidation(data, "our_ref")}
-            value={App_PCT.our_ref.value}
-            error={App_PCT.our_ref.error}
-            errmsg={App_PCT.our_ref.errmsg} />
+            value={patentForm.our_ref.value}
+            error={patentForm.our_ref.error}
+            errmsg={patentForm.our_ref.errmsg} />
 
           <Labelbox type="text" placeholder={"Client Reference"}
             changeData={(data) => checkValidation(data, "client_ref")}
-            value={App_PCT.client_ref.value}
-            error={App_PCT.client_ref.error}
-            errmsg={App_PCT.client_ref.errmsg} />
+            value={patentForm.client_ref.value}
+            error={patentForm.client_ref.error}
+            errmsg={patentForm.client_ref.errmsg} />
 
           <Labelbox type="number" placeholder={"Application number"}
             changeData={(data) => checkValidation(data, "app_num")}
-            value={App_PCT.app_num.value}
-            error={App_PCT.app_num.error}
-            errmsg={App_PCT.app_num.errmsg} />
+            value={patentForm.app_num.value}
+            error={patentForm.app_num.error}
+            errmsg={patentForm.app_num.errmsg} />
 
           <Labelbox type="datepicker" placeholder={"Application Date"}
             changeData={(data) => checkValidation(data, "app_date")}
-            value={App_PCT.app_date.value}
-            error={App_PCT.app_date.error}
-            errmsg={App_PCT.app_date.errmsg} />
+            value={patentForm.app_date.value}
+            error={patentForm.app_date.error}
+            errmsg={patentForm.app_date.errmsg} />
 
-          <Labelbox type="select" placeholder={"Priority Country"} />
+          <Labelbox type="select" placeholder={"Priority Country"} 
+           dropdown={countryDetList.countryListsData}  
+           changeData={(data) => checkValidation(data, "priority_country")}
+           value={patentForm.priority_country.value}
+           error={patentForm.priority_country.error}
+           errmsg={patentForm.priority_country.errmsg}/>
 
           <Labelbox type="number" placeholder={"Priority No"}
             changeData={(data) => checkValidation(data, "priority_num")}
-            value={App_PCT.priority_num.value}
-            error={App_PCT.priority_num.error}
-            errmsg={App_PCT.priority_num.errmsg} />
+            value={patentForm.priority_num.value}
+            error={patentForm.priority_num.error}
+            errmsg={patentForm.priority_num.errmsg} />
           <Labelbox type="datepicker" placeholder={"Priority Date"}
             changeData={(data) => checkValidation(data, "priority_date")}
-            value={App_PCT.priority_date.value}
-            error={App_PCT.priority_date.error}
-            errmsg={App_PCT.priority_date.errmsg} />
+            value={patentForm.priority_date.value}
+            error={patentForm.priority_date.error}
+            errmsg={patentForm.priority_date.errmsg} />
 
-          <Labelbox type="select" placeholder={"Status"} />
+          <Labelbox type="select" placeholder={"Status"} 
+          changeData={(data) => checkValidation(data, "status")}
+          dropdown={tradeStatusList.tradeStatusData} 
+          value={patentForm.status.value}
+          error={patentForm.status.error}
+          errmsg={patentForm.status.errmsg}/>
 
         </Grid>
         <Grid item xs={12} md={12} className="comments_line">
           <div className="coments_div"><Labelbox type="text" placeholder={"Comments"}
             changeData={(data) => checkValidation(data, "comments")}
-            value={App_PCT.comments.value}
-            error={App_PCT.comments.error}
-            errmsg={App_PCT.comments.errmsg}
+            value={patentForm.comments.value}
+            error={patentForm.comments.error}
+            errmsg={patentForm.comments.errmsg}
           /></div>
           <div><Labelbox type="datepicker" placeholder={"DeadLine"}
             changeData={(data) => checkValidation(data, "deadline")}
-            value={App_PCT.deadline.value}
-            error={App_PCT.deadline.error}
-            errmsg={App_PCT.deadline.errmsg} /></div>
+            value={patentForm.deadline.value}
+            error={patentForm.deadline.error}
+            errmsg={patentForm.deadline.errmsg} /></div>
 
 
         </Grid>
@@ -271,3 +325,12 @@ export default function ApplicationPCT() {
     </div>
   )
 }
+const mapStateToProps = (state) =>
+({
+    
+    tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
+    countriesList : state.tradeMarkReducer.getCountryList || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+});
+
+export default connect(mapStateToProps)(ApplicationPCT);

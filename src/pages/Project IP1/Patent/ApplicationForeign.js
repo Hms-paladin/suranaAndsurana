@@ -5,138 +5,180 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+import { useParams } from "react-router-dom";
+import { getTradeMarkStatus,getCountryDetails,
+  } from "../../../actions/tradeMarkAction";
+import {insertPatent} from  "../../../actions/PatentAction";
+import moment from 'moment'
 
-
-export default function ApplicationForeign() {
-    const dispatch = useDispatch()
-    const [App_Foreign, setResumeFrom] = useState({
+function ApplicationForeign(props) {
+    const [projectDetails, setProjectDetails] = useState({})
+  const [idDetails, setidDetails] = useState({})
+  const dispatch = useDispatch()
+  const [tradeStatusList, settradeStatusList] = useState({})
+  const [countryDetList, setcountryDetList] = useState({})
+  const [patentForm, setpatentForm] = useState({
 
         file_cover: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         our_ref: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         associate: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
-        country: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
-        class: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         title: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         client_ref: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         app_num: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         app_date: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
-        applicant: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         status: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         priority_country: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         priority_num: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
 
         priority_date: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
 
 
 
-
-
     })
+
+    let { rowId } = useParams()
+  useEffect(() => {
+    dispatch(getProjectDetails(rowId))
+    dispatch(getTradeMarkStatus());
+    dispatch(getCountryDetails());
+    
+  }, []);
+
+  useEffect(() => {
+    setProjectDetails(props.ProjectDetails);
+    props.ProjectDetails.length > 0 && setidDetails({
+        project_id:props.ProjectDetails[0].project_id,
+        client_id:props.ProjectDetails[0].client_id,
+    })
+
+    let tradeStatusData = []
+    props.tradeStatusList.map((data) =>
+tradeStatusData.push({ value: data.Status,
+    id: data.status_id })
+)
+settradeStatusList({ tradeStatusData })
+
+let countryListsData = []
+props.countriesList.map((data) =>
+countryListsData.push({ value: data.country,
+id: data.country_id })
+) 
+setcountryDetList({ countryListsData })
+
+
+
+}, [props.ProjectDetails,
+props.tradeStatusList,props.countriesList
+]);
 
     function onSubmit() {
         var mainvalue = {};
-        var targetkeys = Object.keys(App_Foreign);
+        var targetkeys = Object.keys(patentForm);
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
-                App_Foreign[targetkeys[i]].value,
-                App_Foreign[targetkeys[i]].validation
+                patentForm[targetkeys[i]].value,
+                patentForm[targetkeys[i]].validation
             );
-            App_Foreign[targetkeys[i]].error = !errorcheck.state;
-            App_Foreign[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = App_Foreign[targetkeys[i]].value;
+            patentForm[targetkeys[i]].error = !errorcheck.state;
+            patentForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = patentForm[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter(
-            (obj) => App_Foreign[obj].error == true
+            (obj) => patentForm[obj].error == true
         );
         console.log(filtererr.length);
-        if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
-        } else {
-            // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(App_Foreign)).then(() => {
-                handleCancel()
-            })
+        let params ={
+            "file_cover":patentForm.file_cover.value,
+            "our_reference":patentForm.our_ref.value,
+            "client_reference":patentForm.client_ref.value,
+            "application_no":patentForm.app_num.value,
+            "application_date":patentForm.app_date.value,
+            "priority_country":patentForm.priority_country.value,
+            "priority_application_no":patentForm.priority_num.value,
+            "priority_date":patentForm.priority_date.value,
+            "patent_title":patentForm.title.value,
+            "associate":patentForm.associate.value,
+            "status_id":patentForm.status.value,
+            "comments":patentForm.comments.value,
+            "created_by" :localStorage.getItem("empId"),
+            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_by" :localStorage.getItem("empId"),
+            }
+
+       
+        if (filtererr.length > 0) {
+            // setpatentForm({ error: true });
+        } else {
+            dispatch(insertPatent(params)).then(() => {
+                //handleCancel()
+              })
         }
 
-        setResumeFrom(prevState => ({
+        setpatentForm(prevState => ({
             ...prevState
         }));
     };
@@ -147,9 +189,9 @@ export default function ApplicationForeign() {
         ]
 
         ResumeFrom_key.map((data) => {
-            App_Foreign[data].value = ""
+            patentForm[data].value = ""
         })
-        setResumeFrom(prevState => ({
+        setpatentForm(prevState => ({
             ...prevState,
         }));
     }
@@ -158,13 +200,13 @@ export default function ApplicationForeign() {
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            App_Foreign[key].validation
+            patentForm[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: App_Foreign[key].validation
+            validation: patentForm[key].validation
         }
 
         // only for multi select (start)
@@ -183,7 +225,7 @@ export default function ApplicationForeign() {
         }
         // (end)
 
-        setResumeFrom(prevState => ({
+        setpatentForm(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
@@ -195,67 +237,77 @@ export default function ApplicationForeign() {
                 <Grid item xs={12} md={12} className="app_cont_domestic">
                     <Labelbox type="text" placeholder={"File Cover"}
                         changeData={(data) => checkValidation(data, "file_cover")}
-                        value={App_Foreign.file_cover.value}
-                        error={App_Foreign.file_cover.error}
-                        errmsg={App_Foreign.file_cover.errmsg} />
+                        value={patentForm.file_cover.value}
+                        error={patentForm.file_cover.error}
+                        errmsg={patentForm.file_cover.errmsg} />
 
                     <Labelbox type="text" placeholder={"Our Reference"}
                         changeData={(data) => checkValidation(data, "our_ref")}
-                        value={App_Foreign.our_ref.value}
-                        error={App_Foreign.our_ref.error}
-                        errmsg={App_Foreign.our_ref.errmsg} />
+                        value={patentForm.our_ref.value}
+                        error={patentForm.our_ref.error}
+                        errmsg={patentForm.our_ref.errmsg} />
 
                     <Labelbox type="text" placeholder={"Client Reference"}
                         changeData={(data) => checkValidation(data, "client_ref")}
-                        value={App_Foreign.client_ref.value}
-                        error={App_Foreign.client_ref.error}
-                        errmsg={App_Foreign.client_ref.errmsg} />
+                        value={patentForm.client_ref.value}
+                        error={patentForm.client_ref.error}
+                        errmsg={patentForm.client_ref.errmsg} />
 
                     <Labelbox type="number" placeholder={"Application number"}
                         changeData={(data) => checkValidation(data, "app_num")}
-                        value={App_Foreign.app_num.value}
-                        error={App_Foreign.app_num.error}
-                        errmsg={App_Foreign.app_num.errmsg} />
+                        value={patentForm.app_num.value}
+                        error={patentForm.app_num.error}
+                        errmsg={patentForm.app_num.errmsg} />
 
                     <Labelbox type="datepicker" placeholder={"Application Date"}
                         changeData={(data) => checkValidation(data, "app_date")}
-                        value={App_Foreign.app_date.value}
-                        error={App_Foreign.app_date.error}
-                        errmsg={App_Foreign.app_date.errmsg} />
+                        value={patentForm.app_date.value}
+                        error={patentForm.app_date.error}
+                        errmsg={patentForm.app_date.errmsg} />
 
                     <Labelbox type="number" placeholder={"Priority No"}
                         changeData={(data) => checkValidation(data, "priority_num")}
-                        value={App_Foreign.priority_num.value}
-                        error={App_Foreign.priority_num.error}
-                        errmsg={App_Foreign.priority_num.errmsg} />
+                        value={patentForm.priority_num.value}
+                        error={patentForm.priority_num.error}
+                        errmsg={patentForm.priority_num.errmsg} />
                     <Labelbox type="datepicker" placeholder={"Priority Date"}
                         changeData={(data) => checkValidation(data, "priority_date")}
-                        value={App_Foreign.priority_date.value}
-                        error={App_Foreign.priority_date.error}
-                        errmsg={App_Foreign.priority_date.errmsg} />
+                        value={patentForm.priority_date.value}
+                        error={patentForm.priority_date.error}
+                        errmsg={patentForm.priority_date.errmsg} />
 
                     <Labelbox type="text" placeholder={"Title"}
                         changeData={(data) => checkValidation(data, "title")}
-                        value={App_Foreign.title.value}
-                        error={App_Foreign.title.error}
-                        errmsg={App_Foreign.title.errmsg} />
+                        value={patentForm.title.value}
+                        error={patentForm.title.error}
+                        errmsg={patentForm.title.errmsg} />
 
-                    <Labelbox type="select" placeholder={"Country"} />
+                    <Labelbox type="select" placeholder={"Country"}
+                    dropdown={countryDetList.countryListsData}  
+                    changeData={(data) => checkValidation(data, "priority_country")}
+                    value={patentForm.priority_country.value}
+                    error={patentForm.priority_country.error}
+                    errmsg={patentForm.priority_country.errmsg} />
 
 
                     <Labelbox type="text" placeholder={"Associate"}
                         changeData={(data) => checkValidation(data, "associate")}
-                        value={App_Foreign.associate.value}
-                        error={App_Foreign.associate.error}
-                        errmsg={App_Foreign.associate.errmsg} />
+                        value={patentForm.associate.value}
+                        error={patentForm.associate.error}
+                        errmsg={patentForm.associate.errmsg} />
 
                     <Labelbox type="select" placeholder={"Status"}
+                    changeData={(data) => checkValidation(data, "status")}
+                    dropdown={tradeStatusList.tradeStatusData} 
+                    value={patentForm.status.value}
+                    error={patentForm.status.error}
+                    errmsg={patentForm.status.errmsg}
                     />
                     <div className="coments_div"><Labelbox type="text" placeholder={"Comments"}
                         changeData={(data) => checkValidation(data, "comments")}
-                        value={App_Foreign.comments.value}
-                        error={App_Foreign.comments.error}
-                        errmsg={App_Foreign.comments.errmsg} /></div>
+                        value={patentForm.comments.value}
+                        error={patentForm.comments.error}
+                        errmsg={patentForm.comments.errmsg} /></div>
 
 
                 </Grid>
@@ -269,3 +321,13 @@ export default function ApplicationForeign() {
         </div>
     )
 }
+
+const mapStateToProps = (state) =>
+({
+    
+    tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
+    countriesList : state.tradeMarkReducer.getCountryList || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+});
+
+export default connect(mapStateToProps)(ApplicationForeign);

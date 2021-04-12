@@ -10,7 +10,8 @@ import { Upload, message, Button, Icon } from 'antd';
 import moment from 'moment'
 import { getTradeMarkStatus,getClassDetails,getPoaDetails,getCountryDetails,
     getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
-// import Tab icons
+    import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+    import { useParams } from "react-router-dom";
 
 import TabsTcons from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 
@@ -38,6 +39,8 @@ function TradeMarkInternational(properties) {
     const [countryDetList, setcountryDetList] = useState({})
     const [selectedFile, setselectedFile] = useState([]);
     const [selectedFile1, setselectedFile1] = useState([]);
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
     useEffect(() => {
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
@@ -58,15 +61,15 @@ function TradeMarkInternational(properties) {
     
     let classDetailsData = []
     properties.classDetailsList.map((data) =>
-    classDetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    classDetailsData.push({ value: data.class,
+    id: data.class_id })
 )
 setclassDetList({ classDetailsData })
 
 let POADetailsData = []
     properties.POAList.map((data) =>
-    POADetailsData.push({ value: data.activity,
-    id: data.activity_id })
+    POADetailsData.push({ value: data.POA,
+    id: data.client_id })
 )
 setpoaList({ POADetailsData })
 
@@ -91,6 +94,17 @@ setcountryDetList({ countryListsData })
   ]);
 
   const dispatch = useDispatch()
+  let { rowId } = useParams()
+  useEffect(() => {
+      dispatch(getProjectDetails(rowId))
+  }, [])
+  useEffect(() => {
+      setProjectDetails(properties.ProjectDetails);
+      properties.ProjectDetails.length > 0 && setidDetails({
+          project_id:properties.ProjectDetails[0].project_id,
+          client_id:properties.ProjectDetails[0].client_id,
+      })
+  }, [properties.ProjectDetails])
 
 
   const [TradeMarkForm, setTradeMarkForm] = useState({
@@ -308,11 +322,10 @@ setcountryDetList({ countryListsData })
         ); */
         //console.log(filtererr.length);
         let params  = {
-            "project_id" :"71",//radeMarkForm.project_id.value,
+            "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
             "status_id" :TradeMarkForm.status_id.value,
             "associateRefernce": "dd",
             "ourRefernce": "ddff",
-            "class_id" :"1",//TradeMarkForm.class_id.value,
             "mark_id":TradeMarkForm.mark_id.value,
              "upload_image" :selectedFile,
             "associate":"ddda",
@@ -345,6 +358,9 @@ setcountryDetList({ countryListsData })
                  "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
                  "updated_by" :localStorage.getItem("empId"),
                "ip_address" :"ddf"
+        }
+        if(TradeMarkForm.class_id.value != ""){
+            params["class_id"] =TradeMarkForm.class_id.value;
         }
         dispatch(insertTradeMark(params)).then(() => {
             handleCancel()
@@ -567,6 +583,7 @@ const mapStateToProps = (state) =>
     POAList: state.tradeMarkReducer.getPOAList || [],
     tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
     countriesList : state.tradeMarkReducer.getCountryList || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 export default connect(mapStateToProps)(TradeMarkInternational);
