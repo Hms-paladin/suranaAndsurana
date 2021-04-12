@@ -122,7 +122,7 @@ function OppositionDefended(props) {
         );
         console.log(filtererr.length);
         let params ={
-        
+            "project_id":idDetails.project_id,
             "opposition_filled_date":patentForm.opp_fill_date.value,
             "types_of_grant":patentForm.type_grant.value,
             "application_no":patentForm.app_num.value,

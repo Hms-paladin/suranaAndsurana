@@ -123,6 +123,7 @@ props.tradeStatusList,props.countriesList
         );
         console.log(filtererr.length);
         let params ={
+            "project_id":idDetails.project_id,
             "opponent_agent":patentForm.opponent.value,
             "opposition_filled_date":patentForm.opp_fill_date.value,
             "types_of_grant":patentForm.type_grant.value,

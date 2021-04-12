@@ -149,6 +149,7 @@ props.tradeStatusList,props.countriesList
     console.log(filtererr.length);
     let params={
   "project_id":idDetails.project_id,
+  "project_id":idDetails.project_id,
   "application_no":patentForm.app_num.value,
   "patent_title":patentForm.title.value,
   "application_date":patentForm.app_date.value,

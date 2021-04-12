@@ -151,6 +151,7 @@ props.tradeStatusList,props.countriesList
         console.log(filtererr.length);
 
         let params ={
+            "project_id":idDetails.project_id,
             "file_cover":patentForm.file_cover.value,
             "our_reference":patentForm.our_ref.value,
             "client_reference":patentForm.client_ref.value,
