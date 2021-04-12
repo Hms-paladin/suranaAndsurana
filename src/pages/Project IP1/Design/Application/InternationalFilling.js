@@ -1,124 +1,114 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
-import Checklist from "../../../../images/checklist.png";
-import Stage from "../../../../images/stage.png";
-import Task from "../../../../images/task.png";
-import Application from "../../../../images/application.png";
+import { useSelector, useDispatch } from 'react-redux';
+import { getClass, getCountry, getIPStatus } from "../../../../actions/IPDropdown.js";
+import { InsertDesign } from "../../../../actions/InsertDesign";
 
-function InternationalFilling() {
+function InternationalFilling(props) {
   const [InternationlForm, setInternationlForm] = useState({
     file_cover: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
+      error: null,
+      errmsg: null,
+    },
+    associate: {
+      value: "",
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     our_ref: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     client_ref: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    applicant: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    country: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    class: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    title: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-      error: null,
-      errmsg: null,
-    },
-    assoc_ref: {
-      value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     app_num: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }, { "name": "alphaNumaricOnly" }],
       error: null,
       errmsg: null,
     },
     app_date: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
-    status: {
+    applicant: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
-    comments: {
+    title: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
-    status: {
+    class: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
+    country: {
+      value: "",
+      validation: [],
       error: null,
       errmsg: null,
     },
     priority_country: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     priority_date: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
-    prior_app_no: {
+    status: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
-    next_renew: {
+    comments: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+      validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
-
+    },
+    renewal_date: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null
     }
-
   })
-
+  const [interFilGetList, setInterFilGetList] = useState({
+    getClassList: [],
+    getCountryList: [],
+    getStatusList: []
+  })
+  const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+  const dispatch = useDispatch();
 
   function checkValidation(data, key, multipleId) {
-
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       InternationlForm[key].validation
@@ -129,37 +119,10 @@ function InternationalFilling() {
       errmsg: errorcheck.msg,
       validation: InternationlForm[key].validation
     }
-
-    // only for multi select (start)
-
-    let multipleIdList = []
-
-    if (multipleId) {
-      multipleId.map((item) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i] === item.value) {
-            multipleIdList.push(item.id)
-          }
-        }
-      })
-      dynObj.valueById = multipleIdList.toString()
-    }
-    // (end)
-
     setInternationlForm(prevState => ({
       ...prevState,
       [key]: dynObj,
     }));
-    // var filtererr = targetkeys.filter(
-    //     (obj) =>
-    //         InternationlForm[obj].error == true ||
-    //         InternationlForm[obj].error == null
-    // );
-    // if (filtererr.length > 0) {
-    //     setResumeFrom({ error: true, errordummy: false });
-    // } else {
-    //     setResumeFrom({ error: false });
-    // }
   };
 
   function SubmitFunction() {
@@ -179,21 +142,54 @@ function InternationalFilling() {
     );
     console.log(filtererr.length);
     if (filtererr.length > 0) {
-      // setInternationlForm({ error: true });
     } else {
-      // setInternationlForm({ error: false });
-
-      // dispatch(InesertResume(InternationlForm)).then(()=>{
-      //     handleCancel()
-      // })
+      dispatch(InsertDesign(InternationlForm, props.projectDetails && props.projectDetails[0])).then(() => {
+        handleCancel()
+      })
     }
 
     setInternationlForm(prevState => ({
       ...prevState
     }));
-
-
   }
+
+  const handleCancel = () => {
+    let interFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
+
+    interFil_key.map((data) => {
+      InternationlForm[data].value = "";
+    });
+    setInternationlForm((prevState) => ({
+      ...prevState,
+    }));
+  };
+
+  useEffect(() => {
+    dispatch(getClass());
+    dispatch(getCountry());
+    dispatch(getIPStatus());
+  }, [])
+
+  useEffect(() => {
+
+    const getClassList = []
+    const getCountryList = []
+    const getStatusList = []
+
+
+    DesignDropDowns.getClass.map((data) => {
+      getClassList.push({ id: data.class_id, value: data.class })
+    })
+    DesignDropDowns.getCountry.map((data) => {
+      getCountryList.push({ id: data.country_id, value: data.country })
+    })
+    DesignDropDowns.getIPStatus.map((data) => {
+      getStatusList.push({ id: data.status_id, value: data.Status })
+    })
+
+    setInterFilGetList({ getClassList, getCountryList, getStatusList })
+  }, [DesignDropDowns])
+
   return (
     <div className="container">
       <Grid container direction={"column"}>
@@ -205,32 +201,27 @@ function InternationalFilling() {
             error={InternationlForm.file_cover.error}
             errmsg={InternationlForm.file_cover.errmsg}
           />
-
-          <Labelbox type="select"
-            placeholder={"applicant"}
-            changeData={(data) => checkValidation(data, "applicant")}
-            value={InternationlForm.applicant.value}
-            error={InternationlForm.applicant.error}
-            errmsg={InternationlForm.applicant.errmsg}
+          <Labelbox type="text"
+            placeholder={"Associate"}
+            changeData={(data) => checkValidation(data, "associate")}
+            value={InternationlForm.associate.value}
+            error={InternationlForm.associate.error}
+            errmsg={InternationlForm.associate.errmsg}
           />
-
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Our Reference"}
             changeData={(data) => checkValidation(data, "our_ref")}
             value={InternationlForm.our_ref.value}
             error={InternationlForm.our_ref.error}
             errmsg={InternationlForm.our_ref.errmsg}
           />
-
-
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Client Reference"}
             changeData={(data) => checkValidation(data, "client_ref")}
             value={InternationlForm.client_ref.value}
             error={InternationlForm.client_ref.error}
             errmsg={InternationlForm.client_ref.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Application Number"}
             changeData={(data) => checkValidation(data, "app_num")}
@@ -238,7 +229,6 @@ function InternationalFilling() {
             error={InternationlForm.app_num.error}
             errmsg={InternationlForm.app_num.errmsg}
           />
-
           <Labelbox type="datepicker"
             placeholder={"Application Date"}
             changeData={(data) => checkValidation(data, "app_date")}
@@ -246,15 +236,13 @@ function InternationalFilling() {
             error={InternationlForm.app_date.error}
             errmsg={InternationlForm.app_date.errmsg}
           />
-
-          <Labelbox type="select"
+          <Labelbox type="text"
             placeholder={"Applicant"}
             changeData={(data) => checkValidation(data, "applicant")}
             value={InternationlForm.applicant.value}
             error={InternationlForm.applicant.error}
             errmsg={InternationlForm.applicant.errmsg}
           />
-
           <Labelbox type="text"
             placeholder={"Title"}
             changeData={(data) => checkValidation(data, "title")}
@@ -262,33 +250,30 @@ function InternationalFilling() {
             error={InternationlForm.title.error}
             errmsg={InternationlForm.title.errmsg}
           />
-
           <Labelbox type="select"
             placeholder={"Class"}
+            dropdown={interFilGetList.getClassList}
             changeData={(data) => checkValidation(data, "class")}
             value={InternationlForm.class.value}
             error={InternationlForm.class.error}
             errmsg={InternationlForm.class.errmsg}
           />
-
-
           <Labelbox type="select"
             placeholder={"Country"}
+            dropdown={interFilGetList.getCountryList}
             changeData={(data) => checkValidation(data, "country")}
             value={InternationlForm.country.value}
             error={InternationlForm.country.error}
             errmsg={InternationlForm.country.errmsg}
           />
-
           <Labelbox type="select"
             placeholder={"priority Country"}
+            dropdown={interFilGetList.getCountryList}
             changeData={(data) => checkValidation(data, "priority_country")}
             value={InternationlForm.priority_country.value}
             error={InternationlForm.priority_country.error}
             errmsg={InternationlForm.priority_country.errmsg}
-
           />
-
           <Labelbox type="datepicker"
             placeholder={"priority Date"}
             changeData={(data) => checkValidation(data, "priority_date")}
@@ -296,16 +281,14 @@ function InternationalFilling() {
             error={InternationlForm.priority_date.error}
             errmsg={InternationlForm.priority_date.errmsg}
           />
-
           <Labelbox type="select"
             placeholder={"Status"}
+            dropdown={interFilGetList.getStatusList}
             changeData={(data) => checkValidation(data, "status")}
             value={InternationlForm.status.value}
             error={InternationlForm.status.error}
             errmsg={InternationlForm.status.errmsg}
           />
-
-
           <Labelbox type="textarea"
             placeholder={"Comments"}
             changeData={(data) => checkValidation(data, "comments")}
@@ -313,22 +296,21 @@ function InternationalFilling() {
             error={InternationlForm.comments.error}
             errmsg={InternationlForm.comments.errmsg}
           />
-
-
           <Labelbox type="datepicker"
             placeholder={"Renewal Date"}
-
+            changeData={(data) => checkValidation(data, "renewal_date")}
+            value={InternationlForm.renewal_date.value}
+            error={InternationlForm.renewal_date.error}
+            errmsg={InternationlForm.renewal_date.errmsg}
           />
         </Grid>
       </Grid>
       <div className="custombtnOposition">
         <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={SubmitFunction} custombtnCSS={"TMopositionbuttons"} />
-        <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+        <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} onBtnClick={handleCancel} />
       </div>
-
-
-
     </div>
   )
 }
+
 export default InternationalFilling;

@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useEffect, useState } from 'react';
 import './litigation.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -7,30 +7,16 @@ import { useDispatch, connect } from "react-redux";
 import { InesertResume } from "../../actions/ResumeAction";
 import CustomButton from "../../component/Butttons/button";
 import { message } from 'antd';
+import { InsertLitigationDetails } from '../../actions/Litigation';
+import { getLitigationCounsel } from '../../actions/MasterDropdowns';
+import moment from 'moment';
 
-function AddDataModel() {
-    const props = {
-        name: 'file',
-        action: '//jsonplaceholder.typicode.com/posts/',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
-    const dispatch = useDispatch()
-
-
+const AddDataModel=(props)=> {
+    const dispatch = useDispatch()                                                                                                                                                  
+    const[LitiCounsel,setLitiCounsel] =useState([])
+    const[IteriumModel,setIteriumModel] =useState(false)
+    const[LitiID,setLitiID] =useState("")
     const [Litigation_Form, setResumeFrom] = useState({
-
         counsel: {
             value: "",
             validation: [{ "name": "required" },],
@@ -39,32 +25,71 @@ function AddDataModel() {
         },
         name: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [],
             error: null,
             errmsg: null,
         },
         phoneno: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [],
             error: null,
             errmsg: null,
         },
         emailid: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [],
             error: null,
             errmsg: null,
         },
         address: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        interimname: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        interimapplicationno: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        interimapplicationdate: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        interimdetails: {
+            value: "",
+            validation: [],
             error: null,
             errmsg: null,
         },
 
 
     })
+   useEffect(() => {
+dispatch(getLitigationCounsel())
+   }, [])
 
+
+
+    useEffect (() => {
+    let liti_councel=[]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+      props.getLitigationCounsel.map((dat)=>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+        liti_councel.push({
+            id:dat.liti_councel_id,value:dat.liti_councel
+        })
+      )
+      setLitiCounsel({liti_councel});
+
+    }, [props.getLitigationCounsel])
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Litigation_Form);
@@ -86,8 +111,9 @@ function AddDataModel() {
         } else {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Litigation_Form)).then(() => {
-                handleCancel()
+            dispatch(InsertLitigationDetails(Litigation_Form,LitiID)).then(() => {
+                handleCancel();
+                props.handleChangeCloseModel()
             })
         }
 
@@ -98,7 +124,7 @@ function AddDataModel() {
 
     const handleCancel = () => {
         let ResumeFrom_key = [
-            "counsel", "name", "phoneno","emailid","address"
+            "counsel", "name", "phoneno","emailid","address","interimname", "interimapplicationno","interimapplicationdate","interimdetails"
         ]
 
         ResumeFrom_key.map((data) => {
@@ -108,9 +134,18 @@ function AddDataModel() {
             ...prevState,
         }));
     }
+useEffect(() => {
+    setLitiID(props.Litigation_ID)
 
+}, [props.Litigation_ID])
     function checkValidation(data, key, multipleId) {
-
+   
+    if(data && data == 5 && key=="counsel"){
+    setIteriumModel(true)
+    }else if(data && data!== 5 && key =="counel"){
+    setIteriumModel(false)
+     }
+         
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Litigation_Form[key].validation
@@ -152,30 +187,34 @@ function AddDataModel() {
 
                 <div className="liticationDetails">
                     <Labelbox type="select" placeholder={"Counsel"}
+                      dropdown={LitiCounsel.liti_councel}
                         changeData={(data) => checkValidation(data, "counsel")}
                         value={Litigation_Form.counsel.value}
                         error={Litigation_Form.counsel.error}
                         errmsg={Litigation_Form.counsel.errmsg} />
-
+  { IteriumModel !== true ?
+        <>
                     <Labelbox type="text" placeholder={"Name"}
                         changeData={(data) => checkValidation(data, "name")}
                         value={Litigation_Form.name.value}
                         error={Litigation_Form.name.error}
                         errmsg={Litigation_Form.name.errmsg} />
 
-                    <Labelbox type="number" placeholder={"Phone No"}
+                    <Labelbox type="text" placeholder={"Phone No"}
                         changeData={(data) => checkValidation(data, "phoneno")}
                         value={Litigation_Form.phoneno.value}
                         error={Litigation_Form.phoneno.error}
                         errmsg={Litigation_Form.phoneno.errmsg} />
+   
+
 
                     <Labelbox type="text" placeholder={"Email Id"}
                         changeData={(data) => checkValidation(data, "emailid")}
                         value={Litigation_Form.emailid.value}
                         error={Litigation_Form.emailid.error}
                         errmsg={Litigation_Form.emailid.errmsg} />
-
-                    <div className="test">
+                     
+                     <div className="test">
                         <Labelbox type="textarea" placeholder={"Address"}
                             changeData={(data) => checkValidation(data, "address")}
                             value={Litigation_Form.address.value}
@@ -183,7 +222,51 @@ function AddDataModel() {
                             errmsg={Litigation_Form.address.errmsg} />
                     </div>
 
-                    <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+               
+                 </>:<>
+                 {console.log("Litigation_Form",Litigation_Form)}
+                        <Labelbox type="text" placeholder={"Interim Name"}
+                        changeData={(data) => checkValidation(data, "interimname")}
+                        value={Litigation_Form.interimname.value}
+                        error={Litigation_Form.interimname.error}
+                        errmsg={Litigation_Form.interimname.errmsg} />
+                        
+                        <Labelbox type="text" placeholder={"Interim Application No"}
+                        changeData={(data) => checkValidation(data, "interimapplicationno")}
+                        value={Litigation_Form.interimapplicationno.value}
+                        error={Litigation_Form.interimapplicationno.error}
+                        errmsg={Litigation_Form.interimapplicationno.errmsg} />
+
+
+                    <Labelbox type="datepicker" placeholder={"Interim Application Date"}
+                        changeData={(data) => checkValidation(data, "interimapplicationdate")}
+                        value={Litigation_Form.interimapplicationdate.value} 
+                       
+                        error={Litigation_Form.interimapplicationdate.error}
+                        errmsg={Litigation_Form.interimapplicationdate.errmsg} />
+
+
+                    <div className="test">
+                        <Labelbox type="textarea" placeholder={"Interim Details"}
+                            changeData={(data) => checkValidation(data, "interimdetails")}
+                            value={Litigation_Form.interimdetails.value}
+                            error={Litigation_Form.interimdetails.error}
+                            errmsg={Litigation_Form.interimdetails.errmsg} />
+                    </div>
+                        </>
+                  
+
+                        
+    }
+
+
+            
+
+
+
+                
+
+                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
 
                 </div>
 
@@ -193,4 +276,11 @@ function AddDataModel() {
         </div>
     )
 }
-export default AddDataModel;
+
+const mapStateToProps = (state) => ({
+
+    getLitigationCounsel: state.getOptions.getLitigationCounsel || [],
+
+  });
+  
+  export default connect(mapStateToProps)(AddDataModel);

@@ -52,11 +52,50 @@ export const GetLitigation = (ProjectID) => async dispatch => {
           url: apiurl + "get_litigation",
           data: 
           {
-            project_id:ProjectID||0
+            project_id:ProjectID||0,
         },
         }).then((response) => {
           if (response.data.status === 1) {
               dispatch({type:GET_LITIGATION,payload:response.data.data})
+          }
+        });
+      
+  } catch (err) {
+      
+  }
+}
+
+
+export const InsertLitigationDetails = (data,id) => async dispatch => {
+  console.log("litiid",id)
+  try {
+      axios({
+          method: "POST",
+          url: apiurl + "insert_litigation_detail",
+          data: 
+            {
+               litigation_id:id || 0,
+               liti_councel_id:data.counsel.value || 0 ,
+               name:data.name.value  || 0,
+               phone_no:data.phoneno.value || 0,
+               email_id:data.emailid.value  || 0,
+               address:data.address.value ||0,
+               interim_name:data.interimname.value||0,
+               interim_appln_no:data.interimapplicationno.value||0,
+               interim_application_date:data.interimapplicationdate.value||0,
+               interim_details:data.interimdetails.value||0,
+             created_on: moment().format("YYYY-MM-DD HH:m:s"),
+             updated_on: moment().format("YYYY-MM-DD HH:m:s"),
+             created_by: localStorage.getItem("empId"),
+             updated_by: localStorage.getItem("empId"),
+          },
+        }).then((response) => {
+          if (response.data.status === 1) {
+              dispatch({type:UPDATE_LITIGATION_DETAILS,payload:response.data.data})
+            notification.success({
+              message: "Litigation Details Added Successfully",
+            });
+            return Promise.resolve();
           }
         });
       

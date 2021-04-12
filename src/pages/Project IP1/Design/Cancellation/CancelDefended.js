@@ -28,7 +28,7 @@ function CancelDefended() {
             error: null,
             errmsg: null,
         },
-        respondent_rep: {
+        petitioner_rep: {
             value: "",
             validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
             error: null,
@@ -137,7 +137,7 @@ function CancelDefended() {
                 <Grid item xs={12} md={12} className="app_cont_domestic">
 
 
-                    <Labelbox type="select"
+                    <Labelbox type="text"
                         placeholder={"Client Respondent"}
                         changeData={(data) => checkValidation(data, "client_respontent")}
                         value={CancelDefended.client_responten.value}
@@ -162,11 +162,11 @@ function CancelDefended() {
                     />
 
                     <Labelbox type="text"
-                        placeholder={"respondent Rep"}
-                        changeData={(data) => checkValidation(data, "respondent_rep")}
-                        value={CancelDefended.respondent_rep.value}
-                        error={CancelDefended.respondent_rep.error}
-                        errmsg={CancelDefended.respondent_rep.errmsg}
+                        placeholder={"Petitioner Rep"}
+                        changeData={(data) => checkValidation(data, "petitioner_rep")}
+                        value={CancelDefended.petitioner_rep.value}
+                        error={CancelDefended.petitioner_rep.error}
+                        errmsg={CancelDefended.petitioner_rep.errmsg}
                     />
 
                     <Labelbox type="select"

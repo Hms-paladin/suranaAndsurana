@@ -15,8 +15,6 @@ export default function Patent(props) {
 
     const [modelOpen, setModelOpen] = useState(false)
 
-
-
     function projectTaskModel(boxName) {
         boxName === "TASKS" && setModelOpen(true)
     }

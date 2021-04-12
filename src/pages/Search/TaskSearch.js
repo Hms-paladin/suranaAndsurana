@@ -28,7 +28,7 @@ import Red from "../../images/red_round.png";
 //TimeSheet Start && Stop  ==>
 import DynModel from '../../component/Model/model';
 import TimesheetStart from '../Search/TimeSheets/timesheetStart';
-import TimesheetStop from '../Search/TimeSheets/timesheetStop';
+import TimeSheetView from '../Search/TimeSheets/timesheetview';
 
 
 
@@ -92,7 +92,7 @@ function Task() {
                                 <p className="num_align_side" onClick={stopModel}>1</p>
                                 <Divider />
                                 <img src={Clock} className="img_side_align" onClick={startModel} />
-                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimesheetStart />} width={1000} />
+                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} />
                                 {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={stopModelOpen} handleChangeCloseModel={(bln) => setStopModelOpen(bln)} content={<TimesheetStop />} width={1000} /> */}
                             </div>
 

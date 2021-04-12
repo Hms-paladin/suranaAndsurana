@@ -72,7 +72,7 @@ function AdhocTask(props) {
     setassignedToLists({ assignedToData })
 
       }, [
-        props.tagsList,,props.assignToList
+        props.tagsList,props.assignToList,props.insertAdhocTask
       ]);
 
     function checkValidation(data, key, multipleId) {
@@ -144,12 +144,34 @@ function AdhocTask(props) {
         }
         dispatch(insertAdhocTask(data)).then((response) => {
             console.log("Insert");
-            //onStateClear()
+            handleCancel();
         })
         setadhoc_Form(prevState => ({
             ...prevState
         }));
     };
+
+    const handleCancel = () => {
+        let From_key = [
+          "task_description",
+          "start_date",
+          "end_date",
+          "tag",
+          "assigned_task"
+        ];
+    
+        From_key.map((data) => {
+          try {
+            adhoc_Form[data].value = "";
+            console.log("mapping", adhoc_Form[data].value);
+          } catch (error) {
+            throw error;
+          }
+        });
+        setadhoc_Form((prevState) => ({
+          ...prevState,
+        }));
+      };
 
 
     return (
@@ -215,7 +237,7 @@ function AdhocTask(props) {
 
             </Grid>
             <div className="adhocModelButtons">
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={handleCancel}  />
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} onBtnClick={adhocSubmit} />
 
             </div>
@@ -231,7 +253,7 @@ const mapStateToProps = (state) =>
 ({
     
     tagsList: state.projectTasksReducer.tagsList || [],
-    assignToList: state.projectTasksReducer.assignToLists || [],
+    assignToList: state.projectTasksReducer.assignToLists || []
 });
 
 export default connect(mapStateToProps)(AdhocTask);

@@ -78,6 +78,33 @@ function ProjectTaskModel(props) {
           errmsg: null,
         }
     });
+
+    const handleCancel = () => {
+      let From_key = [
+        "activity",
+        "subActivity",
+        "location",
+        "fromDate",
+        "toDate",
+        "assignTo",
+        "tag",
+        "priority",
+        "description"
+      ];
+  
+      From_key.map((data) => {
+        try {
+          InsertTaskForm[data].value = "";
+          console.log("mapping", InsertTaskForm[data].value);
+        } catch (error) {
+          throw error;
+        }
+      });
+      setInsertTaskForm((prevState) => ({
+        ...prevState,
+      }));
+    };
+
     
       useEffect(() => {
         dispatch(getActivity());
@@ -146,19 +173,7 @@ function ProjectTaskModel(props) {
         }));
     };
 
-    const handleCancel = () => {
-        let ResumeFrom_key = [
-            "startdate", "enddate", "description"
-        ]
-
-        ResumeFrom_key.map((data) => {
-            ProjectTask_Model[data].value = ""
-        })
-        setResumeFrom(prevState => ({
-            ...prevState,
-        }));
-    }
-
+    
     function checkValidation(data, key, multipleId) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -275,8 +290,7 @@ function ProjectTaskModel(props) {
         }
 
         dispatch(inserTask(data)).then((response) => {
-            console.log("Insert");
-            //onStateClear()
+          handleCancel();
         })
 
       }
@@ -361,12 +375,16 @@ function ProjectTaskModel(props) {
             dropdown={projectSubActivity.projectSubActivitydata}
             changeData={(data) => checkValidation(data, "subActivity")}
                         placeholder={"Sub Activity"} 
-                        value={InsertTaskForm.subActivity.value} />
+                        value={InsertTaskForm.subActivity.value}
+                        error={InsertTaskForm.subActivity.error}
+                    errmsg={InsertTaskForm.subActivity.errmsg} />
                 </Grid>
             </div>
             <div className="activityTask">
                 <Grid item xs={7} >
                     <Labelbox type="select" value={InsertTaskForm.location.value}
+                    error={InsertTaskForm.location.error}
+                    errmsg={InsertTaskForm.location.errmsg}
                      dropdown={locationslList.locationData}
                     changeData={(data) => checkValidation(data, "location")}
                         placeholder={"Location"} />
@@ -375,30 +393,30 @@ function ProjectTaskModel(props) {
             <div className="projectTaskDatealign">
                 <Grid container spacing={3}>
                     <Grid item xs={4} >
-                        <Labelbox type="datepicker" value={InsertTaskForm.fromDate.value}
-                        changeData={(data) => checkValidation(data, "fromDate")}
+                        <Labelbox type="datepicker" 
                             placeholder={"Start Date"}
-                            changeData={(data) => checkValidation(data, "startdate")}
-                            value={ProjectTask_Model.startdate.value}
-                            error={ProjectTask_Model.startdate.error}
-                            errmsg={ProjectTask_Model.startdate.errmsg}
+                            changeData={(data) => checkValidation(data, "fromDate")}
+                            value={InsertTaskForm.fromDate.value}
+                            error={InsertTaskForm.fromDate.error}
+                            errmsg={InsertTaskForm.fromDate.errmsg}
 
                         />
                     </Grid>
                     <Grid item xs={4} >
-                        <Labelbox type="datepicker" value={InsertTaskForm.toDate.value}
+                        <Labelbox type="datepicker" 
                         changeData={(data) => checkValidation(data, "toDate")}
                             placeholder={" End Date"}
-                            changeData={(data) => checkValidation(data, "enddate")}
-                            value={ProjectTask_Model.enddate.value}
-                            error={ProjectTask_Model.enddate.error}
-                            errmsg={ProjectTask_Model.enddate.errmsg}
+                            value={InsertTaskForm.toDate.value}
+                            error={InsertTaskForm.toDate.error}
+                            errmsg={InsertTaskForm.toDate.errmsg}
 
                         />
                     </Grid>
                     <Grid item xs={4} >
-                        <Labelbox type="select" value={InsertTaskForm.assignTo.value}
-
+                        <Labelbox type="select" 
+                        value={InsertTaskForm.assignTo.value}
+                        error={InsertTaskForm.assignTo.error}
+                        errmsg={InsertTaskForm.assignTo.errmsg}
                      dropdown={assignedToLists.assignedToData}
                         changeData={(data) => checkValidation(data, "assignTo")}
                             placeholder={"Assign To"} />
@@ -414,6 +432,8 @@ function ProjectTaskModel(props) {
                                 placeholder={"Description"} 
                                 changeData={(data) => checkValidation(data, "description")}
                                 value={InsertTaskForm.description.value}
+                        error={InsertTaskForm.description.error}
+                        errmsg={InsertTaskForm.description.errmsg}
                                 />
                         </div>
                     </Grid>
@@ -439,7 +459,7 @@ changeData={(data) => checkValidation(data, "tag")}
                 </Grid>
             </div>
             <div className="projectTaskModelButtons">
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"}  onBtnClick={handleCancel}  />
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"projectTaskGo"} />
 
             </div>

@@ -889,7 +889,7 @@ const ResumePage = (props) => {
               <Grid item xs={6}>
                 <Labelbox
                   type="text"
-                  placeholder={"Achievements"}
+                  placeholder={"Achievements"} 
                   changeData={(data) => checkValidation(data, "achivements")}
                   value={Resume_Form.achivements.value}
                   error={Resume_Form.achivements.error}

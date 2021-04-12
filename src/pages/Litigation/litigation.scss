@@ -94,6 +94,10 @@
     justify-content: space-around;
 }
 
+.ourCounselHead{
+    display: flex;
+    justify-content:space-between;
+}
 .customAddcasebtn{
     width: 100%;
     text-align: center;
@@ -117,6 +121,7 @@
     }
     .ourCounselTitle{
         font-size: 15px;
+        justify-items: right;
     }
 }
 
