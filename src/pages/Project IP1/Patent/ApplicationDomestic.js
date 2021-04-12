@@ -242,8 +242,6 @@ export default function ApplicationDomestic() {
 
           <Labelbox type="select" placeholder={"Country"} />
 
-          <Labelbox type="select" placeholder={"Status"} />
-
           <Labelbox type="text" placeholder={"Associate"}
             changeData={(data) => checkValidation(data, "associate")}
             value={App_Domestic.associate.value}

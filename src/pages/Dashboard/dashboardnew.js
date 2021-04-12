@@ -1,8 +1,20 @@
 import react from 'react';
 import './dashboard.scss';
+import Library from '../../images/dashboard/library.svg';
 import appraisal from '../../images/dashboard/appraisal.svg';
+import KRA from '../../images/dashboard/kra.svg';
+import KPI from '../../images/dashboard/KPI.svg';
+import Timesheet from '../../images/dashboard/timesheet.svg';
+import AdhocTask from '../../images/dashboard/adhoc.svg';
+import OPExp from '../../images/dashboard/opicon.svg';
+import ApplyLeave from '../../images/dashboard/applyleave.svg';
+import TicketCreation from '../../images/dashboard/ticketcreation.svg';
+import Employee from '../../images/dashboard/employee.svg';
+import OPAdv from '../../images/dashboard/opadv.svg';
 
-const menulist = [{ img: <img src={appraisal} className="imageicons" />, title: "Library" }, { img: <img src={appraisal} className="imageicons" />, title: "Appraisal" }, { img: <img src={appraisal} className="imageicons" />, title: "KRI" }, { img: <img src={appraisal} className="imageicons" />, title: "KPI" }, { img: <img src={appraisal} className="imageicons" />, title: "Time Sheet" }, { img: <img src={appraisal} className="imageicons" />, title: "OP Expenses" }, { img: <img src={appraisal} className="imageicons" />, title: "Apply Leave" }]
+
+const menulist = [{ img: <img src={Library} className="imageicons" />, title: "Library" }, { img: <img src={appraisal} className="imageicons" />, title: "Appraisal" }, { img: <img src={KRA} className="imageicons" />, title: "KRI" }, { img: <img src={KPI} className="imageicons" />, title: "KPI" }, { img: <img src={Timesheet} className="imageicons" />, title: "Time Sheet" }, { img: <img src={AdhocTask} className="imageicons" />, title: "Adhoc Task" }, { img: <img src={OPExp} className="imageicons" />, title: "OP Expenses" }
+    , { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave" }, { img: <img src={TicketCreation} className="imageicons" />, title: "Ticket Creation" }, { img: <img src={Employee} className="imageicons" />, title: "List of Employees" }, { img: <img src={OPAdv} className="imageicons" />, title: "OP Advance" }]
 
 const Projectbox = [{ projects: "project 1", projecttype: "project Type 1 ", client: "client 1", },
 { projects: "project 2", projecttype: "project Type 2 ", client: "client 2", },
@@ -25,7 +37,7 @@ function DashboardNew() {
             <div className="dashboardMenu">{menulist.map((data) => {
                 return (
                     <div>
-                        <div >{data.img}</div>
+                        <div className="dashboardmenu">{data.img}</div>
                         <div>{data.title}</div>
                     </div>
                 )
@@ -67,7 +79,7 @@ function DashboardNew() {
                 </div>
             </div>
             <div className="taskdaysscroll">
-                <div >Tasks due by 5days</div>
+                <div >Tasks due by 5 days</div>
                 <div className="taskdaysdatas">
                     <div className="taskdaystableHeader">
 

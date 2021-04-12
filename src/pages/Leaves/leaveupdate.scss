@@ -30,3 +30,89 @@
 .reasonscmt .formdiv .brdrcls {
     height: 80px;
   }
+
+  .plusicon{
+    width: 23px;
+    padding-top: 8px;
+    cursor: pointer;
+}
+
+.uploadleave_form{
+    display: flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+    path{
+        fill:#023E7D;
+    }
+    div{
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        width:50%;
+        border: 1px solid #023E7D;
+        background-color: #fff;
+
+    }
+    // input[type="file"]{
+    //     display: none !important;
+    // }
+    .ant-upload-select {
+        border: 1px solid #023E7D !important;
+        background-color: #fff;
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        padding-left:10px;
+        padding-right:10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:230px;
+    }
+    .upload_tag{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    div{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 2px;
+    }
+    
+}
+.upload_file_inside{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.examinfotable{
+    width: 70%;
+    text-align: center;
+    background-color: #F0F0F0;
+    border-radius: 10px;
+    padding: 10px;
+    height: 150px;
+    overflow: auto;
+    >div{
+        display: flex;
+    }
+    .examfield{
+        width: 50%;
+        font-weight: 600;
+        font-size: 15px;
+        padding-bottom: 10px;
+        border-bottom: rgb(201, 196, 196) 1px solid;
+    }
+}
+
+.examdate{
+    display: flex;
+    justify-content: space-around;
+    >div{
+        width: 50%;
+        text-align: left;
+        padding-left: 30px;
+    }
+    
+}

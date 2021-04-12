@@ -18,6 +18,8 @@ import StageMasterReducer from "./StageMasterReducer"
 import CandidateAndEmployeeDetails from "./CandidateAndEmployeeDetails"
 import projectTasksReducer from "./projectTasksReducer"
 import LitigationReducer from "./LitigationReducer"
+import LeaveFormReducer from "./LeaveFormReducer"
+
 export default combineReducers({
     getInterviewquestions,
     ResumeSearchStatus,
@@ -31,5 +33,5 @@ export default combineReducers({
     getHrTodoList,
     interviewApproverTableData,HrSearchRowData,
     variableRateMaster,projectSearchReducer,ProjectFillingFinalReducer,StageMasterReducer,CandidateAndEmployeeDetails,
-    projectTasksReducer,LitigationReducer
+    projectTasksReducer,LitigationReducer,LeaveFormReducer
 })
