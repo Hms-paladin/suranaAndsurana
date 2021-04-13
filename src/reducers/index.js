@@ -11,6 +11,7 @@ import getResumeSearchRowdata from "./ResumeSearchRowdata";
 import getHrTodoList from "./TodoListReducer";
 import interviewApproverTableData from "./interviewApproverReducer";
 import HrSearchRowData from "./HrSearchRowData";
+import LeaveFormReducer from "./LeaveFormReducer";
 import variableRateMaster from "./variableRateMaster";
 import projectSearchReducer from "./ProjectSearchReducers";
 import ProjectFillingFinalReducer from "./ProjectFillingFinalReducer";
@@ -20,6 +21,7 @@ import projectTasksReducer from "./projectTasksReducer";
 import LitigationReducer from "./LitigationReducer";
 import IPDropdownReducer from "./IPDropdownReducer";
 import tradeMarkReducer from "./tradeMarkReducer";
+import PatentReducer from "./PatentReducer"
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -27,11 +29,6 @@ export default combineReducers({
   GetDesignation,
   GetEmployeeApprove,
   insertInterviewquestions,
-  getemplyoeeformid,
-  getOptions: getResumeSearchDropDownOptions,
-  getResumeSearchRowdata,
-  getHrTodoList,
-  IPDropdownReducer,
   interviewApproverTableData,
   HrSearchRowData,
   variableRateMaster,
@@ -42,4 +39,11 @@ export default combineReducers({
   projectTasksReducer,
   LitigationReducer,
   tradeMarkReducer,
+  getemplyoeeformid,
+  getOptions: getResumeSearchDropDownOptions,
+  getResumeSearchRowdata,
+  getHrTodoList,
+  LeaveFormReducer,
+  IPDropdownReducer,PatentReducer
 });
+

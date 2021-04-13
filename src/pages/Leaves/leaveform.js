@@ -6,7 +6,13 @@ import EnhancedTable from '../../component/DynTable/table';
 import Edit from "../../images/editable.svg";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
+import { getProfessionalCourse, SubjectList } from '../../actions/LeaveFormAction';
 import { useDispatch, connect } from "react-redux";
+import { getEmployeeList } from '../../actions/MasterDropdowns';
+import PlusIcon from "../../images/plusIcon.svg";
+import PublishIcon from '@material-ui/icons/Publish';
+
+
 
 import './leaveupdate.scss';
 const headCells = [
@@ -28,6 +34,10 @@ const rows = [
 function LeaveForm(props) {
     const dispatch = useDispatch();
     const [leaveType, setLeaveType] = useState({})
+    const [professional, setProfessional] = useState({})
+    const [subjectList, setSubjectList] = useState({})
+    const [examSchedule, setExamSchedule] = useState([])
+    const [employeeList, setEmployeeList] = useState({});
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
@@ -101,12 +111,60 @@ function LeaveForm(props) {
             error: null,
             errmsg: null,
         },
+        referred_by: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        profess_course: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        tot_leave: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        exam_days: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        other_days: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        subject: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        exam_date: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
 
     })
 
     useEffect(() => {
         dispatch(getLeaveType());
+        dispatch(getProfessionalCourse());
+        dispatch(getEmployeeList());
     }, [])
+
+    const onFileChange = () => {
+
+    }
 
 
     useEffect(() => {
@@ -116,7 +174,29 @@ function LeaveForm(props) {
             LeaveType.push({ id: data.status_id, value: data.leave_type })
         );
         setLeaveType({ LeaveType });
-    }, [props.LeaveType])
+
+        // Professional course
+        let ProfessoionalCourse = [];
+        props.ProfessoionalCourse.map((data) =>
+            ProfessoionalCourse.push({ id: data.professional_course_id, value: data.professional_course })
+        );
+        setProfessional({ ProfessoionalCourse });
+        // subject type
+
+        let SubjectList = [];
+        props.SubjectList.map((data) =>
+            SubjectList.push({ id: data.subject_id, value: data.subject })
+        );
+        setSubjectList({ SubjectList });
+
+
+        let EmployeeList = [];
+        props.EmployeeList.map((data) =>
+            EmployeeList.push({ value: data.name, id: data.emp_id })
+
+        );
+        setEmployeeList({ EmployeeList });
+    }, [props.LeaveType, props.SubjectList, props.stateDemo, props.EmployeeList])
 
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
@@ -132,12 +212,25 @@ function LeaveForm(props) {
             validation: Leave_Form[key].validation,
         };
 
+        if (key === "profess_course" && data) {
+
+            dispatch(SubjectList(data));
+        }
+
 
         setLeaveForm((prevState) => ({
             ...prevState,
             [key]: dynObj,
         }));
     }
+
+    const viewexamschedule = () => {
+        examSchedule.push({ subject: Leave_Form.subject.value, date: Leave_Form.exam_date.value })
+        console.log("demo", examSchedule)
+        setExamSchedule([...examSchedule])
+
+    }
+
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Form);
@@ -157,6 +250,11 @@ function LeaveForm(props) {
         } {
         }
 
+        console.log(Leave_Form.exam_days.value, "Leave_Form")
+        console.log(Leave_Form.subject.value, "Leave_Form")
+        console.log(Leave_Form.exam_date.value, "Leave_Form")
+
+
         setLeaveForm((prevState) => ({
             ...prevState,
         }));
@@ -165,7 +263,7 @@ function LeaveForm(props) {
 
     return (
         <div>
-            <div className="leaveMainHeader">Leave Form Screen</div>
+            <div className="leaveMainHeader">Leave Form </div>
             <div className="leaveFields">
 
                 <Grid item xs={12} container direction="row" spacing={2}>
@@ -387,6 +485,187 @@ function LeaveForm(props) {
 
                         </>
                     }
+                    {Leave_Form.leavetype.value === 40 &&
+                        <>
+                            <Grid item xs={9}>
+
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="leaveMainHeader">Managing Partner Permission Date </div>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Labelbox type="select"
+                                    placeholder="Referred By"
+                                    changeData={(data) =>
+                                        checkValidation(data, "referred_by")
+                                    }
+                                    dropdown={employeeList.EmployeeList}
+                                    value={Leave_Form.referred_by.value}
+                                    error={Leave_Form.referred_by.error}
+                                    errmsg={Leave_Form.referred_by.errmsg}
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Labelbox type="select"
+                                    changeData={(data) =>
+                                        checkValidation(data, "profess_course")
+                                    }
+                                    placeholder="Professional course"
+                                    dropdown={professional.ProfessoionalCourse}
+                                    value={Leave_Form.profess_course.value}
+                                    error={Leave_Form.profess_course.error}
+                                    errmsg={Leave_Form.profess_course.errmsg}
+
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+
+                            </Grid>
+                            <Grid item xs={2}>
+                                <div className="leaveFieldheading">Total Days of Leave</div>
+                                <div>
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            checkValidation(data, "tot_leave")
+                                        }
+                                        value={Leave_Form.tot_leave.value}
+                                        error={Leave_Form.tot_leave.error}
+                                        errmsg={Leave_Form.tot_leave.errmsg}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <div className="leaveFieldheading">No. of Exam Days</div>
+                                <div>
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            checkValidation(data, "exam_days")
+                                        }
+                                        value={Leave_Form.exam_days.value}
+                                        error={Leave_Form.exam_days.error}
+                                        errmsg={Leave_Form.exam_days.errmsg}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <div className="leaveFieldheading">No. of Other Days</div>
+                                <div>
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            checkValidation(data, "other_days")
+                                        }
+                                        value={Leave_Form.other_days.value}
+                                        error={Leave_Form.other_days.error}
+                                        errmsg={Leave_Form.other_days.errmsg}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <div className="leaveFieldheading">Upload Hall Ticket</div>
+                                <div className="uploadleave_form">
+                                    <div>
+
+                                        <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                            onChange={onFileChange} id="pdfupload" /> <PublishIcon />
+                                    </div>
+
+                                </div>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="leaveMainHeader">Examination Schedule </div>
+                            </Grid>
+                            <Grid item xs={12} container direction="row" spacing={2}>
+                                <Grid item xs={6} container direction="row" spacing={1}>
+                                    <Grid item xs={5}>
+                                        <div className="leaveFieldheading">Subject</div>
+                                        <div>
+                                            <Labelbox type="select"
+                                                changeData={(data) =>
+                                                    checkValidation(data, "subject")
+                                                }
+                                                dropdown={subjectList.SubjectList}
+                                                value={Leave_Form.subject.value}
+                                                error={Leave_Form.subject.error}
+                                                errmsg={Leave_Form.subject.errmsg}
+                                            />
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={5}>
+                                        <div className="leaveFieldheading">Date</div>
+                                        <div>
+                                            <Labelbox type="datepicker"
+                                                changeData={(data) =>
+                                                    checkValidation(data, "exam_date")
+                                                }
+                                                value={Leave_Form.exam_date.value}
+                                                error={Leave_Form.exam_date.error}
+                                                errmsg={Leave_Form.exam_date.errmsg}
+                                            />
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <br />
+                                        {examSchedule.length == Leave_Form.exam_days.value ? "" : <img src={PlusIcon} className="plusicon" onClick={viewexamschedule} />}
+                                    </Grid>
+
+                                    <Grid item xs={10}>
+                                        <div className="leaveFieldheading">Assignment Description</div>
+                                        <div className="reasonscmt">
+                                            <Labelbox type="textarea"
+                                                changeData={(data) =>
+                                                    checkValidation(data, "ass_description")
+                                                }
+                                                value={Leave_Form.ass_description.value}
+                                                error={Leave_Form.ass_description.error}
+                                                errmsg={Leave_Form.ass_description.errmsg}
+                                            />
+                                        </div>
+                                    </Grid>
+
+
+                                </Grid>
+                                <Grid item xs={6} container direction="row" spacing={2}>
+                                    {examSchedule.length > 0 && <div className="examinfotable">
+                                        <div>
+                                            <div className="examfield">Subject</div>
+                                            <div className="examfield">Date</div>
+                                        </div>
+
+                                        {examSchedule.length > 0 && examSchedule.map((data) => {
+                                            return (
+                                                <div className="examdate">
+                                                    <div>{data.subject}</div>
+                                                    <div>{data.date}</div>
+                                                </div>
+                                            )
+                                        })}
+
+
+                                    </div>}
+
+                                </Grid>
+
+                            </Grid>
+                            <Grid item xs={5}>
+                                <div className="leaveFieldheading">Remarks</div>
+                                <div className="reasonscmt">
+                                    <Labelbox type="textarea"
+                                        changeData={(data) =>
+                                            checkValidation(data, "ass_description")
+                                        }
+                                        value={Leave_Form.ass_description.value}
+                                        error={Leave_Form.ass_description.error}
+                                        errmsg={Leave_Form.ass_description.errmsg}
+                                    />
+                                </div>
+                            </Grid>
+
+
+
+
+
+                        </>
+                    }
                     <Grid item xs={5} container direction="row" spacing={2}>
                         <Grid item xs={4}>
                             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
@@ -397,9 +676,9 @@ function LeaveForm(props) {
                     </Grid>
                 </Grid>
             </div>
-            <div className="leavetableformat">
+            {Leave_Form.leavetype.value !== 40 && <div className="leavetableformat">
                 <EnhancedTable headCells={headCells} rows={rows} tabletitle={"Leave Status"} />
-            </div>
+            </div>}
 
         </div>
     )
@@ -408,6 +687,11 @@ const mapStateToProps = (state) =>
 // console.log(state,"statestatestate")
 ({
     LeaveType: state.getOptions.getLeaveType,
+    ProfessoionalCourse: state.LeaveFormReducer.leaveformstatus,
+    SubjectList: state.LeaveFormReducer.leavefromsubject || [],
+    EmployeeList: state.getOptions.getEmployeeList || [],
+
+
 });
 
 export default connect(mapStateToProps)(LeaveForm);

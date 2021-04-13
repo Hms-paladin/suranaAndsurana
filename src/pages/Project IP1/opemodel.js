@@ -4,20 +4,41 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { Checkbox } from 'antd';
 import UploadIcon from '../../images/uploadIcon.svg';
+import { Upload, message, Button, Icon } from 'antd';
+import PublishIcon from '@material-ui/icons/Publish';
 import CustomButton from "../../component/Butttons/button";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction";
 import { getExpenseType ,getPaymentMode,InsertOPE} from "../../actions/projectTaskAction";
-
-
+import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
+import { useParams } from "react-router-dom";
+import moment from 'moment'
 
 function OpeModel(props) {
     const [expenseLists, setexpenseLists] = useState({})
     const [paymentMode, setpaymentMode] = useState({})
     const dispatch = useDispatch()
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
+    const [selectedFile, setselectedFile] = useState([]);
+    const fileUpload = {
+        name: 'file',
+       
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                setselectedFile(info.file.originFileObj);
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
     const [opeModel, setopeModel] = useState({
-        expenseType: {
+        expenseType: {  
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -29,7 +50,7 @@ function OpeModel(props) {
             error: null,
             errmsg: null,
         },
-        ourReference: {
+        description: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -46,12 +67,20 @@ function OpeModel(props) {
 
     })
 
+    let { rowId } = useParams()
     useEffect(() => {
+        dispatch(getProjectDetails(rowId))
         dispatch(getExpenseType());
         dispatch(getPaymentMode());
       }, []);
 
       useEffect(() => {
+        setProjectDetails(props.ProjectDetails);
+        props.ProjectDetails.length > 0 && setidDetails({
+            project_id:props.ProjectDetails[0].project_id,
+            client_id:props.ProjectDetails[0].client_id,
+        })
+
         let expenseData = []
     props.expenseList.map((data) =>
     
@@ -67,7 +96,7 @@ function OpeModel(props) {
         }))
         setpaymentMode({paymentmode})
       }, [
-        props.expenseList,props.paymentMode
+        props.ProjectDetails,props.expenseList,props.paymentMode
       ]);
 
     function onSubmit() {
@@ -91,12 +120,20 @@ function OpeModel(props) {
         } else {
             // setopeModel({ error: false });
             let params  = {
-
+                "project_id":idDetails.project_id,
+                "expence_type": opeModel.expenseType.value,
+                "mode_of_payment": opeModel.payment.value,
+                "amount": opeModel.amount.value,
+                "bill": selectedFile,
+                "description": opeModel.description.value,
+                "created_by" :localStorage.getItem("empId"),
+                "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+                 "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+                 "updated_by" :localStorage.getItem("empId"),
             }
-            dispatch(InsertOPE(opeModel)).then(() => {
+            dispatch(InsertOPE(params)).then(() => {
                 handleCancel()
             })
-           // dispatch(InsertOPE(opeModel));
         }
 
         setopeModel(prevState => ({
@@ -105,11 +142,11 @@ function OpeModel(props) {
     };
 
     const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype"
+        let From_key = [
+            "expenseType","amount","description","payment"
         ]
 
-        ResumeFrom_key.map((data) => {
+        From_key.map((data) => {
             opeModel[data].value = ""
         })
         setopeModel(prevState => ({
@@ -189,11 +226,19 @@ function OpeModel(props) {
                                 error={opeModel.payment.error}
                                 errmsg={opeModel.payment.errmsg} />
                     </Grid>
-                    <Grid item xs={2} className="opeHeader">
+                    <Grid item xs={5} className="opeHeader">
 
                         <div>BILL</div>
                         <Checkbox />
-                        <div><img src={UploadIcon} /></div>
+                        <div className="uploadbox_div" >
+                        <div>
+                            <Upload {...fileUpload} className="uploadbox_tag"
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
+                            </Upload>,
+                                     </div>
+                    </div>
                     </Grid>
                 </Grid>
 
@@ -201,10 +246,10 @@ function OpeModel(props) {
 
                     <Labelbox type="textarea" 
                     placeholder={"comments"} 
-                    changeData={(data) => checkValidation(data, "ourReference")}
-                    value={opeModel.ourReference.value}
-                    error={opeModel.ourReference.error}
-                    errmsg={opeModel.ourReference.errmsg}
+                    changeData={(data) => checkValidation(data, "description")}
+                    value={opeModel.description.value}
+                    error={opeModel.description.error}
+                    errmsg={opeModel.description.errmsg}
                     />
                 </div>
                 <div className="opebtn">
@@ -229,6 +274,7 @@ const mapStateToProps = (state) =>
 ({
     
     expenseList:state.projectTasksReducer.expenseType || [],
-    paymentMode:state.projectTasksReducer.paymentMode || []
+    paymentMode:state.projectTasksReducer.paymentMode || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 export default connect(mapStateToProps)(OpeModel);

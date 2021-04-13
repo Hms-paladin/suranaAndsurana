@@ -1,4 +1,4 @@
-import { GET_COUNTRY,GET_CPATENT_STATUS,INSERT_PATENT} from "../utils/Constants";
+import { GET_COUNTRY,GET_PATENT_STATUS,INSERT_PATENT} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -30,7 +30,7 @@ export const getPatentStatus= () => async dispatch => {
             url: apiurl +'get_activity'
         })
         .then((response) => {
-            dispatch({type:GET_CPATENT_STATUS,payload:response.data.data})
+            dispatch({type:GET_PATENT_STATUS,payload:response.data.data})
         })
         
     } catch (err) {
@@ -42,10 +42,13 @@ export const insertPatent = (params) => async dispatch => {
     try {
         axios({
             method: 'POST',
-            url: apiurl + 'insert_trade_mark',
+            url: apiurl + 'insert_patent',
             data: params
           }).then((response) => {
             if (response.data.status === 1) {
+                notification.success({
+                    message: "Patent added sucessfully",
+                  });
                 dispatch({type:INSERT_PATENT,payload:response.data.status})
               return Promise.resolve();
             }
