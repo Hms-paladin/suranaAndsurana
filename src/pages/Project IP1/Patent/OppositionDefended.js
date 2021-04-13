@@ -20,7 +20,7 @@ function OppositionDefended(props) {
   const [tradeStatusList, settradeStatusList] = useState({})
   const [countryDetList, setcountryDetList] = useState({})
   const [patentForm, setpatentForm] = useState({
-
+   
         opp_fill_date: {
             value: "",
             validation: [{ "name": "required" }],
@@ -142,7 +142,7 @@ function OppositionDefended(props) {
             // setpatentForm({ error: false });
 
             dispatch(insertPatent(params)).then(() => {
-                //handleCancel()
+                handleCancel()
               })
         }
 
@@ -152,11 +152,11 @@ function OppositionDefended(props) {
     };
 
     const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype"
+        let formKey = [
+            "opp_fill_date","type_grant","app_num","opponent","publicationdate","title","opponent_agent","comments"
         ]
 
-        ResumeFrom_key.map((data) => {
+        formKey.map((data) => {
             patentForm[data].value = ""
         })
         setpatentForm(prevState => ({
@@ -256,7 +256,7 @@ function OppositionDefended(props) {
             </Grid>
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"TMopositionbuttons"} onBtnClick={onSubmit} />
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS={"TMopositionbuttons"} />
             </div>
         </div>
     )

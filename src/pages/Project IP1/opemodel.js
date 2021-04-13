@@ -226,7 +226,7 @@ function OpeModel(props) {
                                 error={opeModel.payment.error}
                                 errmsg={opeModel.payment.errmsg} />
                     </Grid>
-                    <Grid item xs={2} className="opeHeader">
+                    <Grid item xs={5} className="opeHeader">
 
                         <div>BILL</div>
                         <Checkbox />
@@ -235,7 +235,7 @@ function OpeModel(props) {
                             <Upload {...fileUpload} className="uploadbox_tag"
                                 action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
-                                <div className="upload_file_inside"><label>Upload</label><PublishIcon /></div>
+                                <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
                             </Upload>,
                                      </div>
                     </div>

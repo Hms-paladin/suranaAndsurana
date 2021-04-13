@@ -18,6 +18,7 @@ function ApplicationDomestic(props) {
   const dispatch = useDispatch()
   const [tradeStatusList, settradeStatusList] = useState({})
   const [countryDetList, setcountryDetList] = useState({})
+  
   const [patentForm, setpatentForm] = useState({
     file_cover: {
       value: "",
@@ -95,7 +96,7 @@ function ApplicationDomestic(props) {
 
 
 
-  })
+  })  
   let { rowId } = useParams()
   useEffect(() => {
     dispatch(getProjectDetails(rowId))
@@ -169,19 +170,6 @@ props.tradeStatusList,props.countriesList
     }
   
 
-
- /* "filing_type_id":"2",
-  "opposition_filled_date":"2021-02-01",
-  "types_of_grant":"Grant",
-  
-  "patent_applicant":"Patent Appilcant ",
-  "application_agent":"AGENT",
-  "opponent":"Opponent Level",
-  "opponent_agent":"Agent 1",
-  
-  "application_date":"2021-03-02",
-  
-  "dead_line":"2021-03-20", */
   
   
     if (filtererr.length > 0) {
@@ -190,7 +178,7 @@ props.tradeStatusList,props.countriesList
       // setpatentForm({ error: false });
 
       dispatch(insertPatent(params)).then(() => {
-        //handleCancel()
+        handleCancel()
       })
     }
 
@@ -200,11 +188,12 @@ props.tradeStatusList,props.countriesList
   };
 
   const handleCancel = () => {
-    let ResumeFrom_key = [
-      "mark", "projecttype"
+    let forms = [
+      "file_cover", "our_ref","associate", "country","title", "client_ref","app_num", "app_date"
+  ,"comments", "status","priority_num", "priority_date"
     ]
 
-    ResumeFrom_key.map((data) => {
+    forms.map((data) => {
       patentForm[data].value = ""
     })
     setpatentForm(prevState => ({
@@ -337,7 +326,7 @@ props.tradeStatusList,props.countriesList
       </Grid>
       <div className="custombtnOposition">
         <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"TMopositionbuttons"} onBtnClick={onSubmit} />
-        <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+        <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS={"TMopositionbuttons"} />
       </div>
     </div>
   )

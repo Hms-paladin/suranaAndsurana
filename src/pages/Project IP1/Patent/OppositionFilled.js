@@ -70,7 +70,7 @@ function OppositionFilled(props) {
             errmsg: null,
         },
     })
-
+    
     let { rowId } = useParams()
   useEffect(() => {
     dispatch(getProjectDetails(rowId))
@@ -144,7 +144,7 @@ props.tradeStatusList,props.countriesList
             // setpatentForm({ error: false });
 
             dispatch(insertPatent(params)).then(() => {
-                //handleCancel()
+                handleCancel()
               })
         }
 
@@ -154,11 +154,11 @@ props.tradeStatusList,props.countriesList
     };
 
     const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype"
+        let formKey = [
+            "opp_fill_date","app_agent","type_grant","app_num","opponent","publicationdate","title","applicant"
         ]
 
-        ResumeFrom_key.map((data) => {
+        formKey.map((data) => {
             patentForm[data].value = ""
         })
         setpatentForm(prevState => ({
@@ -259,7 +259,7 @@ props.tradeStatusList,props.countriesList
             </Grid>
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"TMopositionbuttons"} onBtnClick={onSubmit} />
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS={"TMopositionbuttons"} />
             </div>
         </div>
     )

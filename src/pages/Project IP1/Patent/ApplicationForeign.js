@@ -18,6 +18,7 @@ function ApplicationForeign(props) {
   const dispatch = useDispatch()
   const [tradeStatusList, settradeStatusList] = useState({})
   const [countryDetList, setcountryDetList] = useState({})
+  
   const [patentForm, setpatentForm] = useState({
 
         file_cover: {
@@ -97,7 +98,7 @@ function ApplicationForeign(props) {
 
 
     })
-
+    
     let { rowId } = useParams()
   useEffect(() => {
     dispatch(getProjectDetails(rowId))
@@ -175,7 +176,7 @@ props.tradeStatusList,props.countriesList
             // setpatentForm({ error: true });
         } else {
             dispatch(insertPatent(params)).then(() => {
-                //handleCancel()
+                handleCancel()
               })
         }
 
@@ -185,11 +186,12 @@ props.tradeStatusList,props.countriesList
     };
 
     const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype"
+        let formKey = [
+            "file_cover", "our_ref","associate", "title","client_ref", "app_num","app_date", "comments","status", "priority_country"
+    ,"priority_num", "priority_date"
         ]
 
-        ResumeFrom_key.map((data) => {
+        formKey.map((data) => {
             patentForm[data].value = ""
         })
         setpatentForm(prevState => ({
@@ -317,7 +319,7 @@ props.tradeStatusList,props.countriesList
             </Grid>
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"TMopositionbuttons"} onBtnClick={onSubmit} />
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS={"TMopositionbuttons"} />
             </div>
         </div>
     )
