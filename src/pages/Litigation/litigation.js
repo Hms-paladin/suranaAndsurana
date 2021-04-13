@@ -145,29 +145,19 @@ const Litigation=(props)=> {
         setLitigationCaseDetails(MultipleSet)
 // ____________________________________
     let caseDetails=props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0];
-    if(props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0]){
+    if(props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0] &&  props.EmployeeList){
         const strArr = []
         const string = caseDetails.responsible_attorney
         const usingSplit = strArr.push((string.split(",")))
         
-        // const PrefillCounsel=[]
-        let MultipleCouncelValue=[]
-
-                   
-            employeeList?.EmployeeList.map((total)=>{
+        let MultipleCouncelValue=[]  
+            employeeList?.EmployeeList?.map((total)=>{
                 strArr && strArr[0].map((id)=>{
                     if(total.id === parseInt(id)) { 
-
                         MultipleCouncelValue.push(total.value)
                         }
-                  
                    })
-            })  
-
-           console.log("checking",MultipleCouncelValue)
-
-        
-        
+            })          
     Litigation_Form["internalcaseno"].value =caseDetails.internal_case_no
     Litigation_Form["status"].value = caseDetails.status_id
     Litigation_Form["courtname"].value = caseDetails.court_id
@@ -185,7 +175,7 @@ const Litigation=(props)=> {
     
      setLitigationCase(caseDetails)
         //________________________________
-      }, [props.getLitigationDetails])
+      }, [props.getLitigationDetails, props.EmployeeList])
       useEffect(() => {
         //hod/attony, Counsel ,DRA and DDRA
         let EmployeeList = [];

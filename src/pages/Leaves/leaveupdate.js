@@ -131,7 +131,7 @@ function LeaveUpdate(props) {
                                 errmsg={Leave_Update.leavetype.errmsg} />
                         </div>
                     </Grid>
-                    {Leave_Update.leavetype.value !== 38 &&
+                    {Leave_Update.leavetype.value !== 38 && Leave_Update.leavetype.value !== "" &&
                         <>
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">Add No.of Days</div>

@@ -1,0 +1,25 @@
+
+.appraisalContainer{
+    width: 100%;
+    background-color: white;
+    border-radius: 7px;
+    margin: 10px 5px;
+    padding: 10px;
+
+}
+.empDetails{
+    display: flex;
+    >div{
+        width: 20%;
+        padding: 5px;
+        >div:first-child{
+            font-weight: 600;
+            font-size: 16px;
+        }
+    }
+}
+
+.appraisalFieldheading{
+    margin-bottom: 5px;
+
+}

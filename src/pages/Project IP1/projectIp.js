@@ -333,6 +333,7 @@ function ProjectIp(props) {
 
     }
 
+    // console.log(props.ProjectDetails[0].sub_project_type, "props.ProjectDetails[0].sub_project_type")
 
     return (
         <div>
@@ -355,23 +356,23 @@ function ProjectIp(props) {
                                         <div className="projectTitle">Project type</div>
                                         <div>{data.project_type}</div>
                                     </div>
-                                    <div className="projectIpdata">
+                                    {props.ProjectDetails[0] && props.ProjectDetails[0].sub_project_type !== null && <div className="projectIpdata">
                                         <div className="projectTitle">Project Sub type</div>
                                         <div>{data.sub_project_type}</div>
-                                    </div>
-                                    <div className="projectIpdata">
+                                    </div>}
+                                    {props.ProjectDetails[0] && props.ProjectDetails[0].process !== null && <div className="projectIpdata">
                                         <div className="projectTitle">Process type</div>
                                         <div>{data.process}</div>
-                                    </div>
+                                    </div>}
                                 </div>
 
                             </Grid>
                             <Grid item xs={12}>
                                 <div className="projectIpFields">
-                                    <div className="projectIpdata">
+                                    {props.ProjectDetails[0] && props.ProjectDetails[0].filing_type !== null && <div className="projectIpdata">
                                         <div className="projectTitle">Filling Type</div>
                                         <div>{data.filing_type}</div>
-                                    </div>
+                                    </div>}
                                     <div className="projectIpdata">
                                         <div className="projectTitle">Billable Type</div>
                                         <div>{data.billable_type}</div>
@@ -381,7 +382,7 @@ function ProjectIp(props) {
                                         <div>{data.HR}</div>
                                     </div>
                                     <div className="projectIpdata">
-                                        <div className="projectTitle">counsel</div>
+                                        <div className="projectTitle">Counsel</div>
                                         <div>{data.councel}</div>
                                     </div>
 
@@ -391,7 +392,7 @@ function ProjectIp(props) {
                                 <div className="projectIpFields">
                                     <div className="projectIpdata">
                                         <div className="projectTitle">Comments</div>
-                                        <div>text</div>
+                                        <div>{data.comments}</div>
                                     </div>
                                 </div>
 
@@ -404,7 +405,18 @@ function ProjectIp(props) {
 
                 <div className="projectTypedef">
                     <div className="projectTypeHeader">
-                        Intellectual Property -  <div> {props.ProjectDetails[0] && props.ProjectDetails[0].sub_project_type}</div>
+                        {props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" ? <>
+                            <div>Intellectual Property -</div>
+                            <div> {props.ProjectDetails[0] && props.ProjectDetails[0].sub_project_type}</div>
+                        </>
+                            :
+                            <div>
+                                {props.ProjectDetails[0] && props.ProjectDetails[0].project_type}
+                            </div>
+                        }
+
+                        {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
+                            props.ProjectDetails[0].project_type} */}
                     </div>
                     <div className="TabIconsview"><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
@@ -493,12 +505,7 @@ function ProjectIp(props) {
                             props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights projectDetails={props.ProjectDetails} />
                         }
 
-                        {/*  */}
-
-                        {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase id_Props={idDetails} />
-                        }
-
+                
                         {/*  */}
 
                         {

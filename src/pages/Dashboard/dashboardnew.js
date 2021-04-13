@@ -1,20 +1,21 @@
-import react from 'react';
+import react, { useState } from 'react';
 import './dashboard.scss';
 import Library from '../../images/dashboard/library.svg';
 import appraisal from '../../images/dashboard/appraisal.svg';
 import KRA from '../../images/dashboard/kra.svg';
-import KPI from '../../images/dashboard/KPI.svg';
+import KPI from '../../images/dashboard/kpi.svg';
 import Timesheet from '../../images/dashboard/timesheet.svg';
 import AdhocTask from '../../images/dashboard/adhoc.svg';
-import OPExp from '../../images/dashboard/opicon.svg';
+import OPExp from '../../images/dashboard/opexp.svg';
 import ApplyLeave from '../../images/dashboard/applyleave.svg';
 import TicketCreation from '../../images/dashboard/ticketcreation.svg';
-import Employee from '../../images/dashboard/employee.svg';
+import Employee from '../../images/dashboard/employeelist.svg';
 import OPAdv from '../../images/dashboard/opadv.svg';
+import { Redirect, Link } from 'react-router-dom';
 
 
-const menulist = [{ img: <img src={Library} className="imageicons" />, title: "Library" }, { img: <img src={appraisal} className="imageicons" />, title: "Appraisal" }, { img: <img src={KRA} className="imageicons" />, title: "KRI" }, { img: <img src={KPI} className="imageicons" />, title: "KPI" }, { img: <img src={Timesheet} className="imageicons" />, title: "Time Sheet" }, { img: <img src={AdhocTask} className="imageicons" />, title: "Adhoc Task" }, { img: <img src={OPExp} className="imageicons" />, title: "OP Expenses" }
-    , { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave" }, { img: <img src={TicketCreation} className="imageicons" />, title: "Ticket Creation" }, { img: <img src={Employee} className="imageicons" />, title: "List of Employees" }, { img: <img src={OPAdv} className="imageicons" />, title: "OP Advance" }]
+
+
 
 const Projectbox = [{ projects: "project 1", projecttype: "project Type 1 ", client: "client 1", },
 { projects: "project 2", projecttype: "project Type 2 ", client: "client 2", },
@@ -32,16 +33,40 @@ const Taskdays = [{ activity: " Activity 1", subactivity: "Sub Activity 1 ", due
 ]
 
 function DashboardNew() {
+    const [pathname, setpathname] = useState(window.location.pathname)
+
+    const [menulist, setMenulist] = useState(
+        [
+            { img: <img src={Library} className="imageicons" />, title: "Library", path: "#" },
+            { img: <img src={appraisal} className="imageicons" />, title: "Appraisal", path: "/appraisal" },
+            { img: <img src={KRA} className="imageicons" />, title: "KRA", path: "#" },
+            { img: <img src={KPI} className="imageicons" />, title: "KPI", path: "/KPI" },
+            { img: <img src={Timesheet} className="imageicons" />, title: "Time Sheet", path: "#" },
+            { img: <img src={AdhocTask} className="imageicons" />, title: "Adhoc Task", path: "#" },
+            { img: <img src={OPExp} className="imageicons" />, title: "OP Expenses", path: "#" },
+            { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave", path: "#" },
+            { img: <img src={TicketCreation} className="imageicons" />, title: "Ticket Creation", path: "#" },
+            { img: <img src={Employee} className="imageicons" />, title: "List of Employees", path: "#" },
+            { img: <img src={OPAdv} className="imageicons" />, title: "OP Advance", path: "#" }
+        ])
+
+    const handleClick = (data) => {
+        setpathname(data.path)
+    };
+
     return (
         <div>
-            <div className="dashboardMenu">{menulist.map((data) => {
-                return (
-                    <div>
-                        <div className="dashboardmenu">{data.img}</div>
-                        <div>{data.title}</div>
-                    </div>
-                )
-            })}
+            <div className="dashboardMenu">
+                {menulist && menulist.map((data) => {
+                    return (
+                        <Link to={data.path} onClick={() => handleClick(data)}>
+                            <div>
+                                <div className="dashboardmenu">{data.img}</div>
+                                <div className="dashboardtitle">{data.title}</div>
+                            </div>
+                        </Link>
+                    )
+                })}
             </div>
             <div className="topcontainer">
                 <div className="projectscroll">
