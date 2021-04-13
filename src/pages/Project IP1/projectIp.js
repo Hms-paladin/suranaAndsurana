@@ -48,9 +48,9 @@ import CopyRights from '../Project IP1/CopyRight';
 import LitigationAddcase from '../Litigation/litigation';
 
 
-
-
-
+import { Checkbox } from 'antd';
+import CustomButton from '../../component/Butttons/button';
+import Tasks from '../../images/menuicon.svg';
 
 const { TabPane } = Tabs;
 
@@ -64,7 +64,7 @@ function ProjectIp(props) {
     const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
     const [opeModelOpen, setOpeModelOpen] = useState(false)
     const [idDetails, setidDetails] = useState({})
-
+    const [checklistModelOpen, setChecklistModelOpen] = useState(false)
 
 
 
@@ -194,8 +194,8 @@ function ProjectIp(props) {
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
-            project_id:props.ProjectDetails[0].project_id,
-            client_id:props.ProjectDetails[0].client_id,
+            project_id: props.ProjectDetails[0].project_id,
+            client_id: props.ProjectDetails[0].client_id,
         })
     }, [props.ProjectDetails])
 
@@ -326,6 +326,9 @@ function ProjectIp(props) {
         else if (boxName === "OPE") {
             setOpeModelOpen(true)
         }
+        else if (boxName === "CHECKLIST") {
+            setChecklistModelOpen(true)
+        }
 
 
     }
@@ -407,7 +410,26 @@ function ProjectIp(props) {
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
+                    <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
+                        content={
+                            <div style={{ textAlign: 'center' }}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 1</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 2</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}></Grid></Grid>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 3</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 4</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
+                                    <div className="customchecklistbtn">
+                                        <CustomButton
+                                            btnName={"Save"}
+                                            btnCustomColor="customPrimary"
+                                            custombtnCSS={"btnchecklist"}
+                                            onBtnClick={() => setChecklistModelOpen(false)}
+                                        />
+                                    </div>
+                                </Grid>
+                            </div>
 
+                        } width={200} />
 
                     {/* TradeMark */}
                     {stageMonitor && <StageMonitor />}
@@ -446,39 +468,44 @@ function ProjectIp(props) {
                         {/* Design */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Domestic" && <ApplicationIndiaFiling />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Domestic" && <ApplicationIndiaFiling projectDetails={props.ProjectDetails} />
                         }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Foreign" && <ApplicationInternationalFiling />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "Foreign" && <ApplicationInternationalFiling projectDetails={props.ProjectDetails} />
 
                         }
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Cancellation" && props.ProjectDetails[0].filing_type === "Filed" && <CancelFiled />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Cancellation" && props.ProjectDetails[0].filing_type === "Filed" && <CancelFiled projectDetails={props.ProjectDetails} />
                         }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Cancellation" && props.ProjectDetails[0].filing_type === "Defended" && <CancelDefended />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Cancellation" && props.ProjectDetails[0].filing_type === "Defended" && <CancelDefended projectDetails={props.ProjectDetails} />
                         }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <RectificationFiled />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <RectificationFiled projectDetails={props.ProjectDetails} />
                         }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <RectificationDefended />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Design" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <RectificationDefended projectDetails={props.ProjectDetails} />
                         }
 
                         {/* CopyRight */}
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights projectDetails={props.ProjectDetails} />
                         }
 
                         {/*  */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" &&  <LitigationAddcase id_Props={idDetails} />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase id_Props={idDetails} />
+                        }
+
+                        {/*  */}
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase id_Props={idDetails} />
                         }
                     </div>}
 
-                    
                 </div>
 
 

@@ -532,40 +532,47 @@ function ProjectFormCreate(props) {
       </div>
     );
   };
+  // {console.log("props.lenght",props.lenghtData)}
   useEffect(() => {
 
-
-    let searchVariableTableData = [];
-    setNotfoundmodel(false);
-    props.searchVariableRate.map((data) => {
-      projectSearchCreate.amountSearch.value = data.Amount;
-      searchVariableTableData.push({
-        designation: data.designation,
-        activity: data.activity,
-        sub_activity: data.sub_activity,
-        court: data.location,
-        costRange: data.range,
-        lowerLimit: data.lower_limit,
-        upperLimit: data.upper_limit,
-        amount: (
-          <Labelbox
-            type="text"
-            placeholder={"Amount"}
-            changeData={(data) => onchangeAmount(data, "amountSearch")}
-            value={projectSearchCreate.amountSearch.value}
-          />
-        ),
-        UOM: data.unit,
-        add: (
-          <img
-            src={PlusIcon}
-            style={{ cursor: "pointer", width: 19 }}
-            onClick={() => addTempTable(data)}
-          />
-        ),
+    {console.log("props.lenght",props.lenghtData)}
+    if(props.lenghtData !== 0){
+      let searchVariableTableData = [];
+      setNotfoundmodel(false);
+      props.searchVariableRate.map((data) => {
+        projectSearchCreate.amountSearch.value = data.Amount;
+        searchVariableTableData.push({
+          designation: data.designation,
+          activity: data.activity,
+          sub_activity: data.sub_activity,
+          court: data.location,
+          costRange: data.range,
+          lowerLimit: data.lower_limit,
+          upperLimit: data.upper_limit,
+          amount: (
+            <Labelbox
+              type="text"
+              placeholder={"Amount"}
+              changeData={(data) => onchangeAmount(data, "amountSearch")}
+              value={projectSearchCreate.amountSearch.value}
+            />
+          ),
+          UOM: data.unit,
+          add: (
+            <img
+              src={PlusIcon}
+              style={{ cursor: "pointer", width: 19 }}
+              onClick={() => addTempTable(data)}
+            />
+          ),
+        });
       });
-    });
-    setAddTableData({ searchVariableTableData });
+      setAddTableData({ searchVariableTableData });
+    }else{
+      setAddsearchdata(false);
+      setNotfoundmodel(true)
+    }
+    
   }, [props.searchVariableRate, props.lenghtData]);
   //----------
   const addTempTable = (data) => {

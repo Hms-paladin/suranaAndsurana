@@ -38,10 +38,6 @@ import Usergroups from '../../images/usergroups.svg';
 import Dashboard from '../../images/dashboard.svg';
 
 
-
-
-
-
 import { useHistory } from "react-router-dom";
 
 
@@ -109,9 +105,7 @@ function Navbar(props) {
       { path: "/leaveform", title: "Leave Form", img: MasterIcon },
       { path: "/dashboardnew", title: "Dashboard", img: Dashboard },
 
-
-
-      // stage monitering
+      { path: "/kpi", title: "KPI", img: MasterIcon },
     ]
   );
 

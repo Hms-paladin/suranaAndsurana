@@ -4,9 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { InesertResume } from "../../actions/ResumeAction";
+
 import CustomButton from "../../component/Butttons/button";
 import { message } from 'antd';
+import { InsertLitigationDetails } from '../../actions/Litigation';
 
 function AddDataModel() {
     const props = {
@@ -86,7 +87,7 @@ function AddDataModel() {
         } else {
             // setResumeFrom({ error: false });
 
-            dispatch(InesertResume(Litigation_Form)).then(() => {
+            dispatch(InsertLitigationDetails(Litigation_Form)).then(() => {
                 handleCancel()
             })
         }
@@ -163,7 +164,7 @@ function AddDataModel() {
                         error={Litigation_Form.interimname.error}
                         errmsg={Litigation_Form.interimname.errmsg} />
 
-                    <Labelbox type="number" placeholder={"Interim Application No"}
+                    <Labelbox type="text" placeholder={"Interim Application No"}
                         changeData={(data) => checkValidation(data, "interimapplicationno")}
                         value={Litigation_Form.interimapplicationno.value}
                         error={Litigation_Form.interimapplicationno.error}
