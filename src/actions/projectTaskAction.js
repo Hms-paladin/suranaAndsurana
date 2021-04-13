@@ -186,33 +186,26 @@ export const getLocation= () => async dispatch => {
     }
     
     export const InsertOPE= (ope_form) => async dispatch => {
-        // try {
-        //     axios({
-        //       method: 'POST',
-        //       url: apiurl + 'insert_s_tbl_pm_resume',
-        //       data: {
-        //         "user_id": localStorage.getItem("user_id"),
-        //     "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-        //     "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-        //     "created_by": localStorage.getItem("empId"),
-        //     "updated_by": localStorage.getItem("empId"),
-            
-        //       }
-        //     })
-        //       .then(function (response) {
-        //         if (response.data.status === 1) {
-        //           notification.success({
-        //             message: 'Resume Added Successfully',
-        //           });
-        //           return Promise.resolve();
-        //         }
-        //       });
+        try {
+            axios({
+              method: 'POST',
+              url: apiurl + 'insert_ope',
+              data: ope_form
+            })
+              .then(function (response) {
+                if (response.data.status === 1) {
+                  notification.success({
+                    message: 'OPE Added Successfully',
+                  });
+                  return Promise.resolve();
+                }
+              });
         
-        //   } catch (err) {
-        //     notification.error({
-        //       message: 'Record Not Added',
-        //     });
-        //   }
+          } catch (err) {
+            notification.error({
+              message: 'Record Not Added',
+            });
+          }
     }
 
 

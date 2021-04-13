@@ -9,6 +9,8 @@ import { getActivity,getPriorityList,getTagList,inserTask,getAssignedTo,getLocat
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { InesertResume } from "../../../actions/ResumeAction";
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+import { useParams } from "react-router-dom";
 function ProjectTaskModel(props) {
     
     const dispatch = useDispatch();
@@ -18,7 +20,8 @@ function ProjectTaskModel(props) {
     const [taggList, settaggList] = useState({})
     const [assignedToLists, setassignedToLists] = useState({}) 
     const [locationslList, setlocationslList] = useState({})
-
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
     const [InsertTaskForm, setInsertTaskForm] = useState({
         activity: {
           value: "",
@@ -106,7 +109,9 @@ function ProjectTaskModel(props) {
     };
 
     
-      useEffect(() => {
+    let { rowId } = useParams()
+    useEffect(() => {
+        dispatch(getProjectDetails(rowId))
         dispatch(getActivity());
         dispatch(getTagList());
         dispatch(getPriorityList());
@@ -210,6 +215,12 @@ function ProjectTaskModel(props) {
 
     };
       useEffect(() => {
+        setProjectDetails(props.ProjectDetails);
+        props.ProjectDetails.length > 0 && setidDetails({
+            project_id:props.ProjectDetails[0].project_id,
+            client_id:props.ProjectDetails[0].client_id,
+        })
+
         let activityTypeData = []
     props.activitysList.map((data) =>
     activityTypeData.push({ value: data.activity,
@@ -249,7 +260,7 @@ function ProjectTaskModel(props) {
    
      
 
-      }, [
+      }, [props.ProjectDetails,
         props.activitysList,props.prioritysList,props.tagsList,props.locationList,props.assignToList
       ]);
 
@@ -277,7 +288,7 @@ function ProjectTaskModel(props) {
 
       function onSubmit(){
           var data ={
-            "project_id":"71",
+            "project_id" :idDetails.project_id,
             "activiity_id":InsertTaskForm.activity.value,
             "sub_activity_id":InsertTaskForm.subActivity.value,
             "assignee_id":InsertTaskForm.assignTo.value,
@@ -479,6 +490,7 @@ const mapStateToProps = (state) =>
     tagsList: state.projectTasksReducer.tagsList || [],
     assignToList: state.projectTasksReducer.assignToLists || [],
     locationList: state.projectTasksReducer.locationLists || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 export default connect(mapStateToProps)(ProjectTaskModel);

@@ -40,14 +40,14 @@ export const getClassDetails= () => async dispatch => {
     }
 }
 
-export const getPoaDetails= () => async dispatch => {
+export const getPoaDetails= (clientId) => async dispatch => {
     try {
 
         axios({
             method: 'POST',
             url: apiurl +'get_poa',
             data : {
-                "client_id":"3"
+                "client_id":clientId
             }
         })
         .then((response) => {

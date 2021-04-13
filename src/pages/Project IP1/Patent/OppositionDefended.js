@@ -5,104 +5,161 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+    import { useParams } from "react-router-dom";
+    import { getTradeMarkStatus,getCountryDetails,
+      } from "../../../actions/tradeMarkAction";
+import {insertPatent} from  "../../../actions/PatentAction";
+import moment from 'moment'
 
-export default function OppositionDefended() {
+function OppositionDefended(props) {
 
-    const dispatch = useDispatch()
-    const [Oppo_defended, setResumeFrom] = useState({
-
+    const [projectDetails, setProjectDetails] = useState({})
+  const [idDetails, setidDetails] = useState({})
+  const dispatch = useDispatch()
+  const [tradeStatusList, settradeStatusList] = useState({})
+  const [countryDetList, setcountryDetList] = useState({})
+  const [patentForm, setpatentForm] = useState({
+   
         opp_fill_date: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         type_grant: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         app_num: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         opponent: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         publicationdate: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         title: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         opponent_agent: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
 
         comments: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
     })
-
+    let { rowId } = useParams()
+    useEffect(() => {
+      dispatch(getProjectDetails(rowId))
+      dispatch(getTradeMarkStatus());
+      dispatch(getCountryDetails());
+      
+    }, []);
+  
+    useEffect(() => {
+      setProjectDetails(props.ProjectDetails);
+      props.ProjectDetails.length > 0 && setidDetails({
+          project_id:props.ProjectDetails[0].project_id,
+          client_id:props.ProjectDetails[0].client_id,
+      })
+  
+      let tradeStatusData = []
+      props.tradeStatusList.map((data) =>
+  tradeStatusData.push({ value: data.Status,
+      id: data.status_id })
+  )
+  settradeStatusList({ tradeStatusData })
+  
+  let countryListsData = []
+  props.countriesList.map((data) =>
+  countryListsData.push({ value: data.country,
+  id: data.country_id })
+  ) 
+  setcountryDetList({ countryListsData })
+  
+  
+  
+  }, [props.ProjectDetails,
+  props.tradeStatusList,props.countriesList
+  ]);
     function onSubmit() {
         var mainvalue = {};
-        var targetkeys = Object.keys(Oppo_defended);
+        var targetkeys = Object.keys(patentForm);
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
-                Oppo_defended[targetkeys[i]].value,
-                Oppo_defended[targetkeys[i]].validation
+                patentForm[targetkeys[i]].value,
+                patentForm[targetkeys[i]].validation
             );
-            Oppo_defended[targetkeys[i]].error = !errorcheck.state;
-            Oppo_defended[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Oppo_defended[targetkeys[i]].value;
+            patentForm[targetkeys[i]].error = !errorcheck.state;
+            patentForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = patentForm[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter(
-            (obj) => Oppo_defended[obj].error == true
+            (obj) => patentForm[obj].error == true
         );
         console.log(filtererr.length);
+        let params ={
+            "project_id":idDetails.project_id,
+            "opposition_filled_date":patentForm.opp_fill_date.value,
+            "types_of_grant":patentForm.type_grant.value,
+            "application_no":patentForm.app_num.value,
+            "patent_title":patentForm.title.value,
+            "publication_date":patentForm.publicationdate.value,
+            "opponent":patentForm.opponent.value,
+            "opponent_agent":patentForm.opponent_agent.value,
+            "comments":patentForm.comments.value,
+            "created_by" :localStorage.getItem("empId"),
+            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_by" :localStorage.getItem("empId"),
+            }
         if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
+            // setpatentForm({ error: true });
         } else {
-            // setResumeFrom({ error: false });
+            // setpatentForm({ error: false });
 
-            dispatch(InesertResume(Oppo_defended)).then(() => {
+            dispatch(insertPatent(params)).then(() => {
                 handleCancel()
-            })
+              })
         }
 
-        setResumeFrom(prevState => ({
+        setpatentForm(prevState => ({
             ...prevState
         }));
     };
 
     const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype"
+        let formKey = [
+            "opp_fill_date","type_grant","app_num","opponent","publicationdate","title","opponent_agent","comments"
         ]
 
-        ResumeFrom_key.map((data) => {
-            Oppo_defended[data].value = ""
+        formKey.map((data) => {
+            patentForm[data].value = ""
         })
-        setResumeFrom(prevState => ({
+        setpatentForm(prevState => ({
             ...prevState,
         }));
     }
@@ -111,13 +168,13 @@ export default function OppositionDefended() {
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            Oppo_defended[key].validation
+            patentForm[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: Oppo_defended[key].validation
+            validation: patentForm[key].validation
         }
 
         // only for multi select (start)
@@ -136,7 +193,7 @@ export default function OppositionDefended() {
         }
         // (end)
 
-        setResumeFrom(prevState => ({
+        setpatentForm(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
@@ -149,58 +206,67 @@ export default function OppositionDefended() {
 
                     <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}
                         changeData={(data) => checkValidation(data, "opp_fill_date")}
-                        value={Oppo_defended.opp_fill_date.value}
-                        error={Oppo_defended.opp_fill_date.error}
-                        errmsg={Oppo_defended.opp_fill_date.errmsg} />
+                        value={patentForm.opp_fill_date.value}
+                        error={patentForm.opp_fill_date.error}
+                        errmsg={patentForm.opp_fill_date.errmsg} />
 
                     <Labelbox type="text" placeholder={"Types of Grant"}
                         changeData={(data) => checkValidation(data, "type_grant")}
-                        value={Oppo_defended.type_grant.value}
-                        error={Oppo_defended.type_grant.error}
-                        errmsg={Oppo_defended.type_grant.errmsg} />
+                        value={patentForm.type_grant.value}
+                        error={patentForm.type_grant.error}
+                        errmsg={patentForm.type_grant.errmsg} />
 
                     <Labelbox type="text" placeholder={"Patent Apllication Number"}
                         changeData={(data) => checkValidation(data, "app_num")}
-                        value={Oppo_defended.app_num.value}
-                        error={Oppo_defended.app_num.error}
-                        errmsg={Oppo_defended.app_num.errmsg} />
+                        value={patentForm.app_num.value}
+                        error={patentForm.app_num.error}
+                        errmsg={patentForm.app_num.errmsg} />
 
                     <Labelbox type="text" placeholder={"Patent Title"}
                         changeData={(data) => checkValidation(data, "title")}
-                        value={Oppo_defended.title.value}
-                        error={Oppo_defended.title.error}
-                        errmsg={Oppo_defended.title.errmsg} />
+                        value={patentForm.title.value}
+                        error={patentForm.title.error}
+                        errmsg={patentForm.title.errmsg} />
 
                     <Labelbox type="datepicker" placeholder={"Publication Date"}
                         changeData={(data) => checkValidation(data, "publicationdate")}
-                        value={Oppo_defended.publicationdate.value}
-                        error={Oppo_defended.publicationdate.error}
-                        errmsg={Oppo_defended.publicationdate.errmsg} />
+                        value={patentForm.publicationdate.value}
+                        error={patentForm.publicationdate.error}
+                        errmsg={patentForm.publicationdate.errmsg} />
 
                     <Labelbox type="text" placeholder={"Opponent"}
                         changeData={(data) => checkValidation(data, "opponent")}
-                        value={Oppo_defended.opponent.value}
-                        error={Oppo_defended.opponent.error}
-                        errmsg={Oppo_defended.opponent.errmsg} />
+                        value={patentForm.opponent.value}
+                        error={patentForm.opponent.error}
+                        errmsg={patentForm.opponent.errmsg} />
 
                     <Labelbox type="text" placeholder={"Opponent Agent"}
                         changeData={(data) => checkValidation(data, "opponent_agent")}
-                        value={Oppo_defended.opponent_agent.value}
-                        error={Oppo_defended.opponent_agent.error}
-                        errmsg={Oppo_defended.opponent_agent.errmsg} />
+                        value={patentForm.opponent_agent.value}
+                        error={patentForm.opponent_agent.error}
+                        errmsg={patentForm.opponent_agent.errmsg} />
 
                     <div className="foreign_div"><Labelbox type="text" placeholder={"Comments"}
                         changeData={(data) => checkValidation(data, "comments")}
-                        value={Oppo_defended.comments.value}
-                        error={Oppo_defended.comments.error}
-                        errmsg={Oppo_defended.comments.errmsg} /></div>
+                        value={patentForm.comments.value}
+                        error={patentForm.comments.error}
+                        errmsg={patentForm.comments.errmsg} /></div>
                 </Grid>
 
             </Grid>
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"TMopositionbuttons"} onBtnClick={onSubmit} />
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS={"TMopositionbuttons"} />
             </div>
         </div>
     )
 }
+const mapStateToProps = (state) =>
+({
+    
+    tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
+    countriesList : state.tradeMarkReducer.getCountryList || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+});
+
+export default connect(mapStateToProps)(OppositionDefended);
