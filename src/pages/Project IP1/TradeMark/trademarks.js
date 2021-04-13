@@ -37,7 +37,7 @@ function TradeMark(properties) {
         dispatch(getProjectDetails(rowId))
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        dispatch(getPoaDetails(idDetails.client_id));
+        dispatch(getPoaDetails(properties.ProjectDetails[0].client_id));
         dispatch(getUsageDetails());
         
         
