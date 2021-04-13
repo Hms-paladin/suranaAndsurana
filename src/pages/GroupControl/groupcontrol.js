@@ -20,7 +20,7 @@ const GroupControl = (props) => {
   ];
 
   const [GroupControlList, setGroupControlList] = useState([])
-  const [groupcontrol, setGroupcontrolmodel] = useState(false);
+  // const [groupcontrol, setGroupcontrolmodel] = useState(false);
 
   const [isLoaded, setIsLoaded] = useState(true);
   useEffect(() => {
@@ -59,7 +59,7 @@ const GroupControl = (props) => {
         <EnhancedTable headCells={header}
           rows={GroupControlList.length == 0 ? GroupControlList : GroupControlList.groupList} />
       </div>
-      <DynModel
+      {/* <DynModel
         modelTitle={"Edit Group Membership"}
         handleChangeModel={groupcontrol}
         handleChangeCloseModel={(bln) => setGroupcontrolmodel(bln)}
@@ -88,7 +88,7 @@ const GroupControl = (props) => {
 
         }
         width={400}
-      />
+      /> */}
     </div>
   )
 }

@@ -30,8 +30,22 @@ import DynModel from '../../component/Model/model';
 import TimesheetStart from '../Search/TimeSheets/timesheetStart';
 import TimeSheetView from '../Search/TimeSheets/timesheetview';
 
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles} from '@material-ui/core/styles';
+import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
 
-
+const HtmlTooltip = withStyles((theme) => ({
+    arrow: {
+        color: theme.palette.common.white,
+    },
+    tooltip: {
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 700,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}))(Tooltip);
 function Task() {
     const [page, setPage] = React.useState(2);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -56,11 +70,20 @@ function Task() {
     function startModel() {
         setStartModelOpen(true)
     }
-    function stopModel(){
+    function stopModel() {
         alert("test")
         setChangeModel(false)
     }
 
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
     return (
         <div>
             <div className="searchfilterflex">
@@ -91,7 +114,13 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side" onClick={stopModel}>1</p>
                                 <Divider />
-                                <img src={Clock} className="img_side_align" onClick={startModel} />
+                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+
+                                    title={<Timesheetmodel />}
+                                >
+                                     <img src={Clock} className="img_side_align" onClick={startModel} />
+                                </HtmlTooltip>
+                               
                                 <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} />
                                 {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={stopModelOpen} handleChangeCloseModel={(bln) => setStopModelOpen(bln)} content={<TimesheetStop />} width={1000} /> */}
                             </div>

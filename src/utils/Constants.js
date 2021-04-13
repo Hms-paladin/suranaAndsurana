@@ -104,6 +104,8 @@ export const UPDATE_LITIGATION_DETAILS = "UPDATE_LITIGATION_DETAILS";
 // Leave Form
 
 export const GET_LEAVETYPE = "GET_LEAVETYPE";
+export const GET_LEAVE_FORM = "GET_LEAVE_FORM";
+export const GET_SUBJECT_LIST = "GET_SUBJECT_LIST";
 
 // IPProject
 export const GET_CLASS = "GET_CLASS";
