@@ -1,58 +1,62 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
-import Checklist from "../../../../images/checklist.png";
-import Stage from "../../../../images/stage.png";
-import Task from "../../../../images/task.png";
-import Application from "../../../../images/application.png";
+import { useSelector, useDispatch } from 'react-redux';
+import { getIPStatus } from "../../../../actions/IPDropdown.js";
+import { InsertDesign } from "../../../../actions/InsertDesign";
 
 function CancelFiled() {
     const [CancelFiled, setCancelFiled] = useState({
         client_petition: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
-        des_num: {
+        des_number: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         petitioner: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
-        res_rep: {
+        respondent_rep: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         status: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         app_date: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
     })
+    const [cancFilGetList, setCancFilGetList] = useState({
+        getStatusList: []
+    })
+    const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+    const dispatch = useDispatch();
 
     function checkValidation(data, key, multipleId) {
 
@@ -66,37 +70,10 @@ function CancelFiled() {
             errmsg: errorcheck.msg,
             validation: CancelFiled[key].validation
         }
-
-        // only for multi select (start)
-
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
         setCancelFiled(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
-        // var filtererr = targetkeys.filter(
-        //     (obj) =>
-        //         CancelFiled[obj].error == true ||
-        //         CancelFiled[obj].error == null
-        // );
-        // if (filtererr.length > 0) {
-        //     setResumeFrom({ error: true, errordummy: false });
-        // } else {
-        //     setResumeFrom({ error: false });
-        // }
     };
 
     function onSubmit() {
@@ -116,21 +93,31 @@ function CancelFiled() {
         );
         console.log(filtererr.length);
         if (filtererr.length > 0) {
-            // setCancelFiled({ error: true });
         } else {
-            // setCancelFiled({ error: false });
-
             // dispatch(InesertResume(CancelFiled)).then(()=>{
             //     handleCancel()
             // })
         }
-
         setCancelFiled(prevState => ({
             ...prevState
         }));
-
-
     }
+
+    useEffect(() => {
+        dispatch(getIPStatus());
+      }, [])
+    
+      useEffect(() => {
+    
+        const getStatusList = []
+
+        DesignDropDowns.getIPStatus.map((data) => {
+          getStatusList.push({ id: data.status_id, value: data.Status })
+        })
+    
+        setCancFilGetList({ getStatusList })
+      }, [DesignDropDowns])
+
     return (
         <div className="container">
 
@@ -147,10 +134,10 @@ function CancelFiled() {
 
                     <Labelbox type="text"
                         placeholder={"Design Number"}
-                        changeData={(data) => checkValidation(data, "des_num")}
-                        value={CancelFiled.des_num.value}
-                        error={CancelFiled.des_num.error}
-                        errmsg={CancelFiled.des_num.errmsg}
+                        changeData={(data) => checkValidation(data, "des_number")}
+                        value={CancelFiled.des_number.value}
+                        error={CancelFiled.des_number.error}
+                        errmsg={CancelFiled.des_number.errmsg}
                     />
 
                     <Labelbox type="text"
@@ -163,15 +150,16 @@ function CancelFiled() {
 
                     <Labelbox type="text"
                         placeholder={"Responent Rep"}
-                        changeData={(data) => checkValidation(data, "res_rep")}
-                        value={CancelFiled.res_rep.value}
-                        error={CancelFiled.res_rep.error}
-                        errmsg={CancelFiled.res_rep.errmsg}
+                        changeData={(data) => checkValidation(data, "respondent_rep")}
+                        value={CancelFiled.respondent_rep.value}
+                        error={CancelFiled.respondent_rep.error}
+                        errmsg={CancelFiled.respondent_rep.errmsg}
                     />
 
                     <Labelbox type="select"
                         placeholder={"Status"}
                         changeData={(data) => checkValidation(data, "status")}
+                        dropdown={cancFilGetList.getStatusList}
                         value={CancelFiled.status.value}
                         error={CancelFiled.status.error}
                         errmsg={CancelFiled.status.errmsg}
@@ -184,16 +172,6 @@ function CancelFiled() {
                         error={CancelFiled.comments.error}
                         errmsg={CancelFiled.comments.errmsg}
                     />
-
-                    {/* <Labelbox type="datepicker"
-                        placeholder={"Application Date"}
-                        changeData={(data) => checkValidation(data, "app_date")}
-                        value={CancelFiled.app_date.value}
-                        error={CancelFiled.app_date.error}
-                        errmsg={CancelFiled.app_date.errmsg}
-                    /> */}
-
-
                 </Grid>
             </Grid>
 

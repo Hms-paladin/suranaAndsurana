@@ -1,58 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
-import Checklist from "../../../../images/checklist.png";
-import Stage from "../../../../images/stage.png";
-import Task from "../../../../images/task.png";
-import Application from "../../../../images/application.png";
+import { useSelector, useDispatch } from 'react-redux';
+import { getIPStatus } from "../../../../actions/IPDropdown.js";
+import { InsertDesign } from "../../../../actions/InsertDesign";
 
 function CancelDefended() {
     const [CancelDefended, setCancelDefended] = useState({
-        client_responten: {
+        client_respontent: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         des_number: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         respondent: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         petitioner_rep: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         status: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
-        },
-        app_date: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
+        }
     })
+    const [cancDefGetList, setCancDefGetList] = useState({
+        getStatusList: []
+    })
+    const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+    const dispatch = useDispatch();
 
     function checkValidation(data, key, multipleId) {
 
@@ -66,37 +64,10 @@ function CancelDefended() {
             errmsg: errorcheck.msg,
             validation: CancelDefended[key].validation
         }
-
-        // only for multi select (start)
-
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
         setCancelDefended(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
-        // var filtererr = targetkeys.filter(
-        //     (obj) =>
-        //         CancelDefended[obj].error == true ||
-        //         CancelDefended[obj].error == null
-        // );
-        // if (filtererr.length > 0) {
-        //     setResumeFrom({ error: true, errordummy: false });
-        // } else {
-        //     setResumeFrom({ error: false });
-        // }
     };
 
     function onSubmit() {
@@ -116,21 +87,31 @@ function CancelDefended() {
         );
         console.log(filtererr.length);
         if (filtererr.length > 0) {
-            // setCancelDefended({ error: true });
         } else {
-            // setCancelDefended({ error: false });
-
             // dispatch(InesertResume(CancelDefended)).then(()=>{
             //     handleCancel()
             // })
         }
-
         setCancelDefended(prevState => ({
             ...prevState
         }));
-
-
     }
+
+    useEffect(() => {
+        dispatch(getIPStatus());
+      }, [])
+    
+      useEffect(() => {
+    
+        const getStatusList = []
+
+        DesignDropDowns.getIPStatus.map((data) => {
+          getStatusList.push({ id: data.status_id, value: data.Status })
+        })
+    
+        setCancDefGetList({ getStatusList })
+      }, [DesignDropDowns])
+
     return (
         <div className="container">
             <Grid container direction={"column"}>
@@ -140,9 +121,9 @@ function CancelDefended() {
                     <Labelbox type="text"
                         placeholder={"Client Respondent"}
                         changeData={(data) => checkValidation(data, "client_respontent")}
-                        value={CancelDefended.client_responten.value}
-                        error={CancelDefended.client_responten.error}
-                        errmsg={CancelDefended.client_responten.errmsg}
+                        value={CancelDefended.client_respontent.value}
+                        error={CancelDefended.client_respontent.error}
+                        errmsg={CancelDefended.client_respontent.errmsg}
                     />
 
                     <Labelbox type="text"
@@ -172,6 +153,7 @@ function CancelDefended() {
                     <Labelbox type="select"
                         placeholder={"Status"}
                         changeData={(data) => checkValidation(data, "status")}
+                        dropdown={cancDefGetList.getStatusList}
                         value={CancelDefended.status.value}
                         error={CancelDefended.status.error}
                         errmsg={CancelDefended.status.errmsg}
@@ -183,15 +165,6 @@ function CancelDefended() {
                         error={CancelDefended.comments.error}
                         errmsg={CancelDefended.comments.errmsg}
                     />
-                    {/* <Labelbox type="datepicker"
-                        placeholder={"Application Date"}
-                        changeData={(data) => checkValidation(data, "app_date")}
-                        value={CancelDefended.app_date.value}
-                        error={CancelDefended.app_date.error}
-                        errmsg={CancelDefended.app_date.errmsg}
-                    /> */}
-
-
                 </Grid>
             </Grid>
 
