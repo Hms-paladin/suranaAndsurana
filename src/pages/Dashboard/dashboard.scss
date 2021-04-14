@@ -1,128 +1,151 @@
 // Dashboard new
 
-.dashboardMenu{
+.dashboardMenu {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     background-color: white;
     padding: 10px;
+    width: 100%;
 }
 
-.imageicons{
+.imageicons {
     width: 30px;
 }
 
-.projectscroll{
+.projectscroll {
     // height: 200px;
     width: 40%;
     background-color: white;
     margin: 10px;
     border-radius: 5px;
-    >div:first-child{
+    > div:first-child {
         padding: 8px;
         font-size: 17px;
         font-weight: 600;
     }
 }
 
-.projecttable{
+.projecttable {
     display: flex;
     padding: 5px;
     justify-content: space-around;
-    >div{
+    > div {
         width: 25%;
     }
 }
 
-.projectdatas{
+.projectdatas {
     height: 130px;
     overflow: auto;
     background-color: rgb(221, 218, 218);
-
 }
 
 // task
 
-.tasktable{
+.tasktable {
     display: flex;
     padding: 5px;
     justify-content: space-around;
-    >div{
+    > div {
         width: 50%;
     }
 }
 
-.taskscroll{
+.taskscroll {
     width: 30%;
     background-color: white;
     margin: 10px;
     border-radius: 5px;
     overflow: auto;
-    >div:first-child{
+    > div:first-child {
         padding: 8px;
         font-size: 17px;
         font-weight: 600;
     }
-
 }
 
-.taskdatas{
+.taskdatas {
     height: 130px;
     overflow: auto;
     background-color: rgb(221, 218, 218);
 }
 
-.topcontainer{
+.topcontainer {
     display: flex;
     height: auto;
 }
 
 // Tasks due by 5day
 
-
-.taskdaystableHeader{
+.taskdaystableHeader {
     display: flex;
     padding: 5px;
     justify-content: space-around;
     font-weight: 600;
-    >div{
+    > div {
         width: 16.6%;
     }
-
 }
-.taskdaysscroll{
+.taskdaysscroll {
     width: 72%;
     background-color: white;
     margin: 10px;
     border-radius: 5px;
     overflow: auto;
-    >div:first-child{
+    > div:first-child {
         padding: 8px;
         font-size: 17px;
         font-weight: 600;
     }
 }
 
-.taskdaysdatas{
+.taskdaysdatas {
     height: 150px;
     overflow: auto;
     background-color: rgb(221, 218, 218);
 }
 
-.taskdaystable{
+.taskdaystable {
     display: flex;
     padding: 5px;
     justify-content: space-around;
-    >div{
+    > div {
         width: 16.6%;
     }
 }
 
-.dashboardmenu{
+.dashboardmenu {
     height: 40px;
     text-align: center;
 }
 
-.dashboardtitle{
+.dashboardtitle {
     color: #023e7d;
     font-weight: 600;
+}
+
+.dashboardMenuContainer {
+    display: flex;
+}
+
+.menuLeftArrow {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    justify-content: flex-end;
+    width: 3%;
+    box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    cursor: pointer;
+}
+
+.menuRightArrow {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    justify-content: center;
+    width: 3%;
+    box-shadow: -2px 0px 5px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
 }

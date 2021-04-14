@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useCallback, useEffect, useState } from 'react';
 import './dashboard.scss';
 import Library from '../../images/dashboard/library.svg';
 import appraisal from '../../images/dashboard/appraisal.svg';
@@ -12,7 +12,8 @@ import TicketCreation from '../../images/dashboard/ticketcreation.svg';
 import Employee from '../../images/dashboard/employeelist.svg';
 import OPAdv from '../../images/dashboard/opadv.svg';
 import { Redirect, Link } from 'react-router-dom';
-
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
 
@@ -34,6 +35,7 @@ const Taskdays = [{ activity: " Activity 1", subactivity: "Sub Activity 1 ", due
 
 function DashboardNew() {
     const [pathname, setpathname] = useState(window.location.pathname)
+    const [menuListItem, setMenuListItem] = useState([])
 
     const [menulist, setMenulist] = useState(
         [
@@ -54,20 +56,36 @@ function DashboardNew() {
         setpathname(data.path)
     };
 
+    useEffect(() => {
+        orderChange()
+    }, [])
+
+    const orderChange = useCallback((showListStart = 0,showListEnd = 9) => {
+        const menuLists = menulist.map((data,index) => {
+            if (index >= showListStart-1 && index <= showListEnd-1) {
+                return (
+                    <Link to={data.path} onClick={() => handleClick(data)}>
+                        <div>
+                            <div className="dashboardmenu">{data.img}</div>
+                            <div className="dashboardtitle">{data.title}</div>
+                        </div>
+                    </Link>
+                )
+            }
+        })
+        setMenuListItem(menuLists)
+    }, [])
+
     return (
         <div>
-            <div className="dashboardMenu">
-                {menulist && menulist.map((data) => {
-                    return (
-                        <Link to={data.path} onClick={() => handleClick(data)}>
-                            <div>
-                                <div className="dashboardmenu">{data.img}</div>
-                                <div className="dashboardtitle">{data.title}</div>
-                            </div>
-                        </Link>
-                    )
-                })}
+            <div className="dashboardMenuContainer">
+                <div className="menuLeftArrow" onClick={()=>orderChange(0, 9)} ><ArrowBackIosIcon /></div>
+                <div className="dashboardMenu">
+                    {menuListItem}
+                </div>
+                <div className="menuRightArrow"  onClick={()=>orderChange(10,15)} ><ArrowForwardIosIcon/></div>
             </div>
+
             <div className="topcontainer">
                 <div className="projectscroll">
                     <div >Projects</div>
