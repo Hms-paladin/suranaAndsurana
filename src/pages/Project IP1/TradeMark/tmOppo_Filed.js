@@ -349,23 +349,23 @@ setcountryDetList({ countryListsData })
         let params  = {
             "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
             "status_id" :TradeMarkForm.status_id.value,
-            "ourReference": "ddff",
+            "our_reference": TradeMarkForm.ourReference.value,
             "mark_id":TradeMarkForm.mark_id.value,
             "upload_image" :selectedFile,
             "application_no" :TradeMarkForm.application_no.value,
-              "application_date":TradeMarkForm.application_date.value,
-              "tmj_number":TradeMarkForm.tmj_number.value,
-                  "tmj_date":TradeMarkForm.tmj_date.value,
-                  "opositionNumber":"opNo",
-            "applicant": "ddf",
-            "applicantAgent": "ddd",
+            "application_date":TradeMarkForm.application_date.value,
+            "tmj_number":TradeMarkForm.tmj_number.value,
+            "tmj_date":TradeMarkForm.tmj_date.value,
+            "opposition_no":TradeMarkForm.opositionNumber.value,
+            "applicant": TradeMarkForm.applicant.value,
+            "applicant_agent": TradeMarkForm.applicantAgent.value,
             "internal_status":TradeMarkForm.internal_status.value,
             "end_date" : moment().format('YYYY-MM-DD HH:m:s'),
-               "created_by" :localStorage.getItem("empId"),
-                "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-                 "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-                 "updated_by" :localStorage.getItem("empId"),
-               "ip_address" :"ddf"
+            "created_by" :localStorage.getItem("empId"),
+            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_by" :localStorage.getItem("empId"),
+            "ip_address" :"ddf"
         }
         if(TradeMarkForm.class_id.value != ""){
             params["class_id"] =TradeMarkForm.class_id.value;
