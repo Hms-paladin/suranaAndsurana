@@ -1,5 +1,6 @@
 import { GET_ACTIVITY,GET_TAG,GET_PRIORITY,INSERT_TASK,INSERT_ADHOC_TASK,
-    GET_LOCATION,GET_ASSIGN_TO,INSERT_TIME_SHEET,GET_EXPENSE_TYPE,GET_PAYMENT_MODE } from "../utils/Constants";
+    GET_LOCATION,GET_ASSIGN_TO,INSERT_TIME_SHEET,GET_EXPENSE_TYPE,
+    GET_PAYMENT_MODE,GET_STAGESBY_PROJECT,GET_SUBSTAGES } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -209,3 +210,68 @@ export const getLocation= () => async dispatch => {
     }
 
 
+    export const getStagesByProjectId= (projectId,projectTypeId) => async dispatch => {
+        try {
+    
+            axios({
+                method: 'POST',
+                url: apiurl +'get_project_stage',
+                data : {
+                    "project_id":'1',//projectId,
+                    "project_type_id":'1',// projectTypeId
+                    "sub_project_id" :'1'
+                }
+            })
+            .then((response) => {
+                dispatch({type:GET_STAGESBY_PROJECT,payload:response.data.data})
+            })
+            
+        } catch (err) {
+            
+        }
+    }
+
+    export const getSubStages= (stageId) => async dispatch => {
+        try {
+    
+            axios({
+                method: 'POST',
+                url: apiurl +'get_sub_stage',
+                data : {
+                    "stage_id":stageId,
+                }
+            })
+            .then((response) => {
+                dispatch({type:GET_SUBSTAGES,payload:response.data.data})
+            })
+            
+        } catch (err) {
+            
+        }
+    }
+
+    export const insertStages= (params) => async dispatch => {
+        try {
+            axios({
+              method: 'POST',
+              url: apiurl + 'insert_project_stage',
+              data: params
+            })
+              .then(function (response) {
+                if (response.data.status === 1) {
+                  notification.success({
+                    message: 'Stages Added Successfully',
+                  });
+                  return Promise.resolve();
+                }
+              });
+        
+          } catch (err) {
+            notification.error({
+              message: 'Record Not Added',
+            });
+          }
+    }
+
+
+    

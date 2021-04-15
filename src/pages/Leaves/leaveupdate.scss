@@ -97,10 +97,15 @@
     >div{
         display: flex;
     }
-    .examfield{
-        width: 50%;
+    .examfieldSubject,.examfieldDate{
+        width: 40%;
         font-weight: 600;
         font-size: 15px;
+        padding-bottom: 10px;
+        border-bottom: rgb(201, 196, 196) 1px solid;
+    }
+    .examfieldEdit{
+        width: 20%;
         padding-bottom: 10px;
         border-bottom: rgb(201, 196, 196) 1px solid;
     }
@@ -109,10 +114,15 @@
 .examdate{
     display: flex;
     justify-content: space-around;
-    >div{
-        width: 50%;
+    padding: 5px 0px;
+    .subvalue{
+        width: 40%;
         text-align: left;
         padding-left: 30px;
+    }
+    >img{
+        width: 20px;
+        cursor: pointer;
     }
     
 }

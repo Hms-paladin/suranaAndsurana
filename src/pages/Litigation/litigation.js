@@ -145,7 +145,7 @@ const Litigation=(props)=> {
         setLitigationCaseDetails(MultipleSet)
 // ____________________________________
     let caseDetails=props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0];
-    if(props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0]){
+    if(props.getLitigationDetails && props.getLitigationDetails[0] && props.getLitigationDetails[0].case[0] &&  props.EmployeeList){
         const strArr = []
         const string = caseDetails.responsible_attorney
         strArr.push((string.split(",")))
@@ -157,10 +157,8 @@ const Litigation=(props)=> {
         employeeList&&  employeeList?.EmployeeList.map((total)=>{
                 strArr && strArr[0].map((id)=>{
                     if(total.id === parseInt(id)) { 
-
                         MultipleCouncelValue.push(total.value)
                         }
-                  
                    })
             })  
         }
@@ -181,7 +179,7 @@ const Litigation=(props)=> {
     
      setLitigationCase(caseDetails)
         //________________________________
-      }, [props.getLitigationDetails])
+      }, [props.getLitigationDetails, props.EmployeeList])
       useEffect(() => {
         //hod/attony, Counsel ,DRA and DDRA
         let EmployeeList = [];

@@ -1,57 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
+import { useSelector, useDispatch } from 'react-redux';
+import { getIPStatus } from "../../../../actions/IPDropdown.js";
+import { InsertDesign } from "../../../../actions/InsertDesign";
 
-
-function RectificationFiled() {
+function RectificationFiled(props) {
     const [RectificationFiled, setCancelDefended] = useState({
-        client_petitioner: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
         des_number: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         petitioner: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         respondent_rep: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         status: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
-            error: null,
-            errmsg: null,
-        },
-        app_date: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
     })
+    const [rectFilGetList, setRectFilGetList] = useState({
+        getStatusList: []
+    })
+    const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+    const dispatch = useDispatch();
 
-    function checkValidation(data, key, multipleId) {
+    function checkValidation(data, key) {
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -63,37 +58,10 @@ function RectificationFiled() {
             errmsg: errorcheck.msg,
             validation: RectificationFiled[key].validation
         }
-
-        // only for multi select (start)
-
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
         setCancelDefended(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
-        // var filtererr = targetkeys.filter(
-        //     (obj) =>
-        //         RectificationFiled[obj].error == true ||
-        //         RectificationFiled[obj].error == null
-        // );
-        // if (filtererr.length > 0) {
-        //     setResumeFrom({ error: true, errordummy: false });
-        // } else {
-        //     setResumeFrom({ error: false });
-        // }
     };
 
     function onSubmit() {
@@ -113,28 +81,49 @@ function RectificationFiled() {
         );
         console.log(filtererr.length);
         if (filtererr.length > 0) {
-            // setCancelDefended({ error: true });
         } else {
-            // setCancelDefended({ error: false });
-
-            // dispatch(InesertResume(RectificationFiled)).then(()=>{
-            //     handleCancel()
-            // })
+            dispatch(InsertDesign(RectificationFiled, props.projectDetails && props.projectDetails[0])).then(() => {
+                handleCancel()
+              })
         }
-
         setCancelDefended(prevState => ({
             ...prevState
         }));
-
-
     }
+
+
+    useEffect(() => {
+        dispatch(getIPStatus());
+    }, [])
+
+    useEffect(() => {
+
+        const getStatusList = []
+
+        DesignDropDowns.getIPStatus.map((data) => {
+            getStatusList.push({ id: data.status_id, value: data.Status })
+        })
+
+        setRectFilGetList({ getStatusList })
+    }, [DesignDropDowns])
+
+    const handleCancel = () => {
+        let rectFil_key = ["des_number", "petitioner", "respondent_rep", "status", "comments"]
+    
+        rectFil_key.map((data) => {
+            RectificationFiled[data].value = "";
+        });
+        setCancelDefended((prevState) => ({
+          ...prevState,
+        }));
+      };
+
+      console.log(RectificationFiled,"RectificationFiled")
+
     return (
         <div className="container">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-
-
-
                     <Labelbox type="text"
                         placeholder={"Design Number"}
                         changeData={(data) => checkValidation(data, "des_number")}
@@ -142,7 +131,6 @@ function RectificationFiled() {
                         error={RectificationFiled.des_number.error}
                         errmsg={RectificationFiled.des_number.errmsg}
                     />
-
                     <Labelbox type="text"
                         placeholder={"Petitioner"}
                         changeData={(data) => checkValidation(data, "petitioner")}
@@ -150,7 +138,6 @@ function RectificationFiled() {
                         error={RectificationFiled.petitioner.error}
                         errmsg={RectificationFiled.petitioner.errmsg}
                     />
-
                     <Labelbox type="text"
                         placeholder={"Respondent Rep"}
                         changeData={(data) => checkValidation(data, "respondent_rep")}
@@ -158,15 +145,14 @@ function RectificationFiled() {
                         error={RectificationFiled.respondent_rep.error}
                         errmsg={RectificationFiled.respondent_rep.errmsg}
                     />
-
                     <Labelbox type="select"
                         placeholder={"Status"}
                         changeData={(data) => checkValidation(data, "status")}
+                        dropdown={rectFilGetList.getStatusList}
                         value={RectificationFiled.status.value}
                         error={RectificationFiled.status.error}
                         errmsg={RectificationFiled.status.errmsg}
                     />
-
                     <Labelbox type="text"
                         placeholder={"Comments"}
                         changeData={(data) => checkValidation(data, "comments")}
@@ -174,12 +160,11 @@ function RectificationFiled() {
                         error={RectificationFiled.comments.error}
                         errmsg={RectificationFiled.comments.errmsg}
                     />
-
                 </Grid>
             </Grid>
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"TMopositionbuttons"} />
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} onBtnClick={handleCancel} />
             </div>
         </div>
     )
