@@ -18,14 +18,7 @@ import logo from '../../images/surana.gif'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import StarBorder from '@material-ui/icons/StarBorder';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+
 // import Personicon from '../../images/personIcon.svg';
 import ResumeIcon from '../../images/resume.svg';
 import TodoIcon from '../../images/todoicon.svg';
@@ -102,10 +95,7 @@ function Navbar(props) {
       // group control
       { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
       { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
-      { path: "/leaveform", title: "Leave Form", img: MasterIcon },
       { path: "/dashboardnew", title: "Dashboard", img: Dashboard },
-
-      { path: "/kpi", title: "KPI", img: MasterIcon },
     ]
   );
 
