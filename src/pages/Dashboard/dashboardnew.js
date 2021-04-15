@@ -3,7 +3,7 @@ import './dashboard.scss';
 import Library from '../../images/dashboard/library.svg';
 import appraisal from '../../images/dashboard/appraisal.svg';
 import KRA from '../../images/dashboard/kra.svg';
-import KPI from '../../images/dashboard/KPI.svg';
+import KPI from '../../images/dashboard/kpi.svg';
 import Timesheet from '../../images/dashboard/timesheet.svg';
 import AdhocTask from '../../images/dashboard/adhoc.svg';
 import OPExp from '../../images/dashboard/opexp.svg';
@@ -46,7 +46,7 @@ function DashboardNew() {
             { img: <img src={Timesheet} className="imageicons" />, title: "Time Sheet", path: "#" },
             { img: <img src={AdhocTask} className="imageicons" />, title: "Adhoc Task", path: "#" },
             { img: <img src={OPExp} className="imageicons" />, title: "OP Expenses", path: "#" },
-            { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave", path: "#" },
+            { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave", path: "/leaveupdate" },
             { img: <img src={TicketCreation} className="imageicons" />, title: "Ticket Creation", path: "#" },
             { img: <img src={Employee} className="imageicons" />, title: "List of Employees", path: "#" },
             { img: <img src={OPAdv} className="imageicons" />, title: "OP Advance", path: "#" }

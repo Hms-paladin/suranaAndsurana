@@ -40,12 +40,17 @@ import StageMonitering from '../pages/stages/StageMonitering'
 // Leave Update:
 import LeaveUpdate from '../pages/Leaves/leaveupdate';
 
+//employeeFeedback
+
+import EmployeeFeedback from '../pages/Feedback/employeeFeedback';
+
 //DashBoard
 
 import DashboardNew from '../pages/Dashboard/dashboardnew';
 import KPI from '../pages/KPI/KPI';
 import LeaveForm from '../pages/Leaves/leaveform';
 import Appraisal from '../pages/Appraisal/appraisal';
+import Severance from '../pages/Severance/severance';
 
 
 
@@ -85,14 +90,21 @@ function Routes(props) {
 
                 {/* Dashboarde */}
                 <PrivateRoute path="/kpi" component={KPI} exact />
+                <PrivateRoute path="/dashboardnew" component={DashboardNew} exact />
                 <PrivateRoute path="/leaveform" component={LeaveForm} exact />
+                <PrivateRoute path="/appraisal" component={Appraisal} exact />
                 <PrivateRoute path="/appraisal" component={Appraisal} exact />
 
 
 
                 {/* Leaves Update */}
                 <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
-                <PrivateRoute path="/dashboardnew" component={DashboardNew} exact />
+                <PrivateRoute path="/severance" component={Severance} exact />
+
+
+                {/* EmployeeFeedback */}
+                <PrivateRoute path="/employeeFeedback" component={EmployeeFeedback} exact />
+
 
 
 
