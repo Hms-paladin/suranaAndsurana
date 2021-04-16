@@ -9,7 +9,7 @@ import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
 
-const UserGroups = (props) => {
+const KPI = (props) => {
     const header = [
         // { id: 'table_name', label: 'Table Name' },
         { id: 'activity', label: 'Activity' },
@@ -18,8 +18,7 @@ const UserGroups = (props) => {
         { id: 'achievement', label: 'Achievement' },
     ];
 
-    const [UserGroupsList, setUserGroupsList] = useState([])
-    const [usergroupmodel, setUsergroupmodel] = useState(false);
+    const [kpimodel, setKpimodel] = useState(false);
 
     const [isLoaded, setIsLoaded] = useState(true);
 
@@ -27,11 +26,29 @@ const UserGroups = (props) => {
 
         achivements: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
 
+        achivements1: {
+            value: 17,
+            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            error: null,
+            errmsg: null,
+        },
+        achivements2: {
+            value: 35,
+            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            error: null,
+            errmsg: null,
+        },
+        achivements3: {
+            value: 40,
+            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            error: null,
+            errmsg: null,
+        },
     });
 
     function checkValidation(data, key, multipleId) {
@@ -62,7 +79,7 @@ const UserGroups = (props) => {
             <div className="kpi">KPI</div>
             <div className="kpi_main">
                 <div className="kpi_sub">
-                    <Grid container spacing={2} className="kpi_sub">
+                    <Grid container spacing={2} >
                         <Grid
                             item
                             xs={7}
@@ -72,7 +89,7 @@ const UserGroups = (props) => {
                             alignItems="center"
                         >
                             <Grid item xs={6}>
-                                <div><label style={{ fontSize: 11 }} onClick={() => setUsergroupmodel(true)}>Employee Name</label></div>
+                                <div><label style={{ fontSize: 11 }} onClick={() => setKpimodel(true)}>Employee Name</label></div>
                                 <div><label style={{ fontWeight: 'bold' }}>Rajesh</label></div>
                             </Grid>
                             <Grid item xs={6}>
@@ -99,15 +116,15 @@ const UserGroups = (props) => {
                             <Grid item xs={3}><label className="maintitle">Hearing</label></Grid>
                             <Grid item xs={3}><label className="maintitle">In Effective</label></Grid>
                             <Grid item xs={3}> <label className="maintitle">20</label></Grid>
-                            <Grid item xs={3}><div style={{ width: '50%' }}>
+                            <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
                                     type="text"
                                     placeholder={""}
                                     value={35}
-                                    changeData={(data) => checkValidation(data, "achivements")}
-                                    value={kpi_form.achivements.value}
-                                    error={kpi_form.achivements.error}
-                                    errmsg={kpi_form.achivements.errmsg}
+                                    changeData={(data) => checkValidation(data, "achivements1")}
+                                    value={kpi_form.achivements1.value}
+                                    error={kpi_form.achivements1.error}
+                                    errmsg={kpi_form.achivements1.errmsg}
                                 /></div>
                             </Grid>
 
@@ -116,15 +133,15 @@ const UserGroups = (props) => {
                             <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
                             <Grid item xs={3}><label className="maintitle"></label></Grid>
                             <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                            <Grid item xs={3}><div style={{ width: '50%' }}>
+                            <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
                                     type="text"
                                     placeholder={""}
                                     value={35}
-                                    changeData={(data) => checkValidation(data, "achivements")}
-                                    value={kpi_form.achivements.value}
-                                    error={kpi_form.achivements.error}
-                                    errmsg={kpi_form.achivements.errmsg}
+                                    changeData={(data) => checkValidation(data, "achivements2")}
+                                    value={kpi_form.achivements2.value}
+                                    error={kpi_form.achivements2.error}
+                                    errmsg={kpi_form.achivements2.errmsg}
                                 /></div>
                             </Grid>
 
@@ -133,25 +150,25 @@ const UserGroups = (props) => {
                             <Grid item xs={3}> <label className="maintitle">Research</label></Grid>
                             <Grid item xs={3}> <label className="maintitle"></label></Grid>
                             <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                            <Grid item xs={3}><div style={{ width: '50%' }}>
+                            <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
                                     type="text"
                                     placeholder={""}
                                     value={35}
-                                    changeData={(data) => checkValidation(data, "achivements")}
-                                    value={kpi_form.achivements.value}
-                                    error={kpi_form.achivements.error}
-                                    errmsg={kpi_form.achivements.errmsg}
+                                    changeData={(data) => checkValidation(data, "achivements3")}
+                                    value={kpi_form.achivements3.value}
+                                    error={kpi_form.achivements3.error}
+                                    errmsg={kpi_form.achivements3.errmsg}
                                 /></div>
                             </Grid>
 
                         </Grid>
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
-                            <Grid item xs={3}><label className="maintitle">Total </label></Grid>
-                            <Grid item xs={3}><label className="maintitle"></label></Grid>
-                            <Grid item xs={3}><label className="maintitle"></label> </Grid>
-                            <Grid item xs={3}><label className="maintitle">92</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}>Total </label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}></label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}></label> </Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}>92</label></Grid>
                         </Grid>
                     </Grid>
                 </div>
@@ -171,11 +188,10 @@ const UserGroups = (props) => {
             </div>
             <DynModel
                 modelTitle={"KPI Approval"}
-                handleChangeModel={usergroupmodel}
-                handleChangeCloseModel={(bln) => setUsergroupmodel(bln)}
+                handleChangeModel={kpimodel}
+                handleChangeCloseModel={(bln) => setKpimodel(bln)}
                 content={
-                    <div className="successModel">
-                        <div className="kpi_main">
+                        <div>
                             <div className="kpi_sudb">
                                 <Grid container spacing={2} className="ratemaster_firstgrid" className="kpi_sub">
                                     <Grid item xs={7} container direction="row" className="spaceBtGrid" alignItems="center">
@@ -194,20 +210,20 @@ const UserGroups = (props) => {
                             </div>
                             <div className="kpi_table">
                                 <Grid container >
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
-                                        <Grid item xs={3}><label className="maintitle">Activity</label></Grid>
-                                        <Grid item xs={3}> <label className="maintitle">Sub Activity</label> </Grid>
-                                        <Grid item xs={3}> <label className="maintitle">Target</label></Grid>
-                                        <Grid item xs={3}><label className="maintitle">Achievement</label></Grid>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header title_label" alignItems="center">
+                                        <Grid item xs={3}><label >Activity</label></Grid>
+                                        <Grid item xs={3}> <label >Sub Activity</label> </Grid>
+                                        <Grid item xs={3}> <label >Target</label></Grid>
+                                        <Grid item xs={3}><label >Achievement</label></Grid>
 
                                     </Grid>
 
 
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                                        <Grid item xs={3}><label className="maintitle">Hearing</label></Grid>
-                                        <Grid item xs={3}><label className="maintitle">In Effective</label></Grid>
-                                        <Grid item xs={3}> <label className="maintitle">20</label></Grid>
-                                        <Grid item xs={3}><div style={{ width: '50%' }}>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
+                                        <Grid item xs={3} ><label >Hearing</label></Grid>
+                                        <Grid item xs={3} ><label >In Effective</label></Grid>
+                                        <Grid item xs={3} > <label >20</label></Grid>
+                                        <Grid item xs={3} ><div style={{ width: '70%' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -220,11 +236,11 @@ const UserGroups = (props) => {
                                         </Grid>
 
                                     </Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                                        <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
-                                        <Grid item xs={3}><label className="maintitle"></label></Grid>
-                                        <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                                        <Grid item xs={3}><div style={{ width: '50%' }}>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
+                                        <Grid item xs={3} ><label >Documentation</label></Grid>
+                                        <Grid item xs={3} ><label ></label></Grid>
+                                        <Grid item xs={3} ><label >40</label> </Grid>
+                                        <Grid item xs={3} ><div style={{ width: '70%' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -237,11 +253,11 @@ const UserGroups = (props) => {
                                         </Grid>
 
                                     </Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                                        <Grid item xs={3}> <label className="maintitle">Research</label></Grid>
-                                        <Grid item xs={3}> <label className="maintitle"></label></Grid>
-                                        <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                                        <Grid item xs={3}><div style={{ width: '50%' }}>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
+                                        <Grid item xs={3}> <label >Research</label></Grid>
+                                        <Grid item xs={3}> <label ></label></Grid>
+                                        <Grid item xs={3}><label >40</label> </Grid>
+                                        <Grid item xs={3}><div style={{ width: '70%' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -255,28 +271,28 @@ const UserGroups = (props) => {
 
                                     </Grid>
 
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
-                                        <Grid item xs={3}><label className="maintitle">Total </label></Grid>
-                                        <Grid item xs={3}><label className="maintitle"></label></Grid>
-                                        <Grid item xs={3}><label className="maintitle"></label> </Grid>
-                                        <Grid item xs={3}><label className="maintitle">92</label></Grid>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
+                                        <Grid item xs={3}><label style={{color:'black'}}>Total </label></Grid>
+                                        <Grid item xs={3}><label style={{color:'black'}}></label></Grid>
+                                        <Grid item xs={3}><label style={{color:'black'}}></label> </Grid>
+                                        <Grid item xs={3}><label style={{color:'black'}}>92</label></Grid>
                                     </Grid>
                                 </Grid>
                             </div>
 
-                            <div>
+                            <div  style={{marginTop: 20}}>
                                 <Grid container >
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
-                                        <Grid item xs={3}><label className="maintitle">Qualification</label></Grid>
-                                        <Grid item xs={3}> <label className="maintitle">Achievements</label> </Grid>
-                                        <Grid item xs={3}> <label className="maintitle">Seminar</label></Grid>
-                                        <Grid item xs={3}><label className="maintitle">Trainings</label></Grid>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid  title_label" alignItems="center">
+                                        <Grid item xs={3}><label >Qualification</label></Grid>
+                                        <Grid item xs={3}> <label >Achievements</label> </Grid>
+                                        <Grid item xs={3}> <label >Seminar</label></Grid>
+                                        <Grid item xs={3}><label >Trainings</label></Grid>
 
                                     </Grid>
 
 
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                                    <Grid item xs={3}><div style={{ width: '50%' }}>
+                                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" >
+                                        <Grid item xs={3}><div style={{ width: '70%', display: 'inline-block' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -287,7 +303,7 @@ const UserGroups = (props) => {
                                                 errmsg={kpi_form.achivements.errmsg}
                                             /></div>
                                         </Grid>
-                                        <Grid item xs={3}><div style={{ width: '50%' }}>
+                                        <Grid item xs={3}><div style={{ width: '70%', display: 'inline-block' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -298,7 +314,7 @@ const UserGroups = (props) => {
                                                 errmsg={kpi_form.achivements.errmsg}
                                             /></div>
                                         </Grid>
-                                        <Grid item xs={3}><div style={{ width: '50%' }}>
+                                        <Grid item xs={3}><div style={{ width: '70%', display: 'inline-block' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -309,7 +325,7 @@ const UserGroups = (props) => {
                                                 errmsg={kpi_form.achivements.errmsg}
                                             /></div>
                                         </Grid>
-                                        <Grid item xs={3}><div style={{ width: '50%' }}>
+                                        <Grid item xs={3}><div style={{ width: '70%', display: 'inline-block' }}>
                                             <Labelbox
                                                 type="text"
                                                 placeholder={""}
@@ -322,7 +338,7 @@ const UserGroups = (props) => {
                                         </Grid>
 
                                     </Grid>
-                                   
+
                                 </Grid>
                             </div>
 
@@ -331,17 +347,16 @@ const UserGroups = (props) => {
                                     btnName={"Approve"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
-
+                                    onBtnClick={()=>setKpimodel(false)}
                                 />
                                 <CustomButton
                                     btnName={"Return"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
+                                    onBtnClick={()=>setKpimodel(false)}
 
                                 />
                             </div>
-
-                        </div>
                     </div>
 
                 }
@@ -352,4 +367,4 @@ const UserGroups = (props) => {
 }
 
 
-export default (UserGroups);
+export default (KPI);

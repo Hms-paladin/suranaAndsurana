@@ -1,9 +1,9 @@
-.kpi{
+.kra{
     font-weight: bold;
     padding: 5px;
     font-size: 16px;
 }
-.kpi_main{
+.kra_main{
     background-color: #FAFAFA;
     border-radius: 6px;
 }
@@ -11,7 +11,7 @@
 .kpi_table {
     background-color: #F3F3F3;
 }
-.kpi_sub{
+.kra_sub{
     height: 85px;
 }
 
@@ -32,4 +32,16 @@
 .title_label {
     text-align: initial;
     padding-left: 15px;
+}
+
+//////////////
+
+.kra_table_row {
+    border-bottom: 1px solid lightgray;
+    height: 35px;
+}
+
+.kra_img {
+    display: flex;
+    align-items: baseline;
 }

@@ -96,6 +96,10 @@ function Navbar(props) {
       { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
       { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
       { path: "/dashboardnew", title: "Dashboard", img: Dashboard },
+      { path: "/severance", title: "Severance", img: Stagemaster },
+      { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
+
+
     ]
   );
 

@@ -10,7 +10,9 @@ import InterviewApprover from "../InterviewApprover/InterviewApprover";
 import InerviewScreen from "../Interview/interview";
 import EmployeeApprove from '../Employeeform/EmployeeApprove';
 import UnblockUserActive from './UnblockUser/unblockuserActive';
-import Employeeform from '../Employeeform/employeeform'
+import ResignationApproveval from '../Severance/resignationModel';
+import Employeeform from '../Employeeform/employeeform';
+import LeaveApproval from '../Leaves/leaveapprovalModel';
 import "./todoList.scss"
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
@@ -64,12 +66,18 @@ function TodoList(props) {
     const [unblockuserActive, setUnblockuserActive] = useState(false)
     const [hrTodoList, setHrTodoList] = useState([])
     const [projectTodoList, setProjectTodoList] = useState([])
+    const [otherTodoList, setOtherTodoList] = useState([])
+    const [resignationApprove, setResignationApprove] = useState(false)
+    const [leaveApproval, setLeaveApproval] = useState(false)
     const [can_int_id, setcan_int_id] = useState([])
     const [EmployeeFormOpen, setEmployeeFormOpen] = useState(false)
     const [Employee_Data, setEmployee_Data] = useState([])
     const [res_id, setres_id] = useState([])
     const [viewer_id, setviewer_id] = useState([])
     const [leaveapprovemodel, setLeaveapprovemodel] = useState(false);
+    const [modelTitle, setModeltitle] = useState()
+    const [leaveModelTitle, setleaveModelTitle] = useState()
+
 
     useEffect(() => {
         dispatch(getHrTaskList())
@@ -110,12 +118,39 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        projectTask.push({ id: <div className="ProjectTaskId" onClick={unblockUser} 
-        // onClick={() => setLeaveapprovemodel(true)}
-         >01</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021" })
+        projectTask.push({
+            id: <div className="ProjectTaskId" onClick={unblockUser}>01</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
+        })
 
         setProjectTodoList(projectTask)
+
+        //Other Task
+        let otherTask = []
+
+        otherTask.push({
+            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Resignation Approval")}
+            >ResignationApproveval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("HR Noc")}
+            >HR Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("IT Noc")}
+            >IT Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Admin Noc")}
+            >Admin Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Final Relieving")}
+            >Final Relieving</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => leaveApprovalModel("CEP Approval")}
+            >CEP Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        })
+
+        setOtherTodoList(otherTask)
+
     }, [])
+
 
 
 
@@ -164,6 +199,18 @@ function TodoList(props) {
         setUnblockuserActive(true)
     }
 
+    // resignationApproveval
+
+    const resignationApproveval = (val) => {
+        setResignationApprove(true)
+        setModeltitle(val)
+    }
+
+    const leaveApprovalModel = (val) => {
+        setLeaveApproval(true)
+        setleaveModelTitle(val)
+    }
+
     const onNewPageClear = (bln) => {
         setStateClear(!stateClear);
         setInerviewScreen(bln);
@@ -198,7 +245,11 @@ function TodoList(props) {
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
             </div>
             <div>
-                <EnhancedTable headCells={workflowheadCells} rows={[]} tabletitle={"Other task"} />
+                <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other task"} />
+
+                <DynModel modelTitle={modelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval modelTitles={modelTitle} closemodal={(bln) => setResignationApprove(bln)} />} />
+
+                <DynModel modelTitle={leaveModelTitle} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={700} content={<LeaveApproval modelTitles={leaveModelTitle} closemodal={(bln) => setLeaveApproval(bln)} />} />
             </div>
 
 

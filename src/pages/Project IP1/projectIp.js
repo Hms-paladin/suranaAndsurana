@@ -441,7 +441,7 @@ function ProjectIp(props) {
                                 </Grid>
                             </div>
 
-                        } width={200} />
+                        } width={300} />
 
                     {/* TradeMark */}
                     {stageMonitor && <StageMonitor />}
