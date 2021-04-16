@@ -204,7 +204,7 @@ function OppositionDefended(props) {
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
 
-                    <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}
+                    <Labelbox type="datepicker" placeholder={"Opposition Filed Date"}
                         changeData={(data) => checkValidation(data, "opp_fill_date")}
                         value={patentForm.opp_fill_date.value}
                         error={patentForm.opp_fill_date.error}
@@ -216,7 +216,7 @@ function OppositionDefended(props) {
                         error={patentForm.type_grant.error}
                         errmsg={patentForm.type_grant.errmsg} />
 
-                    <Labelbox type="text" placeholder={"Patent Apllication Number"}
+                    <Labelbox type="text" placeholder={"Patent Application Number"}
                         changeData={(data) => checkValidation(data, "app_num")}
                         value={patentForm.app_num.value}
                         error={patentForm.app_num.error}
