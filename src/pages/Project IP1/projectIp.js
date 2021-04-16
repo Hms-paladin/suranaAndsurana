@@ -196,7 +196,9 @@ function ProjectIp(props) {
         props.ProjectDetails.length > 0 && setidDetails({
             project_id: props.ProjectDetails[0].project_id,
             client_id: props.ProjectDetails[0].client_id,
+            billable_type_id:props.ProjectDetails[0].billable_type_id
         })
+        console.log("dtata", props.ProjectDetails[0])
     }, [props.ProjectDetails])
 
 
@@ -418,7 +420,7 @@ function ProjectIp(props) {
                         {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
                             props.ProjectDetails[0].project_type} */}
                     </div>
-                    <div className="TabIconsview"><TabIcons onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />

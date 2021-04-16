@@ -224,7 +224,7 @@ function Appraisal() {
             <div className="linkingModel">
                 <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years")}>Spell out your growth plan for the next five years</div>
             </div>
-            <DynModel modelTitle={"Appraosal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle}/>} />
+            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle}/>} />
 
 
             <div className="appraisalBtn">

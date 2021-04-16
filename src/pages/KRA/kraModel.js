@@ -70,80 +70,28 @@ const KRA = (props) => {
 
     return (
         <div>
-            <div className="kra">KRA</div>
-            <div className="kra_main">
-                <div >
-                    <Grid container className="kra_sub">
-                        <Grid
-                            item
-                            xs={12}
-                            container
-                            direction="row"
-                            className="spaceBtGrid"
-                            alignItems="center"
-                            style={{padding:10}}
-                        >
-                            <Grid item xs={2}>
-                                <div><label style={{ fontSize: 11 }} onClick={() => setKramodel(true)}>Employee Name</label></div>
+            <div>
+                <div className="kpi_sudb">
+                    <Grid container spacing={2} className="ratemaster_firstgrid" className="kpi_sub">
+                        <Grid item xs={7} container direction="row" className="spaceBtGrid" alignItems="center">
+                            <Grid item xs={6}>
+                                <div><label style={{ fontSize: 11 }}>Employee Name</label></div>
                                 <div><label style={{ fontWeight: 'bold' }}>Rajesh</label></div>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={6}>
                                 <div><label style={{ fontSize: 11 }}>Period</label></div>
                                 <div><label style={{ fontWeight: 'bold' }}>April 2021 to March 2021</label></div>
                             </Grid>
-                            <Grid item xs={2}>
-                            <div><label style={{ fontSize: 11 }}>Activity</label></div>
-                            <div style={{ width: '100%', display: 'inline-block' }}>
-                                <Labelbox
-                                    type="select"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "activity")}
-                                    value={kpi_form.activity.value}
-                                    error={kpi_form.activity.error}
-                                    errmsg={kpi_form.activity.errmsg}
-                                /></div>
-                            </Grid>
-                            <Grid item xs={2}>
-                            <div><label style={{ fontSize: 11 }}>Sub Activity</label></div>
-                                <div style={{ width: '100%', display: 'inline-block' }}>
-                                <Labelbox
-                                    type="select"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "subactivity")}
-                                    value={kpi_form.subactivity.value}
-                                    error={kpi_form.subactivity.error}
-                                    errmsg={kpi_form.subactivity.errmsg}
-                                /></div>
-                            </Grid>
-                            <Grid item xs={2}>
-                            <div><label style={{ fontSize: 11 }}>Percentage</label></div>
-                                <div style={{ width: '100%', display: 'inline-block' }}>
-                                <Labelbox
-                                    type="select"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "percentage")}
-                                    value={kpi_form.percentage.value}
-                                    error={kpi_form.percentage.error}
-                                    errmsg={kpi_form.percentage.errmsg}
-                                /></div>
-                            </Grid>
-                            <Grid item xs={1}>
-                            <div style={{display: 'flex'}}>
-          <img src={PlusIcon} style={{cursor: 'pointer',width:19}}  />
-          </div>
-                          </Grid>
-                      </Grid>
+                        </Grid>
 
 
                     </Grid>
                 </div>
 
+
                 <div className="kpi_table">
                     <Grid container >
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{height: 45}}>
+                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ height: 45 }}>
                             <Grid item xs={4}><label className="maintitle">Activity</label></Grid>
                             <Grid item xs={4}> <label className="maintitle">Sub Activity</label> </Grid>
                             <Grid item xs={4}><label className="maintitle">Percentage</label></Grid>
@@ -154,44 +102,47 @@ const KRA = (props) => {
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Hearing</label></Grid>
                             <Grid item xs={4}><label className="maintitle">In Effective</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle">20</label></Grid>
+                            <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
 
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
                             <Grid item xs={4}><label className="maintitle"></label></Grid>
-                            <Grid item xs={4}><label className="maintitle">40</label> </Grid>
+                            <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
 
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={4}> <label className="maintitle">Research</label></Grid>
                             <Grid item xs={4}> <label className="maintitle"></label></Grid>
-                            <Grid item xs={4}><label className="maintitle">40</label> </Grid>
+                            <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
 
                         </Grid>
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
+                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>60</label></Grid>
                         </Grid>
                     </Grid>
                 </div>
-                
+
                 <div className="kpi_btn">
                     <CustomButton
-                        btnName={"Save"}
+                        btnName={"Approve"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-
+                        onBtnClick={() => setKramodel(false)}
                     />
                     <CustomButton
-                        btnName={"Cancel"}
+                        btnName={"Return"}
+                        btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
+                        onBtnClick={() => setKramodel(false)}
 
                     />
                 </div>
             </div>
+
         </div>
     )
 }

@@ -51,6 +51,8 @@ import KPI from '../pages/KPI/KPI';
 import LeaveForm from '../pages/Leaves/leaveform';
 import Appraisal from '../pages/Appraisal/appraisal';
 import Severance from '../pages/Severance/severance';
+import KRA from '../pages/KRA/KRA';
+
 
 
 
@@ -94,8 +96,7 @@ function Routes(props) {
                 <PrivateRoute path="/leaveform" component={LeaveForm} exact />
                 <PrivateRoute path="/appraisal" component={Appraisal} exact />
                 <PrivateRoute path="/appraisal" component={Appraisal} exact />
-
-
+                <PrivateRoute path="/KRA" component={KRA} exact />
 
                 {/* Leaves Update */}
                 <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />

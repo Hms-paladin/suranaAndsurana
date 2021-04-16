@@ -13,11 +13,15 @@ import UnblockUserActive from './UnblockUser/unblockuserActive';
 import ResignationApproveval from '../Severance/resignationModel';
 import Employeeform from '../Employeeform/employeeform';
 import LeaveApproval from '../Leaves/leaveapprovalModel';
+import KPI from '../KPI/kpiModel';
+import KRI from '../KRA/kraModel';
+
+
+import "./todoList.scss"
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import Grid from '@material-ui/core/Grid';
-import "./todoList.scss"
 // Hr Task:
 
 const headCells = [
@@ -77,6 +81,9 @@ function TodoList(props) {
     const [leaveapprovemodel, setLeaveapprovemodel] = useState(false);
     const [modelTitle, setModeltitle] = useState()
     const [leaveModelTitle, setleaveModelTitle] = useState()
+    const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
+    const [kraapprovemodel, setKraapprovemodel] = useState(false);
+
 
 
     useEffect(() => {
@@ -129,7 +136,7 @@ function TodoList(props) {
 
         otherTask.push({
             id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Resignation Approval")}
-            >ResignationApproveval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+            >Resignation Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         }, {
             id: <div className="ProjectTaskId" onClick={() => resignationApproveval("HR Noc")}
             >HR Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
@@ -145,6 +152,21 @@ function TodoList(props) {
         }, {
             id: <div className="ProjectTaskId" onClick={() => leaveApprovalModel("CEP Approval")}
             >CEP Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => leaveApprovalModel("Casual Leave")}
+            >Casual Leave Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => leaveApprovalModel("On Duty")}
+            >On Duty Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => leaveApprovalModel("Permission")}
+            >Permission Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => setKraapprovemodel(true)}
+            >kra Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
+            >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         })
 
         setOtherTodoList(otherTask)
@@ -211,6 +233,8 @@ function TodoList(props) {
         setleaveModelTitle(val)
     }
 
+
+
     const onNewPageClear = (bln) => {
         setStateClear(!stateClear);
         setInerviewScreen(bln);
@@ -249,11 +273,16 @@ function TodoList(props) {
 
                 <DynModel modelTitle={modelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval modelTitles={modelTitle} closemodal={(bln) => setResignationApprove(bln)} />} />
 
-                <DynModel modelTitle={leaveModelTitle} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={700} content={<LeaveApproval modelTitles={leaveModelTitle} closemodal={(bln) => setLeaveApproval(bln)} />} />
+                <DynModel modelTitle={leaveModelTitle} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={800} content={<LeaveApproval modelTitles={leaveModelTitle} closemodal={(bln) => setLeaveApproval(bln)} />} />
+
+                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} />} />
+
+                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
+
             </div>
 
 
-            <DynModel
+            {/* <DynModel
                 modelTitle={"Leave Approval"}
                 handleChangeModel={leaveapprovemodel}
                 handleChangeCloseModel={(bln) => setLeaveapprovemodel(bln)}
@@ -351,7 +380,7 @@ function TodoList(props) {
 
                 }
                 width={500}
-            />
+            /> */}
 
             {/* <DynModel
                 modelTitle={"Leave Approval"}
