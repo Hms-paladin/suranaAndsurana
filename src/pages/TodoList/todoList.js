@@ -13,11 +13,11 @@ import UnblockUserActive from './UnblockUser/unblockuserActive';
 import ResignationApproveval from '../Severance/resignationModel';
 import Employeeform from '../Employeeform/employeeform';
 import LeaveApproval from '../Leaves/leaveapprovalModel';
-import "./todoList.scss"
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import Grid from '@material-ui/core/Grid';
+import "./todoList.scss"
 // Hr Task:
 
 const headCells = [
