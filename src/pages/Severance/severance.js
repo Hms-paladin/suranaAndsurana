@@ -12,6 +12,7 @@ function Severance() {
                 <div className="severanceHeader">
                     <div>
                         <div>Employee</div>
+                        
                         <div className="severanceData">Rajesh</div>
                     </div>
                     <div>
