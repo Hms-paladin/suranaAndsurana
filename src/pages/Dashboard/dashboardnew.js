@@ -3,7 +3,7 @@ import './dashboard.scss';
 import Library from '../../images/dashboard/library.svg';
 import appraisal from '../../images/dashboard/appraisal.svg';
 import KRA from '../../images/dashboard/kra.svg';
-import KPI from '../../images/dashboard/kpi.svg';
+import KPI from '../../images/dashboard/KPI.svg';
 import Timesheet from '../../images/dashboard/timesheet.svg';
 import AdhocTask from '../../images/dashboard/adhoc.svg';
 import OPExp from '../../images/dashboard/opexp.svg';
