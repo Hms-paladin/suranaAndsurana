@@ -11,7 +11,8 @@ import InerviewScreen from "../Interview/interview";
 import EmployeeApprove from '../Employeeform/EmployeeApprove';
 import UnblockUserActive from './UnblockUser/unblockuserActive';
 import ResignationApproveval from '../Severance/resignationModel';
-import Employeeform from '../Employeeform/employeeform'
+import Employeeform from '../Employeeform/employeeform';
+import LeaveApproval from '../Leaves/leaveapprovalModel';
 import "./todoList.scss"
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
@@ -67,6 +68,7 @@ function TodoList(props) {
     const [projectTodoList, setProjectTodoList] = useState([])
     const [otherTodoList, setOtherTodoList] = useState([])
     const [resignationApprove, setResignationApprove] = useState(false)
+    const [leaveApproval, setLeaveApproval] = useState(false)
     const [can_int_id, setcan_int_id] = useState([])
     const [EmployeeFormOpen, setEmployeeFormOpen] = useState(false)
     const [Employee_Data, setEmployee_Data] = useState([])
@@ -74,6 +76,8 @@ function TodoList(props) {
     const [viewer_id, setviewer_id] = useState([])
     const [leaveapprovemodel, setLeaveapprovemodel] = useState(false);
     const [modelTitle, setModeltitle] = useState()
+    const [leaveModelTitle, setleaveModelTitle] = useState()
+
 
     useEffect(() => {
         dispatch(getHrTaskList())
@@ -138,6 +142,9 @@ function TodoList(props) {
         }, {
             id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Final Relieving")}
             >Final Relieving</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => leaveApprovalModel("CEP Approval")}
+            >CEP Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         })
 
         setOtherTodoList(otherTask)
@@ -199,6 +206,11 @@ function TodoList(props) {
         setModeltitle(val)
     }
 
+    const leaveApprovalModel = (val) => {
+        setLeaveApproval(true)
+        setleaveModelTitle(val)
+    }
+
     const onNewPageClear = (bln) => {
         setStateClear(!stateClear);
         setInerviewScreen(bln);
@@ -236,6 +248,8 @@ function TodoList(props) {
                 <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other task"} />
 
                 <DynModel modelTitle={modelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval modelTitles={modelTitle} closemodal={(bln) => setResignationApprove(bln)} />} />
+
+                <DynModel modelTitle={leaveModelTitle} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={700} content={<LeaveApproval modelTitles={leaveModelTitle} closemodal={(bln) => setLeaveApproval(bln)} />} />
             </div>
 
 
