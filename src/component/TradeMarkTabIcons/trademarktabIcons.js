@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './trademarktabIcons.scss';
 import Grid from '@material-ui/core/Grid';
 
@@ -19,23 +19,9 @@ import { withStyles} from '@material-ui/core/styles';
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
 
 
-const TabIcons = [{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
-const HtmlTooltip = withStyles((theme) => ({
-    arrow: {
-        color: theme.palette.common.white,
-      },
-    tooltip: {
-      backgroundColor: 'white',
-      color: 'rgba(0, 0, 0, 0.87)',
-      maxWidth: 700,
-      fontSize: theme.typography.pxToRem(12),
-      border: '1px solid #dadde9',
-    },
-  }))(Tooltip);
 function TradeMarkTabIcons(props) {
-    const [selectBox, setSelectBox] = useState()
-
+    const [variableRateIcon, setVariableRateIcon] = useState("")
     const tabBox = (boxName) => {
         props.onChangeTabBox && props.onChangeTabBox(boxName)
     }
@@ -49,11 +35,31 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
+    const TabIcons = [{ img: Rupees, title: "VAR" },{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+
+const HtmlTooltip = withStyles((theme) => ({
+    arrow: {
+        color: theme.palette.common.white,
+      },
+    tooltip: {
+      backgroundColor: 'white',
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 700,
+      fontSize: theme.typography.pxToRem(12),
+      border: '1px solid #dadde9',
+    },
+  }))(Tooltip);
+
+    useEffect(()=>{
+      setVariableRateIcon(props.variableRate.billable_type_id)
+    },[props.variableRate])
+    const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
     return (
         <div className="tradeMarkIcons">
  
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
                 {TabIcons.map((data, index) => {
+                        if(showFromSec !== index ){
                     return (
                         <div>
                             {data.title === "TIME SHEET" ?
@@ -81,7 +87,7 @@ function TradeMarkTabIcons(props) {
 
                         </div>
 
-                    )
+                    )}
                 })}
 
             </Grid>

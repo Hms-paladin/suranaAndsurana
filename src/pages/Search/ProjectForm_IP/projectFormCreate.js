@@ -705,7 +705,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
-                  placeholder={"Filling Type"}
+                  placeholder={"Filing Type"}
                   dropdown={filingType.FilingType}
                   changeData={(data) => checkValidation(data, "filing_type")}
                   value={projectform.filing_type.value}
@@ -859,7 +859,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
-                  placeholder={"Filling Type"}
+                  placeholder={"Filing Type"}
                   dropdown={filingType.FilingType}
                   changeData={(data) => checkValidation(data, "filing_type")}
                   value={projectform.filing_type.value}

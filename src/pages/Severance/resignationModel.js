@@ -98,7 +98,7 @@ function ResignationApproveval(props) {
                             <div className="severanceData">12-May-2021</div>
                         </div>
                         <div>
-                            <div>HR Date of NOC</div>
+                            <div>Admin Date of NOC</div>
                             <div className="severanceData">12-May-2021</div>
                         </div>
                     </div>
@@ -111,8 +111,7 @@ function ResignationApproveval(props) {
                     </div>
 
                     <div className="appraisalBtn">
-
-                        <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                        <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
                         <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
                     </div>
 

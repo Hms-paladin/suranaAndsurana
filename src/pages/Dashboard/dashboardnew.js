@@ -41,12 +41,12 @@ function DashboardNew() {
         [
             { img: <img src={Library} className="imageicons" />, title: "Library", path: "#" },
             { img: <img src={appraisal} className="imageicons" />, title: "Appraisal", path: "/appraisal" },
-            { img: <img src={KRA} className="imageicons" />, title: "KRA", path: "#" },
+            { img: <img src={KRA} className="imageicons" />, title: "KRA", path: "/KRA" },
             { img: <img src={KPI} className="imageicons" />, title: "KPI", path: "/KPI" },
             { img: <img src={Timesheet} className="imageicons" />, title: "Time Sheet", path: "#" },
             { img: <img src={AdhocTask} className="imageicons" />, title: "Adhoc Task", path: "#" },
             { img: <img src={OPExp} className="imageicons" />, title: "OP Expenses", path: "#" },
-            { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave", path: "/leaveupdate" },
+            { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave", path: "/leaveform" },
             { img: <img src={TicketCreation} className="imageicons" />, title: "Ticket Creation", path: "#" },
             { img: <img src={Employee} className="imageicons" />, title: "List of Employees", path: "#" },
             { img: <img src={OPAdv} className="imageicons" />, title: "OP Advance", path: "#" }
