@@ -93,11 +93,11 @@ const SignInSide = (props) => {
                 axios.post(apiurl+"login", {
                     email:email,
                     password:password
-                  }).then(result => {
-                    if (result.status === 200) {
-                      setAuthTokens(result.data);
+                  }).then(res => {
+                    if (res.status === 200) {
+                      setAuthTokens(res.data);
                       setLoggedIn(true);
-                      console.log(result.data.status,"logindata")
+                      console.log(res.data.status,"logindata")
                     }
                   }).catch(e => {
                     notification.error({
