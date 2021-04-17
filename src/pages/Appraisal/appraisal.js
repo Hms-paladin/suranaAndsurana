@@ -9,7 +9,7 @@ import { useDispatch, connect } from "react-redux";
 import { Checkbox } from 'antd';
 import AppraisalModel from './appraisalModel';
 import DynModel from "../../component/Model/model";
-
+import RatingModel from './ratingModel';
 
 import './appraisal.scss';
 
@@ -19,6 +19,7 @@ function Appraisal() {
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
     const [changeCheckbox, setChangeCheckbox] = useState(false)
     const [modelOpen, setModelOpen] = useState(false)
+    const [ratingModelOpen, setRatingModelOpen] = useState(false)
     const [modelTitle, setModelTitle] = useState()
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
@@ -101,7 +102,7 @@ function Appraisal() {
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
-                            <div className="appraisalFieldheading"> Area of Developement</div>
+                            <div className="appraisalFieldheading"> Area of Development</div>
                             <div>
                                 <Labelbox type="select"
                                     changeData={(data) =>
@@ -170,7 +171,7 @@ function Appraisal() {
                 <div className="linkview" onClick={() => appraisalModelOpen("Area of Specialization")}>Area of Specialization</div>
             </div>
             <div className="linkingModel">
-                <div className="linkview"onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)")}>Self work descripition (List out the details of works carried and the frequency)</div>
+                <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)")}>Self work descripition (List out the details of works carried and the frequency)</div>
             </div>
             <div className="linkingModel">
                 <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div>
@@ -224,13 +225,16 @@ function Appraisal() {
             <div className="linkingModel">
                 <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years")}>Spell out your growth plan for the next five years</div>
             </div>
-            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle}/>} />
+            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} />} />
 
 
             <div className="appraisalBtn">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />
+                <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
+
+            
 
         </div>
     )

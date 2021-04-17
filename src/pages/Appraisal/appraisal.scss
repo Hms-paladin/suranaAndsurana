@@ -136,3 +136,25 @@
         margin: 5px;
     }
 }
+
+// rating Model
+
+.empDetailsIn{
+    display: flex;
+    >div{
+        width: 30%;
+    }
+}
+
+.employeeData{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.areaDevelopment{
+    margin-top: 10px;
+    display: flex;
+    >img{
+        margin-left: 10px;
+    }
+}
