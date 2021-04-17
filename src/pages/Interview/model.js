@@ -22,8 +22,7 @@ function DynModelView(props) {
       }
     })
       .then((response) => {
-        setgetData(response.data.data[0])
-        console.log("type_of_resource",response.data.data[0])
+        setgetData(response.data.data[0].result)
       })
 
 
@@ -53,7 +52,7 @@ function DynModelView(props) {
   React.useEffect(() => {
     setVisible(props.handleChangeModel)
   }, [props.handleChangeModel])
-  console.log(props.handleChangeModel, "props.handleChangeModel")
+
 
   return (
     <Modal
