@@ -1,4 +1,4 @@
-import react from 'react';
+import react, { useState } from 'react';
 import './appraisal.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
@@ -8,6 +8,14 @@ import PlusIcon from "../../images/plusIcon.svg";
 
 
 function RatingModel() {
+    const [test, setTest] = useState()
+    const p1 = new Promise((resolve, reject) => {
+        setTest(() => {
+            resolve("success")
+        })
+    })
+
+    p1.then(console.log("test"))
     return (
         <div>
             <div className="empDetailsIn">
@@ -35,7 +43,7 @@ function RatingModel() {
                         />
                     </div>
                 </Grid>
-                <img src={PlusIcon}  className="plusiconview" />
+                <img src={PlusIcon} className="plusiconview" />
             </div>
             <div className="appraisalBtn">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
