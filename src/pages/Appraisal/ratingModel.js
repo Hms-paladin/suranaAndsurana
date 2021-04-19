@@ -3,19 +3,10 @@ import './appraisal.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
-import ValidationLibrary from "../../helpers/validationfunction";
 import PlusIcon from "../../images/plusIcon.svg";
 
 
-function RatingModel() {
-    const [test, setTest] = useState()
-    const p1 = new Promise((resolve, reject) => {
-        setTest(() => {
-            resolve("success")
-        })
-    })
-
-    p1.then(console.log("test"))
+function RatingModel() { 
     return (
         <div>
             <div className="empDetailsIn">
