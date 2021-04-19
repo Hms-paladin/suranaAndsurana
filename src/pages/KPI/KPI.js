@@ -26,26 +26,26 @@ const KPI = (props) => {
 
         achivements: {
             value: "",
-            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
 
         achivements1: {
             value: 17,
-            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
         achivements2: {
             value: 35,
-            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
         achivements3: {
             value: 40,
-            validation: [{ name: "required" },{ name: "allowNumaricOnly1" }],
+            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
@@ -89,12 +89,12 @@ const KPI = (props) => {
                             alignItems="center"
                         >
                             <Grid item xs={6}>
-                                <div><label style={{ fontSize: 11 }} onClick={() => setKpimodel(true)}>Employee Name</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>Rajesh</label></div>
+                                <div><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
+                                <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
                             </Grid>
                             <Grid item xs={6}>
-                                <div><label style={{ fontSize: 11 }}>Period</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>April 2021 to March 2021</label></div>
+                                <div><label >Period</label></div>
+                                <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
                             </Grid>
                         </Grid>
 
@@ -165,10 +165,10 @@ const KPI = (props) => {
                         </Grid>
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
-                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}>Total </label></Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}></label></Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}></label> </Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{color:'black'}}>92</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label> </Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
                         </Grid>
                     </Grid>
                 </div>
@@ -186,7 +186,7 @@ const KPI = (props) => {
                     />
                 </div>
             </div>
-            
+
         </div>
     )
 }

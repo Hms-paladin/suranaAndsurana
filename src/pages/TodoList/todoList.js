@@ -4,6 +4,8 @@ import DynModel from "../../component/Model/model";
 import { getHrTaskList } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
+import { useParams, Link } from 'react-router-dom';
+
 
 // Model
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
@@ -15,13 +17,11 @@ import Employeeform from '../Employeeform/employeeform';
 import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
+import Appraisal from '../Appraisal/appraisal';
 
 
 import "./todoList.scss"
-import { Checkbox } from 'antd';
-import CustomButton from '../../component/Butttons/button';
-import Labelbox from "../../helpers/labelbox/labelbox";
-import Grid from '@material-ui/core/Grid';
+
 // Hr Task:
 
 const headCells = [
@@ -89,6 +89,11 @@ function TodoList(props) {
     useEffect(() => {
         dispatch(getHrTaskList())
     }, [])
+
+    // let { rowId } = useParams(false)
+    // useEffect(() => {
+    //     setTest(rowId)
+    // }, [])
 
     useEffect(() => {
 
@@ -167,14 +172,13 @@ function TodoList(props) {
         }, {
             id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
             >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        })
+        }, {
+            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraisar Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, )
 
         setOtherTodoList(otherTask)
 
     }, [])
-
-
-
 
 
     function openModelFunc(name, id) {
@@ -242,12 +246,14 @@ function TodoList(props) {
         setApproveOpen(bln);
 
     }
+    //appraisalSupervisor
+
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
             <div>
                 {/* ___________________________________________________________________________ */}
-                <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"Hr task"} />
+                <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"HR Task"} />
                 {/*InrerviewScreen after  Schedule     */}
                 <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1000}
                     content={<InerviewScreen interviewer_id={can_int_id}
@@ -265,11 +271,11 @@ function TodoList(props) {
             </div>
             {/* __________________________________________________________________________ */}
             <div>
-                <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project task"} />
+                <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project Task"} />
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
             </div>
             <div>
-                <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other task"} />
+                <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other Task"} />
 
                 <DynModel modelTitle={modelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval modelTitles={modelTitle} closemodal={(bln) => setResignationApprove(bln)} />} />
 
@@ -282,308 +288,7 @@ function TodoList(props) {
             </div>
 
 
-            {/* <DynModel
-                modelTitle={"Leave Approval"}
-                handleChangeModel={leaveapprovemodel}
-                handleChangeCloseModel={(bln) => setLeaveapprovemodel(bln)}
-                content={
-                    <div className="successModel">
-                        <Grid container spacing={2} >
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label" style={{ whiteSpace: 'nowrap' }}>Employee Name</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Rajesh</label></div>
-                                </Grid>
-                                <Grid item xs={4}>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Leave Type</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Casual Leave</label></div>
-                                </Grid>
-                            </Grid>
 
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">From</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">13-mar-2021</label></div>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">To</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">14-mar-2021</label></div>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Balance</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">5</label></div>
-                                </Grid>
-                            </Grid>
-
-
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-                                <Grid item xs={12}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Reason For Leave</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit est pretium, tristique sed diam. In donec turpis laoreet neque ornare massa commodo. </label></div>
-                                </Grid>
-
-                            </Grid>
-
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                                style={{ marginBottom: 10 }}
-                            >
-                                <Grid item xs={12}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Reason For Reject</label></div>
-                                    <div className="levaprolabel_div" style={{ height: 54 }}>
-                                        <Labelbox type="textarea"
-                                        />
-                                    </div>
-                                </Grid>
-
-                            </Grid>
-                        </Grid>
-
-                        <div className="customleaveaprovbtn">
-                            <CustomButton
-                                btnName={"Reject"}
-                                btnCustomColor="customPrimary"
-                                custombtnCSS={"btnUsergroup"}
-                                onBtnClick={() => setLeaveapprovemodel(false)}
-                            />
-                        </div>
-                    </div>
-
-                }
-                width={500}
-            /> */}
-
-            {/* <DynModel
-                modelTitle={"Leave Approval"}
-                handleChangeModel={leaveapprovemodel}
-                handleChangeCloseModel={(bln) => setLeaveapprovemodel(bln)}
-                content={
-                    <div className="successModel">
-                        <Grid container spacing={2} >
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label" style={{ whiteSpace: 'nowrap' }}>Employee Name</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Rajesh</label></div>
-                                </Grid>
-                                <Grid item xs={4}>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Leave Type</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Casual Leave</label></div>
-                                </Grid>
-                            </Grid>
-
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">From</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">13-mar-2021</label></div>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">To</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">14-mar-2021</label></div>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Balance</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">5</label></div>
-                                </Grid>
-                            </Grid>
-
-
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                                style={{ marginBottom: 10 }}
-                            >
-                                <Grid item xs={12}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Reason For Leave</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit est pretium, tristique sed diam. In donec turpis laoreet neque ornare massa commodo. </label></div>
-                                </Grid>
-
-                            </Grid>
-
-                        </Grid>
-
-                        <div className="customleaveaprovbtn">
-                            <CustomButton
-                                btnName={"Reject"}
-                                btnCustomColor="customPrimary"
-                                custombtnCSS={"btnUsergroup"}
-                                onBtnClick={() => setLeaveapprovemodel(false)}
-                            />
-                            <CustomButton
-                                btnName={"Approve"}
-                                btnCustomColor="customPrimary"
-                                custombtnCSS={"btnUsergroup"}
-                                onBtnClick={() => setLeaveapprovemodel(false)}
-                            />
-                        </div>
-                    </div>
-
-                }
-                width={500}
-            /> */}
-
-            {/* <DynModel
-                modelTitle={"Leave Approval"}
-                handleChangeModel={leaveapprovemodel}
-                handleChangeCloseModel={(bln) => setLeaveapprovemodel(bln)}
-                content={
-                    <div className="successModel">
-                        <Grid container spacing={2} >
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label" style={{ whiteSpace: 'nowrap'}}>Employee Name</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Rajesh</label></div>
-                                </Grid>
-                                <Grid item xs={3}>
-                                </Grid>
-                                <Grid item xs={3}>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Leave Type</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Casual Leave</label></div>
-                                </Grid>
-                            </Grid>
-
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Date</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">13-mar-2021</label></div>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">From</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">09:01 AM</label></div>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">To</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">10:15 Am</label></div>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Balance</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">5</label></div>
-                                </Grid>
-                            </Grid>
-
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                            >
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Client</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">TCS</label></div>
-                                </Grid>
-                                <Grid item xs={3}>
-                                </Grid>
-                                <Grid item xs={3}>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Assigned by</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">George</label></div>
-                                </Grid>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={12}
-                                container
-                                direction="row"
-                                className="spaceBtGrid"
-                                alignItems="center"
-                                style={{ marginBottom: 10 }}
-                            >
-                                <Grid item xs={12}>
-                                    <div className="levaprolabel_div"><label className="leavemodel_label">Reason For On Duty</label></div>
-                                    <div className="levaprolabel_div"><label className="leavemodel_detail">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit est pretium, tristique sed diam. In donec turpis laoreet neque ornare massa commodo. </label></div>
-                                </Grid>
-
-                            </Grid>
-
-                        </Grid>
-
-                        <div className="customleaveaprovbtn">
-                            <CustomButton
-                                btnName={"Reject"}
-                                btnCustomColor="customPrimary"
-                                custombtnCSS={"btnUsergroup"}
-                                onBtnClick={() => setLeaveapprovemodel(false)}
-                            />
-                            <CustomButton
-                                btnName={"Approve"}
-                                btnCustomColor="customPrimary"
-                                custombtnCSS={"btnUsergroup"}
-                                onBtnClick={() => setLeaveapprovemodel(false)}
-                            />
-                        </div>
-                    </div>
-
-                }
-                width={500}
-            /> */}
         </div>
     )
 }
