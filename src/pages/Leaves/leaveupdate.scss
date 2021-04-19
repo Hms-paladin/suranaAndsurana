@@ -210,3 +210,30 @@
 }
 
 
+// Search input design
+
+.searchbtnChange{
+    .ant-btn-primary {
+        color: #fff;
+        background-color: #023E7D;
+        border-color: #023E7D;
+    }
+    .ant-input-group .ant-input {
+       
+        border: 1px solid #023E7D;
+    }
+    .ant-btn-primary:active, .ant-btn-primary.active {
+        color: #fff;
+        background-color: #023E7D !important;
+        border-color: #023E7D;
+    }
+    .ant-input-search-enter-button + .ant-input-group-addon .ant-input-search-button, .ant-input-search-enter-button input + .ant-input-group-addon .ant-input-search-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        font-size: 21px;
+        padding: revert;
+        position: relative;
+        right: 1px;
+    }
+}
+
