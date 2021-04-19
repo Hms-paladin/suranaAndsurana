@@ -109,7 +109,7 @@ const SignInSide = (props) => {
     }
 
     if (isLoggedIn) {
-        return <Redirect to="/resume" />;
+        return <Redirect to="/dashboardnew" />;
       }
 
 
