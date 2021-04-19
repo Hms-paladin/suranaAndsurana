@@ -84,6 +84,10 @@ function Appraisal() {
     }
 
 
+    const ratingModel = () => {
+        setRatingModelOpen(true)
+    }
+
     return (
         <div>
             <div>Appraisal</div>
@@ -229,12 +233,13 @@ function Appraisal() {
 
 
             <div className="appraisalBtn">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />
+                {console.log(ratingModelOpen, "ratingModelOpen")}
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={ratingModel()} />
                 <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
 
-            
+
 
         </div>
     )
