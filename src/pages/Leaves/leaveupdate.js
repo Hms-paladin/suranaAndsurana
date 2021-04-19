@@ -8,6 +8,10 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
 import { useDispatch, connect } from "react-redux";
 import './leaveupdate.scss';
+import { Input, Space } from 'antd';
+import { AudioOutlined } from '@ant-design/icons';
+
+const { Search } = Input;
 
 const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
@@ -56,6 +60,15 @@ function LeaveUpdate(props) {
     useEffect(() => {
         dispatch(getLeaveType());
     }, [])
+
+    const suffix = (
+        <AudioOutlined
+            style={{
+                fontSize: 20,
+                color: '#1890ff',
+            }}
+        />
+    );
 
     useEffect(() => {
         //Leave type
@@ -118,27 +131,9 @@ function LeaveUpdate(props) {
             <div className="leaveMainHeader">Leave Balance Update</div>
             <div className="leaveFields">
                 <Grid item xs={12} container direction="row" spacing={2}>
-                    <Grid item xs={3}>
-                        <div className="leaveFieldheading">Leave Type</div>
-                        <div>
-                            <Labelbox type="select"
-                                dropdown={leaveType.LeaveType}
-                                changeData={(data) =>
-                                    checkValidation(data, "leavetype")
-                                }
-                                value={Leave_Update.leavetype.value}
-                                error={Leave_Update.leavetype.error}
-                                errmsg={Leave_Update.leavetype.errmsg} />
-                        </div>
-                    </Grid>
                     {Leave_Update.leavetype.value !== 38 && Leave_Update.leavetype.value !== "" &&
                         <>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">Add No.of Days</div>
-                                <div>
-                                    <Labelbox type="text" />
-                                </div>
-                            </Grid>
+
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">From</div>
                                 <div>
@@ -164,19 +159,53 @@ function LeaveUpdate(props) {
                                 </div>
                             </Grid>
 
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">Employee Id</div>
-                                <div>
-                                    <Labelbox type="text" />
-                                </div>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">Name</div>
-                                <div>
-                                    Rajesh
-                        </div>
-                            </Grid>
+
                         </>}
+                    {(Leave_Update.leavetype.value !== 38 || Leave_Update.leavetype.value === 38) && Leave_Update.leavetype.value !== "" && <>
+                        <Grid item xs={3}>
+                            <div className="leaveFieldheading">Employee Id</div>
+                            <div className="searchbtnChange">
+                            <Search   enterButton />
+                            </div>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <div className="leaveFieldheading">Name</div>
+                            <div>
+                                Rajesh
+                        </div>
+                        </Grid>
+                        {Leave_Update.leavetype.value === 38 &&
+                            <>
+                                <Grid item xs={6}></Grid>
+
+                            </>
+                        }
+                    </>}
+
+                    <Grid item xs={3}>
+                        <div className="leaveFieldheading">Leave Type</div>
+                        <div>
+                            <Labelbox type="select"
+                                dropdown={leaveType.LeaveType}
+                                changeData={(data) =>
+                                    checkValidation(data, "leavetype")
+                                }
+                                value={Leave_Update.leavetype.value}
+                                error={Leave_Update.leavetype.error}
+                                errmsg={Leave_Update.leavetype.errmsg} />
+                        </div>
+                    </Grid>
+                    {Leave_Update.leavetype.value !== 38 && Leave_Update.leavetype.value !== "" && <>
+                        <Grid item xs={3}>
+                            <div className="leaveFieldheading">Add No.of Days</div>
+                            <div>
+                                <Labelbox type="text" />
+                            </div>
+                        </Grid>
+                    </>}
+
+
+
                     {Leave_Update.leavetype.value === 38 &&
                         <>
                             <Grid item xs={3}>
@@ -184,19 +213,6 @@ function LeaveUpdate(props) {
                                 <div>
                                     <Labelbox type="text" />
                                 </div>
-                            </Grid>
-                            <Grid item xs={6}></Grid>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">Employee Id</div>
-                                <div>
-                                    <Labelbox type="text" />
-                                </div>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">Name</div>
-                                <div>
-                                    Rajesh
-                        </div>
                             </Grid>
 
 

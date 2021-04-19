@@ -20,7 +20,7 @@
     margin: 10px;
     border-radius: 5px;
     > div:first-child {
-        padding: 8px;
+        padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
     }
@@ -59,7 +59,7 @@
     border-radius: 5px;
     overflow: auto;
     > div:first-child {
-        padding: 8px;
+        padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
     }
@@ -94,7 +94,7 @@
     border-radius: 5px;
     overflow: auto;
     > div:first-child {
-        padding: 8px;
+        padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
     }
@@ -148,4 +148,16 @@
     width: 3%;
     box-shadow: -2px 0px 5px 0px rgba(0, 0, 0, 0.25);
     cursor: pointer;
+}
+
+
+.linkHeader{
+    width: 4px;
+    height: 23px;
+    background-color: #0353A4;
+    margin-right: 10px;
+}
+
+.tableHeader{
+    display: flex;
 }

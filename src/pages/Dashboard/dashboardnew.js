@@ -60,9 +60,9 @@ function DashboardNew() {
         orderChange()
     }, [])
 
-    const orderChange = useCallback((showListStart = 0,showListEnd = 9) => {
-        const menuLists = menulist.map((data,index) => {
-            if (index >= showListStart-1 && index <= showListEnd-1) {
+    const orderChange = useCallback((showListStart = 0, showListEnd = 9) => {
+        const menuLists = menulist.map((data, index) => {
+            if (index >= showListStart - 1 && index <= showListEnd - 1) {
                 return (
                     <Link to={data.path} onClick={() => handleClick(data)}>
                         <div>
@@ -79,16 +79,20 @@ function DashboardNew() {
     return (
         <div>
             <div className="dashboardMenuContainer">
-                <div className="menuLeftArrow" onClick={()=>orderChange(0, 9)} ><ArrowBackIosIcon /></div>
+                <div className="menuLeftArrow" onClick={() => orderChange(0, 9)} ><ArrowBackIosIcon /></div>
                 <div className="dashboardMenu">
                     {menuListItem}
                 </div>
-                <div className="menuRightArrow"  onClick={()=>orderChange(10,15)} ><ArrowForwardIosIcon/></div>
+                <div className="menuRightArrow" onClick={() => orderChange(10, 15)} ><ArrowForwardIosIcon /></div>
             </div>
 
             <div className="topcontainer">
                 <div className="projectscroll">
-                    <div >Projects</div>
+                    <div className="tableHeader">
+                        <div className="linkHeader"></div>
+                        <div>Projects</div>
+
+                    </div>
                     <div className="projectdatas">
                         {Projectbox.map((data) => {
                             return (
@@ -105,7 +109,10 @@ function DashboardNew() {
 
                 </div>
                 <div className="taskscroll">
-                    <div >Tasks</div>
+                    <div className="tableHeader">
+                        <div className="linkHeader"></div>
+                        <div>Tasks</div>
+                    </div>
                     <div className="taskdatas">
                         {Tasks.map((data) => {
                             return (
@@ -122,7 +129,10 @@ function DashboardNew() {
                 </div>
             </div>
             <div className="taskdaysscroll">
-                <div >Tasks due by 5 days</div>
+                <div className="tableHeader">
+                    <div className="linkHeader"></div>
+                    <div>Tasks due by 5 days</div>
+                </div>
                 <div className="taskdaysdatas">
                     <div className="taskdaystableHeader">
 
