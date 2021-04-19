@@ -11,6 +11,7 @@ import { useDispatch, connect } from "react-redux";
 import { getEmployeeList } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
+import Delete from '../../images/dashboard/delete.svg';
 
 
 
@@ -21,13 +22,15 @@ const headCells = [
     { id: 'todate', label: 'To Date' },
     { id: 'fromtime', label: 'From Time' },
     { id: 'totime', label: 'To Time' },
-    { id: 'status', label: 'Status' }
+    { id: 'status', label: 'Status' },
+    { id: 'img', label: 'Action' }
+
 
 ];
 
 const rows = [
-    { leavetype: "Casual leave", fromdate: "2-mar-2021", todate: "20-mar-2021", fromtime: "", totime: "", status: "pending", img: <img src={Edit} className="editImage" /> },
-    { leavetype: "On Duty", fromdate: "2-mar-2021", todate: "", fromtime: "02.00 pm", totime: "04.00 pm", status: "pending", img: <img src={Edit} className="editImage" /> },
+    { leavetype: <a href={"#"} className="linktable">Casual leave</a>, fromdate: "2-mar-2021", todate: "20-mar-2021", fromtime: "", totime: "", status: "pending", img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
+    { leavetype: <a href={"#"} className="linktable">ON duty</a>, fromdate: "2-mar-2021", todate: "", fromtime: "02.00 pm", totime: "04.00 pm", status: "pending", img:  <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
 ]
 
 
@@ -250,7 +253,7 @@ function LeaveForm(props) {
     // const editExamDetails = (indexNum) => {
     //     console.log(examSchedule[indexNum], "index")
     //     examSchedule.filter((data, index) => {
-            
+
     //     })
 
     // }
@@ -335,12 +338,12 @@ function LeaveForm(props) {
                                 </div>
                             </Grid>
                             <Grid item xs={3} container direction="row">
-                                <Grid item xs={6}>
+                                <Grid item xs={7}>
 
                                     <div className="leaveFieldheading">Available Balance</div>
                                     <div>10 </div>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={5}>
 
                                     <div className="leaveFieldheading">No.of days</div>
                                     <div>10 </div>

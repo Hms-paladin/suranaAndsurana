@@ -10,6 +10,8 @@ import { useDispatch, connect } from "react-redux";
 import './leaveupdate.scss';
 import { Input, Space } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
+import Delete from '../../images/dashboard/delete.svg';
+
 
 const { Search } = Input;
 
@@ -17,13 +19,15 @@ const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
     { id: 'previousbalance', label: 'Previous Balance' },
     { id: 'eligible', label: 'Eligible' },
-    { id: 'currentbalance', label: 'Current Balance' }
+    { id: 'currentbalance', label: 'Current Balance' },
+    { id: 'img', label: 'Action' }
+
 ];
 
 const rows = [
-    { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
-    { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
-    { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
+    { leavetype: <a href={"#"} className="linktable">Casual leave</a>, previousbalance: 2, eligible: 10, currentbalance: 12, img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
+    { leavetype: <a href={"#"} className="linktable">Annual leave</a>, previousbalance: 4, eligible: 10, currentbalance: 14, img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
+    { leavetype: <a href={"#"} className="linktable">On duty</a>, previousbalance: 8, eligible: 10, currentbalance: 43, img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> }
 ]
 
 function LeaveUpdate(props) {
@@ -165,7 +169,7 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Employee Id</div>
                             <div className="searchbtnChange">
-                            <Search   enterButton />
+                                <Search enterButton />
                             </div>
                         </Grid>
                         <Grid item xs={3}>

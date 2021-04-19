@@ -84,12 +84,12 @@ const KRA = (props) => {
                             style={{padding:10}}
                         >
                             <Grid item xs={2}>
-                                <div><label style={{ fontSize: 11 }} onClick={() => setKramodel(true)}>Employee Name</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>Rajesh</label></div>
+                                <div><label  onClick={() => setKramodel(true)}>Employee Name</label></div>
+                                <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>Rajesh</label></div>
                             </Grid>
                             <Grid item xs={2}>
-                                <div><label style={{ fontSize: 11 }}>Period</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>April 2021 to March 2021</label></div>
+                                <div><label >Period</label></div>
+                                <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div>
                             </Grid>
                             <Grid item xs={2}>
                             <div><label style={{ fontSize: 11 }}>Activity</label></div>

@@ -96,8 +96,10 @@ function Routes(props) {
                 <PrivateRoute path="/kpi" component={KPI} exact />
                 <PrivateRoute path="/dashboardnew" component={DashboardNew} exact />
                 <PrivateRoute path="/leaveform" component={LeaveForm} exact />
+                <PrivateRoute path="/appraisal/:rowId" component={Appraisal} exact />
                 <PrivateRoute path="/appraisal" component={Appraisal} exact />
                 <PrivateRoute path="/ratingModel" component={RatingModel} exact />
+
                 <PrivateRoute path="/KRA" component={KRA} exact />
 
                 {/* Leaves Update */}
