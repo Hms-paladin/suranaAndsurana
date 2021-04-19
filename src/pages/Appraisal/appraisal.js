@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
@@ -10,17 +10,26 @@ import { Checkbox } from 'antd';
 import AppraisalModel from './appraisalModel';
 import DynModel from "../../component/Model/model";
 import RatingModel from './ratingModel';
+import { useParams } from "react-router-dom";
 
 import './appraisal.scss';
 
 
 function Appraisal() {
+    let { rowId } = useParams()
+
+
+    // useEffect(() => {
+    // dispatch(getProjectDetails(rowId))
+    // }, [])
     const dispatch = useDispatch();
+    const rowIdtw=""
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
     const [changeCheckbox, setChangeCheckbox] = useState(false)
     const [modelOpen, setModelOpen] = useState(false)
     const [ratingModelOpen, setRatingModelOpen] = useState(false)
     const [modelTitle, setModelTitle] = useState()
+    const [rowID, setRowID] = useState(rowId)
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
             value: "",
@@ -48,11 +57,17 @@ function Appraisal() {
         },
     })
 
+
     const AddempDetails = () => {
         addemployeeDetails.push({ details: Appraisal.details.value, date: Appraisal.date.value })
         setAddemployeeDetails([...addemployeeDetails])
 
     }
+
+    // useEffect(() => {
+    //     setRowID(rowId)
+
+    // },[])
 
 
     function checkValidation(data, key) {
@@ -82,6 +97,7 @@ function Appraisal() {
         setModelOpen(true)
         setModelTitle(data)
     }
+    // console.log(rowID, "rowID")
 
 
     return (
@@ -93,6 +109,14 @@ function Appraisal() {
                         <div>Employee Name</div>
                         <div>Rajesh</div>
                     </div>
+                    {(rowID == 1 || rowIdtw == 2) && <div>
+                        <div>DOB</div>
+                        <div>14-Jan-1989</div>
+                    </div>}
+                    {(rowID == 1 || rowIdtw == 2) && <div>
+                        <div>DOJ</div>
+                        <div>21-Feb-2017</div>
+                    </div>}
                     <div>
                         <div>Period</div>
                         <div>April 2021 to March 2021</div>
@@ -227,16 +251,54 @@ function Appraisal() {
             </div>
             <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} />} />
 
+            {(rowID == 1 || rowIdtw == 2) &&
+                <>
+                    <div className="commentLine">------------------------------------------------------------- Your comment -------------------------------------------------------------------</div>
+                </>}
+            {rowID == 1 &&
+                <>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Appraiser Comments")}>Appraiser Comments</div>
+                    </div>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Instruction/Advice")}>Instruction/Advice</div>
+                    </div>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Advice to Managing Partner")}>Advice to Managing Partner</div>
+                    </div>
+                </>
+            }
+
+
+            {
+                rowIdtw == 2 &&
+                <>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Advice/Instruction to Appraise")}>Advice/Instruction to Appraise</div>
+                    </div>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Advice to HOD")}>Advice to HOD</div>
+                    </div>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Instruction to Head Admin/HOD")}>Instruction to Head Admin/HOD</div>
+                    </div>
+                    <div className="linkingModel">
+                        <div className="linkview" onClick={() => appraisalModelOpen("Feedback of Managing Partner")}>Feedback of Managing Partner</div>
+                    </div>
+
+                </>
+            }
 
             <div className="appraisalBtn">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />
+                {rowID == 1 && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
                 <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
 
-            
 
-        </div>
+
+        </div >
     )
 }
 

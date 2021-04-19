@@ -28,7 +28,7 @@ function Severance() {
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
-                            <div className="appraisalFieldheading"> Area of Developement</div>
+                            <div className="appraisalFieldheading"> Area of Development</div>
                             <div>
                                 <Labelbox type="select"
                                 // changeData={(data) =>

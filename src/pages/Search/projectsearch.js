@@ -36,7 +36,7 @@ const ipProjectHead = [
   { id: "clientname", label: "Client Name" },
   { id: "subprojectype", label: "Sub Project Type" },
   { id: "processtype", label: "Process Type" },
-  { id: "fillingtype", label: "Filling Type" },
+  { id: "fillingtype", label: "Filing Type" },
   { id: "billabletype", label: "Billable Type" },
 ];
 const litigationHead = [
@@ -44,7 +44,7 @@ const litigationHead = [
   { id: "clientname", label: "Client Name" },
   { id: "DRA", label: "DRA" },
   { id: "DDRA", label: "DDRA" },
-  { id: "fillingtype", label: "Filling Type" },
+  { id: "fillingtype", label: "Filing Type" },
   { id: "billabletype", label: "Billable Type" },
 ];
 const OtherHead = [
