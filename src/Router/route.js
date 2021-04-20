@@ -55,7 +55,7 @@ import KRA from '../pages/KRA/KRA';
 
 import RatingModel from '../pages/Appraisal/ratingModel'
 
-
+import UserMaster from '../pages/UserMaster/Usermaster'
 
 
 function Routes(props) {
@@ -109,6 +109,9 @@ function Routes(props) {
 
                 {/* EmployeeFeedback */}
                 <PrivateRoute path="/employeeFeedback" component={EmployeeFeedback} exact />
+
+                {/* Usermaster */}
+                <PrivateRoute path="/usermaster" component={UserMaster}/>
 
 
 
