@@ -79,7 +79,7 @@ function DashboardNew() {
         setMenuListItem(menuLists)
         setArrowHide(arrowshow)
     }, [])
-console.log(arrowHide,"arrowHide")
+    console.log(arrowHide, "arrowHide")
     return (
         <div>
             <div className="dashboardMenuContainer">
@@ -103,7 +103,7 @@ console.log(arrowHide,"arrowHide")
                         {Projectbox.map((data) => {
                             return (
                                 <div className="projecttable">
-                                    <a href={"#"} className="linktable">{data.projects}</a>
+                                    <div><a href={"#"} className="linktable">{data.projects}</a></div>
                                     <div>{data.projecttype}</div>
                                     <div>{data.client}</div>
 
@@ -123,7 +123,7 @@ console.log(arrowHide,"arrowHide")
                         {Tasks.map((data) => {
                             return (
                                 <div className="tasktable">
-                                    <a href={"#"} className="linktable">{data.task}</a>
+                                    <div><a href={"#"} className="linktable">{data.task}</a></div>
                                     <div>{data.count}</div>
 
                                 </div>
@@ -156,7 +156,7 @@ console.log(arrowHide,"arrowHide")
 
                                 <div className="taskdaystable">
 
-                                    <a href={"#"} className="linktable">{data.activity}</a>
+                                    <div><a href={"#"} className="linktable">{data.activity}</a></div>
                                     <div>{data.subactivity}</div>
                                     <div>{data.dueby}</div>
                                     <div>{data.priority}</div>
