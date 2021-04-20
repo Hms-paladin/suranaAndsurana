@@ -129,3 +129,9 @@ export const GET_PAYMENT_MODE = "GET_PAYMENT_MODE";
 //Stages
 export const  GET_STAGESBY_PROJECT = "GET_STAGESBY_PROJECT";
 export const  GET_SUBSTAGES = "GET_SUBSTAGES";
+
+//copyright
+export const  INSERT_COPYRIGHT = "INSERT_COPYRIGHT";
+export const  GET_COPYRIGHT = "GET_COPYRIGHT";
+export const  UPDATE_COPYRIGHT = "UPDATE_COPYRIGHT";
+// export const  GET_SUBSTAGES = "GET_SUBSTAGES";

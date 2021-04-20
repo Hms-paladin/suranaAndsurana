@@ -198,7 +198,7 @@ function ProjectIp(props) {
             client_id: props.ProjectDetails[0].client_id,
             billable_type_id:props.ProjectDetails[0].billable_type_id
         })
-        console.log("dtata", props.ProjectDetails[0])
+        // console.log("dtata", props.ProjectDetails[0])
     }, [props.ProjectDetails])
 
 
@@ -504,7 +504,7 @@ function ProjectIp(props) {
 
                         {/* CopyRight */}
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights projectDetails={props.ProjectDetails} />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights projectDetails={props.ProjectDetails} id_Props={idDetails} />
                         }
 
                 
