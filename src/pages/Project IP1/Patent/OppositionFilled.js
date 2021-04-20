@@ -211,7 +211,7 @@ props.tradeStatusList,props.countriesList
                         error={patentForm.opponent.error}
                         errmsg={patentForm.opponent.errmsg} />
 
-                    <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}
+                    <Labelbox type="datepicker" placeholder={"Opposition Filed Date"}
                         changeData={(data) => checkValidation(data, "opp_fill_date")}
                         value={patentForm.opp_fill_date.value}
                         error={patentForm.opp_fill_date.error}
@@ -223,7 +223,7 @@ props.tradeStatusList,props.countriesList
                         error={patentForm.type_grant.error}
                         errmsg={patentForm.type_grant.errmsg} />
 
-                    <Labelbox type="text" placeholder={"Patent Apllication Number"}
+                    <Labelbox type="text" placeholder={"Patent Application Number"}
                         changeData={(data) => checkValidation(data, "app_num")}
                         value={patentForm.app_num.value}
                         error={patentForm.app_num.error}

@@ -11,6 +11,7 @@ import { useDispatch, connect } from "react-redux";
 import { getEmployeeList } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
+import Delete from '../../images/dashboard/delete.svg';
 
 
 
@@ -21,13 +22,15 @@ const headCells = [
     { id: 'todate', label: 'To Date' },
     { id: 'fromtime', label: 'From Time' },
     { id: 'totime', label: 'To Time' },
-    { id: 'status', label: 'Status' }
+    { id: 'status', label: 'Status' },
+    { id: 'img', label: 'Action' }
+
 
 ];
 
 const rows = [
-    { leavetype: "Casual leave", fromdate: "2-mar-2021", todate: "20-mar-2021", fromtime: "", totime: "", status: "pending", img: <img src={Edit} className="editImage" /> },
-    { leavetype: "On Duty", fromdate: "2-mar-2021", todate: "", fromtime: "02.00 pm", totime: "04.00 pm", status: "pending", img: <img src={Edit} className="editImage" /> },
+    { leavetype: <a href={"#"} className="linktable">Casual leave</a>, fromdate: "2-mar-2021", todate: "20-mar-2021", fromtime: "", totime: "", status: "pending", img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
+    { leavetype: <a href={"#"} className="linktable">ON duty</a>, fromdate: "2-mar-2021", todate: "", fromtime: "02.00 pm", totime: "04.00 pm", status: "pending", img:  <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
 ]
 
 
@@ -37,23 +40,24 @@ function LeaveForm(props) {
     const [professional, setProfessional] = useState({})
     const [subjectList, setSubjectList] = useState({})
     const [examSchedule, setExamSchedule] = useState([])
+    const [editExam, setEditExam] = useState([])
     const [employeeList, setEmployeeList] = useState({});
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         fromdate: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         todate: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -77,67 +81,67 @@ function LeaveForm(props) {
         },
         date: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         fromtime: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         totime: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         client: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         assignedby: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         ass_description: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         referred_by: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         profess_course: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         tot_leave: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         exam_days: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         other_days: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -225,11 +229,35 @@ function LeaveForm(props) {
     }
 
     const viewexamschedule = () => {
-        examSchedule.push({ subject: Leave_Form.subject.value, date: Leave_Form.exam_date.value })
-        console.log("demo", examSchedule)
+
+        examSchedule.push({
+            subject: subjectList.SubjectList.map((data) => {
+                if (data.id === Leave_Form.subject.value) {
+                    return (
+                        data.value
+                    )
+                }
+            }), date: Leave_Form.exam_date.value
+        })
         setExamSchedule([...examSchedule])
 
+
+        Leave_Form["exam_date"].value = ""
+        Leave_Form["subject"].value = ""
+        setLeaveForm(prevState => ({
+            ...prevState,
+        }));
+
     }
+
+    // const editExamDetails = (indexNum) => {
+    //     console.log(examSchedule[indexNum], "index")
+    //     examSchedule.filter((data, index) => {
+
+    //     })
+
+    // }
+
 
     function onSubmit() {
         var mainvalue = {};
@@ -310,12 +338,12 @@ function LeaveForm(props) {
                                 </div>
                             </Grid>
                             <Grid item xs={3} container direction="row">
-                                <Grid item xs={6}>
+                                <Grid item xs={7}>
 
                                     <div className="leaveFieldheading">Available Balance</div>
                                     <div>10 </div>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={5}>
 
                                     <div className="leaveFieldheading">No.of days</div>
                                     <div>10 </div>
@@ -627,15 +655,18 @@ function LeaveForm(props) {
                                 <Grid item xs={6} container direction="row" spacing={2}>
                                     {examSchedule.length > 0 && <div className="examinfotable">
                                         <div>
-                                            <div className="examfield">Subject</div>
-                                            <div className="examfield">Date</div>
+                                            <div className="examfieldSubject">Subject</div>
+                                            <div className="examfieldDate">Date</div>
+                                            <div className="examfieldEdit"></div>
                                         </div>
 
-                                        {examSchedule.length > 0 && examSchedule.map((data) => {
+                                        {examSchedule.length > 0 && examSchedule.map((data, index) => {
                                             return (
                                                 <div className="examdate">
-                                                    <div>{data.subject}</div>
-                                                    <div>{data.date}</div>
+                                                    <div className="subvalue">{data.subject}</div>
+                                                    <div className="subvalue">{data.date}</div>
+                                                    {/* <img src={EditIcon} onClick={() => editExamDetails(index)} /> */}
+
                                                 </div>
                                             )
                                         })}

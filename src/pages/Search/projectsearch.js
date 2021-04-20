@@ -36,7 +36,7 @@ const ipProjectHead = [
   { id: "clientname", label: "Client Name" },
   { id: "subprojectype", label: "Sub Project Type" },
   { id: "processtype", label: "Process Type" },
-  { id: "fillingtype", label: "Filling Type" },
+  { id: "fillingtype", label: "Filing Type" },
   { id: "billabletype", label: "Billable Type" },
 ];
 const litigationHead = [
@@ -44,7 +44,7 @@ const litigationHead = [
   { id: "clientname", label: "Client Name" },
   { id: "DRA", label: "DRA" },
   { id: "DDRA", label: "DDRA" },
-  { id: "fillingtype", label: "Filling Type" },
+  { id: "fillingtype", label: "Filing Type" },
   { id: "billabletype", label: "Billable Type" },
 ];
 const OtherHead = [
@@ -331,7 +331,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="project type"
+              placeholder="Project type"
               dropdown={projectType.ProjectType}
               changeData={(data) => checkValidation(data, "projecttype")}
               value={projectform.projecttype.value}
@@ -342,7 +342,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="project name"
+              placeholder="Project name"
               dropdown={projectName.ProjectName}
               changeData={(data) => checkValidation(data, "projectname")}
               value={projectform.projectname.value}
@@ -353,7 +353,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="billing type"
+              placeholder="Billing type"
               dropdown={billableType.BillableType}
               changeData={(data) => checkValidation(data, "billabletype")}
               value={projectform.billabletype.value}

@@ -1,0 +1,68 @@
+.severanceContainer{
+    width: 70%;
+    background-color: white;
+    // padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.heading{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.severanceHeader{
+    display: flex;
+    border-bottom: 1px solid rgb(223, 219, 219);
+    padding: 10px;
+    >div{
+        width: 20%;
+        padding: 15px 10px;
+    }
+    .severanceData{
+        font-size: 15px;
+        font-weight: 600;
+        padding-top: 5px;
+    }
+}
+
+.severanceFields{
+    padding: 10px;
+}
+
+.reasonBoxseverance{
+    width: 80%;
+    .reasonsSeverance .formdiv .brdrcls{
+        height: 130px;
+    }
+}
+
+// Models
+
+.severancemodelsContainer{
+    display: flex;
+    border-bottom: 1px solid rgb(211, 205, 205);
+    padding: 10px 0px;
+    >div{
+        width: 33%;
+    }
+    .severanceData{
+        font-weight: 600;
+        font-size: 16px;
+        padding-top: 5px;
+    }
+}
+
+.ResigContent{
+    padding: 20px;
+}
+
+.finalmodeldate{
+    text-align: center;
+    padding: 5px;
+    >div:last-child{
+        width: 30%;
+        margin-left: 35%;
+    }
+ 
+}

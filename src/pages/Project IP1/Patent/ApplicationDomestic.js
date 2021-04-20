@@ -262,7 +262,7 @@ function ApplicationDomestic(props) {
           />
 
           <Labelbox
-            type="number"
+            type="text"
             placeholder={"Application number"}
             changeData={(data) => checkValidation(data, "app_num")}
             value={patentForm.app_num.value}
@@ -280,7 +280,7 @@ function ApplicationDomestic(props) {
           />
 
           <Labelbox
-            type="number"
+            type="text"
             placeholder={"Priority No"}
             changeData={(data) => checkValidation(data, "priority_num")}
             value={patentForm.priority_num.value}

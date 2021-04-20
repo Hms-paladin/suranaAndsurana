@@ -1,0 +1,168 @@
+.appraisalContainer {
+    width: 100%;
+    background-color: white;
+    border-radius: 7px;
+    margin: 10px 5px;
+    padding: 10px;
+}
+.empDetails {
+    display: flex;
+    > div {
+        width: 20%;
+        padding: 5px;
+        > div:first-child {
+            font-weight: 600;
+            font-size: 16px;
+        }
+    }
+}
+
+.appraisalFieldheading {
+    margin-bottom: 5px;
+}
+
+.plusiconview {
+    width: 20px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.appraisalTable {
+    width: 30%;
+    background-color: #f0f0f0;
+    height: 100px;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+.appraisaldetails {
+    display: flex;
+    padding: 10px 0px;
+    border-bottom: #f0f0f0 1px solid;
+    color: #707070;
+    > div {
+        width: 50%;
+    }
+}
+
+.appraisaldata {
+    display: flex;
+    padding-bottom: 5px;
+
+    > div {
+        width: 50%;
+    }
+}
+
+.linkingModel {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    margin: 0px 5px 3px 5px;
+    border-radius: 7px;
+    display: flex;
+    .linkview {
+        color: #1d7dbd;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.subheading {
+    margin: 10px;
+}
+
+.linkChoose {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    margin: 0px 5px 3px 5px;
+    border-radius: 7px;
+    display: flex;
+    > div:first-child {
+        width: 40%;
+        margin-right: 50px;
+        font-weight: 600;
+    }
+    > div {
+        margin-right: 50px;
+    }
+}
+.chooseleave {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    margin: 0px 5px 3px 5px;
+    border-radius: 7px;
+    .linkChooseOption {
+        width: 100%;
+        display: flex;
+
+        > div:first-child {
+            width: 40%;
+            margin-right: 50px;
+            font-weight: 600;
+        }
+        > div {
+            margin-right: 50px;
+        }
+    }
+}
+
+.reasonBox {
+    > div {
+        width: 60%;
+        margin: 5px;
+    }
+}
+
+.appraisalBtn {
+    margin: 20px;
+    text-align: center;
+}
+
+// Appraisal Model
+
+.appModeltitle {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.modelbox {
+    > div {
+        width: 100%;
+        margin: 5px;
+    }
+}
+
+// rating Model
+
+.empDetailsIn{
+    display: flex;
+    >div{
+        width: 30%;
+    }
+}
+
+.employeeData{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.areaDevelopment{
+    margin-top: 10px;
+    display: flex;
+    >img{
+        margin-left: 10px;
+    }
+}
+
+
+// Appraisal Supervisor View
+
+.commentLine{
+    margin: 5px 0px;
+    padding: 5px;
+}

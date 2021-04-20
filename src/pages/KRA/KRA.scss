@@ -1,0 +1,47 @@
+.kra{
+    font-weight: bold;
+    padding: 5px;
+    font-size: 16px;
+}
+.kra_main{
+    background-color: #FAFAFA;
+    border-radius: 6px;
+}
+
+.kpi_table {
+    background-color: #F3F3F3;
+}
+.kra_sub{
+    height: 85px;
+}
+
+.kpi_btn {
+    height: 65px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.kpi_table_header {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid lightgray;
+}
+
+//popup//
+.title_label {
+    text-align: initial;
+    padding-left: 15px;
+}
+
+//////////////
+
+.kra_table_row {
+    border-bottom: 1px solid lightgray;
+    height: 35px;
+}
+
+.kra_img {
+    display: flex;
+    align-items: baseline;
+}

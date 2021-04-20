@@ -324,40 +324,23 @@ setcountryDetList({ countryListsData })
         let params  = {
             "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
             "status_id" :TradeMarkForm.status_id.value,
-            "associateRefernce": "dd",
-            "ourRefernce": "ddff",
+            "associate_reference": TradeMarkForm.associateRefernce.value,
+            "our_reference": TradeMarkForm.ourReference.value,
             "mark_id":TradeMarkForm.mark_id.value,
-             "upload_image" :selectedFile,
-            "associate":"ddda",
+            "upload_image" :selectedFile,
+            "associate":TradeMarkForm.associate.value,
             "application_no" :TradeMarkForm.application_no.value,
-              "application_date":TradeMarkForm.application_date.value,
-            "country_id":1,
+            "application_date":TradeMarkForm.application_date.value,
+            "country_id":TradeMarkForm.country_id.value,
             "priority_details":TradeMarkForm.priority_details.value,
-                "userclaim" : "ddgg",
-                "allotment":TradeMarkForm.allotment.value,
-                "goods_description":TradeMarkForm.goods_description.value,
-
-          /*   "usage_details_id":TradeMarkForm.usage_details_id.value,
-             
-              "usage_from_date":TradeMarkForm.usage_from_date.value,
-              "ip_india_status":TradeMarkForm.ip_india_status.value,
-               "comments":TradeMarkForm.comments.value,
-                "internal_status":TradeMarkForm.internal_status.value,
-                 
-              "amendment":TradeMarkForm.amendment.value,
-              // "orders":TradeMarkForm.orders.value,
-                
-                 "tmj_number":TradeMarkForm.tmj_number.value,
-                  "tmj_date":TradeMarkForm.tmj_date.value,
-                   "journel_extract":TradeMarkForm.journel_extract.value,
-              "poa":TradeMarkForm.poa.value, 
-              "certificate_date":TradeMarkForm.certificate_date.value,
-               "renewal_certificate_date":TradeMarkForm.renewal_certificate_date.value, */
-               "created_by" :localStorage.getItem("empId"),
-                "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-                 "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-                 "updated_by" :localStorage.getItem("empId"),
-               "ip_address" :"ddf"
+            "user_claim" : TradeMarkForm.userclaim.value,
+            "allotment":TradeMarkForm.allotment.value,
+            "goods_description":TradeMarkForm.goods_description.value,
+            "created_by" :localStorage.getItem("empId"),
+            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_by" :localStorage.getItem("empId"),
+            "ip_address" :"ddf"
         }
         if(TradeMarkForm.class_id.value != ""){
             params["class_id"] =TradeMarkForm.class_id.value;

@@ -1,8 +1,9 @@
 import { GET_ACTIVITY, GET_PRIORITY,GET_TAG,INSERT_TASK,INSERT_ADHOC_TASK,
-    GET_ASSIGN_TO,GET_LOCATION,INSERT_TIME_SHEET,GET_EXPENSE_TYPE,GET_PAYMENT_MODE}  from '../utils/Constants.js'
+    GET_ASSIGN_TO,GET_LOCATION,INSERT_TIME_SHEET,GET_EXPENSE_TYPE,GET_PAYMENT_MODE,GET_STAGESBY_PROJECT,GET_SUBSTAGES}  from '../utils/Constants.js'
 
 const intialState = {
-    getActivityList: [], prioritysList:[],tagsList:[],insertTask :[], insertAdhocTask :[] ,  assignToLists :[],locationLists :[]
+    getActivityList: [], prioritysList:[],tagsList:[],insertTask :[],
+     insertAdhocTask :[] ,  assignToLists :[],locationLists :[] ,stagesList :[] ,SubStagesList :[]
 }
 
 export default function (state = intialState, action) {
@@ -23,11 +24,15 @@ export default function (state = intialState, action) {
             case GET_LOCATION:
             return  { ...state, locationLists: payload }
             case INSERT_TIME_SHEET:
-                return  { ...state, insertTask: payload }
-                case GET_EXPENSE_TYPE:
-                    return {...state, expenseType:payload}
-                case GET_PAYMENT_MODE:
-                        return {...state, paymentMode:payload}
+            return  { ...state, insertTask: payload }
+            case GET_EXPENSE_TYPE:
+            return {...state, expenseType:payload}
+            case GET_PAYMENT_MODE:
+            return {...state, paymentMode:payload}
+            case GET_STAGESBY_PROJECT:
+            return {...state, stagesList:payload}
+            case GET_SUBSTAGES:
+            return {...state, SubStagesList:payload}
         default:
             return state;
     }

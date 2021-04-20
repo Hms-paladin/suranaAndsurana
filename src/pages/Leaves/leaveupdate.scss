@@ -15,7 +15,7 @@
 }
 
 .editImage{
-    width: 20px;
+    width: 15px;
 }
 .leaveFieldheading{
     margin-bottom: 5px;
@@ -97,10 +97,15 @@
     >div{
         display: flex;
     }
-    .examfield{
-        width: 50%;
+    .examfieldSubject,.examfieldDate{
+        width: 40%;
         font-weight: 600;
         font-size: 15px;
+        padding-bottom: 10px;
+        border-bottom: rgb(201, 196, 196) 1px solid;
+    }
+    .examfieldEdit{
+        width: 20%;
         padding-bottom: 10px;
         border-bottom: rgb(201, 196, 196) 1px solid;
     }
@@ -109,10 +114,126 @@
 .examdate{
     display: flex;
     justify-content: space-around;
-    >div{
-        width: 50%;
+    padding: 5px 0px;
+    .subvalue{
+        width: 40%;
         text-align: left;
         padding-left: 30px;
     }
+    >img{
+        width: 20px;
+        cursor: pointer;
+    }
     
 }
+
+// leave approval Model
+
+.leaveContainer{
+    margin: auto;
+}
+
+.leaveModelFields{
+    display: flex;
+    margin: 15px 0px;
+    >div{
+        width: 25%;
+    }
+   
+}
+
+
+.fielddataView{
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+
+.middleContent{
+    display: flex;
+    justify-content: space-around;
+    >div{
+        width: 50%;
+    }
+}
+
+
+
+.examInfobox{
+    text-align: center;
+}
+
+.subjectDetailsbox{
+    width: 80%;
+    background-color:  #F0F0F0;
+    border-radius: 7px;
+    padding: 8px;
+    margin: auto;
+}
+
+.subjectDetails{
+    width: 100%;
+    display: flex;
+    padding: 5px;
+    border-bottom: 1px solid rgb(192, 187, 187);
+    >div:first-child{
+        width: 60%;
+    }
+}
+
+.subjectDate{
+    width: 100%;
+    display: flex;
+    padding: 5px;
+    border-bottom: 1px solid rgb(192, 187, 187);
+    >div:first-child{
+        width: 60%;
+    }
+}
+.customBtndwn{
+    width: 200px;
+}
+
+.btnAlign{
+    margin-top: 15px;
+}
+
+//reject leave model
+
+.rejectLeaveReasonBox{
+    padding-top: 5px;
+    .reasonscmt{
+    padding-top: 5px;
+
+    }
+}
+
+
+// Search input design
+
+.searchbtnChange{
+    .ant-btn-primary {
+        color: #fff;
+        background-color: #023E7D;
+        border-color: #023E7D;
+    }
+    .ant-input-group .ant-input {
+       
+        border: 1px solid #023E7D;
+    }
+    .ant-btn-primary:active, .ant-btn-primary.active {
+        color: #fff;
+        background-color: #023E7D !important;
+        border-color: #023E7D;
+    }
+    .ant-input-search-enter-button + .ant-input-group-addon .ant-input-search-button, .ant-input-search-enter-button input + .ant-input-group-addon .ant-input-search-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        font-size: 21px;
+        padding: revert;
+        position: relative;
+        right: 1px;
+    }
+}
+

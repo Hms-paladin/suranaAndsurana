@@ -92,7 +92,7 @@ function Employeeform(props) {
     }, [props.emp_form_id])
     //SETCandidateDetails
     useEffect(() => {
-        setgetDetails(props.getCandidatesDetails[0])
+        setgetDetails(props.getCandidatesDetails)
         console.log("empformempform", props.getCandidatesDetails)
 
     }, [props.getCandidatesDetails])

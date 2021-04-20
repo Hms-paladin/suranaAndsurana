@@ -5,7 +5,7 @@ import Labelbox from '../../../helpers/labelbox/labelbox';
 import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getActivity,getPriorityList,getTagList,inserTask,getAssignedTo,getLocation } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation } from "../../../actions/projectTaskAction";
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
@@ -18,7 +18,8 @@ function TimeSheetStartModel(props) {
     const [activityList, setactivityList] = useState({})
     const [priorityList, setpriorityList] = useState({})
     const [taggList, settaggList] = useState({})
-    const [assignedToLists, setassignedToLists] = useState({}) 
+    const [assignedToLists, setassignedToLists] = useState({})
+    const [projectDetails, setProjectDetails] = useState({})
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
@@ -39,149 +40,161 @@ function TimeSheetStartModel(props) {
             errmsg: null,
         },
         assignTo: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
         },
         tag: {
-          value: "",
-          valueById: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
+            value: "",
+            valueById: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
         },
         priority: {
-          value: "",
-          valueById: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
+            value: "",
+            valueById: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
         },
         fromDate: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
         },
         toDate: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
         },
         description: {
             value: "",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
-          }
+        }
 
     })
 
     const handleCancel = () => {
         let From_key = [
-          "activity",
-          "subActivity",
-          "fromDate",
-          "toDate",
-          "assignTo",
-          "tag",
-          "priority",
-          "startTime","description"
+            "activity",
+            "subActivity",
+            "fromDate",
+            "toDate",
+            "assignTo",
+            "tag",
+            "priority",
+            "startTime", "description"
         ];
-    
+
         From_key.map((data) => {
-          try {
-            timeSheetForm[data].value = "";
-            console.log("mapping", timeSheetForm[data].value);
-          } catch (error) {
-            throw error;
-          }
+            try {
+                timeSheetForm[data].value = "";
+                console.log("mapping", timeSheetForm[data].value);
+            } catch (error) {
+                throw error;
+            }
         });
         settimeSheetForm((prevState) => ({
-          ...prevState,
+            ...prevState,
         }));
-      };
+    };
 
     useEffect(() => {
         dispatch(getActivity());
-       dispatch(getTagList());
+        dispatch(getTagList());
         dispatch(getPriorityList());
         dispatch(getAssignedTo());
-        dispatch(getLocation()); 
-        
-      }, []);
+        dispatch(getLocation());
+
+    }, []);
+
+    useEffect(() => {
+        setProjectDetails(props.projectrow)
+    }, [props.projectrow])
 
     useEffect(() => {
         let activityTypeData = []
-    props.activitysList.map((data) =>
-    activityTypeData.push({ value: data.activity,
-        id: data.activity_id })
-    )
-    setactivityList({ activityTypeData })
+        props.activitysList.map((data) =>
+            activityTypeData.push({
+                value: data.activity,
+                id: data.activity_id
+            })
+        )
+        setactivityList({ activityTypeData })
 
 
-    let priorityTypeData = []
-    props.prioritysList.map((data) =>
-    priorityTypeData.push({ value: data.status,
-        id: data.status_id })
-    )
-    setpriorityList({ priorityTypeData })
+        let priorityTypeData = []
+        props.prioritysList.map((data) =>
+            priorityTypeData.push({
+                value: data.status,
+                id: data.status_id
+            })
+        )
+        setpriorityList({ priorityTypeData })
 
-    let tagTypeData = []
-    props.tagsList.map((data) =>
-    tagTypeData.push({ value: data.status,
-        id: data.status_id })
-    )
-    settaggList({ tagTypeData })
-
-
-    let assignedToData = []
-    props.assignToList.map((data) =>
-    assignedToData.push({ value: data.name,
-        id: data.emp_id })
-    )
-    setassignedToLists({ assignedToData })
+        let tagTypeData = []
+        props.tagsList.map((data) =>
+            tagTypeData.push({
+                value: data.status,
+                id: data.status_id
+            })
+        )
+        settaggList({ tagTypeData })
 
 
-    }, [props.activitysList,props.prioritysList,props.tagsList,props.locationList,props.assignToList])
+        let assignedToData = []
+        props.assignToList.map((data) =>
+            assignedToData.push({
+                value: data.name,
+                id: data.emp_id
+            })
+        )
+        setassignedToLists({ assignedToData })
+
+
+    }, [props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.assignToList])
 
 
     const submitstop = () => {
-        var data ={
-            "project_id":"71",
-            "activiity_id":timeSheetForm.activity.value,
-            "sub_activity_id":timeSheetForm.subActivity.value,
-            "assignee_id":timeSheetForm.assignTo.value,
-            "start_date":timeSheetForm.fromDate.value,
-            "end_date":timeSheetForm.toDate.value,
-            "assigned_by":localStorage.getItem("empId"),
-            "priority":timeSheetForm.priority.value,
-            "description":timeSheetForm.description.value,
-            "tag":timeSheetForm.tag.value
+        var data = {
+            "project_id": "71",
+            "activiity_id": timeSheetForm.activity.value,
+            "sub_activity_id": timeSheetForm.subActivity.value,
+            "assignee_id": timeSheetForm.assignTo.value,
+            "start_date": timeSheetForm.fromDate.value,
+            "end_date": timeSheetForm.toDate.value,
+            "assigned_by": localStorage.getItem("empId"),
+            "priority": timeSheetForm.priority.value,
+            "description": timeSheetForm.description.value,
+            "tag": timeSheetForm.tag.value
         }
         var timesheetData = {
-            "emp_id":localStorage.getItem("empId"),
-            "task_id":"111",
-            "start_date":timeSheetForm.fromDate.value,
-            "start_time":dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
-            "comment":timeSheetForm.description.value,
-            "created_by":localStorage.getItem("empId"),
+            "emp_id": localStorage.getItem("empId"),
+            "task_id": "111",
+            "start_date": timeSheetForm.fromDate.value,
+            "start_time": dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+            "comment": timeSheetForm.description.value,
+            "created_by": localStorage.getItem("empId"),
         }
-       
-            dispatch(inserTask(data,timesheetData)).then((response) => {
-                handleCancel();
-                setChangeStop(false)
-              })
-        
+
+        dispatch(inserTask(data, timesheetData)).then((response) => {
+            handleCancel();
+            setChangeStop(false)
+        })
+
 
     }
     const submitstart = () => {
-        
-                setChangeStop(true)
-            
-        
+
+        setChangeStop(true)
+
+
     }
 
 
@@ -201,25 +214,25 @@ function TimeSheetStartModel(props) {
 
         //Process type
 
-            if (key == "activity") {
-                // Sub Activity
-                Axios({
-                  method: "POST",
-                  url: apiurl + "get_sub_activity",
-                  data: {
+        if (key == "activity") {
+            // Sub Activity
+            Axios({
+                method: "POST",
+                url: apiurl + "get_sub_activity",
+                data: {
                     activity_id: data,
-                  },
-                }).then((response) => {
-                  let projectSubActivitydata = [];
-                  response.data.data.map((data) =>
+                },
+            }).then((response) => {
+                let projectSubActivitydata = [];
+                response.data.data.map((data) =>
                     projectSubActivitydata.push({
-                      value: data.sub_activity,
-                      id: data.sub_activity_id,
+                        value: data.sub_activity,
+                        id: data.sub_activity_id,
                     })
-                  );
-                  setprojectSubActivity({ projectSubActivitydata });
-                });
-              
+                );
+                setprojectSubActivity({ projectSubActivitydata });
+            });
+
         }
 
         settimeSheetForm((prevState) => ({
@@ -228,7 +241,7 @@ function TimeSheetStartModel(props) {
         }));
     }
 
-    
+
 
 
     function onSubmit() {
@@ -244,10 +257,10 @@ function TimeSheetStartModel(props) {
             mainvalue[targetkeys[i]] = timeSheetForm[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter((obj) => timeSheetForm[obj].error == true);
-        
-       
+
+
         if (filtererr.length > 0) {
-        } else{
+        } else {
         }
 
         settimeSheetForm((prevState) => ({
@@ -261,11 +274,18 @@ function TimeSheetStartModel(props) {
             {changeStop ?
                 <div>
                     <Grid item xs={12} container direction="row" spacing={3}>
-                        <Grid item xs={4}>IP Project</Grid>
+                        {projectDetails.length > 0 && projectDetails.map((data) => {
+                            return (
+                                <>
+                                    <Grid item xs={4}>{data.project_type}</Grid>
+                                    <Grid item xs={4}>{data.project_name}</Grid>
+                                    <Grid item xs={4}>{data.client} </Grid>
 
-                        <Grid item xs={4}>Project Name</Grid>
+                                </>
 
-                        <Grid item xs={4}>Johnson & Johnson </Grid>
+                            )
+                        })}
+
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Activity"}
@@ -295,10 +315,10 @@ function TimeSheetStartModel(props) {
                             <Labelbox type="select"
                                 placeholder={"Assign To"}
                                 value={timeSheetForm.assignTo.value}
-                        error={timeSheetForm.assignTo.error}
-                        errmsg={timeSheetForm.assignTo.errmsg}
-                     dropdown={assignedToLists.assignedToData}
-                        changeData={(data) => checkValidation(data, "assignTo")}
+                                error={timeSheetForm.assignTo.error}
+                                errmsg={timeSheetForm.assignTo.errmsg}
+                                dropdown={assignedToLists.assignedToData}
+                                changeData={(data) => checkValidation(data, "assignTo")}
                             />
                         </Grid>
 
@@ -306,27 +326,27 @@ function TimeSheetStartModel(props) {
                             <Labelbox type="select"
                                 placeholder={"Priority"}
 
-    dropdown={priorityList.priorityTypeData}
-    changeData={(data) => checkValidation(data, "priority")}
-                                placeholder={"Priority"}  
-                        value={timeSheetForm.priority.value}
+                                dropdown={priorityList.priorityTypeData}
+                                changeData={(data) => checkValidation(data, "priority")}
+                                placeholder={"Priority"}
+                                value={timeSheetForm.priority.value}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Tag"}
                                 value={timeSheetForm.tag.value}
-changeData={(data) => checkValidation(data, "tag")}
-    dropdown={taggList.tagTypeData}
+                                changeData={(data) => checkValidation(data, "tag")}
+                                dropdown={taggList.tagTypeData}
                             /></Grid>
                         <Grid item xs={4}></Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
 
-changeData={(data) => checkValidation(data, "fromDate")}
-value={timeSheetForm.fromDate.value}
-error={timeSheetForm.fromDate.error}
-errmsg={timeSheetForm.fromDate.errmsg}
+                                changeData={(data) => checkValidation(data, "fromDate")}
+                                value={timeSheetForm.fromDate.value}
+                                error={timeSheetForm.fromDate.error}
+                                errmsg={timeSheetForm.fromDate.errmsg}
                                 placeholder={" Deadline "}
                             />
                         </Grid>
@@ -343,12 +363,12 @@ errmsg={timeSheetForm.fromDate.errmsg}
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
-                             changeData={(data) => checkValidation(data, "toDate")}
-                             placeholder={" End Date"}
-                             value={timeSheetForm.toDate.value}
-                             error={timeSheetForm.toDate.error}
-                             errmsg={timeSheetForm.toDate.errmsg}
-                               
+                                changeData={(data) => checkValidation(data, "toDate")}
+                                placeholder={" End Date"}
+                                value={timeSheetForm.toDate.value}
+                                error={timeSheetForm.toDate.error}
+                                errmsg={timeSheetForm.toDate.errmsg}
+
                             />
                         </Grid>
                         <Grid item xs={3}>
@@ -357,11 +377,11 @@ errmsg={timeSheetForm.fromDate.errmsg}
 
                     </Grid>
                     <div className="timeSheetComments">
-                        <Labelbox type="textarea" placeholder={"comments"} 
-                        changeData={(data) => checkValidation(data, "description")}
-                        value={timeSheetForm.description.value}
-                error={timeSheetForm.description.error}
-                errmsg={timeSheetForm.description.errmsg}/>
+                        <Labelbox type="textarea" placeholder={"comments"}
+                            changeData={(data) => checkValidation(data, "description")}
+                            value={timeSheetForm.description.value}
+                            error={timeSheetForm.description.error}
+                            errmsg={timeSheetForm.description.errmsg} />
                     </div>
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
@@ -393,24 +413,24 @@ errmsg={timeSheetForm.fromDate.errmsg}
                         </Grid>
                         <Grid item xs={4}>
                             <Labelbox type="select"
-                             dropdown={projectSubActivity.projectSubActivitydata}
+                                dropdown={projectSubActivity.projectSubActivitydata}
                                 placeholder={"sub Activity"}
                                 changeData={(data) =>
                                     checkValidation(data, "subActivity")
                                 }
                                 value={timeSheetForm.subActivity.value}
-                        error={timeSheetForm.subActivity.error}
-                    errmsg={timeSheetForm.subActivity.errmsg}
+                                error={timeSheetForm.subActivity.error}
+                                errmsg={timeSheetForm.subActivity.errmsg}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Assign To"}
-                        value={timeSheetForm.assignTo.value}
-                        error={timeSheetForm.assignTo.error}
-                        errmsg={timeSheetForm.assignTo.errmsg}
-                     dropdown={assignedToLists.assignedToData}
-                        changeData={(data) => checkValidation(data, "assignTo")}
+                                value={timeSheetForm.assignTo.value}
+                                error={timeSheetForm.assignTo.error}
+                                errmsg={timeSheetForm.assignTo.errmsg}
+                                dropdown={assignedToLists.assignedToData}
+                                changeData={(data) => checkValidation(data, "assignTo")}
                             />
                         </Grid>
 
@@ -418,18 +438,18 @@ errmsg={timeSheetForm.fromDate.errmsg}
                             <Labelbox type="select"
                                 placeholder={"Priority"}
 
-    dropdown={priorityList.priorityTypeData}
-    changeData={(data) => checkValidation(data, "priority")}
-                                placeholder={"Priority"}  
-                        value={timeSheetForm.priority.value}
+                                dropdown={priorityList.priorityTypeData}
+                                changeData={(data) => checkValidation(data, "priority")}
+                                placeholder={"Priority"}
+                                value={timeSheetForm.priority.value}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Tag"}
                                 value={timeSheetForm.tag.value}
-changeData={(data) => checkValidation(data, "tag")}
-    dropdown={taggList.tagTypeData}
+                                changeData={(data) => checkValidation(data, "tag")}
+                                dropdown={taggList.tagTypeData}
                             /></Grid>
                         <Grid item xs={4}></Grid>
                         <Grid item xs={3}>
@@ -460,16 +480,16 @@ changeData={(data) => checkValidation(data, "tag")}
                     </Grid>
                     <div className="timeSheetComments">
                         <Labelbox type="textarea" placeholder={"comments"}
-                        changeData={(data) => checkValidation(data, "description")}
-                        value={timeSheetForm.description.value}
-                error={timeSheetForm.description.error}
-                errmsg={timeSheetForm.description.errmsg} />
+                            changeData={(data) => checkValidation(data, "description")}
+                            value={timeSheetForm.description.value}
+                            error={timeSheetForm.description.error}
+                            errmsg={timeSheetForm.description.errmsg} />
                     </div>
                     <div className="customiseButton">
-                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={handleCancel}  />
+                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={handleCancel} />
                         <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnclick={submitstart} />
                     </div>
-                  
+
                 </div>
             }
 
@@ -480,7 +500,7 @@ changeData={(data) => checkValidation(data, "tag")}
 
 const mapStateToProps = (state) =>
 ({
-    
+
     activitysList: state.projectTasksReducer.getActivityList || [],
     prioritysList: state.projectTasksReducer.prioritysList || [],
     tagsList: state.projectTasksReducer.tagsList || [],
