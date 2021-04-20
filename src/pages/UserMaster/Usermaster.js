@@ -158,14 +158,16 @@ const UserMaster = (props) => {
            />
             </div>
           }
+
+      <div>
+       {TableName.tablename.value >0&&<img src={PlusIcon} className="plus_icon_user" />}
+
+       </div>
          
        </div>
           
         
-       <div>
-       {TableName.tablename.value >0&&<img src={PlusIcon} className="plus_icon_user" />}
-
-       </div>
+      
         
 
          

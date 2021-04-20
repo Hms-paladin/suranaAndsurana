@@ -31,9 +31,21 @@
 .plus_icon_user{
    width:20px;
    position: relative;
-   top: 22px;
+   top: 3px;
 
 }
-// @media screen and (min-width: 320px) and (max-width: 480px){
-
-// }
+@media only screen and (min-width: 1086px) and (max-width: 1295px){
+    .user_master_parent .custom_labelbox{
+        width:170px;
+    }
+}
+@media only screen and (min-width:  995px) and (max-width: 1086px){
+    .user_master_parent .custom_labelbox{
+        width:150px;
+    }
+}
+@media screen and (max-width: 959px){
+    .user_master_parent .custom_labelbox{
+        width:150px;
+    }
+}
