@@ -191,6 +191,7 @@ function ProjectIp(props) {
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
+
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -291,13 +292,13 @@ function ProjectIp(props) {
 
     const timesheetmodelContent = () => {
         return (
-            <TimeSheets />
+            <TimeSheets   projectrow={rowId}/>
         )
     }
 
     const opeModel = () => {
         return (
-            <OPEModel />
+            <OPEModel/>
         )
     }
 
