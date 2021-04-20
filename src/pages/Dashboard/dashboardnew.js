@@ -18,12 +18,12 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
 
-const Projectbox = [{ projects: "project 1", projecttype: "project Type 1 ", client: "client 1", },
-{ projects: "project 2", projecttype: "project Type 2 ", client: "client 2", },
-{ projects: "project 3", projecttype: "project Type 3 ", client: "client 3", },
-{ projects: "project 4", projecttype: "project Type 4 ", client: "client 4", }]
+const Projectbox = [{ projects: "Project 1", projecttype: "Project Type 1 ", client: "Client 1", },
+{ projects: "Project 2", projecttype: "Project Type 2 ", client: "Client 2", },
+{ projects: "Project 3", projecttype: "Project Type 3 ", client: "Client 3", },
+{ projects: "Project 4", projecttype: "Project Type 4 ", client: "Client 4", }]
 
-const Tasks = [{ task: "project", count: 12 },
+const Tasks = [{ task: "Project", count: 12 },
 { task: "HR", count: " 2 " },
 { task: "Other", count: "1 " },
 ]
@@ -36,6 +36,8 @@ const Taskdays = [{ activity: " Activity 1", subactivity: "Sub Activity 1 ", due
 function DashboardNew() {
     const [pathname, setpathname] = useState(window.location.pathname)
     const [menuListItem, setMenuListItem] = useState([])
+    const [arrowHide, setArrowHide] = useState(false)
+
 
     const [menulist, setMenulist] = useState(
         [
@@ -60,7 +62,8 @@ function DashboardNew() {
         orderChange()
     }, [])
 
-    const orderChange = useCallback((showListStart = 0, showListEnd = 9) => {
+
+    const orderChange = useCallback((showListStart = 0, showListEnd = 7, arrowshow) => {
         const menuLists = menulist.map((data, index) => {
             if (index >= showListStart - 1 && index <= showListEnd - 1) {
                 return (
@@ -74,16 +77,19 @@ function DashboardNew() {
             }
         })
         setMenuListItem(menuLists)
+        setArrowHide(arrowshow)
     }, [])
-
+    console.log(arrowHide, "arrowHide")
     return (
         <div>
             <div className="dashboardMenuContainer">
-                <div className="menuLeftArrow" onClick={() => orderChange(0, 9)} ><ArrowBackIosIcon /></div>
+                {arrowHide && <div className="menuLeftArrow" onClick={() => orderChange(0, 6, false)} ><ArrowBackIosIcon
+                /></div>}
                 <div className="dashboardMenu">
                     {menuListItem}
                 </div>
-                <div className="menuRightArrow" onClick={() => orderChange(10, 15)} ><ArrowForwardIosIcon /></div>
+                {!arrowHide && <div className="menuRightArrow" onClick={() => orderChange(7, 15, true)} ><ArrowForwardIosIcon
+                /></div>}
             </div>
 
             <div className="topcontainer">
@@ -97,7 +103,7 @@ function DashboardNew() {
                         {Projectbox.map((data) => {
                             return (
                                 <div className="projecttable">
-                                    <div >{data.projects}</div>
+                                    <div><a href={"#"} className="linktable">{data.projects}</a></div>
                                     <div>{data.projecttype}</div>
                                     <div>{data.client}</div>
 
@@ -117,7 +123,7 @@ function DashboardNew() {
                         {Tasks.map((data) => {
                             return (
                                 <div className="tasktable">
-                                    <div  >{data.task}</div>
+                                    <div><a href={"#"} className="linktable">{data.task}</a></div>
                                     <div>{data.count}</div>
 
                                 </div>
@@ -150,7 +156,7 @@ function DashboardNew() {
 
                                 <div className="taskdaystable">
 
-                                    <div>{data.activity}</div>
+                                    <div><a href={"#"} className="linktable">{data.activity}</a></div>
                                     <div>{data.subactivity}</div>
                                     <div>{data.dueby}</div>
                                     <div>{data.priority}</div>

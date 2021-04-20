@@ -191,6 +191,7 @@ function ProjectIp(props) {
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
+
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -291,13 +292,13 @@ function ProjectIp(props) {
 
     const timesheetmodelContent = () => {
         return (
-            <TimeSheets />
+            <TimeSheets   projectrow={rowId}/>
         )
     }
 
     const opeModel = () => {
         return (
-            <OPEModel />
+            <OPEModel/>
         )
     }
 
@@ -372,7 +373,7 @@ function ProjectIp(props) {
                             <Grid item xs={12}>
                                 <div className="projectIpFields">
                                     {props.ProjectDetails[0] && props.ProjectDetails[0].filing_type !== null && <div className="projectIpdata">
-                                        <div className="projectTitle">Filling Type</div>
+                                        <div className="projectTitle">Filing Type</div>
                                         <div>{data.filing_type}</div>
                                     </div>}
                                     <div className="projectIpdata">
