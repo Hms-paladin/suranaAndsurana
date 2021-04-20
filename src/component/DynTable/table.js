@@ -316,7 +316,7 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={index}
                       selected={isItemSelected}
-                      className={props.aligncss}
+                     
                     >
                       {props.EnableSno && (
                         <TableCell align="center">

@@ -14,35 +14,28 @@ const UserMaster = (props) => {
     { id: 'edit', label: 'Edit' },
   ];
   const status = [
-    // { id: 'table_name', label: 'Table Name' },
     { id: 'status', label: 'Status' },
     { id: 'type', label: 'Status Type' },
     { id: 'edit', label: 'Edit' },
   ];
   const Class = [
-    // { id: 'table_name', label: 'Table Name' },
     { id: 'class', label: 'Class Type' },
     { id: 'type', label: 'Class Name' },
     { id: 'des', label: 'Class Description' },
     { id: 'edit', label: 'Edit' },
   ];
   const CheckList = [
-    // { id: 'table_name', label: 'Table Name' },
     { id: 'class', label: 'Project Type' },
     { id: 'type', label: 'Check List' },
     { id: 'edit', label: 'Edit' },
   ];
   const subStage = [
-    // { id: 'table_name', label: 'Table Name' },
     { id: 'class', label: 'Stage' },
     { id: 'type', label: 'Sub Stage' },
     { id: 'edit', label: 'Edit' },
   ];
 
-  const [UserGroupsList, setUserGroupsList] = useState([])
-  const [usergroupmodel, setUsergroupmodel] = useState(false);
 
-  const [isLoaded, setIsLoaded] = useState(true);
   const [TableName,setTableName]=useState({
     tablename: {
         value: "",
@@ -99,13 +92,14 @@ const UserMaster = (props) => {
         {/* groupname */}
     
         <Grid  item xs={3} container direction="row" alignItems="center">
-             <Grid item xs={12}>
+             <Grid item xs={12} >
           <Labelbox type="select" placeholder={"Table Name"}
            changeData={(data) => checkValidation(data, "tablename")}
            value={TableName.tablename.value}
            error={TableName.tablename.error}
            errmsg={TableName.tablename.errmsg}
-           dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"},{id:"5",value:"SubStage"}]}
+           dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"}
+           ,{id:"5",value:"SubStage"}]}
           />
            </Grid>
            </Grid>
