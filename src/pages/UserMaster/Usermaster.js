@@ -91,8 +91,8 @@ const UserMaster = (props) => {
 
         {/* groupname */}
     
-        <Grid  item xs={3} container direction="row" alignItems="center">
-             <Grid item xs={12} >
+          <div style={{display:"flex",margin: "20px 0px 20px 0px"}}>
+
           <Labelbox type="select" placeholder={"Table Name"}
            changeData={(data) => checkValidation(data, "tablename")}
            value={TableName.tablename.value}
@@ -101,104 +101,71 @@ const UserMaster = (props) => {
            dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"}
            ,{id:"5",value:"SubStage"}]}
           />
-           </Grid>
-           </Grid>
+          
+           {/* group name */}
            {TableName.tablename.value === "1" &&
-               <Grid item xs={8} container direction="row" spacing={2}>
-          <Grid item xs={4} className="items_align">
           <Labelbox type="text" placeholder={"Enter Group Name"}
           />
-          </Grid>
-          <Grid item xs={1} className="items_align">
-        
-            <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
-            </Grid>
-          </Grid>
           }
+
           {TableName.tablename.value === "2" &&
-             <Grid item xs={8} container direction="row" spacing={2}>
-          <Grid item xs={4} className="items_align">
+           <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Status Type"}
           />
-          </Grid>
-           <Grid item xs={4} className="items_align">
            <Labelbox type="text" placeholder={"Enter Status Name"}
-           />
-           </Grid>
-           <Grid item xs={1} className="items_align">
-        
-        <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
-        </Grid>
-           </Grid>
-           
-          
+           />       
+        </div>
           }
             {TableName.tablename.value === "3" &&
-             <Grid item xs={8} container direction="row" spacing={2}>
-          <Grid item xs={3} className="items_align">
+          <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Class Type"}
           />
-          </Grid>
-           <Grid item xs={3} className="items_align">
+       
+          
            <Labelbox type="text" placeholder={"Enter Class Name"}
            />
-           </Grid>
-           <Grid item xs={3} className="items_align_des">
-          <Labelbox type="textarea" placeholder={"Enter Description"}/>
-          
-           </Grid>
-           <Grid item xs={1} className="items_align">
+       
         
-            <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
-           </Grid>
-           </Grid>
-           
+          <div><Labelbox type="textarea" placeholder={"Enter Description"}/></div>
+          
+        
+          
+        
+         
+            </div>
           
           }
          
          {TableName.tablename.value === "4" &&
-             <Grid item xs={8} container direction="row" spacing={2}>
-          <Grid item xs={4} className="items_align">
+           <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Project Type"}
           />
-          </Grid>
-           <Grid item xs={4} className="items_align">
+      
            <Labelbox type="text" placeholder={"Enter CheckList Name"}
            />
-           </Grid>
-           
-           <Grid item xs={1} className="items_align">
         
-            <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
-           </Grid>
-           </Grid>
-           
+        
+            </div>
           
           }
              {TableName.tablename.value === "5" &&
-             <Grid item xs={8} container direction="row" spacing={2}>
-          <Grid item xs={4} className="items_align">
+           
+         <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Stage"}
           />
-          </Grid>
-           <Grid item xs={4} className="items_align">
+
            <Labelbox type="text" placeholder={"Enter Sub Stage Name"}
            />
-           </Grid>
-           
-           <Grid item xs={1} className="items_align">
-        
-            <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
-           </Grid>
-           </Grid>
-           
-          
+            </div>
           }
          
-       
+       </div>
           
         
-       
+       <div>
+       {TableName.tablename.value >0&&<img src={PlusIcon} className="plus_icon_user" />}
+
+       </div>
         
 
          
