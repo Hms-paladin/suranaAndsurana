@@ -117,7 +117,7 @@ const UserMaster = (props) => {
           </Grid>
           <Grid item xs={1} className="items_align">
         
-            <img src={PlusIcon} style={{cursor: 'pointer'}}  />
+            <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
             </Grid>
           </Grid>
           }
@@ -133,7 +133,7 @@ const UserMaster = (props) => {
            </Grid>
            <Grid item xs={1} className="items_align">
         
-        <img src={PlusIcon} style={{cursor: 'pointer'}}  />
+        <img src={PlusIcon} style={{cursor: 'pointer',width:"20px"}}  />
         </Grid>
            </Grid>
            
