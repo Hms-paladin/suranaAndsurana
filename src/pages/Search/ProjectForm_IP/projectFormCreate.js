@@ -423,7 +423,7 @@ function ProjectFormCreate(props) {
     setEmployeeList({ EmployeeList });
 
 
-    // Project Cost Range
+    // Project Value
 
     let ProjectCostRange = [];
     props.ProjectCostRange.map((data) =>
@@ -765,7 +765,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
-                  placeholder={"Project Cost Range"}
+                  placeholder={"Project Value"}
                   dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
@@ -906,7 +906,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
-                  placeholder={"Project Cost Range"}
+                  placeholder={"Project Value"}
                   dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
@@ -1041,7 +1041,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="select"
-                  placeholder={"Project Cost Range"}
+                  placeholder={"Project Value"}
                   dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
