@@ -32,7 +32,7 @@ function LeaveUpdate(props) {
     const dispatch = useDispatch();
     const [leaveType, setLeaveType] = useState({})
     const [employeeId, setEmployeeId] = useState(0)
-    const [employeeName, setEmployeeName] = useState(0)
+    const [employeeName, setEmployeeName] = useState({})
     const [eligible_leave, setEligible_leave] = useState(0)
     const [Leave_Update, setleaveUpdate] = useState({
         start_date: {
@@ -82,7 +82,8 @@ function LeaveUpdate(props) {
 
     useEffect(() => {
         //employee name
-      console.log(props.EmployeeName,"props.EmployeeName")
+      console.log(props.EmployeeName[0],"props.EmployeeName")
+      setEmployeeName(props.EmployeeName[0])
 
     }, [props.EmployeeName])
 
