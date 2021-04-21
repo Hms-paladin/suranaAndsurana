@@ -124,7 +124,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead className={`"tableHead" ${props.aligncss&&"aligncss"}`}>
+    <TableHead className={"tableHead"}>
       <TableRow>
         {EnableSno && (
           <TableCell padding="checkbox" className="tableHeadsno">
@@ -271,7 +271,7 @@ export default function EnhancedTable(props) {
       <div className="tableTitle">{props.tabletitle}</div>
       <TableContainer>
         <Table
-          className={`${classes.table} ${props.aligncss&&"aligncss"}`}
+          className={`${classes.table} ${props.aligncss}`}
           aria-labelledby="tableTitle"
           size={"small"}
           aria-label="enhanced table"

@@ -17,7 +17,6 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
 
-
 const Projectbox = [{ projects: "Project 1", projecttype: "Project Type 1 ", client: "Client 1", },
 { projects: "Project 2", projecttype: "Project Type 2 ", client: "Client 2", },
 { projects: "Project 3", projecttype: "Project Type 3 ", client: "Client 3", },
@@ -41,7 +40,7 @@ function DashboardNew() {
 
     const [menulist, setMenulist] = useState(
         [
-            { img: <img src={Library} className="imageicons" />, title: "Library", path: "#" },
+            { img: <img src={Library} className="imageicons" />, title: "Library", path: "/librarybook" },
             { img: <img src={appraisal} className="imageicons" />, title: "Appraisal", path: "/appraisal" },
             { img: <img src={KRA} className="imageicons" />, title: "KRA", path: "/KRA" },
             { img: <img src={KPI} className="imageicons" />, title: "KPI", path: "/KPI" },
@@ -50,7 +49,7 @@ function DashboardNew() {
             { img: <img src={OPExp} className="imageicons" />, title: "OP Expenses", path: "#" },
             { img: <img src={ApplyLeave} className="imageicons" />, title: "Apply Leave", path: "/leaveform" },
             { img: <img src={TicketCreation} className="imageicons" />, title: "Ticket Creation", path: "#" },
-            { img: <img src={Employee} className="imageicons" />, title: "List of Employees", path: "#" },
+            { img: <img src={Employee} className="imageicons" />, title: "List of Employees", path: "/employeelist" },
             { img: <img src={OPAdv} className="imageicons" />, title: "OP Advance", path: "#" }
         ])
 

@@ -52,11 +52,12 @@ import LeaveForm from '../pages/Leaves/leaveform';
 import Appraisal from '../pages/Appraisal/appraisal';
 import Severance from '../pages/Severance/severance';
 import KRA from '../pages/KRA/KRA';
+import EmployeeList from '../pages/EmployeeList/EmployeeList'
+import LibraryBook from '../pages/LibraryBook/LibraryBook'
 
 import RatingModel from '../pages/Appraisal/ratingModel'
 
 import UserMaster from '../pages/UserMaster/Usermaster'
-
 
 function Routes(props) {
 
@@ -112,6 +113,9 @@ function Routes(props) {
 
                 {/* Usermaster */}
                 <PrivateRoute path="/usermaster" component={UserMaster}/>
+
+                <PrivateRoute path="/employeelist" component={EmployeeList}/>
+                <PrivateRoute path="/librarybook" component={LibraryBook}/>
 
 
 

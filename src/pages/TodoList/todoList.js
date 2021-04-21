@@ -18,7 +18,7 @@ import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
 import Appraisal from '../Appraisal/appraisal';
-
+import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 
 import "./todoList.scss"
 
@@ -83,7 +83,7 @@ function TodoList(props) {
     const [leaveModelTitle, setleaveModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
     const [kraapprovemodel, setKraapprovemodel] = useState(false);
-
+    const [TimeSheet_Approval,setTimeSheet_Approval]=useState(false)
 
 
     useEffect(() => {
@@ -122,7 +122,9 @@ function TodoList(props) {
                 id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
                 designation: data.designation, candidates: data.no_of_candidates
-            })
+            },
+          
+            )
         })
         setHrTodoList(hrList)
     }, [props.getHrTodoList,])
@@ -132,7 +134,12 @@ function TodoList(props) {
 
         projectTask.push({
             id: <div className="ProjectTaskId" onClick={unblockUser}>01</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
-        })
+        },
+        {
+            id: <div className="ProjectTaskId" onClick={() => setTimeSheet_Approval(true)}
+            >Time Sheet Approval</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021",enddate: "12-Jan-2021"
+        }, 
+        )
 
         setProjectTodoList(projectTask)
 
@@ -174,7 +181,9 @@ function TodoList(props) {
             >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         }, {
             id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraisar Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, )
+        },
+       
+         )
 
         setOtherTodoList(otherTask)
 
@@ -273,6 +282,7 @@ function TodoList(props) {
             <div>
                 <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project Task"} />
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
+                <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
             </div>
             <div>
                 <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other Task"} />
@@ -284,6 +294,8 @@ function TodoList(props) {
                 <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} />} />
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
+
+            
 
             </div>
 
