@@ -765,7 +765,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="text"
-                  placeholder={"Project Cost "}
+                  placeholder={"Project Value "}
                   // dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
@@ -906,7 +906,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
               <Labelbox
                   type="text"
-                  placeholder={"Project Cost "}
+                  placeholder={"Project Value "}
                   // dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
@@ -1041,7 +1041,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
               <Labelbox
                   type="text"
-                  placeholder={"Project Cost "}
+                  placeholder={"Project Value "}
                   // dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
