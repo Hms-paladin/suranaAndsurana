@@ -36,26 +36,86 @@ const UserMaster = (props) => {
   ];
 
 
-  const [TableName,setTableName]=useState({
+  const [UserMaster,setUserMaster]=useState({
     tablename: {
         value: "",
         validation: [{ name: "required" }],
         error: null,
         errmsg: null,
       },
+      groupname:{
+          value:"",
+          validation:[{name:"required"}],
+          error:null,
+          errmsg:null,
+      },
+      status_type:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    status_name:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    class_type:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    project_type:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    class_name:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    description:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    checklist_name:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    stage:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    },
+    sub_stage:{
+        value:"",
+        validation:[{name:"required"}],
+        error:null,
+        errmsg:null,
+    }
   })
  
   function checkValidation(data, key, multipleId) {
     console.log(data,"onchangeValue")
     var errorcheck = ValidationLibrary.checkValidation(
       data,
-      TableName[key].validation
+      UserMaster[key].validation
     );
     let dynObj = {
       value: data,
       error: !errorcheck.state,
       errmsg: errorcheck.msg,
-      validation: TableName[key].validation,
+      validation: UserMaster[key].validation,
     };
    
 
@@ -73,13 +133,16 @@ const UserMaster = (props) => {
     }
     // (end)
 
-    setTableName((prevState) => ({
+    setUserMaster((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
 
   
   }
+  useEffect(()=>{
+
+  })
  
   return (
     <div className="user_master_parent">
@@ -95,72 +158,106 @@ const UserMaster = (props) => {
 
           <Labelbox type="select" placeholder={"Table Name"}
            changeData={(data) => checkValidation(data, "tablename")}
-           value={TableName.tablename.value}
-           error={TableName.tablename.error}
-           errmsg={TableName.tablename.errmsg}
+           value={UserMaster.tablename.value}
+           error={UserMaster.tablename.error}
+           errmsg={UserMaster.tablename.errmsg}
            dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"}
            ,{id:"5",value:"SubStage"}]}
           />
           
            {/* group name */}
-           {TableName.tablename.value === "1" &&
+           {UserMaster.tablename.value === "1" &&
           <Labelbox type="text" placeholder={"Enter Group Name"}
+          changeData={(data) => checkValidation(data, "groupname")}
+          value={UserMaster.groupname.value}
+          error={UserMaster.groupname.error}
+          errmsg={UserMaster.groupname.errmsg}
           />
           }
-
-          {TableName.tablename.value === "2" &&
+         {/* status */}
+          {UserMaster.tablename.value === "2" &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Status Type"}
+           changeData={(data) => checkValidation(data, "status_type")}
+           value={UserMaster.groupname.value}
+           error={UserMaster.groupname.error}
+           errmsg={UserMaster.groupname.errmsg}
           />
            <Labelbox type="text" placeholder={"Enter Status Name"}
+            changeData={(data) => checkValidation(data, "status_name")}
+            value={UserMaster.status_name.value}
+            error={UserMaster.status_name.error}
+            errmsg={UserMaster.status_name.errmsg}
            />       
         </div>
           }
-            {TableName.tablename.value === "3" &&
+          {/* class type */}
+            {UserMaster.tablename.value === "3" &&
           <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Class Type"}
+           changeData={(data) => checkValidation(data, "class_type")}
+           value={UserMaster.class_type.value}
+           error={UserMaster.class_type.error}
+           errmsg={UserMaster.class_type.errmsg}
           />
-       
-          
            <Labelbox type="text" placeholder={"Enter Class Name"}
+            changeData={(data) => checkValidation(data, "class_name")}
+            value={UserMaster.class_name.value}
+            error={UserMaster.class_name.error}
+            errmsg={UserMaster.class_name.errmsg}
            />
-       
-        
-          <div><Labelbox type="textarea" placeholder={"Enter Description"}/></div>
-          
-        
-          
-        
-         
+          <div className="des_crip">
+              <Labelbox type="textarea" placeholder={"Enter Description"}
+                  changeData={(data) => checkValidation(data, "description")}
+                  value={UserMaster.description.value}
+                  error={UserMaster.description.error}
+                  errmsg={UserMaster.description.errmsg}
+           />
+           </div>
             </div>
           
           }
-         
-         {TableName.tablename.value === "4" &&
+
+         {/* checklist */}
+         {UserMaster.tablename.value === "4" &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Project Type"}
+            changeData={(data) => checkValidation(data, "project_type")}
+            value={UserMaster.project_type.value}
+            error={UserMaster.project_type.error}
+            errmsg={UserMaster.project_type.errmsg}
           />
       
            <Labelbox type="text" placeholder={"Enter CheckList Name"}
+            changeData={(data) => checkValidation(data, "checklist_name")}
+            value={UserMaster.checklist_name.value}
+            error={UserMaster.checklist_name.error}
+            errmsg={UserMaster.checklist_name.errmsg}
            />
-        
-        
-            </div>
+         </div>
           
           }
-             {TableName.tablename.value === "5" &&
+             {UserMaster.tablename.value === "5" &&
            
          <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Stage"}
+            changeData={(data) => checkValidation(data, "stage")}
+            value={UserMaster.stage.value}
+            error={UserMaster.stage.error}
+            errmsg={UserMaster.stage.errmsg}
           />
 
            <Labelbox type="text" placeholder={"Enter Sub Stage Name"}
+             changeData={(data) => checkValidation(data, "sub_stage")}
+             value={UserMaster.sub_stage.value}
+             error={UserMaster.sub_stage.error}
+             errmsg={UserMaster.sub_stage.errmsg}
            />
             </div>
           }
 
       <div>
-       {TableName.tablename.value >0&&<img src={PlusIcon} className="plus_icon_user" />}
+       {UserMaster.tablename.value >0&&<img src={PlusIcon} className="plus_icon_user" />}
 
        </div>
          
@@ -175,24 +272,24 @@ const UserMaster = (props) => {
       </Grid>
 
       <div className="rate_enhanced_table">
-     {TableName.tablename.value==="1"&&<EnhancedTable headCells={header}
+     {UserMaster.tablename.value==="1"&&<EnhancedTable headCells={header}
           rows={""}
            aligncss/>}
 
 
-{TableName.tablename.value==="2"&&<EnhancedTable headCells={status}
+{UserMaster.tablename.value==="2"&&<EnhancedTable headCells={status}
           rows={""}
            aligncss/>}
 
-           {TableName.tablename.value==="3"&&<EnhancedTable headCells={Class}
+           {UserMaster.tablename.value==="3"&&<EnhancedTable headCells={Class}
           rows={""}
            aligncss/>}
 
-{TableName.tablename.value==="4"&&<EnhancedTable headCells={CheckList}
+{UserMaster.tablename.value==="4"&&<EnhancedTable headCells={CheckList}
           rows={""}
            aligncss/>}
            
-{TableName.tablename.value==="5"&&<EnhancedTable headCells={subStage}
+{UserMaster.tablename.value==="5"&&<EnhancedTable headCells={subStage}
           rows={""}
            aligncss/>}
       </div>

@@ -1,7 +1,7 @@
 .user_master_h{
         font-size: 17px;
         font-weight: bold;
-        margin-bottom: 20px;
+      
     }
 .user_master_grid{
     margin:20px 0px 5px 0px;
@@ -22,17 +22,20 @@
 
 }
 .items_align{
-    margin:0px 0px 0px 20px;
+    margin:0px 0px 0px 10px;
 }
 .table_cont_change{
     display: flex;
-    align-items: center;
+    // align-items: center;
 }
 .plus_icon_user{
    width:20px;
    position: relative;
    top: 3px;
 
+}
+.des_crip .formdiv .brdrcls{
+  height:80px;
 }
 @media only screen and (min-width: 1086px) and (max-width: 1295px){
     .user_master_parent .custom_labelbox{
@@ -44,8 +47,8 @@
         width:150px;
     }
 }
-@media screen and (max-width: 959px){
-    .user_master_parent .custom_labelbox{
-        width:150px;
-    }
-}
+// @media screen and (max-width: 959px){
+//     .user_master_parent .custom_labelbox{
+//         width:150px;
+//     }
+// }
