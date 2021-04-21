@@ -49,9 +49,11 @@
 .copyright_div{
    width:100%;
    padding: 10px;
+   display: flex;
+   align-items: baseline;
    
 }
 .copyright_div .custom_labelbox{
     margin:30px 15px;
-    width:30%;
+    width:180px;
 }
