@@ -57,8 +57,6 @@ import RatingModel from "../pages/Appraisal/ratingModel";
 
 import UserMaster from "../pages/UserMaster/Usermaster";
 
-import RatingModel from "../pages/Appraisal/ratingModel";
-
 function Routes(props) {
   return (
     <Navbar>
