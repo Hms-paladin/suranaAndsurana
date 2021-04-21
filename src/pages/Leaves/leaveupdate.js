@@ -10,7 +10,7 @@ import { useDispatch, connect } from "react-redux";
 import './leaveupdate.scss';
 import { Input, Space } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
-import Delete from '../../images/dashboard/delete.svg';
+import { insertLeaveUpdate,getEmployee} from "../../actions/LeaveUpdateAction";
 
 
 const { Search } = Input;
@@ -19,28 +19,29 @@ const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
     { id: 'previousbalance', label: 'Previous Balance' },
     { id: 'eligible', label: 'Eligible' },
-    { id: 'currentbalance', label: 'Current Balance' },
-    { id: 'img', label: 'Action' }
-
+    { id: 'currentbalance', label: 'Current Balance' }
 ];
 
 const rows = [
-    { leavetype: <a href={"#"} className="linktable">Casual leave</a>, previousbalance: 2, eligible: 10, currentbalance: 12, img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
-    { leavetype: <a href={"#"} className="linktable">Annual leave</a>, previousbalance: 4, eligible: 10, currentbalance: 14, img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
-    { leavetype: <a href={"#"} className="linktable">On duty</a>, previousbalance: 8, eligible: 10, currentbalance: 43, img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> }
+    { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
+    { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
+    { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
 ]
 
 function LeaveUpdate(props) {
     const dispatch = useDispatch();
     const [leaveType, setLeaveType] = useState({})
+    const [employeeId, setEmployeeId] = useState(0)
+    const [employeeName, setEmployeeName] = useState(0)
+    const [eligible_leave, setEligible_leave] = useState(0)
     const [Leave_Update, setleaveUpdate] = useState({
-        timepickerfrom: {
+        start_date: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
         },
-        timepickerto: {
+        end_date: {
             value: "",
             validation: [],
             error: null,
@@ -61,6 +62,11 @@ function LeaveUpdate(props) {
 
     })
 
+    const onSearchEmpId=(val)=>{
+        setEmployeeId(val)
+        dispatch(getEmployee(val))
+    }
+
     useEffect(() => {
         dispatch(getLeaveType());
     }, [])
@@ -73,6 +79,12 @@ function LeaveUpdate(props) {
             }}
         />
     );
+
+    useEffect(() => {
+        //employee name
+      console.log(props.EmployeeName,"props.EmployeeName")
+
+    }, [props.EmployeeName])
 
     useEffect(() => {
         //Leave type
@@ -106,6 +118,18 @@ function LeaveUpdate(props) {
     }
 
 
+    const handleCancel = () => {
+        let LeaveUpdate_key = [
+            "start_date","end_date","leavetype"
+        ]
+
+        LeaveUpdate_key.map((data) => {
+            Leave_Update[data].value = ""
+        })
+        setleaveUpdate(prevState => ({
+            ...prevState,
+        }));
+    }
 
     function onSubmit() {
         var mainvalue = {};
@@ -123,7 +147,10 @@ function LeaveUpdate(props) {
         // console.log(filtererr.length);
         // console.log(educationList.length, "educationList.length")
         if (filtererr.length > 0) {
-        } {
+        } else{
+            dispatch(insertLeaveUpdate(Leave_Update,employeeId,eligible_leave)).then(() => {
+                handleCancel()
+         })
         }
 
         setleaveUpdate((prevState) => ({
@@ -143,11 +170,11 @@ function LeaveUpdate(props) {
                                 <div>
                                     <Labelbox type="datepicker"
                                         changeData={(data) =>
-                                            checkValidation(data, "timepickerfrom")
+                                            checkValidation(data, "start_date")
                                         }
-                                        value={Leave_Update.timepickerfrom.value}
-                                        error={Leave_Update.timepickerfrom.error}
-                                        errmsg={Leave_Update.timepickerfrom.errmsg} />
+                                        value={Leave_Update.start_date.value}
+                                        error={Leave_Update.start_date.error}
+                                        errmsg={Leave_Update.start_date.errmsg} />
                                 </div>
                             </Grid>
                             <Grid item xs={3}>
@@ -155,11 +182,11 @@ function LeaveUpdate(props) {
                                 <div>
                                     <Labelbox type="datepicker"
                                         changeData={(data) =>
-                                            checkValidation(data, "timepickerto")
+                                            checkValidation(data, "end_date")
                                         }
-                                        value={Leave_Update.timepickerto.value}
-                                        error={Leave_Update.timepickerto.error}
-                                        errmsg={Leave_Update.timepickerto.errmsg} />
+                                        value={Leave_Update.end_date.value}
+                                        error={Leave_Update.end_date.error}
+                                        errmsg={Leave_Update.end_date.errmsg} />
                                 </div>
                             </Grid>
 
@@ -169,13 +196,13 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Employee Id</div>
                             <div className="searchbtnChange">
-                                <Search enterButton />
+                            <Search onSearch={(value)=>onSearchEmpId(value)}  enterButton />
                             </div>
                         </Grid>
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Name</div>
                             <div>
-                                Rajesh
+                                {employeeName.name}
                         </div>
                         </Grid>
                         {Leave_Update.leavetype.value === 38 &&
@@ -203,7 +230,7 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Add No.of Days</div>
                             <div>
-                                <Labelbox type="text" />
+                                <Labelbox type="text" changeData={(value)=>setEligible_leave(value)} />
                             </div>
                         </Grid>
                     </>}
@@ -215,7 +242,7 @@ function LeaveUpdate(props) {
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">Add No. of Hours/Per Month</div>
                                 <div>
-                                    <Labelbox type="text" />
+                                    <Labelbox type="text" changeData={(value)=>setEligible_leave(value)}/>
                                 </div>
                             </Grid>
 
@@ -248,6 +275,6 @@ function LeaveUpdate(props) {
 const mapStateToProps = (state) =>
 ({
     LeaveType: state.getOptions.getLeaveType,
+    EmployeeName: state.LeaveUpdateReducer.getEmployee,
 });
 export default connect(mapStateToProps)(LeaveUpdate);
-
