@@ -32,7 +32,7 @@ function TicketCreation() {
                             <Labelbox type="select" placeholder="Qualification" />
                         </Grid>
                         <Grid item xs={3} >
-                            <Labelbox type="select" placeholder="Experience" />
+                        <Labelbox type="text" placeholder="Experience" />
                         </Grid>
                         <Grid item xs={3} >
                             <Labelbox type="select" placeholder="Language" />
@@ -68,7 +68,7 @@ function TicketCreation() {
                     </Grid>
                 </div>
                 <div className="ticketbtn">
-                <CustomButton btnName={"Save as template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" />
+                <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" />
                 <CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
                 </div>
