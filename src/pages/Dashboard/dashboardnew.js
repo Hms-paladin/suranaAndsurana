@@ -104,7 +104,7 @@ function DashboardNew() {
     {
       img: <img src={TicketCreation} className="imageicons" />,
       title: "Ticket Creation",
-      path: "#",
+      path: "/ticketcreation",
     },
     {
       img: <img src={Employee} className="imageicons" />,

@@ -52,6 +52,7 @@ import LeaveForm from "../pages/Leaves/leaveform";
 import Appraisal from "../pages/Appraisal/appraisal";
 import Severance from "../pages/Severance/severance";
 import KRA from "../pages/KRA/KRA";
+import TicketCreation from '../pages/RequestTicket/ticketcreation'; 
 
 import RatingModel from "../pages/Appraisal/ratingModel";
 
@@ -109,6 +110,8 @@ function Routes(props) {
         <PrivateRoute path="/appraisal/:rowId" component={Appraisal} exact />
         <PrivateRoute path="/appraisal" component={Appraisal} exact />
         <PrivateRoute path="/ratingModel" component={RatingModel} exact />
+        <PrivateRoute path="/ticketcreation" component={TicketCreation} exact />
+
 
         <PrivateRoute path="/KRA" component={KRA} exact />
 
