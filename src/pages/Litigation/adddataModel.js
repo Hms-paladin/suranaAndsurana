@@ -4,16 +4,14 @@ import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { InesertResume } from "../../actions/ResumeAction";
 import CustomButton from "../../component/Butttons/button";
-import { message } from 'antd';
-import { InsertLitigationDetails } from '../../actions/Litigation';
+import { InsertLitigationDetails ,GetLitigation} from '../../actions/Litigation';
 import { getLitigationCounsel } from '../../actions/MasterDropdowns';
-import moment from 'moment';
 
 const AddDataModel=(props)=> {
     const dispatch = useDispatch()                                                                                                                                                  
     const[LitiCounsel,setLitiCounsel] =useState([])
+    const[projtId,setProjtId] =useState("")
     const[IteriumModel,setIteriumModel] =useState(false)
     const[LitiID,setLitiID] =useState("")
     const [Litigation_Form, setResumeFrom] = useState({
@@ -78,7 +76,9 @@ const AddDataModel=(props)=> {
 dispatch(getLitigationCounsel())
    }, [])
 
-
+useEffect(() => {
+      setProjtId(props.id.project_id)
+}, [props.id])
 
     useEffect (() => {
     let liti_councel=[]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
@@ -113,7 +113,9 @@ dispatch(getLitigationCounsel())
 
             dispatch(InsertLitigationDetails(Litigation_Form,LitiID)).then(() => {
                 handleCancel();
-                props.handleChangeCloseModel()
+                props.handleChangeCloseModel();
+                dispatch(GetLitigation(projtId))
+
             })
         }
 

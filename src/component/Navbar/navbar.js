@@ -99,6 +99,8 @@ function Navbar(props) {
       { path: "/severance", title: "Severance", img: Stagemaster },
       { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
       // { path: "/ratingModel", title: "Dashboard", img: Dashboard },
+      { path: "/ratingModel", title: "Dashboard", img: Dashboard },
+      { path: "/usermaster", title: "User Master", img: Stagemaster },
 
 
     ]

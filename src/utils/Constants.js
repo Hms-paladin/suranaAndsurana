@@ -134,4 +134,8 @@ export const  GET_SUBSTAGES = "GET_SUBSTAGES";
 export const  INSERT_COPYRIGHT = "INSERT_COPYRIGHT";
 export const  GET_COPYRIGHT = "GET_COPYRIGHT";
 export const  UPDATE_COPYRIGHT = "UPDATE_COPYRIGHT";
+
+//copyright
+export const  INSERT_LEAVE_UPDATE = "INSERT_LEAVE_UPDATE";
+export const  GET_EMPLOYEE = "GET_EMPLOYEE";
 // export const  GET_SUBSTAGES = "GET_SUBSTAGES";

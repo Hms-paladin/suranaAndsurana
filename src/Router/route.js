@@ -55,6 +55,8 @@ import KRA from "../pages/KRA/KRA";
 
 import RatingModel from "../pages/Appraisal/ratingModel";
 
+import UserMaster from "../pages/UserMaster/Usermaster";
+
 function Routes(props) {
   return (
     <Navbar>
@@ -120,6 +122,9 @@ function Routes(props) {
           component={EmployeeFeedback}
           exact
         />
+
+        {/* Usermaster */}
+        <PrivateRoute path="/usermaster" component={UserMaster} />
       </Switch>
     </Navbar>
   );
