@@ -1,48 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from "./PrivateRoute";
 
 // components path
 import Navbar from "../component/Navbar/navbar.js";
 // pages
 import Dashboard from "../pages/Dashboard/dashboard.js";
 import Resume from "../pages/Resume/resume.js";
-import Interview from '../pages/Interview/interview';
-import TodoList from '../pages/TodoList/todoList';
-import ProjectTask from '../pages/ProjectTask/projectTask';
-import ProjectIp1 from '../pages/Project IP1/projectIp';
+import Interview from "../pages/Interview/interview";
+import TodoList from "../pages/TodoList/todoList";
+import ProjectTask from "../pages/ProjectTask/projectTask";
+import ProjectIp1 from "../pages/Project IP1/projectIp";
 import Employeeform from "../pages/Employeeform/employeeform.js";
-import Search from '../pages/Search/search';
-import Stages from '../pages/stages/stageicon';
-import ProjectForm from '../pages/Search/ProjectForm_IP/projectFormCreate';
+import Search from "../pages/Search/search";
+import Stages from "../pages/stages/stageicon";
+import ProjectForm from "../pages/Search/ProjectForm_IP/projectFormCreate";
 import Task from "../pages/task/Task";
 import AddClient from "../pages/AddClient/addclient";
 // import GenerateInvoice from "../pages/Generateinvoi/ce/generateinvoice";
 import GenerateInvoice from "../pages/Generateinvoice/generateinvoice";
-import StagesMaster from '../pages/stages/StagesMaster'
-import AddHearing from '../pages/task/AddHearing'
-import RateMaster from '../pages/stages/RateMaster'
-import ProjectFormCreate from '../pages/Search/ProjectForm_IP/projectFormCreate';
+import StagesMaster from "../pages/stages/StagesMaster";
+import AddHearing from "../pages/task/AddHearing";
+import RateMaster from "../pages/stages/RateMaster";
+import ProjectFormCreate from "../pages/Search/ProjectForm_IP/projectFormCreate";
 
 //Litigation :
-import Litigation from '../pages/Litigation/litigation';
+import Litigation from "../pages/Litigation/litigation";
 
 //User Groups :
-import UserGroups from '../pages/UserGroups/usergroups'
+import UserGroups from "../pages/UserGroups/usergroups";
 
 //Group Control:
-import GroupControl from '../pages/GroupControl/groupcontrol'
+import GroupControl from "../pages/GroupControl/groupcontrol";
 
 //Stage Monitering:
-import StageMonitering from '../pages/stages/StageMonitering'
+import StageMonitering from "../pages/stages/StageMonitering";
 
 // Leave Update:
-import LeaveUpdate from '../pages/Leaves/leaveupdate';
+import LeaveUpdate from "../pages/Leaves/leaveupdate";
 
 //employeeFeedback
 
-import EmployeeFeedback from '../pages/Feedback/employeeFeedback';
+import EmployeeFeedback from "../pages/Feedback/employeeFeedback";
 
 //DashBoard
 
@@ -123,7 +123,7 @@ function Routes(props) {
             </Switch>
         </Navbar>
     );
-}
 
+}
 
 export default Routes;

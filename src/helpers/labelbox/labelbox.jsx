@@ -282,9 +282,9 @@ export default class Labelbox extends Component {
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
 							if (item.value) {
 								if (this.props.mode === "multiple") {
-									return (<Option key={index} value={item.value}>{item.value}</Option>)
+									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
 								} else {
-									return (<Option key={index} value={item.id}>{item.value}</Option>)
+									return (<Option key={index} disabled={item.disable} value={item.id}>{item.value}</Option>)
 								}
 							}
 						})

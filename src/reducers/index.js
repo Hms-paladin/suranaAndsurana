@@ -21,7 +21,9 @@ import projectTasksReducer from "./projectTasksReducer";
 import LitigationReducer from "./LitigationReducer";
 import IPDropdownReducer from "./IPDropdownReducer";
 import tradeMarkReducer from "./tradeMarkReducer";
-import PatentReducer from "./PatentReducer"
+import copyrightReducer from "./copyrightReducer";
+import PatentReducer from "./PatentReducer";
+import LeaveUpdateReducer from "./LeaveUpdateReducer"
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -44,6 +46,9 @@ export default combineReducers({
   getResumeSearchRowdata,
   getHrTodoList,
   LeaveFormReducer,
-  IPDropdownReducer,PatentReducer
+  IPDropdownReducer,
+  PatentReducer,
+  copyrightReducer,
+  LeaveUpdateReducer
 });
 

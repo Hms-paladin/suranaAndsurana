@@ -272,6 +272,7 @@ export default function EnhancedTable(props) {
       <TableContainer>
         <Table
           className={`${classes.table} ${props.aligncss}`}
+
           aria-labelledby="tableTitle"
           size={"small"}
           aria-label="enhanced table"
