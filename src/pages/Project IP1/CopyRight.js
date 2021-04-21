@@ -78,6 +78,7 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
     }, [props.getCopyRightData])
  
 
+
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(copy_Right);

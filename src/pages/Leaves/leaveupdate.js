@@ -10,8 +10,8 @@ import { useDispatch, connect } from "react-redux";
 import './leaveupdate.scss';
 import { Input, Space } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
-import { insertLeaveUpdate,getEmployee} from "../../actions/LeaveUpdateAction";
-
+import { updateLeaveBalance,insertLeaveUpdate,getEmployee,getLeaveBalance} from "../../actions/LeaveUpdateAction";
+import Delete from "../../images/dashboard/delete.svg";
 
 const { Search } = Input;
 
@@ -19,14 +19,15 @@ const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
     { id: 'previousbalance', label: 'Previous Balance' },
     { id: 'eligible', label: 'Eligible' },
-    { id: 'currentbalance', label: 'Current Balance' }
+    { id: 'currentbalance', label: 'Current Balance' },
+    { id: 'action', label: 'Action' }
 ];
 
-const rows = [
-    { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
-    { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
-    { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
-]
+// const rows = [
+//     { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
+//     { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
+//     { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
+// ]
 
 function LeaveUpdate(props) {
     const dispatch = useDispatch();
@@ -34,58 +35,45 @@ function LeaveUpdate(props) {
     const [employeeId, setEmployeeId] = useState(0)
     const [employeeName, setEmployeeName] = useState({})
     const [eligible_leave, setEligible_leave] = useState(0)
+    const [updateList, setUpdatelist] = useState([])
+   
+    const [leaveAddEdit, setLeaveAddEdit] = useState(false)
+    const [leaveEditMasId, setLeaveEditMasId] = useState("")
     const [Leave_Update, setleaveUpdate] = useState({
         start_date: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         end_date: {
             value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-        },
-        timepicker: {
-            value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
         leavetype: {
             value: "",
-            validation: [],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
+        
 
     })
 
-    const onSearchEmpId=(val)=>{
-        setEmployeeId(val)
-        dispatch(getEmployee(val))
+    /////////// 
+    const onEditLeaveForm=(val)=>{
+       Leave_Update.leavetype.value = val.leave_type_id
+        setleaveUpdate((prevState) => ({
+            ...prevState,
+            }));
     }
-
+    
+    /////////////////
     useEffect(() => {
         dispatch(getLeaveType());
     }, [])
-
-    const suffix = (
-        <AudioOutlined
-            style={{
-                fontSize: 20,
-                color: '#1890ff',
-            }}
-        />
-    );
-
-    useEffect(() => {
-        //employee name
-      console.log(props.EmployeeName[0],"props.EmployeeName")
-      setEmployeeName(props.EmployeeName[0])
-
-    }, [props.EmployeeName])
 
     useEffect(() => {
         //Leave type
@@ -96,6 +84,48 @@ function LeaveUpdate(props) {
         setLeaveType({ LeaveType });
 
     }, [props.LeaveType])
+    /////////
+
+    const onSearchEmpId=(val)=>{
+        setEmployeeId(val)
+        dispatch(getEmployee(val))
+        dispatch(getLeaveBalance(Leave_Update,val))
+    }
+
+    useEffect(() => {
+        //employee name
+        if(employeeId===""){setEmployeeName({})}
+        else if(props.getEmployee.length>0){setEmployeeName(props.getEmployee)}
+        else{setEmployeeName("")}
+    }, [employeeId,props.getEmployee])
+
+ 
+
+    useEffect(() => {
+
+        let leaveUpdateList = [];
+        
+        props.getUpdateTableData.map((data,index) => leaveUpdateList.push(data));
+        var updatelist = [];
+        for (var m = 0; m < leaveUpdateList.length; m++) {
+            const index = m;
+          var listarray = {
+            leave_type: leaveUpdateList[m].leave_type,
+            previous_balance: leaveUpdateList[m].previous_balance===0?'0':leaveUpdateList[m].previous_balance,
+            eligible_leave: leaveUpdateList[m].eligible_leave===0?'0':leaveUpdateList[m].eligible_leave,
+            current_balance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
+            action: (
+                <>
+                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])} id={leaveUpdateList[m].emp_leave_mas_id}  />{" "}
+                  <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} />
+                </>
+              ),
+          };
+          updatelist.push(listarray);
+        }
+        setUpdatelist({ updatelist });
+       
+      }, [props.getUpdateTableData])
 
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
@@ -118,7 +148,6 @@ function LeaveUpdate(props) {
         }));
     }
 
-
     const handleCancel = () => {
         let LeaveUpdate_key = [
             "start_date","end_date","leavetype"
@@ -130,8 +159,11 @@ function LeaveUpdate(props) {
         setleaveUpdate(prevState => ({
             ...prevState,
         }));
-    }
 
+        setEmployeeName({})
+        setUpdatelist([])
+    }
+   
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Update);
@@ -149,9 +181,20 @@ function LeaveUpdate(props) {
         // console.log(educationList.length, "educationList.length")
         if (filtererr.length > 0) {
         } else{
-            dispatch(insertLeaveUpdate(Leave_Update,employeeId,eligible_leave)).then(() => {
-                handleCancel()
-         })
+            if(leaveAddEdit){
+                dispatch(updateLeaveBalance(Leave_Update,employeeName[0].emp_id,eligible_leave,leaveEditMasId)).then(() => {
+                    
+                    handleCancel()
+                    })
+             }else{
+                dispatch(insertLeaveUpdate(Leave_Update,employeeName[0].emp_id,eligible_leave)).then(() => {
+                    // if(props.getInsertStatus){
+                        
+                        handleCancel()
+                    //     }
+                        console.log(props.getInsertStatus,"stastu")
+                        })
+            }
         }
 
         setleaveUpdate((prevState) => ({
@@ -203,7 +246,8 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Name</div>
                             <div>
-                                {employeeName.name}
+                                {/* {(props.EmployeeName.length>0)?props.EmployeeName[0].name:''} */}
+                                {employeeName.length>0?employeeName[0].name:''}
                         </div>
                         </Grid>
                         {Leave_Update.leavetype.value === 38 &&
@@ -254,11 +298,11 @@ function LeaveUpdate(props) {
 
 
 
-                    <Grid item xs={5} container direction="row" spacing={2}>
-                        <Grid item xs={4}>
+                    <Grid item xs={3} container direction="row" spacing={2}>
+                        <Grid item xs={6}>
                             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
                         </Grid>
                     </Grid>
@@ -268,7 +312,9 @@ function LeaveUpdate(props) {
 
             </div>
             <div className="leavetableformat">
-                <EnhancedTable headCells={headCells} rows={rows} />
+                <EnhancedTable headCells={headCells} 
+                 rows={updateList.length == 0 ? updateList : updateList.updatelist} 
+                />
             </div>
         </div>
     )
@@ -276,6 +322,9 @@ function LeaveUpdate(props) {
 const mapStateToProps = (state) =>
 ({
     LeaveType: state.getOptions.getLeaveType,
-    EmployeeName: state.LeaveUpdateReducer.getEmployee,
+    getInsertStatus: state.LeaveUpdateReducer.insertLeaveUpdate,
+    getEmployee: state.LeaveUpdateReducer.getEmployee,
+    getUpdateTableData: state.LeaveUpdateReducer.getLeaveBalance,
+    // getLeaveUpdateData: state.LeaveUpdateReducer.getLeaveUpdate,
 });
 export default connect(mapStateToProps)(LeaveUpdate);

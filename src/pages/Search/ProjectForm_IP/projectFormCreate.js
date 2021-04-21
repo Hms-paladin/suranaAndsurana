@@ -423,7 +423,7 @@ function ProjectFormCreate(props) {
     setEmployeeList({ EmployeeList });
 
 
-    // Project Cost Range
+    // Project Value
 
     let ProjectCostRange = [];
     props.ProjectCostRange.map((data) =>

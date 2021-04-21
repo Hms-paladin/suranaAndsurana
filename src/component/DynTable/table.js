@@ -124,7 +124,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead className="tableHead">
+    <TableHead className={"tableHead"}>
       <TableRow>
         {EnableSno && (
           <TableCell padding="checkbox" className="tableHeadsno">
@@ -271,10 +271,11 @@ export default function EnhancedTable(props) {
       <div className="tableTitle">{props.tabletitle}</div>
       <TableContainer>
         <Table
-          className={classes.table}
+          className={`${classes.table} ${props.aligncss&&"aligncss"}`}
           aria-labelledby="tableTitle"
           size={"small"}
           aria-label="enhanced table"
+
         >
           <EnhancedTableHead
             classes={classes}
@@ -286,6 +287,7 @@ export default function EnhancedTable(props) {
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
             headCells={props.headCells}
+            className={props.aligncss}
           />
           <TableBody>
             {rows.length > 0 ?
@@ -314,6 +316,7 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={index}
                       selected={isItemSelected}
+                     
                     >
                       {props.EnableSno && (
                         <TableCell align="center">
