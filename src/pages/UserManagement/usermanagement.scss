@@ -29,3 +29,61 @@
    text-align: right;
    margin-right: 20px;
 }
+.passwordinput{
+    border-radius: 8px;
+    border: 1px solid #023e7d;
+    height: 30px;
+}
+.switchdiv{
+    display:flex;
+}
+.btnActive{
+    background-color:rgb(105, 221, 105);
+    font-size:13px;
+    border-radius: 5px;
+    border:1px solid rgb(27, 155, 27);
+}
+.btnInActive{
+    background-color:rgb(233, 55, 58);
+    font-size:13px;
+    border-radius: 5px;
+    border:1px solid rgb(162, 9, 11);
+}
+.activefalse {
+    .ant-switch-checked{
+        height: 32px;
+        padding: 5px;
+    }
+    .ant-switch-checked .ant-switch-handle {
+        top: calc(100% - 13px - 13px) !important;
+    }
+    .ant-switch-inner {
+        font-size: 21px;
+    }
+    .ant-switch-checked {
+        background-color: #32AC32;
+    }
+    .ant-switch::after {
+        top: 5px;
+        }
+}
+.activetrue{
+    .ant-switch{
+        height: 32px;
+        padding: 5px;
+        background-color: rgb(224, 211, 211);
+        border: 1px solid  #F42D2D;
+        
+    }
+    .ant-switch-handle {
+        top: 10px !important;
+    }
+    .ant-switch-inner {
+        font-size: 21px;
+        color: #F42D2D ;
+        font-weight: 600;
+    }
+    .ant-switch::after {
+        top: 5px;
+        }
+}
