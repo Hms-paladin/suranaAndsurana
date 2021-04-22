@@ -6,7 +6,7 @@ import { notification } from 'antd'
 import moment from 'moment'
 
 
-export const GetGroupName = () => async dispatch => {
+export const getGroupName = () => async dispatch => {
     try {
 
         axios({

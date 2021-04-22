@@ -312,6 +312,12 @@ function TicketCreation(props) {
         }));
     };
 
+    // TicketCreation.map((data)=>{
+    //     return(
+    //         console.log(data.designation,"designation")
+    //     )
+    // })
+
 
     return (
         <div >

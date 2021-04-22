@@ -109,4 +109,5 @@ function UserGroupModal() {
         </div>
     )
 }
+
 export default UserGroupModal;
