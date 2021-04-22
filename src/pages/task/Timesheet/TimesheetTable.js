@@ -7,7 +7,7 @@ import CustomButton from '../../../component/Butttons/button';
 import edit from '../../../images/edit.svg'
 import DynModel from "../../../component/Model/model";
 import EditTimeSheet from '../Timesheet/Timesheet'
-export default function TimeSheetApproval(){
+export default function TimeSheetApproval(props){
     const [OpenSheet,setOpenSheet]=useState(false)
 const [Ts_approval,setTs_approval]=useState(false)
 const handleChangeModel=()=>{
@@ -50,9 +50,9 @@ const handleChangeModel=()=>{
         <EnhancedTable headCells={header} rows={rows}/>
         <div className="time_s_btnsdiv">
         {/* <CustomButton btnName={"Create Timesheet"} btnCustomColor="customPrimary"  /> */}
-        <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+        <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={()=>props.closemodal(false)}/>
         </div>
-        <DynModel modelTitle={"Edit TimeSheet"} handleChangeModel={OpenSheet} handleChangeCloseModel={(bln) => setOpenSheet(bln)}  content={<EditTimeSheet />} />
+        <DynModel modelTitle={"Edit TimeSheet"} handleChangeModel={OpenSheet} handleChangeCloseModel={(bln) => setOpenSheet(bln)}  content={<EditTimeSheet closemodal={(bln) => setOpenSheet(bln)} />} />
 
         </div>
     )

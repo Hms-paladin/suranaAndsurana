@@ -10,7 +10,7 @@ import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getVariableRateTableData, InsertVariableRate,SearchVariableRate } from "../../actions/VariableRateMaster"
+import { getVariableRateTableData, InsertVariableRate, SearchVariableRate } from "../../actions/VariableRateMaster"
 
 
 const RateMaster = (props) => {
@@ -109,7 +109,7 @@ const RateMaster = (props) => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
     // setAmountDis(false)
-  }, [props.variabletablechange,props.variablebtnchange]);
+  }, [props.variabletablechange, props.variablebtnchange]);
   // useEffect(() => {
   //   // setAmountDis(false)
   // }, [props.variableRateCall]);
@@ -155,9 +155,9 @@ const RateMaster = (props) => {
     }
     var filtererr = targetkeys.filter(
       (obj) => RateMaster[obj].error === true
-  );
-  if (filtererr.length > 0) {
-    // setRateMaster({ error: true });
+    );
+    if (filtererr.length > 0) {
+      // setRateMaster({ error: true });
 
     } else {
       dispatch(InsertVariableRate(RateMaster)).then((response) => {
@@ -169,9 +169,6 @@ const RateMaster = (props) => {
       ...prevState,
     }));
   };
-
-  console.log(RateMaster.range_project_cost.value, "RateMaster.range_project_cost.value")
-
   function checkValidation(data, key, multipleId) {
 
 
@@ -415,38 +412,38 @@ const RateMaster = (props) => {
       setIsLoaded(false);
     }
   });
-const onSearch=()=>{
-  // var mainvalue = {};
-  // var targetkeys = Object.keys(RateMaster);
-  // for (var i in targetkeys) {
-  //   var errorcheck = ValidationLibrary.checkValidation(
-  //     RateMaster[targetkeys[i]].value,
-  //     RateMaster[targetkeys[i]].validation
-  //   );
-  //   RateMaster[targetkeys[i]].error = !errorcheck.state;
-  //   RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
-  //   mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
-  // }
-  // var filtererr = targetkeys.filter(
-//     (obj) => RateMaster[obj].error === true
-// );
-// if (filtererr.length > 0) {
-  // setRateMaster({ error: true });
+  const onSearch = () => {
+    // var mainvalue = {};
+    // var targetkeys = Object.keys(RateMaster);
+    // for (var i in targetkeys) {
+    //   var errorcheck = ValidationLibrary.checkValidation(
+    //     RateMaster[targetkeys[i]].value,
+    //     RateMaster[targetkeys[i]].validation
+    //   );
+    //   RateMaster[targetkeys[i]].error = !errorcheck.state;
+    //   RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
+    //   mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
+    // }
+    // var filtererr = targetkeys.filter(
+    //     (obj) => RateMaster[obj].error === true
+    // );
+    // if (filtererr.length > 0) {
+    // setRateMaster({ error: true });
 
-  // } else {
+    // } else {
     dispatch(SearchVariableRate(RateMaster))
-    .then((response) => {
-      handleCancel();
+      .then((response) => {
+        handleCancel();
         props.setShowSearchTable()
 
-     
-  })
 
-  setRateMaster((prevState) => ({
-    ...prevState,
-  }));
-  
-}
+      })
+
+    setRateMaster((prevState) => ({
+      ...prevState,
+    }));
+
+  }
 
 
   return (
@@ -509,7 +506,7 @@ const onSearch=()=>{
             error={RateMaster.amount.error}
             errmsg={RateMaster.amount.errmsg}
           />
-         
+
         </Grid>
         <Grid item xs={4} spacing={2}>
           <Labelbox
@@ -541,11 +538,11 @@ const onSearch=()=>{
         </Grid>
         {variablebtnchange ?
           <div className="rate_cus_btns"><CustomButton
-          btnName={"Search"}
-          btnCustomColor="customPrimary"
-          custombtnCSS="custom_save"
-          onBtnClick={onSearch}
-        /> </div>
+            btnName={"Search"}
+            btnCustomColor="customPrimary"
+            custombtnCSS="custom_save"
+            onBtnClick={onSearch}
+          /> </div>
           :
           <div className="rate_cus_btns">
             <CustomButton
@@ -576,8 +573,8 @@ const onSearch=()=>{
 
 const mapStateToProps = (state) => (
   {
-      getTableData: state.variableRateMaster.getVariableRateTableData || [],
-      getInsertStatus: state.variableRateMaster.insertVariableRateStatus ,
+    getTableData: state.variableRateMaster.getVariableRateTableData || [],
+    getInsertStatus: state.variableRateMaster.insertVariableRateStatus,
   }
 );
 

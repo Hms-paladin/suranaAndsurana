@@ -12,7 +12,7 @@ import { Input, Space } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
 import { updateLeaveBalance,insertLeaveUpdate,getEmployee,getLeaveBalance} from "../../actions/LeaveUpdateAction";
 import Delete from "../../images/dashboard/delete.svg";
-
+import { useLocation, Switch } from 'react-router-dom'; 
 const { Search } = Input;
 
 const headCells = [
@@ -30,14 +30,15 @@ const headCells = [
 // ]
 
 function LeaveUpdate(props) {
+    const location = useLocation();
     const dispatch = useDispatch();
     const [leaveType, setLeaveType] = useState({})
-    const [employeeId, setEmployeeId] = useState(0)
+    const [employeeCode, setEmployeeCode] = useState(0)
     const [employeeName, setEmployeeName] = useState({})
-    const [eligible_leave, setEligible_leave] = useState(0)
+    const [eligible_leave, setEligible_leave] = useState('')
     const [updateList, setUpdatelist] = useState([])
    
-    const [leaveAddEdit, setLeaveAddEdit] = useState(false)
+    const [leaveupdateEdit, setLeaveupdateEdit] = useState(false)
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
     const [Leave_Update, setleaveUpdate] = useState({
         start_date: {
@@ -58,13 +59,24 @@ function LeaveUpdate(props) {
             error: null,
             errmsg: null,
         },
+        noofdays: {
+            value:'',
+            validation: [{ "name": "required" },{ "name": "allowNumaricOnly1" },{ "name": "custommaxLength","params":"2" }],
+            error: null,
+            errmsg: null,
+        },
+        
         
 
     })
 
     /////////// 
     const onEditLeaveForm=(val)=>{
+        // console.log("test,",val)
        Leave_Update.leavetype.value = val.leave_type_id
+       setEligible_leave(val.eligible_leave)
+       setLeaveupdateEdit(true)
+       setLeaveEditMasId(val.emp_leave_mas_id)
         setleaveUpdate((prevState) => ({
             ...prevState,
             }));
@@ -87,19 +99,49 @@ function LeaveUpdate(props) {
     /////////
 
     const onSearchEmpId=(val)=>{
-        setEmployeeId(val)
+        setEmployeeCode(val)
         dispatch(getEmployee(val))
         dispatch(getLeaveBalance(Leave_Update,val))
     }
 
     useEffect(() => {
         //employee name
-        if(employeeId===""){setEmployeeName({})}
+        if(employeeCode===""){setEmployeeName({})}
         else if(props.getEmployee.length>0){setEmployeeName(props.getEmployee)}
         else{setEmployeeName("")}
-    }, [employeeId,props.getEmployee])
+    }, [employeeCode,props.getEmployee])
 
- 
+    /////
+    useEffect(()=>{
+        
+        let leaveUpdateList = [];
+        if(props.getUpdateTableData.length>0){
+        props.getUpdateTableData.map((data) => leaveUpdateList.push(data));
+
+        for (var m = 0; m < leaveUpdateList.length; m++) {
+            if(leaveUpdateList[m].leave_type_id===Leave_Update.leavetype.value){
+                setLeaveupdateEdit(true);
+                // setEligible_leave('')
+                return;
+            }else if(leaveUpdateList[m].leave_type_id!==Leave_Update.leavetype.value){
+                setLeaveupdateEdit(false);
+                // setEligible_leave('')
+
+            }
+
+        }
+        setleaveUpdate((prevState) => ({
+            ...prevState,
+            }));
+        
+    }
+        
+    },[Leave_Update.leavetype.value])
+    // console.log("new",leaveupdateEdit)
+    /////
+    useEffect(() => {
+        handleCancel();
+      }, [location]);
 
     useEffect(() => {
 
@@ -117,7 +159,7 @@ function LeaveUpdate(props) {
             action: (
                 <>
                   <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])} id={leaveUpdateList[m].emp_leave_mas_id}  />{" "}
-                  <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} />
+                  {/* <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} /> */}
                 </>
               ),
           };
@@ -141,7 +183,9 @@ function LeaveUpdate(props) {
             validation: Leave_Update[key].validation,
         };
 
-
+        if(key==='noofdays'){
+            setEligible_leave(data)
+        }
         setleaveUpdate((prevState) => ({
             ...prevState,
             [key]: dynObj,
@@ -162,6 +206,7 @@ function LeaveUpdate(props) {
 
         setEmployeeName({})
         setUpdatelist([])
+        console.log("test",1)
     }
    
     function onSubmit() {
@@ -181,16 +226,16 @@ function LeaveUpdate(props) {
         // console.log(educationList.length, "educationList.length")
         if (filtererr.length > 0) {
         } else{
-            if(leaveAddEdit){
-                dispatch(updateLeaveBalance(Leave_Update,employeeName[0].emp_id,eligible_leave,leaveEditMasId)).then(() => {
+            if(leaveupdateEdit){
+                dispatch(updateLeaveBalance(Leave_Update,eligible_leave,leaveEditMasId,employeeCode)).then(() => {
                     
-                    handleCancel()
+                    // handleCancel()
                     })
              }else{
-                dispatch(insertLeaveUpdate(Leave_Update,employeeName[0].emp_id,eligible_leave)).then(() => {
+                dispatch(insertLeaveUpdate(Leave_Update,employeeName[0].emp_id,eligible_leave,employeeCode)).then(() => {
                     // if(props.getInsertStatus){
                         
-                        handleCancel()
+                        // handleCancel()
                     //     }
                         console.log(props.getInsertStatus,"stastu")
                         })
@@ -240,7 +285,8 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Employee Id</div>
                             <div className="searchbtnChange">
-                            <Search onSearch={(value)=>onSearchEmpId(value)}  enterButton />
+                            <Search onSearch={(value)=>onSearchEmpId(value)} 
+                            required="" enterButton />
                             </div>
                         </Grid>
                         <Grid item xs={3}>
@@ -275,7 +321,16 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Add No.of Days</div>
                             <div>
-                                <Labelbox type="text" changeData={(value)=>setEligible_leave(value)} />
+                                <Labelbox type="text" 
+                                 value={eligible_leave} 
+                                 changeData={(data) =>
+                                     checkValidation(data, "noofdays")
+                                 }
+                                 // value={Leave_Update.noofdays.value}
+                                 // changeData={(value)=>setEligible_leave(value)}
+                                  error={Leave_Update.noofdays.error}
+                                  errmsg={Leave_Update.noofdays.errmsg}
+                                />
                             </div>
                         </Grid>
                     </>}
@@ -287,7 +342,16 @@ function LeaveUpdate(props) {
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">Add No. of Hours/Per Month</div>
                                 <div>
-                                    <Labelbox type="text" changeData={(value)=>setEligible_leave(value)}/>
+                                    <Labelbox type="text" 
+                                    value={eligible_leave} 
+                                    changeData={(data) =>
+                                        checkValidation(data, "noofdays")
+                                    }
+                                    // value={Leave_Update.noofdays.value}
+                                    // changeData={(value)=>setEligible_leave(value)}
+                                     error={Leave_Update.noofdays.error}
+                                     errmsg={Leave_Update.noofdays.errmsg}
+                                     />
                                 </div>
                             </Grid>
 
@@ -303,7 +367,7 @@ function LeaveUpdate(props) {
                             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                         </Grid>
                         <Grid item xs={6}>
-                            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
+                            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>
                         </Grid>
                     </Grid>
 
@@ -325,6 +389,6 @@ const mapStateToProps = (state) =>
     getInsertStatus: state.LeaveUpdateReducer.insertLeaveUpdate,
     getEmployee: state.LeaveUpdateReducer.getEmployee,
     getUpdateTableData: state.LeaveUpdateReducer.getLeaveBalance,
-    // getLeaveUpdateData: state.LeaveUpdateReducer.getLeaveUpdate,
+    // getUpdateLeaveStatus: state.LeaveUpdateReducer.getLeaveUpdate,
 });
 export default connect(mapStateToProps)(LeaveUpdate);

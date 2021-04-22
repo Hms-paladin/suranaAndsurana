@@ -72,11 +72,8 @@ function ProjectFormCreate(props) {
   const [sendVariableData, setSendVariableData] = useState([]);
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
-  const [projectSearchCreate, setPrpjectSearchCreate] = useState({
-    amountSearch: {
-      value: "",
-    },
-  });
+  const [disableCondition, setDisableCondition] = useState(true);
+  const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -227,13 +224,17 @@ function ProjectFormCreate(props) {
   }, []);
 
   const onchangeAmount = (data, key) => {
-    if (key === "amountSearch" && data) {
+    console.log(parseInt(data),key,"onchangeAmount")
+    // if (key === "amountSearch" && data) {
       setPrpjectSearchCreate((prevState) => ({
         ...prevState,
-        [key]: { value: data },
+        [key]: data ,
       }));
-    }
+      setDisableCondition(false)
+    // }
   };
+
+
   function checkValidation(data, key, multipleId) {
     console.log(data,"onchangeValue")
     var errorcheck = ValidationLibrary.checkValidation(
@@ -534,13 +535,13 @@ function ProjectFormCreate(props) {
   };
   // {console.log("props.lenght",props.lenghtData)}
   useEffect(() => {
-
-    {console.log("props.lenght",props.lenghtData)}
     if(props.lenghtData !== 0){
       let searchVariableTableData = [];
       setNotfoundmodel(false);
-      props.searchVariableRate.map((data) => {
-        projectSearchCreate.amountSearch.value = data.Amount;
+      props.searchVariableRate.map((data, index) => {
+        if(disableCondition){
+        projectSearchCreate['amountSearch'+index] = data.Amount;
+        } 
         searchVariableTableData.push({
           designation: data.designation,
           activity: data.activity,
@@ -553,8 +554,8 @@ function ProjectFormCreate(props) {
             <Labelbox
               type="text"
               placeholder={"Amount"}
-              changeData={(data) => onchangeAmount(data, "amountSearch")}
-              value={projectSearchCreate.amountSearch.value}
+              changeData={(data) => onchangeAmount(data, "amountSearch"+index)}
+              value={projectSearchCreate['amountSearch'+index]}
             />
           ),
           UOM: data.unit,
@@ -562,7 +563,7 @@ function ProjectFormCreate(props) {
             <img
               src={PlusIcon}
               style={{ cursor: "pointer", width: 19 }}
-              onClick={() => addTempTable(data)}
+              onClick={() => addTempTable(data,index)}
             />
           ),
         });
@@ -573,9 +574,18 @@ function ProjectFormCreate(props) {
       setNotfoundmodel(true)
     }
     
-  }, [props.searchVariableRate, props.lenghtData]);
+  }, [props.searchVariableRate, props.lenghtData, projectSearchCreate]);
+
+  console.log(projectSearchCreate,"projectSearchCreate")
+
   //----------
-  const addTempTable = (data) => {
+  const addTempTable = (data,index) => {
+        console.log(projectSearchCreate,index,"projectSearchCreateprojectSearchCreate")
+
+//  ____________________
+
+
+// _______________________
 
     const TabLen = showVariableTable.length;
     showVariableTable.push({
@@ -603,9 +613,9 @@ function ProjectFormCreate(props) {
       sub_activity_id: data.sub_activity_id,
       location_id: data.location_id,
       range_id: data.range_id,
-      lowerLimit: data.lower_limit,
-      upperLimit: data.upper_limit,
-      base_rate: projectSearchCreate.amountSearch.value,
+      lower_limit: data.lower_limit,
+      upper_limit: data.upper_limit,
+      base_rate: data.Amount,
       unit_of_measure: data.unit_id,
     });
     setSendVariableData([...sendVariableData]);
@@ -765,7 +775,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
                 <Labelbox
                   type="text"
-                  placeholder={"Project Cost "}
+                  placeholder={"Project Value "}
                   // dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
@@ -906,7 +916,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
               <Labelbox
                   type="text"
-                  placeholder={"Project Cost "}
+                  placeholder={"Project Value "}
                   // dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")
@@ -1041,7 +1051,7 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}>
               <Labelbox
                   type="text"
-                  placeholder={"Project Cost "}
+                  placeholder={"Project Value "}
                   // dropdown={projectCostRange.ProjectCostRange}
                   changeData={(data) =>
                     checkValidation(data, "projectcostrange")

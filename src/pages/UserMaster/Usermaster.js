@@ -274,24 +274,24 @@ const UserMaster = (props) => {
       <div className="rate_enhanced_table">
      {UserMaster.tablename.value==="1"&&<EnhancedTable headCells={header}
           rows={""}
-           aligncss/>}
+           aligncss="aligncss"/>}
 
 
 {UserMaster.tablename.value==="2"&&<EnhancedTable headCells={status}
           rows={""}
-           aligncss/>}
+           aligncss="aligncss"/>}
 
            {UserMaster.tablename.value==="3"&&<EnhancedTable headCells={Class}
           rows={""}
-           aligncss/>}
+           aligncss="aligncss"/>}
 
 {UserMaster.tablename.value==="4"&&<EnhancedTable headCells={CheckList}
           rows={""}
-           aligncss/>}
+           aligncss="aligncss"/>}
            
 {UserMaster.tablename.value==="5"&&<EnhancedTable headCells={subStage}
           rows={""}
-           aligncss/>}
+           aligncss="aligncss"/>}
       </div>
       
       
