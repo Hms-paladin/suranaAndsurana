@@ -14,11 +14,13 @@ import Eyes from "../../images/neweye.svg";
 import DynModelView from "../Interview/model";
 import './search.scss'
 import ResumeForm from '../Resume/resume';
+import Edit from "../../images/editable.svg";
+
 
 
 
 const headCells = [
-    { id: "view", label: "View" },
+    { id: "view", label: "View/Edit" },
     { id: 'name', label: 'Name' },
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
@@ -95,6 +97,18 @@ function Resumesearch(props) {
             error: null,
             errmsg: null,
         },
+        exp_min: {
+            value: "",
+            validation: [{ "name": "allowNumaricOnly1" }],
+            error: null,
+            errmsg: null,
+        },
+        exp_max: {
+            value: "",
+            validation: [{ "name": "allowNumaricOnly1" }, { "name": "customminValue", "params": "0" }],
+            error: null,
+            errmsg: null,
+        },
     })
 
 
@@ -150,6 +164,16 @@ function Resumesearch(props) {
             dynObj.valueById = multipleIdList.toString()
         }
         // (end)
+
+
+        // experience max
+
+        if (data && key == "exp_min") {
+            ResumeSearch_Form.exp_max.validation[1].params = data
+            setResumeSearchFrom((prevState) => ({
+                ...prevState,
+            }));
+        }
 
         setResumeSearchFrom(prevState => ({
             ...prevState,
@@ -235,11 +259,16 @@ function Resumesearch(props) {
         let rowDataList = []
         props.GetRowData && props.GetRowData.map((data, index) => {
             rowDataList.push({
-                view: <img
+                view: <> <img
                     src={Eyes}
                     className="viewCandidatesList"
                     onClick={() => viewCandidate(data.resume_id)}
-                />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+                />  <img
+                        src={Edit}
+                        className="viewCandidatesList"
+                    // onClick={() => viewCandidate(data.resume_id)}
+                    />
+                </>, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
                 basic: data.basic_qual, language: data.language, certification: data.certifications,
                 specialization: data.specialization, acheivements: data.achievement, talents: data.talent, experience: data.experience,
                 box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id)} name={"checked" + index}
@@ -269,8 +298,9 @@ function Resumesearch(props) {
         <div>
             <div>
                 <div className="searchBoxContainer">
-                    <Grid container spacing={3}>
-                        <Grid item xs={3}>
+                    <Grid item xs={12} container spacing={2} direction="row">
+                        <Grid item xs={1} ></Grid>
+                        <Grid item xs={2}>
                             <Labelbox type="select"
                                 placeholder="Skills"
                                 dropdown={resumeSearchList.skillList}
@@ -279,7 +309,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={3} >
+                        <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Traits"
                                 dropdown={resumeSearchList.traitsList}
@@ -288,7 +318,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={3} >
+                        <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Certifications"
                                 dropdown={resumeSearchList.certificationList}
@@ -297,7 +327,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={3} >
+                        {/* <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Achievements"
                                 dropdown={resumeSearchList.achievementList}
@@ -305,10 +335,8 @@ function Resumesearch(props) {
                                 value={ResumeSearch_Form.acheivements.value}
                                 mode="multiple"
                             />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={3}>
-                        <Grid item xs={3}>
+                        </Grid> */}
+                        <Grid item xs={2}>
                             <Labelbox type="select"
                                 placeholder="Specialization"
                                 dropdown={resumeSearchList.specilizationList}
@@ -317,7 +345,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={3} >
+                        <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Capabilities"
                                 dropdown={resumeSearchList.capabilityList}
@@ -326,7 +354,13 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={3} >
+                        <Grid item xs={1} >
+
+                        </Grid>
+                        <Grid item xs={1} ></Grid>
+
+
+                        <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Talents"
                                 dropdown={resumeSearchList.talentList}
@@ -334,6 +368,34 @@ function Resumesearch(props) {
                                 value={ResumeSearch_Form.talents.value}
                                 mode="multiple"
                             />
+                        </Grid>
+                        <Grid item xs={2} >
+                            <Labelbox type="select"
+                                placeholder="Qualification"
+                                dropdown={resumeSearchList.talentList}
+                                changeData={(data) => checkValidation(data, "talents", resumeSearchList.talentList)}
+                                value={ResumeSearch_Form.talents.value}
+                                mode="multiple"
+                            />
+                        </Grid>
+                        <Grid item xs={3} >
+                            <div className="experienceSearch">
+                                <div>Experience</div>
+                                <div><Labelbox type="text"
+                                    placeholder="Min"
+                                    changeData={(data) => checkValidation(data, "exp_min")}
+                                    value={ResumeSearch_Form.exp_min.value}
+                                    error={ResumeSearch_Form.exp_min.error}
+                                    errmsg={ResumeSearch_Form.exp_min.errmsg}
+                                /></div>
+                                <div> <Labelbox type="text"
+                                    placeholder="Max"
+                                    changeData={(data) => checkValidation(data, "exp_max")}
+                                    value={ResumeSearch_Form.exp_max.value}
+                                    error={ResumeSearch_Form.exp_max.error}
+                                    errmsg={ResumeSearch_Form.exp_max.errmsg}
+                                /></div>
+                            </div>
                         </Grid>
                         <Grid container item xs={3} >
 
