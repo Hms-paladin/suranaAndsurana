@@ -46,19 +46,24 @@ import EmployeeFeedback from "../pages/Feedback/employeeFeedback";
 
 //DashBoard
 
-import DashboardNew from "../pages/Dashboard/dashboardnew";
-import KPI from "../pages/KPI/KPI";
-import LeaveForm from "../pages/Leaves/leaveform";
-import Appraisal from "../pages/Appraisal/appraisal";
-import Severance from "../pages/Severance/severance";
-import KRA from "../pages/KRA/KRA";
-import TicketCreation from '../pages/RequestTicket/ticketcreation'; 
+import DashboardNew from '../pages/Dashboard/dashboardnew';
+import KPI from '../pages/KPI/KPI';
+import LeaveForm from '../pages/Leaves/leaveform';
+import Appraisal from '../pages/Appraisal/appraisal';
+import Severance from '../pages/Severance/severance';
+import KRA from '../pages/KRA/KRA';
+import EmployeeList from '../pages/EmployeeList/EmployeeList'
+import LibraryBook from '../pages/LibraryBook/LibraryBook'
 
-import RatingModel from "../pages/Appraisal/ratingModel";
+import RatingModel from '../pages/Appraisal/ratingModel'
 
-import UserMaster from "../pages/UserMaster/Usermaster";
-
+import UserMaster from '../pages/UserMaster/Usermaster'
+import OPE from '../pages/OPE/OpeAdvance'
+//UserManagement
+import UserGroup from '../pages/UserManagement/usergroup'
+import NewUserMaster from '../pages/UserManagement/newusermaster'
 function Routes(props) {
+
   return (
     <Navbar>
       <Switch>
@@ -70,18 +75,10 @@ function Routes(props) {
         <PrivateRoute path="/search" component={Search} exact />
         <PrivateRoute path="/task" component={Task} exact />
         <PrivateRoute path="/addclient" component={AddClient} exact />
-        <PrivateRoute
-          path="/generateinvoice"
-          component={GenerateInvoice}
-          exact
-        />
+        <PrivateRoute path="/generateinvoice" component={GenerateInvoice} exact />
 
         {/* Create Project Form */}
-        <PrivateRoute
-          path="/projectFormCreate"
-          component={ProjectFormCreate}
-          exact
-        />
+        <PrivateRoute path="/projectFormCreate" component={ProjectFormCreate} exact />
         {/* Ip TradeMark */}
         <PrivateRoute path="/projectTask" component={ProjectTask} exact />
         <PrivateRoute path="/projectIp/:rowId" component={ProjectIp1} exact />
@@ -97,11 +94,7 @@ function Routes(props) {
         {/*  Group Control */}
         <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
         {/*  Stage Monitering */}
-        <PrivateRoute
-          path="/stagemonitering"
-          component={StageMonitering}
-          exact
-        />
+        <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
 
         {/* Dashboarde */}
         <PrivateRoute path="/kpi" component={KPI} exact />
@@ -110,8 +103,6 @@ function Routes(props) {
         <PrivateRoute path="/appraisal/:rowId" component={Appraisal} exact />
         <PrivateRoute path="/appraisal" component={Appraisal} exact />
         <PrivateRoute path="/ratingModel" component={RatingModel} exact />
-        <PrivateRoute path="/ticketcreation" component={TicketCreation} exact />
-
 
         <PrivateRoute path="/KRA" component={KRA} exact />
 
@@ -119,18 +110,25 @@ function Routes(props) {
         <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
         <PrivateRoute path="/severance" component={Severance} exact />
 
+
         {/* EmployeeFeedback */}
-        <PrivateRoute
-          path="/employeeFeedback"
-          component={EmployeeFeedback}
-          exact
-        />
+        <PrivateRoute path="/employeeFeedback" component={EmployeeFeedback} exact />
 
         {/* Usermaster */}
         <PrivateRoute path="/usermaster" component={UserMaster} />
+
+        <PrivateRoute path="/employeelist" component={EmployeeList} />
+        <PrivateRoute path="/librarybook" component={LibraryBook} />
+        <PrivateRoute path="/ope_advance" component={OPE} />
+        {/* UserManagement */}
+        <PrivateRoute path="/usergroup" component={UserGroup} />
+        <PrivateRoute path="/newusermaster" component={NewUserMaster} />
+
+
       </Switch>
     </Navbar>
   );
+
 }
 
 export default Routes;

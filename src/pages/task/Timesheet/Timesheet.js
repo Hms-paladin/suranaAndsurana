@@ -2,7 +2,7 @@ import React from 'react'
 import Labelbox from '../../../helpers/labelbox/labelbox'
 import './Timesheet.scss'
 import CustomButton from '../../../component/Butttons/button';
-export default function EditTimeSheet(){
+export default function EditTimeSheet(props){
     return(
         <>
         <div>
@@ -18,7 +18,7 @@ export default function EditTimeSheet(){
                 <Labelbox type="text"  placeholder={"3 Hrs 20 Mins"}/>
             </div>
             <div className="time_save_btndiv">
-            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"/>
+            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  onBtnClick={()=>props.closemodal(false)}/>
             </div>
         </div>
         </>

@@ -6,7 +6,7 @@
 .searchBoxContainer{
     background-color: #bdbdbd;
     margin-top: 20px;
-    padding: 10px 30px 1px 30px;
+    padding: 10px 0px 1px 0px;
     border-radius: 10px;
 }
 
@@ -313,4 +313,22 @@
     display: flex;
     width: 160px;
     height: 30px;
+}
+
+.experienceSearch{
+    display: flex;
+    >div{
+        font-size: 15px;
+        font-weight: 600;
+        margin-right: 7px;
+    }
+    >div:first-child{
+        padding-top: 8px;
+
+    }
+   
+}
+
+.viewCandidatesList{
+    width: 22px;
 }

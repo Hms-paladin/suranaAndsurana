@@ -7,6 +7,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 
 
 function RatingModel() { 
+
     return (
         <div>
             <div className="empDetailsIn">
@@ -43,5 +44,4 @@ function RatingModel() {
         </div>
     )
 }
-
 export default RatingModel;
