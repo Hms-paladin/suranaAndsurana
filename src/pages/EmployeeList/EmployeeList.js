@@ -14,7 +14,7 @@ export default function EmployeeList(props){
         { id: 'dob', label: 'DOB' },
         { id: 'doj', label: 'DOJ' },
         { id: 'exp', label: <div style={{lineHeight:"1.5",marginTop:"15px"}}><div>Experience</div>
-        <div style={{fontSize:"10px",textAlign:"center"}}>(No.of Years)</div></div> },
+        <div style={{fontSize:"10px"}}>(No.of Years)</div></div> },
         { id: 'sup', label: 'Supervisor' },
       ];
             

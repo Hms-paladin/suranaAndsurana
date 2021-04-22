@@ -19,7 +19,7 @@ import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
 import Appraisal from '../Appraisal/appraisal';
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
-
+import RecruitmentModal from './RecruitmentModal'
 import "./todoList.scss"
 
 // Hr Task:
@@ -83,8 +83,10 @@ function TodoList(props) {
     const [leaveModelTitle, setleaveModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
     const [kraapprovemodel, setKraapprovemodel] = useState(false);
+    // timesheet
     const [TimeSheet_Approval,setTimeSheet_Approval]=useState(false)
-
+    // recruitment
+    const [recruitmodal,setrecruitmodal]=useState(false)
 
     useEffect(() => {
         dispatch(getHrTaskList())
@@ -182,7 +184,10 @@ function TodoList(props) {
         }, {
             id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraisar Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         },
-       
+        {
+            id: <div className="ProjectTaskId" onClick={() => setrecruitmodal(true)}
+            >Recruitment Request</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }
          )
 
         setOtherTodoList(otherTask)
@@ -282,6 +287,7 @@ function TodoList(props) {
             <div>
                 <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project Task"} />
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
+
                 <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
             </div>
             <div>
@@ -294,6 +300,9 @@ function TodoList(props) {
                 <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} />} />
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
+
+                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={800} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} />} />
+
 
             
 

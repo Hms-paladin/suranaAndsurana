@@ -58,7 +58,7 @@ import LibraryBook from '../pages/LibraryBook/LibraryBook'
 import RatingModel from '../pages/Appraisal/ratingModel'
 
 import UserMaster from '../pages/UserMaster/Usermaster'
-
+import OPE from '../pages/OPE/OpeAdvance'
 function Routes(props) {
 
     return (
@@ -116,6 +116,7 @@ function Routes(props) {
 
                 <PrivateRoute path="/employeelist" component={EmployeeList}/>
                 <PrivateRoute path="/librarybook" component={LibraryBook}/>
+                <PrivateRoute path="/ope_advance" component={OPE}/>
 
 
 
