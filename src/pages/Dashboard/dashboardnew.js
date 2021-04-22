@@ -64,7 +64,7 @@ function DashboardNew() {
     {
       img: <img src={Library} className="imageicons" />,
       title: "Library",
-      path: "#",
+      path: "/librarybook",
     },
     {
       img: <img src={appraisal} className="imageicons" />,
@@ -104,12 +104,12 @@ function DashboardNew() {
     {
       img: <img src={TicketCreation} className="imageicons" />,
       title: "Ticket Creation",
-      path: "#",
+      path: "/ticketcreation",
     },
     {
       img: <img src={Employee} className="imageicons" />,
       title: "List of Employees",
-      path: "#",
+      path: "/employeelist",
     },
     {
       img: <img src={OPAdv} className="imageicons" />,

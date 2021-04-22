@@ -52,6 +52,7 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
     useEffect(() => {
 
     console.log(props.getCopyRightData,"getCopyRightData")
+    
     if(props.getCopyRightData.length>0){
     let CopyRightData = props.getCopyRightData
  
@@ -75,6 +76,7 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
     // console.log(props.getCopyRightData.length ,"ss")
     // console.log(CopyRightData,"api data");
     }, [props.getCopyRightData])
+ 
 
 
     function onSubmit() {
@@ -104,21 +106,10 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
                     handleCancel()
                 })
             }else{
-                if(props.getCopyRightStatus){
-                    console.log(props.getCopyRightStatus,"status")
-                    setIdDetails(props.id_Props)
-                    // dispatch(getCopyRight(props.id_Props.project_id))
-
-                    dispatch(updateCopyright(copy_Right,IdDetails,fileupload,copy_right_id)).then(() => {
-                        handleCancel()
-                    })
-                }
-                else{
-                    dispatch(insertCopyright(copy_Right,IdDetails,fileupload)).then(() => {
-                        handleCancel()
-                
-                 })
-                }
+                dispatch(insertCopyright(copy_Right,IdDetails,fileupload)).then(() => {
+                    handleCancel()
+            
+             })
             }
             
         }
@@ -230,7 +221,7 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
 const mapStateToProps = (state) => (
     {
         getCopyRightData: state.copyrightReducer.getCopyRight,
-        getCopyRightStatus: state.copyrightReducer.insertCopyright,
+        // getCopyRightStatus: state.copyrightReducer.insertCopyright,
     }
 );
 
