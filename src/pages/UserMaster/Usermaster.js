@@ -6,19 +6,25 @@ import EnhancedTable from '../../component/DynTable/table';
 import PlusIcon from "../../images/plusIcon.svg";
 import Edit from "../../images/pencil.svg";
 import './Usermaster.scss'
+import {connect,useDispatch} from 'react-redux'
 import ValidationLibrary from "../../helpers/validationfunction";
+import {get_Tablenames} from '../../actions/UserMasterAction'
 const UserMaster = (props) => {
-  const header = [
+  const header1 = [
     // { id: 'table_name', label: 'Table Name' },
     { id: 'groupname', label: 'Group Name' },
     { id: 'edit', label: 'Edit' },
   ];
-  const status = [
+  const  header2 = [
     { id: 'status', label: 'Status' },
     { id: 'type', label: 'Status Type' },
     { id: 'edit', label: 'Edit' },
-  ];
-  const Class = [
+  ]; 
+  const  skills = [
+    { id: 'skills', label: 'Skills Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header3 = [
     { id: 'class', label: 'Class Type' },
     { id: 'type', label: 'Class Name' },
     { id: 'des', label: 'Class Description' },
@@ -35,7 +41,22 @@ const UserMaster = (props) => {
     { id: 'edit', label: 'Edit' },
   ];
 
-
+  const dispatch = useDispatch();
+  const [tableHeaderMaster,setTableHeaderMaster]=useState({
+    'header1':[
+      // { id: 'table_name', label: 'Table Name' },
+      { id: 'groupname', label: 'Group Name' },
+      { id: 'edit', label: 'Edit' },
+    ],
+  'header2':[
+      { id: 'status', label: 'Status' },
+      { id: 'type', label: 'Status Type' },
+      { id: 'edit', label: 'Edit' },
+    ]
+  })
+  const [userTableHeader,setUserTableHeader]=useState([])
+  const [getTablename,setgetTablename]=useState([])
+  const [tablevalues,settablevalues]=useState([])
   const [UserMaster,setUserMaster]=useState({
     tablename: {
         value: "",
@@ -106,7 +127,10 @@ const UserMaster = (props) => {
   })
  
   function checkValidation(data, key, multipleId) {
-    console.log(data,"onchangeValue")
+    console.log(data,key,"tablename")
+    // if(key === 'tablename'){
+    //   setUserTableHeader(tableHeaderMaster[`header${data}`])
+    // }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       UserMaster[key].validation
@@ -140,10 +164,19 @@ const UserMaster = (props) => {
 
   
   }
-  useEffect(()=>{
 
-  })
- 
+  useEffect(() => {
+    dispatch(get_Tablenames());
+    
+  }, []);
+  useEffect(() => {
+    console.log("res",props.table_name)
+    let table_data = [];
+    props.table_name.map((data, index) =>
+    table_data.push({ value: data.display_name, id: data.table_id })
+    );
+    settablevalues({ table_data });
+  },[props.table_name]);
   return (
     <div className="user_master_parent">
       <div className="user_master_h">User Master</div>
@@ -161,12 +194,13 @@ const UserMaster = (props) => {
            value={UserMaster.tablename.value}
            error={UserMaster.tablename.error}
            errmsg={UserMaster.tablename.errmsg}
-           dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"}
-           ,{id:"5",value:"SubStage"}]}
+          //  dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"}
+          //  ,{id:"5",value:"SubStage"}]}
+          dropdown={tablevalues.table_data}
           />
           
            {/* group name */}
-           {UserMaster.tablename.value === "1" &&
+           {UserMaster?.tablename?.value === 3 &&
           <Labelbox type="text" placeholder={"Enter Group Name"}
           changeData={(data) => checkValidation(data, "groupname")}
           value={UserMaster.groupname.value}
@@ -175,7 +209,7 @@ const UserMaster = (props) => {
           />
           }
          {/* status */}
-          {UserMaster.tablename.value === "2" &&
+          {UserMaster.tablename.value === 4 &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Status Type"}
            changeData={(data) => checkValidation(data, "status_type")}
@@ -189,6 +223,18 @@ const UserMaster = (props) => {
             error={UserMaster.status_name.error}
             errmsg={UserMaster.status_name.errmsg}
            />       
+        </div>
+          }
+          {/* skills */}
+          {UserMaster.tablename.value === 5 &&
+           <div className="table_cont_change">
+          <Labelbox type="select" placeholder={"Enter Skills Name"}
+           changeData={(data) => checkValidation(data, "status_type")}
+           value={UserMaster.groupname.value}
+           error={UserMaster.groupname.error}
+           errmsg={UserMaster.groupname.errmsg}
+          />
+          
         </div>
           }
           {/* class type */}
@@ -257,7 +303,7 @@ const UserMaster = (props) => {
           }
 
       <div>
-       {UserMaster.tablename.value >0&&<img src={PlusIcon} className="plus_icon_user" />}
+       {UserMaster.tablename.value >=3&&<img src={PlusIcon} className="plus_icon_user" />}
 
        </div>
          
@@ -272,26 +318,31 @@ const UserMaster = (props) => {
       </Grid>
 
       <div className="rate_enhanced_table">
-     {UserMaster.tablename.value==="1"&&<EnhancedTable headCells={header}
+     {UserMaster.tablename.value===3&&<EnhancedTable headCells={header1}
           rows={""}
            aligncss="aligncss"/>}
 
 
-{UserMaster.tablename.value==="2"&&<EnhancedTable headCells={status}
+ {UserMaster.tablename.value===4&&<EnhancedTable headCells={header2}
           rows={""}
            aligncss="aligncss"/>}
 
-           {UserMaster.tablename.value==="3"&&<EnhancedTable headCells={Class}
+   {UserMaster.tablename.value===5&&<EnhancedTable headCells={skills}
           rows={""}
            aligncss="aligncss"/>}
+           
 
-{UserMaster.tablename.value==="4"&&<EnhancedTable headCells={CheckList}
+           {/* {UserMaster.tablename.value==="3"&&<EnhancedTable headCells={header3}
+          rows={""}
+           aligncss="aligncss"/>} */}
+
+{/* {UserMaster.tablename.value==="4"&&<EnhancedTable headCells={CheckList}
           rows={""}
            aligncss="aligncss"/>}
            
 {UserMaster.tablename.value==="5"&&<EnhancedTable headCells={subStage}
           rows={""}
-           aligncss="aligncss"/>}
+           aligncss="aligncss"/>} */}
       </div>
       
       
@@ -302,5 +353,11 @@ const UserMaster = (props) => {
   )
 }
 
+const mapStateToProps = (state) => (
+  {
+    table_name: state.UserMasterReducer.TableNamedropdownData,
+  }
+);
 
-export default UserMaster;
+export default connect(mapStateToProps)(UserMaster);
+
