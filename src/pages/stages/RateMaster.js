@@ -170,8 +170,6 @@ const RateMaster = (props) => {
     }));
   };
 
-  console.log(RateMaster.range_project_cost.value, "RateMaster.range_project_cost.value")
-
   function checkValidation(data, key, multipleId) {
 
 
