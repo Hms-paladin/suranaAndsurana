@@ -114,7 +114,7 @@ function DashboardNew() {
     {
       img: <img src={OPAdv} className="imageicons" />,
       title: "OP Advance",
-      path: "#",
+      path: "/ope_advance",
     },
   ]);
 
