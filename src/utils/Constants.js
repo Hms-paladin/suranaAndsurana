@@ -139,3 +139,6 @@ export const  UPDATE_COPYRIGHT = "UPDATE_COPYRIGHT";
 export const  INSERT_LEAVE_UPDATE = "INSERT_LEAVE_UPDATE";
 export const  GET_EMPLOYEE = "GET_EMPLOYEE";
 // export const  GET_SUBSTAGES = "GET_SUBSTAGES";
+
+// user master
+export const GET_TABLE_NAME="GET_TABLE_NAME";

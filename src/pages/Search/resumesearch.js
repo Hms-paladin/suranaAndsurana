@@ -118,7 +118,8 @@ function Resumesearch(props) {
             "capability_id": "",
             "talent_id": "",
             "status_id": "",
-            "experience": ""
+            "experience": "",
+         
         }))
     }, [])
 

@@ -24,6 +24,7 @@ import tradeMarkReducer from "./tradeMarkReducer";
 import copyrightReducer from "./copyrightReducer";
 import PatentReducer from "./PatentReducer";
 import LeaveUpdateReducer from "./LeaveUpdateReducer"
+import UserMasterReducer from './UserMasterReducer'
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -49,6 +50,7 @@ export default combineReducers({
   IPDropdownReducer,
   PatentReducer,
   copyrightReducer,
-  LeaveUpdateReducer
+  LeaveUpdateReducer,
+  UserMasterReducer,
 });
 
