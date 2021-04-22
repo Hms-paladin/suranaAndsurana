@@ -29,7 +29,23 @@
    text-align: right;
    margin-right: 20px;
 }
-
-.inputModeltitle{
-    margin-bottom: 7px;
+.passwordinput{
+    border-radius: 8px;
+    border: 1px solid #023e7d;
+    height: 30px;
+}
+.switchdiv{
+    display:flex;
+}
+.btnActive{
+    color:rgb(27, 155, 27);
+    font-size:13px;
+    border-radius: 5px;
+    border:1px solid rgb(27, 155, 27);
+}
+.btnInActive{
+    color:rgb(162, 9, 11);
+    font-size:13px;
+    border-radius: 5px;
+    border:1px solid rgb(162, 9, 11);
 }
