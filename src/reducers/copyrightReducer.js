@@ -1,7 +1,7 @@
 import { UPDATE_COPYRIGHT,GET_COPYRIGHT,INSERT_COPYRIGHT } from "../utils/Constants"
 
 const intialState = {
-    getCopyRight: [],insertCopyRightStatus:false,lengthData:""
+    getCopyRight: [],insertCopyright:false,lengthData:""
 }
 
 export default function (state = intialState, action) {
@@ -10,7 +10,7 @@ export default function (state = intialState, action) {
         case GET_COPYRIGHT:
             return  { ...state, getCopyRight: payload }
         case INSERT_COPYRIGHT:
-            return  { ...state, insertCopyRightStatus: payload }  
+            return  { ...state, insertCopyright: payload }  
         case UPDATE_COPYRIGHT:
                 return  { ...state, updateCopyrightStatus: payload ,lengthData: payload.length}
         default:
