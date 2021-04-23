@@ -142,3 +142,4 @@ export const  GET_EMPLOYEE = "GET_EMPLOYEE";
 
 // user master
 export const GET_TABLE_NAME="GET_TABLE_NAME";
+export const COMMON_INSERT_TEXT ="COMMON_INSERT_TEXT"

@@ -8,7 +8,7 @@ import Edit from "../../images/pencil.svg";
 import './Usermaster.scss'
 import {connect,useDispatch} from 'react-redux'
 import ValidationLibrary from "../../helpers/validationfunction";
-import {get_Tablenames} from '../../actions/UserMasterAction'
+import {get_Tablenames,Common_insert_text} from '../../actions/UserMasterAction'
 const UserMaster = (props) => {
   const header1 = [
     // { id: 'table_name', label: 'Table Name' },
@@ -112,25 +112,152 @@ const UserMaster = (props) => {
         error:null,
         errmsg:null,
     },
-    stage:{
-        value:"",
-        validation:[{name:"required"}],
-        error:null,
-        errmsg:null,
-    },
     sub_stage:{
         value:"",
         validation:[{name:"required"}],
         error:null,
         errmsg:null,
-    }
+    },
+    skill_name:{
+      value:"",
+      validation:[{name:"required"}],
+      error:null,
+      errmsg:null,
+  },
+  traits_name:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  specialization_name:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  certification_name:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  qualification_name:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  industry:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  institute:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  capability:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  talents:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  resourse:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  designation:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  question:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  department:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  activity:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  sub_activity:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  mark:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  court:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  range:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  stage_dropdown:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  stage_name:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+  case_type:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  },
+
+
+
+
+
+
   })
  
   function checkValidation(data, key, multipleId) {
     console.log(data,key,"tablename")
-    // if(key === 'tablename'){
-    //   setUserTableHeader(tableHeaderMaster[`header${data}`])
-    // }
+    if(key === 'tablename'){
+      // setUserTableHeader(tableHeaderMaster[`header${data}`])
+      settableid(data)
+    }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       UserMaster[key].validation
@@ -164,19 +291,93 @@ const UserMaster = (props) => {
 
   
   }
+  const [UserGroupsList, setUserGroupsList] = useState([])
+  const [tableid,settableid]=useState([])
+  const [isLoaded, setIsLoaded] = useState(true);
+  useEffect(() => {
+    if (isLoaded) {
 
-  useEffect(() => {
+      var groupList = [];
+      var groupList2=[]
+      const CheckList = [
+        { id: 'class', label: 'Project Type' },
+        { id: 'type', label: 'Check List' },
+        { id: 'edit', label: 'Edit' },
+      ];
+      const subStage = [
+        { id: 'class', label: 'Stage' },
+        { id: 'type', label: 'Sub Stage' },
+        { id: 'edit', label: 'Edit' },
+      ];
+     
+      groupList.push(subStage);
+      
+      groupList2.push(CheckList);
+      
+      setUserGroupsList({ groupList,groupList2})
+     
+
+    setIsLoaded(false);
+  }
+  var length=Object.keys(UserGroupsList).length;
+   
     dispatch(get_Tablenames());
-    
-  }, []);
-  useEffect(() => {
-    console.log("res",props.table_name)
     let table_data = [];
+    let dynamic_table_id=[]
     props.table_name.map((data, index) =>
-    table_data.push({ value: data.display_name, id: data.table_id })
+    {
+      return(
+    table_data.push({ value: data.display_name, id: data.table_id }),
+    dynamic_table_id.push(data.table_id )
+      )
+    }
     );
     settablevalues({ table_data });
-  },[props.table_name]);
+    // settableid(dynamic_table_id)
+    console.log("res",tableid)
+
+   
+  }, [props.table_name,tableid]);
+  //  insert approve
+  function Submit() {
+    var mainvalue = {};
+    var targetkeys = Object.keys(UserMaster);
+    for (var i in targetkeys) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        UserMaster[targetkeys[i]].value,
+        UserMaster[targetkeys[i]].validation
+      );
+      UserMaster[targetkeys[i]].error = !errorcheck.state;
+      UserMaster[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
+    console.log(filtererr,"length");
+   
+    if (filtererr.length >0) {
+     
+    } else {
+      alert("hai")
+  
+      dispatch(Common_insert_text(UserMaster) ).then(() => {
+        handleCancel();
+      });
+    }
+    setUserMaster((prevState) => ({
+      ...prevState,
+    }));
+  }
+
+const handleCancel = () => {
+    let From_key = ["groupname", "skill_name"];
+
+    From_key.map((data) => {
+      UserMaster[data].value = "";
+    });
+    setUserMaster((prevState) => ({
+      ...prevState,
+    }));
+  };
   return (
     <div className="user_master_parent">
       <div className="user_master_h">User Master</div>
@@ -200,7 +401,7 @@ const UserMaster = (props) => {
           />
           
            {/* group name */}
-           {UserMaster?.tablename?.value === 3 &&
+           {UserMaster?.tablename?.value === 3 && UserMaster?.tablename?.value !== "" &&
           <Labelbox type="text" placeholder={"Enter Group Name"}
           changeData={(data) => checkValidation(data, "groupname")}
           value={UserMaster.groupname.value}
@@ -227,18 +428,158 @@ const UserMaster = (props) => {
           }
           {/* skills */}
           {UserMaster.tablename.value === 5 &&
-           <div className="table_cont_change">
-          <Labelbox type="select" placeholder={"Enter Skills Name"}
-           changeData={(data) => checkValidation(data, "status_type")}
-           value={UserMaster.groupname.value}
-           error={UserMaster.groupname.error}
-           errmsg={UserMaster.groupname.errmsg}
+        
+          <Labelbox type="text" placeholder={"Enter Skills Name"}
+           changeData={(data) => checkValidation(data, "skill_name")}
+           value={UserMaster.skill_name.value}
+           error={UserMaster.skill_name.error}
+           errmsg={UserMaster.skill_name.errmsg}
           />
-          
-        </div>
           }
+
+               {/* Traits */}
+               {UserMaster.tablename.value === 6 &&
+        
+        <Labelbox type="text" placeholder={"Enter Traits Name"}
+         changeData={(data) => checkValidation(data, "traits_name")}
+         value={UserMaster.traits_name.value}
+         error={UserMaster.traits_name.error}
+         errmsg={UserMaster.traits_name.errmsg}
+        />
+        }
+
+             {/* certification */}
+             {UserMaster.tablename.value === 7 &&
+        
+        <Labelbox type="text" placeholder={"Enter Certification Name"}
+         changeData={(data) => checkValidation(data, "certification_name")}
+         value={UserMaster.certification_name.value}
+         error={UserMaster.certification_name.error}
+         errmsg={UserMaster.certification_name.errmsg}
+        />
+        }
+             {/* Traits */}
+             {UserMaster.tablename.value === 8 &&
+        <Labelbox type="text" placeholder={"Enter Specialization Name"}
+         changeData={(data) => checkValidation(data, "specialization_name")}
+         value={UserMaster.specialization_name.value}
+         error={UserMaster.specialization_name.error}
+         errmsg={UserMaster.specialization_name.errmsg}
+        />
+        }
+
+            {/* Qualification */}
+            {UserMaster.tablename.value === 9 &&
+        <Labelbox type="text" placeholder={"Enter Qualification Name"}
+         changeData={(data) => checkValidation(data, "qualification_name")}
+         value={UserMaster.qualification_name.value}
+         error={UserMaster.qualification_name.error}
+         errmsg={UserMaster.qualification_name.errmsg}
+        />
+        }
+
+          {/* Industry */}
+          {UserMaster.tablename.value === 11 &&
+        <Labelbox type="text" placeholder={"Enter Industry Name"}
+         changeData={(data) => checkValidation(data, "industry")}
+         value={UserMaster.industry.value}
+         error={UserMaster.industry.error}
+         errmsg={UserMaster.industry.errmsg}
+        />
+        }
+           {/* Institute */}
+           {UserMaster.tablename.value === 12 &&
+        <Labelbox type="select" placeholder={"Enter Institute Name"}
+         changeData={(data) => checkValidation(data, "institute")}
+         value={UserMaster.institute.value}
+         error={UserMaster.institute.error}
+         errmsg={UserMaster.institute.errmsg}
+        />
+        }
+        
+               {/* Capability */}
+               {UserMaster.tablename.value === 13 &&
+        <Labelbox type="select" placeholder={"Enter Capability Name"}
+         changeData={(data) => checkValidation(data, "capability")}
+         value={UserMaster.capability.value}
+         error={UserMaster.capability.error}
+         errmsg={UserMaster.capability.errmsg}
+        />
+        }
+           {/* Talents */}
+           {UserMaster.tablename.value === 14 &&
+        <Labelbox type="select" placeholder={"Enter Talents Name"}
+         changeData={(data) => checkValidation(data, "talents")}
+         value={UserMaster.talents.value}
+         error={UserMaster.talents.error}
+         errmsg={UserMaster.talents.errmsg}
+        />
+        }
+
+              {/* Type of resource */}
+              {UserMaster.tablename.value === 15 &&
+        <Labelbox type="select" placeholder={"Enter Type of resource Name"}
+         changeData={(data) => checkValidation(data, "resourse")}
+         value={UserMaster.resourse.value}
+         error={UserMaster.resourse.error}
+         errmsg={UserMaster.resourse.errmsg}
+        />
+        }
+
+          {/* Designation  */}
+          {UserMaster.tablename.value === 16 &&
+        <Labelbox type="select" placeholder={"Enter Designation  Name"}
+         changeData={(data) => checkValidation(data, "designation")}
+         value={UserMaster.designation.value}
+         error={UserMaster.designation.error}
+         errmsg={UserMaster.designation.errmsg}
+        />
+        }
+
+            {/* Question  */}
+            {UserMaster.tablename.value === 17 &&
+        <Labelbox type="select" placeholder={"Enter Question  Name"}
+         changeData={(data) => checkValidation(data, "question")}
+         value={UserMaster.question.value}
+         error={UserMaster.question.error}
+         errmsg={UserMaster.question.errmsg}
+        />
+        }
+        
+
+           {/* Department  */}
+           {UserMaster.tablename.value === 18 &&
+        <Labelbox type="select" placeholder={"Enter Department  Name"}
+         changeData={(data) => checkValidation(data, "department")}
+         value={UserMaster.department.value}
+         error={UserMaster.department.error}
+         errmsg={UserMaster.department.errmsg}
+        />
+        }
+        
+           {/* Activity  */}
+           {UserMaster.tablename.value === 19 &&
+        <Labelbox type="select" placeholder={"Enter Activity  Name"}
+         changeData={(data) => checkValidation(data, "activity")}
+         value={UserMaster.activity.value}
+         error={UserMaster.activity.error}
+         errmsg={UserMaster.activity.errmsg}
+        />
+        }
+
+             {/* sub Activity  */}
+             {UserMaster.tablename.value === 20 &&
+        <Labelbox type="select" placeholder={"Enter Sub Activity  Name"}
+         changeData={(data) => checkValidation(data, "sub_activity")}
+         value={UserMaster.sub_activity.value}
+         error={UserMaster.sub_activity.error}
+         errmsg={UserMaster.sub_activity.errmsg}
+        />
+        }
+
+    
           {/* class type */}
-            {UserMaster.tablename.value === "3" &&
+            {UserMaster.tablename.value === 21 &&
           <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Class Type"}
            changeData={(data) => checkValidation(data, "class_type")}
@@ -264,8 +605,80 @@ const UserMaster = (props) => {
           
           }
 
+                 {/* Mark  */}
+                 {UserMaster.tablename.value === 22 &&
+        <Labelbox type="select" placeholder={"Enter Mark Name"}
+         changeData={(data) => checkValidation(data, "mark")}
+         value={UserMaster.mark.value}
+         error={UserMaster.mark.error}
+         errmsg={UserMaster.mark.errmsg}
+        />
+        }
+        
+               {/* Court  */}
+               {UserMaster.tablename.value === 23 &&
+        <Labelbox type="select" placeholder={"Enter Court Name"}
+         changeData={(data) => checkValidation(data, "court")}
+         value={UserMaster.court.value}
+         error={UserMaster.court.error}
+         errmsg={UserMaster.court.errmsg}
+        />
+        }
+
+              {/* Range  */}
+              {UserMaster.tablename.value === 24 &&
+        <Labelbox type="select" placeholder={"Enter Range Name"}
+         changeData={(data) => checkValidation(data, "range")}
+         value={UserMaster.range.value}
+         error={UserMaster.range.error}
+         errmsg={UserMaster.range.errmsg}
+        />
+        }
+
+        
+        
+             {/* Stage  */}
+             {UserMaster.tablename.value === 25 &&
+        <Labelbox type="select" placeholder={"Enter Stage Name"}
+         changeData={(data) => checkValidation(data, "stage_name")}
+         value={UserMaster.stage_name.value}
+         error={UserMaster.stage_name.error}
+         errmsg={UserMaster.stage_name.errmsg}
+        />
+        }
+        
+         {/* substage */}
+         {UserMaster.tablename.value === 26 &&
+           
+           <div className="table_cont_change">
+            <Labelbox type="select" placeholder={" Stage"}
+              changeData={(data) => checkValidation(data, "stage_dropdown")}
+              value={UserMaster.stage_dropdown.value}
+              error={UserMaster.stage_dropdown.error}
+              errmsg={UserMaster.stage_dropdown.errmsg}
+            />
+  
+             <Labelbox type="text" placeholder={"Enter Sub Stage Name"}
+               changeData={(data) => checkValidation(data, "sub_stage")}
+               value={UserMaster.sub_stage.value}
+               error={UserMaster.sub_stage.error}
+               errmsg={UserMaster.sub_stage.errmsg}
+             />
+              </div>
+            }
+
+                  {/* Case Type  */}
+                  {UserMaster.tablename.value === 28 &&
+        <Labelbox type="select" placeholder={"Enter Case Type Name"}
+         changeData={(data) => checkValidation(data, "case_type")}
+         value={UserMaster.case_type.value}
+         error={UserMaster.case_type.error}
+         errmsg={UserMaster.case_type.errmsg}
+        />
+        }
+
          {/* checklist */}
-         {UserMaster.tablename.value === "4" &&
+         {UserMaster.tablename.value === 29 &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Project Type"}
             changeData={(data) => checkValidation(data, "project_type")}
@@ -283,27 +696,10 @@ const UserMaster = (props) => {
          </div>
           
           }
-             {UserMaster.tablename.value === "5" &&
-           
-         <div className="table_cont_change">
-          <Labelbox type="select" placeholder={"Stage"}
-            changeData={(data) => checkValidation(data, "stage")}
-            value={UserMaster.stage.value}
-            error={UserMaster.stage.error}
-            errmsg={UserMaster.stage.errmsg}
-          />
-
-           <Labelbox type="text" placeholder={"Enter Sub Stage Name"}
-             changeData={(data) => checkValidation(data, "sub_stage")}
-             value={UserMaster.sub_stage.value}
-             error={UserMaster.sub_stage.error}
-             errmsg={UserMaster.sub_stage.errmsg}
-           />
-            </div>
-          }
+         
 
       <div>
-       {UserMaster.tablename.value >=3&&<img src={PlusIcon} className="plus_icon_user" />}
+       {UserMaster.tablename.value >=3&&<img src={PlusIcon} onClick={Submit} className="plus_icon_user" />}
 
        </div>
          
@@ -318,11 +714,11 @@ const UserMaster = (props) => {
       </Grid>
 
       <div className="rate_enhanced_table">
-     {UserMaster.tablename.value===3&&<EnhancedTable headCells={header1}
+      <EnhancedTable headCells={header1}
           rows={""}
-           aligncss="aligncss"/>}
+           aligncss="aligncss"/>
 
-
+{/* 
  {UserMaster.tablename.value===4&&<EnhancedTable headCells={header2}
           rows={""}
            aligncss="aligncss"/>}
@@ -330,7 +726,7 @@ const UserMaster = (props) => {
    {UserMaster.tablename.value===5&&<EnhancedTable headCells={skills}
           rows={""}
            aligncss="aligncss"/>}
-           
+            */}
 
            {/* {UserMaster.tablename.value==="3"&&<EnhancedTable headCells={header3}
           rows={""}
