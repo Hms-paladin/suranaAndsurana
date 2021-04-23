@@ -149,3 +149,8 @@ export const INSERT_USERGROUP = "INSERT_USERGROUP";
 export const GET_GROUPNAME = "GET_GROUPNAME";
 // user master
 export const GET_TABLE_NAME="GET_TABLE_NAME";
+
+//employee list
+export const GET_EMPLOYEE_CODE="GET_EMPLOYEE_CODE";
+export const GET_EMPLOYEE_LIST_SEARCH="GET_EMPLOYEE_LIST_SEARCH";
+

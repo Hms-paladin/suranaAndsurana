@@ -77,6 +77,24 @@ function Employeeform(props) {
             error: null,
             errmsg: null,
         },
+        account_no: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        ifsc_code: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        bank_name: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
     })
 
     //Dropdowns
@@ -85,6 +103,8 @@ function Employeeform(props) {
         dispatch(getDepartment());
         dispatch(getInterviewers());
     }, [])
+
+    console.log(props.emp_form_id,"props.emp_form_id")
     //CandidateDetails
     useEffect(() => {
         EmpForm.desgination.value = props.emp_form_id.designation_id
@@ -495,11 +515,7 @@ function Employeeform(props) {
                     errmsg={EmpForm.employee_code.errmsg}
                 /></div>
 
-
-
-
-            </div>
-            <div className="upload_div">
+                <div className="upload_div">
                 {/* <div><Labelbox type="text" placeholder="Upload Document"/></div> */}
                 <div>
                     {/* <Upload {...props} className="upload_tag"
@@ -513,6 +529,32 @@ function Employeeform(props) {
                         onChange={onFileChange} id="pdfupload" /> <PublishIcon />
                 </div>
 
+            </div>
+
+            </div>
+            <div className="employeeform_row9">
+                 <div><Labelbox type="text" placeholder="Account Number"
+                    changeData={(data) => checkValidation(data, "account_no")}
+                    value={EmpForm.account_no.value}
+                    error={EmpForm.account_no.error}
+                    errmsg={EmpForm.account_no.errmsg}
+                /></div>
+
+                <div><Labelbox type="text" placeholder="IFSC Code"
+                    changeData={(data) => checkValidation(data, "ifsc_code")}
+                    value={EmpForm.ifsc_code.value}
+                    error={EmpForm.ifsc_code.error}
+                    errmsg={EmpForm.ifsc_code.errmsg}
+                /></div>
+
+                <div><Labelbox type="select" placeholder="Bank Name"
+                    changeData={(data) => checkValidation(data, "bank_name")}
+                    value={EmpForm.bank_name.value}
+                    error={EmpForm.bank_name.error}
+                    errmsg={EmpForm.bank_name.errmsg}
+                /></div>
+
+        
             </div>
             <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div>
         </div>
