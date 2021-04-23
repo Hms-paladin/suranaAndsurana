@@ -26,6 +26,7 @@ import PatentReducer from "./PatentReducer";
 import LeaveUpdateReducer from "./LeaveUpdateReducer"
 import UserMasterReducer from './UserMasterReducer'
 import EmployeeListReducer from './EmployeeListReducer'
+
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,

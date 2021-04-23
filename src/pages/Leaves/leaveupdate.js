@@ -25,12 +25,6 @@ const headCells = [
     { id: 'action', label: 'Action' }
 ];
 
-// const rows = [
-//     { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
-//     { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
-//     { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
-// ]
-
 function LeaveUpdate(props) {
     const location = useLocation();
     const dispatch = useDispatch();
@@ -84,6 +78,7 @@ function LeaveUpdate(props) {
        setEligible_leave(val.eligible_leave)
        setLeaveupdateEdit(true)
        setLeaveEditMasId(val.emp_leave_mas_id)
+       setEditBtn(true)
         setleaveUpdate((prevState) => ({
             ...prevState,
             }));
@@ -94,8 +89,9 @@ function LeaveUpdate(props) {
         dispatch(getLeaveType());
     }, [])
 
+    //Leave type
     useEffect(() => {
-        //Leave type
+  
         let LeaveType = [];
         props.LeaveType.map((data) =>
             LeaveType.push({ id: data.status_id, value: data.leave_type })
@@ -171,7 +167,6 @@ function LeaveUpdate(props) {
         }
         
     },[Leave_Update.leavetype.value])
-    // console.log("new",leaveupdateEdit)
     /////
  
     useEffect(() => {
@@ -197,13 +192,11 @@ function LeaveUpdate(props) {
           updatelist.push(listarray);
         }
         setUpdatelist({ updatelist });
-        console.log("getUpdateTableData")
-       
+    
       }, [props.getUpdateTableData])
 
     function checkValidation(data, key) {
-        console.log(data, key, "dataValue")
-
+  
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Leave_Update[key].validation
@@ -221,6 +214,7 @@ function LeaveUpdate(props) {
         if(key==='leavetype'){
             setEligible_leave("")
             setLeaveupdateEdit(false)
+            setEditBtn(false)
         }
         
         setleaveUpdate((prevState) => ({
@@ -228,8 +222,7 @@ function LeaveUpdate(props) {
             [key]: dynObj,
         }));
     }
-    // var name = document.getElementById('emp_code').value;
-    // // console.log("eee",name)
+
     const handleCancel = () => {
         let LeaveUpdate_key = [
             "start_date","end_date","leavetype","noofdays"

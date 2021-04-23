@@ -1,4 +1,3 @@
-
 import { GET_INTERVIEW_STATUS, GET_RESUMESEARCH_ROWDATA } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";

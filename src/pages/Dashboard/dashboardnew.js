@@ -113,7 +113,7 @@ function DashboardNew() {
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
-      title: "OP Advance",
+      title: "OPE Advance",
       path: "/ope_advance",
     },
   ]);
