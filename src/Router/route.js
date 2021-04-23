@@ -63,6 +63,8 @@ import OPE from '../pages/OPE/OpeAdvance'
 //UserManagement
 import UserGroup from '../pages/UserManagement/usergroup'
 import NewUserMaster from '../pages/UserManagement/newusermaster'
+//Library
+import AddResource from '../pages/LibraryBook/addresource'
 function Routes(props) {
 
   return (
@@ -124,6 +126,8 @@ function Routes(props) {
         {/* UserManagement */}
         <PrivateRoute path="/usergroup" component={UserGroup} />
         <PrivateRoute path="/newusermaster" component={NewUserMaster} />
+        {/* Library */}
+        <PrivateRoute path="/addresource" component={AddResource}/>
 
 
       </Switch>
