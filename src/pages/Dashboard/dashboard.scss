@@ -1,0 +1,123 @@
+// Dashboard new
+
+.dashboardMenu{
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    padding: 10px;
+}
+
+.imageicons{
+    width: 30px;
+}
+
+.projectscroll{
+    // height: 200px;
+    width: 40%;
+    background-color: white;
+    margin: 10px;
+    border-radius: 5px;
+    >div:first-child{
+        padding: 8px;
+        font-size: 17px;
+        font-weight: 600;
+    }
+}
+
+.projecttable{
+    display: flex;
+    padding: 5px;
+    justify-content: space-around;
+    >div{
+        width: 25%;
+    }
+}
+
+.projectdatas{
+    height: 130px;
+    overflow: auto;
+    background-color: rgb(221, 218, 218);
+
+}
+
+// task
+
+.tasktable{
+    display: flex;
+    padding: 5px;
+    justify-content: space-around;
+    >div{
+        width: 50%;
+    }
+}
+
+.taskscroll{
+    width: 30%;
+    background-color: white;
+    margin: 10px;
+    border-radius: 5px;
+    overflow: auto;
+    >div:first-child{
+        padding: 8px;
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+}
+
+.taskdatas{
+    height: 130px;
+    overflow: auto;
+    background-color: rgb(221, 218, 218);
+}
+
+.topcontainer{
+    display: flex;
+    height: auto;
+}
+
+// Tasks due by 5day
+
+
+.taskdaystableHeader{
+    display: flex;
+    padding: 5px;
+    justify-content: space-around;
+    font-weight: 600;
+    >div{
+        width: 16.6%;
+    }
+
+}
+.taskdaysscroll{
+    width: 72%;
+    background-color: white;
+    margin: 10px;
+    border-radius: 5px;
+    overflow: auto;
+    >div:first-child{
+        padding: 8px;
+        font-size: 17px;
+        font-weight: 600;
+    }
+}
+
+.taskdaysdatas{
+    height: 150px;
+    overflow: auto;
+    background-color: rgb(221, 218, 218);
+}
+
+.taskdaystable{
+    display: flex;
+    padding: 5px;
+    justify-content: space-around;
+    >div{
+        width: 16.6%;
+    }
+}
+
+.dashboardmenu{
+    height: 40px;
+    text-align: center;
+}

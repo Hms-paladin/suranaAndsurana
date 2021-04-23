@@ -6,13 +6,14 @@ import React, { Component } from 'react';
 checkValidation(textValue,validatorsArray){
   for(var valid in validatorsArray){//check validations through array
   console.log("mystextvalue",validatorsArray[valid].name);
-
+  console.log("RAN",validatorsArray[valid].rangeID);
          if(textValue==""){//check value is empty
       if(validatorsArray[valid].name=='required'){
       return {msg:"Field required",state:false};//validation occurs break the loop & throw the error
     }
-      }else if(validatorsArray[valid].name=='email'){
-        var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      }
+      else if(validatorsArray[valid].name=='email'){
+        var re = /^(?!.{101})(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if(re.test(textValue)==false){
      
       return {msg:"Email is invalid",state:false};//validation occurs break the loop & throw the error
@@ -27,8 +28,15 @@ checkValidation(textValue,validatorsArray){
       }
     }
     else if(validatorsArray[valid].name=='custommaxValue'){
-      if(textValue>validatorsArray[valid].params){
+      console.log("validation",validatorsArray[valid].params)
+      if(parseInt(textValue)>parseInt(validatorsArray[valid].params)){
       return {msg:"Value should not greater than "+validatorsArray[valid].params,state:false};//validation occurs break the loop & throw the error
+      }
+    }
+    else if(validatorsArray[valid].name=='customminValue'){
+      console.log("validation",validatorsArray[valid].params)
+      if(parseInt(textValue)<parseInt(validatorsArray[valid].params)){
+      return {msg:"Value should  greater than "+validatorsArray[valid].params,state:false};//validation occurs break the loop & throw the error
       }
     }
     else if(validatorsArray[valid].name=='mobile'){
@@ -45,10 +53,10 @@ checkValidation(textValue,validatorsArray){
      return {msg:"Please Enter 4 digit Number",state:false};
        }
    }
-    else if(validatorsArray[valid].name=='mobileHms'){ // 8 Digit Only
-      var re = /^([0-9][0-9]{7,14})$/;
+    else if(validatorsArray[valid].name=='mobileSurana'){ // 8 Digit Only
+      var re = /^([0-9][0-9]{9})$/;
       if(re.test(textValue)==false){
-    return {msg:"Please Enter 8 to 15 digit Mobile Number",state:false};
+    return {msg:"Please Enter 10 digit Mobile Number",state:false};
       }
   }
     else if (validatorsArray[valid].name == "regex") {
@@ -58,7 +66,7 @@ checkValidation(textValue,validatorsArray){
       }
     } else if (validatorsArray[valid].name == "allowNumaricOnly1") {
       var re = /^[0-9]*\.?[0-9]*$/;
-      if (re.test(textValue) == false) {
+      if (re.test(textValue) == false  || Number(textValue) == "00") {
         return { msg: "Please Enter Numeric Value only", state: false };
       }
     } else if (validatorsArray[valid].name == "webUrl") {
@@ -128,6 +136,39 @@ checkValidation(textValue,validatorsArray){
         }
       }
     }
+    //  else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
+    //   var re = /^[ A-Za-z_@./#&+-]\z*$/;
+    //   if (re.test(textValue) == false) {
+    //     return { msg: "Please Enter Alphabets only", state: false };
+    //   }
+    // } 
+     else if (validatorsArray[valid].name == "PercentageCGPA") {
+      var re = /	^100$|^\d{0,2}(\.\d{1,2})? *%?$/;
+      if (re.test(textValue) == false  || Number(textValue) == "00" ) {
+        return { msg: "Please Enter Percentage/CGPA only", state: false };
+      }
+    } else if (validatorsArray[valid].name == "50Char") {
+      var re =/^.{1,51}$/;
+      if (re.test(textValue) == false) {
+        return { msg:"Input data exceeds the limit", state: false };
+      }
+    } else if (validatorsArray[valid].name == "100Char") {
+      var re =/^.{1,101}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Input data exceeds the limit", state: false };
+      }
+    }else if (validatorsArray[valid].name == "200Char" ) { 
+      var re =/^.{1,251}$/;
+      if (re.test(textValue) == false) {
+        return { msg: "Input data exceeds the limit", state: false };
+      }
+    }else if (validatorsArray[valid].name == "alphabetsandSpecialChar" ) { 
+      var re =/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+      if (re.test(textValue) == false) {
+        return { msg: " Invalid Input ", state: false };
+      }
+    }
+
 
     }
     return {msg:"",state:true};//if no error throw empty message

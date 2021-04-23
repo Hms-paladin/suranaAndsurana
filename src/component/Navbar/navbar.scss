@@ -2,16 +2,14 @@
   margin: auto;
 }
 
-.MasterContainer {
-  height: 900px;
-}
 
 .userInfo {
   display: flex;
   justify-content: space-around;
 }
 
-.customIcon_header,.menuIcon {
+.customIcon_header,
+.menuIcon {
   font-size: 32px !important;
   color: white;
 }
@@ -49,7 +47,7 @@
   font-size: 13px;
 }
 
-.suranaLogo{
+.suranaLogo {
   margin: 30px 75px;
   height: 110px;
   background-color: white;
@@ -58,19 +56,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+  }
 }
 
-.menuItemHighLightDark{
+.menuItemHighLightDark {
   width: 4%;
   height: 40px;
   margin-right: 10px;
 }
 
-.menuItemHighLightDarkBg{
-  background-color: #a20981;
+.menuItemHighLightDarkBg {
+  background-color: #0466a8;
 }
 
-.siderOptions{
+.menuListIcon{
+  width: 35px;
+}
+
+.siderOptions {
   display: flex;
   font-size: 16px;
   margin: 4px 0;
@@ -78,11 +86,11 @@
   align-items: center;
 }
 
-.siderOptionsBg{
-  background-color: #682998;
+.siderOptionsBg {
+  background-color: #0353a4;
 }
 
-.SiderResume_Button{
+.SiderResume_Button {
   padding: 2.3% 5%;
   color: white;
 }
@@ -117,7 +125,22 @@
       font-size: 10px !important;
       margin: 0 2.5px;
     }
-
   }
+}
 
+.highlightedtitle {
+  font-size: 40px;
+  margin-left: 10px;
+}
+.suranaLogo img {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+}
+
+.logoutModel{
+  button{
+    padding: 0px;
+    min-width: 0px;
+  }
 }

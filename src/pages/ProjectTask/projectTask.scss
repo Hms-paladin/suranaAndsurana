@@ -1,0 +1,88 @@
+
+
+.taskContainer{
+    height: auto;
+    margin: 20px 40px 0px 0px;
+    background-color: #bdbdbd;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+
+.projectTaskGo{
+    border-radius: 30px !important;
+    height: 32px;
+}
+
+.projectButtonContainer{
+ text-align: right;
+ margin-right: 5%;
+ margin-top: 5%;
+}
+
+// Project Task Model
+
+.ddd{
+    margin-top: 20px;
+}
+.bill_align{
+    font-weight: bold;
+}
+.checkbox_clr .MuiCheckbox-colorSecondary.Mui-checked{
+color: rgba(0, 0, 0, 0.54);
+}
+
+.modalchangestask{
+    width: 60% !important;
+    margin-left: 25% !important;
+}
+
+.projectTaskModel{
+    width: 98%;
+}
+
+.projectTaskHeader{
+    height: 80px;
+    border: 1px solid rgba(16, 16, 87, 0.671);
+    border-radius: 8px;
+    padding: 15px;
+ 
+}   
+
+.projectTasktitle{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.projectTasdata{
+    font-size: 14px;
+}
+
+.activityTask{
+    margin: 20px;
+}
+
+.projectTaskDatealign{
+    margin: 0px 20px ;
+}
+
+.projectTaskModelButtons{
+    margin: 30px;
+    text-align: right;
+}
+
+// AdhocModelcontainer
+
+
+.AdhocTask{
+    margin: 0px 0px 20px 0px;
+}
+
+.adhocModelButtons{
+    text-align: right;
+    margin: 10px;
+}
