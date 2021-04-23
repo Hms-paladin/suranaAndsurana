@@ -35,10 +35,14 @@ export const searchRowdata = (data) => async dispatch => {
                 "capability_id": data.capability_id,
                 "talent_id": data.talent_id,
                 "status_id": data.status_id,
-                "experience": data.experience
+                "experience": data.experience,
+                "qualification":data.qualification,
+                "min_experience":"0",
+                "max_experience":"1"
             }
         })
             .then((response) => {
+                console.log("response",response)
                 dispatch({ type: GET_RESUMESEARCH_ROWDATA, payload: response.data.data })
             })
 

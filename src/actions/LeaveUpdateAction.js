@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
 
-export const insertLeaveUpdate = (params,employee_id,eligible_leave) => async dispatch => {
+export const insertLeaveUpdate = (params,employee_id,eligible_leave,employee_code) => async dispatch => {
 
     var DocumentData = new FormData();
     DocumentData.set("employee_id",employee_id)
@@ -27,7 +27,7 @@ export const insertLeaveUpdate = (params,employee_id,eligible_leave) => async di
                     message: "Leave Balance added sucessfully",
                   });
                 dispatch({type:INSERT_LEAVE_UPDATE,payload:response.data.status})
-                // dispatch(getCopyRight(IdDetails.project_id))
+                dispatch(getLeaveBalance(params,employee_code))
               return Promise.resolve();
             }else{
               let exist=false
@@ -92,12 +92,10 @@ export const getLeaveBalance = (params,employee_code) => async dispatch => {
     }
   }
 
-  export const updateLeaveBalance = (params,employee_id,eligible_leave,emp_leave_mas_id) => async dispatch => {
+  export const updateLeaveBalance = (params,eligible_leave,emp_leave_mas_id,employee_code) => async dispatch => {
 
     var DocumentData = new FormData();
-    DocumentData.set("emp_leave_mas_id",employee_id)
-    DocumentData.set("employee_id",employee_id)
-    DocumentData.set("leave_type_id",params.leavetype.value)
+    DocumentData.set("emp_leave_mas_id",emp_leave_mas_id)
     DocumentData.set("eligible_leave",eligible_leave)
     DocumentData.set("start_date",params.start_date.value)
     DocumentData.set("end_date",params.end_date.value)
@@ -107,7 +105,7 @@ export const getLeaveBalance = (params,employee_code) => async dispatch => {
     DocumentData.set("updated_by",localStorage.getItem("empId"))
     try {
         axios({
-            method: 'POST',
+            method: 'PUT',
             url: apiurl + 'update_leave_balance',
             data: DocumentData
           }).then((response) => {
@@ -116,7 +114,7 @@ export const getLeaveBalance = (params,employee_code) => async dispatch => {
                     message: "Leave Balance updated sucessfully",
                   });
                 dispatch({type:UPDATE_LEAVE_BALANCE,payload:response.data.status})
-                // dispatch(getCopyRight(IdDetails.project_id))
+                dispatch(getLeaveBalance(params,employee_code))
               return Promise.resolve();
             }else{
               notification.success({
