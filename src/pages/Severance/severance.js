@@ -28,9 +28,9 @@ function Severance() {
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
-                            <div className="appraisalFieldheading"> Area of Development</div>
+                            <div className="appraisalFieldheading"> Date of Resignation</div>
                             <div>
-                                <Labelbox type="select"
+                                <Labelbox type="datepicker"
                                 // changeData={(data) =>
                                 //     checkValidation(data, "area_dev")
                                 // }

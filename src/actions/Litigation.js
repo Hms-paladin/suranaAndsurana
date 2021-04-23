@@ -35,6 +35,7 @@ export const InsertLitigation = (Litigation_Form,IdDetails) => async dispatch =>
               notification.success({
                 message: "Litigation Updated Successfully",
               });
+              dispatch(GetLitigation(IdDetails.project_id))
               return Promise.resolve();
             }
           });

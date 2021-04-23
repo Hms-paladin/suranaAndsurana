@@ -166,3 +166,28 @@
     margin: 5px 0px;
     padding: 5px;
 }
+
+.appraisal_collapse{
+    margin: 0px 0px 3px 5px;
+}
+
+.appraisal_collapse {
+    .ant-collapse{
+        background-color: white !important;
+    }
+    .ant-collapse-arrow svg{
+    position: relative;
+    top: 50%  !important;
+    left: 1200px !important;
+    font-size: 16px !important;
+    .ant-collapse-header{
+        font-weight: 600 !important;
+        font-size: 16px;
+    }
+    
+  
+}
+}
+
+
+

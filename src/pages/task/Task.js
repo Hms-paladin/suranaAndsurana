@@ -481,7 +481,7 @@ function Task(){
                 </div>
             </div>
             <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => sethearing(bln)} width={800} content={<Hearing />} />
-    <DynModel modelTitle={"TimeSheet"} handleChangeModel={Ts_approval} handleChangeCloseModel={(bln) => setTs_approval(bln)} width={1100} content={<TimeSheetApproval />} />
+   
     
 
         </div>

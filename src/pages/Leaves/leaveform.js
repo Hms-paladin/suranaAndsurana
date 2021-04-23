@@ -6,7 +6,7 @@ import EnhancedTable from '../../component/DynTable/table';
 import Edit from "../../images/editable.svg";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
-import { getProfessionalCourse, SubjectList } from '../../actions/LeaveFormAction';
+import { insertLeaveForm,getProfessionalCourse, SubjectList,getEmpAvailableBalance } from '../../actions/LeaveFormAction';
 import { useDispatch, connect } from "react-redux";
 import { getEmployeeList } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
@@ -41,6 +41,8 @@ function LeaveForm(props) {
     const [subjectList, setSubjectList] = useState({})
     const [examSchedule, setExamSchedule] = useState([])
     const [editExam, setEditExam] = useState([])
+    const [empLeaveBal, setEmpLeaveBal] = useState("")
+    const [noOfDays, setNoOfDays] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
@@ -166,6 +168,22 @@ function LeaveForm(props) {
         dispatch(getEmployeeList());
     }, [])
 
+    useEffect(() => {
+        dispatch(getEmpAvailableBalance(localStorage.getItem("empId"),Leave_Form.leavetype.value))
+        // if(Leave_Form.leavetype.value===35||Leave_Form.leavetype.value)
+    }, [Leave_Form.leavetype.value])
+
+    useEffect(() => {
+        props.getEmpLeaveBal.length>0?setEmpLeaveBal(props.getEmpLeaveBal[0].current_balance):setEmpLeaveBal("")
+    }, [Leave_Form.leavetype.value,props.getEmpLeaveBal])
+
+    useEffect(() => {
+        var diff =  Math.floor(( Date.parse(Leave_Form.fromdate.value) - Date.parse(Leave_Form.todate.value) ) / 86400000)
+        console.log(diff,"diff")
+        isNaN(diff)?setNoOfDays(0):setNoOfDays(diff)
+    }, [Leave_Form.fromdate.value,Leave_Form.todate.value])
+   
+    
     const onFileChange = () => {
 
     }
@@ -275,7 +293,12 @@ function LeaveForm(props) {
         // console.log(filtererr.length);
         // console.log(educationList.length, "educationList.length")
         if (filtererr.length > 0) {
-        } {
+            console.log(filtererr.length,"tttts")
+        } else{
+            console.log("tttts")
+            dispatch(insertLeaveForm(Leave_Form)).then(() => {      
+                // handleCancel()
+           })
         }
 
         console.log(Leave_Form.exam_days.value, "Leave_Form")
@@ -341,12 +364,12 @@ function LeaveForm(props) {
                                 <Grid item xs={7}>
 
                                     <div className="leaveFieldheading">Available Balance</div>
-                                    <div>10 </div>
+                                    <div>{empLeaveBal} </div>
                                 </Grid>
                                 <Grid item xs={5}>
 
                                     <div className="leaveFieldheading">No.of days</div>
-                                    <div>10 </div>
+                                    <div>{noOfDays} </div>
                                 </Grid>
                             </Grid>
                             <Grid item xs={5}>
@@ -721,6 +744,7 @@ const mapStateToProps = (state) =>
     ProfessoionalCourse: state.LeaveFormReducer.leaveformstatus,
     SubjectList: state.LeaveFormReducer.leavefromsubject || [],
     EmployeeList: state.getOptions.getEmployeeList || [],
+    getEmpLeaveBal: state.LeaveFormReducer.getEmpAvailableBalance || [],
 
 
 });
