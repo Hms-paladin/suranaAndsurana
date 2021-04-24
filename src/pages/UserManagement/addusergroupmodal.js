@@ -1,24 +1,33 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
 import CustomButton from "../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import './usermanagement.scss';
 import { connect, useDispatch } from "react-redux";
-import { InsertUsergroup } from "../../actions/UserGroupAction";
+import { InsertUsergroup, updateGroupName } from "../../actions/UserGroupAction";
+import { PropertySafetyFilled } from '@ant-design/icons';
 
 
-function UserGroupModal() {
+function UserGroupModal(props) {
     const dispatch = useDispatch();
     const [groupName, setGroupName] = useState()
     const [UserGroup, setUserGroup] = useState({
         groupname: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ name: "required" }, { "name": "alphabetwithspace" }, { "name": "alphabetsandSpecialChar" }],
             error: null,
             errmsg: null,
+        },
+        groupid: {
+            value: "",
         }
     });
+
+    // useEffect(() => {
+    //     handleCancel()
+    // }, [props.nullFieldValue])
+
 
     function checkValidation(data, key, multipleId) {
         console.log(data, "onchangeValue")
@@ -57,17 +66,41 @@ function UserGroupModal() {
         }
 
         var filtererr = targetkeys.filter((obj) => UserGroup[obj].error == true);
-
-        dispatch(InsertUsergroup(UserGroup, groupName)).then(
-            (response) => {
-                handleCancel();
-            }
-        );
-
+        if (props.editbtn) {
+            dispatch(updateGroupName(UserGroup)).then(
+                (response) => {
+                    handleCancel();
+                    props.handleChangeCloseModel()
+                }
+            )
+        } else {
+            dispatch(InsertUsergroup(UserGroup)).then(
+                (response) => {
+                    handleCancel();
+                    props.handleChangeCloseModel()
+                }
+            )
+            UserGroup.groupname.value = "";
+        }
         setUserGroup((prevState) => ({
             ...prevState,
         }));
     }
+
+    useEffect(() => {
+        const Groupname = props.editGrouplist[0]?.group_name;
+        const Groupid = props.editGrouplist[0]?.id;
+
+        UserGroup.groupname.value = Groupname;
+        UserGroup.groupid.value = Groupid;
+
+        setUserGroup((prevState) => ({
+            ...prevState,
+        }));
+    }, [props.editGrouplist]);
+
+
+
 
     const handleCancel = () => {
         let From_key = [
@@ -104,10 +137,19 @@ function UserGroupModal() {
             </div>
             <div className="groupbtn">
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
-                <CustomButton btnName={"Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
+                <CustomButton btnName={props.editbtn ? "Update" : "Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
+
             </div>
         </div>
     )
 }
+const mapStateToProps = (state) =>
+(
+    {
+        UserGroupName: state.UserGroupReducer.getGroupName || [],
+        UpdateGroupName: state.UserGroupReducer.updateGroupName || [],
 
-export default UserGroupModal;
+    }
+);
+
+export default connect(mapStateToProps)(UserGroupModal);

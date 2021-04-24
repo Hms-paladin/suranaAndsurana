@@ -45,7 +45,7 @@ import {
   GET_ACTIVITY,
   GET_SUBACTIVITY,
   GET_LITIGATION_COUNSEL,
-  GET_LEAVETYPE,
+  GET_LEAVETYPE, GET_USERGROUP,
 } from "../utils/Constants.js";
 const initalState = {
   getResourcesType: [],
@@ -90,7 +90,8 @@ const initalState = {
   getSubactivity: [],
   getLitigationCounsel: [],
   getLeaveType: [],
-  getClass:[]
+  getClass:[],
+  getUserGroup: [],
 };
 
 export default function (state = initalState, action) {
@@ -182,6 +183,8 @@ export default function (state = initalState, action) {
       return { ...state, getLeaveType: payload };
     case USER_GET_CLASS:
       return {...state, getClass: payload };
+    case GET_USERGROUP:
+      return { ...state, getUserGroup: payload };
     default:
       return state;
   }

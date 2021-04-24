@@ -48,6 +48,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
+  GET_USERGROUP,
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -333,3 +334,11 @@ export const getClass  = () => async (dispatch) => {
     });
   return dispatch({ type: USER_GET_CLASS, payload: response.data.data });
 };
+//GET_USERGROUP
+
+export const getUserGroup = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/getGroupMaster");
+  return dispatch({ type: GET_USERGROUP, payload: response.data.data });
+};
+
+

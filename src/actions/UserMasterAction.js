@@ -1,7 +1,9 @@
-import { GET_TABLE_NAME,COMMON_INSERT_TEXT,INSERT_CLASS} from "../utils/Constants";
+import { GET_TABLE_NAME,INSERT_CLASS,COMMON_INSERT_TEXT} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
+
+
 export const get_Tablenames = () => async dispatch => {
   try {
 
@@ -100,3 +102,4 @@ export const InsertClass = (UserMaster,props) =>async dispatch => {
     });
   }
 }
+
