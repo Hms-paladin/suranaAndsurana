@@ -77,6 +77,24 @@ function Employeeform(props) {
             error: null,
             errmsg: null,
         },
+        account_no: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        ifsc_code: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        bank_name: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
     })
 
     //Dropdowns
@@ -85,6 +103,8 @@ function Employeeform(props) {
         dispatch(getDepartment());
         dispatch(getInterviewers());
     }, [])
+
+    console.log(props.emp_form_id,"props.emp_form_id")
     //CandidateDetails
     useEffect(() => {
         EmpForm.desgination.value = props.emp_form_id.designation_id
@@ -423,7 +443,8 @@ function Employeeform(props) {
                 )
             })
             }
-            <div className="employeeform_row7">
+          
+          {!props.emp_list &&  <div className="employeeform_row7">
                 <div>
                     <Labelbox type="select" placeholder="Designation"
                         disabled={true}
@@ -465,8 +486,9 @@ function Employeeform(props) {
                 </div>
 
 
-            </div>
-            <div className="employeeform_row8">
+            </div> }
+            
+            {!props.emp_list && <div className="employeeform_row8">
                 <div><Labelbox type="text" placeholder="Official Email ID"
                     changeData={(data) => checkValidation(data, "EmpOfficialEmail")}
                     value={EmpForm.EmpOfficialEmail.value}
@@ -495,11 +517,7 @@ function Employeeform(props) {
                     errmsg={EmpForm.employee_code.errmsg}
                 /></div>
 
-
-
-
-            </div>
-            <div className="upload_div">
+                <div className="upload_div">
                 {/* <div><Labelbox type="text" placeholder="Upload Document"/></div> */}
                 <div>
                     {/* <Upload {...props} className="upload_tag"
@@ -514,7 +532,59 @@ function Employeeform(props) {
                 </div>
 
             </div>
-            <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div>
+
+            </div> }
+            {!props.emp_list && <div className="employeeform_row9">
+                 <div><Labelbox type="text" placeholder="Account Number"
+                    changeData={(data) => checkValidation(data, "account_no")}
+                    value={EmpForm.account_no.value}
+                    error={EmpForm.account_no.error}
+                    errmsg={EmpForm.account_no.errmsg}
+                /></div>
+
+                <div><Labelbox type="text" placeholder="IFSC Code"
+                    changeData={(data) => checkValidation(data, "ifsc_code")}
+                    value={EmpForm.ifsc_code.value}
+                    error={EmpForm.ifsc_code.error}
+                    errmsg={EmpForm.ifsc_code.errmsg}
+                /></div>
+
+                <div><Labelbox type="select" placeholder="Bank Name"
+                    changeData={(data) => checkValidation(data, "bank_name")}
+                    value={EmpForm.bank_name.value}
+                    error={EmpForm.bank_name.error}
+                    errmsg={EmpForm.bank_name.errmsg}
+                /></div>
+
+        
+            </div> }
+            {!props.emp_list && 
+            <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div> }
+
+            {props.emp_list && 
+             <div>
+                     <div className="employeeform_row3">
+                            <div className="employeeform_r2"><div className="headcolor">Designation</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Date of Joining</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Supervisor's Name</div><div className="employeecont">--</div></div>
+                       
+                            <div className="employeeform_r2"><div className="headcolor">Supervisor's Email ID</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Supervisor's Phone No.</div><div className="employeecont">--</div></div>
+                            
+                        </div>
+                        <div className="employeeform_row5">
+                        <div className="employeeform_r2 traitsdiv"><div className="headcolor">Official Email ID</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2"><div className="headcolor">Official Contact No.</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Department</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Employee Code</div><div className="employeecont">-</div></div>
+                        </div>
+                        <div className="employeeform_row5">
+                            <div className="employeeform_r2"><div className="headcolor">Account Number</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">IFSC Code</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Bank Name</div><div className="employeecont">-</div></div>
+                        </div>
+            </div> }
+            
         </div>
     )
 }

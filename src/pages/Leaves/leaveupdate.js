@@ -13,6 +13,8 @@ import { AudioOutlined } from '@ant-design/icons';
 import { updateLeaveBalance,insertLeaveUpdate,getEmployee,getLeaveBalance} from "../../actions/LeaveUpdateAction";
 import Delete from "../../images/dashboard/delete.svg";
 import { useLocation, Switch } from 'react-router-dom'; 
+
+
 const { Search } = Input;
 
 const headCells = [
@@ -23,21 +25,20 @@ const headCells = [
     { id: 'action', label: 'Action' }
 ];
 
-// const rows = [
-//     { leavetype: "Casual leave", previousbalance: 2, eligible: 10, currentbalance: 12, img: <img src={Edit} className="editImage" /> },
-//     { leavetype: "Annual leave", previousbalance: 4, eligible: 10, currentbalance: 14, img: <img src={Edit} className="editImage" /> },
-//     { leavetype: "On duty", previousbalance: 8, eligible: 10, currentbalance: 43, img: <img src={Edit} className="editImage" /> }
-// ]
-
 function LeaveUpdate(props) {
     const location = useLocation();
     const dispatch = useDispatch();
     const [leaveType, setLeaveType] = useState({})
-    const [employeeCode, setEmployeeCode] = useState(0)
+    const [employeeCode, setEmployeeCode] = useState("")
+    const [errEmployee, setErrEmployee] = useState(false)
+
+    
     const [employeeName, setEmployeeName] = useState({})
     const [eligible_leave, setEligible_leave] = useState('')
     const [updateList, setUpdatelist] = useState([])
    
+    const [editBtn, setEditBtn] = useState(false)
+
     const [leaveupdateEdit, setLeaveupdateEdit] = useState(false)
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
     const [Leave_Update, setleaveUpdate] = useState({
@@ -77,6 +78,7 @@ function LeaveUpdate(props) {
        setEligible_leave(val.eligible_leave)
        setLeaveupdateEdit(true)
        setLeaveEditMasId(val.emp_leave_mas_id)
+       setEditBtn(true)
         setleaveUpdate((prevState) => ({
             ...prevState,
             }));
@@ -87,8 +89,9 @@ function LeaveUpdate(props) {
         dispatch(getLeaveType());
     }, [])
 
+    //Leave type
     useEffect(() => {
-        //Leave type
+  
         let LeaveType = [];
         props.LeaveType.map((data) =>
             LeaveType.push({ id: data.status_id, value: data.leave_type })
@@ -99,11 +102,36 @@ function LeaveUpdate(props) {
     /////////
 
     const onSearchEmpId=(val)=>{
+
         setEmployeeCode(val)
+        val!==""?setErrEmployee(false):setErrEmployee(true)
         dispatch(getEmployee(val))
         dispatch(getLeaveBalance(Leave_Update,val))
+        setleaveUpdate((prevState) => ({
+            ...prevState,
+            }));
     }
 
+    const onChangeEmpId=(data)=>{
+   
+        let val=data.target.value;
+        if(val!==""){
+            setErrEmployee(false)
+            setEmployeeCode(val)
+        }
+        else {
+                setEmployeeCode("")
+                setErrEmployee(true)
+            }
+      
+            dispatch(getEmployee(val))
+            dispatch(getLeaveBalance(Leave_Update,val))
+
+        setleaveUpdate((prevState) => ({
+            ...prevState,
+            }));
+    }
+   
     useEffect(() => {
         //employee name
         if(employeeCode===""){setEmployeeName({})}
@@ -120,12 +148,14 @@ function LeaveUpdate(props) {
 
         for (var m = 0; m < leaveUpdateList.length; m++) {
             if(leaveUpdateList[m].leave_type_id===Leave_Update.leavetype.value){
+                if(editBtn){
                 setLeaveupdateEdit(true);
-                // setEligible_leave('')
+                }else{
+                setLeaveupdateEdit(false);
+                }
                 return;
             }else if(leaveUpdateList[m].leave_type_id!==Leave_Update.leavetype.value){
                 setLeaveupdateEdit(false);
-                // setEligible_leave('')
 
             }
 
@@ -134,15 +164,11 @@ function LeaveUpdate(props) {
             ...prevState,
             }));
         
-    }
+        }
         
     },[Leave_Update.leavetype.value])
-    // console.log("new",leaveupdateEdit)
     /////
-    useEffect(() => {
-        handleCancel();
-      }, [location]);
-
+ 
     useEffect(() => {
 
         let leaveUpdateList = [];
@@ -166,12 +192,11 @@ function LeaveUpdate(props) {
           updatelist.push(listarray);
         }
         setUpdatelist({ updatelist });
-       
+    
       }, [props.getUpdateTableData])
 
     function checkValidation(data, key) {
-        console.log(data, key, "dataValue")
-
+  
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Leave_Update[key].validation
@@ -186,6 +211,12 @@ function LeaveUpdate(props) {
         if(key==='noofdays'){
             setEligible_leave(data)
         }
+        if(key==='leavetype'){
+            setEligible_leave("")
+            setLeaveupdateEdit(false)
+            setEditBtn(false)
+        }
+        
         setleaveUpdate((prevState) => ({
             ...prevState,
             [key]: dynObj,
@@ -194,7 +225,7 @@ function LeaveUpdate(props) {
 
     const handleCancel = () => {
         let LeaveUpdate_key = [
-            "start_date","end_date","leavetype"
+            "start_date","end_date","leavetype","noofdays"
         ]
 
         LeaveUpdate_key.map((data) => {
@@ -206,9 +237,13 @@ function LeaveUpdate(props) {
 
         setEmployeeName({})
         setUpdatelist([])
-        console.log("test",1)
+        setEmployeeCode("")
+       
     }
-   
+    useEffect(() => {
+        handleCancel();
+      }, [location]);
+
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Update);
@@ -222,23 +257,18 @@ function LeaveUpdate(props) {
             mainvalue[targetkeys[i]] = Leave_Update[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter((obj) => Leave_Update[obj].error == true);
-        // console.log(filtererr.length);
-        // console.log(educationList.length, "educationList.length")
-        if (filtererr.length > 0) {
-        } else{
+
+        if (filtererr.length > 0 || employeeCode==="") {
+           if(employeeCode===""){setErrEmployee(true)}
+
+        } 
+        else{
             if(leaveupdateEdit){
                 dispatch(updateLeaveBalance(Leave_Update,eligible_leave,leaveEditMasId,employeeCode)).then(() => {
-                    
-                    // handleCancel()
-                    })
+                })
              }else{
                 dispatch(insertLeaveUpdate(Leave_Update,employeeName[0].emp_id,eligible_leave,employeeCode)).then(() => {
-                    // if(props.getInsertStatus){
-                        
-                        // handleCancel()
-                    //     }
-                        console.log(props.getInsertStatus,"stastu")
-                        })
+                })
             }
         }
 
@@ -285,8 +315,9 @@ function LeaveUpdate(props) {
                         <Grid item xs={3}>
                             <div className="leaveFieldheading">Employee Id</div>
                             <div className="searchbtnChange">
-                            <Search onSearch={(value)=>onSearchEmpId(value)} 
-                            required="" enterButton />
+                            <Search onSearch={(value)=>onSearchEmpId(value)} onChange={(value)=> onChangeEmpId(value)}
+                             className={errEmployee && "required_box"} enterButton />
+                            {errEmployee && <span className={"required_text"}>Field required</span>}
                             </div>
                         </Grid>
                         <Grid item xs={3}>
