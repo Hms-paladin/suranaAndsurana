@@ -8,7 +8,7 @@ import Edit from "../../images/pencil.svg";
 import './Usermaster.scss'
 import {connect,useDispatch} from 'react-redux'
 import ValidationLibrary from "../../helpers/validationfunction";
-import {get_Tablenames,Common_insert_text,InsertClass} from '../../actions/UserMasterAction'
+import {get_Tablenames,Common_insert_text,InsertClass,InsertSubStage} from '../../actions/UserMasterAction'
 import {getClass,getStageList} from '../../actions/MasterDropdowns'
 const UserMaster = (props) => {
   const header1 = [
@@ -348,9 +348,9 @@ const UserMaster = (props) => {
       class_type_data.push({id:data.class_id,value:data.class})
     })
     props.stage.map((data,index)=>{
-      stage_list.push({id:data.class_id,value:data.class})
+      stage_list.push({id:data.stage_id,value:data.stage})
     })
-    settablevalues({ table_data,class_type_data});   
+    settablevalues({ table_data,class_type_data,stage_list});   
     settable_name_value(tablevalues.table_data)
    console.log(table_name_value,"ttt")
   }, [props.table_name,UserMaster]);
@@ -377,14 +377,16 @@ const UserMaster = (props) => {
     if(UserMaster.tablename.value === 21)
     {
     dispatch(
-      InsertClass(
-        UserMaster
-      )
-    ).then(() => {
+      InsertClass(UserMaster)).then(() => {
       handleCancel()
-   
     });
-  }
+    }
+//   else if(UserMaster.tablename.value === 26){
+//     dispatch(
+//       InsertClass(UserMaster)).then(() => {
+//       handleCancel()
+//     });
+// }
   
     // {UserMaster.tablename.value === 21?dispatch(
     //   Common_insert_text(
@@ -689,6 +691,7 @@ const handleCancel = () => {
            
            <div className="table_cont_change">
             <Labelbox type="select" placeholder={" Stage"}
+              dropdown={tablevalues.stage_list}
               changeData={(data) => checkValidation(data, "stage_dropdown")}
               value={UserMaster.stage_dropdown.value}
               error={UserMaster.stage_dropdown.error}
