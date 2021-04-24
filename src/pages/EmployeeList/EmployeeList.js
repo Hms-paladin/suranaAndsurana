@@ -184,7 +184,7 @@ useEffect(() => {
 const onclickEmpName=data=>{
   
     // Sup_nameGetId(data.emp_id)
-    setEmployee_Data({int_status_id:resume_id,designation_id:data.designation_id})
+    setEmployee_Data({int_status_id:data.emp_id})
     setEmployeeFormOpen(true)
 }
 console.log(resume_id,"resume_id",Employee_Data)
