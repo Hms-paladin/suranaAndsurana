@@ -8,6 +8,8 @@ import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
 import { GET_TALENTS } from "../utils/Constants.js";
+import {GET_QUALIFICATION} from '../utils/Constants.js'
+import {USER_GET_CLASS} from '../utils/Constants'
 import {
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
@@ -26,7 +28,6 @@ import {
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
-  GET_QUALIFICATION,
   GET_INDUSTRY,
   GET_PROJECT_SUB_TYPE,
   GET_PROCESS_TYPE,
@@ -321,3 +322,14 @@ export const getLeaveType = () => async (dispatch) => {
   return dispatch({ type: GET_LEAVETYPE, payload: response.data.data });
 };
 
+// user master dropdown
+export const getClass  = () => async (dispatch) => {
+  const response = await axios({
+      method: "post",
+      url: apiurl + "get_class",
+      data: {
+          class_type: "1",
+      },
+    });
+  return dispatch({ type: USER_GET_CLASS, payload: response.data.data });
+};

@@ -190,6 +190,7 @@ const HrInterviewModel = (props) => {
 
     if (roundDropdownValues.hr_round) {
       const getDisableId = roundDropdownValues.hr_round.filter((data) => {
+
         return (props.roundName === data.value)
       })
       for (let i = 0; i < getDisableId[0].id; i++) {
@@ -198,7 +199,6 @@ const HrInterviewModel = (props) => {
     }
   }, [props])
 
-  console.log(roundDropdownValues && roundDropdownValues.hr_round, "roundDropdownValues")
 
   return (
     <div>

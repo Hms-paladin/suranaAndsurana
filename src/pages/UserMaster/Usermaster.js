@@ -8,7 +8,8 @@ import Edit from "../../images/pencil.svg";
 import './Usermaster.scss'
 import {connect,useDispatch} from 'react-redux'
 import ValidationLibrary from "../../helpers/validationfunction";
-import {get_Tablenames,Common_insert_text} from '../../actions/UserMasterAction'
+import {get_Tablenames,Common_insert_text,InsertClass} from '../../actions/UserMasterAction'
+import {getClass,getStageList} from '../../actions/MasterDropdowns'
 const UserMaster = (props) => {
   const header1 = [
     // { id: 'table_name', label: 'Table Name' },
@@ -254,10 +255,10 @@ const UserMaster = (props) => {
  
   function checkValidation(data, key, multipleId) {
     console.log(data,key,"tablename")
-    if(key === 'tablename'){
-      // setUserTableHeader(tableHeaderMaster[`header${data}`])
-      settableid(data)
-    }
+    // if(key === 'tablename'){
+    //   // setUserTableHeader(tableHeaderMaster[`header${data}`])
+    //   settableid(data)
+    // }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       UserMaster[key].validation
@@ -292,9 +293,15 @@ const UserMaster = (props) => {
   
   }
   const [UserGroupsList, setUserGroupsList] = useState([])
-  const [tableid,settableid]=useState([])
+  const [table_name_value,settable_name_value]=useState([])
   const [isLoaded, setIsLoaded] = useState(true);
   useEffect(() => {
+    dispatch(get_Tablenames());
+    dispatch(getClass())
+    dispatch(getStageList())
+  }, [props]);
+  useEffect(() => {
+
     if (isLoaded) {
 
       var groupList = [];
@@ -320,24 +327,33 @@ const UserMaster = (props) => {
     setIsLoaded(false);
   }
   var length=Object.keys(UserGroupsList).length;
-   
-    dispatch(get_Tablenames());
+      
+  let table_value_data=[]
     let table_data = [];
-    let dynamic_table_id=[]
+    let class_type_data=[]
+    let stage_list=[]
     props.table_name.map((data, index) =>
     {
       return(
-    table_data.push({ value: data.display_name, id: data.table_id }),
-    dynamic_table_id.push(data.table_id )
+    table_data.push({ value: data.display_name, id: data.table_id,t_name:data.table_names }),
+    table_value_data.push({t_name:data.table_names})
       )
     }
     );
-    settablevalues({ table_data });
-    // settableid(dynamic_table_id)
-    console.log("res",tableid)
-
    
-  }, [props.table_name,tableid]);
+    // class_type
+    
+  
+    props.class_type.map((data,index)=>{
+      class_type_data.push({id:data.class_id,value:data.class})
+    })
+    props.stage.map((data,index)=>{
+      stage_list.push({id:data.class_id,value:data.class})
+    })
+    settablevalues({ table_data,class_type_data});   
+    settable_name_value(tablevalues.table_data)
+   console.log(table_name_value,"ttt")
+  }, [props.table_name,UserMaster]);
   //  insert approve
   function Submit() {
     var mainvalue = {};
@@ -354,22 +370,42 @@ const UserMaster = (props) => {
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
     console.log(filtererr,"length");
    
-    if (filtererr.length >0) {
+    if (filtererr.length>0) {
      
-    } else {
-      alert("hai")
-  
-      dispatch(Common_insert_text(UserMaster) ).then(() => {
-        handleCancel();
-      });
     }
+
+    if(UserMaster.tablename.value === 21)
+    {
+    dispatch(
+      InsertClass(
+        UserMaster
+      )
+    ).then(() => {
+      handleCancel()
+   
+    });
+  }
+  
+    // {UserMaster.tablename.value === 21?dispatch(
+    //   Common_insert_text(
+    //     props.table_name
+    //   )
+    // ).then(() => {
+    //   handleCancel()
+   
+    // }):""}
+  
+      // dispatch(Common_insert_text(props.table_name) ).then(() => {
+      //   handleCancel();
+      // });
+      
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   }
 
 const handleCancel = () => {
-    let From_key = ["groupname", "skill_name"];
+    let From_key = ["groupname", "skill_name","class_name","class_type","description"];
 
     From_key.map((data) => {
       UserMaster[data].value = "";
@@ -410,7 +446,7 @@ const handleCancel = () => {
           />
           }
          {/* status */}
-          {UserMaster.tablename.value === 4 &&
+          {UserMaster.tablename.value === 4 && UserMaster?.tablename?.value !== "" &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Status Type"}
            changeData={(data) => checkValidation(data, "status_type")}
@@ -583,6 +619,7 @@ const handleCancel = () => {
           <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Class Type"}
            changeData={(data) => checkValidation(data, "class_type")}
+           dropdown={tablevalues.class_type_data}
            value={UserMaster.class_type.value}
            error={UserMaster.class_type.error}
            errmsg={UserMaster.class_type.errmsg}
@@ -714,31 +751,31 @@ const handleCancel = () => {
       </Grid>
 
       <div className="rate_enhanced_table">
-      <EnhancedTable headCells={header1}
+      {/* <EnhancedTable headCells={header1}
           rows={""}
-           aligncss="aligncss"/>
+           aligncss="aligncss"/> */}
 
-{/* 
- {UserMaster.tablename.value===4&&<EnhancedTable headCells={header2}
+
+ {UserMaster.tablename.value===3&&<EnhancedTable headCells={header1}
+          rows={""}
+           aligncss="aligncss"/>}
+
+   {UserMaster.tablename.value===4&&<EnhancedTable headCells={skills}
+          rows={""}
+           aligncss="aligncss"/>}
+            
+
+           {UserMaster.tablename.value===5&&<EnhancedTable headCells={header3}
           rows={""}
            aligncss="aligncss"/>}
 
-   {UserMaster.tablename.value===5&&<EnhancedTable headCells={skills}
-          rows={""}
-           aligncss="aligncss"/>}
-            */}
-
-           {/* {UserMaster.tablename.value==="3"&&<EnhancedTable headCells={header3}
-          rows={""}
-           aligncss="aligncss"/>} */}
-
-{/* {UserMaster.tablename.value==="4"&&<EnhancedTable headCells={CheckList}
+{UserMaster.tablename.value===29&&<EnhancedTable headCells={CheckList}
           rows={""}
            aligncss="aligncss"/>}
            
-{UserMaster.tablename.value==="5"&&<EnhancedTable headCells={subStage}
+{UserMaster.tablename.value===26&&<EnhancedTable headCells={subStage}
           rows={""}
-           aligncss="aligncss"/>} */}
+           aligncss="aligncss"/>}
       </div>
       
       
@@ -752,6 +789,8 @@ const handleCancel = () => {
 const mapStateToProps = (state) => (
   {
     table_name: state.UserMasterReducer.TableNamedropdownData,
+    class_type:state.getOptions.getClass,
+    stage:state.getOptions.getStageList
   }
 );
 

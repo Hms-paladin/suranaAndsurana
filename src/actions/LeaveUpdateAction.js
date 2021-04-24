@@ -1,10 +1,10 @@
-import { GET_EMPLOYEE,INSERT_LEAVE_UPDATE } from "../utils/Constants";
+import {UPDATE_LEAVE_BALANCE, GET_LEAVE_BALANCE,GET_EMPLOYEE,INSERT_LEAVE_UPDATE } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
 
-export const insertLeaveUpdate = (params,employee_id,eligible_leave) => async dispatch => {
+export const insertLeaveUpdate = (params,employee_id,eligible_leave,employee_code) => async dispatch => {
 
     var DocumentData = new FormData();
     DocumentData.set("employee_id",employee_id)
@@ -27,8 +27,15 @@ export const insertLeaveUpdate = (params,employee_id,eligible_leave) => async di
                     message: "Leave Balance added sucessfully",
                   });
                 dispatch({type:INSERT_LEAVE_UPDATE,payload:response.data.status})
-                // dispatch(getCopyRight(IdDetails.project_id))
+                dispatch(getLeaveBalance(params,employee_code))
               return Promise.resolve();
+            }else{
+              let exist=false
+              notification.success({
+                message: response.data.data,
+              });
+              dispatch({type:INSERT_LEAVE_UPDATE,payload:exist})
+              return Promise.resolve(); 
             }
           });
         
@@ -60,60 +67,64 @@ export const getEmployee = (emp_code) => async dispatch => {
   }
 }
 
-// export const getCopyRight = (id) => async dispatch => {
+export const getLeaveBalance = (params,employee_code) => async dispatch => {
 
-//     try {
+    try {
   
-//         axios({
-//             method: "POST",
-//             url: apiurl + "get_copyright",
-//             data: {
-//               project_id: id,
-//             },
-//           }).then((response) => {
-//             if (response.data.status === 1) {
-//               // console.log(response.data.data.length,"//")
-//                 dispatch({type:GET_COPYRIGHT,payload:response.data.data})
-//               return Promise.resolve();
-//             }
-//           });
+        axios({
+            method: "POST",
+            url: apiurl + "get_leave_balance",
+            data: {
+              employee_code: employee_code,
+              start_date: params.start_date.value,
+              end_date: params.end_date.value,
+            },
+          }).then((response) => {
+            if (response.data.status === 1) {
+              // console.log(response.data.data.length,"//")
+                dispatch({type:GET_LEAVE_BALANCE,payload:response.data.data})
+              return Promise.resolve();
+            }
+          });
         
-//     } catch (err) {
+    } catch (err) {
         
-//     }
-//   }
+    }
+  }
 
-//   export const updateCopyright = (params,IdDetails,fileupload,copy_right_id) => async dispatch => {
+  export const updateLeaveBalance = (params,eligible_leave,emp_leave_mas_id,employee_code) => async dispatch => {
 
-//     var DocumentData = new FormData();
-//     DocumentData.set("copy_right_id",copy_right_id)
-//     DocumentData.set("project_id",IdDetails.project_id)
-//     DocumentData.set("title",params.title.value)
-//     DocumentData.set("type_of_work",params.type_of_work.value)
-//     DocumentData.set("upload_images",fileupload)
-//     DocumentData.set("reference",params.reference.value)
-//     DocumentData.set("status",params.status.value)
-//     DocumentData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
-//     DocumentData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
-//     DocumentData.set("created_by",localStorage.getItem("empId"))
-//     DocumentData.set("updated_by",localStorage.getItem("empId"))
-//     try {
-//         axios({
-//             method: 'PUT',
-//             url: apiurl + 'update_copyright',
-//             data: DocumentData
-//           }).then((response) => {
-//             if (response.data.status === 1) {
-//                 notification.success({
-//                     message: "Copyright Updated sucessfully",
-//                   });
-//                 dispatch({type:UPDATE_COPYRIGHT,payload:response.data.status})
-//                 dispatch(getCopyRight(IdDetails.project_id))
-//               return Promise.resolve();
-//             }
-//           });
+    var DocumentData = new FormData();
+    DocumentData.set("emp_leave_mas_id",emp_leave_mas_id)
+    DocumentData.set("eligible_leave",eligible_leave)
+    DocumentData.set("start_date",params.start_date.value)
+    DocumentData.set("end_date",params.end_date.value)
+    DocumentData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
+    DocumentData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
+    DocumentData.set("created_by",localStorage.getItem("empId"))
+    DocumentData.set("updated_by",localStorage.getItem("empId"))
+    try {
+        axios({
+            method: 'PUT',
+            url: apiurl + 'update_leave_balance',
+            data: DocumentData
+          }).then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "Leave Balance updated sucessfully",
+                  });
+                dispatch({type:UPDATE_LEAVE_BALANCE,payload:response.data.status})
+                dispatch(getLeaveBalance(params,employee_code))
+              return Promise.resolve();
+            }else{
+              notification.success({
+                message: response.data.data,
+              });
+              return Promise.resolve(); 
+            }
+          });
         
-//     } catch (err) {
+    } catch (err) {
         
-//     }
-// }
+    }
+}

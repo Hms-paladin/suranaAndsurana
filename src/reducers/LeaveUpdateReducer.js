@@ -1,7 +1,7 @@
-import { GET_EMPLOYEE,INSERT_LEAVE_UPDATE} from "../utils/Constants"
+import { UPDATE_LEAVE_BALANCE,GET_LEAVE_BALANCE,GET_EMPLOYEE,INSERT_LEAVE_UPDATE} from "../utils/Constants"
 
 const intialState = {
-    getEmployee:[],insertLeaveUpdateStatus:false,lengthData:""
+    getLeaveBalance:[],getEmployee:[],insertLeaveUpdate:false,lengthData:""
 }
 
 export default function (state = intialState, action) {
@@ -9,11 +9,13 @@ export default function (state = intialState, action) {
     switch (type) {
        
         case INSERT_LEAVE_UPDATE:
-            return  { ...state, insertLeaveUpdateStatus: payload }  
+            return  { ...state, insertLeaveUpdate: payload }  
         case GET_EMPLOYEE:
             return  { ...state, getEmployee: payload }
-        // case UPDATE_COPYRIGHT:
-        //         return  { ...state, updateCopyrightStatus: payload ,lengthData: payload.length}
+        case GET_LEAVE_BALANCE:
+            return  { ...state, getLeaveBalance: payload }
+        case UPDATE_LEAVE_BALANCE:
+                return  { ...state, updateLeaveBalance: payload ,lengthData: payload.length}
         default:
             return state;
     }
