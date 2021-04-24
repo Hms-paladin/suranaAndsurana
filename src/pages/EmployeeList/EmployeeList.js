@@ -11,6 +11,8 @@ import ValidationLibrary from "../../helpers/validationfunction";
 
 import DynModel from "../../component/Model/model";
 import Employeeform from '../Employeeform/employeeform';
+import Axios from 'axios';
+import { apiurl } from '../../utils/baseUrl'
 
 function EmployeeList(props){
     const dispatch = useDispatch();
@@ -23,7 +25,7 @@ function EmployeeList(props){
     const [EmployeeFormOpen, setEmployeeFormOpen] = useState(false)
     const [Employee_Data, setEmployee_Data] = useState([])
     const [stateClear, setStateClear] = useState(false)
-
+    const [resume_id, setResume_id] = useState("")
     const [EmpList, setEmpList] = useState({
         empcode: {
             value:"",
@@ -118,6 +120,7 @@ useEffect(() => {
   }, [props.getEmployee_List_Data])
 
 //   function Sup_nameGetId(data) {
+//       try{
 //     Axios({
 //         method: "post",
 //         header: {
@@ -133,12 +136,12 @@ useEffect(() => {
 //         response.data.data.map((data, index) =>
 //             empData.push(data)
 //         )
-//         // setEmpFrom(prevState => ({
-//         //     ...prevState,
-//         //     supervisor_email: { value: empData[0].official_email },
-//         //     supervisor_ph: { value: empData[0].official_contact }
-//         // }));
+//         setResume_id(empData[0].resume_id)
+//         return Promise.resolve();
 //     })
+// }catch{
+
+// }
 // }
 
   function checkValidation(data, key) {
@@ -179,12 +182,12 @@ useEffect(() => {
 }
 
 const onclickEmpName=data=>{
-    setEmployeeFormOpen(true)
+  
     // Sup_nameGetId(data.emp_id)
-    setEmployee_Data({int_status_id:data.resume_id,designation_id:data.designation_id})
-   
+    setEmployee_Data({int_status_id:resume_id,designation_id:data.designation_id})
+    setEmployeeFormOpen(true)
 }
-console.log(Employee_Data,"Employee_Data")
+console.log(resume_id,"resume_id",Employee_Data)
 const onNewPageClear = (bln) => {
     // setStateClear(!stateClear);
     // setInerviewScreen(bln);
@@ -245,7 +248,7 @@ dispatch(getEmployeeListSearch(empCodeName,EmpList)).then(() => {
 
                 {/*EmployeeForm after  selected in interview approve     */}
                 <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1100}
-                content={<Employeeform closemodal={(bln) => onNewPageClear(bln)} emp_form_id={Employee_Data} stateClear={stateClear} />} />
+                content={<Employeeform closemodal={(bln) => onNewPageClear(bln)} emp_form_id={Employee_Data} stateClear={stateClear} emp_list={true} />} />
 
         </div>
     )

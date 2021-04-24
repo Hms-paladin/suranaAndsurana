@@ -443,7 +443,8 @@ function Employeeform(props) {
                 )
             })
             }
-            <div className="employeeform_row7">
+          
+          {!props.emp_list &&  <div className="employeeform_row7">
                 <div>
                     <Labelbox type="select" placeholder="Designation"
                         disabled={true}
@@ -485,8 +486,9 @@ function Employeeform(props) {
                 </div>
 
 
-            </div>
-            <div className="employeeform_row8">
+            </div> }
+            
+            {!props.emp_list && <div className="employeeform_row8">
                 <div><Labelbox type="text" placeholder="Official Email ID"
                     changeData={(data) => checkValidation(data, "EmpOfficialEmail")}
                     value={EmpForm.EmpOfficialEmail.value}
@@ -531,8 +533,8 @@ function Employeeform(props) {
 
             </div>
 
-            </div>
-            <div className="employeeform_row9">
+            </div> }
+            {!props.emp_list && <div className="employeeform_row9">
                  <div><Labelbox type="text" placeholder="Account Number"
                     changeData={(data) => checkValidation(data, "account_no")}
                     value={EmpForm.account_no.value}
@@ -555,8 +557,34 @@ function Employeeform(props) {
                 /></div>
 
         
-            </div>
-            <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div>
+            </div> }
+            {!props.emp_list && 
+            <div className="employeeform_save"><Button onClick={onSubmit}>Save</Button></div> }
+
+            {props.emp_list && 
+             <div>
+                     <div className="employeeform_row3">
+                            <div className="employeeform_r2"><div className="headcolor">Designation</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Date of Joining</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Supervisor's Name</div><div className="employeecont">--</div></div>
+                       
+                            <div className="employeeform_r2"><div className="headcolor">Supervisor's Email ID</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Supervisor's Phone No.</div><div className="employeecont">--</div></div>
+                            
+                        </div>
+                        <div className="employeeform_row5">
+                        <div className="employeeform_r2 traitsdiv"><div className="headcolor">Official Email ID</div><div className="employeecont">--</div></div>
+                            <div className="employeeform_r2"><div className="headcolor">Official Contact No.</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">Department</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Employee Code</div><div className="employeecont">-</div></div>
+                        </div>
+                        <div className="employeeform_row5">
+                            <div className="employeeform_r2"><div className="headcolor">Account Number</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor">IFSC Code</div><div className="employeecont">-</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Bank Name</div><div className="employeecont">-</div></div>
+                        </div>
+            </div> }
+            
         </div>
     )
 }
