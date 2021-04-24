@@ -1,0 +1,43 @@
+.tradeMarkIcons{
+    margin-right: 12px;
+    }
+    
+
+
+
+.tabIconsView{
+    width: 45px;
+    background-color: white;
+    margin: 5px;
+    text-align: center;
+    padding: 1px 4px 6px 4px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 4px 3px #b8b6b6;
+    cursor: pointer;
+    height: 40px;
+}
+
+.tabiconTitle{
+    font-size: 6px;
+    color: #023E7D;
+    font-weight: 600;
+}
+
+.tabIconImage{
+    width: 17px;
+}
+
+.active,.tabIconsView:hover{
+    transform: scale(1.1);
+    box-shadow: 0px 0px 4px 3px #757373;
+
+}
+
+    
+@media only screen and (max-width: 1100px) {
+    .tabiconTitle{
+        font-size: 6px;
+       
+    }
+    
+}
