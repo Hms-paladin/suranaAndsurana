@@ -63,6 +63,7 @@ import OPE from '../pages/OPE/OpeAdvance'
 //UserManagement
 import UserGroup from '../pages/UserManagement/usergroup'
 import NewUserMaster from '../pages/UserManagement/newusermaster'
+import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
 function Routes(props) {
 
   return (
@@ -124,6 +125,7 @@ function Routes(props) {
         {/* UserManagement */}
         <PrivateRoute path="/usergroup" component={UserGroup} />
         <PrivateRoute path="/newusermaster" component={NewUserMaster} />
+        <PrivateRoute path="/useraccessrights" component={userAccessRights} />
 
 
       </Switch>
