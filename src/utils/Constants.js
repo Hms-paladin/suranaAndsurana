@@ -151,7 +151,10 @@ export const GET_GROUPNAME = "GET_GROUPNAME";
 export const UPDATE_GROUP_NAME = "UPDATE_GROUP_NAME";
 export const DELETE_GROUPNAME = "DELETE_GROUPNAME";
 // user master
-export const GET_TABLE_NAME="GET_TABLE_NAME";
+export const COMMON_INSERT_TEXT ="COMMON_INSERT_TEXT"
+export const USER_GET_CLASS="USER_GET_CLASS"
+export const INSERT_CLASS="INSERT_CLASS"
+export const GET_TABLE_NAME = "GET_TABLE_NAME";
 
 //employee list
 export const GET_EMPLOYEE_CODE="GET_EMPLOYEE_CODE";
