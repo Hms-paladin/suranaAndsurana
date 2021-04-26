@@ -9,7 +9,7 @@ import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
 import { GET_TALENTS } from "../utils/Constants.js";
 import {GET_QUALIFICATION} from '../utils/Constants.js'
-import {USER_GET_CLASS} from '../utils/Constants'
+import {USER_GET_CLASS,USER_GET_STATUS} from '../utils/Constants'
 import {
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
@@ -333,6 +333,13 @@ export const getClass  = () => async (dispatch) => {
       },
     });
   return dispatch({ type: USER_GET_CLASS, payload: response.data.data });
+};
+export const UsergetStatus  = () => async (dispatch) => {
+  const response = await axios({
+      method: "get",
+      url: apiurl + "get_status_type",
+    });
+  return dispatch({ type: USER_GET_STATUS, payload: response.data.data });
 };
 //GET_USERGROUP
 
