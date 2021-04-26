@@ -1,221 +1,222 @@
-import react, { useState, useEffect } from 'react';
-import './stagesicon.scss';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import AddIcon from '../../images/addIcon.svg';
-import CustomButton from '../../component/Butttons/button';
-import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
-import { useParams } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
-import { getStagesByProjectId,getSubStages,insertStages } from "../../actions/projectTaskAction";
+import { getStageMasterTableData } from "../../actions/StageMasterAction";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { getStagesByProjectId, getSubStages, insertStages, getStages } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
-import Axios from "axios";
-import moment from 'moment'
+import moment from 'moment';
+
+import './stagesicon.scss';
+
+
 function Stages(props) {
     const dispatch = useDispatch();
+    const [stageForm, setstageForm] = useState({
+        stages: {
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
+        subStages: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        }
+    });
     const [stages, setstages] = useState({});
     const [substages, setsubstages] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
+    const [stageItem, setStageItem] = useState([])
+    const [subStageItem, setSubStageItem] = useState([])
 
-    let { rowId } = useParams()
-    useEffect(() => {
-        dispatch(getProjectDetails(rowId))
-        dispatch(getStagesByProjectId(props.ProjectDetails[0].project_id,props.ProjectDetails[0].project_type_id));
-       // dispatch(getSubStages(stageId));
-        
-        
-        
-      }, []);
 
     useEffect(() => {
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id:props.ProjectDetails[0].project_id,
-            client_id:props.ProjectDetails[0].client_id,
-        })
+        dispatch(getStageMasterTableData())
+    }, [])
+
+    useEffect(() => {
+        console.log(props.projectDetails, "projectDetails")
+
+        if (props.projectDetails && props.projectDetails.length > 0) {
+            dispatch(getStagesByProjectId(props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id));
+            dispatch(getStages())
+        }
+    }, [props.projectDetails]);
+
+    useEffect(() => {
 
         let stagesData = []
-        let SubstagesData = []
         props.stagesList.map((data) =>
-        stagesData.push({ value: data.stage,
-        id: data.stage_id })
-    )
+            stagesData.push({
+                value: data.stage,
+                id: data.stage_id
+            })
+        )
 
-    props.stagesList.map((data) =>
-        
-        SubstagesData.push({ value: data.sub_stage,
-            id: data.sub_stage_id })
-    )
-    setstages({ stagesData })
-    setsubstages({ SubstagesData })
+        setstages({ stagesData })
 
-}, [props.ProjectDetails,
-    props.stagesList
-  ]);
-  const [stageForm, setstageForm] = useState({
-    stages: {
-      value: "",
-      //validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    }, 
-    subStages: {
-      value: "",
-      validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    }
-});
-
-    const [addRows, setAddRows] = useState([])
+    }, [props.stagesList]);
 
 
-    function Addbox() {
-        setAddRows([...addRows, <Grid item xs={9} container direction="row" spacing={2}>
-            <Grid item xs={5}>
-                <Labelbox type="select"
-                placeholder="Stage"
-                dropdown={stages.stagesData}
-    changeData={(data) => checkValidation(data, "stages")}
-                
-                value={stageForm.stages.value} />
-            </Grid>
-            <Grid item xs={5}>
-                <Labelbox type="select"
-                dropdown={substages.SubstagesData}
-                changeData={(data) => checkValidation(data, "subStages")} 
-                value={stageForm.subStages.value}  />
-            </Grid>
-         
+    useEffect(() => {
+        let SubstagesData = []
 
-        </Grid>])
+        props.subStagesList.map((data) =>
+            SubstagesData.push({
+                value: data.sub_stage,
+                id: data.sub_stage_id
+            })
+        )
+
+        setsubstages({ SubstagesData })
+
+    }, [props.subStagesList])
 
 
-    }
-
-    function checkValidation(data, key, multipleId) {
-
+    function checkValidation(data, key) {
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             stageForm[key].validation
         );
+
+        if (key === "stages") {
+            dispatch(getSubStages(data));
+        }
+
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
             validation: stageForm[key].validation
         }
-
-        // only for multi select (start)
-
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
         setstageForm(prevState => ({
             ...prevState,
             [key]: dynObj,
         }));
-
     };
 
     function onSubmit() {
-        let params ={
-            "project_id":props.ProjectDetails[0].project_id,
-            "project_type_id":props.ProjectDetails[0].project_type_id,
-            "sub_project_id":props.ProjectDetails[0].sub_project_id,
-            "stage_id":stageForm.stages.value,
-            "sub_stage_id":stageForm.subStages.value,
-            "created_by" :localStorage.getItem("empId"),
-            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-            "updated_by" :localStorage.getItem("empId"),
-            }
+        var mainvalue = {};
+        var targetkeys = Object.keys(stageForm);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                stageForm[targetkeys[i]].value,
+                stageForm[targetkeys[i]].validation
+            );
+            stageForm[targetkeys[i]].error = !errorcheck.state;
+            stageForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = stageForm[targetkeys[i]].value;
+        }
 
-            dispatch(insertStages(params)).then(() => {
-                //handleCancel()
+        var filtererr = targetkeys.filter(
+            (obj) => stageForm[obj].error == true
+        );
+        if (filtererr.length > 0) {
+        } else {
+            let params = {
+                "project_id": props.projectDetails[0].project_id,
+                "project_type_id": props.projectDetails[0].project_type_id,
+                "sub_project_id": props.projectDetails[0].sub_project_id,
+                "stage_id": stageForm.stages.value,
+                "sub_stage_id": stageForm.subStages.value,
+                "created_by": localStorage.getItem("empId"),
+                "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+                "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+                "updated_by": localStorage.getItem("empId"),
+            }
+            dispatch(insertStages(params, props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id)).then(() => {
+                handleCancel()
             })
-       
+        }
+
+        setstageForm((prevState) => ({
+            ...prevState,
+        }));
+    }
+
+    const handleCancel = () => {
+        let Stages_key = [
+            "stages",
+            "subStages"
+        ];
+
+        Stages_key.map((data) => {
+            stageForm[data].value = "";
+        });
+        setstageForm((prevState) => ({
+            ...prevState,
+        }));
     };
+
+    useEffect(() => {
+        let stageArrItem = []
+        let subStageArrItem = []
+
+        console.log(props.getAllStages, "getAllStages")
+        props.getAllStages.map((data) => {
+            stageArrItem.push(data.stage)
+            subStageArrItem.push(data.sub_stage)
+        })
+
+        setStageItem(stageArrItem)
+        setSubStageItem(subStageArrItem)
+
+    }, [props.getAllStages])
+
+    console.log(stageItem, "stageItem")
 
 
 
     return (
         <div>
             <Grid>
-
                 <div className="StagesTitle">Stages</div>
-
-
-
             </Grid>
-
-
             <Grid item xs={9} container direction="row" spacing={2}>
                 <Grid item xs={5}>
                     <Labelbox type="select"
                         placeholder="Stage"
                         dropdown={stages.stagesData}
-            changeData={(data) => checkValidation(data, "stages")}
-                        
+                        changeData={(data) => checkValidation(data, "stages")}
                         value={stageForm.stages.value} />
 
                 </Grid>
                 <Grid item xs={5}>
                     <Labelbox type="select" placeholder="Sub Stage"
-                    dropdown={substages.SubstagesData}
-                    changeData={(data) => checkValidation(data, "subStages")} 
-                    value={stageForm.subStages.value} />
+                        dropdown={substages.SubstagesData}
+                        changeData={(data) => checkValidation(data, "subStages")}
+                        value={stageForm.subStages.value} />
                 </Grid>
                 <Grid item xs={2}>
-                    <img src={AddIcon} onClick={() => Addbox()} />
+                    <img src={AddIcon} onClick={onSubmit} />
                 </Grid>
             </Grid>
-
-            {addRows}
 
             <Grid item xs={9} container direction="row" spacing={2}>
                 <Grid item xs={5}>
                     <div className="stageHeading" >Stages</div>
-                    <div >Stages</div>
-                    <div >Stages</div>
-                    <div >Stages</div>
-                    <div >Stages</div>
-
+                    {stageItem.map((data) => {
+                        return <div >{data}</div>
+                    })}
                 </Grid>
+
                 <Grid item xs={5}>
                     <div className="stageHeading"> Sub Stages</div>
-                    <div > Sub Stages</div>
-                    <div >Sub Stages</div>
-                    <div >Sub Stages</div>
-                    <div >Sub Stages</div>
-
+                    {subStageItem.map((data) => {
+                        return <div >{data}</div>
+                    })}
                 </Grid>
-
             </Grid>
-            <div className="stagebtn">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="custom_save" />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
-            </div>
         </div>
     )
 }
-const mapStateToProps = (state) =>
-({
-    
+const mapStateToProps = (state) => ({
     stagesList: state.projectTasksReducer.stagesList || [],
-    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    subStagesList: state.projectTasksReducer.SubStagesList || [],
+    getAllStages: state.projectTasksReducer.getAllStage || []
 });
 
 export default connect(mapStateToProps)(Stages);

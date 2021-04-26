@@ -93,6 +93,7 @@ function Navbar(props) {
       // user groups
       { path: "/usergroups", title: "User Groups", img: Usergroups },
       // group control
+      { path: "/groupacess", title: "Group Acess", img: MasterIcon },
       { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
       { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
       { path: "/dashboardnew", title: "Dashboard", img: Dashboard },
@@ -100,8 +101,10 @@ function Navbar(props) {
       { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
       { path: "/usermaster", title: "User Master", img: Stagemaster },
       //User Management
-      { path: "/usergroup", title: "User Management Group", img: Stagemaster },
-      { path: "/newusermaster", title: "User Management Master", img: Stagemaster },
+      { path: "/usergroup", title: "User Management Group", img: Usergroups },
+      { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
+      //user rights
+      { path: "/userrights", title: "User Rights", img: MasterIcon },
     ]
   );
 

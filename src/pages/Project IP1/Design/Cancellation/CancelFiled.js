@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getIPStatus } from "../../../../actions/IPDropdown.js";
 import { InsertDesign } from "../../../../actions/InsertDesign";
 
-function CancelFiled() {
+function CancelFiled(props) {
     const [CancelFiled, setCancelFiled] = useState({
         client_petition: {
             value: "",
@@ -94,9 +94,9 @@ function CancelFiled() {
         console.log(filtererr.length);
         if (filtererr.length > 0) {
         } else {
-            // dispatch(InesertResume(CancelFiled)).then(()=>{
-            //     handleCancel()
-            // })
+            dispatch(InsertDesign(CancelFiled, props.projectDetails && props.projectDetails[0])).then(() => {
+                handleCancel()
+              })
         }
         setCancelFiled(prevState => ({
             ...prevState
@@ -117,6 +117,17 @@ function CancelFiled() {
     
         setCancFilGetList({ getStatusList })
       }, [DesignDropDowns])
+
+      const handleCancel = () => {
+        let cancFil_key = ["client_petition", "des_number", "petitioner", "respondent_rep", "status", "comments"]
+    
+        cancFil_key.map((data) => {
+            CancelFiled[data].value = "";
+        });
+        setCancFilGetList((prevState) => ({
+          ...prevState,
+        }));
+      };
 
     return (
         <div className="container">

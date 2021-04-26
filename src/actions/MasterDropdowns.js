@@ -47,6 +47,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
+  GET_USERGROUP,
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -320,4 +321,12 @@ export const getLeaveType = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_leave_type");
   return dispatch({ type: GET_LEAVETYPE, payload: response.data.data });
 };
+
+//GET_USERGROUP
+
+export const getUserGroup = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/getGroupMaster");
+  return dispatch({ type: GET_USERGROUP, payload: response.data.data });
+};
+
 

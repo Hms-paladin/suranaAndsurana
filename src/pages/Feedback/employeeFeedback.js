@@ -10,7 +10,7 @@ function EmployeeFeedback() {
         <div>
             <div className="headerpage">Employee Feedback</div>
             <div className="fbContainer">
-                <div className="feedbackSubheading">Which of the following influenced your decision to Leave the company?  </div>
+                <div className="feedbackSubheading">Which of the following influenced your decision to leave the company?  </div>
                 <div className="checkboxChooser">
                     <div>
                         <Checkbox />

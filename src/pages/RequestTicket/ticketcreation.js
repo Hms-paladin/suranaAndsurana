@@ -365,7 +365,8 @@ function TicketCreation(props) {
                                 changeData={(data) => checkValidation(data, "qualification")}
                                 value={TicketCreation.qualification.value}
                                 error={TicketCreation.qualification.error}
-                                errmsg={TicketCreation.qualification.errmsg} />
+                                errmsg={TicketCreation.qualification.errmsg}
+                                mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
                             <Labelbox type="text" placeholder="Experience"
@@ -457,11 +458,14 @@ function TicketCreation(props) {
                                 errmsg={TicketCreation.talents.errmsg}
                                 mode="multiple" />
                         </Grid>
+                        <Grid item xs={3}>
+                        <Labelbox type="select" placeholder="Assigned to"></Labelbox>
+                        </Grid>
                     </Grid>
                 </div>
                 <div className="ticketbtn">
                     <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" />
-                    <CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
                 </div>
 

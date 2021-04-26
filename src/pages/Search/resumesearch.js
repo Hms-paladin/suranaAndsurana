@@ -406,7 +406,7 @@ function Resumesearch(props) {
                             </Grid>
                             <Grid item xs={8}>
                                 <Link to='resume'>
-                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"} onBtnClick={() => setpathname("/projectFormCreate")} />
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}  />
                                 </Link>
                             </Grid>
                         </Grid>

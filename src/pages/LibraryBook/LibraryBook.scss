@@ -42,3 +42,83 @@
 .cont_lib_item_grid .formdiv .labeltxt{
     margin-bottom: 5px !important;
 }
+//Receive Modal & Issue Modal
+.RIbtncss{
+    display:flex;
+}
+.custom_RIbtn{
+    width:0px !important;
+    padding:8px 5% !important;
+    box-shadow: none !important;
+    background-color: #1965B2 !important;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    height:20px !important;
+}
+.Rtitlediv{
+    display:flex;
+    justify-content: space-around;
+}
+.Rvaluesdiv{
+    display:flex;
+    margin-left:30px;
+}
+.linespace{
+    box-shadow: 0px 2px #f5e5e5;
+    width:100%;
+    height: 5px;
+    margin-bottom: 12px;
+    margin-top:12px;
+}
+.RModalTitle{
+    font-size:12px;
+    font-weight:600;
+}
+.RModalValues{
+    font-size:15px;
+    font-weight:600;
+}
+.RGridcss{
+    margin-left:30px;
+    margin-bottom: 20px;
+}
+.RGridcss1{
+    margin-left:38px;
+    margin-bottom: 30px;
+}
+.ok_btn_css{
+    width:auto !important;
+}
+.okbtndiv{
+    margin-top:10px;
+    display:flex;
+    justify-content: center;
+}
+.plusicon{
+    width:20px;
+}
+.plusgrid{
+    display: flex;
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+//Add Resource
+.addresource{
+    font-size:20px;
+    font-weight:600;
+}
+.AddResourceContainer{
+    background-color: white;
+    border-radius:5px;
+    padding:20px;
+}
+.addresource_table_align{
+    background-color: #F3F3F3 !important;
+}
+.add_btn_css{
+    width:100px !important;
+}
+.addresource{
+    margin-bottom: 15px;
+    margin-left:13px;
+}
