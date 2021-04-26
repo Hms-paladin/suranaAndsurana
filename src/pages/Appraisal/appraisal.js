@@ -129,7 +129,45 @@ function Appraisal() {
                         <div>April 2021 to March 2021</div>
                     </div>
                 </div>
-                <div>
+
+                <div className="employeeApprisal_Container">
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Qualification</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>LLB</div>
+                            <div>Mar 2021</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Diploma in Law</div>
+                            <div>Dec 2021</div>
+                        </div>
+                    </div>
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Program</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Legal Practice</div>
+                            <div>Jan 2021</div>
+                        </div>
+                    </div>
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Seminar</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Seminar 1</div>
+                            <div>Feb 2021</div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div>
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
@@ -179,7 +217,7 @@ function Appraisal() {
                         </Grid>
                     </Grid>
 
-                </div>
+                </div> */}
                 {addemployeeDetails.length > 0 &&
                     <div className="appraisalTable" >
                         <div className="appraisaldetails">
@@ -198,6 +236,7 @@ function Appraisal() {
 
                     </div>}
             </div>
+
 
             { rowID == 1 ?
                 <>
@@ -250,7 +289,7 @@ function Appraisal() {
                             </div>
                         }
                     </div>
-                    
+
                     <div className="appraisal_collapse">
                         <Collapse onChange={callback}><Panel header="Any other specific opinion/remarks" ><div>Any other specific opinion/remarks</div></Panel></Collapse>
                     </div>
