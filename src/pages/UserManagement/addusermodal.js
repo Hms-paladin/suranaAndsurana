@@ -6,15 +6,17 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from "react-redux";
 import { Switch } from 'antd';
 import './usermanagement.scss';
-import { getEmployeeList, getUserGroup } from "../../actions/MasterDropdowns";
-import {insertUser} from "../../actions/UserMasterAction";
+import { getUserGroup } from "../../actions/MasterDropdowns";
+import {insertUser,editUser,getCandidateName} from "../../actions/UserMasterAction";
 
 
 function UserMasterModal(props) {
     const dispatch = useDispatch();
-    const [employeeList, setEmployeeList] = useState({})
+    const [employeeList, setEmployeeList] = useState([])
     const [userGroup, setUserGroup] = useState({})
     const [password, setPassword] = useState("")
+    const [changeActive, setChangeActive] = useState(1)
+    const [errPassword, setErrPassword] = useState(false)
     const [UserMaster, setUserMaster] = useState({
         emp_name: {
             value: "",
@@ -49,8 +51,66 @@ function UserMasterModal(props) {
 
     });
 
+    ////// api dispatch
+    useEffect(() => {
+        dispatch(getCandidateName())
+        dispatch(getUserGroup())
+    }, [])
+    //////
+ 
+    useEffect(() => {
+        if(props.user_data){
+            
+        UserMaster.emp_name.value=props.user_data.employee_id
+        UserMaster.user_name.value=props.user_data.user_name
+        UserMaster.mobilenumber.value=props.user_data.mobileno
+        UserMaster.emailid.value=props.user_data.email
+        UserMaster.usergroup.value=props.user_data.group_id
+        // setPassword(props.user_data.password)
+        setChangeActive(props.user_data.active_flag)
+        
+        // setPassword((prevState) => ({
+        //     ...prevState,
+        // }));
+        
+        setUserMaster((prevState) => ({
+            ...prevState,
+        }));
+        }
+
+    }, [props.user_data])
+
+    
+    useEffect(() => {
+        const EmployeeList = []
+        props.EmployeeList.map((data, index) => {
+            EmployeeList.push({ value: data.EmpName, id: data.emp_id })
+        })
+        console.log(props.EmployeeList,"props.EmployeeList")
+
+        setEmployeeList(EmployeeList)
+
+        // UserGroup
+        const UserGroup = []
+        props.UserGroup.map((data, index) => {
+            UserGroup.push({ value: data.group_name, id: data.id })
+        })
+        setUserGroup({ UserGroup })
+
+    }, [props.EmployeeList, props.UserGroup])
+
+
+    
+    // function SwitchChange() {
+    // }
+    function onChangeActive(data) {
+       
+        data===true?setChangeActive(1):setChangeActive(0)
+        
+    }
+   
     function checkValidation(data, key) {
-        console.log(key, "onchangeValue")
+        // console.log(key, "onchangeValue")
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             UserMaster[key].validation
@@ -71,45 +131,13 @@ function UserMasterModal(props) {
 
     }
 
-  
-
-
-    useEffect(() => {
-        dispatch(getEmployeeList())
-        dispatch(getUserGroup())
-    }, [])
-
-    useEffect(() => {
-        const EmployeeList = []
-        props.EmployeeList.map((data, index) => {
-            EmployeeList.push({ value: data.name, id: data.emp_id })
-        })
-        setEmployeeList({ EmployeeList })
-
-        // UserGroup
-        const UserGroup = []
-        props.UserGroup.map((data, index) => {
-            UserGroup.push({ value: data.group_name, id: data.id })
-        })
-        setUserGroup({ UserGroup })
-
-    }, [props.EmployeeList, props.UserGroup])
-
-
-    const [change, setchange] = useState(false)
-    function SwitchChange() {
-    }
-    function onChange() {
-        setchange(!change)
-
-    }
-
     const handleCancel = () => {
         let From_key = [
             "emp_name",
             "user_name",
             "mobilenumber",
-            "emailid"
+            "emailid",
+            "usergroup"
 
         ];
 
@@ -122,9 +150,12 @@ function UserMasterModal(props) {
             }
         });
 
+        setPassword("")
         setUserMaster((prevState) => ({
             ...prevState,
         }));
+        props.closeModel()
+
     };
 
     function onsubmit() {
@@ -149,18 +180,31 @@ function UserMasterModal(props) {
         //         }
         //     )
         // } else {
+            // console.log(filtererr.length,"filtererr.length")
+
+        if(filtererr.length>0||password===""){
             console.log(filtererr.length,"filtererr.length")
-        if(filtererr.length>0){
-            console.log(filtererr.length,"filtererr.length")
+            if(password===""){setErrPassword(true)}
         }else{
-                dispatch(insertUser(UserMaster,password)).then(() => {
+                if(props.user_data){
+                    dispatch(editUser(UserMaster,password,changeActive)).then(() => {
+                        handleCancel()
+                       
+                    })
+                }
+                else{
+                dispatch(insertUser(UserMaster,password,changeActive)).then(() => {
+                    handleCancel()
+                   
                 })
+                }
+                
         }
         setUserMaster((prevState) => ({
             ...prevState,
         }));
     }
-
+console.log(employeeList,"employeeListemployeeList")
     return (
         <div>
             <div className="groupame">
@@ -168,7 +212,8 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">Employee Name</div>
                         <Labelbox type="select"
-                            dropdown={employeeList.EmployeeList}
+                            disabled={props.user_data?true:false}
+                            dropdown={employeeList}
                             changeData={(data) => checkValidation(data, "emp_name")}
                             value={UserMaster.emp_name.value}
                             error={UserMaster.emp_name.error}
@@ -185,7 +230,8 @@ function UserMasterModal(props) {
                     </Grid>
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">Password</div>
-                        <input type="password" className="passwordinput" />
+                        <input type="password" className="passwordinput" value={password} onChange={(data)=>(setPassword(data.target.value),data.target.value!==''?setErrPassword(false):setErrPassword(true))}/>
+                        {errPassword && <span className={"required_text"}>Field required</span>}
                     </Grid>
 
                 </Grid>
@@ -222,16 +268,16 @@ function UserMasterModal(props) {
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={4} container direction="row">
                         <div className="switchdiv">
-                            {change ? <div className="activeStatus">In Active</div> : <div className="activeStatus"> Active</div>}
-                            <Switch defaultChecked onChange={onChange} />
+                            {changeActive===0 ? <div className="activeStatus">In Active</div> : <div className="activeStatus"> Active</div>}
+                            <Switch unchecked onChange={(data)=>onChangeActive(data)} />
                         </div>
                     </Grid>
                     <Grid item xs={8} container direction="column"></Grid>
                 </Grid>
             </div>
             <div className="groupbtn">
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
-                <CustomButton btnName={"Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
+                <CustomButton btnName={props.user_data?"Update":"Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
             </div>
         </div>
     )
@@ -240,7 +286,7 @@ function UserMasterModal(props) {
 const mapStateToProps = (state) =>
 (
     {
-        EmployeeList: state.getOptions.getEmployeeList || [],
+        EmployeeList: state.UserMasterReducer.getCandidateName || [],
         UserGroup: state.getOptions.getUserGroup || [],
 
     }

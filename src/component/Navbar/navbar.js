@@ -91,10 +91,10 @@ function Navbar(props) {
       { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
       { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
       // user groups
-      { path: "/usergroups", title: "User Groups", img: Usergroups },
+      // { path: "/usergroups", title: "User Groups", img: Usergroups },
       // group control
-      { path: "/groupacess", title: "Group Acess", img: MasterIcon },
-      { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+      { path: "/groupaccess", title: "Group Access", img: MasterIcon },
+      // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
       { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
       { path: "/dashboardnew", title: "Dashboard", img: Dashboard },
       { path: "/severance", title: "Severance", img: Stagemaster },
@@ -104,7 +104,7 @@ function Navbar(props) {
       { path: "/usergroup", title: "User Management Group", img: Usergroups },
       { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
       //user rights
-      { path: "/userrights", title: "User Rights", img: MasterIcon },
+      { path: "/userrights", title: "User Access Rights", img: MasterIcon },
     ]
   );
 
