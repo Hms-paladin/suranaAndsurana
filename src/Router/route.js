@@ -34,6 +34,7 @@ import UserGroups from "../pages/UserGroups/usergroups";
 //Group Control:
 import GroupControl from "../pages/GroupControl/groupcontrol";
 
+import GroupAcess from "../pages/GroupAcess/GroupAccessRights";
 //Stage Monitering:
 import StageMonitering from "../pages/stages/StageMonitering";
 
@@ -67,6 +68,7 @@ import NewUserMaster from '../pages/UserManagement/newusermaster'
 //userRights
 import UserRights from '../pages/UserRights/UserAccess/userAccessRights'
 
+import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
 function Routes(props) {
 
   return (
@@ -98,6 +100,9 @@ function Routes(props) {
         <PrivateRoute path="/usergroups" component={UserGroups} exact />
         {/*  Group Control */}
         <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
+        <PrivateRoute path="/groupacess" component={GroupAcess} exact />
+
+        
         {/*  Stage Monitering */}
         <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
 
@@ -128,6 +133,7 @@ function Routes(props) {
         {/* UserManagement */}
         <PrivateRoute path="/usergroup" component={UserGroup} />
         <PrivateRoute path="/newusermaster" component={NewUserMaster} />
+        <PrivateRoute path="/useraccessrights" component={userAccessRights} />
 
          {/* UserRights */}
          <PrivateRoute path="/userrights" component={UserRights} />

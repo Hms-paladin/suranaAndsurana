@@ -23,12 +23,9 @@ import IPDropdownReducer from "./IPDropdownReducer";
 import tradeMarkReducer from "./tradeMarkReducer";
 import copyrightReducer from "./copyrightReducer";
 import PatentReducer from "./PatentReducer";
-import LeaveUpdateReducer from "./LeaveUpdateReducer"
-import UserMasterReducer from './UserMasterReducer'
-import EmployeeListReducer from './EmployeeListReducer'
-import UserGroupReducer from './UserGroupReducer'
-
-
+import LeaveUpdateReducer from "./LeaveUpdateReducer";
+import UserMasterReducer from './UserMasterReducer';
+import UserGroupReducer from "./UserGroupReducer";
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -56,7 +53,6 @@ export default combineReducers({
   copyrightReducer,
   LeaveUpdateReducer,
   UserMasterReducer,
-  EmployeeListReducer,
-  UserGroupReducer
+  UserGroupReducer,
 });
 

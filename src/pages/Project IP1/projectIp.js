@@ -450,7 +450,7 @@ function ProjectIp(props) {
 
                     {/* TradeMark */}
                     {stageMonitor && <StageMonitor />}
-                    {stage && <Stages />}
+                    {stage && <Stages projectDetails={props.ProjectDetails} />}
 
                     {projecttypes && <div>{
                         props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "India Filing" && <Trade1 />
