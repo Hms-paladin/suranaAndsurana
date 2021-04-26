@@ -458,6 +458,9 @@ function TicketCreation(props) {
                                 errmsg={TicketCreation.talents.errmsg}
                                 mode="multiple" />
                         </Grid>
+                        <Grid item xs={3}>
+                        <Labelbox type="select" placeholder="Assigned to"></Labelbox>
+                        </Grid>
                     </Grid>
                 </div>
                 <div className="ticketbtn">

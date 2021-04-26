@@ -64,6 +64,8 @@ import OPE from '../pages/OPE/OpeAdvance'
 //UserManagement
 import UserGroup from '../pages/UserManagement/usergroup'
 import NewUserMaster from '../pages/UserManagement/newusermaster'
+//Library
+import AddResource from '../pages/LibraryBook/addresource'
 
 //userRights
 import UserRights from '../pages/UserRights/UserAccess/userAccessRights'
@@ -134,6 +136,8 @@ function Routes(props) {
         <PrivateRoute path="/usergroup" component={UserGroup} />
         <PrivateRoute path="/newusermaster" component={NewUserMaster} />
         <PrivateRoute path="/useraccessrights" component={userAccessRights} />
+        {/* Library */}
+        <PrivateRoute path="/addresource" component={AddResource}/>
 
          {/* UserRights */}
          <PrivateRoute path="/userrights" component={UserRights} />
