@@ -93,11 +93,11 @@
     margin: 0px 15px 10px 0px;
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .employeeform_row8 div{
     // margin: 0px 5px;
-    width: 23%;
+    width: 18%;
 }
 .employeeform_row8 div div{
     width: 100%;
@@ -105,6 +105,25 @@
 .employeeform_row8 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
     height: 28px;
 }
+
+.employeeform_row9{
+    margin-bottom: 10px;
+    margin: 0px 15px 10px 0px;
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+}
+.employeeform_row9 div{
+    // margin: 0px 5px;
+    width: 30%;
+}
+.employeeform_row9 div div{
+    width: 100%;
+}
+.employeeform_row9 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+    height: 28px;
+}
+
 .empform_upload_doc div{
     width: 50% !important;
 }
@@ -126,6 +145,10 @@
     border-radius: 5px !important;
 }
 .employeeform_row8 .formdiv .brdrcls{
+    box-shadow: 0px 0px 4px 2px #b8b6b6;
+    border-radius: 5px !important;
+}
+.employeeform_row9 .formdiv .brdrcls{
     box-shadow: 0px 0px 4px 2px #b8b6b6;
     border-radius: 5px !important;
 }
@@ -161,8 +184,9 @@
 // upload css
 .upload_div{
     display: flex;
-    align-items: center;
-    justify-content: center;
+    // align-items: center;
+    // justify-content: center;
+    align-items: baseline;
     path{
         fill:#023E7D;
     }

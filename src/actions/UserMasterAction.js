@@ -1,6 +1,8 @@
 import { GET_TABLE_NAME} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
+
+
 export const get_Tablenames = () => async dispatch => {
   try {
 
@@ -22,3 +24,4 @@ export const get_Tablenames = () => async dispatch => {
 
   }
 }
+

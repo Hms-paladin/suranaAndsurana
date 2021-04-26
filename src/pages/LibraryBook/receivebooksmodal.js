@@ -8,7 +8,7 @@ function ReceiveBooksModal() {
     return (
             <div>
                 <div className="Rtitlediv">
-                    <div className="RModalTitle">Resourse</div>
+                    <div className="RModalTitle">Resource</div>
                     <div className="RModalTitle">Subject</div>
                     <div className="RModalTitle">Author</div>
                     <div className="RModalTitle">Title</div>
@@ -24,7 +24,7 @@ function ReceiveBooksModal() {
                     <div className="RModalValues" style={{width:"82px"}}>Title 1</div>
                     <div className="RModalValues" style={{width:"171px"}}>1990</div>
                     <div className="RModalValues" style={{width:"134px"}}>Department 1</div>
-                    <div className="RModalValues" style={{width:"20px"}}>5</div>
+                    <div className="RModalValues" style={{width:"55px"}}>5</div>
                 </div>
                 <div className="linespace"></div>
                 <div className="RGridcss">
@@ -44,8 +44,8 @@ function ReceiveBooksModal() {
                 </Grid>
                 </div>
                 <div className="RGridcss1">
-                    <Grid item xs={6} container direction="column" spacing={2}>
-                            <div className="RModalTitle">Book condition</div>
+                    <Grid item xs={6} container direction="column" spacing={3}>
+                            <div className="RModalTitle" style={{marginBottom:"5px"}}>Book Condition</div>
                             <Labelbox type="text" />
                     </Grid>
                 </div>

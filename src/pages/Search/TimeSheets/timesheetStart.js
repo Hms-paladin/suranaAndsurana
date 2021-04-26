@@ -6,6 +6,7 @@ import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation } from "../../../actions/projectTaskAction";
+
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
@@ -19,7 +20,7 @@ function TimeSheetStartModel(props) {
     const [priorityList, setpriorityList] = useState({})
     const [taggList, settaggList] = useState({})
     const [assignedToLists, setassignedToLists] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
+    const [projectDetails, setProjectDetails] = useState([{}])
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
@@ -79,7 +80,10 @@ function TimeSheetStartModel(props) {
         }
 
     })
-
+    useEffect(() => {
+        setProjectDetails(props.projectrow)
+    }, [props.projectrow])
+    
     const handleCancel = () => {
         let From_key = [
             "activity",
@@ -114,10 +118,8 @@ function TimeSheetStartModel(props) {
 
     }, []);
 
-    useEffect(() => {
-        setProjectDetails(props.projectrow)
-    }, [props.projectrow])
-
+ 
+   
     useEffect(() => {
         let activityTypeData = []
         props.activitysList.map((data) =>
@@ -274,7 +276,7 @@ function TimeSheetStartModel(props) {
             {changeStop ?
                 <div>
                     <Grid item xs={12} container direction="row" spacing={3}>
-                        {projectDetails.length > 0 && projectDetails.map((data) => {
+                        {projectDetails&&projectDetails.length > 0 && projectDetails.map((data) => {
                             return (
                                 <>
                                     <Grid item xs={4}>{data.project_type}</Grid>
@@ -285,7 +287,7 @@ function TimeSheetStartModel(props) {
 
                             )
                         })}
-
+                       
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Activity"}
@@ -506,6 +508,7 @@ const mapStateToProps = (state) =>
     tagsList: state.projectTasksReducer.tagsList || [],
     assignToList: state.projectTasksReducer.assignToLists || [],
     locationList: state.projectTasksReducer.locationLists || [],
+   
 });
 
 export default connect(mapStateToProps)(TimeSheetStartModel);

@@ -96,8 +96,8 @@ export default function LibraryBook(props) {
                         />
                     </Link>
                 </div>
-                <DynModel modelTitle={"Receiving of books"} handleChangeModel={receivingbooksmodal} handleChangeCloseModel={(bln) => setreceivingbooksmodal(bln)} width={850} content={<ReceiveBooksModal />} />
-                <DynModel modelTitle={"Issue of books"} handleChangeModel={issuebooksmodal} handleChangeCloseModel={(bln) => setissuebooksmodal(bln)} width={850} content={<IssueBooksModal />} />
+                <DynModel modelTitle={"Receiving of Books"} handleChangeModel={receivingbooksmodal} handleChangeCloseModel={(bln) => setreceivingbooksmodal(bln)} width={850} content={<ReceiveBooksModal />} />
+                <DynModel modelTitle={"Issue of Books"} handleChangeModel={issuebooksmodal} handleChangeCloseModel={(bln) => setissuebooksmodal(bln)} width={850} content={<IssueBooksModal />} />
             </div>
         </div>
     )

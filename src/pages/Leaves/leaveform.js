@@ -42,6 +42,7 @@ function LeaveForm(props) {
     const [examSchedule, setExamSchedule] = useState([])
     const [editExam, setEditExam] = useState([])
     const [empLeaveBal, setEmpLeaveBal] = useState("")
+    const [leavetypeName, setLeavetypeName] = useState("")
     const [noOfDays, setNoOfDays] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
     const [Leave_Form, setLeaveForm] = useState({
@@ -183,7 +184,7 @@ function LeaveForm(props) {
         isNaN(diff)?setNoOfDays(0):setNoOfDays(diff)
     }, [Leave_Form.fromdate.value,Leave_Form.todate.value])
    
-    
+    console.log(Leave_Form.leavetype.name,"type") 
     const onFileChange = () => {
 
     }
@@ -239,6 +240,12 @@ function LeaveForm(props) {
             dispatch(SubjectList(data));
         }
 
+        if (key === "leavetype" && data) {
+
+            // setLeavetypeName(data);
+            console.log(data)
+        }
+        
 
         setLeaveForm((prevState) => ({
             ...prevState,
