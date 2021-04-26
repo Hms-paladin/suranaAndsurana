@@ -34,6 +34,7 @@ import UserGroups from "../pages/UserGroups/usergroups";
 //Group Control:
 import GroupControl from "../pages/GroupControl/groupcontrol";
 
+import GroupAcess from "../pages/GroupAcess/GroupAccessRights";
 //Stage Monitering:
 import StageMonitering from "../pages/stages/StageMonitering";
 
@@ -95,6 +96,9 @@ function Routes(props) {
         <PrivateRoute path="/usergroups" component={UserGroups} exact />
         {/*  Group Control */}
         <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
+        <PrivateRoute path="/groupacess" component={GroupAcess} exact />
+
+        
         {/*  Stage Monitering */}
         <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
 
