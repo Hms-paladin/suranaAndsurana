@@ -296,8 +296,7 @@ class Useraccess_rights extends Component {
       method: 'post',
       url: `${apiurl}/getUserPermission`,
       data: {
-        "user_id": 8
-        // "user_id": 7
+        "user_id": userid
       }
     }).then(response => {
       let local =  JSON.parse(localStorage.getItem("user_id"))
