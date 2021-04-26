@@ -99,8 +99,14 @@ function TodoList(props) {
 
     useEffect(() => {
 
-        let hrList = []
+        let hrList = [
+            {
+                id: <div className="ProjectTaskId" onClick={()=>setrecruitmodal(true)}
+                >Recruitment Request</div>, requestedby: "-", requestedon: "-", approvedby: "-", startdateon: "-"
+            }
+        ]
         let todoListdata = []
+        let hrlist2=[]
 
         props.getHrTodoList.map((data) => {
             console.log(data, "showid")
@@ -120,14 +126,25 @@ function TodoList(props) {
                 showId = data.int_status_id
                 showName = "int_status_id"
             }
+            else{
+                showName=""
+            }
             hrList.push({
                 id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
                 designation: data.designation, candidates: data.no_of_candidates
             },
-          
             )
+             hrList.push({
+                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
+                interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
+                designation: data.designation, candidates: data.no_of_candidates
+            },
+            )
+        
+               
         })
+        
         setHrTodoList(hrList)
     }, [props.getHrTodoList,])
 
@@ -184,10 +201,6 @@ function TodoList(props) {
         }, {
             id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         },
-        {
-            id: <div className="ProjectTaskId" onClick={() => setrecruitmodal(true)}
-            >Recruitment Request</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }
          )
 
         setOtherTodoList(otherTask)
@@ -232,6 +245,7 @@ function TodoList(props) {
             })
             setEmployee_Data(checkData)
         }
+       
     }
 
     // unblockUsers ==>
@@ -281,6 +295,11 @@ function TodoList(props) {
 
                 <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)}
                     content={<EmployeeApprove closemodal={(bln) => onNewPageClear(bln)} emp_viewer_id={viewer_id} stateClear={stateClear} />} />
+                    
+                    {/* recruitment Request modal */}
+
+                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={800} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} />} />
+
 
             </div>
             {/* __________________________________________________________________________ */}
@@ -301,7 +320,6 @@ function TodoList(props) {
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
 
-                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={800} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} />} />
 
 
             

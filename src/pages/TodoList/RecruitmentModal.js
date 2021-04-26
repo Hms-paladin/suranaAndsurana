@@ -18,6 +18,7 @@ export default function RecruitmentModal(props){
                 <div><div>Age Limit</div><div>25-40</div></div>
                 <div><div>Languages Known</div><div>Tamil, English</div></div>
                 <div><div>State </div><div>Tamil nadu</div></div>
+                <div><div>Experience</div><div>2</div></div>
              </Grid>
              <Grid item xs={12} container direction="row" alignItems="center" spacing={2} >
                  <Grid item xs={6} className="third_item_grid_rec">

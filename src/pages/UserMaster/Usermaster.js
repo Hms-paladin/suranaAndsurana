@@ -8,8 +8,8 @@ import Edit from "../../images/pencil.svg";
 import './Usermaster.scss'
 import {connect,useDispatch} from 'react-redux'
 import ValidationLibrary from "../../helpers/validationfunction";
-import {get_Tablenames,Common_insert_text,InsertClass,InsertSubStage} from '../../actions/UserMasterAction'
-import {getClass,getStageList} from '../../actions/MasterDropdowns'
+import {get_Tablenames,Common_insert_text,InsertClass,InsertSubActivity,InsertCheckList, InsertSubstage,InsertStatus} from '../../actions/UserMasterAction'
+import {getClass,getStageList,getActivity,getProjectType,UsergetStatus} from '../../actions/MasterDropdowns'
 const UserMaster = (props) => {
   const header1 = [
     // { id: 'table_name', label: 'Table Name' },
@@ -21,24 +21,101 @@ const UserMaster = (props) => {
     { id: 'type', label: 'Status Type' },
     { id: 'edit', label: 'Edit' },
   ]; 
-  const  skills = [
+  const  header3 = [
     { id: 'skills', label: 'Skills Name' },
     { id: 'edit', label: 'Edit' },
   ]; 
-  const  header3 = [
+  const  header4 = [
+    { id: 'traits', label: 'Traits Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header5 = [
+    { id: 'cer', label: 'Certification Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header6 = [
+    { id: 'specification', label: 'Specification Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header7 = [
+    { id: 'qualificayion', label: 'Qualification Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header8 = [
+    { id: 'industry', label: 'Industry Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header9 = [
+    { id: 'institute', label: 'Institute Name'},
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header10 = [
+    { id: 'Capalitity', label: 'Capalitity Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header11 = [
+    { id: 'talents', label: 'Talents Name' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header12 = [
+    { id: 'resource', label: 'Type of Resource' },
+    { id: 'edit', label: 'Edit' },
+  ]; 
+  const  header13 = [
+    { id: 'desgination', label: 'Designation Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header14 = [
+    { id: 'question', label: 'Question Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header15 = [
+    { id: 'department', label: 'Department Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header16 = [
+    { id: 'activity', label: 'Activity Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header17 = [
+    { id: 'activity', label: 'Activity' },
+    { id: 'activity', label: 'Activity Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header18 = [
     { id: 'class', label: 'Class Type' },
     { id: 'type', label: 'Class Name' },
     { id: 'des', label: 'Class Description' },
     { id: 'edit', label: 'Edit' },
   ];
-  const CheckList = [
+  const  header19 = [
+    { id: 'mark', label: 'Mark Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header20 = [
+    { id: 'court', label: 'Court Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header21 = [
+    { id: 'range', label: 'Range Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header22 = [
+    { id: 'stage', label: 'Stage Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const header25 = [
     { id: 'class', label: 'Project Type' },
     { id: 'type', label: 'Check List' },
     { id: 'edit', label: 'Edit' },
   ];
-  const subStage = [
+  const header23 = [
     { id: 'class', label: 'Stage' },
-    { id: 'type', label: 'Sub Stage' },
+    { id: 'type', label: 'Sub Stage Name' },
+    { id: 'edit', label: 'Edit' },
+  ];
+  const  header24 = [
+    { id: 'case', label: 'Case Type Name' },
     { id: 'edit', label: 'Edit' },
   ];
 
@@ -245,7 +322,12 @@ const UserMaster = (props) => {
     error:null,
     errmsg:null,
   },
-
+  activity_drop:{
+    value:"",
+    validation:[{name:"required"}],
+    error:null,
+    errmsg:null,
+  }
 
 
 
@@ -272,7 +354,7 @@ const UserMaster = (props) => {
    
 
     let multipleIdList = [];
-
+  
     if (multipleId) {
       multipleId.map((item) => {
         for (let i = 0; i < data.length; i++) {
@@ -284,25 +366,44 @@ const UserMaster = (props) => {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
+    if(key==="tablename"){
+            
+      let value = [];
+      if(props.table_name.length>0){
+      props.table_name.map((data) => value.push(data));
+
+      for (var m = 0; m < value.length; m++) {
+          if(value[m].table_names===data){
+              settable_name_value(value[m].table_names)
+            
+          }
+         
+      }
+     
+  }
+  }
 
     setUserMaster((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
 
-  
+     console.log(table_name_value,"divya")
+    
   }
   const [UserGroupsList, setUserGroupsList] = useState([])
   const [table_name_value,settable_name_value]=useState([])
-  const [isLoaded, setIsLoaded] = useState(true);
   useEffect(() => {
     dispatch(get_Tablenames());
     dispatch(getClass())
     dispatch(getStageList())
+    dispatch(getActivity())
+    dispatch(getProjectType())
+    dispatch(UsergetStatus())
   }, [props]);
   useEffect(() => {
 
-    if (isLoaded) {
+   
 
       var groupList = [];
       var groupList2=[]
@@ -313,7 +414,7 @@ const UserMaster = (props) => {
       ];
       const subStage = [
         { id: 'class', label: 'Stage' },
-        { id: 'type', label: 'Sub Stage' },
+        { id: 'type', label: 'Sub Stage Name'},
         { id: 'edit', label: 'Edit' },
       ];
      
@@ -324,14 +425,16 @@ const UserMaster = (props) => {
       setUserGroupsList({ groupList,groupList2})
      
 
-    setIsLoaded(false);
-  }
+   
   var length=Object.keys(UserGroupsList).length;
       
   let table_value_data=[]
     let table_data = [];
     let class_type_data=[]
     let stage_list=[]
+    let activity_list=[]
+    let ProjectType=[]
+    let get_status_type=[]
     props.table_name.map((data, index) =>
     {
       return(
@@ -342,20 +445,27 @@ const UserMaster = (props) => {
     );
    
     // class_type
-    
-  
     props.class_type.map((data,index)=>{
       class_type_data.push({id:data.class_id,value:data.class})
     })
     props.stage.map((data,index)=>{
       stage_list.push({id:data.stage_id,value:data.stage})
     })
-    settablevalues({ table_data,class_type_data,stage_list});   
+    props.activity.map((data,index)=>{
+      activity_list.push({id:data.activity_id,value:data.activity})
+    })
+    props.project_type_value.map((data,index)=>{
+      ProjectType.push({id:data.project_type_id,value:data.project_type})
+    })
+    props.Status.map((data,index)=>{
+      get_status_type.push({id:index,value:data.status_type})
+    })
+    settablevalues({ table_data,class_type_data,stage_list,activity_list,ProjectType,get_status_type});   
     settable_name_value(tablevalues.table_data)
    console.log(table_name_value,"ttt")
   }, [props.table_name,UserMaster]);
   //  insert approve
-  function Submit() {
+  function Submit(data) {
     var mainvalue = {};
     var targetkeys = Object.keys(UserMaster);
     for (var i in targetkeys) {
@@ -374,32 +484,60 @@ const UserMaster = (props) => {
      
     }
 
-    if(UserMaster.tablename.value === 21)
+    if(data === 21)
     {
     dispatch(
       InsertClass(UserMaster)).then(() => {
       handleCancel()
     });
     }
-//   else if(UserMaster.tablename.value === 26){
-//     dispatch(
-//       InsertClass(UserMaster)).then(() => {
-//       handleCancel()
-//     });
-// }
+    else if(data === 20)
+    {
+      alert("hai")
+    dispatch(
+      InsertSubActivity(UserMaster)).then(() => {
+      // handleCancel()
+    });
+    }
+ 
+    else if(data === 29)
+    {
+    dispatch(
+      InsertCheckList(UserMaster)).then(() => {
+      // handleCancel()
+    });
+    }
+    else if (data===3)
+    {
+        dispatch(
+          Common_insert_text(table_name_value,UserMaster)).then(() => {
+          // handleCancel()
+        });
+        
+    }
+    else if (data===26)
+    {
   
-    // {UserMaster.tablename.value === 21?dispatch(
-    //   Common_insert_text(
-    //     props.table_name
-    //   )
-    // ).then(() => {
-    //   handleCancel()
-   
-    // }):""}
+        dispatch(
+          InsertSubstage(UserMaster)).then(() => {
+          // handleCancel()
+        });
+        
+    }
+    else if (data===4)
+    {
   
-      // dispatch(Common_insert_text(props.table_name) ).then(() => {
-      //   handleCancel();
-      // });
+        dispatch(
+          InsertStatus(UserMaster)).then(() => {
+          // handleCancel()
+        });
+        
+    }
+
+  
+
+  
+     
       
     setUserMaster((prevState) => ({
       ...prevState,
@@ -407,7 +545,7 @@ const UserMaster = (props) => {
   }
 
 const handleCancel = () => {
-    let From_key = ["groupname", "skill_name","class_name","class_type","description"];
+    let From_key = ["groupname", "skill_name","class_name","class_type","description","acticity","activity_drop","project_type","checklist_name"];
 
     From_key.map((data) => {
       UserMaster[data].value = "";
@@ -439,7 +577,7 @@ const handleCancel = () => {
           />
           
            {/* group name */}
-           {UserMaster?.tablename?.value === 3 && UserMaster?.tablename?.value !== "" &&
+           {UserMaster?.tablename?.value === 3  &&
           <Labelbox type="text" placeholder={"Enter Group Name"}
           changeData={(data) => checkValidation(data, "groupname")}
           value={UserMaster.groupname.value}
@@ -448,15 +586,17 @@ const handleCancel = () => {
           />
           }
          {/* status */}
-          {UserMaster.tablename.value === 4 && UserMaster?.tablename?.value !== "" &&
+          {UserMaster.tablename.value === 4  &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Status Type"}
+           dropdown={tablevalues.get_status_type}
            changeData={(data) => checkValidation(data, "status_type")}
-           value={UserMaster.groupname.value}
-           error={UserMaster.groupname.error}
-           errmsg={UserMaster.groupname.errmsg}
+           value={UserMaster.status_type.value}
+           error={UserMaster.status_type.error}
+           errmsg={UserMaster.status_type.errmsg}
           />
            <Labelbox type="text" placeholder={"Enter Status Name"}
+           
             changeData={(data) => checkValidation(data, "status_name")}
             value={UserMaster.status_name.value}
             error={UserMaster.status_name.error}
@@ -527,7 +667,7 @@ const handleCancel = () => {
         }
            {/* Institute */}
            {UserMaster.tablename.value === 12 &&
-        <Labelbox type="select" placeholder={"Enter Institute Name"}
+        <Labelbox type="text" placeholder={"Enter Institute Name"}
          changeData={(data) => checkValidation(data, "institute")}
          value={UserMaster.institute.value}
          error={UserMaster.institute.error}
@@ -537,7 +677,7 @@ const handleCancel = () => {
         
                {/* Capability */}
                {UserMaster.tablename.value === 13 &&
-        <Labelbox type="select" placeholder={"Enter Capability Name"}
+        <Labelbox type="text" placeholder={"Enter Capability Name"}
          changeData={(data) => checkValidation(data, "capability")}
          value={UserMaster.capability.value}
          error={UserMaster.capability.error}
@@ -546,7 +686,7 @@ const handleCancel = () => {
         }
            {/* Talents */}
            {UserMaster.tablename.value === 14 &&
-        <Labelbox type="select" placeholder={"Enter Talents Name"}
+        <Labelbox type="text" placeholder={"Enter Talents Name"}
          changeData={(data) => checkValidation(data, "talents")}
          value={UserMaster.talents.value}
          error={UserMaster.talents.error}
@@ -556,7 +696,7 @@ const handleCancel = () => {
 
               {/* Type of resource */}
               {UserMaster.tablename.value === 15 &&
-        <Labelbox type="select" placeholder={"Enter Type of resource Name"}
+        <Labelbox type="text" placeholder={"Enter Type of resource Name"}
          changeData={(data) => checkValidation(data, "resourse")}
          value={UserMaster.resourse.value}
          error={UserMaster.resourse.error}
@@ -566,7 +706,7 @@ const handleCancel = () => {
 
           {/* Designation  */}
           {UserMaster.tablename.value === 16 &&
-        <Labelbox type="select" placeholder={"Enter Designation  Name"}
+        <Labelbox type="text" placeholder={"Enter Designation  Name"}
          changeData={(data) => checkValidation(data, "designation")}
          value={UserMaster.designation.value}
          error={UserMaster.designation.error}
@@ -576,7 +716,7 @@ const handleCancel = () => {
 
             {/* Question  */}
             {UserMaster.tablename.value === 17 &&
-        <Labelbox type="select" placeholder={"Enter Question  Name"}
+        <Labelbox type="text" placeholder={"Enter Question  Name"}
          changeData={(data) => checkValidation(data, "question")}
          value={UserMaster.question.value}
          error={UserMaster.question.error}
@@ -587,7 +727,7 @@ const handleCancel = () => {
 
            {/* Department  */}
            {UserMaster.tablename.value === 18 &&
-        <Labelbox type="select" placeholder={"Enter Department  Name"}
+        <Labelbox type="text" placeholder={"Enter Department  Name"}
          changeData={(data) => checkValidation(data, "department")}
          value={UserMaster.department.value}
          error={UserMaster.department.error}
@@ -597,7 +737,7 @@ const handleCancel = () => {
         
            {/* Activity  */}
            {UserMaster.tablename.value === 19 &&
-        <Labelbox type="select" placeholder={"Enter Activity  Name"}
+        <Labelbox type="text" placeholder={"Enter Activity  Name"}
          changeData={(data) => checkValidation(data, "activity")}
          value={UserMaster.activity.value}
          error={UserMaster.activity.error}
@@ -607,12 +747,21 @@ const handleCancel = () => {
 
              {/* sub Activity  */}
              {UserMaster.tablename.value === 20 &&
-        <Labelbox type="select" placeholder={"Enter Sub Activity  Name"}
+              <div className="table_cont_change">
+              <Labelbox type="select" placeholder={"Activity"}
+         changeData={(data) => checkValidation(data, "activity_drop")}
+         dropdown={tablevalues.activity_list}
+         value={UserMaster.activity_drop.value}
+         error={UserMaster.activity_drop.error}
+         errmsg={UserMaster.activity_drop.errmsg}
+        />
+        <Labelbox type="text" placeholder={"Enter Sub Activity  Name"}
          changeData={(data) => checkValidation(data, "sub_activity")}
          value={UserMaster.sub_activity.value}
          error={UserMaster.sub_activity.error}
          errmsg={UserMaster.sub_activity.errmsg}
         />
+        </div>
         }
 
     
@@ -646,7 +795,7 @@ const handleCancel = () => {
 
                  {/* Mark  */}
                  {UserMaster.tablename.value === 22 &&
-        <Labelbox type="select" placeholder={"Enter Mark Name"}
+        <Labelbox type="text" placeholder={"Enter Mark Name"}
          changeData={(data) => checkValidation(data, "mark")}
          value={UserMaster.mark.value}
          error={UserMaster.mark.error}
@@ -656,7 +805,7 @@ const handleCancel = () => {
         
                {/* Court  */}
                {UserMaster.tablename.value === 23 &&
-        <Labelbox type="select" placeholder={"Enter Court Name"}
+        <Labelbox type="text" placeholder={"Enter Court Name"}
          changeData={(data) => checkValidation(data, "court")}
          value={UserMaster.court.value}
          error={UserMaster.court.error}
@@ -666,7 +815,7 @@ const handleCancel = () => {
 
               {/* Range  */}
               {UserMaster.tablename.value === 24 &&
-        <Labelbox type="select" placeholder={"Enter Range Name"}
+        <Labelbox type="text" placeholder={"Enter Range Name"}
          changeData={(data) => checkValidation(data, "range")}
          value={UserMaster.range.value}
          error={UserMaster.range.error}
@@ -678,7 +827,7 @@ const handleCancel = () => {
         
              {/* Stage  */}
              {UserMaster.tablename.value === 25 &&
-        <Labelbox type="select" placeholder={"Enter Stage Name"}
+        <Labelbox type="text" placeholder={"Enter Stage Name"}
          changeData={(data) => checkValidation(data, "stage_name")}
          value={UserMaster.stage_name.value}
          error={UserMaster.stage_name.error}
@@ -709,7 +858,7 @@ const handleCancel = () => {
 
                   {/* Case Type  */}
                   {UserMaster.tablename.value === 28 &&
-        <Labelbox type="select" placeholder={"Enter Case Type Name"}
+        <Labelbox type="text" placeholder={"Enter Case Type Name"}
          changeData={(data) => checkValidation(data, "case_type")}
          value={UserMaster.case_type.value}
          error={UserMaster.case_type.error}
@@ -721,6 +870,7 @@ const handleCancel = () => {
          {UserMaster.tablename.value === 29 &&
            <div className="table_cont_change">
           <Labelbox type="select" placeholder={"Project Type"}
+             dropdown={tablevalues.ProjectType}
             changeData={(data) => checkValidation(data, "project_type")}
             value={UserMaster.project_type.value}
             error={UserMaster.project_type.error}
@@ -739,7 +889,7 @@ const handleCancel = () => {
          
 
       <div>
-       {UserMaster.tablename.value >=3&&<img src={PlusIcon} onClick={Submit} className="plus_icon_user" />}
+       {UserMaster.tablename.value >=3&&<img src={PlusIcon} onClick={()=>Submit(UserMaster.tablename.value)} className="plus_icon_user" />}
 
        </div>
          
@@ -763,22 +913,79 @@ const handleCancel = () => {
           rows={""}
            aligncss="aligncss"/>}
 
-   {UserMaster.tablename.value===4&&<EnhancedTable headCells={skills}
+   {UserMaster.tablename.value===4&&<EnhancedTable headCells={header2}
           rows={""}
            aligncss="aligncss"/>}
-            
+              {UserMaster.tablename.value===5&&<EnhancedTable headCells={header3}
+          rows={""}
+           aligncss="aligncss"/>}
+              {UserMaster.tablename.value===6&&<EnhancedTable headCells={header4}
+          rows={""}
+           aligncss="aligncss"/>}
+              {UserMaster.tablename.value===7&&<EnhancedTable headCells={header5}
+          rows={""}
+           aligncss="aligncss"/>}
+                {UserMaster.tablename.value===8&&<EnhancedTable headCells={header6}
+          rows={""}
+           aligncss="aligncss"/>}
+                {UserMaster.tablename.value===9&&<EnhancedTable headCells={header7}
+          rows={""}
+           aligncss="aligncss"/>}
+                {UserMaster.tablename.value===11&&<EnhancedTable headCells={header8}
+          rows={""}
+           aligncss="aligncss"/>}
+                {UserMaster.tablename.value===12&&<EnhancedTable headCells={header9}
+          rows={""}
+           aligncss="aligncss"/>}
+                 {UserMaster.tablename.value===13&&<EnhancedTable headCells={header10}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===14&&<EnhancedTable headCells={header11}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===15&&<EnhancedTable headCells={header12}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===16&&<EnhancedTable headCells={header13}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===17&&<EnhancedTable headCells={header14}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===18&&<EnhancedTable headCells={header15}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===19&&<EnhancedTable headCells={header16}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===20&&<EnhancedTable headCells={header17}
+          rows={""}
+           aligncss="aligncss"/>}
+               {UserMaster.tablename.value===21&&<EnhancedTable headCells={header18}
+          rows={""}
+           aligncss="aligncss"/>}
+               {UserMaster.tablename.value===22&&<EnhancedTable headCells={header19}
+          rows={""}
+           aligncss="aligncss"/>}
+               {UserMaster.tablename.value===23&&<EnhancedTable headCells={header20}
+          rows={""}
+           aligncss="aligncss"/>}
+               {UserMaster.tablename.value===24&&<EnhancedTable headCells={header21}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===25&&<EnhancedTable headCells={header22}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===26&&<EnhancedTable headCells={header23}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===27&&<EnhancedTable headCells={header25}
+          rows={""}
+           aligncss="aligncss"/>}
+                  {UserMaster.tablename.value===28&&<EnhancedTable headCells={header24}
+          rows={""}
+           aligncss="aligncss"/>}
 
-           {UserMaster.tablename.value===5&&<EnhancedTable headCells={header3}
-          rows={""}
-           aligncss="aligncss"/>}
-
-{UserMaster.tablename.value===29&&<EnhancedTable headCells={CheckList}
-          rows={""}
-           aligncss="aligncss"/>}
-           
-{UserMaster.tablename.value===26&&<EnhancedTable headCells={subStage}
-          rows={""}
-           aligncss="aligncss"/>}
       </div>
       
       
@@ -793,7 +1000,10 @@ const mapStateToProps = (state) => (
   {
     table_name: state.UserMasterReducer.TableNamedropdownData,
     class_type:state.getOptions.getClass,
-    stage:state.getOptions.getStageList
+    stage:state.getOptions.getStageList,
+    activity:state.getOptions.getActivity,
+    project_type_value:state.getOptions.getProjectType,
+    Status:state.getOptions.getUserStatus
   }
 );
 
