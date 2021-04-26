@@ -51,6 +51,7 @@ import DashboardNew from '../pages/Dashboard/dashboardnew';
 import KPI from '../pages/KPI/KPI';
 import LeaveForm from '../pages/Leaves/leaveform';
 import Appraisal from '../pages/Appraisal/appraisal';
+import AppraisalView from '../pages/Appraisal/appraisalView';
 import Severance from '../pages/Severance/severance';
 import KRA from '../pages/KRA/KRA';
 import EmployeeList from '../pages/EmployeeList/EmployeeList'
@@ -114,6 +115,7 @@ function Routes(props) {
         <PrivateRoute path="/leaveform" component={LeaveForm} exact />
         <PrivateRoute path="/appraisal/:rowId" component={Appraisal} exact />
         <PrivateRoute path="/appraisal" component={Appraisal} exact />
+        <PrivateRoute path="/appraisalView" component={AppraisalView} exact />
         <PrivateRoute path="/ratingModel" component={RatingModel} exact />
         <PrivateRoute path="/ticketcreation" component={TicketCreation} exact />
         <PrivateRoute path="/KRA" component={KRA} exact />

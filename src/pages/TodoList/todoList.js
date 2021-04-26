@@ -18,6 +18,7 @@ import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
 import Appraisal from '../Appraisal/appraisal';
+import AppraisalView from '../Appraisal/appraisalView';
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
 import "./todoList.scss"
@@ -201,6 +202,13 @@ function TodoList(props) {
         }, {
             id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         },
+        {
+            id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        },
+        {
+            id: <div className="ProjectTaskId" onClick={() => setrecruitmodal(true)}
+            >Recruitment Request</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }
          )
 
         setOtherTodoList(otherTask)
