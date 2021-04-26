@@ -10,6 +10,7 @@ export default function OPE(){
         <div>
              <div className="lib_master_h">OPE Advance</div>
                 <div className="parent_div_ope">
+
                   <div className="noposition">
                      <div><div>Employee</div><div>Rajesh</div></div>
                      <div><div>Designation</div><div>Attorney</div></div>
@@ -24,10 +25,10 @@ export default function OPE(){
                   
                       <div className="advance_amt">
                       <div>Advance Amount</div>
-                        <Input   prefix={<img src={Dollar}/>} style={{width:"40%"}}/>
+                       <Input   prefix={<img src={Dollar}/>} style={{width:"40%"}}/>
                       </div>
-
-                            <div className="ope_advance_btns">
+                     
+                      <div className="ope_advance_btns">
                                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="ope_save" />
                                 <CustomButton btnName={"Cancel"} custombtnCSS="ope_save" />
                             </div>

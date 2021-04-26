@@ -169,8 +169,6 @@ const RateMaster = (props) => {
       ...prevState,
     }));
   };
-
-
   function checkValidation(data, key, multipleId) {
 
 

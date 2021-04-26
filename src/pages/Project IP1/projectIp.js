@@ -291,8 +291,10 @@ function ProjectIp(props) {
     }
 
     const timesheetmodelContent = () => {
+    
         return (
-            <TimeSheets   projectrow={rowId}/>
+           
+            <TimeSheets   projectrow={projectDetails}/>
         )
     }
 

@@ -34,6 +34,7 @@ import UserGroups from "../pages/UserGroups/usergroups";
 //Group Control:
 import GroupControl from "../pages/GroupControl/groupcontrol";
 
+import GroupAcess from "../pages/GroupAcess/GroupAccessRights";
 //Stage Monitering:
 import StageMonitering from "../pages/stages/StageMonitering";
 
@@ -63,9 +64,13 @@ import OPE from '../pages/OPE/OpeAdvance'
 //UserManagement
 import UserGroup from '../pages/UserManagement/usergroup'
 import NewUserMaster from '../pages/UserManagement/newusermaster'
-import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
 //Library
 import AddResource from '../pages/LibraryBook/addresource'
+
+//userRights
+import UserRights from '../pages/UserRights/UserAccess/userAccessRights'
+
+import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
 function Routes(props) {
 
   return (
@@ -97,6 +102,9 @@ function Routes(props) {
         <PrivateRoute path="/usergroups" component={UserGroups} exact />
         {/*  Group Control */}
         <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
+        <PrivateRoute path="/groupacess" component={GroupAcess} exact />
+
+        
         {/*  Stage Monitering */}
         <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
 
@@ -122,7 +130,7 @@ function Routes(props) {
         <PrivateRoute path="/usermaster" component={UserMaster} />
 
         <PrivateRoute path="/employeelist" component={EmployeeList} />
-        <PrivateRoute path="/librarybook" component={LibraryBook}/>
+        <PrivateRoute path="/librarybook" component={LibraryBook} />
         <PrivateRoute path="/ope_advance" component={OPE} />
         {/* UserManagement */}
         <PrivateRoute path="/usergroup" component={UserGroup} />
@@ -130,6 +138,9 @@ function Routes(props) {
         <PrivateRoute path="/useraccessrights" component={userAccessRights} />
         {/* Library */}
         <PrivateRoute path="/addresource" component={AddResource}/>
+
+         {/* UserRights */}
+         <PrivateRoute path="/userrights" component={UserRights} />
 
 
       </Switch>

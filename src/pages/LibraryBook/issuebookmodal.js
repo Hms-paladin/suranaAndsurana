@@ -9,7 +9,7 @@ function IssueBooksModal() {
     return (
             <div>
                 <div className="Rtitlediv">
-                    <div className="RModalTitle">Resourse</div>
+                    <div className="RModalTitle">Resource</div>
                     <div className="RModalTitle">Subject</div>
                     <div className="RModalTitle">Author</div>
                     <div className="RModalTitle">Title</div>
@@ -25,7 +25,7 @@ function IssueBooksModal() {
                     <div className="RModalValues" style={{width:"82px"}}>Title 1</div>
                     <div className="RModalValues" style={{width:"171px"}}>1990</div>
                     <div className="RModalValues" style={{width:"134px"}}>Department 1</div>
-                    <div className="RModalValues" style={{width:"20px"}}>5</div>
+                    <div className="RModalValues" style={{width:"55px"}}>5</div>
                 </div>
                 <div className="linespace"></div>
                 <div className="plusgrid">

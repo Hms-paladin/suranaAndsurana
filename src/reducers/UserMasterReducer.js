@@ -1,6 +1,6 @@
-import { GET_TABLE_NAME,USER_GET_CLASS} from "../utils/Constants";
+import { GET_TABLE_NAME} from "../utils/Constants";
 const intialState = {
-    TableNamedropdownData: []
+    TableNamedropdownData: [],
 }
 
 export default function (state = intialState, action) {
@@ -8,7 +8,7 @@ export default function (state = intialState, action) {
     switch (type) {
         case GET_TABLE_NAME:
             return  { ...state, TableNamedropdownData: payload.data }
-    
+      
         default:
             return state;
     }

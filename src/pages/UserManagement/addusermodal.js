@@ -7,12 +7,14 @@ import { connect, useDispatch } from "react-redux";
 import { Switch } from 'antd';
 import './usermanagement.scss';
 import { getEmployeeList, getUserGroup } from "../../actions/MasterDropdowns";
+import {insertUser} from "../../actions/UserMasterAction";
 
 
 function UserMasterModal(props) {
     const dispatch = useDispatch();
     const [employeeList, setEmployeeList] = useState({})
     const [userGroup, setUserGroup] = useState({})
+    const [password, setPassword] = useState("")
     const [UserMaster, setUserMaster] = useState({
         emp_name: {
             value: "",
@@ -28,7 +30,7 @@ function UserMasterModal(props) {
         },
         mobilenumber: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ name: "required" },{ name: "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -69,57 +71,8 @@ function UserMasterModal(props) {
 
     }
 
-    function onsubmit() {
-        var mainvalue = {};
-        var targetkeys = Object.keys(UserMaster);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                UserMaster[targetkeys[i]].value,
-                UserMaster[targetkeys[i]].validation
-            );
-            UserMaster[targetkeys[i]].error = !errorcheck.state;
-            UserMaster[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
-        }
+  
 
-        var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-        // if (props.editbtn) {
-        //     dispatch(updateGroupName(UserMaster)).then(
-        //         (response) => {
-        //             handleCancel();
-        //             props.handleChangeCloseModel()
-        //         }
-        //     )
-        // } else {
-
-        setUserMaster((prevState) => ({
-            ...prevState,
-        }));
-    }
-
-    const handleCancel = () => {
-        let From_key = [
-            "emp_name",
-            "user_name",
-            "mobilenumber",
-            "emailid",
-            "UserMaster"
-
-        ];
-
-        From_key.map((data) => {
-            try {
-                UserMaster[data].value = "";
-                console.log("mapping", UserMaster[data].value);
-            } catch (error) {
-                throw error;
-            }
-        });
-
-        setUserMaster((prevState) => ({
-            ...prevState,
-        }));
-    };
 
     useEffect(() => {
         dispatch(getEmployeeList())
@@ -151,6 +104,62 @@ function UserMasterModal(props) {
 
     }
 
+    const handleCancel = () => {
+        let From_key = [
+            "emp_name",
+            "user_name",
+            "mobilenumber",
+            "emailid"
+
+        ];
+
+        From_key.map((data) => {
+            try {
+                UserMaster[data].value = "";
+                console.log("mapping", UserMaster[data].value);
+            } catch (error) {
+                throw error;
+            }
+        });
+
+        setUserMaster((prevState) => ({
+            ...prevState,
+        }));
+    };
+
+    function onsubmit() {
+        var mainvalue = {};
+        var targetkeys = Object.keys(UserMaster);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                UserMaster[targetkeys[i]].value,
+                UserMaster[targetkeys[i]].validation
+            );
+            UserMaster[targetkeys[i]].error = !errorcheck.state;
+            UserMaster[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
+        }
+
+        var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
+        // if (props.editbtn) {
+        //     dispatch(updateGroupName(UserMaster)).then(
+        //         (response) => {
+        //             handleCancel();
+        //             props.handleChangeCloseModel()
+        //         }
+        //     )
+        // } else {
+            console.log(filtererr.length,"filtererr.length")
+        if(filtererr.length>0){
+            console.log(filtererr.length,"filtererr.length")
+        }else{
+                dispatch(insertUser(UserMaster,password)).then(() => {
+                })
+        }
+        setUserMaster((prevState) => ({
+            ...prevState,
+        }));
+    }
 
     return (
         <div>

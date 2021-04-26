@@ -182,7 +182,7 @@ function TodoList(props) {
             id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
             >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         }, {
-            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraisar Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         },
         {
             id: <div className="ProjectTaskId" onClick={() => setrecruitmodal(true)}

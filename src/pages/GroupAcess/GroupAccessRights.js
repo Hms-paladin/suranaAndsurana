@@ -17,12 +17,12 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { withStyles } from '@material-ui/core/styles';
-import Dropdownantd from "./userAccessDropdown"
-import Green_checkBox from "../blueCheckBox";
+import Dropdownantd from "./GroupAccessDropdown"
+import Green_checkBox from "../UserRights/blueCheckBox";
 import { Spin, notification } from 'antd';
-import { apiurl } from "../../../utils/baseUrl.js";
+import { apiurl } from "../../utils/baseUrl.js";
 
-import "./userAccessRights.css"
+import "./GroupAccessRights.css"
 
 const { Panel } = Collapse;
 const axios = require('axios');
@@ -260,20 +260,20 @@ class Useraccess_rights extends Component {
     var self = this
     axios({
       method: 'get',
-      url: `${apiurl}/getuser`
+      url: `${apiurl}/get_group`
     })
       .then(function (response) {
         var arrval = []
         response.data.data.map((value) => {
-          arrval.push({ dropdown_val: value.user_name, id: value.id })
+          arrval.push({ dropdown_val: value.group_name, id: value.group_id })
         })
-        console.log(response.data.data[0].user_id, "response")
-        console.log(arrval, "arrval")
+       // console.log(response.data.data[0].user_id, "response")
+        //console.log(arrval, "arrval")
 
         self.setState({
           user: arrval[0].dropdown_val,
           user_arr: arrval,
-          responseid:response.data.data[0].user_id,
+          responseid:response.data.data[0].group_id,
           onceopen:true,
         })
       })
@@ -294,9 +294,9 @@ class Useraccess_rights extends Component {
 
     axios({
       method: 'post',
-      url: `${apiurl}/getUserPermission`,
+      url: apiurl + 'getgroupPermission',
       data: {
-        "user_id": userid
+        "group_id":"8"
       }
     }).then(response => {
       let local =  JSON.parse(localStorage.getItem("user_id"))
@@ -593,7 +593,7 @@ class Useraccess_rights extends Component {
         rows: stroe_table_arr,
         loading: false,
         insideLoading: false,
-        group:response.data.data[0].group_name,
+      //  group:response.data.data[0].group_name,
         currentuserid:userid
       })
       if (showNotification) {
@@ -632,7 +632,7 @@ class Useraccess_rights extends Component {
       }
 
       var sendData = [{
-        "user_id": userid,
+        "group_id": "8",
         "screen_master_id": id,
         "allow_view": allow_view,
         "allow_add": allow_add,
@@ -654,7 +654,7 @@ class Useraccess_rights extends Component {
         allvalue.map((data) => {
 
           sendData.push({
-            "user_id": userid,
+            "group_id": "8",
             "screen_master_id": data.id,
             "allow_view": "N",
             "allow_add": "N",
@@ -674,7 +674,7 @@ class Useraccess_rights extends Component {
         allvalue.map((data) => {
 
           sendData.push({
-            "user_id": userid,
+            "group_id": "8",
             "screen_master_id": data.id,
             "allow_view": "Y",
             "allow_add": "Y",
@@ -701,7 +701,7 @@ class Useraccess_rights extends Component {
           var enableview=allowview.find((val)=>{return val==="Y"})
 
           sendData.push({
-            "user_id": userid,
+            "group_id": "8",
             "screen_master_id": data.id,
             "allow_view": name === "head_view" ?  "N" : data.allow_view,
             "allow_add": name === "head_add" ? "N" : data.allow_add,
@@ -724,7 +724,7 @@ class Useraccess_rights extends Component {
         // enableview==="N"?"N":"Y"
 
           sendData.push({
-            "user_id": userid,
+            "group_id": "8",
             "screen_master_id": data.id,
             "allow_view": name === "head_view" ?  "Y" : data.allow_view,
             "allow_add": name === "head_add" ? "Y" : data.allow_add,
@@ -771,7 +771,7 @@ class Useraccess_rights extends Component {
       var allowview=[allow_view,allow_add,allow_edit,allow_delete]
       var enableview=allowview.find((val)=>{return val==="Y"})
       var sendData = [{
-        "user_id": userid,
+        "group_id": "8",
         "screen_master_id": id,
         "allow_view": enableview?enableview:"N",
         "allow_add": allow_add,
@@ -789,7 +789,7 @@ class Useraccess_rights extends Component {
     var self = this
     axios({
       method: 'post',
-      url: `${apiurl}/insertUserPermission`,
+      url: `${apiurl}/insertGroupPermission`,
       data:{"submit": sendData}
     })
       .then(function (response) {
@@ -805,7 +805,7 @@ class Useraccess_rights extends Component {
     this.setState({insideLoading:true})
     axios({
       method: 'put',
-      url: `${apiurl}/insertUserPermission`,
+      url: `${apiurl}/insertGroupPermission`,
       data:{"user_id":this.state.currentuserid}
     })
       .then(()=> {
@@ -834,7 +834,7 @@ class Useraccess_rights extends Component {
 
                 <div className="group_accessrights_dropdown">
                   <div className="d-flex mr-3">
-                    <h6>User</h6>
+                    <h6>Group</h6>
                     <Dropdownantd className={`accessrights-option ${useraccess && useraccess.allow_edit==="N" && "disablenotallow"}`} breakclass="drop_down_br" option={this.state.user_arr} changeData={
                         useraccess && useraccess.allow_edit==="Y" ? 
                     (data) => this.changeDynamic(data, "Group",useraccess) 
@@ -842,10 +842,7 @@ class Useraccess_rights extends Component {
                 }
                       value={this.state.user} />
                   </div>
-                  <div className="d-flex userAccessGroupField">
-                    <h6>Group</h6>
-                    <div>{this.state.group}</div>
-                  </div>
+                 
                 </div>
                 <div className="btn_group_acceess_flex">
                   <Button className={`accessrights_button_cancel ${useraccess && useraccess.allow_edit==="N" && "disablenotallow"}`} onClick={useraccess && useraccess.allow_edit==="Y" && this.reset}>Reset</Button>
@@ -907,7 +904,7 @@ class Useraccess_rights extends Component {
                   onChangePage={this.handleChangePage}
                   onChangerowsPerPage={this.handleChangerowsPerPage}
                   ActionsComponent={TablePaginationActionsWrapped}
-                /> 
+                />
               </Paper>
             </div>
           </Spin>
