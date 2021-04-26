@@ -104,7 +104,7 @@ function Navbar(props) {
       { path: "/usergroup", title: "User Management Group", img: Usergroups },
       { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
       //user rights
-      { path: "/userrights", title: "User Rights", img: MasterIcon },
+      { path: "/userrights", title: "User Access Rights", img: MasterIcon },
     ]
   );
 
