@@ -9,8 +9,8 @@ import { getActivity,getPriorityList,getTagList,inserTask,getAssignedTo,getLocat
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
-
-
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+import { useParams } from "react-router-dom";
 function TimeSheetStartModel(props) {
     const [changeStop, setChangeStop] = useState(true)
     const dispatch = useDispatch();
@@ -19,6 +19,8 @@ function TimeSheetStartModel(props) {
     const [priorityList, setpriorityList] = useState({})
     const [taggList, settaggList] = useState({})
     const [assignedToLists, setassignedToLists] = useState({}) 
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
@@ -104,7 +106,9 @@ function TimeSheetStartModel(props) {
         }));
       };
 
-    useEffect(() => {
+      let { rowId } = useParams()
+      useEffect(() => {
+          dispatch(getProjectDetails(rowId))
         dispatch(getActivity());
        dispatch(getTagList());
         dispatch(getPriorityList());
@@ -112,8 +116,19 @@ function TimeSheetStartModel(props) {
         dispatch(getLocation()); 
         
       }, []);
-
+      const [projectType, setprojectType] = useState("") 
+      const [projectName, setprojectName] = useState("")
+      const [clientName, setclientName] = useState("")
     useEffect(() => {
+        setProjectDetails(props.ProjectDetails);
+        props.ProjectDetails.length > 0 && setidDetails({
+            project_id:props.ProjectDetails[0].project_id,
+            client_id:props.ProjectDetails[0].client_id,
+        })
+        setprojectType(props.ProjectDetails[0].project_type)
+        setprojectName(props.ProjectDetails[0].project_name)
+        setclientName(props.ProjectDetails[0].client)
+
         let activityTypeData = []
     props.activitysList.map((data) =>
     activityTypeData.push({ value: data.activity,
@@ -145,7 +160,7 @@ function TimeSheetStartModel(props) {
     setassignedToLists({ assignedToData })
 
 
-    }, [props.activitysList,props.prioritysList,props.tagsList,props.locationList,props.assignToList])
+    }, [props.ProjectDetails,props.activitysList,props.prioritysList,props.tagsList,props.locationList,props.assignToList])
 
 
     const submitstop = () => {
@@ -261,11 +276,11 @@ function TimeSheetStartModel(props) {
             {changeStop ?
                 <div>
                     <Grid item xs={12} container direction="row" spacing={3}>
-                        <Grid item xs={4}>IP Project</Grid>
+                        <Grid item xs={4}>{projectType}</Grid>
 
-                        <Grid item xs={4}>Project Name</Grid>
+                        <Grid item xs={4}>{projectName}</Grid>
 
-                        <Grid item xs={4}>Johnson & Johnson </Grid>
+                        <Grid item xs={4}>{clientName}</Grid>
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Activity"}
@@ -486,6 +501,7 @@ const mapStateToProps = (state) =>
     tagsList: state.projectTasksReducer.tagsList || [],
     assignToList: state.projectTasksReducer.assignToLists || [],
     locationList: state.projectTasksReducer.locationLists || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 export default connect(mapStateToProps)(TimeSheetStartModel);

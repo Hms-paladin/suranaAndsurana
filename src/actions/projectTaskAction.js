@@ -1,6 +1,6 @@
 import { GET_ACTIVITY,GET_TAG,GET_PRIORITY,INSERT_TASK,INSERT_ADHOC_TASK,
     GET_LOCATION,GET_ASSIGN_TO,INSERT_TIME_SHEET,GET_EXPENSE_TYPE,
-    GET_PAYMENT_MODE,GET_STAGESBY_PROJECT,GET_SUBSTAGES } from "../utils/Constants";
+    GET_PAYMENT_MODE,GET_STAGESBY_PROJECT,GET_SUBSTAGES,GET_STAGE_LIST } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -259,9 +259,16 @@ export const getLocation= () => async dispatch => {
             })
               .then(function (response) {
                 if (response.data.status === 1) {
-                  notification.success({
-                    message: 'Stages Added Successfully',
-                  });
+                    var msg = response.data.msg;
+                    notification.success({
+                        message: msg != "" ? msg : "Stages added Successfully",
+                      });
+                  return Promise.resolve();
+                }else{
+                    var msg = response.data.msg;
+                    notification.success({
+                        message: msg ,
+                      });
                   return Promise.resolve();
                 }
               });
@@ -273,5 +280,24 @@ export const getLocation= () => async dispatch => {
           }
     }
 
-
+    export const getStageListData = () => async dispatch => {
+        try {
+      
+          axios({
+            method: 'GET',
+            url: apiurl + 'get_stage_master',
+          })
+            .then((response) => {
+              dispatch(
+                {
+                  type: GET_STAGE_LIST,
+                  payload: response.data.data
+                }
+              )
+            })
+      
+        } catch (err) {
+      
+        }
+      }
     

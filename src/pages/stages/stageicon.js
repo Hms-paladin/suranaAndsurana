@@ -7,7 +7,8 @@ import CustomButton from '../../component/Butttons/button';
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
 import { useParams } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
-import { getStagesByProjectId,getSubStages,insertStages } from "../../actions/projectTaskAction";
+import EnhancedTable from '../../component/DynTable/table';
+import { getStagesByProjectId,getSubStages,insertStages,getStageListData } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Axios from "axios";
 import moment from 'moment'
@@ -17,17 +18,45 @@ function Stages(props) {
     const [substages, setsubstages] = useState({})
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
-
+    const header = [
+        { id: 'stage', label: 'Stage ' },
+        { id: 'subStage', label: 'Sub Stage' }
+      ];
     let { rowId } = useParams()
+    const [StageMasterList, setStageMasterList] = useState([])
+    useEffect(() => {
+        dispatch(getStageListData());
+      }, []);
+    useEffect(() => {
+        //stageTableData
+        let stageMasterListData = []
+        props.getTableData.map((data) =>
+        stageMasterListData.push(data)
+      )
+      var stageList = [];
+    
+      for (var m = 0; m < stageMasterListData.length; m++) {
+        var listarray = {
+          
+          "stage": stageMasterListData[m].stage,
+          "sub_stage": stageMasterListData[m].sub_stage,
+        }
+        stageList.push(listarray);
+      }
+        setStageMasterList({ stageList })
+    
+      
+      },[props.getTableData])
+    
+    
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
         dispatch(getStagesByProjectId(props.ProjectDetails[0].project_id,props.ProjectDetails[0].project_type_id));
-       // dispatch(getSubStages(stageId));
         
         
         
       }, []);
-
+      
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -70,7 +99,7 @@ function Stages(props) {
 
     const [addRows, setAddRows] = useState([])
 
-
+/*
     function Addbox() {
         setAddRows([...addRows, <Grid item xs={9} container direction="row" spacing={2}>
             <Grid item xs={5}>
@@ -92,7 +121,7 @@ function Stages(props) {
         </Grid>])
 
 
-    }
+    } */
 
     function checkValidation(data, key, multipleId) {
 
@@ -178,36 +207,24 @@ function Stages(props) {
                     changeData={(data) => checkValidation(data, "subStages")} 
                     value={stageForm.subStages.value} />
                 </Grid>
-                <Grid item xs={2}>
-                    <img src={AddIcon} onClick={() => Addbox()} />
-                </Grid>
+             
             </Grid>
 
-            {addRows}
+           
 
-            <Grid item xs={9} container direction="row" spacing={2}>
-                <Grid item xs={5}>
-                    <div className="stageHeading" >Stages</div>
-                    <div >Stages</div>
-                    <div >Stages</div>
-                    <div >Stages</div>
-                    <div >Stages</div>
+           
 
-                </Grid>
-                <Grid item xs={5}>
-                    <div className="stageHeading"> Sub Stages</div>
-                    <div > Sub Stages</div>
-                    <div >Sub Stages</div>
-                    <div >Sub Stages</div>
-                    <div >Sub Stages</div>
-
-                </Grid>
-
-            </Grid>
+           
             <div className="stagebtn">
                     <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="custom_save" />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
             </div>
+            <div className="rate_enhanced_table">
+        <EnhancedTable headCells={header}
+          rows={StageMasterList.length == 0 ? StageMasterList :StageMasterList.stageList}
+          />
+      </div>
+
         </div>
     )
 }
@@ -216,6 +233,7 @@ const mapStateToProps = (state) =>
     
     stagesList: state.projectTasksReducer.stagesList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    getTableData:state.projectTasksReducer.getstagesTableData || [] ,
 });
 
 export default connect(mapStateToProps)(Stages);

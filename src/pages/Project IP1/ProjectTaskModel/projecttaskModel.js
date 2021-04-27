@@ -214,12 +214,18 @@ function ProjectTaskModel(props) {
         }));
 
     };
-      useEffect(() => {
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id:props.ProjectDetails[0].project_id,
-            client_id:props.ProjectDetails[0].client_id,
-        })
+    const [projectType, setprojectType] = useState("") 
+    const [projectName, setprojectName] = useState("")
+    const [clientName, setclientName] = useState("")
+  useEffect(() => {
+      setProjectDetails(props.ProjectDetails);
+      props.ProjectDetails.length > 0 && setidDetails({
+          project_id:props.ProjectDetails[0].project_id,
+          client_id:props.ProjectDetails[0].client_id,
+      })
+      setprojectType(props.ProjectDetails[0].project_type)
+      setprojectName(props.ProjectDetails[0].project_name)
+      setclientName(props.ProjectDetails[0].client)
 
         let activityTypeData = []
     props.activitysList.map((data) =>
@@ -361,9 +367,9 @@ function ProjectTaskModel(props) {
         <div className="projectTaskModel">
 
             <Grid item xs={12} container direction="row" justify="center" alignItems="center" spacing={1} className="projectTasktitle">
-                <Grid item xs={4} container justify="center" alignItems="center"> IP Project</Grid>
-                <Grid item xs={4} container justify="center" alignItems="center">Project Name</Grid>
-                <Grid item xs={4} container justify="center" alignItems="center">Johnson & Johnson</Grid>
+                <Grid item xs={4} container justify="center" alignItems="center">{projectType}</Grid>
+                <Grid item xs={4} container justify="center" alignItems="center">{projectName}</Grid>
+                <Grid item xs={4} container justify="center" alignItems="center">{clientName}</Grid>
 
             </Grid>
 

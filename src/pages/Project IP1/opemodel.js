@@ -74,12 +74,18 @@ function OpeModel(props) {
         dispatch(getPaymentMode());
       }, []);
 
+      const [projectType, setprojectType] = useState("") 
+      const [projectName, setprojectName] = useState("")
+      const [clientName, setclientName] = useState("")
       useEffect(() => {
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
             project_id:props.ProjectDetails[0].project_id,
             client_id:props.ProjectDetails[0].client_id,
         })
+        setprojectType(props.ProjectDetails[0].project_type)
+        setprojectName(props.ProjectDetails[0].project_name)
+        setclientName(props.ProjectDetails[0].client)
 
         let expenseData = []
     props.expenseList.map((data) =>
@@ -193,9 +199,9 @@ function OpeModel(props) {
     return (
         <div>
             <div className="opeHeader">
-                <div>IP Project </div>
-                <div>Project Name</div>
-                <div>Johnson & Johnson</div>
+                <div>{projectType}</div>
+                <div>{projectName}</div>
+                <div>{clientName}</div>
             </div>
             <div className="opeFields">
                 <Grid container direction="row" spacing={2}>
