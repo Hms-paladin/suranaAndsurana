@@ -11,6 +11,8 @@ import More from "../../images/more.svg";
 import {getStageMonitor,insertStageMaonitor} from "../../actions/StageMonotorrAction";
 import { useParams } from "react-router-dom";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
+import Labelbox from '../../helpers/labelbox/labelbox';
+
 const StageMonitor = (props) => {
 
   const header = [
@@ -19,6 +21,7 @@ const StageMonitor = (props) => {
     { id: 'subStage', label: 'Sub Stages' },
     { id: 'compDate', label: 'Compliance Date' },
     { id: 'actDate', label: 'Actual Date' },
+    { id: 'statusImg', label: '' },
   ];
   const [projectDetails, setProjectDetails] = useState({})
   const [idDetails, setidDetails] = useState({})
@@ -43,9 +46,17 @@ const StageMonitor = (props) => {
     })
     
     let StageListData = []
-    props.stageList.map((data) =>
+    props.stageList.map((data) =>{
+    let b = true;
+    if(b && data.actual_date){
+      b= false;
     StageListData.push({ stage: data.stage,
-    substage: data.sub_stage,actualdate: data.actual_date,compliancedate: data.compliance_date})
+    substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: <Labelbox type='datepicker' placeholder={'Actual Date'} changeData={(data)} />,statusImg: data.statusImg});
+  }else{
+    StageListData.push({ stage: data.stage,
+      substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: data.actual_date,statusImg: data.statusImg})
+  }
+}
 )
 setStageList({ StageListData })
 
