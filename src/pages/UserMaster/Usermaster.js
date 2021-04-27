@@ -484,7 +484,7 @@ const UserMaster = (props) => {
      
     }
 
-    if(data === 21)
+    /*if(data === 21)
     {
     dispatch(
       InsertClass(UserMaster)).then(() => {
@@ -507,7 +507,7 @@ const UserMaster = (props) => {
       // handleCancel()
     });
     }
-    else if (data===3)
+    /*else if (data===3)
     {
         dispatch(
           Common_insert_text(table_name_value,UserMaster)).then(() => {
@@ -532,7 +532,7 @@ const UserMaster = (props) => {
           // handleCancel()
         });
         
-    }
+    }*/
 
   
 

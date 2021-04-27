@@ -26,6 +26,7 @@ import PatentReducer from "./PatentReducer";
 import LeaveUpdateReducer from "./LeaveUpdateReducer";
 import UserMasterReducer from './UserMasterReducer';
 import UserGroupReducer from "./UserGroupReducer";
+import StageMonotorReducer from "./StageMonotorReducer";
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -54,5 +55,15 @@ export default combineReducers({
   LeaveUpdateReducer,
   UserMasterReducer,
   UserGroupReducer,
+  getInterviewquestions,
+    ResumeSearchStatus,
+    GetInterviewers,
+    GetDesignation,
+    GetEmployeeApprove,
+    insertInterviewquestions,
+    getemplyoeeformid,
+    getOptions:getResumeSearchDropDownOptions,
+    getResumeSearchRowdata,StageMonotorReducer
 });
+
 

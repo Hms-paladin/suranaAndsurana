@@ -277,9 +277,17 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
                     notification.success({
                         message: 'Stages Added Successfully',
                     });
+                    dispatch(getStagesByProjectId(projectId, projectTypeId, subProjectId));
+                    return Promise.resolve();
+                   
+                }else if(response.data.status === 0){
+                    
+                    notification.success({
+                        message: response.data.msg,
+                    });
                     return Promise.resolve();
                 }
-                dispatch(getStagesByProjectId(projectId, projectTypeId, subProjectId))
+                
             });
 
     } catch (err) {
