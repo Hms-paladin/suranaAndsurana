@@ -12,6 +12,7 @@ import {getStageMonitor,insertStageMaonitor} from "../../actions/StageMonotorrAc
 import { useParams } from "react-router-dom";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
 import Labelbox from '../../helpers/labelbox/labelbox';
+import ValidationLibrary from "../../helpers/validationfunction";
 
 const StageMonitor = (props) => {
 
@@ -27,6 +28,41 @@ const StageMonitor = (props) => {
   const [idDetails, setidDetails] = useState({})
   const [stageList, setStageList] = useState([]);
   const dispatch = useDispatch();
+  const [updateParam, setupdateParam] = useState({
+
+    compDate: {
+        value: "2021-04-28",
+        validation: [],
+        error: null,
+        errmsg: null,
+    },
+    stagelistid: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+  }
+  })
+
+  function checkValidation(data, key, multipleId) {
+    var errorcheck = ValidationLibrary.checkValidation(
+      data,
+      updateParam[key].validation
+    );
+    let dynObj = {
+      value: data,
+      error: !errorcheck.state,
+      errmsg: errorcheck.msg,
+      validation: updateParam[key].validation
+    }
+    setupdateParam(prevState => ({
+      ...prevState,
+      [key]: dynObj,
+    }));
+
+    updateParam[key].value=data;
+  };
+
   let { rowId } = useParams();
   useEffect(() => {
     
@@ -48,10 +84,21 @@ const StageMonitor = (props) => {
     let StageListData = []
     props.stageList.map((data) =>{
     let b = true;
-    if(b && data.actual_date){
+    if(b && (!data.actual_date || data.actual_date==null)){
       b= false;
+      let key ='stagelistid';
+      let obj = {
+        value: data.stage_list_id,
+        validation: [],
+      error: null,
+      errmsg: null,
+      }
+      setupdateParam(prevState => ({
+        ...prevState,
+        [key]: obj,
+      }));
     StageListData.push({ stage: data.stage,
-    substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: <Labelbox type='datepicker' placeholder={'Actual Date'} changeData={(data)} />,statusImg: data.statusImg});
+    substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: <Labelbox type='datepicker' placeholder={'Actual Date'} changeData={(data)  => checkValidation(data, 'compDate')} value={updateParam.compDate.value} error={updateParam.compDate.error} errmsg={updateParam.compDate.errmsg}/>,statusImg: data.statusImg});
   }else{
     StageListData.push({ stage: data.stage,
       substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: data.actual_date,statusImg: data.statusImg})
@@ -62,6 +109,10 @@ setStageList({ StageListData })
 
   }, [props.stageList,props.ProjectDetails,]);
 
+
+  function SubmitFunction() {
+    dispatch(insertStageMaonitor(updateParam));
+  }
 
   return (
     <div>
@@ -74,7 +125,7 @@ setStageList({ StageListData })
           btnName={"Save"}
           btnCustomColor="customPrimary"
           custombtnCSS={"btnstagemonitor"}
-
+          onBtnClick={SubmitFunction}
         />
         <CustomButton
           btnName={"Cancel"}

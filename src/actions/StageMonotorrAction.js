@@ -23,7 +23,7 @@ export const getStageMonitor = (data) => async dispatch => {
           let dt = '<Labelbox type="datepicker" placeholder={"Actual Date"} />';
           let b = true;
           for (let x of response.data.data) {
-                if(b && !response.data.data['actual_date']){
+                if(b && !x['actual_date']){
                   x['actual_date'] = true;
                   b = false;
                 }
@@ -74,15 +74,15 @@ export const getStageMonitor = (data) => async dispatch => {
   }*/
 
 
-export const insertStageMaonitor = () => async dispatch => {
+export const insertStageMaonitor = (stageData) => async dispatch => {
     try {
 
         axios({
-            method: "POST",
+            method: "PUT",
             url: apiurl + 'update_stage_completion_date',
             data: {
-              "actual_date":"2021-03-03",
-              "stage_list_id":"3"
+              "actual_date":stageData.compDate.value, //"2021-03-03"
+              "stage_list_id":stageData.stagelistid.value
             }
           }).then((response) => {
             if (response.data.status === 1) {
