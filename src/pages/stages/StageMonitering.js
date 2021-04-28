@@ -84,7 +84,7 @@ const StageMonitor = (props) => {
     let StageListData = []
     props.stageList.map((data) =>{
     let b = true;
-    if(b && (!data.actual_date || data.actual_date==null)){
+    if(b && (data.actual_date ==true)){
       b= false;
       let key ='stagelistid';
       let obj = {
@@ -98,7 +98,10 @@ const StageMonitor = (props) => {
         [key]: obj,
       }));
     StageListData.push({ stage: data.stage,
-    substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: <Labelbox type='datepicker' placeholder={'Actual Date'} changeData={(data)  => checkValidation(data, 'compDate')} value={updateParam.compDate.value} error={updateParam.compDate.error} errmsg={updateParam.compDate.errmsg}/>,statusImg: data.statusImg});
+    substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: <Labelbox type='datepicker' placeholder={'Actual Date'} 
+    changeData={(data)  => checkValidation(data, 'compDate')} 
+    value={updateParam.compDate.value} error={updateParam.compDate.error}
+     errmsg={updateParam.compDate.errmsg}/>,statusImg: data.statusImg});
   }else{
     StageListData.push({ stage: data.stage,
       substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: data.actual_date,statusImg: data.statusImg})
