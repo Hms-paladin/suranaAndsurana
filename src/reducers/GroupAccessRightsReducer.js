@@ -5,14 +5,12 @@ import { INSERT_GROUPACCESS, GET_GROUPNAME,GET_GROUPPERMISION } from '../utils/C
 
 // }
 
-
 const intialState = {
     InsertGroupAccess: [],
     GetGroupName: [],
     GetGroupPermision: [],
 
 }
-
 
 export default function (state = [], action) {
     const { type, payload } = action;

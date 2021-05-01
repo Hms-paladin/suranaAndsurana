@@ -62,7 +62,7 @@ console.log(VariableRate,"variable_rate")
             if (response.data.status === 1) {
                 dispatch({ type: INSERT_IPPROJECT, payload: true })
                 notification.success({
-                    message: "IP project inserted Successfully",
+                    message: "IP Project Inserted Successfully",
                 });
                 return Promise.resolve();
             }

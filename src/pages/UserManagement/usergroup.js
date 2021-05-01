@@ -9,7 +9,7 @@ import './usermanagement.scss';
 import { connect, useDispatch } from "react-redux";
 import { getGroupName, deleteGroupName } from "../../actions/UserGroupAction";
 import CustomButton from "../../component/Butttons/button";
-
+import { notification } from "antd";
 
 
 function UserGroup(props) {
@@ -22,7 +22,7 @@ function UserGroup(props) {
     const [editGroupNameid, setEditGroupNameid] = useState();
     const [usergroupdeleteModel, setUsergroupdeleteModel] = useState(false)
     const [deleteID, setDeleteID] = useState();
-
+    const [permission, setPermission] = useState([])
 
 
     const headCells = [
@@ -46,12 +46,15 @@ function UserGroup(props) {
             usergroup.push({
                 sno: index + 1,
                 group: data.group_name,
-                action: <><img src={Edit} className="editicon" onClick={() => editGroupNames(data.id, groupid)} /> <img src={Delete} className="editicon" onClick={() => deleteGroupNames(data.id)} /></>
+                action: <><img src={Edit} className="editicon" onClick={()=>( permission.allow_edit==='Y'?(editGroupNames(data.id, groupid)):rights())}  /> 
+                        <img src={Delete} className="editicon" onClick={()=>( permission.allow_delete==='Y'?(deleteGroupNames(data.id)):rights())}  /></>
             },
 
             )
         })
-        setUserGroupName(usergroup)
+        // setUserGroupName(usergroup)
+
+        permission.allow_view==='Y'?setUserGroupName(usergroup):setUserGroupName([]);
     }, [props.UserGroupName])
 
     const editGroupNames = (id) => {
@@ -84,11 +87,28 @@ function UserGroup(props) {
         setOnEdit(false);
     };
 
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+           let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+           return (
+               "User Group" == val.screen_name
+           ) 
+       })
+       setPermission(data_res_id)
+       }
+   
+       }, [props.UserPermission]);
+       console.log(permission,"permission")
+    function rights(){
+        notification.success({
+            message: "You Dont't Have Rights To Access This",
+        });
+    }
     return (
         <div>
             <div className="UserGroup">
                 <div>User Group</div>
-                <img src={PlusIcon} className="plusicon" onClick={() => setUsergroupModel(true)} />
+                <img src={PlusIcon} className="plusicon" onClick={() => (permission.allow_add==='Y'?setUsergroupModel(true):rights())} />
                 <DynModel modelTitle={"ADD USER GROUP"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} content={<UserGroupModal handleChangeCloseModel={(bln) => setUsergroupModel(bln)} editbtn={onEdit}
                     handleChangeCloseModel={(bln) => handleFieldNull(bln)}
                     editGrouplist={editGroupName}
@@ -115,6 +135,7 @@ const mapStateToProps = (state) =>
     {
         UserGroupName: state.UserGroupReducer.getGroupName || [],
         DeleteGroupName: state.UserGroupReducer.deleteGroupName || [],
+        UserPermission: state.UserPermissionReducer.getUserPermission,
     }
 );
 

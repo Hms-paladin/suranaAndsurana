@@ -1,0 +1,33 @@
+.DayReportContainer{
+    padding:25px;
+    background-color: white;
+    border-radius: 8px;
+}
+.Reportbtnsearch{
+    height:40px;
+    width: 90%;
+}
+.Reporthead{
+    padding-bottom:8px;
+}
+.DRtitle{
+    font-size:20px;
+    font-weight:600;
+    padding-bottom:8px;
+}
+.DRcollapsecss{
+    .ant-collapse-header {
+        padding: 6px 35px !important;
+    }
+    .ant-collapse-content > .ant-collapse-content-box {
+        padding:0px;        
+    }
+    .ant-collapse-content > .ant-collapse-content-box  >.ant-collapse > .ant-collapse-item > .ant-collapse-header 
+    {
+        padding-left: 50px !important;
+    }
+    .ant-collapse-content > .ant-collapse-content-box  >.ant-collapse > .ant-collapse-item > .ant-collapse-header >.ant-collapse-arrow
+    {
+        left:30px !important;
+    }
+}

@@ -759,7 +759,7 @@ const ResumePage = (props) => {
             )}
 
             <div className="educationList">
-              <div>Education*</div>
+              <div style={{fontWeight:600}}>Education*</div>
               <div>
                 <img src={PlusIcon} onClick={showEducationModel} />
               </div>
@@ -1091,7 +1091,7 @@ const ResumePage = (props) => {
                 </span>
               )}
               <div className="experienceList">
-                <div>Previous Employer Details{expReq && "*"}</div>
+                <div  style={{fontWeight:600}}>Previous Employer Details{expReq && "*"}</div>
                 <div>
                   <img src={PlusIcon} onClick={showExperienceModel} />
                 </div>

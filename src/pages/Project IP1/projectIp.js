@@ -47,6 +47,20 @@ import CopyRights from '../Project IP1/CopyRight';
 // Litigation  ==>
 import LitigationAddcase from '../Litigation/litigation';
 
+//IPAB Trademark
+import IPABRectificationFiled from './IPAB Trademark/rectification_filed'
+import IPABRectificationDefended from './IPAB Trademark/rectification_defended'
+import AppealFiling from './IPAB Trademark/appeal_filing';
+import RevocationFiled from './IPAB Trademark/revocation_filed'
+import RevocationDefended from './IPAB Trademark/revocation_defended'
+
+//IPAB Patent
+import PatentRectificationFiled from './IPAB Patent/patent_rectificationfiled'
+import PatentRectificationDef from './IPAB Patent/patent_rectificationdef'
+import PatentAppealFiling from './IPAB Patent/patent_appealfiling'
+import PatentRevocationFiled from './IPAB Patent/patent_revocationfiled'
+import PatentRevocationDef from './IPAB Patent/patent_revocationdef'
+
 
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
@@ -197,7 +211,7 @@ function ProjectIp(props) {
         props.ProjectDetails.length > 0 && setidDetails({
             project_id: props.ProjectDetails[0].project_id,
             client_id: props.ProjectDetails[0].client_id,
-            billable_type_id:props.ProjectDetails[0].billable_type_id
+            billable_type_id: props.ProjectDetails[0].billable_type_id
         })
         // console.log("dtata", props.ProjectDetails[0])
     }, [props.ProjectDetails])
@@ -291,16 +305,16 @@ function ProjectIp(props) {
     }
 
     const timesheetmodelContent = () => {
-    
+
         return (
-           
-            <TimeSheets   projectrow={projectDetails}/>
+
+            <TimeSheets projectrow={projectDetails} />
         )
     }
 
     const opeModel = () => {
         return (
-            <OPEModel/>
+            <OPEModel />
         )
     }
 
@@ -436,12 +450,12 @@ function ProjectIp(props) {
                                     <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 3</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
                                     <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 4</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
                                     <div className="customchecklistbtn">
-                                        <CustomButton
-                                            btnName={"Save"}
-                                            btnCustomColor="customPrimary"
-                                            custombtnCSS={"btnchecklist"}
-                                            onBtnClick={() => setChecklistModelOpen(false)}
-                                        />
+                                    <CustomButton
+                                        btnName={"Save"}
+                                        btnCustomColor="customPrimary"
+                                        custombtnCSS={"btnchecklist"}
+                                        onBtnClick={() => setChecklistModelOpen(false)}
+                                    />
                                     </div>
                                 </Grid>
                             </div>
@@ -510,12 +524,56 @@ function ProjectIp(props) {
                             props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Copyright" && <CopyRights projectDetails={props.ProjectDetails} id_Props={idDetails} />
                         }
 
-                
+
                         {/*  */}
 
                         {
                             props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase id_Props={idDetails} />
                         }
+
+                        {/* IPAB Trademark */}
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Trademark" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <IPABRectificationFiled />
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Trademark" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <IPABRectificationDefended />
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Trademark" && props.ProjectDetails[0].process === "Appeal" && props.ProjectDetails[0].filing_type === "Filing" && <AppealFiling />
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Trademark" && props.ProjectDetails[0].process === "Revocation" && props.ProjectDetails[0].filing_type === "Filed" && <RevocationFiled />
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Trademark" && props.ProjectDetails[0].process === "Revocation" && props.ProjectDetails[0].filing_type === "Defended" && <RevocationDefended />
+                        }
+
+                        {/* IPAB Patent */}
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <PatentRectificationFiled/>
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <PatentRectificationDef/>
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Appeal" && props.ProjectDetails[0].filing_type === "Filing" && <PatentAppealFiling />
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Revocation" && props.ProjectDetails[0].filing_type === "Filed" && <PatentRevocationFiled />
+                        }
+
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Revocation" && props.ProjectDetails[0].filing_type === "Defended" && <PatentRevocationDef />
+                        }
+
                     </div>}
 
                 </div>

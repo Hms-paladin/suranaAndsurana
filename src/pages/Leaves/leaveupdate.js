@@ -13,7 +13,7 @@ import { AudioOutlined } from '@ant-design/icons';
 import { updateLeaveBalance,insertLeaveUpdate,getEmployee,getLeaveBalance} from "../../actions/LeaveUpdateAction";
 import Delete from "../../images/dashboard/delete.svg";
 import { useLocation, Switch } from 'react-router-dom'; 
-
+import { notification } from "antd";
 
 const { Search } = Input;
 
@@ -38,6 +38,8 @@ function LeaveUpdate(props) {
     const [updateList, setUpdatelist] = useState([])
    
     const [editBtn, setEditBtn] = useState(false)
+
+    const [permission, setPermission] = useState([])
 
     const [leaveupdateEdit, setLeaveupdateEdit] = useState(false)
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
@@ -73,7 +75,7 @@ function LeaveUpdate(props) {
 
     /////////// 
     const onEditLeaveForm=(val)=>{
-        // console.log("test,",val)
+        console.log("test,",val)
        Leave_Update.leavetype.value = val.leave_type_id
        setEligible_leave(val.eligible_leave)
        setLeaveupdateEdit(true)
@@ -87,6 +89,7 @@ function LeaveUpdate(props) {
     /////////////////
     useEffect(() => {
         dispatch(getLeaveType());
+        // dispatch(getUserPermission());
     }, [])
 
     //Leave type
@@ -140,33 +143,33 @@ function LeaveUpdate(props) {
     }, [employeeCode,props.getEmployee])
 
     /////
-    useEffect(()=>{
+    // useEffect(()=>{
         
-        let leaveUpdateList = [];
-        if(props.getUpdateTableData.length>0){
-        props.getUpdateTableData.map((data) => leaveUpdateList.push(data));
+    //     let leaveUpdateList = [];
+    //     if(props.getUpdateTableData.length>0){
+    //     props.getUpdateTableData.map((data) => leaveUpdateList.push(data));
 
-        for (var m = 0; m < leaveUpdateList.length; m++) {
-            if(leaveUpdateList[m].leave_type_id===Leave_Update.leavetype.value){
-                if(editBtn){
-                setLeaveupdateEdit(true);
-                }else{
-                setLeaveupdateEdit(false);
-                }
-                return;
-            }else if(leaveUpdateList[m].leave_type_id!==Leave_Update.leavetype.value){
-                setLeaveupdateEdit(false);
+    //     for (var m = 0; m < leaveUpdateList.length; m++) {
+    //         if(leaveUpdateList[m].leave_type_id===Leave_Update.leavetype.value){
+    //             if(editBtn){
+    //             setLeaveupdateEdit(true);
+    //             }else{
+    //             setLeaveupdateEdit(false);
+    //             }
+    //             return;
+    //         }else if(leaveUpdateList[m].leave_type_id!==Leave_Update.leavetype.value){
+    //             setLeaveupdateEdit(false);
 
-            }
+    //         }
 
-        }
-        setleaveUpdate((prevState) => ({
-            ...prevState,
-            }));
+    //     }
+    //     setleaveUpdate((prevState) => ({
+    //         ...prevState,
+    //         }));
         
-        }
+    //     }
         
-    },[Leave_Update.leavetype.value])
+    // },[Leave_Update.leavetype.value])
     /////
  
     useEffect(() => {
@@ -184,15 +187,15 @@ function LeaveUpdate(props) {
             current_balance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
             action: (
                 <>
-                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])} id={leaveUpdateList[m].emp_leave_mas_id}  />{" "}
+                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit&&permission.allow_edit==='N'?(onEditLeaveForm(leaveUpdateList[index])):rights())}    />{" "}
                   {/* <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} /> */}
                 </>
               ),
           };
           updatelist.push(listarray);
         }
-        setUpdatelist({ updatelist });
-    
+        // setUpdatelist({ updatelist });
+        permission.allow_view==='Y'?setUpdatelist({ updatelist }):setUpdatelist([]);
       }, [props.getUpdateTableData])
 
     function checkValidation(data, key) {
@@ -243,7 +246,21 @@ function LeaveUpdate(props) {
     useEffect(() => {
         handleCancel();
       }, [location]);
+///*****user permission**********/
+      useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+           let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+           return (
+               "Leave Update" == val.screen_name
+           ) 
+       })
+       setPermission(data_res_id)
+       }
+   
+       }, [props.UserPermission]);
+/////////////
 
+      console.log(permission,"permission")
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Update);
@@ -263,7 +280,7 @@ function LeaveUpdate(props) {
 
         } 
         else{
-            if(leaveupdateEdit){
+            if(editBtn){
                 dispatch(updateLeaveBalance(Leave_Update,eligible_leave,leaveEditMasId,employeeCode)).then(() => {
                 })
              }else{
@@ -275,6 +292,11 @@ function LeaveUpdate(props) {
         setleaveUpdate((prevState) => ({
             ...prevState,
         }));
+    }
+    function rights(){
+        notification.success({
+            message: "You Dont't Have Rights To Access This",
+        });
     }
     return (
         <div>
@@ -395,7 +417,7 @@ function LeaveUpdate(props) {
 
                     <Grid item xs={3} container direction="row" spacing={2}>
                         <Grid item xs={6}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?onSubmit:rights} />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>
@@ -420,6 +442,6 @@ const mapStateToProps = (state) =>
     getInsertStatus: state.LeaveUpdateReducer.insertLeaveUpdate,
     getEmployee: state.LeaveUpdateReducer.getEmployee,
     getUpdateTableData: state.LeaveUpdateReducer.getLeaveBalance,
-    // getUpdateLeaveStatus: state.LeaveUpdateReducer.getLeaveUpdate,
+    UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 export default connect(mapStateToProps)(LeaveUpdate);

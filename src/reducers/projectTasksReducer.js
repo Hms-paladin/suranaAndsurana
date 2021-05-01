@@ -1,10 +1,10 @@
 import {
     GET_ACTIVITY, GET_PRIORITY, GET_TAG, INSERT_TASK, INSERT_ADHOC_TASK,
-    GET_ASSIGN_TO, GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE, GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES
+    GET_ASSIGN_TO, GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE, GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,GET_PROJECT_STAGES_LIST
 } from '../utils/Constants.js'
 
 const intialState = {
-    getActivityList: [], prioritysList: [], tagsList: [], insertTask: [],
+    getProjectStageList:[],getActivityList: [], prioritysList: [], tagsList: [], insertTask: [],
     insertAdhocTask: [], assignToLists: [], locationLists: [], stagesList: [], SubStagesList: [], getAllStage: []
 }
 
@@ -37,6 +37,8 @@ export default function (state = intialState, action) {
             return { ...state, SubStagesList: payload }
         case GET_PROJECTSTAGES:
             return { ...state, stagesList: payload }
+        case GET_PROJECT_STAGES_LIST:
+            return { ...state, getProjectStageList: payload }
         default:
             return state;
     }

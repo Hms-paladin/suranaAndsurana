@@ -15,7 +15,6 @@ class ValidationLibrary extends Component {
       else if (validatorsArray[valid].name == 'email') {
         var re = /^(?!.{101})(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(textValue) == false) {
-
           return { msg: "Email is invalid", state: false };//validation occurs break the loop & throw the error
         }
       } else if (validatorsArray[valid].name == 'minLength') {

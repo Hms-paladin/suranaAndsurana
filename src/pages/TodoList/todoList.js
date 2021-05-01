@@ -18,8 +18,10 @@ import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
 import Appraisal from '../Appraisal/appraisal';
+import AppraisalView from '../Appraisal/appraisalView';
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
+import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
 
 // Hr Task:
@@ -78,15 +80,22 @@ function TodoList(props) {
     const [Employee_Data, setEmployee_Data] = useState([])
     const [res_id, setres_id] = useState([])
     const [viewer_id, setviewer_id] = useState([])
-    const [leaveapprovemodel, setLeaveapprovemodel] = useState(false);
     const [modelTitle, setModeltitle] = useState()
     const [leaveModelTitle, setleaveModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
     const [kraapprovemodel, setKraapprovemodel] = useState(false);
     // timesheet
-    const [TimeSheet_Approval,setTimeSheet_Approval]=useState(false)
+    const [TimeSheet_Approval, setTimeSheet_Approval] = useState(false)
     // recruitment
-    const [recruitmodal,setrecruitmodal]=useState(false)
+    const [recruitmodal, setrecruitmodal] = useState(false)
+    const [recruitmentData, setRecruitmentData] = useState([])
+    const [editTickettemplate, setEditTickettemplate] = useState(false);
+    const [ticket_id, setTicket_id] = useState();
+
+
+
+    //serverance
+    const [serverancemodal, setserverancemodal] = useState(false)
 
     useEffect(() => {
         dispatch(getHrTaskList())
@@ -99,13 +108,17 @@ function TodoList(props) {
 
     useEffect(() => {
 
+
         let hrList = []
         let todoListdata = []
+        let hrlist2 = []
+
 
         props.getHrTodoList.map((data) => {
-            console.log(data, "showid")
+            console.log(data, "showidshowid")
             let showId = null
             let showName = null
+
 
             if (data.interviewer_id) {
                 showId = data.interviewer_id
@@ -120,15 +133,29 @@ function TodoList(props) {
                 showId = data.int_status_id
                 showName = "int_status_id"
             }
+            else if (data.ticket_id) {
+                showId = data.ticket_id
+                showName = "Recruitment Request"
+            }
+            else {
+                showName = ""
+            }
             hrList.push({
                 id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
                 designation: data.designation, candidates: data.no_of_candidates
             },
-          
             )
+
+
+
         })
+
         setHrTodoList(hrList)
+
+        if (props.getHrTodoList.assigned_by !== props.getHrTodoList.assignee_id) {
+            alert("test")
+        }
     }, [props.getHrTodoList,])
 
     useEffect(() => {
@@ -137,10 +164,10 @@ function TodoList(props) {
         projectTask.push({
             id: <div className="ProjectTaskId" onClick={unblockUser}>Unblock User</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
         },
-        {
-            id: <div className="ProjectTaskId" onClick={() => setTimeSheet_Approval(true)}
-            >Time Sheet Approval</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021",enddate: "12-Jan-2021"
-        }, 
+            {
+                id: <div className="ProjectTaskId" onClick={() => setTimeSheet_Approval(true)}
+                >Time Sheet Approval</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
+            },
         )
 
         setProjectTodoList(projectTask)
@@ -184,11 +211,13 @@ function TodoList(props) {
         }, {
             id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         },
-        {
-            id: <div className="ProjectTaskId" onClick={() => setrecruitmodal(true)}
-            >Recruitment Request</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }
-         )
+            {
+                id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+            },
+            {
+                id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+            },
+        )
 
         setOtherTodoList(otherTask)
 
@@ -226,13 +255,32 @@ function TodoList(props) {
         else if (name === "int_status_id") {
             setEmployeeFormOpen(true)
             let checkData = props.getHrTodoList.find((val) => {
+                // console.log(val,"valval")
                 return (
                     id == val.int_status_id
                 )
             })
             setEmployee_Data(checkData)
         }
+        else if (name === "Recruitment Request") {
+            setrecruitmodal(true)
+            setEditTickettemplate(true)
+            let checkData = props.getHrTodoList.find((val) => {
+
+                return (
+                    id == val.ticket_id
+                )
+            })
+            setRecruitmentData(checkData)
+            setTicket_id(id)
+            console.log(checkData, "props.getHrTodoList")
+
+
+
+        }
+
     }
+
 
     // unblockUsers ==>
     function unblockUser() {
@@ -282,6 +330,14 @@ function TodoList(props) {
                 <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)}
                     content={<EmployeeApprove closemodal={(bln) => onNewPageClear(bln)} emp_viewer_id={viewer_id} stateClear={stateClear} />} />
 
+                {/* recruitment Request modal */}
+
+                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={900} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} ticket_id={ticket_id} editTickettemplate={editTickettemplate} recruitmentDa={recruitmentData}  />} />
+
+                {/* serverance_Userview_Modal */}
+                {/* <DynModel modelTitle={"Severance"} handleChangeModel={serverancemodal} handleChangeCloseModel={(bln) => setserverancemodal(bln)} width={950} content={<ServeranceModal closemodal={(bln) => setserverancemodal(bln)} />} /> */}
+
+
             </div>
             {/* __________________________________________________________________________ */}
             <div>
@@ -301,10 +357,9 @@ function TodoList(props) {
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
 
-                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={800} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} />} />
 
 
-            
+
 
             </div>
 
@@ -316,7 +371,7 @@ function TodoList(props) {
 
 const mapStateToProps = state => (
     {
-        getHrTodoList: state.getHrTodoList.getHrToDoListTableData || []
+        getHrTodoList: state.getHrTodoList.getHrToDoListTableData || [],
     }
 )
 

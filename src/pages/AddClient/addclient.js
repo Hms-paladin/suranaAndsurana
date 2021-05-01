@@ -14,7 +14,7 @@ import { connect, useDispatch } from "react-redux";
 import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import "./addclient.scss";
-
+import PlusIcon from "../../images/plusIcon.svg";
 
 
 function AddClient() {
@@ -22,9 +22,13 @@ function AddClient() {
 
   const [clientName, setClientName] = useState({});
 
+  const [fileupload, setFileupload] = useState([]);
+
   const [stateList, setstateList] = useState({});
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
+
+  const [selectedFile, setselectedFile] = useState([]);
 
   const [Addclient_Form, setAddclient_Form] = useState({
     client_name: {
@@ -134,7 +138,6 @@ function AddClient() {
       errmsg: null,
     }
   });
-  const [selectedFile, setselectedFile] = useState([]);
 
   const props = {
     name: 'file',
@@ -155,6 +158,10 @@ function AddClient() {
       }
     },
   };
+
+  useEffect(() => {
+    console.log(props.getInsertStatus, "getInsertStatus")
+  }, [props.getInsertStatus])
 
   useEffect(() => {
 
@@ -249,6 +256,7 @@ function AddClient() {
         }
       });
       dynObj.valueById = multipleIdList.toString();
+      // console.log(dynObj.valueById,"id")
     }
     // (end)
 
@@ -299,7 +307,7 @@ function AddClient() {
     if (filtererr.length > 0) {
       // setAddclient_Form({ error: true });
     } else {
-      dispatch(InsertClient(Addclient_Form, selectedFile)).then((response) => {
+      dispatch(InsertClient(Addclient_Form, fileupload)).then((response) => {
         onStateClear()
       })
     }
@@ -308,6 +316,44 @@ function AddClient() {
       ...prevState,
     }));
   }
+
+
+  function onfileupload() {
+
+    if (Addclient_Form.poa_name.value === '') {
+      notification.success({
+        message: 'Please Select Document',
+      });
+    } else {
+
+      setFileupload((prevState) => (
+        [...prevState, {
+          poa_name: Addclient_Form.poa_name.value,
+          selectedFile: "",
+        }]
+      ));
+
+
+    }
+
+    console.log("hello", fileupload)
+
+    if (Addclient_Form.poa_name.value === '') {
+      notification.success({
+        message: 'Please Select Document',
+      });
+    } else {
+
+      setFileupload((prevState) => (
+        [...prevState, {
+          poa_name: Addclient_Form.poa_name.value,
+          selectedFile: "",
+        }]
+      ));
+
+    }
+  }
+
 
   const onStateClear = () => {
     let From_key = [
@@ -463,10 +509,24 @@ function AddClient() {
                 {/* <input type="file" onChange={handleImagePreview} /> */}
                 <Upload {...props}>
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>,
+                </Upload>
                 {/* <PublishIcon/> */}
               </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }}>
+                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload} />
+              </div>
+
             </div>
+            <div className="doc_upload_div"><div>POA</div>  <div>File Name</div></div>
+            {fileupload.map((data) => {
+              return (
+                <div className="doc_upload_items">
+                  <div>{data.poa_name}</div>
+                  <div>{data.selectedFile}</div>
+                </div>
+              )
+            })}
             {/* <Grid container spacing={2} md={12}>
               <Grid md={2} style={{ color: "#023e7d" }}>
                 POA{" "}
@@ -614,6 +674,8 @@ const mapStateToProps = (state) => (
   {
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
     // getInsertStatus: state.AddClientReducer.addClientDocumentStatus ,
+    getInsertStatus: state.AddClientReducer.InsertClient,
+
   }
 );
 

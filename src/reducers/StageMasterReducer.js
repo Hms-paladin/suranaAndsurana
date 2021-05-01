@@ -1,6 +1,6 @@
-import { GET_STAGEMASTER_TABLEDATA, INSERT_STAGEMASTER, } from "../utils/Constants";
+import { GET_STAGEMASTER,GET_STAGEMASTER_TABLEDATA, INSERT_STAGEMASTER, } from "../utils/Constants";
 const intialState = {
-    getStageMasterTableData: [],insertStageMasterStatus:false,
+    getStageMaster:[],getStageMasterTableData: [],insertStageMasterStatus:false,
 }
 
 export default function (state = intialState, action) {
@@ -10,6 +10,8 @@ export default function (state = intialState, action) {
             return  { ...state, getStageMasterTableData: payload }
         case INSERT_STAGEMASTER:
             return  { ...state, insertStageMasterStatus: payload }  
+        case GET_STAGEMASTER:
+            return  { ...state, getStageMaster: payload } 
         default:
             return state;
     }

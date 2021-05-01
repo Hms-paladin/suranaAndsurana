@@ -167,3 +167,161 @@
 .linktable{
     text-decoration: underline;
 }
+
+//dashboardbtn
+
+.dashboardbtn{
+    margin: 20px 0px 10px 0px;
+}
+
+// Compliance :-moz-full-screen
+
+.overallContainer{
+    margin: 20px 0px;
+    width: 100%;
+}
+
+.overallScroll{
+    width: 70%;
+    background-color: white;
+    margin: 10px;
+    border-radius: 5px;
+    > div:first-child {
+        padding: 8px 8px 8px 0px;
+        font-size: 17px;
+        font-weight: 600;
+    }
+}
+
+.overallData{
+    height: 140px;
+    overflow: auto;
+    background-color: #f0f0f0;
+}
+
+.overallMajorheading{
+    display: flex;
+    text-align: center;
+    padding: 6px 0px ;
+    color: gray;
+    border-bottom:1px solid #d8d4d4;
+    >div:first-child{
+        width: 40%;
+
+    }
+}
+
+.overallMajordatas{
+    display: flex;
+    text-align: center;
+    padding: 6px 0px ;
+    font-weight: 600%;
+    border-bottom:1px solid #d8d4d4;
+    >div:first-child{
+        width: 40%;
+
+    }
+}
+
+.secondheading{
+    width: 60%;
+}
+
+.taskStages{
+    width: 60%;
+    display: flex;
+    >div{
+        width: 50%;
+    }
+}
+
+.taskStage{
+    display: flex;
+    text-align: center;
+    >div{
+        width: 50%;
+        padding: 5px;
+    }
+}
+
+.projectwiseheading{
+    display: flex;
+    text-align: center;
+    color: gray;
+    padding: 7px 0px;
+    border-bottom:1px solid #d8d4d4;
+
+    >div:first-child{
+        width: 20%;
+    }
+    .firstheading{
+        width: 30%;
+    }
+    .secondheading{
+        width: 50%;
+    }
+    .taskStage{
+        width: 30%;
+        display: flex;
+        text-align: center;
+        >div{
+            width: 50%;
+            padding: 5px;
+        }
+    }
+    .taskStages{
+        width: 50%;
+        display: flex;
+        >div{
+            width: 50%;
+            .taskStagefields{
+                display: flex;
+                text-align: center;
+                >div{
+                    width: 50%;
+                }
+            }
+        }
+        
+    }
+}
+
+.projectwisedata{
+    display: flex;
+    text-align: center;
+    font-weight: 600;
+    padding: 7px 0px;
+    >div:first-child{
+        width: 20%;
+    }
+    .firstheading{
+        width: 30%;
+    }
+    .secondheading{
+        width: 50%;
+    }
+    .taskStage{
+        width: 30%;
+        display: flex;
+        text-align: center;
+        >div{
+            width: 50%;
+            padding: 5px;
+        }
+    }
+    .taskStages{
+        width: 50%;
+        display: flex;
+        >div{
+            width: 50%;
+            .taskStagefields{
+                display: flex;
+                text-align: center;
+                >div{
+                    width: 50%;
+                }
+            }
+        }
+        
+    }
+}

@@ -21,8 +21,10 @@ import Dropdownantd from "./userAccessDropdown"
 import Green_checkBox from "../blueCheckBox";
 import { Spin, notification } from 'antd';
 import { apiurl } from "../../../utils/baseUrl.js";
-
+import {getUserPermission} from "../../../actions/UserAccessRightsAction";
 import "./userAccessRights.css"
+import { connect } from "react-redux";
+
 
 const { Panel } = Collapse;
 const axios = require('axios');
@@ -285,7 +287,7 @@ class Useraccess_rights extends Component {
 
 
   recall_permission = (showNotification,userid,useraccess) => {
-
+    userid=JSON.parse(localStorage.getItem("user_id"))
     function setobject(name) {
       return name
     }
@@ -610,8 +612,8 @@ class Useraccess_rights extends Component {
   }
 
   change_checkbox = (useraccess,userid,id, val, name, allvalue, index) => {
-    var userid = 8
-
+    var userid = localStorage.getItem("user_id")
+console.log(localStorage.getItem("user_id"),"localStorage.getItem")
     this.setState({
       insideLoading: true
     })
@@ -794,6 +796,7 @@ class Useraccess_rights extends Component {
     })
       .then(function (response) {
         self.recall_permission(true,userid,useraccess)
+       this.props.dispatch()
       })
       .catch(function (error) {
         console.log(error, "error");
@@ -810,6 +813,7 @@ class Useraccess_rights extends Component {
     })
       .then(()=> {
         this.recall_permission(true,this.state.currentuserid,this.state.useraccess)
+        this.props.dispatch()
       })
       .catch(function (error) {
         console.log(error, "error");
@@ -917,4 +921,18 @@ class Useraccess_rights extends Component {
   }
 }
 
-export default Useraccess_rights;
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch: () => dispatch(getUserPermission()),
+  }
+}
+
+
+const mapStateToProps = (state) => (
+  {
+    // getTableData: state.variableRateMaster.getVariableRateTableData || [],
+    // getInsertStatus: state.variableRateMaster.insertVariableRateStatus,
+    // UserPermission: state.UserPermissionReducer.getUserPermission,
+  }
+);
+export default connect(mapStateToProps, mapDispatchToProps)(Useraccess_rights) ;

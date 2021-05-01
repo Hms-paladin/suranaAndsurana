@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
@@ -8,7 +8,10 @@ import DynModel from "../../component/Model/model";
 import ReceiveBooksModal from "./receivebooksmodal";
 import IssueBooksModal from "./issuebookmodal";
 import { Redirect, Link } from "react-router-dom";
-export default function LibraryBook(props) {
+import { notification } from "antd";
+import { useDispatch, connect } from "react-redux";
+
+function LibraryBook(props) {
     const [pathname, setpathname] = useState(window.location.pathname);
     const [receivingbooksmodal, setreceivingbooksmodal] = useState(false)
     const [issuebooksmodal, setissuebooksmodal] = useState(false)
@@ -51,8 +54,32 @@ export default function LibraryBook(props) {
 
     ];
 
+    const [permission, setPermission] = useState([])
+
+    ///*****user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+        return (
+            "Exit Interview form" == val.screen_name
+        ) 
+    })
+    setPermission(data_res_id)
+    if(data_res_id.allow_view==='N')
+    rights()
+    }
+
+    }, [props.UserPermission]);
+    /////////////
+    console.log(props.UserPermission,"props.UserPermission")
+    function rights(){
+        notification.success({
+            message: "You Dont't Have Rights To Access This",
+        });
+    }
     return (
         <div>
+        { permission.allow_view==='N'&&<div>
             <div className="lib_master_h">Library Book Maintenance</div>
             <div className="parent_div_lib">
                 <Grid container spacing={2} className="cont_parent_lib_grid">
@@ -99,6 +126,14 @@ export default function LibraryBook(props) {
                 <DynModel modelTitle={"Receiving of Books"} handleChangeModel={receivingbooksmodal} handleChangeCloseModel={(bln) => setreceivingbooksmodal(bln)} width={850} content={<ReceiveBooksModal />} />
                 <DynModel modelTitle={"Issue of Books"} handleChangeModel={issuebooksmodal} handleChangeCloseModel={(bln) => setissuebooksmodal(bln)} width={850} content={<IssueBooksModal />} />
             </div>
+        </div> }
+
         </div>
     )
 }
+
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (LibraryBook)

@@ -4,10 +4,12 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import AddIcon from '../../images/addIcon.svg';
 import { getStageMasterTableData } from "../../actions/StageMasterAction";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getStagesByProjectId, getSubStages, insertStages, getStages } from "../../actions/projectTaskAction";
+import { getStagesByProjectId, getSubStages, insertStages,getProjectStageList } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
 import moment from 'moment';
-
+import {getStageMonitor,insertStageMaonitor} from "../../actions/StageMonotorrAction";
+import { useParams } from "react-router-dom";
+import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
 import './stagesicon.scss';
 
 
@@ -32,7 +34,19 @@ function Stages(props) {
     const [stageItem, setStageItem] = useState([])
     const [subStageItem, setSubStageItem] = useState([])
 
-
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
+    const [stageList, setStageList] = useState([]);
+    let { rowId } = useParams();
+    useEffect(() => {
+      
+      dispatch(getProjectDetails(rowId))
+      dispatch(getStageMonitor(props.ProjectDetails))
+     // dispatch(insertStageMaonitor());
+     
+      
+      
+    }, []);
     useEffect(() => {
         dispatch(getStageMasterTableData())
     }, [])
@@ -42,7 +56,7 @@ function Stages(props) {
 
         if (props.projectDetails && props.projectDetails.length > 0) {
             dispatch(getStagesByProjectId(props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id));
-            dispatch(getStages())
+            dispatch(getProjectStageList(props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id,props.projectDetails[0].project_id))
         }
     }, [props.projectDetails]);
 
@@ -128,10 +142,11 @@ function Stages(props) {
                 "updated_by": localStorage.getItem("empId"),
             }
             dispatch(insertStages(params, props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id)).then(() => {
-                handleCancel()
+                handleCancel();
+               // dispatch(getStageMonitor(props.ProjectDetails))
             })
         }
-
+        
         setstageForm((prevState) => ({
             ...prevState,
         }));
@@ -214,9 +229,11 @@ function Stages(props) {
     )
 }
 const mapStateToProps = (state) => ({
-    stagesList: state.projectTasksReducer.stagesList || [],
+    stagesList: state.projectTasksReducer.getProjectStageList || [],
     subStagesList: state.projectTasksReducer.SubStagesList || [],
-    getAllStages: state.projectTasksReducer.getAllStage || []
+    getAllStages: state.projectTasksReducer.getAllStage || [],
+    stageList: state.StageMonotorReducer.getStageMonitor || [],
+     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 export default connect(mapStateToProps)(Stages);

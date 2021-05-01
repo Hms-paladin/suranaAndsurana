@@ -48,7 +48,7 @@ export default class Labelbox extends Component {
 		var timeformat = dateFormat(time, "hh:MM:ss");
 		console.log("timeformat", timeformat)
 		this.setState({ selectedtime: time });
-		this.props.changeData && this.props.changeData(time, timeformat);
+		this.props.changeData && this.props.changeData(timeformat,time);
 	};
 
 	componentWillReceiveProps(props) {
@@ -91,7 +91,6 @@ export default class Labelbox extends Component {
 							</div>
 						}
 					</div>
-
 				</div>
 
 			)
@@ -283,7 +282,11 @@ export default class Labelbox extends Component {
 							if (item.value) {
 								if (this.props.mode === "multiple") {
 									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
-								} else {
+								}
+								else if(this.props.stringvalue){
+									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
+								}
+								 else {
 									return (<Option key={index} disabled={item.disable} value={item.id}>{item.value}</Option>)
 								}
 							}

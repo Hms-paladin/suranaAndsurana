@@ -1,10 +1,32 @@
-import { GET_STAGEMASTER_TABLEDATA, INSERT_STAGEMASTER, } from "../utils/Constants";
+import { GET_STAGEMASTER_TABLEDATA, INSERT_STAGEMASTER,GET_STAGEMASTER } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
 
+
 export const getStageMasterTableData = () => async dispatch => {
+  try {
+
+    axios({
+      method: 'GET',
+      url: apiurl + 'get_project_stage',
+    })
+      .then((response) => {
+        dispatch(
+          {
+            type: GET_STAGEMASTER_TABLEDATA,
+            payload: response.data.data
+          }
+        )
+      })
+
+  } catch (err) {
+
+  }
+}
+
+export const getStageMaster = () => async dispatch => {
   try {
 
     axios({
@@ -14,7 +36,7 @@ export const getStageMasterTableData = () => async dispatch => {
       .then((response) => {
         dispatch(
           {
-            type: GET_STAGEMASTER_TABLEDATA,
+            type: GET_STAGEMASTER,
             payload: response.data.data
           }
         )
@@ -46,7 +68,7 @@ export const InsertStageMaster = (RateMaster) => async dispatch => {
             }
           }).then((response) => {
             if (response.data.status === 1) {
-                dispatch(getStageMasterTableData())
+                dispatch(getStageMaster())
                 notification.success({
                   message: 'Stage Master Updated Successfully',
                 });

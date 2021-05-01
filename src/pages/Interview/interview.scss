@@ -178,3 +178,21 @@
 .selectedCandidateBG{
     background-color:#c0d5ea !important;
 }
+.candidate_det{
+    display: flex;
+    >div:nth-child(1){
+        font-size: 20px;
+        font-weight: 600;
+        padding: 10px 20px 10px 18px;
+        color: black;
+    }
+    >div:nth-child(2){
+        font-size: 20px;
+        font-weight: 600;
+        padding: 10px 20px 10px 18px;
+        color: rgb(94, 88, 88);
+    }
+}
+.score_table{
+    padding: 5px 20px 10px 15px;
+}

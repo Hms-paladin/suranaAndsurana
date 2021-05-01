@@ -25,12 +25,11 @@ export const InesertInterviewDetails = (Interviewschedule,selectedCandidateId) =
             .then(function (response) {
                 if(response.data.status===1){
                 notification.success({
-                    message: 'Record Added Successfully',
+                    message: 'Interview Scheduled Successfully',
                   });
                 return Promise.resolve();
                 }
             });
-        
     } catch (err) {
             notification.error({
                 message: 'Record Not Added',

@@ -6,9 +6,9 @@ import EnhancedTable from '../../component/DynTable/table';
 import Edit from "../../images/editable.svg";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
-import { insertLeaveForm,getProfessionalCourse, SubjectList,getEmpAvailableBalance } from '../../actions/LeaveFormAction';
+import { insertLeaveForm, getProfessionalCourse, SubjectList, getEmpAvailableBalance, getLeaveForm, deleteLeaveForm } from '../../actions/LeaveFormAction';
 import { useDispatch, connect } from "react-redux";
-import { getEmployeeList } from '../../actions/MasterDropdowns';
+import { getEmployeeList, getClientlist } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
@@ -18,7 +18,7 @@ import Delete from '../../images/dashboard/delete.svg';
 import './leaveupdate.scss';
 const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
-    { id: 'fromdate', label: 'From Dtae' },
+    { id: 'fromdate', label: 'From Date' },
     { id: 'todate', label: 'To Date' },
     { id: 'fromtime', label: 'From Time' },
     { id: 'totime', label: 'To Time' },
@@ -28,10 +28,6 @@ const headCells = [
 
 ];
 
-const rows = [
-    { leavetype: <a href={"#"} className="linktable">Casual leave</a>, fromdate: "2-mar-2021", todate: "20-mar-2021", fromtime: "", totime: "", status: "pending", img: <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
-    { leavetype: <a href={"#"} className="linktable">ON duty</a>, fromdate: "2-mar-2021", todate: "", fromtime: "02.00 pm", totime: "04.00 pm", status: "pending", img:  <><img src={Edit} className="editImage" /> <img src={Delete} className="editImage" /></> },
-]
 
 
 function LeaveForm(props) {
@@ -42,9 +38,13 @@ function LeaveForm(props) {
     const [examSchedule, setExamSchedule] = useState([])
     const [editExam, setEditExam] = useState([])
     const [empLeaveBal, setEmpLeaveBal] = useState("")
-    const [leavetypeName, setLeavetypeName] = useState("")
+    const [clientlist, setClientlist] = useState({})
     const [noOfDays, setNoOfDays] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
+
+    const [editBtn, setEditBtn] = useState(false)
+
+    const [leaveFormTable, setLeaveFormTable] = useState({});
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
@@ -82,12 +82,7 @@ function LeaveForm(props) {
             error: null,
             errmsg: null,
         },
-        date: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
+
         fromtime: {
             value: "",
             validation: [{ "name": "required" }],
@@ -112,12 +107,7 @@ function LeaveForm(props) {
             error: null,
             errmsg: null,
         },
-        ass_description: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-        },
+       
         referred_by: {
             value: "",
             validation: [{ "name": "required" }],
@@ -167,28 +157,55 @@ function LeaveForm(props) {
         dispatch(getLeaveType());
         dispatch(getProfessionalCourse());
         dispatch(getEmployeeList());
+        dispatch(getLeaveForm());
+        dispatch(SubjectList());
+        dispatch(getClientlist())
     }, [])
 
     useEffect(() => {
-        dispatch(getEmpAvailableBalance(localStorage.getItem("empId"),Leave_Form.leavetype.value))
+        dispatch(getEmpAvailableBalance(localStorage.getItem("empId"), Leave_Form.leavetype.value))
         // if(Leave_Form.leavetype.value===35||Leave_Form.leavetype.value)
     }, [Leave_Form.leavetype.value])
 
     useEffect(() => {
-        props.getEmpLeaveBal.length>0?setEmpLeaveBal(props.getEmpLeaveBal[0].current_balance):setEmpLeaveBal("")
-    }, [Leave_Form.leavetype.value,props.getEmpLeaveBal])
+        props.getEmpLeaveBal.length > 0 ? setEmpLeaveBal(props.getEmpLeaveBal[0].current_balance) : setEmpLeaveBal("")
+    }, [Leave_Form.leavetype.value, props.getEmpLeaveBal])
 
     useEffect(() => {
-        var diff =  Math.floor(( Date.parse(Leave_Form.fromdate.value) - Date.parse(Leave_Form.todate.value) ) / 86400000)
-        console.log(diff,"diff")
-        isNaN(diff)?setNoOfDays(0):setNoOfDays(diff)
-    }, [Leave_Form.fromdate.value,Leave_Form.todate.value])
-   
-    console.log(Leave_Form.leavetype.name,"type") 
+        var diff = Math.floor((Date.parse(Leave_Form.fromdate.value) - Date.parse(Leave_Form.todate.value)) / 86400000)
+        console.log(diff, "diff")
+        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff)
+    }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
+
+    console.log(Leave_Form.leavetype.name, "type")
     const onFileChange = () => {
 
     }
 
+    function onDeleteLeaveForm(emp_leave_id) {
+        console.log(emp_leave_id, "emp_leave_id")
+        dispatch(deleteLeaveForm(emp_leave_id))
+    }
+
+    const onEditLeaveForm = (val) => {
+        console.log(val , "valval")
+
+        Leave_Form.leavetype.value = val.leave_type_id || ""
+        Leave_Form.fromdate.value = val.from_date || ""
+        Leave_Form.todate.value = val.to_date || ""
+        Leave_Form.fromtime.value = val.from_time || ""
+        Leave_Form.totime.value = val.to_time || ""
+        Leave_Form.reasoncmt.value = val.leave_reason || ""
+        Leave_Form.address.value = val.address || ""
+        Leave_Form.contactperson.value = val.contact_number || ""
+        Leave_Form.client.value = val.client_id || ""
+        Leave_Form.assignedby.value = val.assigned_by || ""
+
+
+        setLeaveForm(prevState => ({
+            ...prevState,
+        }));
+    }
 
     useEffect(() => {
         // Leave Type
@@ -212,17 +229,28 @@ function LeaveForm(props) {
         );
         setSubjectList({ SubjectList });
 
-
+        //EmployeeList
         let EmployeeList = [];
         props.EmployeeList.map((data) =>
             EmployeeList.push({ value: data.name, id: data.emp_id })
-
         );
         setEmployeeList({ EmployeeList });
-    }, [props.LeaveType, props.SubjectList, props.stateDemo, props.EmployeeList])
+
+        // getClientlist
+        let Clientlist = [];
+        props.getClientlist.map((data) =>
+            Clientlist.push({ value: data.client, id: data.client_id })
+        );
+        setClientlist({ Clientlist });
+
+
+
+    }, [props.LeaveType, props.SubjectList, props.stateDemo, props.EmployeeList, props.getClientlist])
 
     function checkValidation(data, key) {
-        console.log(data, key, "dataValue")
+        if (key === "fromtime") {
+            console.log("timeformat", data)
+        }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -235,17 +263,34 @@ function LeaveForm(props) {
             validation: Leave_Form[key].validation,
         };
 
-        if (key === "profess_course" && data) {
-
-            dispatch(SubjectList(data));
-        }
-
         if (key === "leavetype" && data) {
+            handleCancel()
 
             // setLeavetypeName(data);
+            setEditBtn(false)
             console.log(data)
+
+            let From_key = [
+                "fromdate", "todate", "reasoncmt", "address", "contactperson", "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
+
+
+            ];
+
+            From_key.map((data) => {
+                try {
+                    Leave_Form[data].error = null;
+                } catch (error) {
+                    throw error;
+                }
+            });
+
+            setLeaveForm((prevState) => ({
+                ...prevState,
+            }));
+
         }
-        
+
+
 
         setLeaveForm((prevState) => ({
             ...prevState,
@@ -275,16 +320,77 @@ function LeaveForm(props) {
 
     }
 
-    // const editExamDetails = (indexNum) => {
-    //     console.log(examSchedule[indexNum], "index")
-    //     examSchedule.filter((data, index) => {
 
-    //     })
 
-    // }
+    useEffect(() => {
 
+        let TableData = [];
+
+        props.getLeaveForm.map((data, index) => TableData.push(data));
+        var updatelist = [];
+        for (var m = 0; m < TableData.length; m++) {
+            const index = m;
+            var listarray = {
+                leavetype: TableData[m].status,
+                fromdate: TableData[m].from_date === 0 ? '0' : TableData[m].from_date,
+                todate: TableData[m].to_date === 0 ? '0' : TableData[m].to_date,
+                fromtime: TableData[m].from_time === 0 ? '0' : TableData[m].from_time,
+                totime: TableData[m].to_time === 0 ? '0' : TableData[m].to_time,
+                status: TableData[m].approve_status === 1 ? 'Approved' : "Pending",
+                action: (
+                    <>
+                        <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onEditLeaveForm(TableData[index])} />{" "}
+                        <img src={Delete} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onDeleteLeaveForm(TableData[index].emp_leave_id)} />
+                    </>
+                ),
+            };
+            updatelist.push(listarray);
+        }
+        setLeaveFormTable(updatelist);
+
+    }, [props.getLeaveForm])
+
+
+    const hideValidation = (From_key) => {
+        From_key.map((data) => {
+            try {
+                Leave_Form[data].validation = [];
+            } catch (error) {
+                throw error;
+            }
+        });
+
+        setLeaveForm((prevState) => ({
+            ...prevState,
+        }));
+    }
 
     function onSubmit() {
+        if (Leave_Form.leavetype.value) {
+            // const Form_key = []
+            if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
+                const From_key = [
+                    "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
+                ];
+                hideValidation(From_key)
+
+            } else if (Leave_Form.leavetype.value === 38) {
+                const From_key = [
+                    "todate", "address", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
+                ];
+                hideValidation(From_key)
+            } else if (Leave_Form.leavetype.value === 39) {
+                const From_key = [
+                    "todate", "reasoncmt", "address", "contactperson", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
+                ];
+                hideValidation(From_key)
+
+            }
+
+
+
+        }
+
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Form);
         for (var i in targetkeys) {
@@ -297,27 +403,53 @@ function LeaveForm(props) {
             mainvalue[targetkeys[i]] = Leave_Form[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
-        // console.log(filtererr.length);
-        // console.log(educationList.length, "educationList.length")
+
         if (filtererr.length > 0) {
-            console.log(filtererr.length,"tttts")
-        } else{
-            console.log("tttts")
-            dispatch(insertLeaveForm(Leave_Form)).then(() => {      
-                // handleCancel()
-           })
+
+        } else {
+            dispatch(insertLeaveForm(Leave_Form)).then(() => {
+                dispatch(getLeaveForm(Leave_Form.leavetype.value));
+                handleCancel()
+            })
         }
-
-        console.log(Leave_Form.exam_days.value, "Leave_Form")
-        console.log(Leave_Form.subject.value, "Leave_Form")
-        console.log(Leave_Form.exam_date.value, "Leave_Form")
-
-
         setLeaveForm((prevState) => ({
             ...prevState,
         }));
     }
-    console.log(Leave_Form.leavetype.value, "Leave_Form.leavetype.value")
+    console.log(leaveFormTable, "leaveFormTable")
+
+    const handleCancel = () => {
+        let From_key = [
+            "fromdate",
+            "todate",
+            "reasoncmt",
+            "address",
+            "contactperson",
+            "fromtime",
+            "totime",
+            "client",
+            "assignedby",
+            "referred_by",
+            "profess_course",
+            "tot_leave",
+            "exam_days",
+            "other_days",
+            "subject",
+            "exam_date",
+        ];
+
+        From_key.map((data) => {
+            try {
+                Leave_Form[data].value = "";
+            } catch (error) {
+                throw error;
+            }
+        });
+
+        setLeaveForm((prevState) => ({
+            ...prevState,
+        }));
+    };
 
     return (
         <div>
@@ -429,11 +561,11 @@ function LeaveForm(props) {
                                 <div>
                                     <Labelbox type="datepicker"
                                         changeData={(data) =>
-                                            checkValidation(data, "date")
+                                            checkValidation(data, "fromdate")
                                         }
-                                        value={Leave_Form.date.value}
-                                        error={Leave_Form.date.error}
-                                        errmsg={Leave_Form.date.errmsg}
+                                        value={Leave_Form.fromdate.value}
+                                        error={Leave_Form.fromdate.error}
+                                        errmsg={Leave_Form.fromdate.errmsg}
                                     />
                                 </div>
                             </Grid>
@@ -453,7 +585,7 @@ function LeaveForm(props) {
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading"> To Time</div>
                                 <div>
-                                    <Labelbox type="datepicker"
+                                    <Labelbox type="timepicker"
                                         changeData={(data) =>
                                             checkValidation(data, "totime")
                                         }
@@ -472,6 +604,7 @@ function LeaveForm(props) {
                                     <Grid item xs={5}>
                                         <div className="leaveFieldheading">Client</div>
                                         <Labelbox type="select"
+                                            dropdown={clientlist.Clientlist}
                                             changeData={(data) =>
                                                 checkValidation(data, "client")
                                             }
@@ -483,6 +616,7 @@ function LeaveForm(props) {
                                     <Grid item xs={3}>
                                         <div className="leaveFieldheading">Assigned By</div>
                                         <Labelbox type="select"
+                                            dropdown={employeeList.EmployeeList}
                                             changeData={(data) =>
                                                 checkValidation(data, "assignedby")
                                             }
@@ -496,11 +630,11 @@ function LeaveForm(props) {
                                         <div className="reasonscmt">
                                             <Labelbox type="textarea"
                                                 changeData={(data) =>
-                                                    checkValidation(data, "ass_description")
+                                                    checkValidation(data, "reasoncmt")
                                                 }
-                                                value={Leave_Form.ass_description.value}
-                                                error={Leave_Form.ass_description.error}
-                                                errmsg={Leave_Form.ass_description.errmsg}
+                                                value={Leave_Form.reasoncmt.value}
+                                                error={Leave_Form.reasoncmt.error}
+                                                errmsg={Leave_Form.reasoncmt.errmsg}
                                             />
                                         </div>
                                     </Grid>
@@ -671,11 +805,11 @@ function LeaveForm(props) {
                                         <div className="reasonscmt">
                                             <Labelbox type="textarea"
                                                 changeData={(data) =>
-                                                    checkValidation(data, "ass_description")
+                                                    checkValidation(data, "reasoncmt")
                                                 }
-                                                value={Leave_Form.ass_description.value}
-                                                error={Leave_Form.ass_description.error}
-                                                errmsg={Leave_Form.ass_description.errmsg}
+                                                value={Leave_Form.reasoncmt.value}
+                                                error={Leave_Form.reasoncmt.error}
+                                                errmsg={Leave_Form.reasoncmt.errmsg}
                                             />
                                         </div>
                                     </Grid>
@@ -721,10 +855,6 @@ function LeaveForm(props) {
                                 </div>
                             </Grid>
 
-
-
-
-
                         </>
                     }
                     <Grid item xs={5} container direction="row" spacing={2}>
@@ -738,7 +868,10 @@ function LeaveForm(props) {
                 </Grid>
             </div>
             {Leave_Form.leavetype.value !== 40 && <div className="leavetableformat">
-                <EnhancedTable headCells={headCells} rows={rows} tabletitle={"Leave Status"} />
+                <EnhancedTable headCells={headCells} tabletitle={"Leave Status"}
+                    rows={leaveFormTable.length == 0 ? leaveFormTable : leaveFormTable}
+                // rows={rows}
+                />
             </div>}
 
         </div>
@@ -752,9 +885,55 @@ const mapStateToProps = (state) =>
     SubjectList: state.LeaveFormReducer.leavefromsubject || [],
     EmployeeList: state.getOptions.getEmployeeList || [],
     getEmpLeaveBal: state.LeaveFormReducer.getEmpAvailableBalance || [],
-
+    getLeaveForm: state.LeaveFormReducer.getLeaveForm || [],
+    getClientlist: state.getOptions.getClientlist || [],
 
 });
 
 export default connect(mapStateToProps)(LeaveForm);
 
+  // const editExamDetails = (indexNum) => {
+    //     console.log(examSchedule[indexNum], "index")
+    //     examSchedule.filter((data, index) => {
+
+    //     })
+
+    // }
+
+    // useEffect(() => {
+    //     let TableData = [];
+    //     props.getLeaveForm.map((data) =>
+
+    //     TableData.push({
+    //         leavetype: <a href={"#"} className="linktable">{data.leave_type}</a>, 
+    //         fromdate: data.from_date ,
+    //         todate: data.to_date ,
+    //         fromtime: data.from_time ,
+    //         totime: data.to_time ,
+    //         status: data.approve_status===1?"Approved":"Pending",
+    //         img:<><img src={Edit} className="editImage" /> <img src={Delete} className="editImage"  /></> ,
+
+    //     }),
+    //     // console.log(data,"data")
+    //     );
+    //     setLeaveFormTable( {TableData });
+
+    // }, [props.getLeaveForm])
+
+    // useEffect(() => {
+
+    //     let TableData = [];
+    //     props.getLeaveForm.map((data) =>
+    //     TableData.push({ 
+    //         leavetype: <a href={"#"} className="linktable">{data.leave_type}</a>, 
+    //         fromdate: data.from_date ,
+    //         todate: data.to_date ,
+    //         fromtime: data.from_time ,
+    //         totime: data.to_time ,
+    //         status: data.approve_status===1?"Approved":"Pending",
+    //         img:<><img src={Edit} className="editImage" /> <img src={Delete} className="editImage"  /></> ,       
+    //      })
+    //     );
+    //     setLeaveFormTable({ TableData });
+
+    // }, [props.getLeaveForm])   

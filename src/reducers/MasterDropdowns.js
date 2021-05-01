@@ -4,6 +4,7 @@ import { GET_CERTIFICATION } from "../utils/Constants.js";
 import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
+import { USER_GET_CLASS,USER_GET_STATUS } from '../utils/Constants.js';
 import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
@@ -89,6 +90,8 @@ const initalState = {
   getSubactivity: [],
   getLitigationCounsel: [],
   getLeaveType: [],
+  getClass:[],
+  getUserStatus:[],
   getUserGroup: [],
 };
 
@@ -179,6 +182,10 @@ export default function (state = initalState, action) {
       return { ...state, getLitigationCounsel: payload };
     case GET_LEAVETYPE:
       return { ...state, getLeaveType: payload };
+    case USER_GET_CLASS:
+      return {...state, getClass: payload };
+    case USER_GET_STATUS:
+      return {...state, getUserStatus: payload };
     case GET_USERGROUP:
       return { ...state, getUserGroup: payload };
     default:

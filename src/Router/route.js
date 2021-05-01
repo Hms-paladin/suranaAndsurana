@@ -34,7 +34,7 @@ import UserGroups from "../pages/UserGroups/usergroups";
 //Group Control:
 import GroupControl from "../pages/GroupControl/groupcontrol";
 
-import GroupAcess from "../pages/GroupAcess/GroupAccessRights";
+import GroupAccess from "../pages/GroupAcess/GroupAccessRights";
 //Stage Monitering:
 import StageMonitering from "../pages/stages/StageMonitering";
 
@@ -71,6 +71,19 @@ import AddResource from '../pages/LibraryBook/addresource'
 import UserRights from '../pages/UserRights/UserAccess/userAccessRights'
 
 import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
+//To do list
+import AppraisalView from '../pages/Appraisal/appraisalView';
+import ServeranceModal from '../pages/Severance/serverance_userview_Modal';
+
+//DayReport
+import DayReport from '../pages/DayReport/dayreport'
+
+//OnlineTest
+import AddQuestion from '../pages/OnlineTest/addquestion'
+import TestTemplate from '../pages/OnlineTest/testtemplate'
+import OnlineTest from '../pages/OnlineTest/onlinetest'
+import InstructionModal from '../pages/OnlineTest/instructionModal'
+import OnlineQA from '../pages/OnlineTest/onlineQA'
 function Routes(props) {
 
   return (
@@ -102,9 +115,9 @@ function Routes(props) {
         <PrivateRoute path="/usergroups" component={UserGroups} exact />
         {/*  Group Control */}
         <PrivateRoute path="/groupcontrol" component={GroupControl} exact />
-        <PrivateRoute path="/groupacess" component={GroupAcess} exact />
+        <PrivateRoute path="/groupaccess" component={GroupAccess} exact />
 
-        
+
         {/*  Stage Monitering */}
         <PrivateRoute path="/stagemonitering" component={StageMonitering} exact />
 
@@ -137,11 +150,23 @@ function Routes(props) {
         <PrivateRoute path="/newusermaster" component={NewUserMaster} />
         <PrivateRoute path="/useraccessrights" component={userAccessRights} />
         {/* Library */}
-        <PrivateRoute path="/addresource" component={AddResource}/>
+        <PrivateRoute path="/addresource" component={AddResource} />
 
-         {/* UserRights */}
-         <PrivateRoute path="/userrights" component={UserRights} />
+        {/* UserRights */}
+        <PrivateRoute path="/userrights" component={UserRights} />
+        {/* To do list */}
+        <PrivateRoute path="/appraisalView" component={AppraisalView} exact />
+        <PrivateRoute path="/serverance_userview_Modal" component={ServeranceModal} exact />
 
+        {/* DayReport */}
+        <PrivateRoute path="/dayreport" component={DayReport} exact />
+
+        {/* Online Test */}
+        <PrivateRoute path="/addquestion" component={AddQuestion} exact />
+        <PrivateRoute path="/testtemplate" component={TestTemplate} exact />
+        <PrivateRoute path="/onlinetest" component={OnlineTest} exact />
+        <PrivateRoute path="/instructionModal" component={InstructionModal} exact />
+        <PrivateRoute path="/onlineQA" component={OnlineQA} exact />
 
       </Switch>
     </Navbar>

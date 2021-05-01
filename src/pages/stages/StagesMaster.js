@@ -5,9 +5,12 @@ import CustomButton from '../../component/Butttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from 'react-redux';
-import {getStageMasterTableData,InsertStageMaster} from '../../actions/StageMasterAction'
+import {getStageMasterTableData,InsertStageMaster,getStageMaster} from '../../actions/StageMasterAction'
 import {getProjectType,getProjectSubType,getProcessType,getStageList, getSubStage } from '../../actions/MasterDropdowns';
 import './StagesMaster.scss'
+import { notification } from "antd";
+
+
 const StagesMaster = (props) => {
   const header = [
     { id: 'project_type', label: 'Project Type' },
@@ -27,6 +30,7 @@ const StagesMaster = (props) => {
   const [processType, setprocessType] = useState({})
   const [disabled, setEnabled] = useState(true);
   const [stageDisable, setStageEnabled] = useState(true);
+  const [permission, setPermission] = useState([])
   const [RateMaster, setRateMaster] = useState({
     project_type: {
       value: "",
@@ -74,7 +78,7 @@ const StagesMaster = (props) => {
 
 
   useEffect(() => {
-    dispatch(getStageMasterTableData());
+    dispatch(getStageMaster());
     dispatch(getProjectType());
     dispatch(getStageList());
   }, []);
@@ -99,7 +103,8 @@ const StagesMaster = (props) => {
     }
     rateList.push(listarray);
   }
-  setStageMasterList({ rateList })
+  // setStageMasterList({ rateList })
+  permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
 
   //ProjectType
   let projectTypedata = []
@@ -221,9 +226,26 @@ const StagesMaster = (props) => {
     }));
   }
 
+  useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+       let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+       return (
+           "Variable Rate Master" == val.screen_name
+       ) 
+   })
+   setPermission(data_res_id)
+   }
 
+   }, [props.UserPermission]);
+
+   function rights(){
+    notification.success({
+        message: "You Dont't Have Rights To Access This",
+    });
+  }
   return (
     <div>
+       <div className="var_rate_master">Stage Master</div>
       <Grid container spacing={3} className="stage_firstgrid">
         <Grid item xs={5} spacing={4} direction={"column"}>
         </Grid>
@@ -291,7 +313,7 @@ const StagesMaster = (props) => {
         
           </Grid>   */}
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
-          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
+          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?onSubmit:rights} />
           <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
         </Grid>
       </Grid>
@@ -306,12 +328,13 @@ const StagesMaster = (props) => {
 
 
 const mapStateToProps = (state) => ({
-  getTableData:state.StageMasterReducer.getStageMasterTableData || [] ,
+  getTableData:state.StageMasterReducer.getStageMaster || [] ,
   ProjectType: state.getOptions.getProjectType || [],
   StageList: state.getOptions.getStageList || [],
   ProcessType: state.getOptions.getProcessType || [],
   ProjectSubtype: state.getOptions.getProjectSubType || [],
   getSubStage: state.getOptions.getSubStage || [],
+  UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 
 export default connect(mapStateToProps)(StagesMaster);

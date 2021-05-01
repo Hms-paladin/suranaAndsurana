@@ -12,6 +12,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { InsertInterviewquestions } from "../../actions/interviewActions";
 import { getInterviewStatus } from "../../actions/MasterDropdowns";
 import {getInterviewQuestions,getSelectedCandidates} from '../../actions/TodoListAction'
+import EnhancedTable from '../../component/DynTable/table';
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import Axios from "axios";
@@ -35,6 +36,15 @@ function InerviewScreen(props) {
   const [canName, setcanName] = useState("");
   const [dropDownSel, setdropDownSel] = useState(false);
   const [interviewDetails,setInterviewDetails] = useState({})
+  const headCells=[
+    {id:"testname",label:"Test Name"},
+    {id:"testdate",label:"Test Date"},
+    {id:"score",label:"Score"}
+  ];
+  const rows=[
+    {testname:"Aptitude",testdata:"02-Mar-2021",score:"45"},
+    {testname:"General Knowledge",testdata:"02-Mar-2021",score:"23"}
+  ];
   const [postData, setpostData] = useState({
     init_status: {
       value: "",
@@ -244,14 +254,14 @@ const onStateClear=()=>{
         alignItems="center"
         spacing={1}
       >
-        <Grid item xs={5}>
+        <Grid item xs={4}>
           <div className="interviewTitle">Interview Date</div>
           <div className="interview_cont">
           {/* {interviewDetails.date?interviewDetails.date:'--' } */}
           {int_details.Intview_data ? int_details.Intview_data[0].date : "-"}
           </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="interviewTitle">Designation</div>
           <div className="interview_cont">
           {/* {interviewDetails.designation?interviewDetails.designation:'--' } */}
@@ -352,6 +362,14 @@ const onStateClear=()=>{
       </Grid>
       {comments === true ? (
         <>
+        {/* Changes here */}
+        <div className="candidate_det">
+          <div>Name of the Candidate</div>
+          <div>Priya</div>
+        </div>
+        <div className="score_table">
+            <EnhancedTable headCells={headCells} rows={rows}></EnhancedTable>
+        </div>
           <div className="inter_status_div">
             <Labelbox
               type="select"

@@ -43,6 +43,7 @@ const RateMaster = (props) => {
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
+  const [permission, setPermission] = useState([])
   // const [amountDis,setAmountDis] =useState(true);
   const [RateMaster, setRateMaster] = useState({
     activity: {
@@ -136,7 +137,8 @@ const RateMaster = (props) => {
       };
       rateList.push(listarray);
     }
-    setvarRateList({ rateList });
+    // setvarRateList({ rateList });
+    permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
 
   const onSubmit = () => {
@@ -445,7 +447,25 @@ const RateMaster = (props) => {
 
   }
 
+  useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+       let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+       return (
+           "Variable Rate Master" == val.screen_name
+       ) 
+   })
+   setPermission(data_res_id)
+   }
 
+   }, [props.UserPermission]);
+
+   function rights(){
+    notification.success({
+        message: "You Dont't Have Rights To Access This Page",
+    });
+  }
+
+   console.log(permission,"permission");
   return (
     <div>
       <div className="var_rate_master">Variable Rate Master</div>
@@ -549,7 +569,8 @@ const RateMaster = (props) => {
               btnName={"Save"}
               btnCustomColor="customPrimary"
               custombtnCSS="custom_save"
-              onBtnClick={onSubmit}
+              // onBtnClick={onSubmit}
+              onBtnClick={permission.allow_add==="Y"?onSubmit:rights}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>
@@ -575,6 +596,7 @@ const mapStateToProps = (state) => (
   {
     getTableData: state.variableRateMaster.getVariableRateTableData || [],
     getInsertStatus: state.variableRateMaster.insertVariableRateStatus,
+    UserPermission: state.UserPermissionReducer.getUserPermission,
   }
 );
 

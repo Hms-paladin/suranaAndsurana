@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './generateinvoice.scss';
 import { Grid } from '@material-ui/core';
 import CustomButton from "../../component/Butttons/button";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import EnhancedTable from "../../component/DynTable/table";
 import { Checkbox } from 'antd';
+import { notification } from "antd";
+import { useDispatch, connect } from "react-redux";
 
-function GenerateInvoice() {
+function GenerateInvoice(props) {
     const [invoicetable, setInvoivetable] = useState([])
 
 
@@ -44,8 +46,31 @@ function GenerateInvoice() {
         { billed: <Checkbox />, activity: 'Project 2', desription: "Field 5", resource: "Pradish", acthours: <input style={{ width: '50px' }} />, startdate: '07-Mar-2021', enddate: '08-Mar- 2021', rate: '500', billablehours: <input style={{ width: '50px' }} />, amount: '1000' },
     ];
 
+    const [permission, setPermission] = useState([])
+
+    ///*****user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+        return (
+            "Generate Invoice" == val.screen_name
+        ) 
+        })
+        setPermission(data_res_id)
+        if(data_res_id.allow_view==='N')
+            rights()
+        }
+    }, [props.UserPermission]);
+/////////////
+console.log(props.UserPermission,"props.UserPermission")
+    function rights(){
+        notification.success({
+            message: "You Dont't Have Rights To Access This",
+        });
+    }
     return (
         <div>
+            { permission.allow_view==='Y'&&<div>
             <Grid container spacing={3}>
                 <Grid item xs={4}>
                     <Labelbox type="select"
@@ -76,10 +101,17 @@ function GenerateInvoice() {
                 <EnhancedTable headCells={BillableCells} rows={Billablerows} />
             </div>
             <div className="btngenerate">
-                <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" />
+                <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" onBtnClick={permission.allow_add==="Y"?'':rights}/>
             </div>
+
+        </div> }
 
         </div>
     )
 }
-export default GenerateInvoice;
+
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (GenerateInvoice);

@@ -11,10 +11,10 @@ import {
     getCertification,
     getSpecilization,
     getCapability,
-    getTalents,
+    getTalents, getEmployeeList
 } from "../../actions/MasterDropdowns";
-
-
+import { InsertTicketTemplate, InsertRecruitmentTicket, getTicketTemplate } from '../../actions/TicketCreationAction';
+import { notification } from "antd";
 
 function TicketCreation(props) {
     const dispatch = useDispatch();
@@ -24,7 +24,9 @@ function TicketCreation(props) {
     const [stateList, setStateList] = useState({})
     const [languages, setLanguages] = useState({})
     const [requestGetList, setGetList] = useState({});
-
+    const [employeeList, setEmployeeList] = useState({});
+    const [changemsg, setChangesmsg] = useState(false)
+    const [permission, setPermission] = useState([])
 
     const [TicketCreation, setTicketCreation] = useState({
         department: {
@@ -59,12 +61,14 @@ function TicketCreation(props) {
         },
         language: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         qualification: {
             value: "",
+            valueById: "",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -77,41 +81,53 @@ function TicketCreation(props) {
         },
         age_limit: {
             value: "",
-            validation: [{ name: "allowNumaricOnly" }, { "name": "custommaxLength", "params": "2" }],
+            validation: [{ name: "allowNumaricOnly" }],
             error: null,
             errmsg: null,
         },
         skills: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         traits: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         certifications: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         specialization: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         capablities: {
             value: "",
+            valueById: "",
             validation: [],
             error: null,
             errmsg: null,
         },
         talents: {
+            value: "",
+            valueById: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        assignedto: {
             value: "",
             validation: [],
             error: null,
@@ -131,6 +147,8 @@ function TicketCreation(props) {
         dispatch(getSpecilization());
         dispatch(getCapability());
         dispatch(getTalents());
+        dispatch(getEmployeeList());
+
 
     }, []);
 
@@ -205,7 +223,7 @@ function TicketCreation(props) {
         // specilalizaionsList
 
         let specilalizaionsList = [];
-        props.getSpecilization.map((data, index) => {
+        props.getSpecilization.map((data) => {
             specilalizaionsList.push({
                 value: data.specilization,
                 id: data.specialization_id,
@@ -215,18 +233,155 @@ function TicketCreation(props) {
         // talentList
 
         let talentList = [];
-        props.getTalents.map((data, index) => {
+        props.getTalents.map((data) => {
             talentList.push({ value: data.talent, id: data.talent_id });
         });
 
         setGetList({ skillsList, traitsList, certificateList, specilalizaionsList, talentList, capabilityList })
 
+        //getEmployeeList
+        let EmployeeList = [];
+        props.EmployeeList.map((data) => {
+            EmployeeList.push({
+                value: data.name,
+                id: data.emp_id,
+            });
+        });
+        setEmployeeList({ EmployeeList })
+
     }, [
-        props.Department, props.DesignationList, props.Qualification, props.getState, props.Languages, props.getSkills, props.getTraits, props.getCertification, props.getCapability, props.getSpecilization, props.talentList
+        props.Department, props.DesignationList, props.Qualification, props.getState, props.Languages, props.getSkills, props.getTraits, props.getCertification, props.getCapability, props.getSpecilization, props.talentList, props.EmployeeList
     ]);
 
+    useEffect(() => {
+
+        if (props.TicketTemplate.length > 0) {
+            setChangesmsg(true)
+            // Languages
+            let languageValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.language_id + "]").map((data) => {
+                languages && languages?.Languages?.map((list) => {
+                    if (data === list.id) {
+                        languageValue.push(list.value)
+                    }
+                })
+            })
+
+            // QualificationValue
+            let QualificationValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.qualification_id + "]").map((data) => {
+                qualificationList && qualificationList?.Qualification?.map((list) => {
+                    if (data === list.id) {
+                        QualificationValue.push(list.value)
+                    }
+                })
+            })
+
+
+            // skills
+            let skillsValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.skill_id + "]").map((data) => {
+                requestGetList && requestGetList?.skillsList?.map((list) => {
+                    if (data === list.id) {
+                        skillsValue.push(list.value)
+                    }
+                })
+            })
+
+
+            // traits
+            let traitsValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.trait_id + "]").map((data) => {
+                requestGetList && requestGetList?.traitsList?.map((list) => {
+                    if (data === list.id) {
+                        traitsValue.push(list.value)
+                    }
+                })
+            })
+
+            // certificationsValue
+            let certificationsValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.certification_id + "]").map((data) => {
+                requestGetList && requestGetList?.certificateList?.map((list) => {
+                    if (data === list.id) {
+                        certificationsValue.push(list.value)
+                    }
+                })
+            })
+
+            // capablitiesValue
+            let capablitiesValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.capability_id + "]").map((data) => {
+                requestGetList && requestGetList?.capabilityList?.map((list) => {
+                    if (data === list.id) {
+                        capablitiesValue.push(list.value)
+                    }
+                })
+            })
+
+            // specialization
+            let specializationValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.specialization_id + "]").map((data) => {
+                requestGetList && requestGetList?.specilalizaionsList?.map((list) => {
+                    if (data === list.id) {
+                        specializationValue.push(list.value)
+                    }
+                })
+            })
+
+            // talentValue
+            let talentValue = [];
+            JSON.parse("[" + props.TicketTemplate[0]?.talent_id + "]").map((data) => {
+                requestGetList && requestGetList?.talentList?.map((list) => {
+                    if (data === list.id) {
+                        talentValue.push(list.value)
+                    }
+                })
+            })
+
+
+            TicketCreation.position.value = props.TicketTemplate[0]?.number_of_position;
+            TicketCreation.req_by.value = props.TicketTemplate[0]?.required_by;
+
+            TicketCreation.qualification.value = QualificationValue;
+            TicketCreation.qualification.valueById = props.TicketTemplate[0]?.qualification_id;
+
+            TicketCreation.experience.value = props.TicketTemplate[0]?.experience;
+
+            TicketCreation.language.value = languageValue;
+            TicketCreation.language.valueById = props.TicketTemplate[0]?.language_id;
+
+            TicketCreation.state.value = props.TicketTemplate[0]?.state_id;
+            TicketCreation.age_limit.value = props.TicketTemplate[0]?.age_limit;
+
+            TicketCreation.skills.value = skillsValue;
+            TicketCreation.skills.valueById = props.TicketTemplate[0]?.skill_id;
+
+            TicketCreation.traits.value = traitsValue;
+            TicketCreation.traits.valueById = props.TicketTemplate[0]?.trait_id;
+
+            TicketCreation.certifications.value = certificationsValue;
+            TicketCreation.certifications.valueById = props.TicketTemplate[0]?.certification_id;
+
+            TicketCreation.specialization.value = specializationValue;
+            TicketCreation.specialization.valueById = props.TicketTemplate[0]?.specialization_id;
+
+            TicketCreation.capablities.value = capablitiesValue;
+            TicketCreation.capablities.valueById = props.TicketTemplate[0]?.capability_id;
+
+            TicketCreation.talents.value = talentValue;
+            TicketCreation.talents.valueById = props.TicketTemplate[0]?.talent_id;
+
+            TicketCreation.assignedto.value = props.TicketTemplate[0]?.assigned_to;
+        }
+
+        setTicketCreation((prevState) => ({
+            ...prevState,
+        }));
+
+    }, [props.TicketTemplate])
+
     function checkValidation(data, key, multipleId) {
-        console.log(data, "TicketCreation.skills.value")
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -254,11 +409,9 @@ function TicketCreation(props) {
         }
         // (end)
 
-        if (data && key == "age_limit") {
-            TicketCreation.age_limit.validation[1].params = 2
-            setTicketCreation((prevState) => ({
-                ...prevState,
-            }));
+        if (data && key === "designation") {
+            let values = { designation: data, department: TicketCreation.department.value }
+            dispatch(getTicketTemplate(values))
         }
 
 
@@ -270,7 +423,10 @@ function TicketCreation(props) {
         }));
     }
 
-    function onSubmit() {
+
+
+
+    function onSubmit(id) {
         var mainvalue = {};
         var targetkeys = Object.keys(TicketCreation);
         for (var i in targetkeys) {
@@ -284,45 +440,87 @@ function TicketCreation(props) {
         }
 
         var filtererr = targetkeys.filter((obj) => TicketCreation[obj].error == true);
+        if (filtererr.length > 0) {
+            // setResumeFrom({ error: true });
+        } else {
+        if (id === 1) {
+            // Save as template
+            dispatch(InsertTicketTemplate(TicketCreation, changemsg)).then(
+                (response) => {
+                    handleCancel();
+                }
+            )
+        } else {
+            // Generate Ticket
+            dispatch(InsertRecruitmentTicket(TicketCreation)).then(
+                (response) => {
+                    handleCancel();
+                }
+            )
 
-        // dispatch(InsertIpProject(TicketCreation, sendVariableData)).then(
-        //   (response) => {
-        //     handleCancel();
-        //   }
-        // );
+        } }
+
         setTicketCreation((prevState) => ({
             ...prevState,
         }));
     }
+
     const handleCancel = () => {
         let ResumeFrom_key = [
-            "name",
-            "candidate",
-            "gender",
-            "DOB",
-            "email1",
-            "email2",
-            "phone1",
+            "department",
+            "designation",
+            "position",
+            "req_by",
+            "experience",
+            "language",
+            "qualification",
+            "state",
+            "age_limit",
+            "skills",
+            "traits",
+            "certifications",
+            "specialization",
+            "capablities",
+            "talents",
+            "assignedto",
 
         ];
 
+        ResumeFrom_key.map((data) => {
+            TicketCreation[data].value = "";
+        });
 
         setTicketCreation((prevState) => ({
             ...prevState,
         }));
     };
 
-    // TicketCreation.map((data)=>{
-    //     return(
-    //         console.log(data.designation,"designation")
-    //     )
-    // })
+    ///*****user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+        return (
+            "Exit Interview form" == val.screen_name
+        ) 
+        })
+        setPermission(data_res_id)
+        if(data_res_id.allow_view==='N')
+            rights()
+        }
+        
+    }, [props.UserPermission]);
+    /////////////
 
-
+    function rights(){
+        notification.success({
+            message: "You Dont't Have Rights To Access This",
+        });
+    }
     return (
-        <div >
+        <div> 
+         { permission.allow_view==='Y'&&<div >
             <div className="Titlediv">Recruitment Request Tickets</div>
-            <div className="ticketContainer">
+             <div className="ticketContainer">
                 <div className="ticketGrid">
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
@@ -362,7 +560,7 @@ function TicketCreation(props) {
                         <Grid item xs={3} >
                             <Labelbox type="select" placeholder="Qualification"
                                 dropdown={qualificationList.Qualification}
-                                changeData={(data) => checkValidation(data, "qualification")}
+                                changeData={(data) => checkValidation(data, "qualification", qualificationList.Qualification)}
                                 value={TicketCreation.qualification.value}
                                 error={TicketCreation.qualification.error}
                                 errmsg={TicketCreation.qualification.errmsg}
@@ -379,7 +577,7 @@ function TicketCreation(props) {
                         <Grid item xs={3} >
                             <Labelbox type="select" placeholder="Language"
                                 dropdown={languages.Languages}
-                                changeData={(data) => checkValidation(data, "language")}
+                                changeData={(data) => checkValidation(data, "language", languages.Languages)}
                                 value={TicketCreation.language.value}
                                 error={TicketCreation.language.error}
                                 errmsg={TicketCreation.language.errmsg}
@@ -459,18 +657,27 @@ function TicketCreation(props) {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3}>
-                        <Labelbox type="select" placeholder="Assigned to"></Labelbox>
+                            <Labelbox type="select" placeholder="Assigned to"
+                                dropdown={employeeList.EmployeeList}
+                                changeData={(data) => checkValidation(data, "assignedto")}
+                                value={TicketCreation.assignedto.value}
+                                error={TicketCreation.assignedto.error}
+                                errmsg={TicketCreation.assignedto.errmsg}></Labelbox>
                         </Grid>
                     </Grid>
                 </div>
                 <div className="ticketbtn">
-                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" />
-                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(1):rights())}  />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(""):rights())}  />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
                 </div>
 
             </div >
-        </div >
+            </div >
+        
+      }
+     
+    </div>
     )
 }
 const mapStateToProps = (state) => ({
@@ -485,14 +692,9 @@ const mapStateToProps = (state) => ({
     getSpecilization: state.getOptions.getSpecilization || [],
     getCapability: state.getOptions.getCapability || [],
     getTalents: state.getOptions.getTalents || [],
-
-    // getSpecialInterest: state.getOptions.getSpecialInterest || [],
-    // getCity: state.getOptions.getCity || [],
-
-    // getStatus: state.getOptions.getStatus || [],
-    // getIndustry: state.getOptions.getIndustry || [],
-    // getAchievement: state.getOptions.getAchievement || [],
-
+    EmployeeList: state.getOptions.getEmployeeList || [],
+    TicketTemplate: state.TicketCreationReducer.getTicketTemplate || [],
+    UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 
 export default connect(mapStateToProps)(TicketCreation);

@@ -144,3 +144,21 @@
     min-width: 0px;
   }
 }
+
+//sub menu
+#submenu_div{
+  display: flex;
+  align-items: center;
+}
+
+.submenuListIcon {
+  width: 20px;
+  margin-left: 38px;
+}
+
+.MuiListItemText-inset {
+  padding-left: 5px !important;
+}
+.MuiTypography-body1{
+  font-family: Poppins-Regular !important;
+}

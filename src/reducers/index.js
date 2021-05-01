@@ -26,6 +26,13 @@ import PatentReducer from "./PatentReducer";
 import LeaveUpdateReducer from "./LeaveUpdateReducer";
 import UserMasterReducer from './UserMasterReducer';
 import UserGroupReducer from "./UserGroupReducer";
+import UserPermissionReducer from "./UserPermissionReducer";
+import EmployeeListReducer from "./EmployeeListReducer";
+import TicketCreationReducer from './TicketCreationReducer';
+import StageMonotorReducer from './StageMonotorReducer';
+import AddClientReducer from './AddClientReducer';
+
+
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -54,5 +61,11 @@ export default combineReducers({
   LeaveUpdateReducer,
   UserMasterReducer,
   UserGroupReducer,
+  UserPermissionReducer,
+  EmployeeListReducer,
+  StageMonotorReducer,
+  TicketCreationReducer,
+  AddClientReducer
 });
+
 

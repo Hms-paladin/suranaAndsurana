@@ -84,15 +84,15 @@ const KRA = (props) => {
                             style={{padding:10}}
                         >
                             <Grid item xs={2}>
-                                <div><label  onClick={() => setKramodel(true)}>Employee Name</label></div>
-                                <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>Rajesh</label></div>
+                                <div className="KRAhead"><label  onClick={() => setKramodel(true)}>Employee Name</label></div>
+                                <div ><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>Rajesh</label></div>
                             </Grid>
                             <Grid item xs={2}>
-                                <div><label >Period</label></div>
+                                <div className="KRAhead"><label >Period</label></div>
                                 <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div>
                             </Grid>
                             <Grid item xs={2}>
-                            <div><label style={{ fontSize: 11 }}>Activity</label></div>
+                            <div className="KRAhead"><label style={{ fontSize: 15 }}>Activity</label></div>
                             <div style={{ width: '100%', display: 'inline-block' }}>
                                 <Labelbox
                                     type="select"
@@ -105,7 +105,7 @@ const KRA = (props) => {
                                 /></div>
                             </Grid>
                             <Grid item xs={2}>
-                            <div><label style={{ fontSize: 11 }}>Sub Activity</label></div>
+                            <div className="KRAhead"><label style={{ fontSize: 15 }}>Sub Activity</label></div>
                                 <div style={{ width: '100%', display: 'inline-block' }}>
                                 <Labelbox
                                     type="select"
@@ -118,7 +118,7 @@ const KRA = (props) => {
                                 /></div>
                             </Grid>
                             <Grid item xs={2}>
-                            <div><label style={{ fontSize: 11 }}>Percentage</label></div>
+                            <div className="KRAhead"><label style={{ fontSize: 15 }}>Percentage</label></div>
                                 <div style={{ width: '100%', display: 'inline-block' }}>
                                 <Labelbox
                                     type="select"
@@ -143,10 +143,10 @@ const KRA = (props) => {
 
                 <div className="kpi_table">
                     <Grid container >
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{height: 45}}>
-                            <Grid item xs={4}><label className="maintitle">Activity</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle">Sub Activity</label> </Grid>
-                            <Grid item xs={4}><label className="maintitle">Percentage</label></Grid>
+                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row kra_table_header" alignItems="center" style={{height: 45}}>
+                            <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
+                            <Grid item xs={4}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid>
+                            <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Percentage</label></Grid>
 
                         </Grid>
 

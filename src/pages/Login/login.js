@@ -97,7 +97,6 @@ const SignInSide = (props) => {
                     if (res.status === 200) {
                       setAuthTokens(res.data);
                       setLoggedIn(true);
-                      console.log(res.data.status,"logindata")
                     }
                   }).catch(e => {
                     notification.error({

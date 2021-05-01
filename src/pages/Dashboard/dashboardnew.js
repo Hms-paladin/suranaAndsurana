@@ -14,6 +14,7 @@ import OPAdv from "../../images/dashboard/opadv.svg";
 import { Redirect, Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import CustomButton from "../../component/Butttons/button";
 
 const Projectbox = [
   { projects: "Project 1", projecttype: "Project Type 1 ", client: "Client 1" },
@@ -26,6 +27,14 @@ const Tasks = [
   { task: "Project", count: 12 },
   { task: "HR", count: " 2 " },
   { task: "Other", count: "1 " },
+];
+
+const projectwise = [
+  { projects: "IP Project", task: "24% ", stage: "10%" },
+  { projects: "Trade Mark", task: " 24%", stage: "10%" },
+  { projects: "IP Projects", task: "24%", stage: "10%" },
+  { projects: "Design", task: "24% ", stage: "10%" },
+  { projects: "Copyright", task: "24% ", stage: "10%" },
 ];
 
 const Taskdays = [
@@ -59,6 +68,8 @@ function DashboardNew() {
   const [pathname, setpathname] = useState(window.location.pathname);
   const [menuListItem, setMenuListItem] = useState([]);
   const [arrowHide, setArrowHide] = useState(false);
+  const [changedashBoard, setChangedashBoard] = useState(true);
+
 
   const [menulist, setMenulist] = useState([
     {
@@ -116,6 +127,11 @@ function DashboardNew() {
       title: "OPE Advance",
       path: "/ope_advance",
     },
+    {
+      img: <img src={OPAdv} className="imageicons" />,
+      title: "Day Report",
+      path: "/dayreport",
+    },
   ]);
 
   const handleClick = (data) => {
@@ -126,6 +142,7 @@ function DashboardNew() {
     orderChange();
   }, []);
 
+  console.log(projectwise, "projectwise")
   const orderChange = useCallback(
     (showListStart = 0, showListEnd = 7, arrowshow) => {
       const menuLists = menulist.map((data, index) => {
@@ -145,6 +162,15 @@ function DashboardNew() {
     },
     []
   );
+
+  const userdashboard = () => {
+    setChangedashBoard(true)
+  }
+
+  const compliancedashboard = () => {
+    setChangedashBoard(false)
+  }
+
   console.log(arrowHide, "arrowHide");
   return (
     <div>
@@ -168,83 +194,223 @@ function DashboardNew() {
         )}
       </div>
 
-      <div className="topcontainer">
-        <div className="projectscroll">
-          <div className="tableHeader">
-            <div className="linkHeader"></div>
-            <div>Projects</div>
-          </div>
-          <div className="projectdatas">
-            {Projectbox.map((data) => {
-              return (
-                <div className="projecttable">
-                  <div>
-                    <a href={"#"} className="linktable">
-                      {data.projects}
-                    </a>
-                  </div>
-                  <div>{data.projecttype}</div>
-                  <div>{data.client}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="taskscroll">
-          <div className="tableHeader">
-            <div className="linkHeader"></div>
-            <div>Tasks</div>
-          </div>
-          <div className="taskdatas">
-            {Tasks.map((data) => {
-              return (
-                <div className="tasktable">
-                  <div>
-                    <a href={"#"} className="linktable">
-                      {data.task}
-                    </a>
-                  </div>
-                  <div>{data.count}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <div className="dashboardbtn">
+        <CustomButton
+          btnName={"User Overview"}
+          onBtnClick={userdashboard}
+        />
+        <CustomButton btnName={"Compliance"}
+          btnCustomColor="customPrimary"
+          onBtnClick={userdashboard}
+          onBtnClick={compliancedashboard}
+        />
       </div>
-      <div className="taskdaysscroll">
-        <div className="tableHeader">
-          <div className="linkHeader"></div>
-          <div>Tasks due by 5 days</div>
-        </div>
-        <div className="taskdaysdatas">
-          <div className="taskdaystableHeader">
-            <div>Activity</div>
-            <div>Sub Activity</div>
-            <div>Due by</div>
-            <div>Priority</div>
-            <div>%Completed</div>
-            <div>Assigned By</div>
-          </div>
-          {Taskdays.map((data) => {
-            return (
-              <>
-                <div className="taskdaystable">
-                  <div>
-                    <a href={"#"} className="linktable">
-                      {data.activity}
-                    </a>
+
+
+
+      {changedashBoard ?
+        <> <div className="topcontainer">
+          <div className="projectscroll">
+            <div className="tableHeader">
+              <div className="linkHeader"></div>
+              <div>Projects</div>
+            </div>
+            <div className="projectdatas">
+              {Projectbox.map((data) => {
+                return (
+                  <div className="projecttable">
+                    <div>
+                      <a href={"#"} className="linktable">
+                        {data.projects}
+                      </a>
+                    </div>
+                    <div>{data.projecttype}</div>
+                    <div>{data.client}</div>
                   </div>
-                  <div>{data.subactivity}</div>
-                  <div>{data.dueby}</div>
-                  <div>{data.priority}</div>
-                  <div>{data.completed}</div>
-                  <div>{data.assignedby}</div>
-                </div>
-              </>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
+          <div className="taskscroll">
+            <div className="tableHeader">
+              <div className="linkHeader"></div>
+              <div>Tasks</div>
+            </div>
+            <div className="taskdatas">
+              {Tasks.map((data) => {
+                return (
+                  <div className="tasktable">
+                    <div>
+                      <a href={"#"} className="linktable">
+                        {data.task}
+                      </a>
+                    </div>
+                    <div>{data.count}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
+          <div className="taskdaysscroll">
+            <div className="tableHeader">
+              <div className="linkHeader"></div>
+              <div>Tasks due by 5 days</div>
+            </div>
+            <div className="taskdaysdatas">
+              <div className="taskdaystableHeader">
+                <div>Activity</div>
+                <div>Sub Activity</div>
+                <div>Due by</div>
+                <div>Priority</div>
+                <div>%Completed</div>
+                <div>Assigned By</div>
+              </div>
+              {Taskdays.map((data) => {
+                return (
+                  <>
+                    <div className="taskdaystable">
+                      <div>
+                        <a href={"#"} className="linktable">
+                          {data.activity}
+                        </a>
+                      </div>
+                      <div>{data.subactivity}</div>
+                      <div>{data.dueby}</div>
+                      <div>{data.priority}</div>
+                      <div>{data.completed}</div>
+                      <div>{data.assignedby}</div>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </>
+        :
+        <>
+          <div className="overallContainer">
+            <div className="overallScroll">
+              <div className="tableHeader">
+                <div className="linkHeader"></div>
+                <div>Over All</div>
+              </div>
+              <div className="overallData">
+                <div className="overallMajorheading">
+                  <div className="firstheading">Completed on or before</div>
+                  <div className="secondheading">Completed on or before</div>
+                </div>
+                <div className="overallMajorheading">
+                  <div className="taskStage">
+                    <div>Task</div>
+                    <div>Stage</div>
+                  </div>
+                  <div className="taskStages">
+                    <div>
+                      <div>Delayed less than 5 days</div>
+                      <div className="taskStage">
+                        <div>Task</div>
+                        <div>Stage</div>
+                      </div>
+                    </div>
+                    <div>
+                      <div>Delayed less than 5 days</div>
+                      <div className="taskStage">
+                        <div>Task</div>
+                        <div>Stage</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="overallMajordatas">
+                  <div className="taskStage">
+                    <div>24%</div>
+                    <div>10%</div>
+                  </div>
+                  <div className="taskStages">
+                    <div className="taskStage">
+                      <div>24%</div>
+                      <div>10%</div>
+                    </div>
+                    <div className="taskStage">
+                      <div>24%</div>
+                      <div>10%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div className="overallContainer">
+            <div className="overallScroll">
+              <div className="tableHeader">
+                <div className="linkHeader"></div>
+                <div>Project wise</div>
+              </div>
+              <div className="overallData">
+                <div className="projectwiseheading">
+                  <div >Project</div>
+                  <div className="firstheading">Completed on or before</div>
+                  <div className="secondheading">Completed on or before</div>
+                </div>
+                <div className="projectwiseheading">
+                  <div ></div>
+                  <div className="taskStage">
+                    <div>Task</div>
+                    <div>Stage</div>
+                  </div>
+                  <div className="taskStages">
+                    <div>
+                      <div>Delayed less than 5 days</div>
+                      <div className="taskStagefields">
+                        <div>Task</div>
+                        <div>Stage</div>
+                      </div>
+                    </div>
+                    <div>
+                      <div>Delayed less than 5 days</div>
+                      <div className="taskStagefields">
+                        <div>Task</div>
+                        <div>Stage</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div >
+                  {projectwise && projectwise.map((data) => {
+                    return (
+                      <div className="projectwisedata">
+                        <div >{data.projects}</div>
+                        <div className="taskStage">
+                          <div>{data.task}</div>
+                          <div>{data.stage}</div>
+                        </div>
+                        <div className="taskStages">
+                          <div>
+                            <div className="taskStagefields">
+                              <div>{data.task}</div>
+                              <div>{data.stage}</div>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="taskStagefields">
+                              <div>{data.task}</div>
+                              <div>{data.stage}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+
+
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>}
     </div>
   );
 }

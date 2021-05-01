@@ -35,7 +35,7 @@ export const InsertClient = (Addclient_Form,Document_Form) => async dispatch => 
           }).then((response) => {
             if (response.data.status === 1) {
                 dispatch({type:ADD_CLIENT,payload:response.data.status})
-               dispatch(InsertClientDocument(Document_Form,Addclient_Form,response.data.data.client_id))
+               dispatch(InsertClientDocument(Document_Form,response.data.data.client_id))
               return Promise.resolve();
             }
           });
@@ -44,14 +44,15 @@ export const InsertClient = (Addclient_Form,Document_Form) => async dispatch => 
         
     }
 }
-export const InsertClientDocument = (Document_Form,Addclient_Form,id) => async dispatch => {
+export const InsertClientDocument = (Document_Form,id) => async dispatch => {
 
    for (var i=0; i< Document_Form.length;i++){
      var fileObject = Document_Form[i].originFileObj;
+     var poa_name = Document_Form[i].poa_name;
    
     var DocumentData = new FormData();
     DocumentData.set("client_id",id)
-    DocumentData.set("POA",Addclient_Form.poa_name.value || "TEST")
+    DocumentData.set("POA",poa_name || "TEST")
     DocumentData.append("file_name_upload",fileObject)
     DocumentData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
     DocumentData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )

@@ -1,11 +1,8 @@
-
 import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, DELETE_GROUPNAME } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
 import moment from 'moment'
-
-
 export const getGroupName = () => async dispatch => {
     try {
 
@@ -26,7 +23,7 @@ export const getGroupName = () => async dispatch => {
 
 export const InsertUsergroup = (UserGroup, groupName) => async dispatch => {
     try {
-        console.log(groupName, "groupName")
+        console.log(UserGroup.groupname.value, "UserGroup.groupname.value")
         axios({
             method: "POST",
             url: apiurl + "insertGroupMaster",
@@ -115,5 +112,3 @@ export const deleteGroupName = (deleteID) => async dispatch => {
 
     }
 }
-
-

@@ -1,0 +1,91 @@
+//AddQuestions
+.AQTitle{
+    font-size:20px;
+    font-weight:600;
+    padding-bottom:8px;
+}
+.AQContainer{
+    padding:25px;
+    background-color: white;
+    border-radius: 8px;
+}
+.AQAddbtn{width:100%;}
+textarea{height: 70px !important;}
+
+.egCss
+{    
+    font-size: 12px;
+    padding-bottom: 20px;
+}
+.eyesview{width:20px;cursor: pointer;}
+
+//TestTemplate
+.TTContainer{
+    background-color: white;
+    border-radius: 8px;
+    width:70%;
+    padding: 20px; 
+}
+#TTbtns{
+    display: flex;
+    justify-content: center;
+    padding:40px 10px 10px 10px;
+}
+.TTcategory{
+    display:flex;
+}
+.TTplusicon{
+    width:20px;
+}
+//Instruction_Modal
+.Instruction_Modal_Container{
+    padding:10px;
+    >div:last-child{
+        padding-top: 30px;
+        justify-content: center;
+        display: flex;
+    }
+}
+#steps,#testinfo{
+    font-weight: 600;
+    padding-bottom: 8px;
+}
+.Instruction_Modal_Container li{
+    font-size: 13px;
+}
+.showcontainer{
+    display:flex;
+    justify-content: flex-start;
+    >div{width:30%}
+}
+.spl{font-weight: 600;}
+
+//Online QA
+.QAPanel{
+    width:70%;
+    background-color: white;
+    padding:20px;
+    .MuiTypography-body1{
+        font-size:13px !important;
+    }
+    .MuiRadio-colorSecondary.Mui-checked {
+        color: #0b249c !important;
+    }
+    >div:nth-child(1){
+        padding-bottom: 30px;
+        font-size:15px;
+    }
+    >div:nth-child(2){
+        padding-bottom: 30px;
+        font-size:20px;
+        font-weight: 600;
+    }
+}
+.QAStatusPane{
+    width:30%;
+    background-color: blue;
+}
+#QAcount,#Question{
+    padding-bottom: 30px;
+}
+

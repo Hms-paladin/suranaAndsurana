@@ -47,21 +47,50 @@
     color: #707070;
     font-weight: 600;
     >div{
-        width: 12.5%;
+        width: 12%;
         margin-right: 5px;
+    }
+    >div:nth-child(1){
+        width:60px;
+    }
+    >div:nth-child(2){
+        width:16%;
+    }
+    >div:nth-child(3){
+        width:16%;
     }
 }
 
 .EmployeeRow{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 6px;
     font-size: 13px;
     color: #969090;
      >div{
-        width: 12.5%;
+        width: 12%;
         margin-right: 5px;
-
+    }
+    >div:nth-child(1){
+        width:58px;
+    }
+    >div:nth-child(2){
+        width:148px;
+    }
+    >div:nth-child(3){
+        width:144px;
+    }
+    >div:nth-child(4){
+        width:109px;
+    }
+    >div:nth-child(5){
+        width:110px;
+    }
+    >div:nth-child(6){
+        width:109px;
+    }
+    >div:nth-child(7){
+        width:108px;
     }
 }
 

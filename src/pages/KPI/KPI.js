@@ -89,11 +89,11 @@ const KPI = (props) => {
                             alignItems="center"
                         >
                             <Grid item xs={6}>
-                                <div><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
+                                <div className="KRAhead"><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
                             </Grid>
                             <Grid item xs={6}>
-                                <div><label >Period</label></div>
+                                <div className="KRAhead"><label >Period</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
                             </Grid>
                         </Grid>
@@ -104,10 +104,10 @@ const KPI = (props) => {
                 <div className="kpi_table">
                     <Grid container >
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
-                            <Grid item xs={3}><label className="maintitle">Activity</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle">Sub Activity</label> </Grid>
-                            <Grid item xs={3}> <label className="maintitle">Target</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">Achievement</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
+                            <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid>
+                            <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Target</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Achievement</label></Grid>
 
                         </Grid>
 

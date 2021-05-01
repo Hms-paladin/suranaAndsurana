@@ -25,7 +25,6 @@ function TradeMarkTabIcons(props) {
     const tabBox = (boxName) => {
         props.onChangeTabBox && props.onChangeTabBox(boxName)
     }
-
     const [open, setOpen] = useState(false);
 
     const handleClose = () => {
@@ -69,8 +68,10 @@ const HtmlTooltip = withStyles((theme) => ({
                                     <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
         
                                         title={<Timesheetmodel/>}
+                                        onMouseEnter={() => setOpen(true)}
+                                        onMouseLeave={() => setOpen(false)}
                                     >
-                                        <div className="tabIconsView" onClick={() => tabBox(data.title)}>
+                                        <div className="tabIconsView" onClick={() => (tabBox(data.title),setOpen(false))}>
                                             <Grid><img src={data.img} className="tabIconImage" /></Grid>
                                             <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
                                         </div>

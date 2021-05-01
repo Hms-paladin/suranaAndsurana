@@ -1,7 +1,8 @@
 import {
     GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK,
     GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
-    GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES
+    GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
+    GET_PROJECT_STAGES_LIST
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -247,6 +248,26 @@ export const getStages = () => async dispatch => {
     }
 }
 
+export const getProjectStageList = (project_type_id,sub_proj_type_id,process_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_project_stage_list',
+            data: {
+                "project_type_id": project_type_id,
+                "sub_proj_type_id": sub_proj_type_id,
+                "project_id": process_id,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_PROJECT_STAGES_LIST, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
 export const getSubStages = (stageId) => async dispatch => {
     try {
         axios({
@@ -267,6 +288,9 @@ export const getSubStages = (stageId) => async dispatch => {
 
 export const insertStages = (params, projectId, projectTypeId, subProjectId) => async dispatch => {
     try {
+        if(params.sub_stage_id==="")
+        params.sub_stage_id=0
+        
         axios({
             method: 'POST',
             url: apiurl + 'insert_project_stage',
@@ -277,9 +301,17 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
                     notification.success({
                         message: 'Stages Added Successfully',
                     });
+                    dispatch(getStagesByProjectId(projectId, projectTypeId, subProjectId));
+                    return Promise.resolve();
+                   
+                }else if(response.data.status === 0){
+                    
+                    notification.success({
+                        message: response.data.msg,
+                    });
                     return Promise.resolve();
                 }
-                dispatch(getStagesByProjectId(projectId, projectTypeId, subProjectId))
+                
             });
 
     } catch (err) {

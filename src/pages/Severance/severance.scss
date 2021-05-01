@@ -66,3 +66,66 @@
     }
  
 }
+//ServeranceUserViewModal
+.serverance_container{
+    padding:10px;
+    width:80%;
+}
+.container_head{
+    display:flex;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    >div{
+        width:25%;
+    }
+}
+.container_values{
+    display:flex;
+    justify-content: flex-start;
+    >div{
+        width:25%;
+        font-weight:600;
+    }
+}
+.NOC_container{
+    padding:10px;
+    width:100%;
+}
+.NOC_head{
+    display:flex;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    >div{
+        width:80%;
+    }
+}
+.NOC_values{
+    display:flex;
+    justify-content: flex-start;
+    >div{
+        width:80%;
+        font-weight:600;
+    }
+}
+
+.adminnoc{
+    position: relative;
+    right:25px;
+}
+.container_Date{
+    display:flex;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    >div:nth-child(1){
+        width:25%;
+    }
+    >div:nth-child(2){
+        width:40%;
+    }
+    >div:nth-child(3){
+        width:30%;
+    }
+}
+.c1{
+    font-weight:600;
+}

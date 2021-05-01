@@ -12,13 +12,11 @@ import DynModel from "../../component/Model/model";
 import RatingModel from './ratingModel';
 import { useParams } from "react-router-dom";
 import './appraisal.scss';
+import { notification } from "antd";
 
 const { Panel } = Collapse;
 
-
-
-
-function Appraisal() {
+function Appraisal(props) {
     let { rowId } = useParams()
 
 
@@ -106,9 +104,32 @@ function Appraisal() {
     }
     // console.log(rowID, "rowID")
 
+    const [permission, setPermission] = useState([])
 
+    ///*****user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
+        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+        return (
+            "Appraisal Apply & view" == val.screen_name
+        ) 
+        })
+        setPermission(data_res_id)
+        if(data_res_id.allow_view==='N')
+        rights()
+
+        }
+    }, [props.UserPermission]);
+    /////////////
+    console.log(permission,"props.UserPermission")
+    function rights(){
+        notification.success({
+            message: "You Dont't Have Rights To Access This",
+        });
+    }
     return (
         <div>
+       { permission.allow_view==='Y'&& <div>
             <div>Appraisal</div>
             <div className="appraisalContainer">
                 <div className="empDetails">
@@ -129,7 +150,45 @@ function Appraisal() {
                         <div>April 2021 to March 2021</div>
                     </div>
                 </div>
-                <div>
+
+                <div className="employeeApprisal_Container">
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Qualification</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>LLB</div>
+                            <div>Mar 2021</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Diploma in Law</div>
+                            <div>Dec 2021</div>
+                        </div>
+                    </div>
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Program</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Legal Practice</div>
+                            <div>Jan 2021</div>
+                        </div>
+                    </div>
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Seminar</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Seminar 1</div>
+                            <div>Feb 2021</div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div>
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
@@ -179,7 +238,7 @@ function Appraisal() {
                         </Grid>
                     </Grid>
 
-                </div>
+                </div> */}
                 {addemployeeDetails.length > 0 &&
                     <div className="appraisalTable" >
                         <div className="appraisaldetails">
@@ -198,6 +257,7 @@ function Appraisal() {
 
                     </div>}
             </div>
+
 
             { rowID == 1 ?
                 <>
@@ -250,7 +310,7 @@ function Appraisal() {
                             </div>
                         }
                     </div>
-                    
+
                     <div className="appraisal_collapse">
                         <Collapse onChange={callback}><Panel header="Any other specific opinion/remarks" ><div>Any other specific opinion/remarks</div></Panel></Collapse>
                     </div>
@@ -371,8 +431,13 @@ function Appraisal() {
 
 
 
-        </div >
+        </div > }
+        </div>
     )
 }
 
-export default Appraisal;
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+    });
+export default connect(mapStateToProps) (Appraisal);

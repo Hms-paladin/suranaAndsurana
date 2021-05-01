@@ -260,7 +260,7 @@ class Useraccess_rights extends Component {
     var self = this
     axios({
       method: 'get',
-      url: `${apiurl}/get_group`
+      url: `${apiurl}/getAllGroup`
     })
       .then(function (response) {
         var arrval = []
@@ -824,13 +824,14 @@ class Useraccess_rights extends Component {
       this.recall_permission(null,this.state.responseid,useraccess)
       this.setState({onceopen:false,useraccess:useraccess})
     } 
+    console.log(this.state.user,"user")
     return (
       <div>
         {this.state.loading ? <Spin className="spinner_align" spinning={this.state.loading}></Spin> :
           <Spin className="spinner_align" spinning={this.state.insideLoading}>
             <div className="VendorDetailsDiv grp_dropdown_tble">
               <div className="group_accessrights_header">
-                <div className="group_accessrights_titleuser"><h3>USER ACCESS RIGHTS</h3></div>
+                <div className="group_accessrights_titleuser"><h3>GROUP ACCESS RIGHTS</h3></div>
 
                 <div className="group_accessrights_dropdown">
                   <div className="d-flex mr-3">
