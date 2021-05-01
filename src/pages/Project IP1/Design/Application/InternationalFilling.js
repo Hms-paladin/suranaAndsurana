@@ -5,7 +5,9 @@ import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
 import { useSelector, useDispatch } from 'react-redux';
 import { getClass, getCountry, getIPStatus } from "../../../../actions/IPDropdown.js";
-import { InsertDesign } from "../../../../actions/InsertDesign";
+import { InsertDesign, getDesignDetails } from "../../../../actions/InsertDesign";
+import moment from "moment";
+
 
 function InternationalFilling(props) {
   const [InternationlForm, setInternationlForm] = useState({
@@ -14,90 +16,105 @@ function InternationalFilling(props) {
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     associate: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     our_ref: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     client_ref: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     app_num: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphaNumaricOnly" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     app_date: {
       value: "",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     applicant: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     title: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     class: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     country: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     priority_country: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     priority_date: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     status: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     comments: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     renewal_date: {
       value: "",
       validation: [],
       error: null,
-      errmsg: null
+      errmsg: null,
+      disabled: false
     }
   })
   const [interFilGetList, setInterFilGetList] = useState({
@@ -106,6 +123,7 @@ function InternationalFilling(props) {
     getStatusList: []
   })
   const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+  const getDesign =useSelector((state) => state.getDesignDetails)
   const dispatch = useDispatch();
 
   function checkValidation(data, key, multipleId) {
@@ -143,8 +161,8 @@ function InternationalFilling(props) {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertDesign(InternationlForm, props.projectDetails && props.projectDetails[0])).then(() => {
-        handleCancel()
+      dispatch(InsertDesign(InternationlForm, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
+        // handleCancel()
       })
     }
 
@@ -156,9 +174,18 @@ function InternationalFilling(props) {
   const handleCancel = () => {
     let interFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 
-    interFil_key.map((data) => {
-      InternationlForm[data].value = "";
-    });
+    let interFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+
+    if(getDesign.length > 0){
+      interFil_key.map((data, index) => {
+        InternationlForm[data].value = getDesign[0][interFil_value[index]] ? getDesign[0][interFil_value[index]] : "";
+      });
+    }else{
+      interFil_key.map((data) => {
+        InternationlForm[data].value = "";
+      });
+  }
+
     setInternationlForm((prevState) => ({
       ...prevState,
     }));
@@ -169,6 +196,38 @@ function InternationalFilling(props) {
     dispatch(getCountry());
     dispatch(getIPStatus());
   }, [])
+
+  useEffect(()=>{
+    dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id));
+  },[props.projectDetails])
+
+
+  useEffect(()=>{
+    if(getDesign.length > 0){
+      let interFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
+
+      let interFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+  
+      interFil_key.map((data, index) => {
+        console.log(interFil_value[index],interFil_value[index] !== "application_date","interFil_value[index]")
+        if(interFil_value[index] !== "application_date" && interFil_value[index] !== "priority_date" && interFil_value[index] !== "renewal_date"){
+        InternationlForm[data].value = getDesign[0][interFil_value[index]];
+        InternationlForm[data].disabled = getDesign[0][interFil_value[index]] ? true : false;
+        }
+        else{
+          console.log(getDesign[0][interFil_value[index]],"getDesign[0]")
+        InternationlForm[data].value = getDesign[0][interFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][interFil_value[index]]);
+        InternationlForm[data].disabled = getDesign[0][interFil_value[index]] === "0000-00-00" ? false : true;
+  
+        }
+      });
+      setInternationlForm((prevState) => ({
+        ...prevState,
+      }));
+    }
+  },[getDesign])
+
+
 
   useEffect(() => {
 
@@ -200,6 +259,7 @@ function InternationalFilling(props) {
             value={InternationlForm.file_cover.value}
             error={InternationlForm.file_cover.error}
             errmsg={InternationlForm.file_cover.errmsg}
+            disabled={InternationlForm.file_cover.disabled}
           />
           <Labelbox type="text"
             placeholder={"Associate"}
@@ -207,6 +267,7 @@ function InternationalFilling(props) {
             value={InternationlForm.associate.value}
             error={InternationlForm.associate.error}
             errmsg={InternationlForm.associate.errmsg}
+            disabled={InternationlForm.associate.disabled}
           />
           <Labelbox type="text"
             placeholder={"Our Reference"}
@@ -214,6 +275,7 @@ function InternationalFilling(props) {
             value={InternationlForm.our_ref.value}
             error={InternationlForm.our_ref.error}
             errmsg={InternationlForm.our_ref.errmsg}
+            disabled={InternationlForm.our_ref.disabled}
           />
           <Labelbox type="text"
             placeholder={"Client Reference"}
@@ -221,6 +283,7 @@ function InternationalFilling(props) {
             value={InternationlForm.client_ref.value}
             error={InternationlForm.client_ref.error}
             errmsg={InternationlForm.client_ref.errmsg}
+            disabled={InternationlForm.client_ref.disabled}
           />
           <Labelbox type="text"
             placeholder={"Application Number"}
@@ -228,6 +291,7 @@ function InternationalFilling(props) {
             value={InternationlForm.app_num.value}
             error={InternationlForm.app_num.error}
             errmsg={InternationlForm.app_num.errmsg}
+            disabled={InternationlForm.app_num.disabled}
           />
           <Labelbox type="datepicker"
             placeholder={"Application Date"}
@@ -235,6 +299,7 @@ function InternationalFilling(props) {
             value={InternationlForm.app_date.value}
             error={InternationlForm.app_date.error}
             errmsg={InternationlForm.app_date.errmsg}
+            disabled={InternationlForm.app_date.disabled}
           />
           <Labelbox type="text"
             placeholder={"Applicant"}
@@ -242,6 +307,7 @@ function InternationalFilling(props) {
             value={InternationlForm.applicant.value}
             error={InternationlForm.applicant.error}
             errmsg={InternationlForm.applicant.errmsg}
+            disabled={InternationlForm.applicant.disabled}
           />
           <Labelbox type="text"
             placeholder={"Title"}
@@ -249,6 +315,7 @@ function InternationalFilling(props) {
             value={InternationlForm.title.value}
             error={InternationlForm.title.error}
             errmsg={InternationlForm.title.errmsg}
+            disabled={InternationlForm.title.disabled}
           />
           <Labelbox type="select"
             placeholder={"Class"}
@@ -257,6 +324,7 @@ function InternationalFilling(props) {
             value={InternationlForm.class.value}
             error={InternationlForm.class.error}
             errmsg={InternationlForm.class.errmsg}
+            disabled={InternationlForm.class.disabled}
           />
           <Labelbox type="select"
             placeholder={"Country"}
@@ -265,6 +333,7 @@ function InternationalFilling(props) {
             value={InternationlForm.country.value}
             error={InternationlForm.country.error}
             errmsg={InternationlForm.country.errmsg}
+            disabled={InternationlForm.country.disabled}
           />
           <Labelbox type="select"
             placeholder={"priority Country"}
@@ -273,6 +342,7 @@ function InternationalFilling(props) {
             value={InternationlForm.priority_country.value}
             error={InternationlForm.priority_country.error}
             errmsg={InternationlForm.priority_country.errmsg}
+            disabled={InternationlForm.priority_country.disabled}
           />
           <Labelbox type="datepicker"
             placeholder={"priority Date"}
@@ -280,6 +350,7 @@ function InternationalFilling(props) {
             value={InternationlForm.priority_date.value}
             error={InternationlForm.priority_date.error}
             errmsg={InternationlForm.priority_date.errmsg}
+            disabled={InternationlForm.priority_date.disabled}
           />
           <Labelbox type="select"
             placeholder={"Status"}
@@ -288,6 +359,7 @@ function InternationalFilling(props) {
             value={InternationlForm.status.value}
             error={InternationlForm.status.error}
             errmsg={InternationlForm.status.errmsg}
+            disabled={InternationlForm.status.disabled}
           />
           <Labelbox type="textarea"
             placeholder={"Comments"}
@@ -295,6 +367,7 @@ function InternationalFilling(props) {
             value={InternationlForm.comments.value}
             error={InternationlForm.comments.error}
             errmsg={InternationlForm.comments.errmsg}
+            disabled={InternationlForm.comments.disabled}
           />
           <Labelbox type="datepicker"
             placeholder={"Renewal Date"}
@@ -302,6 +375,7 @@ function InternationalFilling(props) {
             value={InternationlForm.renewal_date.value}
             error={InternationlForm.renewal_date.error}
             errmsg={InternationlForm.renewal_date.errmsg}
+            disabled={InternationlForm.renewal_date.disabled}
           />
         </Grid>
       </Grid>

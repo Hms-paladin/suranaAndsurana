@@ -99,7 +99,7 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<input className={`${data.error && "brdred"} brdrcls`} min="0" value={this.props.value} type="number" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} onKeyDown={e => (e.key === "e" || e.key === "+" || e.key === "-") && e.preventDefault()} />
+						<input className={`${data.error && "brdred"} brdrcls`} min="0" value={this.props.value} type="number" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} onKeyDown={e => (e.key === "e" || e.key === "+" || e.key === "-") && e.preventDefault()} disabled={this.props.disabled} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -115,7 +115,7 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<textarea className={`${data.error && "brdred"} brdrcls`} rows={this.props.rows} cols="50" value={this.props.value} placeholder={this.props.placeholder} onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}></textarea>
+						<textarea className={`${data.error && "brdred"} brdrcls`} rows={this.props.rows} cols="50" value={this.props.value} placeholder={this.props.placeholder} onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} disabled={this.props.disabled}></textarea>
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -159,6 +159,7 @@ export default class Labelbox extends Component {
 								placeholder={this.props.placeholder}
 								disableToolbar={this.props.disableToolbar && this.props.disableToolbar}
 								autoOk={true}
+								disabled={this.props.disabled}
 								views={this.props.view && this.props.view}
 								clearable={false}
 								disableUnderline={true}

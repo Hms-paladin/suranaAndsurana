@@ -5,7 +5,8 @@ import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
 import { useSelector, useDispatch } from 'react-redux';
 import { getClass, getCountry, getIPStatus } from "../../../../actions/IPDropdown.js";
-import { InsertDesign } from "../../../../actions/InsertDesign";
+import { InsertDesign, getDesignDetails } from "../../../../actions/InsertDesign";
+import moment from "moment";
 
 
 function IndiaFilling(props) {
@@ -15,90 +16,105 @@ function IndiaFilling(props) {
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     associate: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     our_ref: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     client_ref: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     app_num: {
       value: "",
       validation: [{ "name": "required" }, { "name": "alphaNumaricOnly" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     app_date: {
       value: "",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     applicant: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     title: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     class: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     country: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     priority_country: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     priority_date: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     status: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
+      disabled: false
     },
     comments: {
       value: "",
       validation: [{ "name": "alphabetwithspace" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     renewal_date: {
       value: "",
       validation: [],
       error: null,
-      errmsg: null
+      errmsg: null,
+      disabled: false
     }
   })
   const [indFilGetList, setIndFilGetList] = useState({
@@ -107,6 +123,7 @@ function IndiaFilling(props) {
     getStatusList: []
   })
   const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
+  const getDesign =useSelector((state) => state.getDesignDetails)
   const dispatch = useDispatch();
 
   function checkValidation(data, key, multipleId) {
@@ -144,8 +161,8 @@ function IndiaFilling(props) {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0])).then(() => {
-        handleCancel()
+      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0],getDesign)).then(() => {
+        // handleCancel()
       })
     }
 
@@ -157,9 +174,17 @@ function IndiaFilling(props) {
   const handleCancel = () => {
     let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 
+    let indiaFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+
+    if(getDesign.length > 0){
+      indiaFil_key.map((data, index) => {
+        IndiaForm[data].value = getDesign[0][indiaFil_value[index]] ? getDesign[0][indiaFil_value[index]] : "";
+      });
+    }else{
     indiaFil_key.map((data) => {
       IndiaForm[data].value = "";
     });
+  }
     setIndiaForm((prevState) => ({
       ...prevState,
     }));
@@ -170,6 +195,35 @@ function IndiaFilling(props) {
     dispatch(getCountry());
     dispatch(getIPStatus());
   }, [])
+
+  useEffect(()=>{
+    dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id));
+  },[props.projectDetails])
+
+useEffect(()=>{
+  if(getDesign.length > 0){
+    let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
+
+    let indiaFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+
+    indiaFil_key.map((data, index) => {
+      console.log(indiaFil_value[index],indiaFil_value[index] !== "application_date","indiaFil_value[index]")
+      if(indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date"){
+      IndiaForm[data].value = getDesign[0][indiaFil_value[index]];
+      IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] ? true : false;
+      }
+      else{
+        console.log(getDesign[0][indiaFil_value[index]],"getDesign[0]")
+      IndiaForm[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
+      IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+
+      }
+    });
+    setIndiaForm((prevState) => ({
+      ...prevState,
+    }));
+  }
+},[getDesign])
 
   useEffect(() => {
 
@@ -203,6 +257,7 @@ function IndiaFilling(props) {
             value={IndiaForm.file_cover.value}
             error={IndiaForm.file_cover.error}
             errmsg={IndiaForm.file_cover.errmsg}
+            disabled={IndiaForm.file_cover.disabled}
           />
           <Labelbox type="text"
             placeholder={"Associate"}
@@ -210,6 +265,7 @@ function IndiaFilling(props) {
             value={IndiaForm.associate.value}
             error={IndiaForm.associate.error}
             errmsg={IndiaForm.associate.errmsg}
+            disabled={IndiaForm.associate.disabled}
           />
           <Labelbox type="text"
             placeholder={"Our Reference"}
@@ -217,6 +273,7 @@ function IndiaFilling(props) {
             value={IndiaForm.our_ref.value}
             error={IndiaForm.our_ref.error}
             errmsg={IndiaForm.our_ref.errmsg}
+            disabled={IndiaForm.our_ref.disabled}
           />
           <Labelbox type="text"
             placeholder={"Client Reference"}
@@ -224,6 +281,7 @@ function IndiaFilling(props) {
             value={IndiaForm.client_ref.value}
             error={IndiaForm.client_ref.error}
             errmsg={IndiaForm.client_ref.errmsg}
+            disabled={IndiaForm.client_ref.disabled}
           />
           <Labelbox type="text"
             placeholder={"Application Number"}
@@ -231,6 +289,7 @@ function IndiaFilling(props) {
             value={IndiaForm.app_num.value}
             error={IndiaForm.app_num.error}
             errmsg={IndiaForm.app_num.errmsg}
+            disabled={IndiaForm.app_num.disabled}
           />
           <Labelbox type="datepicker"
             placeholder={"Application Date"}
@@ -238,6 +297,7 @@ function IndiaFilling(props) {
             value={IndiaForm.app_date.value}
             error={IndiaForm.app_date.error}
             errmsg={IndiaForm.app_date.errmsg}
+            disabled={IndiaForm.app_date.disabled}
           />
           <Labelbox type="text"
             placeholder={"Applicant"}
@@ -245,6 +305,7 @@ function IndiaFilling(props) {
             value={IndiaForm.applicant.value}
             error={IndiaForm.applicant.error}
             errmsg={IndiaForm.applicant.errmsg}
+            disabled={IndiaForm.applicant.disabled}
           />
           <Labelbox type="text"
             placeholder={"Title"}
@@ -252,6 +313,7 @@ function IndiaFilling(props) {
             value={IndiaForm.title.value}
             error={IndiaForm.title.error}
             errmsg={IndiaForm.title.errmsg}
+            disabled={IndiaForm.title.disabled}
           />
           <Labelbox type="select"
             placeholder={"Class"}
@@ -260,6 +322,7 @@ function IndiaFilling(props) {
             value={IndiaForm.class.value}
             error={IndiaForm.class.error}
             errmsg={IndiaForm.class.errmsg}
+            disabled={IndiaForm.class.disabled}
           />
           <Labelbox type="select"
             placeholder={"Country"}
@@ -268,6 +331,7 @@ function IndiaFilling(props) {
             value={IndiaForm.country.value}
             error={IndiaForm.country.error}
             errmsg={IndiaForm.country.errmsg}
+            disabled={IndiaForm.country.disabled}
           />
           <Labelbox type="select"
             placeholder={"priority Country"}
@@ -276,6 +340,7 @@ function IndiaFilling(props) {
             value={IndiaForm.priority_country.value}
             error={IndiaForm.priority_country.error}
             errmsg={IndiaForm.priority_country.errmsg}
+            disabled={IndiaForm.priority_country.disabled}
           />
           <Labelbox type="datepicker"
             placeholder={"priority Date"}
@@ -283,6 +348,7 @@ function IndiaFilling(props) {
             value={IndiaForm.priority_date.value}
             error={IndiaForm.priority_date.error}
             errmsg={IndiaForm.priority_date.errmsg}
+            disabled={IndiaForm.priority_date.disabled}
           />
           <Labelbox type="select"
             placeholder={"Status"}
@@ -291,6 +357,7 @@ function IndiaFilling(props) {
             value={IndiaForm.status.value}
             error={IndiaForm.status.error}
             errmsg={IndiaForm.status.errmsg}
+            disabled={IndiaForm.status.disabled}
           />
           <Labelbox type="textarea"
             placeholder={"Comments"}
@@ -298,6 +365,7 @@ function IndiaFilling(props) {
             value={IndiaForm.comments.value}
             error={IndiaForm.comments.error}
             errmsg={IndiaForm.comments.errmsg}
+            disabled={IndiaForm.comments.disabled}
           />
           <Labelbox type="datepicker"
             placeholder={"Renewal Date"}
@@ -305,6 +373,7 @@ function IndiaFilling(props) {
             value={IndiaForm.renewal_date.value}
             error={IndiaForm.renewal_date.error}
             errmsg={IndiaForm.renewal_date.errmsg}
+            disabled={IndiaForm.renewal_date.disabled}
           />
         </Grid>
       </Grid>
