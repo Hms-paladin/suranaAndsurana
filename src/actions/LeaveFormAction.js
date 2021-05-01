@@ -1,5 +1,5 @@
 
-import { INSERT_LEAVE_FORM, GET_EMP_LEAVE_BALANCE, GET_LEAVE_FORM, GET_SUBJECT_LIST, GET_LEAVE_FORM_DETAILS } from "../utils/Constants";
+import { INSERT_LEAVE_FORM, GET_EMP_LEAVE_BALANCE, GET_LEAVE_FORM, GET_SUBJECT_LIST, GET_LEAVE_FORM_DETAILS, UPDATE_LEAVE_FROM } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -71,8 +71,8 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
                 "leave_type_id": Leave_Form.leavetype.value,
                 "from_date": Leave_Form.fromdate.value || 0,
                 "to_date": Leave_Form.todate.value || 0,
-                "from_time": Leave_Form.fromtime.value|| 0,
-                "to_time":  Leave_Form.totime.value || 0,
+                "from_time": Leave_Form.fromtime.value || 0,
+                "to_time": Leave_Form.totime.value || 0,
                 "reason": Leave_Form.reasoncmt.value || 0,
                 "address": Leave_Form.address.value || 0,
                 "contact_number": Leave_Form.contactperson.value || 0,
@@ -99,17 +99,8 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
     }
 }
 
-// export const getLeaveForm = () => async (dispatch) => {
-//     const response = await axios.get(apiurl + "/get_leave_form");
-//     return dispatch({ type: GET_LEAVE_FORM_DETAILS, payload: response.data.data });
-// };
 
 export const getLeaveForm = (id) => async dispatch => {
-
-    // var DocumentData = new FormData();
-    // DocumentData.set("employee_id", )
-    // DocumentData.set("leave_type_id", "")
-
     try {
         axios({
             method: 'POST',
@@ -120,8 +111,45 @@ export const getLeaveForm = (id) => async dispatch => {
             }
         }).then((response) => {
             if (response.data.status === 1) {
+                console.log(response.data.data, "response.data.data")
                 dispatch({ type: GET_LEAVE_FORM_DETAILS, payload: response.data.data })
-                // dispatch(getLeaveBalance(params,employee_code))
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
+
+export const updateLeaveFrom = (Leave_Form) => async dispatch => {
+    console.log(Leave_Form.leavetype.value, "Leave_Form.reasoncmt.value")
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'update_leave_form',
+            data: {
+                "emp_leave_id": Leave_Form.leavetype.value,
+                "employee_id": localStorage.getItem("empId"),
+                "from_date": Leave_Form.fromdate.value || 0,
+                "to_date": Leave_Form.todate.value || 0,
+                "from_time": Leave_Form.fromtime.value || 0,
+                "to_time": Leave_Form.totime.value || 0,
+                "reason": Leave_Form.reasoncmt.value || 0,
+                "address": Leave_Form.address.value || 0,
+                "contact_number": Leave_Form.contactperson.value || 0,
+                "client_id": Leave_Form.client.value || 0,
+                "assigned_by": Leave_Form.assignedby.value || 0,
+                "updated_on": moment().format("YYYY-MM-DD "),
+                "updated_by": localStorage.getItem("empId")
+            },
+        }).then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "updated sucessfully",
+                });
+                dispatch({ type: UPDATE_LEAVE_FROM, payload: response.data.status })
+                dispatch(getLeaveForm(Leave_Form.leavetype.value))
                 return Promise.resolve();
             }
         });
