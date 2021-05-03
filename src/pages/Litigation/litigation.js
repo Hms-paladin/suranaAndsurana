@@ -99,15 +99,14 @@ const Litigation = (props) => {
     },
   });
   useEffect(() => {
-    handleCancel()
+    handleCancel();
     dispatch(getEmployeeList());
     dispatch(getLocation());
     dispatch(getTradeMarkStatus());
     dispatch(getCaseType());
-  
   }, []);
   useEffect(() => {
-    handleCancel()
+    handleCancel();
     setIdDetails(props.id_Props);
     dispatch(getSubCaseType(props.id_Props.client_id));
     dispatch(GetLitigation(props.id_Props.project_id));
@@ -123,24 +122,40 @@ const Litigation = (props) => {
   }, [props.getSubCaseType]);
 
   useEffect(() => {
-    handleCancel()
+    handleCancel();
     let MultipleSet =
       props.getLitigationDetails &&
       props.getLitigationDetails[0] &&
       props.getLitigationDetails[0].case_details.map((data) => {
+        if (data.liti_councel_id === 5) {
+          console.log("datadata", data);
+        } else {
+          //
+        }
         let rowDataList = data?.liti_details?.map((val) => {
           return (
             <div className="ourCounselFields">
-              <div>{val.name}</div>
-              <div>{val.phone_no}</div>
-              <div>{val.email_id}</div>
-              <div>{val.address}</div>
+              {val.liti_councel_id === 5 ? (
+                <>
+                  <div>{val.interim_name}</div>
+                  <div>{val.interim_appln_no}</div>
+                  <div>{val.interim_application_date}</div>
+                  <div>{val.interim_details}</div>
+                </>
+              ) : (
+                <>
+                  <div>{val.name}</div>
+                  <div>{val.phone_no}</div>
+                  <div>{val.email_id}</div>
+                  <div>{val.address}</div>
+                </>
+              )}
             </div>
           );
         });
         return (
           <>
-            {rowDataList && rowDataList.length > 0 && (
+            {rowDataList && props.getLitigationDetails[0].case.length > 0 && (
               <div className="litigationCounsel">
                 <div className="ourCounselTitle ourCounselHead">
                   {" "}
@@ -150,6 +165,13 @@ const Litigation = (props) => {
                     style={{ height: "20px" }}
                     onClick={setLitigationCounselModel}
                   />
+                </div>
+                <div className="ourCounselFieldsHeading">
+                  {" "}
+                  <div>Name</div>
+                  <div>Phone No</div>
+                  <div>Email</div>
+                  <div>Address</div>
                 </div>
                 {rowDataList}
               </div>
@@ -193,7 +215,12 @@ const Litigation = (props) => {
       Litigation_Form["courtname"].value = caseDetails.court_id || 0;
       Litigation_Form["casetype"].value = caseDetails.case_type_id || 0;
       Litigation_Form["courtcaseno"].value = caseDetails.court_case_no || 0;
+      // _________________________
       Litigation_Form["ddra"].value = MultipleCouncelValue || "";
+      Litigation_Form["ddra"].valueById = caseDetails.responsible_attorney;
+      // TicketCreation.language.value = languageValue;
+      // TicketCreation.language.valueById = props.TicketTemplate[0]?.language_id;
+      // __________________________________________________
       Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date || 0;
       Litigation_Form["duedate"].value = caseDetails.due_date || 0;
       Litigation_Form["subcase"].value = caseDetails.sub_case || 0;
@@ -204,7 +231,7 @@ const Litigation = (props) => {
     }));
 
     setLitigationCase(caseDetails);
-   
+
     //________________________________
   }, [props.getLitigationDetails, props.EmployeeList]);
   useEffect(() => {

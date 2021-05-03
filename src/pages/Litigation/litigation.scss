@@ -81,6 +81,11 @@
     border: 1px solid #023e7d;
     border-radius: 10px;
     margin-bottom: 8px;
+    .ourCounselFieldsHeading{
+        display: flex;
+        justify-content: space-around;
+    }
+
 }
 
 .ourCounselTitle{
