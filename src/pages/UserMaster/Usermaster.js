@@ -1238,7 +1238,7 @@ const UserMaster = (props) => {
                 type="select"
                 placeholder={"Status Type"}
                 dropdown={tablevalues.get_status_type}
-                stringvalue
+                //stringvalue
                 changeData={(data) => checkValidation(data, "status_type")}
                 value={UserMaster.status_type.value}
                 error={UserMaster.status_type.error}

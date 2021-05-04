@@ -96,7 +96,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
       {
 
         "table_names":data,
-        "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skills?.value ? state?.skills?.value||"":
+        "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
         state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
         state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
@@ -162,7 +162,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         // "id":Editvisible?editId.group.group_id:"",
         "id":"1",
         "table_names":data,
-        "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skills?.value ? state?.skills?.value||"":
+        "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
         state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
         state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
@@ -350,9 +350,9 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible) => async dispatch 
       url: apiurl + 'insert_status_master',
       data:
       {
-        "status_id":Editvisible?StatusId.status_id:0,
+        //"status_id":Editvisible?StatusId.status_id:0,
         // "status_type": UserMaster.status_type.value,
-        "status_type":"Interview",
+        "status_type":UserMaster.status_type.value,
         "status": UserMaster.status_name.value,
         "created_on": "2021-02-01",
         "created_by": "2"
