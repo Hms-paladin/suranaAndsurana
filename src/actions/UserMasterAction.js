@@ -502,7 +502,7 @@ const response = await axios({
   method: "post",
   url: apiurl + "get_s_tbl_m_status",
   data: {
-    "status_type":id
+    "status_type":"Interview"
   },
 });
   return dispatch({ type: GET_TABLE_STATUS, payload: response.data.data});
