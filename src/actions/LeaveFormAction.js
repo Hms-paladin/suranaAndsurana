@@ -1,5 +1,4 @@
-
-import { INSERT_LEAVE_FORM, GET_EMP_LEAVE_BALANCE, GET_LEAVE_FORM, GET_SUBJECT_LIST, GET_LEAVE_FORM_DETAILS } from "../utils/Constants";
+import { INSERT_LEAVE_FORM, GET_EMP_LEAVE_BALANCE, GET_LEAVE_FORM, GET_SUBJECT_LIST, GET_LEAVE_FORM_DETAILS, UPDATE_LEAVE_FROM,INSERT_LEAVE_FORM_CEP } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -71,8 +70,8 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
                 "leave_type_id": Leave_Form.leavetype.value,
                 "from_date": Leave_Form.fromdate.value || 0,
                 "to_date": Leave_Form.todate.value || 0,
-                "from_time": Leave_Form.fromtime.value|| 0,
-                "to_time":  Leave_Form.totime.value || 0,
+                "from_time": Leave_Form.fromtime.value || 0,
+                "to_time": Leave_Form.totime.value || 0,
                 "reason": Leave_Form.reasoncmt.value || 0,
                 "address": Leave_Form.address.value || 0,
                 "contact_number": Leave_Form.contactperson.value || 0,
@@ -99,17 +98,8 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
     }
 }
 
-// export const getLeaveForm = () => async (dispatch) => {
-//     const response = await axios.get(apiurl + "/get_leave_form");
-//     return dispatch({ type: GET_LEAVE_FORM_DETAILS, payload: response.data.data });
-// };
 
 export const getLeaveForm = (id) => async dispatch => {
-
-    // var DocumentData = new FormData();
-    // DocumentData.set("employee_id", )
-    // DocumentData.set("leave_type_id", "")
-
     try {
         axios({
             method: 'POST',
@@ -120,8 +110,45 @@ export const getLeaveForm = (id) => async dispatch => {
             }
         }).then((response) => {
             if (response.data.status === 1) {
+                console.log(response.data.data, "response.data.data")
                 dispatch({ type: GET_LEAVE_FORM_DETAILS, payload: response.data.data })
-                // dispatch(getLeaveBalance(params,employee_code))
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
+
+export const updateLeaveFrom = (Leave_Form) => async dispatch => {
+    console.log(Leave_Form.leavetype.value, "Leave_Form.reasoncmt.value")
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'update_leave_form',
+            data: {
+                "emp_leave_id": Leave_Form.leavetype.value,
+                "employee_id": localStorage.getItem("empId"),
+                "from_date": Leave_Form.fromdate.value || 0,
+                "to_date": Leave_Form.todate.value || 0,
+                "from_time": Leave_Form.fromtime.value || 0,
+                "to_time": Leave_Form.totime.value || 0,
+                "reason": Leave_Form.reasoncmt.value || 0,
+                "address": Leave_Form.address.value || 0,
+                "contact_number": Leave_Form.contactperson.value || 0,
+                "client_id": Leave_Form.client.value || 0,
+                "assigned_by": Leave_Form.assignedby.value || 0,
+                "updated_on": moment().format("YYYY-MM-DD "),
+                "updated_by": localStorage.getItem("empId")
+            },
+        }).then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "updated sucessfully",
+                });
+                dispatch({ type: UPDATE_LEAVE_FROM, payload: response.data.status })
+                dispatch(getLeaveForm(Leave_Form.leavetype.value))
                 return Promise.resolve();
             }
         });
@@ -142,6 +169,126 @@ export const deleteLeaveForm = (emp_leave_id) => async dispatch => {
             data: DocumentData
         }).then((response) => {
             if (response.data.status === 1) {
+                notification.success({
+                    message: "Leave Form deleted sucessfully",
+                });
+                dispatch(getLeaveForm())
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
+
+export const insertLeaveCep = (Leave_Form,examSchedule) => async dispatch => {
+
+    let subject_details=[]
+        examSchedule.length > 0 && examSchedule.map((data, index) =>
+        subject_details.push({ 
+             emp_id: localStorage.getItem("empId"),
+             subject_id: data.subject_id,
+             subject_date: data.date,
+             created_on: moment().format("YYYY-MM-DD"),
+             updated_on: moment().format("YYYY-MM-DD "),
+             created_by: localStorage.getItem("empId"),
+             updated_by: localStorage.getItem("empId"),
+             }) 
+        );
+
+        var DocumentData = new FormData();
+        DocumentData.set("employee_id",localStorage.getItem("empId"))
+        DocumentData.set("leave_type_id",Leave_Form.leavetype.value)
+        DocumentData.set("professional_course_id",Leave_Form.profess_course.value || 0)
+        DocumentData.set("total_days_leave",Leave_Form.tot_leave.value || 0)
+        DocumentData.set("no_exam_days",Leave_Form.exam_days.value || 0)
+        
+        DocumentData.set("no_other_days",Leave_Form.other_days.value || 0)
+
+        DocumentData.set("hall_ticket",null)
+        DocumentData.set("description",Leave_Form.reasoncmt.value || 0)
+        DocumentData.set("remarks",Leave_Form.remarks.value || 0)
+        DocumentData.set("subject", JSON.stringify(subject_details) || 0)
+
+        DocumentData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
+        DocumentData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
+        DocumentData.set("created_by",localStorage.getItem("empId"))
+        DocumentData.set("updated_by",localStorage.getItem("empId"))
+
+        DocumentData.set("referred_by",Leave_Form.referred_by.value || 0)
+
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_leave_cep',
+            data: DocumentData,headers: { "Content-Type": "multipart/form-data" },
+        }).then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "Leave Form added sucessfully",
+                });
+                dispatch({ type: INSERT_LEAVE_FORM_CEP, payload: response.data.status })
+                dispatch(getLeaveForm())
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
+
+
+export const updateLeaveCep = (Leave_Form,examSchedule) => async dispatch => {
+  console.log(examSchedule,"examSchedule1")
+    let subject_details=[]
+        examSchedule.length > 0 && examSchedule.map((data, index) =>
+        subject_details.push({ 
+             emp_leave_cep_sub_id:data.emp_leave_cep_sub_id,
+             emp_leave_id:data.emp_leave_id,
+             emp_id: localStorage.getItem("empId"),
+             subject_id: data.subject_id,
+             subject_date: data.subject_date,
+             created_on: moment().format("YYYY-MM-DD"),
+             updated_on: moment().format("YYYY-MM-DD "),
+             created_by: localStorage.getItem("empId"),
+             updated_by: localStorage.getItem("empId"),
+             }) 
+        );
+        var DocumentData = new FormData();
+        DocumentData.set("employee_id",localStorage.getItem("empId"))
+        DocumentData.set("leave_type_id",Leave_Form.leavetype.value)
+        DocumentData.set("professional_course_id",Leave_Form.profess_course.value || 0)
+        DocumentData.set("total_days_leave",Leave_Form.tot_leave.value || 0)
+        DocumentData.set("no_exam_days",Leave_Form.exam_days.value || 0)
+        
+        DocumentData.set("no_other_days",Leave_Form.other_days.value || 0)
+        DocumentData.set("hall_ticket",null)
+        DocumentData.set("description",Leave_Form.reasoncmt.value || 0)
+        DocumentData.set("remarks",Leave_Form.remarks.value || 0)
+        DocumentData.set("subject", JSON.stringify(subject_details) || 0)
+        
+        DocumentData.set("emp_leave_id",examSchedule[0].emp_leave_id)
+        DocumentData.set("referred_by",examSchedule[0].emp_leave_id)
+
+        DocumentData.set("created_on",moment().format('YYYY-MM-DD HH:m:s')  )
+        DocumentData.set("updated_on",moment().format('YYYY-MM-DD HH:m:s')  )
+        DocumentData.set("created_by",localStorage.getItem("empId"))
+        DocumentData.set("updated_by",localStorage.getItem("empId"))
+       
+
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'update_leave_cep',
+            data: DocumentData,headers: { "Content-Type": "multipart/form-data" },
+        }).then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "Leave Form updated sucessfully",
+                });
+                dispatch({ type: INSERT_LEAVE_FORM_CEP, payload: response.data.status })
                 dispatch(getLeaveForm())
                 return Promise.resolve();
             }
