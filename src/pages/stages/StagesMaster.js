@@ -40,13 +40,13 @@ const StagesMaster = (props) => {
     },
     sub_project_type: {
       value: "",
-      validation: [],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
     process_type: {
       value: "",
-      validation: [],
+      validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },

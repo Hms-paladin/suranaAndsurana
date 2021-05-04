@@ -551,7 +551,7 @@ function TicketCreation(props) {
                                 errmsg={TicketCreation.position.errmsg} />
                         </Grid>
                         <Grid item xs={3} >
-                            <Labelbox type="datepicker" placeholder="Required by"
+                            <Labelbox type="datepicker" placeholder="Required by" disablePast={true}
                                 changeData={(data) => checkValidation(data, "req_by")}
                                 value={TicketCreation.req_by.value}
                                 error={TicketCreation.req_by.error}

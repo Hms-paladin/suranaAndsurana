@@ -150,7 +150,7 @@ function ProjectFormCreate(props) {
     },
     baseRate: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" }, { "name": "custommaxValue", "params": "0" }],
       error: null,
       errmsg: null,
     },
@@ -224,19 +224,19 @@ function ProjectFormCreate(props) {
   }, []);
 
   const onchangeAmount = (data, key) => {
-    console.log(parseInt(data),key,"onchangeAmount")
+    console.log(parseInt(data), key, "onchangeAmount")
     // if (key === "amountSearch" && data) {
-      setPrpjectSearchCreate((prevState) => ({
-        ...prevState,
-        [key]: data ,
-      }));
-      setDisableCondition(false)
+    setPrpjectSearchCreate((prevState) => ({
+      ...prevState,
+      [key]: data,
+    }));
+    setDisableCondition(false)
     // }
   };
 
 
   function checkValidation(data, key, multipleId) {
-    console.log(data,"onchangeValue")
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
@@ -247,9 +247,12 @@ function ProjectFormCreate(props) {
       errmsg: errorcheck.msg,
       validation: projectform[key].validation,
     };
-    // console.log(projectform.project_type.value, "projectform.client.value")
-
-
+    if (data && key == "projectcostrange") {
+      projectform.baseRate.validation[1].params = data
+      setprojectform((prevState) => ({
+        ...prevState,
+      }));
+    }
     //  projectSubTypeValue
 
     if (key === "project_type" && data) {
@@ -307,17 +310,46 @@ function ProjectFormCreate(props) {
     }));
 
     // variable popup==>
-
     if (key === "billable_type" && data === 2) {
       setVarRatePlusIcon(true);
       // setVariableid(true);
-    } 
-    else if(key === "billable_type" && data !== 2)  {
+    }
+    else if (key === "billable_type" && data !== 2) {
       setVarRatePlusIcon(false);
     }
   }
 
+  console.log(projectUnit, "projectUnit")
+
+
+  const hideValidation = (From_key) => {
+    From_key.map((data) => {
+      try {
+        projectform[data].validation = [];
+      } catch (error) {
+        throw error;
+      }
+    });
+
+    setprojectform((prevState) => ({
+      ...prevState,
+    }));
+  }
+
   function onsubmit() {
+    if (projectform.project_type.value) {
+      if (projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5) {
+        const From_key = [
+          "project_Subtype", "process_type", "filing_type"
+        ];
+        hideValidation(From_key)
+      } else if (projectform.project_type.value === 6) {
+        const From_key = [
+          "project_Subtype", "process_type"
+        ];
+        hideValidation(From_key)
+      }
+    }
     var mainvalue = {};
     var targetkeys = Object.keys(projectform);
     for (var i in targetkeys) {
@@ -331,15 +363,16 @@ function ProjectFormCreate(props) {
     }
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
-    // if (filtererr.length < 0) {
-    //     // setpostData({ error: true });
-    // } else {
-    // setpostData({ error: false });
-    dispatch(InsertIpProject(projectform, sendVariableData)).then(
-      (response) => {
-        handleCancel();
-      }
-    );
+    console.log(filtererr.length, "filtererr.length")
+
+    if (filtererr.length > 1) {
+    } else {
+      dispatch(InsertIpProject(projectform, sendVariableData)).then(
+        (response) => {
+          handleCancel();
+        }
+      );
+    }
     setprojectform((prevState) => ({
       ...prevState,
     }));
@@ -380,6 +413,10 @@ function ProjectFormCreate(props) {
       ...prevState,
     }));
   };
+
+  const onCancel = () => {
+    handleCancel()
+  }
 
   useEffect(() => {
     // Client
@@ -476,7 +513,7 @@ function ProjectFormCreate(props) {
             <div>
               <EnhancedTable
                 headCells={header}
-                rows={addTableData.searchVariableTableData ||[]} 
+                rows={addTableData.searchVariableTableData || []}
               />
             </div>
             {showVariableTable.length !== 0 ? (
@@ -513,18 +550,8 @@ function ProjectFormCreate(props) {
                 </label>
               </div>
               <div className="customNotFoundbtn">
-                <CustomButton
-                  btnName={"Yes"}
-                  btnCustomColor="customPrimary"
-                  custombtnCSS={"btnNotFound"}
-                  onBtnClick={() => setNotfoundmodel(false)}
-                />
-                <CustomButton
-                  btnName={"No "}
-                  btnCustomColor="customPrimary"
-                  custombtnCSS={"btnNotFound"}
-                  onBtnClick={() => setNotfoundmodel(false)}
-                />
+                <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+                <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
               </div>
             </div>
           }
@@ -533,15 +560,14 @@ function ProjectFormCreate(props) {
       </div>
     );
   };
-  // {console.log("props.lenght",props.lenghtData)}
   useEffect(() => {
-    if(props.lenghtData !== 0){
+    if (props.lenghtData !== 0) {
       let searchVariableTableData = [];
       setNotfoundmodel(false);
       props.searchVariableRate.map((data, index) => {
-        if(disableCondition){
-        projectSearchCreate['amountSearch'+index] = data.Amount;
-        } 
+        if (disableCondition) {
+          projectSearchCreate['amountSearch' + index] = data.Amount;
+        }
         searchVariableTableData.push({
           designation: data.designation,
           activity: data.activity,
@@ -554,8 +580,8 @@ function ProjectFormCreate(props) {
             <Labelbox
               type="text"
               placeholder={"Amount"}
-              changeData={(data) => onchangeAmount(data, "amountSearch"+index)}
-              value={projectSearchCreate['amountSearch'+index]}
+              changeData={(data) => onchangeAmount(data, "amountSearch" + index)}
+              value={projectSearchCreate['amountSearch' + index]}
             />
           ),
           UOM: data.unit,
@@ -563,29 +589,21 @@ function ProjectFormCreate(props) {
             <img
               src={PlusIcon}
               style={{ cursor: "pointer", width: 19 }}
-              onClick={() => addTempTable(data,index)}
+              onClick={() => addTempTable(data, index)}
             />
           ),
         });
       });
       setAddTableData({ searchVariableTableData });
-    }else{
+    } else {
       setAddsearchdata(false);
       setNotfoundmodel(true)
     }
-    
+
   }, [props.searchVariableRate, props.lenghtData, projectSearchCreate]);
 
-  console.log(projectSearchCreate,"projectSearchCreate")
-
   //----------
-  const addTempTable = (data,index) => {
-        console.log(projectSearchCreate,index,"projectSearchCreateprojectSearchCreate")
-
-//  ____________________
-
-
-// _______________________
+  const addTempTable = (data, index) => {
 
     const TabLen = showVariableTable.length;
     showVariableTable.push({
@@ -646,242 +664,245 @@ function ProjectFormCreate(props) {
         >
           <Grid item xs={4}>
             <Labelbox
-              type="select"
-              placeholder={"Client"}
-              dropdown={client.Client}
+              type="select" placeholder={"Client"} dropdown={client.Client}
               changeData={(data) => checkValidation(data, "client")}
               value={projectform.client.value}
               error={projectform.client.error}
-              errmsg={projectform.client.errmsg}
-            />
+              errmsg={projectform.client.errmsg} />
           </Grid>
           <Grid item xs={2}>
             <Link to="/addclient">
-              <CustomButton
-                btnName={"Create Client "}
-                btnCustomColor="customPrimary"
-                custombtnCSS="btnCreateClient"
-                onBtnClick={() => setpathname("/addclient")}
-              />
+              <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary" custombtnCSS="btnCreateClient" onBtnClick={() => setpathname("/addclient")} />
             </Link>
           </Grid>
           <Grid item xs={6}>
-            <Labelbox
-              type="text"
-              placeholder={"Project Name "}
+            <Labelbox type="text" placeholder={"Project Name "}
               changeData={(data) => checkValidation(data, "projectname")}
               value={projectform.projectname.value}
               error={projectform.projectname.error}
-              errmsg={projectform.projectname.errmsg}
-            />
-          </Grid>
+              errmsg={projectform.projectname.errmsg} /></Grid>
           <Grid item xs={6}>
-            <Labelbox
-              type="select"
-              placeholder={"Project Type "}
+            <Labelbox type="select" placeholder={"Project Type "}
               dropdown={ProjectType.projectTypedata}
               changeData={(data) => checkValidation(data, "project_type")}
               value={projectform.project_type.value}
               error={projectform.project_type.error}
-              errmsg={projectform.project_type.errmsg}
-            />
-          </Grid>
+              errmsg={projectform.project_type.errmsg} /></Grid>
           {projectform.project_type.value === 1 ? (
-            <>
+            <> <Grid item xs={6}>
+              <Labelbox type="select" placeholder={"Project Sub Type"}
+                dropdown={SubType_Project.projectSubTypeValue}
+                changeData={(data) => checkValidation(data, "project_Subtype")}
+                value={projectform.project_Subtype.value}
+                error={projectform.project_Subtype.error}
+                errmsg={projectform.project_Subtype.errmsg} />
+            </Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Project Sub Type"}
-                  dropdown={SubType_Project.projectSubTypeValue}
-                  changeData={(data) =>
-                    checkValidation(data, "project_Subtype")
-                  }
-                  value={projectform.project_Subtype.value}
-                  error={projectform.project_Subtype.error}
-                  errmsg={projectform.project_Subtype.errmsg}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Process Type"}
+                <Labelbox type="select" placeholder={"Process Type"}
                   dropdown={ProcessType.Processtypevalue}
                   changeData={(data) => checkValidation(data, "process_type")}
                   value={projectform.process_type.value}
                   error={projectform.process_type.error}
-                  errmsg={projectform.process_type.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.process_type.errmsg} />  </Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Filing Type"}
+                <Labelbox type="select" placeholder={"Filing Type"}
                   dropdown={filingType.FilingType}
                   changeData={(data) => checkValidation(data, "filing_type")}
                   value={projectform.filing_type.value}
                   error={projectform.filing_type.error}
-                  errmsg={projectform.filing_type.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.filing_type.errmsg} /></Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"HOD/Attorney"}
+                <Labelbox type="select" placeholder={"HOD/Attorney"}
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
                   error={projectform.hod_attorny.error}
-                  errmsg={projectform.hod_attorny.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.hod_attorny.errmsg} /> </Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Counsel"}
+                <Labelbox type="select" placeholder={"Counsel"}
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "employeelist")}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
-                  errmsg={projectform.employeelist.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.employeelist.errmsg} /></Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Billable Type"}
+                <Labelbox type="select" placeholder={"Billable Type"}
                   dropdown={BillableType.BillableData}
                   changeData={(data) => checkValidation(data, "billable_type")}
                   value={projectform.billable_type.value}
                   error={projectform.billable_type.error}
-                  errmsg={projectform.billable_type.errmsg}
-                />
-                {varRatePlusIcon === true ? (
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <img
-                      src={PlusIcon}
-                      style={{ cursor: "pointer", width: 19 }}
-                      onClick={() => setVariableid(true)}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-                {varRatePlusIcon === true
-                  ? showVariableTable.length !== 0
-                    ? `Variable Rate Selected(${showVariableTable.length})`
-                    : ""
-                  : ""}
+                  errmsg={projectform.billable_type.errmsg} />
+                {varRatePlusIcon === true ? (<div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
+                {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""}
               </Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="text"
-                  placeholder={"Project Value "}
-                  // dropdown={projectCostRange.ProjectCostRange}
-                  changeData={(data) =>
-                    checkValidation(data, "projectcostrange")
-                  }
+                <Labelbox type="text" placeholder={"Project Value "}
+                  changeData={(data) => checkValidation(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
                   error={projectform.projectcostrange.error}
-                  errmsg={projectform.projectcostrange.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.projectcostrange.errmsg} /> </Grid>
               {projectform.billable_type.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Base Rate"}
+                    <Labelbox type="text" placeholder={"Base Rate"}
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}
-                    />
-                  </Grid>
+                      errmsg={projectform.baseRate.errmsg} /></Grid>
                   <Grid item xs={3}>
-                    <Labelbox
-                      type="select"
-                      placeholder={"Unit of Measurement"}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Labelbox type="text" placeholder={"Limit"} />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Additional Rate Hourly"}
-                      changeData={(data) =>
-                        checkValidation(data, "additionalRate")
-                      }
-                      value={projectform.additionalRate.value}
-                      error={projectform.additionalRate.error}
-                      errmsg={projectform.additionalRate.errmsg}
-                    />
-                  </Grid>
-                </Grid>
-              ) : projectform.billable_type.value === 5 ||
-                projectform.billable_type.value === 1 ||
-                projectform.billable_type.value === 4 ? (
-                <Grid item xs={6} container direction="row" spacing={2}>
-                  <Grid item xs={6}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Base Rate"}
-                      changeData={(data) => checkValidation(data, "baseRate")}
-                      value={projectform.baseRate.value}
-                      error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Labelbox
-                      type="select"
-                      placeholder={"Unit of Measurement"}
+                    <Labelbox type="select" placeholder={"Unit of Measurement"}
                       dropdown={projectUnit.projectUnitdata}
-                      changeData={(data) =>
-                        checkValidation(data, "unit_measurement")
-                      }
+                      changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
                       error={projectform.unit_measurement.error}
-                      errmsg={projectform.unit_measurement.errmsg}
-                    />
+                      errmsg={projectform.unit_measurement.errmsg} />
                   </Grid>
-                </Grid>
+                  <Grid item xs={3}> <Labelbox type="text" placeholder={"Limit"} /></Grid>
+                  <Grid item xs={3}>
+                    <Labelbox type="text" placeholder={"Additional Rate Hourly"}
+                      changeData={(data) => checkValidation(data, "additionalRate")}
+                      value={projectform.additionalRate.value}
+                      error={projectform.additionalRate.error}
+                      errmsg={projectform.additionalRate.errmsg} /></Grid> </Grid>
+              ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
+                <Grid item xs={6} container direction="row" spacing={2}>
+                  <Grid item xs={6}>
+                    <Labelbox type="text" placeholder={"Base Rate"}
+                      changeData={(data) => checkValidation(data, "baseRate")}
+                      value={projectform.baseRate.value}
+                      error={projectform.baseRate.error}
+                      errmsg={projectform.baseRate.errmsg} />  </Grid>
+                  <Grid item xs={6}>
+                    <Labelbox type="select" placeholder={"Unit of Measurement"}
+                      dropdown={projectUnit.projectUnitdata}
+                      changeData={(data) => checkValidation(data, "unit_measurement")}
+                      value={projectform.unit_measurement.value}
+                      error={projectform.unit_measurement.error}
+                      errmsg={projectform.unit_measurement.errmsg} /> </Grid></Grid>
               ) : (
                 <Grid item xs={6}></Grid>
               )}
               <Grid item xs={6}>
                 <div className="projectFormComments">
-                  <Labelbox
-                    type="textarea"
-                    placeholder={"Comments"}
+                  <Labelbox type="textarea" placeholder={"Comments"}
                     changeData={(data) => checkValidation(data, "comments")}
                     value={projectform.comments.value}
                     error={projectform.comments.error}
-                    errmsg={projectform.comments.errmsg}
-                  />
-                </div>
-              </Grid>
+                    errmsg={projectform.comments.errmsg} /> </div></Grid>
               <Grid item xs={6}></Grid>
-            </>
-          ) : projectform.project_type.value === 6 ? (
-            <>
-              <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Filing Type"}
+            </>) : projectform.project_type.value === 6 ? (
+              <><Grid item xs={6}>
+                <Labelbox type="select" placeholder={"Filing Type"}
                   dropdown={filingType.FilingType}
                   changeData={(data) => checkValidation(data, "filing_type")}
                   value={projectform.filing_type.value}
                   error={projectform.filing_type.error}
-                  errmsg={projectform.filing_type.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.filing_type.errmsg} /></Grid>
+                <Grid item xs={6}>
+                  <Labelbox type="select" placeholder={"Direct Responsible Attorney"}
+                    dropdown={employeeList.EmployeeList}
+                    changeData={(data) => checkValidation(data, "hod_attorny")}
+                    value={projectform.hod_attorny.value}
+                    error={projectform.hod_attorny.error}
+                    errmsg={projectform.hod_attorny.errmsg} /></Grid>
+                <Grid item xs={6}>
+                  <Labelbox type="select" placeholder={"Deputy Direct Responsible Attorney"}
+                    dropdown={employeeList.EmployeeList}
+                    changeData={(data) => checkValidation(data, "employeelist")}
+                    value={projectform.employeelist.value}
+                    error={projectform.employeelist.error}
+                    errmsg={projectform.employeelist.errmsg} /></Grid>
+                <Grid item xs={6}>
+                  <Labelbox type="select" placeholder={"Billable Type"}
+                    dropdown={BillableType.BillableData}
+                    changeData={(data) => checkValidation(data, "billable_type")}
+                    value={projectform.billable_type.value}
+                    error={projectform.billable_type.error}
+                    errmsg={projectform.billable_type.errmsg} />
 
+                  {varRatePlusIcon === true ? (<div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
+                  {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""} </Grid>
+
+                <Grid item xs={6}>
+                  <Labelbox type="text" placeholder={"Project Value "}
+                    changeData={(data) => checkValidation(data, "projectcostrange")}
+                    value={projectform.projectcostrange.value}
+                    error={projectform.projectcostrange.error}
+                    errmsg={projectform.projectcostrange.errmsg} />
+                </Grid>
+                {projectform?.billable_type?.value === 3 ? (
+                  <Grid xs={12} container direction="row" spacing={2}>
+                    <Grid item xs={3}>
+                      <Labelbox type="text" placeholder={"Base Rate"}
+                        changeData={(data) => checkValidation(data, "baseRate")}
+                        value={projectform.baseRate.value}
+                        error={projectform.baseRate.error}
+                        errmsg={projectform.baseRate.errmsg} />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Labelbox type="select" placeholder={"Unit of Measurement"}
+                        dropdown={projectUnit.projectUnitdata}
+                        changeData={(data) => checkValidation(data, "unit_measurement")}
+                        value={projectform.unit_measurement.value}
+                        error={projectform.unit_measurement.error}
+                        errmsg={projectform.unit_measurement.errmsg} />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Labelbox type="text" placeholder={"Limit"}
+                        changeData={(data) => checkValidation(data, "limit")}
+                        value={projectform.limit.value}
+                        error={projectform.limit.error}
+                        errmsg={projectform.limit.errmsg} />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Labelbox type="text" placeholder={"Additional Rate Hourly"}
+                        changeData={(data) => checkValidation(data, "additionalRate")}
+                        value={projectform.additionalRate.value}
+                        error={projectform.additionalRate.error}
+                        errmsg={projectform.additionalRate.errmsg} />
+                    </Grid>  </Grid>
+                ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
+                  <Grid item xs={6} container direction="row" spacing={2}>
+                    <Grid item xs={6}>
+                      <Labelbox type="text" placeholder={"Base Rate"}
+                        changeData={(data) => checkValidation(data, "baseRate")}
+                        value={projectform.baseRate.value}
+                        error={projectform.baseRate.error}
+                        errmsg={projectform.baseRate.errmsg} /> </Grid>
+                    <Grid item xs={6}>
+                      <Labelbox type="select" placeholder={"Unit of Measurement"}
+                        dropdown={projectUnit.projectUnitdata}
+                        changeData={(data) => checkValidation(data, "unit_measurement")}
+                        value={projectform.unit_measurement.value}
+                        error={projectform.unit_measurement.error}
+                        errmsg={projectform.unit_measurement.errmsg} />
+                    </Grid> </Grid>
+                ) : (<Grid item xs={6}></Grid>
+                )}
+                <Grid item xs={6}>
+                  <div className="projectFormComments">
+                    <Labelbox type="textarea" placeholder={"Comments"}
+                      changeData={(data) => checkValidation(data, "comments")}
+                      value={projectform.comments.value}
+                      error={projectform.comments.error}
+                      errmsg={projectform.comments.errmsg} />
+                  </div>
+                </Grid>
+                <Grid item xs={6}></Grid>
+              </>
+            ) : projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5 ? (<>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Direct Responsible Attorney"}
+                <Labelbox type="select" placeholder={"Counsel"}
+                  dropdown={employeeList.EmployeeList}
+                  changeData={(data) => checkValidation(data, "employeelist")}
+                  value={projectform.employeelist.value}
+                  error={projectform.employeelist.error}
+                  errmsg={projectform.employeelist.errmsg} />
+              </Grid>
+              <Grid item xs={6}>
+                <Labelbox type="select" placeholder={"HOD/Attorney"}
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
@@ -890,318 +911,113 @@ function ProjectFormCreate(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Deputy Direct Responsible Attorney"}
-                  dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist")}
-                  value={projectform.employeelist.value}
-                  error={projectform.employeelist.error}
-                  errmsg={projectform.employeelist.errmsg}
-                />
+                <Labelbox type="text" placeholder={"Project Value "}
+                  changeData={(data) => checkValidation(data, "projectcostrange")}
+                  value={projectform.projectcostrange.value}
+                  error={projectform.projectcostrange.error}
+                  errmsg={projectform.projectcostrange.errmsg} />
               </Grid>
-
               <Grid item xs={6}>
                 <Labelbox
-                  type="select"
-                  placeholder={"Billable Type"}
+                  type="select" placeholder={"Billable Type"}
                   dropdown={BillableType.BillableData}
                   changeData={(data) => checkValidation(data, "billable_type")}
                   value={projectform.billable_type.value}
                   error={projectform.billable_type.error}
-                  errmsg={projectform.billable_type.errmsg}
-                />
-              </Grid>
+                  errmsg={projectform.billable_type.errmsg} />
+
+                {varRatePlusIcon === true ? (<div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
+                {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""} </Grid>
 
               <Grid item xs={6}>
-              <Labelbox
-                  type="text"
-                  placeholder={"Project Value "}
-                  // dropdown={projectCostRange.ProjectCostRange}
-                  changeData={(data) =>
-                    checkValidation(data, "projectcostrange")
-                  }
-                  value={projectform.projectcostrange.value}
-                  error={projectform.projectcostrange.error}
-                  errmsg={projectform.projectcostrange.errmsg}
-                />
+                <div className="projectFormComments">
+                  <Labelbox type="textarea" placeholder={"Comments"}
+                    changeData={(data) => checkValidation(data, "comments")}
+                    value={projectform.comments.value}
+                    error={projectform.comments.error}
+                    errmsg={projectform.comments.errmsg} />
+                </div>
               </Grid>
               {projectform?.billable_type?.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Base Rate"}
+                    <Labelbox type="text" placeholder={"Base Rate"}
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}
-                    />
+                      errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox
-                      type="select"
-                      placeholder={"Unit of Measurement"}
+                    <Labelbox type="select" placeholder={"Unit of Measurement"}
                       dropdown={projectUnit.projectUnitdata}
-                      changeData={(data) =>
-                        checkValidation(data, "unit_measurement")
-                      }
+                      changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
                       error={projectform.unit_measurement.error}
-                      errmsg={projectform.unit_measurement.errmsg}
-                    />
+                      errmsg={projectform.unit_measurement.errmsg} />
                   </Grid>
                   <Grid item xs={3}>
                     <Labelbox
-                      type="text"
-                      placeholder={"Limit"}
+                      type="text" placeholder={"Limit"}
                       changeData={(data) => checkValidation(data, "limit")}
                       value={projectform.limit.value}
                       error={projectform.limit.error}
-                      errmsg={projectform.limit.errmsg}
-                    />
+                      errmsg={projectform.limit.errmsg} />
                   </Grid>
                   <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Additional Rate Hourly"}
-                      changeData={(data) =>
-                        checkValidation(data, "additionalRate")
-                      }
+                    <Labelbox type="text" placeholder={"Additional Rate Hourly"}
+                      changeData={(data) => checkValidation(data, "additionalRate")}
                       value={projectform.additionalRate.value}
                       error={projectform.additionalRate.error}
-                      errmsg={projectform.additionalRate.errmsg}
-                    />
+                      errmsg={projectform.additionalRate.errmsg} />
                   </Grid>
                 </Grid>
-              ) : projectform.billable_type.value === 5 ||
-                projectform.billable_type.value === 1 ||
-                projectform.billable_type.value === 4 ? (
+              ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
-                  <Grid item xs={6}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Base Rate"}
-                      changeData={(data) => checkValidation(data, "baseRate")}
-                      value={projectform.baseRate.value}
-                      error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}
-                    />
+                  <Grid item xs={6}> <Labelbox type="text" placeholder={"Base Rate"}
+                    changeData={(data) => checkValidation(data, "baseRate")}
+                    value={projectform.baseRate.value}
+                    error={projectform.baseRate.error}
+                    errmsg={projectform.baseRate.errmsg} />
                   </Grid>
-                  <Grid item xs={6}>
-                    <Labelbox
-                      type="select"
-                      placeholder={"Unit of Measurement"}
-                      dropdown={projectUnit.projectUnitdata}
-                      changeData={(data) =>
-                        checkValidation(data, "unit_measurement")
-                      }
-                      value={projectform.unit_measurement.value}
-                      error={projectform.unit_measurement.error}
-                      errmsg={projectform.unit_measurement.errmsg}
-                    />
+                  <Grid item xs={6}> <Labelbox
+                    type="select" placeholder={"Unit of Measurement"}
+                    dropdown={projectUnit.projectUnitdata}
+                    changeData={(data) => checkValidation(data, "unit_measurement")}
+                    value={projectform.unit_measurement.value}
+                    error={projectform.unit_measurement.error}
+                    errmsg={projectform.unit_measurement.errmsg} />
                   </Grid>
                 </Grid>
               ) : (
                 <Grid item xs={6}></Grid>
               )}
-
-              <Grid item xs={6}>
-                <div className="projectFormComments">
-                  <Labelbox
-                    type="textarea"
-                    placeholder={"Comments"}
-                    changeData={(data) => checkValidation(data, "comments")}
-                    value={projectform.comments.value}
-                    error={projectform.comments.error}
-                    errmsg={projectform.comments.errmsg}
-                  />
-                </div>
-              </Grid>
-
               <Grid item xs={6}></Grid>
             </>
-          ) : projectform.project_type.value === 2 ||
-            projectform.project_type.value === 3 ||
-            projectform.project_type.value === 4 ||
-            projectform.project_type.value === 5 ? (
-            <>
-              <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Counsel"}
-                  dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist")}
-                  value={projectform.employeelist.value}
-                  error={projectform.employeelist.error}
-                  errmsg={projectform.employeelist.errmsg}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"HOD/Attorney"}
-                  dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "hod_attorny")}
-                  value={projectform.hod_attorny.value}
-                  error={projectform.hod_attorny.error}
-                  errmsg={projectform.hod_attorny.errmsg}
-                />
-              </Grid>
-              <Grid item xs={6}>
-              <Labelbox
-                  type="text"
-                  placeholder={"Project Value "}
-                  // dropdown={projectCostRange.ProjectCostRange}
-                  changeData={(data) =>
-                    checkValidation(data, "projectcostrange")
-                  }
-                  value={projectform.projectcostrange.value}
-                  error={projectform.projectcostrange.error}
-                  errmsg={projectform.projectcostrange.errmsg}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  placeholder={"Billable Type"}
-                  dropdown={BillableType.BillableData}
-                  changeData={(data) => checkValidation(data, "billable_type")}
-                  value={projectform.billable_type.value}
-                  error={projectform.billable_type.error}
-                  errmsg={projectform.billable_type.errmsg}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <div className="projectFormComments">
-                  <Labelbox
-                    type="textarea"
-                    placeholder={"Comments"}
-                    changeData={(data) => checkValidation(data, "comments")}
-                    value={projectform.comments.value}
-                    error={projectform.comments.error}
-                    errmsg={projectform.comments.errmsg}
-                  />
-                </div>
-              </Grid>
-
-              {projectform?.billable_type?.value === 3 ? (
-                <Grid xs={12} container direction="row" spacing={2}>
-                  <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Base Rate"}
-                      changeData={(data) => checkValidation(data, "baseRate")}
-                      value={projectform.baseRate.value}
-                      error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Labelbox
-                      type="select"
-                      placeholder={"Unit of Measurement"}
-                      dropdown={projectUnit.projectUnitdata}
-                      changeData={(data) =>
-                        checkValidation(data, "unit_measurement")
-                      }
-                      value={projectform.unit_measurement.value}
-                      error={projectform.unit_measurement.error}
-                      errmsg={projectform.unit_measurement.errmsg}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Limit"}
-                      changeData={(data) => checkValidation(data, "limit")}
-                      value={projectform.limit.value}
-                      error={projectform.limit.error}
-                      errmsg={projectform.limit.errmsg}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Additional Rate Hourly"}
-                      changeData={(data) =>
-                        checkValidation(data, "additionalRate")
-                      }
-                      value={projectform.additionalRate.value}
-                      error={projectform.additionalRate.error}
-                      errmsg={projectform.additionalRate.errmsg}
-                    />
-                  </Grid>
-                </Grid>
-              ) : projectform.billable_type.value === 5 ||
-                projectform.billable_type.value === 1 ||
-                projectform.billable_type.value === 4 ? (
-                <Grid item xs={6} container direction="row" spacing={2}>
-                  <Grid item xs={6}>
-                    <Labelbox
-                      type="text"
-                      placeholder={"Base Rate"}
-                      changeData={(data) => checkValidation(data, "baseRate")}
-                      value={projectform.baseRate.value}
-                      error={projectform.baseRate.error}
-                      errmsg={projectform.baseRate.errmsg}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Labelbox
-                      type="select"
-                      placeholder={"Unit of Measurement"}
-                      dropdown={projectUnit.projectUnitdata}
-                      changeData={(data) =>
-                        checkValidation(data, "unit_measurement")
-                      }
-                      value={projectform.unit_measurement.value}
-                      error={projectform.unit_measurement.error}
-                      errmsg={projectform.unit_measurement.errmsg}
-                    />
-                  </Grid>
-                </Grid>
-              ) : (
-                <Grid item xs={6}></Grid>
-              )}
-
-              <Grid item xs={6}></Grid>
-            </>
-          ) : (
-            <Grid item xs={6}></Grid>
-          )}
-        </Grid>
+            ) : (<Grid item xs={6}></Grid>
+          )}  </Grid>
       </div>
-
       <div className="customFormbtn">
-        <CustomButton
-          btnName={"SAVE "}
-          btnCustomColor="customPrimary"
-          custombtnCSS={"btnProjectForm"}
-          onBtnClick={onsubmit}
-        />
-        <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} />
-      </div>
-      <DynModel
+        <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onsubmit} />
+        <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} onBtnClick={onCancel} />
+      </div> <DynModel
         modelTitle={"Variable Rate"}
         handleChangeModel={variableid}
         handleChangeCloseModel={(bln) => setVariableid(bln)}
-        content={variablerateModel()}
-        width={1300}
-      />
+        content={variablerateModel()} width={1300} />
     </div>
   );
 }
 const mapStateToProps = (state) =>
-  ({
-    ProjectSubType: state.getOptions.getProjectSubType || [],
-    ProcessType: state.getOptions.getProcessType || [],
-    FilingType: state.getOptions.getFilingType || [],
-    EmployeeList: state.getOptions.getEmployeeList || [],
-    ProjectCostRange: state.getOptions.getProjectCostRange || [],
-    Client: state.getOptions.getClientlist,
-    searchVariableRate: state.variableRateMaster.searchVariableRate,
-    lenghtData: state.variableRateMaster.lengthData,
-  });
+({
+  ProjectSubType: state.getOptions.getProjectSubType || [],
+  ProcessType: state.getOptions.getProcessType || [],
+  FilingType: state.getOptions.getFilingType || [],
+  EmployeeList: state.getOptions.getEmployeeList || [],
+  ProjectCostRange: state.getOptions.getProjectCostRange || [],
+  Client: state.getOptions.getClientlist,
+  searchVariableRate: state.variableRateMaster.searchVariableRate,
+  lenghtData: state.variableRateMaster.lengthData,
+});
 
 export default connect(mapStateToProps)(ProjectFormCreate);
