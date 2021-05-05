@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -9,7 +9,7 @@ function TaskTag() {
         setValue(event.target.value);
     };
     return (
-        <div>
+        <>
             <div className="radio_btns">
             <FormControl component="fieldset">
                 <RadioGroup aria-label="task" name="task_tag" value={value} onChange={handleChange}>
@@ -19,7 +19,7 @@ function TaskTag() {
                 </RadioGroup>
             </FormControl>
             </div>
-        </div>
+        </>
     )
 }
 export default TaskTag;
