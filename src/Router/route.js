@@ -74,6 +74,7 @@ import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
 //To do list
 import AppraisalView from '../pages/Appraisal/appraisalView';
 import ServeranceModal from '../pages/Severance/serverance_userview_Modal';
+import MPAppraisal from '../pages/Appraisal/MP_Appraisal'
 
 //DayReport
 import DayReport from '../pages/DayReport/dayreport'
@@ -157,6 +158,7 @@ function Routes(props) {
         {/* To do list */}
         <PrivateRoute path="/appraisalView" component={AppraisalView} exact />
         <PrivateRoute path="/serverance_userview_Modal" component={ServeranceModal} exact />
+        <PrivateRoute path="/MP_Appraisal" component={MPAppraisal} exact />
 
         {/* DayReport */}
         <PrivateRoute path="/dayreport" component={DayReport} exact />
