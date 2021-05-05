@@ -2,8 +2,10 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from "moment";
 import { notification } from 'antd';
+import { GET_DESIGN_DETAILS } from "../utils/Constants";
 
-export const InsertDesign = (data, ProjectDetails) => async dispatch => {
+
+export const InsertDesign = (data, ProjectDetails, design_id ) => async dispatch => {
     console.log(data, ProjectDetails, "ProjectDetailsTest")
 
     try {
@@ -11,8 +13,8 @@ export const InsertDesign = (data, ProjectDetails) => async dispatch => {
             method: 'POST',
             url: apiurl + 'insert_design',
             data: {
-                "design_id": ProjectDetails.project_id,
-                "project_id": ProjectDetails.project_type_id,
+                "design_id": design_id.length > 0 ? design_id[0].design_id : 0 ,
+                "project_id": ProjectDetails.project_id,
                 "file_cover": data.file_cover && data.file_cover.value || "",
                 "associate": data.associate && data.associate.value || "",
                 "our_reference": data.our_ref && data.our_ref.value || "",
@@ -43,6 +45,7 @@ export const InsertDesign = (data, ProjectDetails) => async dispatch => {
                     notification.success({
                         message: 'Record Added Successfully',
                     });
+                    dispatch(getDesignDetails(ProjectDetails.project_id))
                     return Promise.resolve();
                 }
             })
@@ -54,28 +57,19 @@ export const InsertDesign = (data, ProjectDetails) => async dispatch => {
     }
 }
 
-// "design_id": "2",
-// "project_id": "8",
-// "file_cover": "Cover",
-// "associate": "Associate Levels",
-// "our_reference": "Refered",
-// "client_reference": "Client Refered",
-// "application_no": "4",
-// "application_date": "2021-02-03",
-// "applicant": "Apllicant",
-// "title": "The Shepered",
-// "class_id": "6",
-// "country_id": "3",
-// "priority_country_id": "2",
-// "priority_date": "2021-02-03",
-// "status": "2",
-// "comments": "Very Poor",
-// "renewal_date": "2021-03-02",
-// "client_petitioner": "Petitioner",
-// "design_number": "1",
-// "petitioner": "Next Petitioner",
-// "responent_rep": "Responent",
-// "created_on": "2021-03-08",
-// "updated_on": "2021-03-09",
-// "created_by": "2",
-// "updated_by": "1"
+export const getDesignDetails = (ProjectId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_design',
+            data: {
+                "project_id": ProjectId,
+            }
+        })
+            .then((response) => {
+                dispatch({type:GET_DESIGN_DETAILS, payload: response.data.data})
+            })
+
+    } catch (err) {
+    }
+}

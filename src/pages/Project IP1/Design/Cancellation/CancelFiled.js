@@ -5,7 +5,8 @@ import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
 import { useSelector, useDispatch } from 'react-redux';
 import { getIPStatus } from "../../../../actions/IPDropdown.js";
-import { InsertDesign } from "../../../../actions/InsertDesign";
+import { InsertDesign, getDesignDetails } from "../../../../actions/InsertDesign";
+import moment from "moment";
 
 function CancelFiled(props) {
     const [CancelFiled, setCancelFiled] = useState({
@@ -14,49 +15,57 @@ function CancelFiled(props) {
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
+            disabled: false
         },
         des_number: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
+            disabled: false
         },
         petitioner: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
+            disabled: false
         },
         respondent_rep: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
+            disabled: false
         },
         status: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
+            disabled: false
         },
         comments: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
+            disabled: false
         },
         app_date: {
             value: "",
             validation: [],
             error: null,
             errmsg: null,
+            disabled: false
         },
     })
     const [cancFilGetList, setCancFilGetList] = useState({
         getStatusList: []
     })
     const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
-    const dispatch = useDispatch();
+  const getDesign =useSelector((state) => state.getDesignDetails)
+  const dispatch = useDispatch();
 
     function checkValidation(data, key, multipleId) {
 
@@ -94,8 +103,8 @@ function CancelFiled(props) {
         console.log(filtererr.length);
         if (filtererr.length > 0) {
         } else {
-            dispatch(InsertDesign(CancelFiled, props.projectDetails && props.projectDetails[0])).then(() => {
-                handleCancel()
+            dispatch(InsertDesign(CancelFiled, props.projectDetails && props.projectDetails[0],getDesign)).then(() => {
+                // handleCancel()
               })
         }
         setCancelFiled(prevState => ({
@@ -120,14 +129,49 @@ function CancelFiled(props) {
 
       const handleCancel = () => {
         let cancFil_key = ["client_petition", "des_number", "petitioner", "respondent_rep", "status", "comments"]
-    
-        cancFil_key.map((data) => {
-            CancelFiled[data].value = "";
-        });
+
+        let cancFil_value = ["client_petitioner","design_number", "petitioner", "responent_rep", "status", "comments"]
+
+        if(getDesign.length > 0){
+            cancFil_key.map((data, index) => {
+                CancelFiled[data].value = getDesign[0][cancFil_value[index]] ? getDesign[0][cancFil_value[index]] : "";
+          });
+        }else{
+            cancFil_key.map((data) => {
+                CancelFiled[data].value = "";
+            });
+      }
         setCancFilGetList((prevState) => ({
           ...prevState,
         }));
       };
+
+      useEffect(()=>{
+        dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id));
+      },[props.projectDetails])
+
+      useEffect(()=>{
+        if(getDesign.length > 0){
+            let cancFil_key = ["client_petition", "des_number", "petitioner", "respondent_rep", "status", "comments"]
+
+            let cancFil_value = ["client_petitioner","design_number", "petitioner", "responent_rep", "status", "comments"]
+      
+            cancFil_key.map((data, index) => {
+            if(cancFil_value[index] !== "application_date" && cancFil_value[index] !== "priority_date" && cancFil_value[index] !== "renewal_date"){
+            CancelFiled[data].value = getDesign[0][cancFil_value[index]];
+            CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] ? true : false;
+            }
+            else{
+              console.log(getDesign[0][cancFil_value[index]],"getDesign[0]")
+            CancelFiled[data].value = getDesign[0][cancFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancFil_value[index]]);
+            CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] === "0000-00-00" ? false : true;
+            }
+          });
+          setCancFilGetList((prevState) => ({
+            ...prevState,
+          }));
+        }
+      },[getDesign])
 
     return (
         <div className="container">
@@ -141,6 +185,7 @@ function CancelFiled(props) {
                         value={CancelFiled.client_petition.value}
                         error={CancelFiled.client_petition.error}
                         errmsg={CancelFiled.client_petition.errmsg}
+                        disabled={CancelFiled.client_petition.disabled}
                     />
 
                     <Labelbox type="text"
@@ -149,6 +194,7 @@ function CancelFiled(props) {
                         value={CancelFiled.des_number.value}
                         error={CancelFiled.des_number.error}
                         errmsg={CancelFiled.des_number.errmsg}
+                        disabled={CancelFiled.des_number.disabled}
                     />
 
                     <Labelbox type="text"
@@ -157,6 +203,7 @@ function CancelFiled(props) {
                         value={CancelFiled.petitioner.value}
                         error={CancelFiled.petitioner.error}
                         errmsg={CancelFiled.petitioner.errmsg}
+                        disabled={CancelFiled.petitioner.disabled}
                     />
 
                     <Labelbox type="text"
@@ -165,6 +212,7 @@ function CancelFiled(props) {
                         value={CancelFiled.respondent_rep.value}
                         error={CancelFiled.respondent_rep.error}
                         errmsg={CancelFiled.respondent_rep.errmsg}
+                        disabled={CancelFiled.respondent_rep.disabled}
                     />
 
                     <Labelbox type="select"
@@ -174,6 +222,7 @@ function CancelFiled(props) {
                         value={CancelFiled.status.value}
                         error={CancelFiled.status.error}
                         errmsg={CancelFiled.status.errmsg}
+                        disabled={CancelFiled.status.disabled}
                     />
 
                     <Labelbox type="text"
@@ -182,6 +231,7 @@ function CancelFiled(props) {
                         value={CancelFiled.comments.value}
                         error={CancelFiled.comments.error}
                         errmsg={CancelFiled.comments.errmsg}
+                        disabled={CancelFiled.comments.disabled}
                     />
                 </Grid>
             </Grid>
@@ -189,7 +239,7 @@ function CancelFiled(props) {
 
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"TMopositionbuttons"} />
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"TMopositionbuttons"} onBtnClick={handleCancel} />
             </div>
         </div>
     )

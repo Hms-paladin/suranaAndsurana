@@ -31,6 +31,7 @@ import EmployeeListReducer from "./EmployeeListReducer";
 import TicketCreationReducer from './TicketCreationReducer';
 import StageMonotorReducer from './StageMonotorReducer';
 import AddClientReducer from './AddClientReducer';
+import getDesignDetails from "./insertDesign"
 
 
 export default combineReducers({
@@ -65,7 +66,8 @@ export default combineReducers({
   EmployeeListReducer,
   StageMonotorReducer,
   TicketCreationReducer,
-  AddClientReducer
+  AddClientReducer,
+  getDesignDetails
 });
 
 
