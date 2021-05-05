@@ -56,6 +56,7 @@ import KRA from '../pages/KRA/KRA';
 import EmployeeList from '../pages/EmployeeList/EmployeeList'
 import LibraryBook from '../pages/LibraryBook/LibraryBook'
 import TicketCreation from '../pages/RequestTicket/ticketcreation';
+import AdhocTask from '../pages/Search/adhoctask'
 
 import RatingModel from '../pages/Appraisal/ratingModel'
 
@@ -85,6 +86,9 @@ import TestTemplate from '../pages/OnlineTest/testtemplate'
 import OnlineTest from '../pages/OnlineTest/onlinetest'
 import InstructionModal from '../pages/OnlineTest/instructionModal'
 import OnlineQA from '../pages/OnlineTest/onlineQA'
+
+//TimeSheet
+import ProjectwiseTS from '../pages/Search/TimeSheets/projectwise_timesheet'
 function Routes(props) {
 
   return (
@@ -131,6 +135,8 @@ function Routes(props) {
         <PrivateRoute path="/ratingModel" component={RatingModel} exact />
         <PrivateRoute path="/ticketcreation" component={TicketCreation} exact />
         <PrivateRoute path="/KRA" component={KRA} exact />
+        <PrivateRoute path="/adhoctask" component={AdhocTask} exact />
+        
 
         {/* Leaves Update */}
         <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
@@ -169,6 +175,9 @@ function Routes(props) {
         <PrivateRoute path="/onlinetest" component={OnlineTest} exact />
         <PrivateRoute path="/instructionModal" component={InstructionModal} exact />
         <PrivateRoute path="/onlineQA" component={OnlineQA} exact />
+
+        {/* TimeSheet */}
+        <PrivateRoute path="/projectwise_timesheet" component={ProjectwiseTS} exact />
 
       </Switch>
     </Navbar>

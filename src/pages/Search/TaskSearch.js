@@ -236,8 +236,8 @@ function Task() {
                                 </div>
                                 <div className="images_div">
                                     <img src={H_icon} style={{ marginRight: '10px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
-                                    <img src={File} style={{ marginRight: '10px' }} />
-                                    <img src={Percentage} style={{ marginRight: '10px' }} />
+                                    <img src={File} style={{ marginRight: '10px' }} onClick={()=>setTaskTag(true)}/>
+                                    <img src={Percentage} style={{ marginRight: '10px' }} onClick={()=>setTaskStatus(true)}/>
                                 </div>
                             </div>
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
@@ -295,8 +295,8 @@ function Task() {
                                 </div>
                                 <div className="images_div">
                                     <img src={M_icon} style={{ marginRight: '10px', width: '18px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
-                                    <img src={File} style={{ marginRight: '10px', width: '18px' }} />
-                                    <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} />
+                                    <img src={File} style={{ marginRight: '10px', width: '18px' }} onClick={()=>setTaskTag(true)}/>
+                                    <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} onClick={()=>setTaskStatus(true)}/>
                                     <img src={Order} style={{ marginRight: '10px', width: '18px' }} />
                                 </div>
                             </div>
@@ -355,8 +355,8 @@ function Task() {
                                 </div>
                                 <div className="images_div">
                                     <img src={L_icon} style={{ marginRight: '10px' }} onClick={()=>setTaskPrioriyModal(true)}/>
-                                    <img src={File} style={{ marginRight: '10px' }} />
-                                    <img src={Percentage} style={{ marginRight: '10px' }} />
+                                    <img src={File} style={{ marginRight: '10px' }} onClick={()=>setTaskTag(true)}/>
+                                    <img src={Percentage} style={{ marginRight: '10px' }} onClick={()=>setTaskStatus(true)}/>
 
                                 </div>
                             </div>
@@ -413,8 +413,8 @@ function Task() {
                                 </div>
                                 <div className="images_div">
                                     <img src={L_icon} style={{ marginRight: '10px', width: '18px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
-                                    <img src={File} style={{ marginRight: '10px', width: '18px' }} />
-                                    <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} />
+                                    <img src={File} style={{ marginRight: '10px', width: '18px' }} onClick={()=>setTaskTag(true)}/>
+                                    <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} onClick={()=>setTaskStatus(true)}/>
                                     <img src={Order} style={{ marginRight: '10px', width: '18px' }} />
                                 </div>
                             </div>
@@ -471,8 +471,8 @@ function Task() {
                                 </div>
                                 <div className="images_div">
                                     <img src={Arrow} style={{ marginRight: '10px', width: '18px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
-                                    <img src={File} style={{ marginRight: '10px', width: '18px' }} />
-                                    <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} />
+                                    <img src={File} style={{ marginRight: '10px', width: '18px' }} onClick={()=>setTaskTag(true)}/>
+                                    <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} onClick={()=>setTaskStatus(true)}/>
                                     <img src={Order} style={{ marginRight: '10px', width: '18px' }} />
                                 </div>
                             </div>
