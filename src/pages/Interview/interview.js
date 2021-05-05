@@ -11,7 +11,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InsertInterviewquestions } from "../../actions/interviewActions";
 import { getInterviewStatus } from "../../actions/MasterDropdowns";
-import {getInterviewQuestions,getSelectedCandidates} from '../../actions/TodoListAction'
+import { getInterviewQuestions, getSelectedCandidates } from '../../actions/TodoListAction'
 import EnhancedTable from '../../component/DynTable/table';
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
@@ -35,15 +35,15 @@ function InerviewScreen(props) {
   const [canDesig, setCandDesig] = useState(false);
   const [canName, setcanName] = useState("");
   const [dropDownSel, setdropDownSel] = useState(false);
-  const [interviewDetails,setInterviewDetails] = useState({})
-  const headCells=[
-    {id:"testname",label:"Test Name"},
-    {id:"testdate",label:"Test Date"},
-    {id:"score",label:"Score"}
+  const [interviewDetails, setInterviewDetails] = useState({})
+  const headCells = [
+    { id: "testname", label: "Test Name" },
+    { id: "testdate", label: "Test Date" },
+    { id: "score", label: "Score" }
   ];
-  const rows=[
-    {testname:"Aptitude",testdata:"02-Mar-2021",score:"45"},
-    {testname:"General Knowledge",testdata:"02-Mar-2021",score:"23"}
+  const rows = [
+    { testname: "Aptitude", testdata: "02-Mar-2021", score: "45" },
+    { testname: "General Knowledge", testdata: "02-Mar-2021", score: "23" }
   ];
   const [postData, setpostData] = useState({
     init_status: {
@@ -72,8 +72,10 @@ function InerviewScreen(props) {
   useEffect(() => {
     dispatch(getInterviewStatus());
     dispatch(getInterviewQuestions());
- 
+
   }, []);
+
+
   useEffect(() => {
     let interview_status = [];
     props.getInterviewStatus.map((data, index) =>
@@ -83,7 +85,7 @@ function InerviewScreen(props) {
 
     //Questions
     setgetData(props.getQuestions);
-  }, [props.getInterviewStatus,props.getQuestions]);
+  }, [props.getInterviewStatus, props.getQuestions]);
   useEffect(() => {
     Axios({
       method: "POST",
@@ -96,26 +98,26 @@ function InerviewScreen(props) {
       const Intview_data = [];
       response.data.data.map((data) =>
         Intview_data.push({
-        id:data.int_details_id,
-        date: moment(data.prop_date_time).format("DD-MM-YYYY"),
-        designation: data.designation,
-         candiates: data.total_number_candidates,
-         approver:data.approver,
-         round:data.round
+          id: data.int_details_id,
+          date: moment(data.prop_date_time).format("DD-MM-YYYY"),
+          designation: data.designation,
+          candiates: data.total_number_candidates,
+          approver: data.approver,
+          round: data.round
 
         })
       );
-      const CandList=[];
+      const CandList = [];
       response.data.data.map((data) =>
-      CandList.push({
-     date:data.prop_date_time,
-          designation: data.designation,    designationID: data.prop_designation,
-          round:data.round
-    })
-       );
-      
-       setCandDesig(response.data.data[0].designation)
-       setCandDetails({CandList})
+        CandList.push({
+          date: data.prop_date_time,
+          designation: data.designation, designationID: data.prop_designation,
+          round: data.round
+        })
+      );
+
+      setCandDesig(response.data.data[0].designation)
+      setCandDetails({ CandList })
       setcand_data(response.data.data[0].output);
       // setint_details(props.interviewer_id.map((data,index)=>{
       //     // console.log("datacheck",data),
@@ -187,8 +189,8 @@ function InerviewScreen(props) {
     setcanName("");
   }, [props.stateClear])
 
-const onStateClear=()=>{
- let InterviewState = [
+  const onStateClear = () => {
+    let InterviewState = [
       "init_status",
       "initial_score",
       "comment"
@@ -196,11 +198,15 @@ const onStateClear=()=>{
 
     InterviewState.map((data) => {
       postData[data].value = "";
+      postData[data].error = null;
+      // postData[data].validation = "";
+
     });
+
     setpostData((prevState) => ({
       ...prevState,
     }));
-}
+  }
 
   function onSubmit() {
     var mainvalue = {};
@@ -257,15 +263,15 @@ const onStateClear=()=>{
         <Grid item xs={4}>
           <div className="interviewTitle">Interview Date</div>
           <div className="interview_cont">
-          {/* {interviewDetails.date?interviewDetails.date:'--' } */}
-          {int_details.Intview_data ? int_details.Intview_data[0].date : "-"}
+            {/* {interviewDetails.date?interviewDetails.date:'--' } */}
+            {int_details.Intview_data ? int_details.Intview_data[0].date : "-"}
           </div>
         </Grid>
         <Grid item xs={4}>
           <div className="interviewTitle">Designation</div>
           <div className="interview_cont">
-          {/* {interviewDetails.designation?interviewDetails.designation:'--' } */}
-          {int_details.Intview_data
+            {/* {interviewDetails.designation?interviewDetails.designation:'--' } */}
+            {int_details.Intview_data
               ? int_details.Intview_data[0].designation
               : "-"}
           </div>
@@ -273,8 +279,8 @@ const onStateClear=()=>{
         <Grid item xs={4}>
           <div className="interviewTitle">No of Candidates</div>
           <div className="interview_cont">
-          {/* {interviewDetails.candidates?interviewDetails.candidates:'--' } */}
-          {int_details.Intview_data
+            {/* {interviewDetails.candidates?interviewDetails.candidates:'--' } */}
+            {int_details.Intview_data
               ? int_details.Intview_data[0].candiates
               : "-"}
           </div>
@@ -315,38 +321,37 @@ const onStateClear=()=>{
               {
                 // cand_data.length===0&& cand_data.length>=0&&
                 cand_data &&
-                  cand_data.map((data, index) => {
-                    return (
-                      <Grid
-                        xs={12}
-                        container
-                        direction="row"
-                        justify="center"
-                        alignItems="left"
-                        display="flex"
-                        className={`${
-                          data &&
-                          data.resume_id &&
-                          data.resume_id === selectedCandidateId &&
-                          "selectedCandidateBG"
+                cand_data.map((data, index) => {
+                  return (
+                    <Grid
+                      xs={12}
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="left"
+                      display="flex"
+                      className={`${data &&
+                        data.resume_id &&
+                        data.resume_id === selectedCandidateId &&
+                        "selectedCandidateBG"
                         } ordercandidates`}
-                        onClick={() =>
-                          selectCandidate(data.resume_id, data.name)
-                        }
-                      >
-                        <Grid item xs={10} className="candidateName">
-                          {data && data.name}
-                        </Grid>
-                        <Grid item xs={2}>
-                          <img
-                            src={Eyes}
-                            className="viewCandidatesList"
-                            onClick={() => ViewCandiate(data.resume_id)}
-                          />
-                        </Grid>
+                      onClick={() =>
+                        selectCandidate(data.resume_id, data.name)
+                      }
+                    >
+                      <Grid item xs={10} className="candidateName">
+                        {data && data.name}
                       </Grid>
-                    );
-                  })
+                      <Grid item xs={2}>
+                        <img
+                          src={Eyes}
+                          className="viewCandidatesList"
+                          onClick={() => ViewCandiate(data.resume_id)}
+                        />
+                      </Grid>
+                    </Grid>
+                  );
+                })
               }
               {data_id.resume_id && (
                 <DynModelView
@@ -362,14 +367,14 @@ const onStateClear=()=>{
       </Grid>
       {comments === true ? (
         <>
-        {/* Changes here */}
-        <div className="candidate_det">
-          <div>Name of the Candidate</div>
-          <div>Priya</div>
-        </div>
-        <div className="score_table">
+          {/* Changes here */}
+          <div className="candidate_det">
+            <div>Name of the Candidate</div>
+            <div>Priya</div>
+          </div>
+          <div className="score_table">
             <EnhancedTable headCells={headCells} rows={rows}></EnhancedTable>
-        </div>
+          </div>
           <div className="inter_status_div">
             <Labelbox
               type="select"
@@ -447,8 +452,8 @@ const mapStateToProps = (state) => ({
   getInterviewquestions: state,
   GetCandiateDetails: state.getcandiate,
   getInterviewStatus: state.getOptions.getInterviewStatus || [],
-  getQuestions: state.getHrTodoList.getQuestions ||[],
-  getSelectedCandidates: state.getHrTodoList.getSelectedCandidates ||[]
+  getQuestions: state.getHrTodoList.getQuestions || [],
+  getSelectedCandidates: state.getHrTodoList.getSelectedCandidates || []
 });
 
 export default connect(mapStateToProps)(InerviewScreen);

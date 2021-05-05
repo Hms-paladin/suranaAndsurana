@@ -23,6 +23,8 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { getProjectSearchTableData } from "../../actions/ProjectSearchAction"
 import ProjectIp from '../Project IP1/projectIp';
 import LitigationAddcase from '../Litigation/litigation';
+import { notification } from "antd";
+
 
 const { Panel } = Collapse;
 
@@ -212,7 +214,15 @@ function Projectsearch(props) {
   // }, [props.Client])
 
   const onSearch = () => {
+    // if (projectLength === 0) {
+    //   notification.success({
+    //     message: " No Found Data",
+    //   });
+    // }
+
+
     dispatch(getProjectSearchTableData(projectform)).then((response) => {
+
       stateClear();
     });
   };
@@ -240,6 +250,8 @@ function Projectsearch(props) {
   };
 
   useEffect(() => {
+    console.log(props.TableData, "projectLength")
+
     let multipleTab = [];
     props.TableData.map((data, index) => {
       let ipProjectDataList = [];
@@ -251,10 +263,10 @@ function Projectsearch(props) {
         //   rowdataListobj["project_name"] = data.project_name
         // }
 
-       
+
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
-          let currentData={}
+          let currentData = {}
           rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["ClientName"] = data.client;
           rowdataListobj["SubProjectType"] = data.sub_project_type;
@@ -279,6 +291,12 @@ function Projectsearch(props) {
         ipProjectDataList.push(rowdataListobj);
       });
 
+      if (data.project_details.length === 0) {
+        notification.success({
+          message: " No Found Data",
+        })
+      }
+
       multipleTab.push(
         <Panel
           header={`${data.project_type} (${data.project_details.length})`}
@@ -297,9 +315,13 @@ function Projectsearch(props) {
           />
         </Panel>
       );
+
     });
+
     setMultiplePanel(multipleTab);
   }, [props.TableData]);
+
+
 
   return (
     <div>
@@ -396,7 +418,7 @@ function Projectsearch(props) {
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>
   );
-} 
+}
 const mapStateToProps = (state) =>
 // console.log(state,"statestatestate")
 ({

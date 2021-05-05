@@ -317,9 +317,8 @@ function TodoList(props) {
                 {/* ___________________________________________________________________________ */}
                 <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"HR Task"} />
                 {/*InrerviewScreen after  Schedule     */}
-                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1000}
-                    content={<InerviewScreen interviewer_id={can_int_id}
-                        handleAproverModelClose={(bln) => onNewPageClear(bln)} stateClear={stateClear} />} />
+                <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
+                    handleAproverModelClose={(bln) => onNewPageClear(bln)} stateClear={stateClear}  />} />
 
                 {/*EmployeeForm after  selected in interview approve     */}
                 <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1100}
@@ -332,7 +331,7 @@ function TodoList(props) {
 
                 {/* recruitment Request modal */}
 
-                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={900} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} ticket_id={ticket_id} editTickettemplate={editTickettemplate} recruitmentDa={recruitmentData}  />} />
+                <DynModel modelTitle={"Recruitment Request"} handleChangeModel={recruitmodal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setrecruitmodal(bln)} width={900} content={<RecruitmentModal closemodal={(bln) => setrecruitmodal(bln)} ticket_id={ticket_id} editTickettemplate={editTickettemplate} recruitmentDa={recruitmentData} />} />
 
                 {/* serverance_Userview_Modal */}
                 {/* <DynModel modelTitle={"Severance"} handleChangeModel={serverancemodal} handleChangeCloseModel={(bln) => setserverancemodal(bln)} width={950} content={<ServeranceModal closemodal={(bln) => setserverancemodal(bln)} />} /> */}

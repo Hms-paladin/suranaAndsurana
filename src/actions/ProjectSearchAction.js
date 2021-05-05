@@ -9,21 +9,22 @@ export const getProjectSearchTableData = (data) => async dispatch => {
 
         axios({
             method: 'POST',
-            url: apiurl +'get_resume_project_search', 
+            url: apiurl + 'get_resume_project_search',
             data: {
-                client_type_id:data.clienttype.value,
-                client_id:data.client.value,
-                project_type_id:data.projecttype.value,
-                project_id:data.projectname.value,
-                billable_type_id:data.billabletype.value
+                client_type_id: data.clienttype.value,
+                client_id: data.client.value,
+                project_type_id: data.projecttype.value,
+                project_id: data.projectname.value,
+                billable_type_id: data.billabletype.value
             }
         })
-        .then((response) => {
-            dispatch({type:GET_PROJECT_SEARCH_TABLEDATA,payload:response.data.data})
-        })
-        
+            .then((response) => {
+                dispatch({ type: GET_PROJECT_SEARCH_TABLEDATA, payload: response.data.data })
+               
+            })
+
     } catch (err) {
-        
+
     }
 }
 

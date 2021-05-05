@@ -38,7 +38,7 @@
   border: 1px solid red !important;
 }
 
-.formdiv .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline{
+.formdiv .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline {
   background-color: #c9c8c8;
 }
 
@@ -71,7 +71,8 @@
   border: 1px solid #023e7d !important;
 }
 
-.formdiv .ant-select-disabled .ant-select-selection,.formdiv .ant-select-disabled{
+.formdiv .ant-select-disabled .ant-select-selection,
+.formdiv .ant-select-disabled {
   background-color: #c9c8c8;
   cursor: auto;
   color: black;
@@ -236,6 +237,12 @@
 
 /* time Picker */
 
-.labelboxTimePicker{
+.labelboxTimePicker {
   width: 21px;
+}
+
+/* dropdown color */
+
+.ant-select-dropdown-menu-item {
+  color: rgb(102, 98, 98);
 }
