@@ -339,20 +339,8 @@ export const EmployeeLeaveApprove = (leaveStatus,leaveId) =>async dispatch => {
         })
         .then((response)=>{
             console.log("reject",response)
-            if(response.data.status===1){
-                notification.success({
-                    message: `Employee leave approved successfully`,
-                    placement: "topRight",
-                  });
-            }
-            if(response.data.status===0){
-                notification.warning({
-                    message: `Employee leave rejected`,
-                    placement: "topRight",
-                  });
-            }
             dispatch({ type: UPDATE_EMP_APPROVAL, payload: response.data.status })
-            dispatch(getEmpApproval())
+            dispatch(getEmpApproval(leaveId))
         })
     }
     catch(err){

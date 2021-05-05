@@ -102,11 +102,7 @@ function DashboardNew() {
       title: "Adhoc Task",
       path: "#",
     },
-    {
-      img: <img src={OPExp} className="imageicons" />,
-      title: "OP Expenses",
-      path: "#",
-    },
+   
     {
       img: <img src={ApplyLeave} className="imageicons" />,
       title: "Apply Leave",
@@ -124,8 +120,8 @@ function DashboardNew() {
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
-      title: "OPE Advance",
-      path: "/ope_advance",
+      title: "OPE",
+      path: "/outofpacket",
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
