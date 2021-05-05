@@ -242,6 +242,7 @@
     display: flex;
     align-items: center;
     text-align: center;
+    margin-right: 5px;
 }
 .RatingContentBox{
     display: flex;
@@ -249,8 +250,80 @@
 }
 .heading{
     font-weight: 600;
-    color: #1818b1;
+    color: #0353A4;
     font-size: 15px;
+}
+//MP_Appraisal
+.mp_appraisal_container{
+    width: 100%;
+    background-color: white;
+    border-radius: 7px;
+    margin: 10px 5px;
+    padding: 10px;
+}
+.empDet {
+    display: flex;
+    > div {
+        width: 20%;
+        padding: 5px;
+        > div:nth-child(2) {
+            font-weight: 600;
+            font-size: 16px;
+        }
+    }
+}
+.MP_btns{
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+.MP_appraisal_comments{
+    display: flex;
+    width: 100%;
+    border-radius: 5px;
+    background-color: white;
+    padding-left: 45px;
+    height: 45px;
+    align-items: center;
+    margin-left: 5px;
+    margin-bottom:3px;
+    cursor:pointer;
+}
+.MPRatingContainer{
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: white;
+}
+.MP_RatingContentBox{
+    display: flex;
+    justify-content: space-between;
+}
+.edit_rate{
+    display: flex;
+    width: 50px;
+}
+.img_rate{width:20px;}
+.MP_Details{
+    width:100%;
+    background-color: white;
+    padding:10px;
+    margin-left: 6px;
+    >div:nth-child(1){
+        display: flex;
+        justify-content: flex-start;
+        >div{
+            width:30%;
+        }
+    }
+    >div:nth-child(2){
+        display: flex;
+        justify-content: flex-start;
+        >div{
+            width:30%;
+            font-weight: 600;
+        }
+    }
 }
 
 

@@ -17,16 +17,16 @@ function TaskStatus() {
     return (
         <div>
             <div className="radio_btns">
-                <Slider defaultValue={100} aria-labelledby="disabled-slider" />
+                {/* <Slider defaultValue={100} aria-labelledby="disabled-slider" /> */}
+                <div style={{textAlign:"right",fontWeight:"600"}}>{sildeval}%</div>
                 <Slider
-                    defaultValue={20}
+                    defaultValue={sildeval?sildeval:0}
                     getAriaValueText={valuetext}
                     aria-labelledby="discrete-slider-custom"
                     step={10}
                     valueLabelDisplay="auto"
                     onChange={range}
                 />
-                <div>{sildeval}</div>
                 <div className="status_btn"><CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick="" /></div>
             </div>
         </div>

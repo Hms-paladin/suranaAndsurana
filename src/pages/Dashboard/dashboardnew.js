@@ -15,6 +15,8 @@ import { Redirect, Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import CustomButton from "../../component/Butttons/button";
+import DynModel from "../../component/Model/model";
+import AdhocTaskModal from "../Search/adhoctask"
 
 const Projectbox = [
   { projects: "Project 1", projecttype: "Project Type 1 ", client: "Client 1" },
@@ -69,6 +71,7 @@ function DashboardNew() {
   const [menuListItem, setMenuListItem] = useState([]);
   const [arrowHide, setArrowHide] = useState(false);
   const [changedashBoard, setChangedashBoard] = useState(true);
+  // const[adhoc,setAdhoc]=useState(false)
 
 
   const [menulist, setMenulist] = useState([
@@ -95,12 +98,12 @@ function DashboardNew() {
     {
       img: <img src={Timesheet} className="imageicons" />,
       title: "Time Sheet",
-      path: "#",
+      path: "/projectwise_timesheet",
     },
     {
       img: <img src={AdhocTask} className="imageicons" />,
       title: "Adhoc Task",
-      path: "#",
+      path: "/adhoctask",
     },
    
     {
@@ -169,7 +172,7 @@ function DashboardNew() {
 
   console.log(arrowHide, "arrowHide");
   return (
-    <div>
+       <div>
       <div className="dashboardMenuContainer">
         {arrowHide && (
           <div
@@ -407,7 +410,12 @@ function DashboardNew() {
             </div>
           </div>
         </>}
+          {/* <div>
+            <DynModel modelTitle="Adhoc Task" handleChangeModel={adhoc} handleChangeCloseModel={(bln) => setAdhoc(bln)} width={1000} 
+            content={<AdhocTaskModal />} closeModel={()=>setAdhoc(false)}/>
+        </div> */}
     </div>
+    
   );
 }
 

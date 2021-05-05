@@ -156,9 +156,11 @@ function Navbar(props) {
       ]},
     
       //Online Test
-      { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-      { path: "/testtemplate", title: "Test Template", img: MasterIcon }
-    
+      { active: "onlinetest",path: "", title: "Online Test", img: Usergroups ,submenu:true,
+      subtree:[
+        { path: "/addquestion", title: "Add Questions", img: MasterIcon },
+        { path: "/testtemplate", title: "Test Template", img: MasterIcon }
+      ]},
     ]
   );
 
@@ -175,6 +177,7 @@ function Navbar(props) {
   const [severanceopen, setSeveranceopen] = React.useState(false);
   const [masteropen, setMasteropen] = React.useState(false);
   const [userManageopen, setUserManageopen] = React.useState(false);
+  const [onlineTestopen, setonlineTestopen] = React.useState(false);
 
   const handleClick = (data) => {
     setpathname(data.path)
@@ -187,6 +190,8 @@ function Navbar(props) {
     setMasteropen(!masteropen)
     if(active==="usermanagement")
     setUserManageopen(!userManageopen)  
+    if(active==="onlinetest")
+    setonlineTestopen(!onlineTestopen)  
 
   };
   
@@ -196,7 +201,9 @@ function Navbar(props) {
     if(active==="master")
     return masteropen
     if(active==="usermanagement")
-    return userManageopen  
+    return userManageopen 
+    if(active==="onlinetest")
+    return onlineTestopen  
 
   };
 

@@ -12,7 +12,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { getTagList, insertAdhocTask,getAssignedTo } from "../../actions/projectTaskAction";
 import { connect, useDispatch } from "react-redux";
 
-function AdhocTask(props) {
+function AdhocTaskModal(props) {
     const dispatch = useDispatch();
     const [taggList, settaggList] = useState({})
     const [assignedToLists, setassignedToLists] = useState({}) 
@@ -256,4 +256,4 @@ const mapStateToProps = (state) =>
     assignToList: state.projectTasksReducer.assignToLists || []
 });
 
-export default connect(mapStateToProps)(AdhocTask);
+export default connect(mapStateToProps)(AdhocTaskModal);

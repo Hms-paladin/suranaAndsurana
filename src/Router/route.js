@@ -56,6 +56,7 @@ import KRA from '../pages/KRA/KRA';
 import EmployeeList from '../pages/EmployeeList/EmployeeList'
 import LibraryBook from '../pages/LibraryBook/LibraryBook'
 import TicketCreation from '../pages/RequestTicket/ticketcreation';
+import AdhocTask from '../pages/Search/adhoctask'
 
 import RatingModel from '../pages/Appraisal/ratingModel'
 
@@ -74,6 +75,7 @@ import userAccessRights from "../pages/UserRights/UserAccess/userAccessRights";
 //To do list
 import AppraisalView from '../pages/Appraisal/appraisalView';
 import ServeranceModal from '../pages/Severance/serverance_userview_Modal';
+import MPAppraisal from '../pages/Appraisal/MP_Appraisal'
 
 //DayReport
 import DayReport from '../pages/DayReport/dayreport'
@@ -85,6 +87,9 @@ import OnlineTest from '../pages/OnlineTest/onlinetest'
 import InstructionModal from '../pages/OnlineTest/instructionModal'
 import OnlineQA from '../pages/OnlineTest/onlineQA'
 import OutofPacket from '../pages/OutofPacket/OutofPacket'
+
+//TimeSheet
+import ProjectwiseTS from '../pages/Search/TimeSheets/projectwise_timesheet'
 function Routes(props) {
 
   return (
@@ -131,6 +136,8 @@ function Routes(props) {
         <PrivateRoute path="/ratingModel" component={RatingModel} exact />
         <PrivateRoute path="/ticketcreation" component={TicketCreation} exact />
         <PrivateRoute path="/KRA" component={KRA} exact />
+        <PrivateRoute path="/adhoctask" component={AdhocTask} exact />
+        
 
         {/* Leaves Update */}
         <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
@@ -158,6 +165,7 @@ function Routes(props) {
         {/* To do list */}
         <PrivateRoute path="/appraisalView" component={AppraisalView} exact />
         <PrivateRoute path="/serverance_userview_Modal" component={ServeranceModal} exact />
+        <PrivateRoute path="/MP_Appraisal" component={MPAppraisal} exact />
 
         {/* DayReport */}
         <PrivateRoute path="/dayreport" component={DayReport} exact />
@@ -171,6 +179,8 @@ function Routes(props) {
 
         {/* out of packet */}
         <PrivateRoute path="/outofpacket" component={OutofPacket} exact/>
+        {/* TimeSheet */}
+        <PrivateRoute path="/projectwise_timesheet" component={ProjectwiseTS} exact />
 
       </Switch>
     </Navbar>

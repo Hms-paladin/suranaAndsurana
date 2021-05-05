@@ -26,6 +26,7 @@ textarea{height: 70px !important;}
     width:70%;
     padding: 20px; 
 }
+.TThead{padding-bottom: 5px;}
 #TTbtns{
     display: flex;
     justify-content: center;
@@ -64,6 +65,7 @@ textarea{height: 70px !important;}
 .QAPanel{
     width:70%;
     background-color: white;
+    border-radius: 10px;
     padding:20px;
     .MuiTypography-body1{
         font-size:13px !important;
@@ -72,7 +74,6 @@ textarea{height: 70px !important;}
         color: #0b249c !important;
     }
     >div:nth-child(1){
-        padding-bottom: 30px;
         font-size:15px;
     }
     >div:nth-child(2){
@@ -81,11 +82,107 @@ textarea{height: 70px !important;}
         font-weight: 600;
     }
 }
+.online_qa{display: flex;justify-content: space-around;}
+.QAContainer{
+    display: flex;
+    justify-content:space-between;
+    padding-bottom: 15px;
+    >div:nth-child(2){
+        border-radius: 10px;
+        background-color:#0353A4;
+        color: white;
+        font-weight: 600;
+        padding: 5px 10px;
+    }
+}
 .QAStatusPane{
     width:30%;
     background-color: blue;
 }
-#QAcount,#Question{
+#Question{
     padding-bottom: 30px;
 }
+.question_traverse{
+    background-color: #0353A4;
+    border-radius: 10px;
+    padding:10px;
+    width:25%;
+}
+.question_flows{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    >div{
+        border-radius: 100%;
+        color: blue;
+        background-color: white;
+        font-weight: 600;
+        width: 35px;
+        text-align: center;
+        height: 30px;
+        justify-content: space-around;
+        margin: 5px;
+        padding: 5px 5px 10px 5px;
+    }
+    >div:nth-child(2){background-color:#14D756;color: white;}
+    >div:nth-child(3){background-color:#D77E4D;color: white;}
+}
+.color_initmation{
+    display: flex;
+    padding: 50px 0px 70px 15px;
+    >div:nth-child(2)>div{
+        color:white;
+        margin:5px;
+        }
+}
+.color_circles{
+    >div{
+        border-radius: 50%;
+        background-color:white;
+        width: 20px;  
+        height: 20px;
+        margin:5px;
+    }  
+    >div:nth-child(2){
+        background-color:#14D756;
+    }
+    >div:nth-child(3){
+        background-color:#D77E4D;
+    }
+}
+#answer_btns{
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    .customPrimary.MuiButton-contained {
+        background-color: white !important;
+        color: #1965B2 !important;
+    }
+    .custom_cancel{
+        border: 1px solid white;
+        background-color: #0353A4 !important;
+    }
+}
+.viewques_container{
+    padding:10px;
+    width:90%;
+}
+.viewques_head{
+    display:flex;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    >div{
+        width:25%;
+    }
+}
+.viewques_values{
+    display:flex;
+    justify-content: flex-start;
+    >div{
+        width:25%;
+        font-weight:600;
+    }
+}
+
 
