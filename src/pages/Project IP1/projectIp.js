@@ -61,6 +61,9 @@ import PatentAppealFiling from './IPAB Patent/patent_appealfiling'
 import PatentRevocationFiled from './IPAB Patent/patent_revocationfiled'
 import PatentRevocationDef from './IPAB Patent/patent_revocationdef'
 
+// Variable Rate master  ==>
+import RateMaster from '../stages/RateMaster';
+
 
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
@@ -80,8 +83,7 @@ function ProjectIp(props) {
     const [idDetails, setidDetails] = useState({})
     const [checklistModelOpen, setChecklistModelOpen] = useState(false)
 
-
-
+    const [variablemodelOpen, setVariableModelOpen] = useState(false)
 
     function callback(key) {
         console.log(key);
@@ -339,6 +341,9 @@ function ProjectIp(props) {
             setStageMonitor(false)
 
         }
+        else if (boxName === "VARIABLE RATE") {
+            setVariableModelOpen(true)
+        }
         else if (boxName === "TIME SHEET") {
             setTimesheetModelOpen(true)
         }
@@ -438,6 +443,7 @@ function ProjectIp(props) {
                             props.ProjectDetails[0].project_type} */}
                     </div>
                     <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster project_ip={props.ProjectDetails[0]} />} width={1200} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />

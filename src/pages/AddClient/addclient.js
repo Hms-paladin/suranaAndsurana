@@ -19,17 +19,12 @@ import PlusIcon from "../../images/plusIcon.svg";
 
 function AddClient() {
   const dispatch = useDispatch();
-
   const [clientName, setClientName] = useState({});
-
   const [fileupload, setFileupload] = useState([]);
-
   const [stateList, setstateList] = useState({});
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
-
   const [selectedFile, setselectedFile] = useState([]);
-
   const [Addclient_Form, setAddclient_Form] = useState({
     client_name: {
       value: "",
@@ -45,7 +40,7 @@ function AddClient() {
     },
     con_per_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphabetwithspace" }, { name: "alphabetwithspace" }],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphabetsandSpecialChar" }],
       error: null,
       errmsg: null,
     },
@@ -63,7 +58,7 @@ function AddClient() {
     },
     con_ph_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "mobile" }],
+      validation: [{ name: "required" }, { name: "mobileSurana" }],
       error: null,
       errmsg: null,
     },
@@ -91,7 +86,7 @@ function AddClient() {
     cont_per_2: {
       value: "",
       valueById: "",
-      validation: [{ name: "custommaxLength", params: "50" }, { "name": "alphabetwithspace" }],
+      validation: [{ name: "custommaxLength", params: "50" }, { "name": "alphabetsandSpecialChar" }],
       error: null,
       errmsg: null,
     },
@@ -109,7 +104,7 @@ function AddClient() {
     },
     con_ph_2: {
       value: "",
-      validation: [],
+      validation: [{ name: "required" }, { name: "mobileSurana" }],
       error: null,
       errmsg: null,
     },
