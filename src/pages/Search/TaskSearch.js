@@ -29,10 +29,16 @@ import Red from "../../images/red_round.png";
 import DynModel from '../../component/Model/model';
 import TimesheetStart from '../Search/TimeSheets/timesheetStart';
 import TimeSheetView from '../Search/TimeSheets/timesheetview';
+import TaskPriority from '../Search/task_priority'
+import TaskTag from '../Search/tasktag'
+import TaskStatus from '../Search/taskstatus'
 
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles} from '@material-ui/core/styles';
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
+
+import AddHearing from '../task/AddHearing';
+import { useDispatch, connect } from "react-redux";
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -51,11 +57,16 @@ function Task() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [startModelOpen, setStartModelOpen] = useState(false)
     const [stopModelOpen, setStopModelOpen] = useState(false)
-
+    const[timesheetmodal,setTimesheetmodal]=useState(false)
+    const[task_pri_modal,setTaskPrioriyModal]=useState(false)
+    const[task_tag,setTaskTag]=useState(false)
+    const[task_status,setTaskStatus]=useState(false)
+    
     // Change start,stop Model
 
     const [changeModel, setChangeModel] = useState(true)
 
+    const [hearing, setHearing] = useState(false)
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -114,15 +125,17 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side" onClick={stopModel}>1</p>
                                 <Divider />
-                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+                                {/* <HtmlTooltip open={open}  onOpen={handleOpen} arrow
 
                                     title={<Timesheetmodel />}
-                                >
-                                     <img src={Clock} className="img_side_align" onClick={startModel} />
-                                </HtmlTooltip>
+                                    onMouseEnter={()=>setOpen(true)}
+                                    onMouseLeave={()=>setOpen(true)}
+                                > */}
+                                     <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>setTimesheetmodal(true)} />
+                                {/* </HtmlTooltip> */}
                                
-                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} />
-                                {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={stopModelOpen} handleChangeCloseModel={(bln) => setStopModelOpen(bln)} content={<TimesheetStop />} width={1000} /> */}
+                                {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> */}
+                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} />
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
@@ -164,10 +177,10 @@ function Task() {
                                     <p style={{ display: "flex", justifyContent: 'center' }}>12</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={Arrow} style={{ marginRight: '5px', width: '18px' }} />
-                                    <img src={File} style={{ marginRight: '5px', width: '18px' }} />
-                                    <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} />
-                                    <img src={Order} style={{ marginRight: '5px', width: '18px' }} />
+                                    <img src={Arrow} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskPrioriyModal(true)}/>
+                                    <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskTag(true)}/>
+                                    <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>setTaskStatus(true)}/>
+                                    <img src={Order} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={()=>setHearing(true)}/>
                                 </div>
                             </div>
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
@@ -187,7 +200,7 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side">1</p>
                                 <Divider />
-                                <img src={Clock} className="img_side_align" />
+                                <img src={Clock} className="img_side_align" onClick={()=>setTimesheetmodal(true)}/>
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
@@ -222,7 +235,7 @@ function Task() {
                                     <p style={{ display: "flex", justifyContent: 'center' }}>12</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={H_icon} style={{ marginRight: '10px' }} />
+                                    <img src={H_icon} style={{ marginRight: '10px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
                                     <img src={File} style={{ marginRight: '10px' }} />
                                     <img src={Percentage} style={{ marginRight: '10px' }} />
                                 </div>
@@ -245,7 +258,7 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side">1</p>
                                 <Divider />
-                                <img src={Clock} className="img_side_align" />
+                                <img src={Clock} className="img_side_align" onClick={()=>setTimesheetmodal(true)}/>
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
@@ -281,7 +294,7 @@ function Task() {
                                     <p style={{ display: "flex", justifyContent: 'center' }}>12</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={M_icon} style={{ marginRight: '10px', width: '18px' }} />
+                                    <img src={M_icon} style={{ marginRight: '10px', width: '18px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
                                     <img src={File} style={{ marginRight: '10px', width: '18px' }} />
                                     <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} />
                                     <img src={Order} style={{ marginRight: '10px', width: '18px' }} />
@@ -306,7 +319,7 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side">1</p>
                                 <Divider />
-                                <img src={Clock} className="img_side_align" />
+                                <img src={Clock} className="img_side_align" onClick={()=>setTimesheetmodal(true)}/>
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
@@ -341,7 +354,7 @@ function Task() {
                                     <p style={{ display: "flex", justifyContent: 'center' }}>12</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={L_icon} style={{ marginRight: '10px' }} />
+                                    <img src={L_icon} style={{ marginRight: '10px' }} onClick={()=>setTaskPrioriyModal(true)}/>
                                     <img src={File} style={{ marginRight: '10px' }} />
                                     <img src={Percentage} style={{ marginRight: '10px' }} />
 
@@ -364,7 +377,7 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side">1</p>
                                 <Divider />
-                                <img src={Clock} className="img_side_align" />
+                                <img src={Clock} className="img_side_align" onClick={()=>setTimesheetmodal(true)}/>
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
@@ -399,7 +412,7 @@ function Task() {
                                     <p style={{ display: "flex", justifyContent: 'center' }}>12</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={L_icon} style={{ marginRight: '10px', width: '18px' }} />
+                                    <img src={L_icon} style={{ marginRight: '10px', width: '18px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
                                     <img src={File} style={{ marginRight: '10px', width: '18px' }} />
                                     <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} />
                                     <img src={Order} style={{ marginRight: '10px', width: '18px' }} />
@@ -422,7 +435,7 @@ function Task() {
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side">1</p>
                                 <Divider />
-                                <img src={Clock} className="img_side_align" />
+                                <img src={Clock} className="img_side_align" onClick={()=>setTimesheetmodal(true)}/>
                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
@@ -457,7 +470,7 @@ function Task() {
                                     <p style={{ display: "flex", justifyContent: 'center' }}>12</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={Arrow} style={{ marginRight: '10px', width: '18px' }} />
+                                    <img src={Arrow} style={{ marginRight: '10px', width: '18px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
                                     <img src={File} style={{ marginRight: '10px', width: '18px' }} />
                                     <img src={Percentage} style={{ marginRight: '10px', width: '18px' }} />
                                     <img src={Order} style={{ marginRight: '10px', width: '18px' }} />
@@ -520,8 +533,16 @@ function Task() {
                     </div>
                 </div>
             </div>
-
+            <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing onhearingclose={()=>setHearing(false)} />} width={1000}/>
+            <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority/>} width={300}/>
+            <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag/>} width={300}/>
+            <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  content={<TaskStatus/>} width={300}/>
         </div>
     )
 }
-export default Task;
+
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps)(Task);
