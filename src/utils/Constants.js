@@ -226,3 +226,7 @@ export const UPDATE_TICKET_STATUS = "UPDATE_TICKET_STATUS";
 
 //add hearing
 export const GET_ADJOURN_TAKEN_BY = "GET_ADJOURN_TAKEN_BY";
+
+// leave Approval
+export const GET_EMP_APPROVAL="GET_EMP_APPROVAL"
+export const UPDATE_EMP_APPROVAL="UPDATE_EMP_APPROVAL"

@@ -2,6 +2,7 @@ import { INSERT_LEAVE_FORM, GET_EMP_LEAVE_BALANCE, GET_LEAVE_FORM, GET_SUBJECT_L
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
+import {GET_EMP_APPROVAL,UPDATE_EMP_APPROVAL} from '../utils/Constants'
 import { notification } from "antd";
 // Leave Type (CEP)
 
@@ -296,5 +297,64 @@ export const updateLeaveCep = (Leave_Form,examSchedule) => async dispatch => {
 
     } catch (err) {
 
+    }
+}
+
+
+
+
+
+
+// leave get approval
+export const getEmpApproval = (data) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_leave_approval',
+            data: {
+                "employee_id":data==="Casual Leave"?9:data==="Permission"?192:data==="On Duty"?1:data==="CEP Approval"?193:0,
+                "emp_leave_id":data==="On Duty"?2:data==="Casual Leave"?8:data==="Permission"?37:data==="CEP Approval"?54:0
+            }
+        })
+            .then((response) => {
+                console.log(response,"res_id")
+                dispatch({ type: GET_EMP_APPROVAL, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+
+export const EmployeeLeaveApprove = (leaveStatus,leaveId) =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'update_leave_approval',
+            data:{
+                "emp_leave_id":leaveId,
+                "approve_status":leaveStatus===true?1:2                             
+            },
+        })
+        .then((response)=>{
+            console.log("reject",response)
+            if(response.data.status===1){
+                notification.success({
+                    message: `Employee leave approved successfully`,
+                    placement: "topRight",
+                  });
+            }
+            if(response.data.status===0){
+                notification.warning({
+                    message: `Employee leave rejected`,
+                    placement: "topRight",
+                  });
+            }
+            dispatch({ type: UPDATE_EMP_APPROVAL, payload: response.data.status })
+            dispatch(getEmpApproval())
+        })
+    }
+    catch(err){
     }
 }

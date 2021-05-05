@@ -84,6 +84,7 @@ import TestTemplate from '../pages/OnlineTest/testtemplate'
 import OnlineTest from '../pages/OnlineTest/onlinetest'
 import InstructionModal from '../pages/OnlineTest/instructionModal'
 import OnlineQA from '../pages/OnlineTest/onlineQA'
+import OutofPacket from '../pages/OutofPacket/OutofPacket'
 function Routes(props) {
 
   return (
@@ -167,6 +168,9 @@ function Routes(props) {
         <PrivateRoute path="/onlinetest" component={OnlineTest} exact />
         <PrivateRoute path="/instructionModal" component={InstructionModal} exact />
         <PrivateRoute path="/onlineQA" component={OnlineQA} exact />
+
+        {/* out of packet */}
+        <PrivateRoute path="/outofpacket" component={OutofPacket} exact/>
 
       </Switch>
     </Navbar>
