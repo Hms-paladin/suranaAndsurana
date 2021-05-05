@@ -1,7 +1,7 @@
-import { INSERT_LEAVE_FORM,GET_EMP_LEAVE_BALANCE,GET_LEAVE_FORM, GET_SUBJECT_LIST,GET_LEAVE_FORM_DETAILS } from '../utils/Constants.js'
+import { INSERT_LEAVE_FORM, GET_EMP_LEAVE_BALANCE, GET_LEAVE_FORM, GET_SUBJECT_LIST, GET_LEAVE_FORM_DETAILS, UPDATE_LEAVE_FROM } from '../utils/Constants.js'
 
 const intialState = {
-    getLeaveForm:[],leaveformstatus: [], leavefromsubject: [], getEmpAvailableBalance: []
+    getLeaveForm: [], leaveformstatus: [], leavefromsubject: [], getEmpAvailableBalance: [], updateLeaveFrom: [],
 }
 
 export default function (state = intialState, action) {
@@ -16,7 +16,9 @@ export default function (state = intialState, action) {
         case INSERT_LEAVE_FORM:
             return { ...state, insertLeaveForm: payload }
         case GET_LEAVE_FORM_DETAILS:
-        return { ...state, getLeaveForm: payload }
+            return { ...state, getLeaveForm: payload }
+        case UPDATE_LEAVE_FROM:
+            return { ...state, updateLeaveFrom: payload }
         default:
             return state;
     }

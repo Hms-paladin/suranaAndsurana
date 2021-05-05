@@ -6,15 +6,12 @@ import EnhancedTable from '../../component/DynTable/table';
 import Edit from "../../images/editable.svg";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
-import { insertLeaveForm, getProfessionalCourse, SubjectList, getEmpAvailableBalance, getLeaveForm, deleteLeaveForm } from '../../actions/LeaveFormAction';
+import { insertLeaveForm, getProfessionalCourse, SubjectList, getEmpAvailableBalance, getLeaveForm, deleteLeaveForm, updateLeaveFrom } from '../../actions/LeaveFormAction';
 import { useDispatch, connect } from "react-redux";
 import { getEmployeeList, getClientlist } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
-
-
-
 import './leaveupdate.scss';
 const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
@@ -24,11 +21,7 @@ const headCells = [
     { id: 'totime', label: 'To Time' },
     { id: 'status', label: 'Status' },
     { id: 'img', label: 'Action' }
-
-
 ];
-
-
 
 function LeaveForm(props) {
     const dispatch = useDispatch();
@@ -36,14 +29,11 @@ function LeaveForm(props) {
     const [professional, setProfessional] = useState({})
     const [subjectList, setSubjectList] = useState({})
     const [examSchedule, setExamSchedule] = useState([])
-    const [editExam, setEditExam] = useState([])
     const [empLeaveBal, setEmpLeaveBal] = useState("")
     const [clientlist, setClientlist] = useState({})
     const [noOfDays, setNoOfDays] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
-
     const [editBtn, setEditBtn] = useState(false)
-
     const [leaveFormTable, setLeaveFormTable] = useState({});
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
@@ -107,7 +97,7 @@ function LeaveForm(props) {
             error: null,
             errmsg: null,
         },
-       
+
         referred_by: {
             value: "",
             validation: [{ "name": "required" }],
@@ -164,7 +154,6 @@ function LeaveForm(props) {
 
     useEffect(() => {
         dispatch(getEmpAvailableBalance(localStorage.getItem("empId"), Leave_Form.leavetype.value))
-        // if(Leave_Form.leavetype.value===35||Leave_Form.leavetype.value)
     }, [Leave_Form.leavetype.value])
 
     useEffect(() => {
@@ -173,23 +162,20 @@ function LeaveForm(props) {
 
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.fromdate.value) - Date.parse(Leave_Form.todate.value)) / 86400000)
-        console.log(diff, "diff")
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff)
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
-    console.log(Leave_Form.leavetype.name, "type")
     const onFileChange = () => {
 
     }
 
     function onDeleteLeaveForm(emp_leave_id) {
-        console.log(emp_leave_id, "emp_leave_id")
         dispatch(deleteLeaveForm(emp_leave_id))
     }
 
     const onEditLeaveForm = (val) => {
-        console.log(val , "valval")
-
+        setEditBtn(true)
+        console.log(val.leave_reason, "valval")
         Leave_Form.leavetype.value = val.leave_type_id || ""
         Leave_Form.fromdate.value = val.from_date || ""
         Leave_Form.todate.value = val.to_date || ""
@@ -200,12 +186,12 @@ function LeaveForm(props) {
         Leave_Form.contactperson.value = val.contact_number || ""
         Leave_Form.client.value = val.client_id || ""
         Leave_Form.assignedby.value = val.assigned_by || ""
-
-
         setLeaveForm(prevState => ({
             ...prevState,
         }));
     }
+    console.log(Leave_Form, "Leave_Form")
+
 
     useEffect(() => {
         // Leave Type
@@ -242,14 +228,10 @@ function LeaveForm(props) {
             Clientlist.push({ value: data.client, id: data.client_id })
         );
         setClientlist({ Clientlist });
-
-
-
     }, [props.LeaveType, props.SubjectList, props.stateDemo, props.EmployeeList, props.getClientlist])
 
     function checkValidation(data, key) {
         if (key === "fromtime") {
-            console.log("timeformat", data)
         }
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -265,15 +247,9 @@ function LeaveForm(props) {
 
         if (key === "leavetype" && data) {
             handleCancel()
-
-            // setLeavetypeName(data);
             setEditBtn(false)
-            console.log(data)
-
             let From_key = [
                 "fromdate", "todate", "reasoncmt", "address", "contactperson", "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
-
-
             ];
 
             From_key.map((data) => {
@@ -287,11 +263,7 @@ function LeaveForm(props) {
             setLeaveForm((prevState) => ({
                 ...prevState,
             }));
-
         }
-
-
-
         setLeaveForm((prevState) => ({
             ...prevState,
             [key]: dynObj,
@@ -299,7 +271,6 @@ function LeaveForm(props) {
     }
 
     const viewexamschedule = () => {
-
         examSchedule.push({
             subject: subjectList.SubjectList.map((data) => {
                 if (data.id === Leave_Form.subject.value) {
@@ -310,23 +281,16 @@ function LeaveForm(props) {
             }), date: Leave_Form.exam_date.value
         })
         setExamSchedule([...examSchedule])
-
-
         Leave_Form["exam_date"].value = ""
         Leave_Form["subject"].value = ""
         setLeaveForm(prevState => ({
             ...prevState,
         }));
-
     }
 
-
-
     useEffect(() => {
-
         let TableData = [];
-
-        props.getLeaveForm.map((data, index) => TableData.push(data));
+        props.getLeaveForm && props.getLeaveForm.map((data, index) => TableData.push(data));
         var updatelist = [];
         for (var m = 0; m < TableData.length; m++) {
             const index = m;
@@ -350,7 +314,6 @@ function LeaveForm(props) {
 
     }, [props.getLeaveForm])
 
-
     const hideValidation = (From_key) => {
         From_key.map((data) => {
             try {
@@ -365,15 +328,14 @@ function LeaveForm(props) {
         }));
     }
 
-    function onSubmit() {
+    function onSubmit(value) {
+        console.log(value, "valuetype")
         if (Leave_Form.leavetype.value) {
-            // const Form_key = []
             if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
                 const From_key = [
                     "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
                 ];
                 hideValidation(From_key)
-
             } else if (Leave_Form.leavetype.value === 38) {
                 const From_key = [
                     "todate", "address", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
@@ -384,13 +346,8 @@ function LeaveForm(props) {
                     "todate", "reasoncmt", "address", "contactperson", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
                 ];
                 hideValidation(From_key)
-
             }
-
-
-
         }
-
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Form);
         for (var i in targetkeys) {
@@ -403,7 +360,6 @@ function LeaveForm(props) {
             mainvalue[targetkeys[i]] = Leave_Form[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
-
         if (filtererr.length > 0) {
 
         } else {
@@ -416,26 +372,25 @@ function LeaveForm(props) {
             ...prevState,
         }));
     }
-    console.log(leaveFormTable, "leaveFormTable")
+    const onUpdate = (data) => {
+
+        if (data === "othertype") {
+            dispatch(updateLeaveFrom(Leave_Form)).then((response) => {
+                handleCancel();
+            });
+
+        } else {
+
+        }
+
+        setLeaveForm((prevState) => ({
+            ...prevState,
+        }));
+    }
 
     const handleCancel = () => {
         let From_key = [
-            "fromdate",
-            "todate",
-            "reasoncmt",
-            "address",
-            "contactperson",
-            "fromtime",
-            "totime",
-            "client",
-            "assignedby",
-            "referred_by",
-            "profess_course",
-            "tot_leave",
-            "exam_days",
-            "other_days",
-            "subject",
-            "exam_date",
+            "fromdate", "todate", "reasoncmt", "address", "contactperson", "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date",
         ];
 
         From_key.map((data) => {
@@ -445,311 +400,222 @@ function LeaveForm(props) {
                 throw error;
             }
         });
-
         setLeaveForm((prevState) => ({
             ...prevState,
         }));
     };
+    const onCancel = () => {
+        handleCancel()
+        setEditBtn(false)
+    }
 
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
             <div className="leaveFields">
-
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={3}>
                         <div className="leaveFieldheading">Leave Type</div>
                         <div>
                             <Labelbox type="select"
                                 dropdown={leaveType.LeaveType}
-                                changeData={(data) =>
-                                    checkValidation(data, "leavetype")
-                                }
+                                changeData={(data) => checkValidation(data, "leavetype")}
                                 value={Leave_Form.leavetype.value}
                                 error={Leave_Form.leavetype.error}
-                                errmsg={Leave_Form.leavetype.errmsg}
-                            />
+                                errmsg={Leave_Form.leavetype.errmsg} />
                         </div>
                     </Grid>
-                    {(Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) &&
-                        <>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">From Date</div>
-                                <div>
-                                    <Labelbox type="datepicker"
-                                        changeData={(data) =>
-                                            checkValidation(data, "fromdate")
-                                        }
-                                        value={Leave_Form.fromdate.value}
-                                        error={Leave_Form.fromdate.error}
-                                        errmsg={Leave_Form.fromdate.errmsg}
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">To Date</div>
-                                <div>
-                                    <Labelbox type="datepicker"
-                                        changeData={(data) =>
-                                            checkValidation(data, "todate")
-                                        }
-                                        value={Leave_Form.todate.value}
-                                        error={Leave_Form.todate.error}
-                                        errmsg={Leave_Form.todate.errmsg}
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item xs={3} container direction="row">
-                                <Grid item xs={7}>
-
-                                    <div className="leaveFieldheading">Available Balance</div>
-                                    <div>{empLeaveBal} </div>
-                                </Grid>
-                                <Grid item xs={5}>
-
-                                    <div className="leaveFieldheading">No.of days</div>
-                                    <div>{noOfDays} </div>
-                                </Grid>
+                    {(Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) && <> <Grid item xs={3}>
+                        <div className="leaveFieldheading">From Date</div>
+                        <div>  <Labelbox type="datepicker"
+                            changeData={(data) => checkValidation(data, "fromdate")}
+                            value={Leave_Form.fromdate.value}
+                            error={Leave_Form.fromdate.error}
+                            errmsg={Leave_Form.fromdate.errmsg} />
+                        </div>
+                    </Grid>
+                        <Grid item xs={3}>
+                            <div className="leaveFieldheading">To Date</div>
+                            <div> <Labelbox type="datepicker"
+                                changeData={(data) => checkValidation(data, "todate")}
+                                value={Leave_Form.todate.value}
+                                error={Leave_Form.todate.error}
+                                errmsg={Leave_Form.todate.errmsg} />
+                            </div>
+                        </Grid>
+                        <Grid item xs={3} container direction="row">
+                            <Grid item xs={7}>
+                                <div className="leaveFieldheading">Available Balance</div>
+                                <div>{empLeaveBal} </div>
                             </Grid>
                             <Grid item xs={5}>
-                                <div className="leaveFieldheading">Reason for Leave</div>
-                                <div className="reasonscmt">
-                                    <Labelbox type="textarea"
-                                        changeData={(data) =>
-                                            checkValidation(data, "reasoncmt")
-                                        }
-                                        value={Leave_Form.reasoncmt.value}
-                                        error={Leave_Form.reasoncmt.error}
-                                        errmsg={Leave_Form.reasoncmt.errmsg}
-                                    />
-                                </div>
+                                <div className="leaveFieldheading">No.of days</div>
+                                <div>{noOfDays} </div>
                             </Grid>
-                            <Grid item xs={5}>
-                                <div className="leaveFieldheading">Address</div>
-                                <div className="reasonscmt">
-                                    <Labelbox type="textarea"
-                                        changeData={(data) =>
-                                            checkValidation(data, "address")
-                                        }
-                                        value={Leave_Form.address.value}
-                                        error={Leave_Form.address.error}
-                                        errmsg={Leave_Form.address.errmsg}
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <div className="leaveFieldheading">Contact Number</div>
-                                <div>
-                                    <Labelbox type="text"
-                                        changeData={(data) =>
-                                            checkValidation(data, "contactperson")
-                                        }
-                                        value={Leave_Form.contactperson.value}
-                                        error={Leave_Form.contactperson.error}
-                                        errmsg={Leave_Form.contactperson.errmsg}
-                                    />
-                                </div>
-                            </Grid>
-
-                        </>
-
+                        </Grid>
+                        <Grid item xs={5}>
+                            <div className="leaveFieldheading">Reason for Leave</div>
+                            <div className="reasonscmt">
+                                <Labelbox type="textarea"
+                                    changeData={(data) => checkValidation(data, "reasoncmt")}
+                                    value={Leave_Form.reasoncmt.value}
+                                    error={Leave_Form.reasoncmt.error}
+                                    errmsg={Leave_Form.reasoncmt.errmsg} />
+                            </div>
+                        </Grid>
+                        <Grid item xs={5}>
+                            <div className="leaveFieldheading">Address</div>
+                            <div className="reasonscmt">
+                                <Labelbox type="textarea"
+                                    changeData={(data) => checkValidation(data, "address")}
+                                    value={Leave_Form.address.value}
+                                    error={Leave_Form.address.error}
+                                    errmsg={Leave_Form.address.errmsg} />
+                            </div>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <div className="leaveFieldheading">Contact Number</div>
+                            <div><Labelbox type="text"
+                                changeData={(data) => checkValidation(data, "contactperson")}
+                                value={Leave_Form.contactperson.value}
+                                error={Leave_Form.contactperson.error}
+                                errmsg={Leave_Form.contactperson.errmsg} />
+                            </div>
+                        </Grid>
+                    </>
                     }
                     {(Leave_Form.leavetype.value === 38 || Leave_Form.leavetype.value === 39) &&
-                        <>
-                            <Grid item xs={2}>
-                                <div className="leaveFieldheading"> Date</div>
-                                <div>
-                                    <Labelbox type="datepicker"
-                                        changeData={(data) =>
-                                            checkValidation(data, "fromdate")
-                                        }
-                                        value={Leave_Form.fromdate.value}
-                                        error={Leave_Form.fromdate.error}
-                                        errmsg={Leave_Form.fromdate.errmsg}
-                                    />
-                                </div>
-                            </Grid>
+                        <> <Grid item xs={2}>
+                            <div className="leaveFieldheading"> Date</div>
+                            <div> <Labelbox type="datepicker"
+                                changeData={(data) => checkValidation(data, "fromdate")}
+                                value={Leave_Form.fromdate.value}
+                                error={Leave_Form.fromdate.error}
+                                errmsg={Leave_Form.fromdate.errmsg} />
+                            </div>
+                        </Grid>
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading"> From Time</div>
-                                <div>
-                                    <Labelbox type="timepicker"
-                                        changeData={(data) =>
-                                            checkValidation(data, "fromtime")
-                                        }
-                                        value={Leave_Form.fromtime.value}
-                                        error={Leave_Form.fromtime.error}
-                                        errmsg={Leave_Form.fromtime.errmsg}
-                                    />
+                                <div><Labelbox type="timepicker"
+                                    changeData={(data) => checkValidation(data, "fromtime")}
+                                    value={Leave_Form.fromtime.value}
+                                    error={Leave_Form.fromtime.error}
+                                    errmsg={Leave_Form.fromtime.errmsg} />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading"> To Time</div>
-                                <div>
-                                    <Labelbox type="timepicker"
-                                        changeData={(data) =>
-                                            checkValidation(data, "totime")
-                                        }
-                                        value={Leave_Form.totime.value}
-                                        error={Leave_Form.totime.error}
-                                        errmsg={Leave_Form.totime.errmsg}
-                                    />
+                                <div><Labelbox type="timepicker"
+                                    changeData={(data) => checkValidation(data, "totime")}
+                                    value={Leave_Form.totime.value}
+                                    error={Leave_Form.totime.error}
+                                    errmsg={Leave_Form.totime.errmsg} />
                                 </div>
                             </Grid>
-                            <Grid item xs={2} >
-                                <div className="leaveFieldheading">Available Balance</div>
-                                <div>10 </div>
-                            </Grid>
+                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>10 </div> </Grid>
                             {Leave_Form.leavetype.value === 39 ?
-                                <>
-                                    <Grid item xs={5}>
-                                        <div className="leaveFieldheading">Client</div>
-                                        <Labelbox type="select"
-                                            dropdown={clientlist.Clientlist}
-                                            changeData={(data) =>
-                                                checkValidation(data, "client")
-                                            }
-                                            value={Leave_Form.client.value}
-                                            error={Leave_Form.client.error}
-                                            errmsg={Leave_Form.client.errmsg}
-                                        />
-                                    </Grid>
+                                <><Grid item xs={5}>
+                                    <div className="leaveFieldheading">Client</div>
+                                    <Labelbox type="select"
+                                        dropdown={clientlist.Clientlist}
+                                        changeData={(data) => checkValidation(data, "client")}
+                                        value={Leave_Form.client.value}
+                                        error={Leave_Form.client.error}
+                                        errmsg={Leave_Form.client.errmsg} />
+                                </Grid>
                                     <Grid item xs={3}>
                                         <div className="leaveFieldheading">Assigned By</div>
                                         <Labelbox type="select"
                                             dropdown={employeeList.EmployeeList}
-                                            changeData={(data) =>
-                                                checkValidation(data, "assignedby")
-                                            }
+                                            changeData={(data) => checkValidation(data, "assignedby")}
                                             value={Leave_Form.assignedby.value}
                                             error={Leave_Form.assignedby.error}
-                                            errmsg={Leave_Form.assignedby.errmsg}
-                                        />
+                                            errmsg={Leave_Form.assignedby.errmsg} />
                                     </Grid>
                                     <Grid item xs={5}>
                                         <div className="leaveFieldheading">Assignment Description</div>
                                         <div className="reasonscmt">
                                             <Labelbox type="textarea"
-                                                changeData={(data) =>
-                                                    checkValidation(data, "reasoncmt")
-                                                }
+                                                changeData={(data) => checkValidation(data, "reasoncmt")}
                                                 value={Leave_Form.reasoncmt.value}
                                                 error={Leave_Form.reasoncmt.error}
-                                                errmsg={Leave_Form.reasoncmt.errmsg}
-                                            />
+                                                errmsg={Leave_Form.reasoncmt.errmsg} />
                                         </div>
                                     </Grid>
-
-
-
                                 </> :
                                 <>
                                     <Grid item xs={5}>
                                         <div className="leaveFieldheading">Reason for Permission</div>
                                         <div className="reasonscmt">
                                             <Labelbox type="textarea"
-                                                changeData={(data) =>
-                                                    checkValidation(data, "reasoncmt")
-                                                }
+                                                changeData={(data) => checkValidation(data, "reasoncmt")}
                                                 value={Leave_Form.reasoncmt.value}
                                                 error={Leave_Form.reasoncmt.error}
-                                                errmsg={Leave_Form.reasoncmt.errmsg}
-                                            />
+                                                errmsg={Leave_Form.reasoncmt.errmsg} />
                                         </div>
                                     </Grid>
-                                    <Grid item xs={5}>
-
-                                    </Grid>
+                                    <Grid item xs={5}></Grid>
                                     <Grid item xs={3}>
                                         <div className="leaveFieldheading">Contact Number</div>
-                                        <div>
-                                            <Labelbox type="text"
-                                                changeData={(data) =>
-                                                    checkValidation(data, "contactperson")
-                                                }
-                                                value={Leave_Form.contactperson.value}
-                                                error={Leave_Form.contactperson.error}
-                                                errmsg={Leave_Form.contactperson.errmsg}
-                                            />
+                                        <div><Labelbox type="text"
+                                            changeData={(data) => checkValidation(data, "contactperson")}
+                                            value={Leave_Form.contactperson.value}
+                                            error={Leave_Form.contactperson.error}
+                                            errmsg={Leave_Form.contactperson.errmsg} />
                                         </div>
                                     </Grid>
                                 </>
                             }
-
                         </>
                     }
                     {Leave_Form.leavetype.value === 40 &&
                         <>
-                            <Grid item xs={9}>
-
+                            <Grid item xs={9}></Grid>
+                            <Grid item xs={12}><div className="leaveMainHeader">Managing Partner Permission Date </div></Grid>
+                            <Grid item xs={3}><Labelbox type="select"
+                                placeholder="Referred By"
+                                changeData={(data) => checkValidation(data, "referred_by")}
+                                dropdown={employeeList.EmployeeList}
+                                value={Leave_Form.referred_by.value}
+                                error={Leave_Form.referred_by.error}
+                                errmsg={Leave_Form.referred_by.errmsg} />
                             </Grid>
-                            <Grid item xs={12}>
-                                <div className="leaveMainHeader">Managing Partner Permission Date </div>
+                            <Grid item xs={3}> <Labelbox type="select"
+                                changeData={(data) => checkValidation(data, "profess_course")}
+                                placeholder="Professional course"
+                                dropdown={professional.ProfessoionalCourse}
+                                value={Leave_Form.profess_course.value}
+                                error={Leave_Form.profess_course.error}
+                                errmsg={Leave_Form.profess_course.errmsg} />
                             </Grid>
-                            <Grid item xs={3}>
-                                <Labelbox type="select"
-                                    placeholder="Referred By"
-                                    changeData={(data) =>
-                                        checkValidation(data, "referred_by")
-                                    }
-                                    dropdown={employeeList.EmployeeList}
-                                    value={Leave_Form.referred_by.value}
-                                    error={Leave_Form.referred_by.error}
-                                    errmsg={Leave_Form.referred_by.errmsg}
-                                />
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Labelbox type="select"
-                                    changeData={(data) =>
-                                        checkValidation(data, "profess_course")
-                                    }
-                                    placeholder="Professional course"
-                                    dropdown={professional.ProfessoionalCourse}
-                                    value={Leave_Form.profess_course.value}
-                                    error={Leave_Form.profess_course.error}
-                                    errmsg={Leave_Form.profess_course.errmsg}
-
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-
-                            </Grid>
+                            <Grid item xs={6}></Grid>
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading">Total Days of Leave</div>
-                                <div>
-                                    <Labelbox type="text"
-                                        changeData={(data) =>
-                                            checkValidation(data, "tot_leave")
-                                        }
-                                        value={Leave_Form.tot_leave.value}
-                                        error={Leave_Form.tot_leave.error}
-                                        errmsg={Leave_Form.tot_leave.errmsg}
-                                    />
+                                <div> <Labelbox type="text"
+                                    changeData={(data) => checkValidation(data, "tot_leave")}
+                                    value={Leave_Form.tot_leave.value}
+                                    error={Leave_Form.tot_leave.error}
+                                    errmsg={Leave_Form.tot_leave.errmsg} />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading">No. of Exam Days</div>
                                 <div>
                                     <Labelbox type="text"
-                                        changeData={(data) =>
-                                            checkValidation(data, "exam_days")
-                                        }
+                                        changeData={(data) => checkValidation(data, "exam_days")}
                                         value={Leave_Form.exam_days.value}
                                         error={Leave_Form.exam_days.error}
-                                        errmsg={Leave_Form.exam_days.errmsg}
-                                    />
+                                        errmsg={Leave_Form.exam_days.errmsg} />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading">No. of Other Days</div>
                                 <div>
                                     <Labelbox type="text"
-                                        changeData={(data) =>
-                                            checkValidation(data, "other_days")
-                                        }
+                                        changeData={(data) => checkValidation(data, "other_days")}
                                         value={Leave_Form.other_days.value}
                                         error={Leave_Form.other_days.error}
-                                        errmsg={Leave_Form.other_days.errmsg}
-                                    />
+                                        errmsg={Leave_Form.other_days.errmsg} />
                                 </div>
                             </Grid>
                             <Grid item xs={4}>
@@ -772,9 +638,7 @@ function LeaveForm(props) {
                                         <div className="leaveFieldheading">Subject</div>
                                         <div>
                                             <Labelbox type="select"
-                                                changeData={(data) =>
-                                                    checkValidation(data, "subject")
-                                                }
+                                                changeData={(data) => checkValidation(data, "subject")}
                                                 dropdown={subjectList.SubjectList}
                                                 value={Leave_Form.subject.value}
                                                 error={Leave_Form.subject.error}
@@ -786,13 +650,10 @@ function LeaveForm(props) {
                                         <div className="leaveFieldheading">Date</div>
                                         <div>
                                             <Labelbox type="datepicker"
-                                                changeData={(data) =>
-                                                    checkValidation(data, "exam_date")
-                                                }
+                                                changeData={(data) => checkValidation(data, "exam_date")}
                                                 value={Leave_Form.exam_date.value}
                                                 error={Leave_Form.exam_date.error}
-                                                errmsg={Leave_Form.exam_date.errmsg}
-                                            />
+                                                errmsg={Leave_Form.exam_date.errmsg} />
                                         </div>
                                     </Grid>
                                     <Grid item xs={2}>
@@ -804,18 +665,12 @@ function LeaveForm(props) {
                                         <div className="leaveFieldheading">Assignment Description</div>
                                         <div className="reasonscmt">
                                             <Labelbox type="textarea"
-                                                changeData={(data) =>
-                                                    checkValidation(data, "reasoncmt")
-                                                }
+                                                changeData={(data) => checkValidation(data, "reasoncmt")}
                                                 value={Leave_Form.reasoncmt.value}
                                                 error={Leave_Form.reasoncmt.error}
-                                                errmsg={Leave_Form.reasoncmt.errmsg}
-                                            />
+                                                errmsg={Leave_Form.reasoncmt.errmsg} />
                                         </div>
-                                    </Grid>
-
-
-                                </Grid>
+                                    </Grid> </Grid>
                                 <Grid item xs={6} container direction="row" spacing={2}>
                                     {examSchedule.length > 0 && <div className="examinfotable">
                                         <div>
@@ -829,56 +684,38 @@ function LeaveForm(props) {
                                                 <div className="examdate">
                                                     <div className="subvalue">{data.subject}</div>
                                                     <div className="subvalue">{data.date}</div>
-                                                    {/* <img src={EditIcon} onClick={() => editExamDetails(index)} /> */}
-
                                                 </div>
                                             )
                                         })}
-
-
                                     </div>}
-
-                                </Grid>
-
-                            </Grid>
+                                </Grid> </Grid>
                             <Grid item xs={5}>
                                 <div className="leaveFieldheading">Remarks</div>
                                 <div className="reasonscmt">
                                     <Labelbox type="textarea"
                                         changeData={(data) =>
-                                            checkValidation(data, "ass_description")
-                                        }
-                                        value={Leave_Form.ass_description.value}
-                                        error={Leave_Form.ass_description.error}
-                                        errmsg={Leave_Form.ass_description.errmsg}
+                                            checkValidation(data, "reasoncmt")}
+                                        value={Leave_Form.reasoncmt.value}
+                                        error={Leave_Form.reasoncmt.error}
+                                        errmsg={Leave_Form.reasoncmt.errmsg}
                                     />
-                                </div>
-                            </Grid>
+                                </div></Grid>
 
                         </>
                     }
                     <Grid item xs={5} container direction="row" spacing={2}>
                         <Grid item xs={4}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </div>
-            {Leave_Form.leavetype.value !== 40 && <div className="leavetableformat">
-                <EnhancedTable headCells={headCells} tabletitle={"Leave Status"}
-                    rows={leaveFormTable.length == 0 ? leaveFormTable : leaveFormTable}
-                // rows={rows}
-                />
+                            {editBtn ? <CustomButton btnName={"Update"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onUpdate(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} /> :
+                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
+                        <Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={onCancel} /></Grid>
+                    </Grid></Grid>
+            </div>{Leave_Form.leavetype.value !== 40 && <div className="leavetableformat">
+                <EnhancedTable headCells={headCells} tabletitle={"Leave Status"} rows={leaveFormTable.length == 0 ? leaveFormTable : leaveFormTable} />
             </div>}
-
         </div>
     )
 }
 const mapStateToProps = (state) =>
-// console.log(state,"statestatestate")
 ({
     LeaveType: state.getOptions.getLeaveType,
     ProfessoionalCourse: state.LeaveFormReducer.leaveformstatus,
@@ -887,53 +724,6 @@ const mapStateToProps = (state) =>
     getEmpLeaveBal: state.LeaveFormReducer.getEmpAvailableBalance || [],
     getLeaveForm: state.LeaveFormReducer.getLeaveForm || [],
     getClientlist: state.getOptions.getClientlist || [],
-
+    updateLeaveFrom: state.LeaveFormReducer.updateLeaveFrom || [],
 });
-
 export default connect(mapStateToProps)(LeaveForm);
-
-  // const editExamDetails = (indexNum) => {
-    //     console.log(examSchedule[indexNum], "index")
-    //     examSchedule.filter((data, index) => {
-
-    //     })
-
-    // }
-
-    // useEffect(() => {
-    //     let TableData = [];
-    //     props.getLeaveForm.map((data) =>
-
-    //     TableData.push({
-    //         leavetype: <a href={"#"} className="linktable">{data.leave_type}</a>, 
-    //         fromdate: data.from_date ,
-    //         todate: data.to_date ,
-    //         fromtime: data.from_time ,
-    //         totime: data.to_time ,
-    //         status: data.approve_status===1?"Approved":"Pending",
-    //         img:<><img src={Edit} className="editImage" /> <img src={Delete} className="editImage"  /></> ,
-
-    //     }),
-    //     // console.log(data,"data")
-    //     );
-    //     setLeaveFormTable( {TableData });
-
-    // }, [props.getLeaveForm])
-
-    // useEffect(() => {
-
-    //     let TableData = [];
-    //     props.getLeaveForm.map((data) =>
-    //     TableData.push({ 
-    //         leavetype: <a href={"#"} className="linktable">{data.leave_type}</a>, 
-    //         fromdate: data.from_date ,
-    //         todate: data.to_date ,
-    //         fromtime: data.from_time ,
-    //         totime: data.to_time ,
-    //         status: data.approve_status===1?"Approved":"Pending",
-    //         img:<><img src={Edit} className="editImage" /> <img src={Delete} className="editImage"  /></> ,       
-    //      })
-    //     );
-    //     setLeaveFormTable({ TableData });
-
-    // }, [props.getLeaveForm])   

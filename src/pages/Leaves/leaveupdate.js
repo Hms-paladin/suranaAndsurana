@@ -309,7 +309,7 @@ function LeaveUpdate(props) {
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">From</div>
                                 <div>
-                                    <Labelbox type="datepicker"
+                                    <Labelbox type="datepicker" disablePast={true}
                                         changeData={(data) =>
                                             checkValidation(data, "start_date")
                                         }
@@ -321,7 +321,7 @@ function LeaveUpdate(props) {
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">To</div>
                                 <div>
-                                    <Labelbox type="datepicker"
+                                    <Labelbox type="datepicker" disablePast={true}
                                         changeData={(data) =>
                                             checkValidation(data, "end_date")
                                         }
