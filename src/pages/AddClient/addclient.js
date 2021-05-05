@@ -328,24 +328,6 @@ function AddClient() {
         }]
       ));
 
-
-    }
-
-    console.log("hello", fileupload)
-
-    if (Addclient_Form.poa_name.value === '') {
-      notification.success({
-        message: 'Please Select Document',
-      });
-    } else {
-
-      setFileupload((prevState) => (
-        [...prevState, {
-          poa_name: Addclient_Form.poa_name.value,
-          selectedFile: "",
-        }]
-      ));
-
     }
   }
 
@@ -513,13 +495,14 @@ function AddClient() {
               </div>
 
             </div>
-            <div className="doc_upload_div"><div>POA</div>  <div>File Name</div></div>
+          
             {fileupload.map((data) => {
-              return (
+              return (<>
+                <div className="doc_upload_div"><div>POA</div>  <div>File Name</div></div>
                 <div className="doc_upload_items">
                   <div>{data.poa_name}</div>
-                  <div>{data.selectedFile}</div>
-                </div>
+                  <div>{"data.selectedFile"}</div>
+                </div></>
               )
             })}
             {/* <Grid container spacing={2} md={12}>

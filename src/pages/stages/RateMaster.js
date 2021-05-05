@@ -11,7 +11,7 @@ import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { getVariableRateTableData, InsertVariableRate, SearchVariableRate } from "../../actions/VariableRateMaster"
-import PlusIcon from "../../images/plusIcon.svg";
+
 
 const RateMaster = (props) => {
   const header = [
@@ -44,9 +44,6 @@ const RateMaster = (props) => {
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
   const [permission, setPermission] = useState([])
-
-  const [addTableData, setAddTableData] = useState();
-
   // const [amountDis,setAmountDis] =useState(true);
   const [RateMaster, setRateMaster] = useState({
     activity: {
@@ -144,48 +141,6 @@ const RateMaster = (props) => {
     permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
 
-  useEffect(() => {
-    if(props.searchVariableRate !== 0){
-      let searchVariableTableData = [];
-     
-      props.searchVariableRate.map((data, index) => {
-       
-        searchVariableTableData.push({
-          designation: data.designation,
-          activity: data.activity,
-          sub_activity: data.sub_activity,
-          court: data.location,
-          costRange: data.range,
-          lowerLimit: data.lower_limit,
-          upperLimit: data.upper_limit,
-          amount: (
-            <Labelbox
-              type="text"
-              placeholder={"Amount"}
-              // changeData={(data) => onchangeAmount(data, "amountSearch"+index)}
-              // value={projectSearchCreate['amountSearch'+index]}
-            />
-          ),
-          UOM: data.unit,
-          add: (
-            <img
-              src={PlusIcon}
-              style={{ cursor: "pointer", width: 19 }}
-              // onClick={() => addTempTable(data,index)}
-            />
-          ),
-        });
-      });
-      setAddTableData({ searchVariableTableData });
-    }
-    // else{
-    //   setAddsearchdata(false);
-    //   setNotfoundmodel(true)
-    // }
-    
-  }, [props.searchVariableRate]);
-
-
   const onSubmit = () => {
     console.log(RateMaster, "RateMaster")
 
@@ -207,15 +162,9 @@ const RateMaster = (props) => {
       // setRateMaster({ error: true });
 
     } else {
-      if(props.project_ip){
-      dispatch(SearchVariableRate(RateMaster)).then((response) => {
-        handleCancel();
-      })
-    }else{
       dispatch(InsertVariableRate(RateMaster)).then((response) => {
         handleCancel();
       });
-      }
     }
 
     setRateMaster((prevState) => ({
@@ -616,7 +565,6 @@ const RateMaster = (props) => {
           /> </div>
           :
           <div className="rate_cus_btns">
-            {!props.project_ip&&<div>
             <CustomButton
               btnName={"Save"}
               btnCustomColor="customPrimary"
@@ -625,17 +573,6 @@ const RateMaster = (props) => {
               onBtnClick={permission.allow_add==="Y"?onSubmit:rights}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
-            </div> }
-
-            {props.project_ip&&<div>
-            <CustomButton
-              btnName={"Search"}
-              btnCustomColor="customPrimary"
-              custombtnCSS="custom_save"
-              // onBtnClick={onSubmit}
-              onBtnClick={permission.allow_add==="Y"?onSubmit:rights}
-            />
-            </div> }
           </div>
         }
       </Grid>
@@ -648,8 +585,7 @@ const RateMaster = (props) => {
         <div className="rate_enhanced_table">
           <EnhancedTable
             headCells={header}
-            // rows={addTableData.searchVariableTableData ||[]} 
-            rows={!props.project_ip&&(varRateList.length == 0 ? varRateList : varRateList.rateList) || props.project_ip&&addTableData.searchVariableTableData ||[]}
+            rows={varRateList.length == 0 ? varRateList : varRateList.rateList}
           />
         </div>}
     </div>
@@ -661,7 +597,6 @@ const mapStateToProps = (state) => (
     getTableData: state.variableRateMaster.getVariableRateTableData || [],
     getInsertStatus: state.variableRateMaster.insertVariableRateStatus,
     UserPermission: state.UserPermissionReducer.getUserPermission,
-    searchVariableRate: state.variableRateMaster.searchVariableRate,
   }
 );
 

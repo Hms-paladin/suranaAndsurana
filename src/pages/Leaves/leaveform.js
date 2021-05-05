@@ -33,6 +33,8 @@ function LeaveForm(props) {
     const [clientlist, setClientlist] = useState({})
     const [noOfDays, setNoOfDays] = useState(0)
 
+    const [minDate, setMinDate] = useState(0)
+
     const [plusicon, setPlusicon] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
     const [editBtn, setEditBtn] = useState(false)
@@ -288,6 +290,10 @@ function LeaveForm(props) {
             //     ...prevState,
             // }));
         }
+
+        if(key==="fromdate"){
+            setMinDate(data)
+        }
         setLeaveForm((prevState) => ({
             ...prevState,
             [key]: dynObj,
@@ -522,6 +528,7 @@ function LeaveForm(props) {
                             <div> <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "todate")}
                                 value={Leave_Form.todate.value}
+                                minDate={minDate}
                                 error={Leave_Form.todate.error}
                                 errmsg={Leave_Form.todate.errmsg} />
                             </div>
