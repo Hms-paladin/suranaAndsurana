@@ -338,3 +338,14 @@
         color:#023E7D;
     }
 }
+.radio_btns{
+    .MuiSlider-root {
+        color: #FFE819;
+    }
+}
+.status_btn{
+    text-align: center;
+    .customPrimary.MuiButton-contained{
+        width:10px !important;
+    }
+}
