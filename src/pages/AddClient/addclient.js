@@ -40,7 +40,7 @@ function AddClient() {
     },
     con_per_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphabetsandSpecialChar" }],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphabetsandSpecialChar"}],
       error: null,
       errmsg: null,
     },
@@ -310,10 +310,14 @@ function AddClient() {
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
+    setFileupload([])
   }
 
 
   function onfileupload() {
+
+
+
 
     if (Addclient_Form.poa_name.value === '') {
       notification.success({
@@ -502,7 +506,7 @@ function AddClient() {
               <div className="uploadfileSpace">
                 {" "}
                 {/* <input type="file" onChange={handleImagePreview} /> */}
-                <Upload {...props}>
+                <Upload {...props} accept=".pdf">
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload>
                 {/* <PublishIcon/> */}
@@ -514,7 +518,7 @@ function AddClient() {
 
             </div>
             <div className="doc_upload_div"><div>POA</div>  <div>File Name</div></div>
-            {fileupload.map((data) => {
+            {fileupload.length > 0 && fileupload.map((data) => {
               return (
                 <div className="doc_upload_items">
                   <div>{data.poa_name}</div>
