@@ -1,4 +1,5 @@
-import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK } from "../utils/Constants";
+import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,
+    GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -39,6 +40,28 @@ export const getClassDetails= () => async dispatch => {
         
     }
 }
+
+export const getTradeMark= (projectId) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'get_trade_mark',
+            data :{
+                "project_id" :projectId
+
+            }
+        })
+        .then((response) => {
+            dispatch({type:GET_TRADE_MARK,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+
 
 export const getPoaDetails= (clientId) => async dispatch => {
     try {
@@ -93,14 +116,22 @@ export const getCountryDetails= () => async dispatch => {
 
 export const insertTradeMark = (params) => async dispatch => {
     try {
+        var url ='insert_trade_mark';
+        var method = 'POST';
+        var message="Trade Mark added sucessfully";
+        if(params.trademark_id !=0){
+            url = 'update_trade_mark';
+            method ='PUT';
+            message="Trade Mark updated sucessfully";
+        }
         axios({
-            method: 'POST',
-            url: apiurl + 'insert_trade_mark',
+            method: method,
+            url: apiurl + url,
             data: params
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Trade Mark added sucessfully",
+                    message: message,
                   });
                 dispatch({type:INSERT_TRADE_MARK,payload:response.data.status})
               return Promise.resolve();

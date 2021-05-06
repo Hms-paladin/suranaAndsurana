@@ -1,8 +1,8 @@
-import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK }  from '../utils/Constants.js'
+import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK }  from '../utils/Constants.js'
 
 const intialState = {
     getTradeMarkStatusList: [],getClassDetailsList :[],getPOAList :[],
-    gettradeMarkUsageList :[],getCountryList :[],insertTrademark:[]
+    gettradeMarkUsageList :[],getCountryList :[],insertTrademark:[],getTrademark:{}
 }
 
 export default function (state = intialState, action) {
@@ -20,7 +20,8 @@ export default function (state = intialState, action) {
             return  { ...state, getCountryList: payload }  
             case INSERT_TRADE_MARK:
             return  { ...state, insertTrademark: payload } 
-            
+            case GET_TRADE_MARK:
+                return  { ...state, getTrademark: payload } 
         default:
             return state;
     }
