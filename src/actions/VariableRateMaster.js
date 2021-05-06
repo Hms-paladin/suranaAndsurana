@@ -1,4 +1,4 @@
-import { GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE, SEARCH_VARIABLERATE } from "../utils/Constants";
+import { GET_PROJECT_VARIABLE_RATE,GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE,SEARCH_VARIABLERATE } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -25,43 +25,115 @@ export const getVariableRateTableData = () => async dispatch => {
   }
 }
 
-export const InsertVariableRate = (RateMaster) => async dispatch => {
-  console.log(RateMaster, "RateMaster")
+export const getProjectVariableRate = (project_id) => async dispatch => {
   try {
 
     axios({
-      method: "POST",
-      url: apiurl + "insert_vairable_rate",
+      method: 'POST',
+      url: apiurl + 'get_project_variable_rate',
       data: {
-        range_id: RateMaster.range_project_cost.value || 0,
-        location_id: RateMaster.court.value || 0,
-        designation_id: RateMaster.designation.value || 0,
-        activity_id: RateMaster.activity.value || 0,
-        created_on: moment().format("YYYY-MM-DD HH:m:s"),
-        updated_on: moment().format("YYYY-MM-DD HH:m:s"),
-        created_by: localStorage.getItem("empId"),
-        updated_by: localStorage.getItem("empId"),
-        sub_activity_id: RateMaster.sub_activity.value || 0,
-        rate: RateMaster.amount.value || 0,
-        upper_limit: RateMaster.upper_limit.value || 0,
-        lower_limit: RateMaster.lower_limit.value || 0,
-        unit_id: RateMaster.unit_measurement.value || 0,
+        project_id: project_id || 0,
       },
-    }).then((response) => {
-      dispatch(getVariableRateTableData())
-
-      if (response.data.status === 1) {
-        dispatch({ type: INSERT_VARIABLERATE, payload: true })
-        notification.success({
-          message: "Variable Rate Master Updated Successfully",
-        });
-        return Promise.resolve();
-      }
-    });
+    })
+      .then((response) => {
+        dispatch(
+          {
+            type: GET_PROJECT_VARIABLE_RATE,
+            payload: response.data.data
+          }
+        )
+      })
 
   } catch (err) {
 
   }
+}
+export const InsertVariableRate = (RateMaster) => async dispatch => {
+  console.log(RateMaster,"RateMaster")
+   if(RateMaster.length >= 1){
+
+    RateMaster.map((data, index) => {
+    console.log(data,"data11111")
+    try {
+
+        axios({
+            method: "POST",
+            url: apiurl + "insert_vairable_rate",
+            data: {
+              range_id: data.range_id || 0,
+              location_id: data.location_id || 0,
+              designation_id:data.designation_id || 0,
+              activity_id:data.activity_id || 0,
+         
+              sub_activity_id:data.sub_activity_id || 0,
+              rate:data.base_rate || 0,
+              upper_limit: data.upper_limit || 0,
+              lower_limit: data.lower_limit || 0,
+              unit_id: data.unit_of_measure || 0,
+
+              created_on: moment().format("YYYY-MM-DD HH:m:s"),
+              updated_on: moment().format("YYYY-MM-DD HH:m:s"),
+              created_by: localStorage.getItem("empId"),
+              updated_by: localStorage.getItem("empId"),
+            },
+          }).then((response) => {
+           dispatch( getVariableRateTableData())
+
+            if (response.data.status === 1) {
+              //   dispatch({type:INSERT_VARIABLERATE,payload:true})
+              // notification.success({
+              //   message: "Variable Rate Master Updated Successfully",
+              // });
+              return Promise.resolve();
+            }
+          });
+        
+    } catch (err) {
+        
+    }
+
+  }
+  );
+  }else{
+
+    try {
+
+      axios({
+          method: "POST",
+          url: apiurl + "insert_vairable_rate",
+          data: {
+            range_id: RateMaster.range_project_cost.value ||0,
+            location_id: RateMaster.court.value || 0,
+            designation_id: RateMaster.designation.value || 0,
+            activity_id: RateMaster.activity.value || 0,
+            created_on: moment().format("YYYY-MM-DD HH:m:s"),
+            updated_on: moment().format("YYYY-MM-DD HH:m:s"),
+            created_by: localStorage.getItem("empId"),
+            updated_by: localStorage.getItem("empId"),
+            sub_activity_id: RateMaster.sub_activity.value || 0,
+            rate: RateMaster.amount.value || 0,
+            upper_limit: RateMaster.upper_limit.value || 0,
+            lower_limit: RateMaster.lower_limit.value || 0,
+            unit_id: RateMaster.unit_measurement.value || 0,
+          },
+        }).then((response) => {
+         dispatch( getVariableRateTableData())
+
+          if (response.data.status === 1) {
+              dispatch({type:INSERT_VARIABLERATE,payload:true})
+            notification.success({
+              message: "Variable Rate Master Updated Successfully",
+            });
+            return Promise.resolve();
+          }
+        });
+      
+    } catch (err) {
+        
+    }
+
+  }
+
 }
 
 export const SearchVariableRate = (RateMaster) => async dispatch => {

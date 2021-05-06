@@ -62,12 +62,19 @@ import PatentRevocationFiled from './IPAB Patent/patent_revocationfiled'
 import PatentRevocationDef from './IPAB Patent/patent_revocationdef'
 
 // Variable Rate master  ==>
-import RateMaster from '../stages/RateMaster';
-
+import VariableRate from "../stages/RateMaster";
 
 import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import Tasks from '../../images/menuicon.svg';
+import EnhancedTable from "../../component/DynTable/table";
+import DeleteIcon from "@material-ui/icons/Delete";
+import SuccessIcon from "../../images/successicon.svg";
+import AddVarData from "../../images/addvardata.svg";
+import Labelbox from "../../helpers/labelbox/labelbox";
+import PlusIcon from "../../images/plusIcon.svg";
+import {InsertVariableRate,getProjectVariableRate } from "../../actions/VariableRateMaster"
+
 
 const { TabPane } = Tabs;
 
@@ -83,7 +90,21 @@ function ProjectIp(props) {
     const [idDetails, setidDetails] = useState({})
     const [checklistModelOpen, setChecklistModelOpen] = useState(false)
 
-    const [variablemodelOpen, setVariableModelOpen] = useState(false)
+
+    const [variableid, setVariableid] = useState(false);
+    const [successmodel, setSuccessmodel] = useState(false);
+    const [searchdata, setSearchdata] = useState();
+    const [addsearchdata, setAddsearchdata] = useState();
+
+    const [addTableData, setAddTableData] = useState();
+    const [showVariableTable, setShowVariableTable] = useState([]);
+    const [sendVariableData, setSendVariableData] = useState([]);
+    const [notfoundmodel, setNotfoundmodel] = useState(false);
+   
+    const [disableCondition, setDisableCondition] = useState(true);
+    const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
+
+    const [applicableamount, setApplicableamount] = useState({});
 
     function callback(key) {
         console.log(key);
@@ -202,12 +223,39 @@ function ProjectIp(props) {
 
     })
 
+    const header = [
+        { id: "designation", label: "Designation" },
+        { id: "activity", label: "Activity" },
+        { id: "sub_activity", label: "Sub Activity" },
+        { id: "court", label: "Court" },
+        { id: "range", label: "Range of Project cost" },
+        { id: "lower_limit", label: "Lower Limit" },
+        { id: "upper_limit", label: "Upper Limit" },
+        { id: "amount", label: "Amount" },
+        { id: "unit", label: "Unit of Measurement" },
+        { id: "add", label: "Add" },
+      ];
+
+const headers = [
+  { id: "designation", label: "Designation" },
+  { id: "activity", label: "Activity" },
+  { id: "sub_activity", label: "Sub Activity" },
+  { id: "court", label: "Court" },
+  { id: "range", label: "Range of Project cost" },
+  { id: "lower_limit", label: "Lower Limit" },
+  { id: "upper_limit", label: "Upper Limit" },
+  { id: "amount", label: "Amount" },
+  { id: "unit", label: "Unit of Measurement" },
+  { id: "del", label: "Delete" },
+];
 
     let { rowId } = useParams()
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
+
     }, [])
 
+    
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -218,7 +266,7 @@ function ProjectIp(props) {
         // console.log("dtata", props.ProjectDetails[0])
     }, [props.ProjectDetails])
 
-
+console.log(props.ProjectDetails,"props.ProjectDetails")
 
     function onSubmit() {
         var mainvalue = {};
@@ -342,7 +390,9 @@ function ProjectIp(props) {
 
         }
         else if (boxName === "VARIABLE RATE") {
-            setVariableModelOpen(true)
+            
+        dispatch(getProjectVariableRate(props.ProjectDetails[0].project_id))
+            setVariableid(true)
         }
         else if (boxName === "TIME SHEET") {
             setTimesheetModelOpen(true)
@@ -358,7 +408,256 @@ function ProjectIp(props) {
     }
 
     // console.log(props.ProjectDetails[0].sub_project_type, "props.ProjectDetails[0].sub_project_type")
+console.log(projectSearchCreate,"projectSearchCreate")
+      //----------
 
+     function onsubmitvariablerate(){
+        dispatch(InsertVariableRate(sendVariableData)).then((response) => {
+            setVariableid(false);
+          });
+      }
+      const onDelete = (i) => {
+          console.log(i,"showVariableTable")
+        if (i > -1) {
+          showVariableTable.splice(i, 1);
+          sendVariableData.splice(i, 1);
+        }
+        setShowVariableTable([...showVariableTable]);
+        setSendVariableData([...sendVariableData]);
+      };
+
+      const onchangeAmount = (data, key) => {
+        console.log(parseInt(data), key, "onchangeAmount")
+        // if (key === "amountSearch" && data) {
+        setPrpjectSearchCreate((prevState) => ({
+          ...prevState,
+          [key]: data,
+        }));
+        setDisableCondition(false)
+        // }
+      };
+
+      const onchangeapplicableAmount = (data, key) => {
+        console.log(parseInt(data), key, "onchangeAmountappli")
+        // if (key === "amountSearch" && data) {
+            setApplicableamount((prevState) => ({
+          ...prevState,
+          [key]: data,
+        }));
+        // setDisableCondition(false)
+        // }
+      };
+
+  const addTempTable = (data, index) => {
+    applicableamount['amountapplicable' + parseInt(showVariableTable.length+1)] = data.Amount;
+    console.log(showVariableTable.length,"applicableamount")
+    const TabLen = showVariableTable.length;
+    showVariableTable.push({
+      designation: data.designation,
+      activity: data.activity,
+      sub_activity: data.sub_activity,
+      court: data.location,
+      costRange: data.range,
+      lowerLimit: data.lower_limit,
+      upperLimit: data.upper_limit,
+      amount:
+      <Labelbox
+      type="text"
+      placeholder={"Amount"}
+      changeData={(data) => onchangeapplicableAmount(data, "amountapplicable" + parseInt(showVariableTable.length+1))}
+      value={ applicableamount['amountapplicable' + parseInt(showVariableTable.length+1)]}
+      />,
+      UOM: data.unit,
+      del: (
+        <DeleteIcon
+          style={{ cursor: "pointer", width: 19 }}
+          fontSize="small"
+          
+          onClick={() => onDelete(TabLen)}
+        />
+      ),
+    });
+    setShowVariableTable([...showVariableTable]);
+    sendVariableData.push({
+      designation_id: data.designation_id,
+      activity_id: data.activity_id,
+      sub_activity_id: data.sub_activity_id,
+      location_id: data.location_id,
+      range_id: data.range_id,
+      lower_limit: data.lower_limit,
+      upper_limit: data.upper_limit,
+      base_rate: data.Amount,
+      unit_of_measure: data.unit_id,
+    });
+    setSendVariableData([...sendVariableData]);
+  };
+  ////
+  useEffect(()=>{
+    let searchVariableTableData = [];
+    props.getProjectVariableRate.length>0 &&props.getProjectVariableRate.map((data, index) => {
+        applicableamount['amountapplicable' + index] = data.amount;
+        searchVariableTableData.push({
+      designation: data.designation,
+      activity: data.activity,
+      sub_activity: data.sub_activity,
+      court: data.location,
+      costRange: data.range,
+      lowerLimit: data.lower_limit,
+      upperLimit: data.upper_limit,
+      amount: <Labelbox
+      type="text"
+      placeholder={"Amount"}
+      changeData={(data) => onchangeapplicableAmount(data, "amountapplicable" + index)}
+      value={ applicableamount['amountapplicable' + index]}
+      />,
+      UOM: data.unit,
+      del: (
+        <DeleteIcon
+          style={{ cursor: "pointer", width: 19 }}
+          fontSize="small"
+          
+          onClick={() => onDelete(index)}
+        />
+      ),
+    });
+    })
+    setShowVariableTable([...searchVariableTableData]);
+    setSendVariableData([...searchVariableTableData]);
+  },[props.getProjectVariableRate])
+
+   console.log(applicableamount,"applicableamount")
+  ///
+    useEffect(() => {
+        if (props.lenghtData !== 0) {
+          let searchVariableTableData = [];
+          setNotfoundmodel(false);
+          props.searchVariableRate.map((data, index) => {
+            if (disableCondition) {
+              projectSearchCreate['amountSearch' + index] = data.Amount;
+            }
+            searchVariableTableData.push({
+              designation: data.designation,
+              activity: data.activity,
+              sub_activity: data.sub_activity,
+              court: data.location,
+              costRange: data.range,
+              lowerLimit: data.lower_limit,
+              upperLimit: data.upper_limit,
+              amount: (
+                <Labelbox
+                  type="text"
+                  placeholder={"Amount"}
+                  changeData={(data) => onchangeAmount(data, "amountSearch" + index)}
+                  value={projectSearchCreate['amountSearch' + index]}
+                />
+              ),
+              UOM: data.unit,
+              add: (
+                <img
+                  src={PlusIcon}
+                  style={{ cursor: "pointer", width: 19 }}
+                  onClick={() => addTempTable(data, index)}
+                />
+              ),
+            });
+          });
+          setAddTableData({ searchVariableTableData });
+        } else {
+          setAddsearchdata(false);
+          setNotfoundmodel(true)
+        }
+    
+      }, [props.searchVariableRate, props.lenghtData, projectSearchCreate]);
+console.log(showVariableTable,"showVariableTable")
+      
+    const variablerateModel = () => {
+        function onSearch() {
+          setSearchdata(true);
+          setAddsearchdata(false);
+          // setVariableRateCall(!variableRateCall)
+          setNotfoundmodel(true);
+        }
+    
+        function addSearchData() {
+          setAddsearchdata(true);
+          setSearchdata(false);
+          setSuccessmodel(true);
+        }
+    
+        return (
+          <div>
+            <VariableRate
+              variablebtnchange={true}
+              variabletablechange={true}
+              setShowSearchTable={() => setAddsearchdata(true)}
+              setNoSearchResult={() => setNotfoundmodel(true)}
+            />
+            {searchdata && (
+              <div className="addvariableData">
+                <img src={AddVarData} onClick={addSearchData} />
+              </div>
+            )}
+            {addsearchdata && (
+              <>
+                <div>
+                  <EnhancedTable
+                    headCells={header}
+                    rows={addTableData.searchVariableTableData || []}
+                  />
+                </div>
+                </>
+            )}
+                {showVariableTable.length !== 0 ? (
+                  
+                  <div>
+                        <div style={{fontSize:20,fontWeight:'bold'}}> Applicable Rates</div>
+                            <EnhancedTable headCells={headers} rows={showVariableTable || []} />
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                  <div className="VariableRateButton">
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => onsubmitvariablerate()} />
+                    <CustomButton btnName={"Cancel "}  custombtnCSS={"btnNotFound"} onBtnClick={() =>  setVariableid(false)} />
+                  </div>
+             
+            <DynModel
+              modelTitle={"Success"}
+              handleChangeModel={successmodel}
+              handleChangeCloseModel={(bln) => setSuccessmodel(bln)}
+              content={
+                <div className="successModel">
+                  <img src={SuccessIcon} />
+                  <div>Data Successfully Added in Variable Rate Master</div>
+                </div>
+              }
+              width={400}
+            />
+            <DynModel
+              modelTitle={"Billing Criteria Not Found"}
+              handleChangeModel={notfoundmodel}
+              handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
+              content={
+                <div className="successModel">
+                  <div>
+                    {" "}
+                    <label className="notfound_label">
+                      Do You Want To Continue ?
+                    </label>
+                  </div>
+                  <div className="customNotFoundbtn">
+                    <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+                    <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+                  </div>
+                </div>
+              }
+              width={400}
+            />
+          </div>
+        );
+      };
+      console.log()
     return (
         <div>
             <div className="projectIpContainer">
@@ -443,7 +742,14 @@ function ProjectIp(props) {
                             props.ProjectDetails[0].project_type} */}
                     </div>
                     <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
-                    <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster project_ip={props.ProjectDetails[0]} />} width={1200} />
+                    {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
+                     */}
+
+                    <DynModel
+                    modelTitle={"Variable Rate"}
+                    handleChangeModel={variableid}
+                    handleChangeCloseModel={(bln) => setVariableid(bln)}
+                    content={variablerateModel()} width={1300} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
@@ -612,7 +918,8 @@ function ProjectIp(props) {
 const mapStateToProps = (state) => (
     {
         ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
-
+        searchVariableRate: state.variableRateMaster.searchVariableRate,
+        getProjectVariableRate: state.variableRateMaster.getProjectVariableRate,
     }
 );
 

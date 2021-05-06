@@ -614,7 +614,7 @@ function ProjectFormCreate(props) {
       costRange: data.range,
       lowerLimit: data.lower_limit,
       upperLimit: data.upper_limit,
-      amount: data.Amount,
+      amount: projectSearchCreate['amountSearch' + index],
       UOM: data.unit,
       del: (
         <DeleteIcon
@@ -640,6 +640,7 @@ function ProjectFormCreate(props) {
   };
 
   const onDelete = (i) => {
+    console.log(i,"check")
     if (i > -1) {
       showVariableTable.splice(i, 1);
       sendVariableData.splice(i, 1);
