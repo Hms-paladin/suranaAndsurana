@@ -90,6 +90,12 @@ import OutofPacket from '../pages/OutofPacket/OutofPacket'
 
 //TimeSheet
 import ProjectwiseTS from '../pages/Search/TimeSheets/projectwise_timesheet'
+
+// CheckList Creation
+import checkListCreation from '../pages/Checklist/checklistCreation';
+import checkListAssign from '../pages/Checklist/checklistAssigning';
+
+
 function Routes(props) {
 
   return (
@@ -137,7 +143,7 @@ function Routes(props) {
         <PrivateRoute path="/ticketcreation" component={TicketCreation} exact />
         <PrivateRoute path="/KRA" component={KRA} exact />
         <PrivateRoute path="/adhoctask" component={AdhocTask} exact />
-        
+
 
         {/* Leaves Update */}
         <PrivateRoute path="/leaveupdate" component={LeaveUpdate} exact />
@@ -178,9 +184,14 @@ function Routes(props) {
         <PrivateRoute path="/onlineQA" component={OnlineQA} exact />
 
         {/* out of packet */}
-        <PrivateRoute path="/outofpacket" component={OutofPacket} exact/>
+        <PrivateRoute path="/outofpacket" component={OutofPacket} exact />
         {/* TimeSheet */}
         <PrivateRoute path="/projectwise_timesheet" component={ProjectwiseTS} exact />
+
+        {/* checkListCreation */}
+        <PrivateRoute path="/checklistCreation" component={checkListCreation} exact />
+        <PrivateRoute path="/checklistAssigning" component={checkListAssign} exact />
+
 
       </Switch>
     </Navbar>

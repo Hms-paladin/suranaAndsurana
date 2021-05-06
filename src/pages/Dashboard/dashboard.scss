@@ -1,4 +1,7 @@
 // Dashboard new
+.Master {
+    // display: flex;
+}
 
 .dashboardMenu {
     display: flex;
@@ -19,6 +22,7 @@
     background-color: white;
     margin: 10px;
     border-radius: 5px;
+    height: 100px;
     > div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
@@ -38,7 +42,7 @@
 .projectdatas {
     height: 130px;
     overflow: auto;
-    background-color: rgb(221, 218, 218);
+    background-color: rgb(246, 240, 240);
 }
 
 // task
@@ -58,6 +62,7 @@
     margin: 10px;
     border-radius: 5px;
     overflow: auto;
+    height: 170px;
     > div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
@@ -68,12 +73,40 @@
 .taskdatas {
     height: 130px;
     overflow: auto;
-    background-color: rgb(221, 218, 218);
+    background-color: rgb(250, 244, 244);
 }
 
 .topcontainer {
     display: flex;
     height: auto;
+}
+
+// expAdvContainer
+.expAdvContainer {
+    width: 71%;
+    padding: 20px 15px;
+    background-color: white;
+    margin: 20px 0px 7px 8px;
+    border-radius: 8px;
+    display: flex;
+}
+
+.expensePalce {
+    width: 30%;
+    background-color: #ffe819;
+    padding: 3px 10px;
+    border-radius: 20px 0px 0px 20px;
+    font-size: 15px;
+}
+
+.advancePlace {
+    width: 70%;
+    background-color: #276da8;
+    color: white;
+    text-align: end;
+    padding: 3px 10px;
+    border-radius: 0px 20px 20px 0px;
+    font-size: 15px;
 }
 
 // Tasks due by 5day
@@ -93,6 +126,8 @@
     margin: 10px;
     border-radius: 5px;
     overflow: auto;
+    position: relative;
+    bottom: 210px;
     > div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
@@ -103,7 +138,7 @@
 .taskdaysdatas {
     height: 150px;
     overflow: auto;
-    background-color: rgb(221, 218, 218);
+    background-color: rgb(246, 240, 240);
 }
 
 .taskdaystable {
@@ -150,38 +185,37 @@
     cursor: pointer;
 }
 
-
-.linkHeader{
+.linkHeader {
     width: 4px;
     height: 23px;
-    background-color: #0353A4;
+    background-color: #0353a4;
     margin-right: 10px;
 }
 
-.tableHeader{
+.tableHeader {
     display: flex;
 }
 
 // linktable
 
-.linktable{
+.linktable {
     text-decoration: underline;
 }
 
 //dashboardbtn
 
-.dashboardbtn{
+.dashboardbtn {
     margin: 20px 0px 10px 0px;
 }
 
 // Compliance :-moz-full-screen
 
-.overallContainer{
+.overallContainer {
     margin: 20px 0px;
     width: 100%;
 }
 
-.overallScroll{
+.overallScroll {
     width: 70%;
     background-color: white;
     margin: 10px;
@@ -193,135 +227,172 @@
     }
 }
 
-.overallData{
+.overallData {
     height: 140px;
     overflow: auto;
     background-color: #f0f0f0;
 }
 
-.overallMajorheading{
+.overallMajorheading {
     display: flex;
     text-align: center;
-    padding: 6px 0px ;
+    padding: 6px 0px;
     color: gray;
-    border-bottom:1px solid #d8d4d4;
-    >div:first-child{
+    border-bottom: 1px solid #d8d4d4;
+    > div:first-child {
         width: 40%;
-
     }
 }
 
-.overallMajordatas{
+.overallMajordatas {
     display: flex;
     text-align: center;
-    padding: 6px 0px ;
+    padding: 6px 0px;
     font-weight: 600%;
-    border-bottom:1px solid #d8d4d4;
-    >div:first-child{
+    border-bottom: 1px solid #d8d4d4;
+    > div:first-child {
         width: 40%;
-
     }
 }
 
-.secondheading{
+.secondheading {
     width: 60%;
 }
 
-.taskStages{
+.taskStages {
     width: 60%;
     display: flex;
-    >div{
+    > div {
         width: 50%;
     }
 }
 
-.taskStage{
+.taskStage {
     display: flex;
     text-align: center;
-    >div{
+    > div {
         width: 50%;
         padding: 5px;
     }
 }
 
-.projectwiseheading{
+.projectwiseheading {
     display: flex;
     text-align: center;
     color: gray;
     padding: 7px 0px;
-    border-bottom:1px solid #d8d4d4;
+    border-bottom: 1px solid #d8d4d4;
 
-    >div:first-child{
+    > div:first-child {
         width: 20%;
     }
-    .firstheading{
+    .firstheading {
         width: 30%;
     }
-    .secondheading{
+    .secondheading {
         width: 50%;
     }
-    .taskStage{
+    .taskStage {
         width: 30%;
         display: flex;
         text-align: center;
-        >div{
+        > div {
             width: 50%;
             padding: 5px;
         }
     }
-    .taskStages{
+    .taskStages {
         width: 50%;
         display: flex;
-        >div{
+        > div {
             width: 50%;
-            .taskStagefields{
+            .taskStagefields {
                 display: flex;
                 text-align: center;
-                >div{
+                > div {
                     width: 50%;
                 }
             }
         }
-        
     }
 }
 
-.projectwisedata{
+.projectwisedata {
     display: flex;
     text-align: center;
     font-weight: 600;
     padding: 7px 0px;
-    >div:first-child{
+    > div:first-child {
         width: 20%;
     }
-    .firstheading{
+    .firstheading {
         width: 30%;
     }
-    .secondheading{
+    .secondheading {
         width: 50%;
     }
-    .taskStage{
+    .taskStage {
         width: 30%;
         display: flex;
         text-align: center;
-        >div{
+        > div {
             width: 50%;
             padding: 5px;
         }
     }
-    .taskStages{
+    .taskStages {
         width: 50%;
         display: flex;
-        >div{
+        > div {
             width: 50%;
-            .taskStagefields{
+            .taskStagefields {
                 display: flex;
                 text-align: center;
-                >div{
+                > div {
                     width: 50%;
                 }
             }
         }
-        
     }
+}
+
+.custom_calender {
+    margin: 10px 0px 10px 20px;
+    background-color: white;
+}
+
+// .ant-card-grid {
+//     width: 26.5% !important;
+//     padding: none !important;
+// }
+
+.ant-fullcalendar-header {
+    padding: 11px 16px 11px 16px;
+    text-align: right;
+  
+}
+
+.calender_view{
+    background-color: white;
+    margin-left: 21px;
+    position: relative;
+    bottom: 10px;
+    height: 122px;
+    >div{
+        margin: 5px;
+        background-color: #E4E4E4;
+        height: 117px;
+        overflow: auto;
+        padding: 5px;
+    }
+}
+
+.calDay{
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.cal_time{
+    font-size: 10px;
+    padding-top: 5px;
 }
