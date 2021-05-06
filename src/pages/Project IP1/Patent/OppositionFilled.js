@@ -9,7 +9,7 @@ import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 import { getTradeMarkStatus,getCountryDetails,
   } from "../../../actions/tradeMarkAction";
-import {insertPatent} from  "../../../actions/PatentAction";
+import {insertPatent,getPatent} from  "../../../actions/PatentAction";
 import moment from 'moment'
 
 function OppositionFilled(props) {
@@ -21,6 +21,12 @@ function OppositionFilled(props) {
   const [countryDetList, setcountryDetList] = useState({})
   const [patentForm, setpatentForm] = useState({
 
+    patent_id: {
+    value: 0,
+    validation: [{ "name": "required" },],
+    error: null,
+    errmsg: null,
+},
         opp_fill_date: {
             value: "",
             validation: [{ "name": "required" }],
@@ -73,13 +79,30 @@ function OppositionFilled(props) {
     
     let { rowId } = useParams()
   useEffect(() => {
-    dispatch(getProjectDetails(rowId))
+    dispatch(getPatent(rowId));
+    dispatch(getProjectDetails(rowId));
     dispatch(getTradeMarkStatus());
     dispatch(getCountryDetails());
     
   }, []);
 
   useEffect(() => {
+
+    if(props.patent && props.patent[0]){
+
+        let obj = props.patent[0];
+        //patent_id
+        patentForm.patent_id.value =obj.patent_id;
+        patentForm.opponent.value =obj.opponent_agent;
+        patentForm.opp_fill_date.value =obj.opposition_filled_date;
+        patentForm.type_grant.value =obj.types_of_grant;
+        patentForm.applicant.value =obj.patent_applicant;
+        patentForm.title.value =obj.patent_title;
+        patentForm.publicationdate.value =obj.publication_date;
+        patentForm.app_agent.value =obj.application_agent;
+        patentForm.app_num.value =obj.application_no;
+           
+    }
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
         project_id:props.ProjectDetails[0].project_id,
@@ -270,6 +293,7 @@ const mapStateToProps = (state) =>
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     countriesList : state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    patent: state.PatentReducer.getPatent || {},
 });
 
 export default connect(mapStateToProps)(OppositionFilled);

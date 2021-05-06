@@ -9,7 +9,7 @@ import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 import { getTradeMarkStatus,getCountryDetails,
   } from "../../../actions/tradeMarkAction";
-import {insertPatent} from  "../../../actions/PatentAction";
+import {insertPatent,getPatent} from  "../../../actions/PatentAction";
 import moment from 'moment'
 
 function ApplicationForeign(props) {
@@ -20,7 +20,12 @@ function ApplicationForeign(props) {
   const [countryDetList, setcountryDetList] = useState({})
   
   const [patentForm, setpatentForm] = useState({
-
+    patent_id: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+    },
         file_cover: {
             value: "",
             validation: [{ "name": "required" }],
@@ -101,6 +106,7 @@ function ApplicationForeign(props) {
     
     let { rowId } = useParams()
   useEffect(() => {
+    dispatch(getPatent(rowId));
     dispatch(getProjectDetails(rowId))
     dispatch(getTradeMarkStatus());
     dispatch(getCountryDetails());
@@ -108,6 +114,41 @@ function ApplicationForeign(props) {
   }, []);
 
   useEffect(() => {
+
+    if(props.patent && props.patent[0]){
+
+        let obj = props.patent[0];
+        //patent_id
+        patentForm.patent_id.value =obj.patent_id;
+        patentForm.comments.value =obj.comments;
+        patentForm.file_cover.value =obj.file_cover;
+        patentForm.associate.value =obj.associate;
+        patentForm.our_ref.value =obj.our_reference;
+        patentForm.client_ref.value =obj.client_reference;
+        patentForm.priority_date.value =obj.priority_date;
+        patentForm.country.value =obj.priority_country;
+        patentForm.priority_num.value =obj.priority_application_no;
+  
+        patentForm.status.value =obj.status_id;
+        patentForm.app_num.value =obj.application_no;
+       patentForm.app_date.value =obj.application_date;
+       patentForm.title.value =obj.patent_title;
+
+       // "file_cover":patentForm.file_cover.value,
+       // "our_reference":patentForm.our_ref.value,
+       // "client_reference":patentForm.client_ref.value,
+        //"application_no":patentForm.app_num.value,
+       // "application_date":patentForm.app_date.value,
+       // "priority_country":patentForm.priority_country.value,
+       // "priority_application_no":patentForm.priority_num.value,
+        //"priority_date":patentForm.priority_date.value,
+       // "patent_title":patentForm.title.value,
+        //"associate":patentForm.associate.value,
+       // "status_id":patentForm.status.value,
+       // "comments":patentForm.comments.value,
+           
+    }
+
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
         project_id:props.ProjectDetails[0].project_id,
@@ -331,6 +372,7 @@ const mapStateToProps = (state) =>
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     countriesList : state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    patent: state.PatentReducer.getPatent || {},
 });
 
 export default connect(mapStateToProps)(ApplicationForeign);

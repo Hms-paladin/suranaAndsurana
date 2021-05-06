@@ -1,4 +1,4 @@
-import { GET_COUNTRY,GET_PATENT_STATUS,INSERT_PATENT} from "../utils/Constants";
+import { GET_COUNTRY,GET_PATENT_STATUS,INSERT_PATENT,GET_PATENT} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -22,21 +22,28 @@ export const getCountry= () => async dispatch => {
     }
 }
 
-export const getPatentStatus= () => async dispatch => {
+export const getPatent= (projectId) => async dispatch => {
     try {
 
         axios({
-            method: 'GET',
-            url: apiurl +'get_activity'
+            method: 'POST',
+            url: apiurl +'get_patent',
+            data :{
+                "project_id" :projectId
+
+            }
         })
         .then((response) => {
-            dispatch({type:GET_PATENT_STATUS,payload:response.data.data})
+            dispatch({type:GET_PATENT,payload:response.data.data})
         })
         
     } catch (err) {
         
     }
 }
+
+
+
 
 export const insertPatent = (params) => async dispatch => {
     try {

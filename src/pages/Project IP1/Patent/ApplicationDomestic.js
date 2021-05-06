@@ -11,7 +11,7 @@ import {
   getTradeMarkStatus,
   getCountryDetails,
 } from "../../../actions/tradeMarkAction";
-import { insertPatent } from "../../../actions/PatentAction";
+import { insertPatent,getPatent } from "../../../actions/PatentAction";
 import moment from "moment";
 function ApplicationDomestic(props) {
   const [projectDetails, setProjectDetails] = useState({});
@@ -21,6 +21,12 @@ function ApplicationDomestic(props) {
   const [countryDetList, setcountryDetList] = useState({});
 
   const [patentForm, setpatentForm] = useState({
+    patent_id: {
+      value: 0,
+      validation: [{ "name": "required" },],
+      error: null,
+      errmsg: null,
+  },
     file_cover: {
       value: "",
       validation: [{ name: "required" }],
@@ -97,12 +103,35 @@ function ApplicationDomestic(props) {
   });
   let { rowId } = useParams();
   useEffect(() => {
+    dispatch(getPatent(rowId));
     dispatch(getProjectDetails(rowId));
     dispatch(getTradeMarkStatus());
     dispatch(getCountryDetails());
   }, []);
 
   useEffect(() => {
+
+    if(props.patent && props.patent[0]){
+
+      let obj = props.patent[0];
+      //patent_id
+      patentForm.patent_id.value =obj.patent_id;
+      patentForm.comments.value =obj.comments;
+      patentForm.file_cover.value =obj.file_cover;
+      patentForm.associate.value =obj.associate;
+      patentForm.our_ref.value =obj.our_reference;
+      patentForm.client_ref.value =obj.client_reference;
+      patentForm.priority_date.value =obj.priority_date;
+      patentForm.country.value =obj.priority_country;
+      patentForm.priority_num.value =obj.priority_application_no;
+
+      patentForm.status.value =obj.status_id;
+      patentForm.app_num.value =obj.application_no;
+      patentForm.title.value = obj.title;
+
+      
+         
+  }
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 &&
       setidDetails({
@@ -152,6 +181,7 @@ function ApplicationDomestic(props) {
       priority_application_no: patentForm.priority_num.value,
       priority_date: patentForm.priority_date.value,
       status_id: patentForm.status.value,
+      title:patentForm.title.value,
       created_by: localStorage.getItem("empId"),
       created_on: moment().format("YYYY-MM-DD HH:m:s"),
       updated_on: moment().format("YYYY-MM-DD HH:m:s"),
@@ -365,6 +395,7 @@ const mapStateToProps = (state) => ({
   tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
   countriesList: state.tradeMarkReducer.getCountryList || [],
   ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+  patent: state.PatentReducer.getPatent || {},
 });
 
 export default connect(mapStateToProps)(ApplicationDomestic);
