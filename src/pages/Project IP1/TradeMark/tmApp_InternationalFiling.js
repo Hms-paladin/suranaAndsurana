@@ -57,13 +57,14 @@ function TradeMarkInternational(properties) {
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
             TradeMarkForm.status_id.value = obj.status_id;
-       
+            TradeMarkForm.class_id.value = obj.class_id;
+            
             TradeMarkForm.associateRefernce.value =obj.associate_reference;
-            TradeMarkForm.ourReference.value =obj.our_reference;
+            TradeMarkForm.ourRefernce.value =obj.our_reference;
             TradeMarkForm.mark_id.value =obj.mark_id;
             //"upload_image" :selectedFile,
            TradeMarkForm.associate.value =obj.associate;
-            TradeMarkForm.opositionNumber.value =obj.opposition_no;
+           TradeMarkForm.application_no.value =obj.application_no;
             TradeMarkForm.application_date.value =obj.application_date;
             TradeMarkForm.country_id.value =obj.country_id;
             TradeMarkForm.priority_details.value = obj.priority_details;
@@ -350,9 +351,10 @@ setcountryDetList({ countryListsData })
         //console.log(filtererr.length);
         let params  = {
             "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
+            "trademark_id" : TradeMarkForm.trademark_id.value,
             "status_id" :TradeMarkForm.status_id.value,
             "associate_reference": TradeMarkForm.associateRefernce.value,
-            "our_reference": TradeMarkForm.ourReference.value,
+            "our_reference": TradeMarkForm.ourRefernce.value,
             "mark_id":TradeMarkForm.mark_id.value,
             "upload_image" :selectedFile,
             "associate":TradeMarkForm.associate.value,

@@ -373,6 +373,7 @@ setcountryDetList({ countryListsData })
         //console.log(filtererr.length);
         let params  = {
             "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
+            "trademark_id": TradeMarkForm.trademark_id.value ,
             "status_id" :TradeMarkForm.status_id.value,
             "our_reference": TradeMarkForm.ourReference.value,
             "mark_id":TradeMarkForm.mark_id.value,

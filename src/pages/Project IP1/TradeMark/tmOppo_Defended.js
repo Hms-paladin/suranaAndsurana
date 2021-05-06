@@ -56,6 +56,7 @@ function TradeMarkOposition2(properties) {
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
             TradeMarkForm.status_id.value = obj.status_id;
+            TradeMarkForm.class_id.value = obj.class_id;
         TradeMarkForm.mark_id.value =obj.mark_id
           TradeMarkForm.ourReference.value =obj.our_reference;
             
@@ -65,8 +66,8 @@ function TradeMarkOposition2(properties) {
            TradeMarkForm.tmj_number.value =obj.tmj_number;
            TradeMarkForm.tmj_date.value = obj.tmj_date;
            TradeMarkForm.opositionNumber.value =obj.opposition_no;
-           TradeMarkForm.applicant.value = obj.applicant;
-           TradeMarkForm.applicantAgent.value =obj.applicant_agent;
+           TradeMarkForm.opponent.value = obj.applicant;
+           //TradeMarkForm.applicantAgent.value =obj.applicant_agent;
             TradeMarkForm.internal_status.value =obj.internal_status;
         }
 
@@ -379,6 +380,7 @@ setcountryDetList({ countryListsData })
         //console.log(filtererr.length);
         let params  = {
             "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
+            "trademark_id": TradeMarkForm.trademark_id.value ,
             "status_id" :TradeMarkForm.status_id.value,
             "our_reference": TradeMarkForm.ourReference.value,
             "mark_id":TradeMarkForm.mark_id.value,
@@ -388,8 +390,8 @@ setcountryDetList({ countryListsData })
             "tmj_number":TradeMarkForm.tmj_number.value,
             "tmj_date":TradeMarkForm.tmj_date.value,
             "opposition_no":TradeMarkForm.opositionNumber.value,
-            "applicant": TradeMarkForm.applicant.value,
-            "applicant_agent": TradeMarkForm.applicantAgent.value,
+            "applicant": TradeMarkForm.opponent.value,
+            //"applicant_agent": TradeMarkForm.applicantAgent.value,
             "internal_status":TradeMarkForm.internal_status.value,
             "end_date" : moment().format('YYYY-MM-DD HH:m:s'),
             "created_by" :localStorage.getItem("empId"),
