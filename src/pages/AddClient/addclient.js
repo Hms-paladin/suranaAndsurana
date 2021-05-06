@@ -40,7 +40,7 @@ function AddClient() {
     },
     con_per_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" },{ "name": "test" }],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
@@ -84,9 +84,10 @@ function AddClient() {
       errmsg: null,
     },
     cont_per_2: {
+      
       value: "",
       valueById: "",
-      validation: [{ name: "custommaxLength", params: "50" }, { "name": "alphabetsandSpecialChar" }],
+      validation: [{ name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
