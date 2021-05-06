@@ -519,6 +519,7 @@ function LeaveForm(props) {
                         <div>  <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "fromdate")}
                             value={Leave_Form.fromdate.value}
+                            minDate={new Date()}
                             error={Leave_Form.fromdate.error}
                             errmsg={Leave_Form.fromdate.errmsg} />
                         </div>

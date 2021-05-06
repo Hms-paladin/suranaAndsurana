@@ -70,7 +70,7 @@ export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res
             if(response.data.status===1){
                 dispatch(getHrTaskList())
                 notification.success({
-                    message: 'Interview Approve Successfully',
+                    message: 'Candidate Approved Successfully',
                   });
                   return Promise.resolve();
                 }

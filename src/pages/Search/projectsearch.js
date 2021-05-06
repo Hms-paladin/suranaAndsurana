@@ -331,7 +331,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="Client type"
+              placeholder="Client Type"
               dropdown={clientType.ClientType}
               changeData={(data) => checkValidation(data, "clienttype")}
               value={projectform.clienttype.value}
@@ -353,7 +353,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="Project type"
+              placeholder="Project Type"
               dropdown={projectType.ProjectType}
               changeData={(data) => checkValidation(data, "projecttype")}
               value={projectform.projecttype.value}
@@ -364,7 +364,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="Project name"
+              placeholder="Project Name"
               dropdown={projectName.ProjectName}
               changeData={(data) => checkValidation(data, "projectname")}
               value={projectform.projectname.value}
@@ -375,7 +375,7 @@ function Projectsearch(props) {
           <div className="projsearchfilterdrpdwn">
             <Labelbox
               type="select"
-              placeholder="Billing type"
+              placeholder="Billing Type"
               dropdown={billableType.BillableType}
               changeData={(data) => checkValidation(data, "billabletype")}
               value={projectform.billabletype.value}

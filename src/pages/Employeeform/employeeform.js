@@ -11,15 +11,18 @@ import moment from "moment";
 import { getHrTaskList } from "../../actions/TodoListAction";
 import { connect, useDispatch } from "react-redux";
 import { getDesignationList, getDepartment, getInterviewers } from '../../actions/MasterDropdowns'
-import { GetCandiateDetails, GetEmployeeDetails } from '../../actions/CandidateAndEmployeeDetails';
+import { GetCandiateDetails, GetEmployeeDetails,getBankName } from '../../actions/CandidateAndEmployeeDetails';
 import DynModelView from '../Interview/model';
 import './employeeform.scss'
 function Employeeform(props) {
     const dispatch = useDispatch();
     const [getDetails, setgetDetails] = useState([])
     const [getdata, setgetData] = useState([])
+    
+    const [bankNames, setBankNames] = useState([])
     const [dept, setdept] = useState({})
     const [sup_name, setsup_name] = useState({})
+    const [supervisor_name, setSupervisor_name] = useState()
     const [file, setfile] = useState("")
     const [fileList, setfileList] = useState("")
     const [EmpForm, setEmpFrom] = useState({
@@ -79,13 +82,13 @@ function Employeeform(props) {
         },
         account_no: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "custommaxLength","params":"16" },{ "name": "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
         ifsc_code: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" },{ "name": "custommaxLength","params":"11" },{ "name": "alphaNumaricOnly" }],
             error: null,
             errmsg: null,
         },
@@ -101,6 +104,7 @@ function Employeeform(props) {
     useEffect(() => {
         dispatch(getDesignationList());
         dispatch(getDepartment());
+        dispatch(getBankName());
         dispatch(getInterviewers());
     }, [])
 
@@ -135,6 +139,17 @@ function Employeeform(props) {
 
     }, [props.getEmployeeDetails])
 
+    ///bank name
+    useEffect(() => {
+        let BankName = [];
+        props.getBankNameDetails.map((data, index) =>
+            BankName.push({ id: data.bank_id, value: data.bank_name })
+        );
+        setBankNames({ BankName });
+
+    }, [props.getBankNameDetails])
+    ///
+    
     //SETDropdowns 
     useEffect(() => {
         let Designation = [];
@@ -152,6 +167,7 @@ function Employeeform(props) {
         props.getInterviewersList.map((data, index) =>
             Supervisor.push({ id: data.emp_id, value: data.name })
         );
+
         setsup_name({ Supervisor });
     }, [
         props.getDesignationList,
@@ -228,12 +244,17 @@ function Employeeform(props) {
         formData.append("doj", EmpForm.date_of_birth.value);
         formData.append("supervisor", EmpForm.supervisor_name.value);
         formData.append("email", EmpForm.EmpOfficialEmail.value);
-        formData.append("supervisor_name", "");
+        formData.append("supervisor_name",supervisor_name);
         formData.append("supervisor_email", EmpForm.supervisor_email.value);
         formData.append("official_email", EmpForm.EmpOfficialEmail.value);
         formData.append("official_contact", EmpForm.EmpOfficialContact.value);
         formData.append("department", EmpForm.department.value);
         formData.append("employee__code", EmpForm.employee_code.value);
+
+        formData.append("account_number", EmpForm.account_no.value);
+        formData.append("ifsc_code", EmpForm.ifsc_code.value);
+        formData.append("bank_id", EmpForm.bank_name.value);
+
         formData.append("upload_document", file);
         formData.append("biometric_data", "notes");
         formData.append("approved_by", localStorage.getItem("empId"));
@@ -266,7 +287,7 @@ function Employeeform(props) {
             })
         handleCancel()
     }
-
+console.log(supervisor_name,"supervisor_name")
     const onSubmit = () => {
         var mainvalue = {};
         var targetkeys = Object.keys(EmpForm);
@@ -321,6 +342,15 @@ function Employeeform(props) {
 
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
+
+            if( props.getInterviewersList.length>0&& props.getInterviewersList){
+                let data_res_id =  props.getInterviewersList.find((val) => { 
+                return (
+                    data == val.emp_id
+                ) 
+            })
+            setSupervisor_name(data_res_id.name)
+            }
 
             Sup_nameGetId(data)
             // dispatch(GetEmployeeDetails(data))
@@ -596,7 +626,9 @@ function Employeeform(props) {
                     errmsg={EmpForm.ifsc_code.errmsg}
                 /></div>
 
-                <div><Labelbox type="select" placeholder="Bank Name"
+                <div><Labelbox type="select"
+                    placeholder="Bank Name"
+                    dropdown={bankNames.BankName}
                     changeData={(data) => checkValidation(data, "bank_name")}
                     value={EmpForm.bank_name.value}
                     error={EmpForm.bank_name.error}
@@ -621,6 +653,7 @@ const mapStateToProps = (state) => (
         getInterviewersList: state.getOptions.getInterviewersList || [],
         getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails || [],
         getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
+        getBankNameDetails: state.CandidateAndEmployeeDetails.getBankName || [],
     }
 );
 

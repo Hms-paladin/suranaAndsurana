@@ -25,6 +25,7 @@ import {
   GET_TABLE_CLASS,
   GET_TABLE_SUBACTIVITY,
   GET_CHECKLIST,
+  GET_CASE_TYPE
 } from '../utils/Constants'
 export const get_Tablenames = () => async dispatch => {
   try {
@@ -103,7 +104,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
         state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
         state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
         state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
-        state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":"0",
+        state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
         "created_by":"2"
        
 
@@ -114,8 +115,8 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
         if (response.data.status === 1) {
 
           notification.success({
-            message: 'Inserted Successfully',
-          });
+            message: response.data.msg,
+        });
         dispatch({ type: COMMON_INSERT_TEXT, payload: response.data.status })
 
           dispatch(getTableGroup())
@@ -135,7 +136,12 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           dispatch(getTableInsitute())
           dispatch(getTableActivity())
           dispatch(getTableCourt())
+          dispatch(getCaseType())
           return Promise.resolve();
+        }else{
+          notification.success({
+            message: response.data.msg,
+        });
         }
 
       });
@@ -159,8 +165,8 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
       url: apiurl + 'common_update_text',
       data:
       {
-        // "id":Editvisible?editId.group.group_id:"",
-        "id":"1",
+        "id":Editvisible?editId.group.group_id:"",
+        // "id":"1",
         "table_names":data,
         "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
@@ -169,12 +175,8 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
         state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
         state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
-        state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":"0",
-        "created_by":"2"
-        
-        
-        
-        
+        state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
+        "updated_by":localStorage.getItem("empId")
 
       },
     })
@@ -183,12 +185,30 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         if (response.data.status === 1) {
 
           notification.success({
-            message: 'Updated Successfully',
+            message: response.data.msg,
           });
         dispatch({ type: COMMON_UPDATE_TEXT, payload: response.data.status })
 
-          dispatch(getTableGroup())
-          return Promise.resolve();
+        dispatch(getTableGroup())
+        dispatch(getTableSkills())
+        dispatch(getTableTraits())
+        dispatch(getTableCapability())
+        dispatch(getTableCertification())
+        dispatch(getTableCourt())
+        dispatch(getTableDepartment())
+        dispatch(getTableDesgination())
+        dispatch(getTableQualification())
+        dispatch(getTableResource())
+        dispatch(getTableSpecification())
+        dispatch(getTableTalents())
+        dispatch(getTableCourt)
+        dispatch(getTableIndustry())
+        dispatch(getTableInsitute())
+        dispatch(getTableActivity())
+        dispatch(getTableCourt())
+        dispatch(getCaseType())
+        
+        return Promise.resolve();
         }
 
       });
@@ -224,6 +244,10 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
           });
           dispatch(getCheckList())
           return Promise.resolve();
+        }else{
+          notification.success({
+            message:response.data.msg,
+          });
         }
       });
   }
@@ -316,7 +340,8 @@ export const InsertSubstage = (UserMaster, props) => async dispatch => {
       data:
       {
         "stage_id": UserMaster.stage_dropdown.value,
-        "stage": UserMaster.sub_stage.value,
+        "sub_stage_id": UserMaster.stage_dropdown.value,
+        "sub_stage": UserMaster.sub_stage.value,
         "created_on": "2021-03-02",
         "created_by": "3"
       },
@@ -326,10 +351,10 @@ export const InsertSubstage = (UserMaster, props) => async dispatch => {
         dispatch({ type: INSERT_SUBSTAGE, payload: response.data.status })
         if (response.data.status === 1) {
           notification.success({
-            message: 'Inserted Successfully',
+            message: response.data.msg,
           });
 
-          dispatch(getSubStage())
+          dispatch(getSubStage( UserMaster.stage_dropdown.value))
           return Promise.resolve();
         }
        
@@ -510,6 +535,10 @@ const response = await axios({
 export const getTableGroup = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_group");
   return dispatch({ type: GET_TABLE_GROUP, payload: response.data.data});
+};
+export const getCaseType = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_case_type");
+  return dispatch({ type: GET_CASE_TYPE, payload: response.data.data });
 };
 export const getTableSkills = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_skills");

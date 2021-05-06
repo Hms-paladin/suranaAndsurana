@@ -167,6 +167,11 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: " Invalid Input ", state: false };
         }
+      } else if (validatorsArray[valid].name == "test") {
+        var re =/^[a-zA-Z !@#$%^&*)(]{}$/;
+        if (re.test(textValue) == false) {
+          return { msg: " Invalid Input ", state: false };
+        }
       }
 
 

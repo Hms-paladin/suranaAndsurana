@@ -27,8 +27,8 @@ function Search(props) {
                     <Radio value={2}>Project</Radio>
                     <Radio value={3}>HR</Radio>
                     <Radio value={4}>Task</Radio>
-                    <Radio value={5}>Label 4</Radio>
-                    <Radio value={6}>Label 6</Radio>
+                    {/* <Radio value={5}>Label 4</Radio>
+                    <Radio value={6}>Label 6</Radio> */}
                 </Radio.Group>
             </div>
             {value ===1 && <Resumesearch/>}

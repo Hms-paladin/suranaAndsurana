@@ -40,7 +40,7 @@ function AddClient() {
     },
     con_per_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphabetsandSpecialChar"}],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" },{ "name": "test" }],
       error: null,
       errmsg: null,
     },
@@ -52,7 +52,7 @@ function AddClient() {
     },
     DOB_1: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -104,7 +104,7 @@ function AddClient() {
     },
     con_ph_2: {
       value: "",
-      validation: [{ name: "required" }, { name: "mobileSurana" }],
+      validation: [{ name: "mobileSurana" }],
       error: null,
       errmsg: null,
     },
@@ -314,10 +314,7 @@ function AddClient() {
   }
 
 
-  function onfileupload() {
-
-
-
+async function onfileupload() {
 
     if (Addclient_Form.poa_name.value === '') {
       notification.success({
@@ -325,12 +322,28 @@ function AddClient() {
       });
     } else {
 
-      setFileupload((prevState) => (
-        [...prevState, {
-          poa_name: Addclient_Form.poa_name.value,
-          selectedFile: "",
-        }]
-      ));
+    let wait=await check()
+    function check(){
+      
+      return new Promise((resolve)=>{
+        setFileupload((prevState) => (
+          [...prevState, {
+            poa_name: Addclient_Form.poa_name.value,
+            selectedFile: "",
+          }]
+         
+        ));
+
+       
+       
+      
+      })
+      Addclient_Form["poa_name"].value=""
+ 
+    //  return Promise.resolve(true);
+    }
+  
+     
 
     }
   }
@@ -357,6 +370,7 @@ function AddClient() {
       }
     });
     setselectedFile("")
+    setFileupload([])
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
@@ -499,13 +513,13 @@ function AddClient() {
               </div>
 
             </div>
-          
+            <div className="doc_upload_div"><div style={{width:'50%'}}>POA</div>  <div>File Name</div></div>
             {fileupload.map((data) => {
               return (<>
-                <div className="doc_upload_div"><div>POA</div>  <div>File Name</div></div>
+               
                 <div className="doc_upload_items">
-                  <div>{data.poa_name}</div>
-                  <div>{"data.selectedFile"}</div>
+                  <div style={{width:'50%'}}>{data.poa_name}</div>
+                  <div>{""}</div>
                 </div></>
               )
             })}

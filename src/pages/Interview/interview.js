@@ -370,7 +370,7 @@ function InerviewScreen(props) {
           {/* Changes here */}
           <div className="candidate_det">
             <div>Name of the Candidate</div>
-            <div>Priya</div>
+            <div>{canName}</div>
           </div>
           <div className="score_table">
             <EnhancedTable headCells={headCells} rows={rows}></EnhancedTable>

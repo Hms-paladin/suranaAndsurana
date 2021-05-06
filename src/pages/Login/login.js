@@ -112,20 +112,25 @@ const SignInSide = (props) => {
       }
 
 
-    const validateEmail = data => {
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (re.test(data)) {
-            setInvalidEmail(false)
-        } else {
-            setInvalidEmail(true)
-        }
-    }
+    // const validateEmail = data => {
+    //     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //     if (re.test(data)) {
+    //         setInvalidEmail(false)
+    //     } else {
+    //         setInvalidEmail(true)
+    //     }
+    // }
 
 
     const storeUserDetails = (event) => {
         if (event.target.name === "email") {
             setEmail(event.target.value)
-            validateEmail(email)
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (re.test(event.target.value)) {
+                setInvalidEmail(false)
+            } else {
+                setInvalidEmail(true)
+            }
             setEmailError(false)
         }
 

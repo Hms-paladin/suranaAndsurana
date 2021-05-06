@@ -73,7 +73,7 @@ import SuccessIcon from "../../images/successicon.svg";
 import AddVarData from "../../images/addvardata.svg";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";
-import {InsertVariableRate,getProjectVariableRate } from "../../actions/VariableRateMaster"
+import {InsertProjectVariableRate,getProjectVariableRate } from "../../actions/VariableRateMaster"
 
 
 const { TabPane } = Tabs;
@@ -412,7 +412,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
       //----------
 
      function onsubmitvariablerate(){
-        dispatch(InsertVariableRate(sendVariableData)).then((response) => {
+        dispatch(InsertProjectVariableRate(sendVariableData)).then((response) => {
             setVariableid(false);
           });
       }
@@ -479,6 +479,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
     });
     setShowVariableTable([...showVariableTable]);
     sendVariableData.push({
+      project_id:props.ProjectDetails[0].project_id,
       designation_id: data.designation_id,
       activity_id: data.activity_id,
       sub_activity_id: data.sub_activity_id,
@@ -494,6 +495,8 @@ console.log(projectSearchCreate,"projectSearchCreate")
   ////
   useEffect(()=>{
     let searchVariableTableData = [];
+    let sendprojVariableTableData = [];
+    
     props.getProjectVariableRate.length>0 &&props.getProjectVariableRate.map((data, index) => {
         applicableamount['amountapplicable' + index] = data.amount;
         searchVariableTableData.push({
@@ -520,9 +523,17 @@ console.log(projectSearchCreate,"projectSearchCreate")
         />
       ),
     });
+
+    sendprojVariableTableData.push({
+        project_id:props.ProjectDetails[0].project_id,
+        rate_master_id: data.rate_master_id,
+        base_rate: data.amount,
+      });
+
     })
     setShowVariableTable([...searchVariableTableData]);
-    setSendVariableData([...searchVariableTableData]);
+    setSendVariableData([...sendprojVariableTableData]);
+
   },[props.getProjectVariableRate])
 
    console.log(applicableamount,"applicableamount")

@@ -378,6 +378,7 @@ const UserMaster = (props) => {
     //   // setUserTableHeader(tableHeaderMaster[`header${data}`])
     //   settableid(data)
     // }
+
     if (key === "stage_dropdown") {
       dispatch(getSubStage(data));
     }
@@ -392,7 +393,9 @@ const UserMaster = (props) => {
     }
     if (data && key === "tablename") {
       var value = props.table_name.find((item) => {
+        setEditvisible(false);
         return item.table_id == data;
+        
       });
       settable_name_value(value);
     }

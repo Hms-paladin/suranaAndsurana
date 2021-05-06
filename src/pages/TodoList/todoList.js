@@ -330,7 +330,7 @@ function TodoList(props) {
 
                 {/*EmployeeApprove after  value entered in employee form     */}
 
-                <DynModel modelTitle={"Employee Approve"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)}
+                <DynModel modelTitle={"Employee Approval"} handleChangeModel={approveModalOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)}
                     content={<EmployeeApprove closemodal={(bln) => onNewPageClear(bln)} emp_viewer_id={viewer_id} stateClear={stateClear} />} />
 
                 {/* recruitment Request modal */}

@@ -1,4 +1,4 @@
-import { GET_CANDIDATES_DETAILS,GET_EMPLOYEE_DETAILS } from "../utils/Constants";
+import { GET_BANK_NAME,GET_CANDIDATES_DETAILS,GET_EMPLOYEE_DETAILS } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
@@ -44,3 +44,8 @@ export const GetEmployeeDetails = (data) => async dispatch => {
         
     }
 }
+
+export const getBankName = () => async (dispatch) => {
+    const response = await axios.get(apiurl + "/get_bank_name");
+    return dispatch({ type: GET_BANK_NAME, payload: response.data.data });
+  };

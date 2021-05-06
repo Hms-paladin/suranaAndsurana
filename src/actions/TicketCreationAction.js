@@ -39,7 +39,7 @@ export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatc
                 dispatch({ type: INSERT_TICKET_TEMPLATE, payload: true })
                 notification.success({
 
-                    message: changemsg ? " Ticket  Updated Successfully" : " Ticket  Inserted Successfully",
+                    message: changemsg ? " Template Updated Successfully" : " Template Saved Successfully",
                 });
                 return Promise.resolve();
             }
@@ -106,7 +106,7 @@ export const InsertRecruitmentTicket = (TicketCreation) => async dispatch => {
             if (response.data.status === 1) {
                 dispatch({ type: INSERT_RECRUITMENT_TICKET, payload: true })
                 notification.success({
-                    message: " Ticket Generated  Successfully",
+                    message: " Ticket Generated Successfully",
                 });
                 return Promise.resolve();
             }

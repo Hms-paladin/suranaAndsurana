@@ -25,7 +25,7 @@ const headCells = [
     { id: 'age', label: 'Age' },
     { id: 'gender', label: 'Gender' },
     { id: 'basic', label: ' Qualification' },
-    { id: 'language', label: 'Languages Known' },
+    { id: 'language', label: 'Languages ' },
     { id: 'certification', label: 'Certification' },
     { id: 'specialization', label: 'Specialization' },
     // { id: 'acheivements', label: 'Achievements' },
