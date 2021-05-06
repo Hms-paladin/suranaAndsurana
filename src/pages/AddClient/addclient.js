@@ -40,7 +40,7 @@ function AddClient() {
     },
     con_per_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphabetsandSpecialChar"}],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
@@ -86,7 +86,7 @@ function AddClient() {
     cont_per_2: {
       value: "",
       valueById: "",
-      validation: [{ name: "custommaxLength", params: "50" }, { "name": "alphabetsandSpecialChar" }],
+      validation: [{ name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
@@ -499,7 +499,7 @@ function AddClient() {
               </div>
 
             </div>
-          
+
             {fileupload.map((data) => {
               return (<>
                 <div className="doc_upload_div"><div>POA</div>  <div>File Name</div></div>

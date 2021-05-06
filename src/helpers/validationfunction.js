@@ -168,6 +168,12 @@ class ValidationLibrary extends Component {
           return { msg: " Invalid Input ", state: false };
         }
       }
+      else if (validatorsArray[valid].name == "alphaspecialwithwhitespace") {
+        var re =/^[a-zA-Z !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+        if (re.test(textValue) == false) {
+          return { msg: " Invalid Input ", state: false };
+        }
+      }
 
 
     }
