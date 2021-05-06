@@ -14,7 +14,7 @@ import { Upload, message, Button, Icon } from 'antd';
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
 import moment from 'moment'
 import { getTradeMarkStatus,getClassDetails,getPoaDetails,
-    getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
+    getUsageDetails,insertTradeMark,getTradeMark} from "../../../actions/tradeMarkAction";
       
 
 
@@ -34,6 +34,7 @@ function TradeMark(properties) {
     const [idDetails, setidDetails] = useState({})
     let { rowId } = useParams()
     useEffect(() => {
+        dispatch(getTradeMark(rowId))
         dispatch(getProjectDetails(rowId))
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
@@ -44,6 +45,31 @@ function TradeMark(properties) {
       }, []);
 
     useEffect(() => {
+        if(properties.tradeMark && properties.tradeMark[0]){
+            let obj = properties.tradeMark[0];
+        TradeMarkForm.comments.value =obj.comments;
+        TradeMarkForm.trademark_id.value = obj.trademark_id;
+        TradeMarkForm.status_id.value = obj.status_id;
+        TradeMarkForm.mark_id.value =obj.mark_id
+        //"upload_image" :selectedFile,
+        TradeMarkForm.application_no.value =obj.application_no;
+        TradeMarkForm.application_date.value =obj.application_date;
+        TradeMarkForm.usage_details_id.value = obj.usage_details_id;
+        TradeMarkForm.goods_description.value= obj.goods_description;
+        TradeMarkForm.usage_from_date.value=obj.usage_from_date;
+        TradeMarkForm.ip_india_status.value =obj.ip_india_status;
+       
+        TradeMarkForm.internal_status.value =obj.internal_status;
+        TradeMarkForm.allotment.value=obj.allotment;
+        TradeMarkForm.amendment.value =obj.amendment;
+         // "orders":TradeMarkForm.orders.value,
+        TradeMarkForm.priority_details.value =obj.priority_details;
+        TradeMarkForm.tmj_number.value =obj.tmj_number;
+       TradeMarkForm.tmj_date.value = obj.tmj_date;
+        TradeMarkForm.journel_extract.value =obj.journel_extract;
+        TradeMarkForm.certificate_date.value =obj.certificate_date;
+        TradeMarkForm.renewal_certificate_date.value = obj.renewal_certificate_date;
+        }
         setProjectDetails(properties.ProjectDetails);
         properties.ProjectDetails.length > 0 && setidDetails({
             project_id:properties.ProjectDetails[0].project_id,
@@ -78,7 +104,7 @@ let tmUsageDetailsData = []
 )
 setusageDetList({ tmUsageDetailsData })
 
-}, [properties.ProjectDetails,
+}, [properties.ProjectDetails,properties.tradeMark,
     properties.tradeStatusList,properties.classDetailsList,properties.POAList,properties.tmUsageDetailsList
   ]);
 
@@ -114,9 +140,15 @@ setusageDetList({ tmUsageDetailsData })
         },
     };
     const dispatch = useDispatch()
-
+    
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
+        trademark_id: {
+            value: 0,
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
         project_id: {
             value: "",
             validation: [{ "name": "required" },],
@@ -306,6 +338,8 @@ setusageDetList({ tmUsageDetailsData })
         ); 
         console.log(filtererr.length);
         let params  = {
+            
+            "trademark_id" :TradeMarkForm.trademark_id.value,
              "project_id" :idDetails.project_id,//"71",//radeMarkForm.project_id.value,
              "status_id" :TradeMarkForm.status_id.value,
              "mark_id":TradeMarkForm.mark_id.value,
@@ -327,6 +361,7 @@ setusageDetList({ tmUsageDetailsData })
              "journel_extract":TradeMarkForm.journel_extract.value,
              "certificate_date":TradeMarkForm.certificate_date.value,
              "renewal_certificate_date":TradeMarkForm.renewal_certificate_date.value,
+             "next_renewal":TradeMarkForm.nextRenewal.value, 
              "created_by" :localStorage.getItem("empId"),
              "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
              "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
@@ -625,6 +660,7 @@ const mapStateToProps = (state) =>
     tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
     countriesList : state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark : state.tradeMarkReducer.getTrademark || {},
 });
 
 //export default connect(mapStateToProps)(ProjectTaskModel);

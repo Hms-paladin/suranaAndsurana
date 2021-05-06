@@ -125,6 +125,7 @@ export const GET_TRADEMARK_USAGE_DETS = "GET_TRADEMARK_USAGE_DETS";
 export const GET_POA = "GET_POA";
 export const INSERT_TRADE_MARK = "INSERT_TRADE_MARK";
 export const INSERT_TIME_SHEET = "INSERT_TIME_SHEET";
+export const GET_TRADE_MARK ="GET_TRADE_MARK";
 //Design
 export const GET_DESIGN_DETAILS = "GET_DESIGN_DETAILS";
 //patent

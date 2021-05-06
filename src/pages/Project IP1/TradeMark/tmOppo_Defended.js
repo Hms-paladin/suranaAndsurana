@@ -7,7 +7,7 @@ import ValidationLibrary from "../../../helpers/validationfunction";
 import PublishIcon from '@material-ui/icons/Publish';
 import CustomButton from '../../../component/Butttons/button';
 import moment from 'moment'
-import { getTradeMarkStatus,getClassDetails,getPoaDetails,getCountryDetails,
+import { getTradeMarkStatus,getClassDetails,getPoaDetails,getCountryDetails,getTradeMark,
     getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
     import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
     import { useParams } from "react-router-dom";
@@ -38,6 +38,7 @@ function TradeMarkOposition2(properties) {
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     useEffect(() => {
+        dispatch(getTradeMark(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
         dispatch(getPoaDetails());
@@ -49,6 +50,26 @@ function TradeMarkOposition2(properties) {
       }, []);
 
     useEffect(() => {
+
+        if(properties.tradeMark && properties.tradeMark[0]){
+            let obj = properties.tradeMark[0];
+            TradeMarkForm.trademark_id.value = obj.trademark_id;
+
+            TradeMarkForm.status_id.value = obj.status_id;
+        TradeMarkForm.mark_id.value =obj.mark_id
+          TradeMarkForm.ourReference.value =obj.our_reference;
+            
+           // "upload_image" :selectedFile,
+           TradeMarkForm.application_no.value =obj.application_no;
+           TradeMarkForm.application_date.value =obj.application_date;
+           TradeMarkForm.tmj_number.value =obj.tmj_number;
+           TradeMarkForm.tmj_date.value = obj.tmj_date;
+           TradeMarkForm.opositionNumber.value =obj.opposition_no;
+           TradeMarkForm.applicant.value = obj.applicant;
+           TradeMarkForm.applicantAgent.value =obj.applicant_agent;
+            TradeMarkForm.internal_status.value =obj.internal_status;
+        }
+
 
         let tradeStatusData = []
         properties.tradeStatusList.map((data) =>
@@ -106,6 +127,12 @@ setcountryDetList({ countryListsData })
 
 
   const [TradeMarkForm, setTradeMarkForm] = useState({
+    trademark_id: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+    },
       project_id: {
           value: "",
           validation: [{ "name": "required" },],
@@ -643,6 +670,7 @@ const mapStateToProps = (state) =>
     tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
     countriesList : state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark : state.tradeMarkReducer.getTrademark || {},
 });
 
 export default connect(mapStateToProps)(TradeMarkOposition2);
