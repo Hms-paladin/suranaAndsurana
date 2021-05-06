@@ -108,6 +108,8 @@ function Navbar(props) {
       // { path: "/employeeform", title: "Employee Form" },
       { path: "/search", title: "Search", img: SearchbarIcon },
       { path: "/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
+      { path: "/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
+
       // variable rate master
       // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
       // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
@@ -143,7 +145,9 @@ function Navbar(props) {
         { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
         { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
         { path: "/leaveupdate", title: "Leave Master", img: MasterIcon },
-        { path: "/usermaster", title: "User Master", img: MasterIcon }
+        { path: "/usermaster", title: "User Master", img: MasterIcon },
+        { path: "/checklistCreation", title: "CheckList Creation", img: MasterIcon },
+
       ]},
 
       //user management

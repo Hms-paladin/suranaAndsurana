@@ -293,7 +293,7 @@ function Projectsearch(props) {
 
       if (data.project_details.length === 0) {
         notification.success({
-          message: " No Found Data",
+          message: " No Data found",
         })
       }
 

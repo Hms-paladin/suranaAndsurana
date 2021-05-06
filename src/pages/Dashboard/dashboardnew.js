@@ -17,6 +17,9 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import CustomButton from "../../component/Butttons/button";
 import DynModel from "../../component/Model/model";
 import AdhocTaskModal from "../Search/adhoctask"
+import { Calendar } from 'antd';
+import Grid from "@material-ui/core/Grid";
+
 
 const Projectbox = [
   { projects: "Project 1", projecttype: "Project Type 1 ", client: "Client 1" },
@@ -73,7 +76,6 @@ function DashboardNew() {
   const [changedashBoard, setChangedashBoard] = useState(true);
   // const[adhoc,setAdhoc]=useState(false)
 
-
   const [menulist, setMenulist] = useState([
     {
       img: <img src={Library} className="imageicons" />,
@@ -105,7 +107,7 @@ function DashboardNew() {
       title: "Adhoc Task",
       path: "/adhoctask",
     },
-   
+
     {
       img: <img src={ApplyLeave} className="imageicons" />,
       title: "Apply Leave",
@@ -141,6 +143,10 @@ function DashboardNew() {
     orderChange();
   }, []);
 
+  function onPanelChange(value, mode) {
+    console.log(value, mode);
+  }
+
   console.log(projectwise, "projectwise")
   const orderChange = useCallback(
     (showListStart = 0, showListEnd = 7, arrowshow) => {
@@ -172,7 +178,7 @@ function DashboardNew() {
 
   console.log(arrowHide, "arrowHide");
   return (
-       <div>
+    <div>
       <div className="dashboardMenuContainer">
         {arrowHide && (
           <div
@@ -208,49 +214,74 @@ function DashboardNew() {
 
 
       {changedashBoard ?
-        <> <div className="topcontainer">
-          <div className="projectscroll">
-            <div className="tableHeader">
-              <div className="linkHeader"></div>
-              <div>Projects</div>
-            </div>
-            <div className="projectdatas">
-              {Projectbox.map((data) => {
-                return (
-                  <div className="projecttable">
-                    <div>
-                      <a href={"#"} className="linktable">
-                        {data.projects}
-                      </a>
-                    </div>
-                    <div>{data.projecttype}</div>
-                    <div>{data.client}</div>
-                  </div>
-                );
-              })}
-            </div>
+        <>
+          <div className="expAdvContainer">
+            <div className="expensePalce">Expenses  4000</div>
+            <div className="advancePlace">Advance  20000</div>
+
           </div>
-          <div className="taskscroll">
-            <div className="tableHeader">
-              <div className="linkHeader"></div>
-              <div>Tasks</div>
-            </div>
-            <div className="taskdatas">
-              {Tasks.map((data) => {
-                return (
-                  <div className="tasktable">
-                    <div>
-                      <a href={"#"} className="linktable">
-                        {data.task}
-                      </a>
+
+          <div className="topcontainer">
+            <div className="projectscroll">
+              <div className="tableHeader">
+                <div className="linkHeader"></div>
+                <div>Projects</div>
+              </div>
+              <div className="projectdatas">
+                {Projectbox.map((data) => {
+                  return (
+                    <div className="projecttable">
+                      <div>
+                        <a href={"#"} className="linktable">
+                          {data.projects}
+                        </a>
+                      </div>
+                      <div>{data.projecttype}</div>
+                      <div>{data.client}</div>
                     </div>
-                    <div>{data.count}</div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
+            <div className="taskscroll">
+              <div className="tableHeader">
+                <div className="linkHeader"></div>
+                <div>Tasks</div>
+              </div>
+              <div className="taskdatas">
+                {Tasks.map((data) => {
+                  return (
+                    <div className="tasktable">
+                      <div>
+                        <a href={"#"} className="linktable">
+                          {data.task}
+                        </a>
+                      </div>
+                      <div>{data.count}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <Grid item xs={3}>
+              <div className="custom_calender">
+                <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+              </div>
+              <div className="calender_view">
+                <div>
+                  <div className="calDay">16 May</div>
+                  <div className="cal_time">09:00 aM</div>
+                  <div className="cal_time">10:00 aM</div>
+                  <div className="cal_time">11:00 aM</div>
+
+                </div>
+              </div>
+
+            </Grid>
+
+
           </div>
-        </div>
           <div className="taskdaysscroll">
             <div className="tableHeader">
               <div className="linkHeader"></div>
@@ -284,7 +315,10 @@ function DashboardNew() {
                 );
               })}
             </div>
+
           </div>
+
+
         </>
         :
         <>
@@ -410,12 +444,12 @@ function DashboardNew() {
             </div>
           </div>
         </>}
-          {/* <div>
+      {/* <div>
             <DynModel modelTitle="Adhoc Task" handleChangeModel={adhoc} handleChangeCloseModel={(bln) => setAdhoc(bln)} width={1000} 
             content={<AdhocTaskModal />} closeModel={()=>setAdhoc(false)}/>
         </div> */}
     </div>
-    
+
   );
 }
 
