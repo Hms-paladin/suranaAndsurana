@@ -84,6 +84,7 @@ function AddClient() {
       errmsg: null,
     },
     cont_per_2: {
+      
       value: "",
       valueById: "",
       validation: [{ name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
