@@ -168,7 +168,7 @@ function ApplicationDomestic(props) {
     console.log(filtererr.length);
     let params = {
       project_id: idDetails.project_id,
-      project_id: idDetails.project_id,
+      patent_id :patentForm.patent_id.value ,
       application_no: patentForm.app_num.value,
       patent_title: patentForm.title.value,
       application_date: patentForm.app_date.value,
@@ -188,7 +188,7 @@ function ApplicationDomestic(props) {
       updated_by: localStorage.getItem("empId"),
     };
 
-    if (filtererr.length > 0) {
+    if (filtererr.length > 1) {
       // setpatentForm({ error: true });
     } else {
       // setpatentForm({ error: false });

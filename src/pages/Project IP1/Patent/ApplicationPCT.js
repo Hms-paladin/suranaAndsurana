@@ -193,6 +193,7 @@ props.tradeStatusList,props.countriesList
     console.log(filtererr.length);
     let params ={
       "project_id":idDetails.project_id,
+      "patent_id" :patentForm.patent_id.value ,
       "file_cover":patentForm.file_cover.value,
       "associate":patentForm.associate.value,
       "our_reference":patentForm.our_ref.value,
@@ -212,15 +213,15 @@ props.tradeStatusList,props.countriesList
       }
 
     
-    if (filtererr.length > 0) {
+  //  if (filtererr.length > 0) {
       // setpatentForm({ error: true });
-    } else {
+   // } else {
       // setpatentForm({ error: false });
 
       dispatch(insertPatent(params)).then(() => {
         handleCancel()
       })
-    }
+   // }
 
     setpatentForm(prevState => ({
       ...prevState

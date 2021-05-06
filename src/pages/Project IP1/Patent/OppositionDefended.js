@@ -154,6 +154,7 @@ function OppositionDefended(props) {
         console.log(filtererr.length);
         let params ={
             "project_id":idDetails.project_id,
+            "patent_id" :patentForm.patent_id.value ,
             "opposition_filled_date":patentForm.opp_fill_date.value,
             "types_of_grant":patentForm.type_grant.value,
             "application_no":patentForm.app_num.value,
@@ -167,15 +168,15 @@ function OppositionDefended(props) {
             "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
             "updated_by" :localStorage.getItem("empId"),
             }
-        if (filtererr.length > 0) {
+      //  if (filtererr.length > 0) {
             // setpatentForm({ error: true });
-        } else {
+       // } else {
             // setpatentForm({ error: false });
 
             dispatch(insertPatent(params)).then(() => {
                 handleCancel()
               })
-        }
+       // }
 
         setpatentForm(prevState => ({
             ...prevState

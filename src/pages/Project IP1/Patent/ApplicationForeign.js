@@ -126,7 +126,7 @@ function ApplicationForeign(props) {
         patentForm.our_ref.value =obj.our_reference;
         patentForm.client_ref.value =obj.client_reference;
         patentForm.priority_date.value =obj.priority_date;
-        patentForm.country.value =obj.priority_country;
+        patentForm.priority_country.value =obj.priority_country;
         patentForm.priority_num.value =obj.priority_application_no;
   
         patentForm.status.value =obj.status_id;
@@ -194,6 +194,7 @@ props.tradeStatusList,props.countriesList
 
         let params ={
             "project_id":idDetails.project_id,
+            "patent_id" :patentForm.patent_id.value ,
             "file_cover":patentForm.file_cover.value,
             "our_reference":patentForm.our_ref.value,
             "client_reference":patentForm.client_ref.value,
@@ -213,7 +214,7 @@ props.tradeStatusList,props.countriesList
             }
 
        
-        if (filtererr.length > 0) {
+        if (filtererr.length > 1) {
             // setpatentForm({ error: true });
         } else {
             dispatch(insertPatent(params)).then(() => {
