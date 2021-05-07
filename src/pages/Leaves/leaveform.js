@@ -578,7 +578,7 @@ function LeaveForm(props) {
                     {(Leave_Form.leavetype.value === 38 || Leave_Form.leavetype.value === 39) &&
                         <> <Grid item xs={2}>
                             <div className="leaveFieldheading"> Date</div>
-                            <div> <Labelbox type="datepicker"
+                            <div> <Labelbox type="datepicker"   minDate={new Date()}
                                 changeData={(data) => checkValidation(data, "fromdate")}
                                 value={Leave_Form.fromdate.value}
                                 error={Leave_Form.fromdate.error}

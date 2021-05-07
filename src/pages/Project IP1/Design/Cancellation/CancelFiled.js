@@ -64,8 +64,8 @@ function CancelFiled(props) {
         getStatusList: []
     })
     const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
-  const getDesign =useSelector((state) => state.getDesignDetails)
-  const dispatch = useDispatch();
+    const getDesign = useSelector((state) => state.getDesignDetails)
+    const dispatch = useDispatch();
 
     function checkValidation(data, key, multipleId) {
 
@@ -103,9 +103,9 @@ function CancelFiled(props) {
         console.log(filtererr.length);
         if (filtererr.length > 0) {
         } else {
-            dispatch(InsertDesign(CancelFiled, props.projectDetails && props.projectDetails[0],getDesign)).then(() => {
+            dispatch(InsertDesign(CancelFiled, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
                 // handleCancel()
-              })
+            })
         }
         setCancelFiled(prevState => ({
             ...prevState
@@ -114,125 +114,137 @@ function CancelFiled(props) {
 
     useEffect(() => {
         dispatch(getIPStatus());
-      }, [])
-    
-      useEffect(() => {
-    
+    }, [])
+
+    useEffect(() => {
+
         const getStatusList = []
 
         DesignDropDowns.getIPStatus.map((data) => {
-          getStatusList.push({ id: data.status_id, value: data.Status })
+            getStatusList.push({ id: data.status_id, value: data.Status })
         })
-    
-        setCancFilGetList({ getStatusList })
-      }, [DesignDropDowns])
 
-      const handleCancel = () => {
+        setCancFilGetList({ getStatusList })
+    }, [DesignDropDowns])
+
+    const handleCancel = () => {
         let cancFil_key = ["client_petition", "des_number", "petitioner", "respondent_rep", "status", "comments"]
 
-        let cancFil_value = ["client_petitioner","design_number", "petitioner", "responent_rep", "status", "comments"]
+        let cancFil_value = ["client_petitioner", "design_number", "petitioner", "responent_rep", "status", "comments"]
 
-        if(getDesign.length > 0){
+        if (getDesign.length > 0) {
             cancFil_key.map((data, index) => {
                 CancelFiled[data].value = getDesign[0][cancFil_value[index]] ? getDesign[0][cancFil_value[index]] : "";
-          });
-        }else{
+            });
+        } else {
             cancFil_key.map((data) => {
                 CancelFiled[data].value = "";
             });
-      }
+        }
         setCancFilGetList((prevState) => ({
-          ...prevState,
+            ...prevState,
         }));
-      };
+    };
 
-      useEffect(()=>{
+    useEffect(() => {
         dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id));
-      },[props.projectDetails])
+    }, [props.projectDetails])
 
-      useEffect(()=>{
-        if(getDesign.length > 0){
+    useEffect(() => {
+        if (getDesign.length > 0) {
             let cancFil_key = ["client_petition", "des_number", "petitioner", "respondent_rep", "status", "comments"]
 
-            let cancFil_value = ["client_petitioner","design_number", "petitioner", "responent_rep", "status", "comments"]
-      
+            let cancFil_value = ["client_petitioner", "design_number", "petitioner", "responent_rep", "status", "comments"]
+
             cancFil_key.map((data, index) => {
-            if(cancFil_value[index] !== "application_date" && cancFil_value[index] !== "priority_date" && cancFil_value[index] !== "renewal_date"){
-            CancelFiled[data].value = getDesign[0][cancFil_value[index]];
-            CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] ? true : false;
-            }
-            else{
-              console.log(getDesign[0][cancFil_value[index]],"getDesign[0]")
-            CancelFiled[data].value = getDesign[0][cancFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancFil_value[index]]);
-            CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] === "0000-00-00" ? false : true;
-            }
-          });
-          setCancFilGetList((prevState) => ({
-            ...prevState,
-          }));
+                if (cancFil_value[index] !== "application_date" && cancFil_value[index] !== "priority_date" && cancFil_value[index] !== "renewal_date") {
+                    CancelFiled[data].value = getDesign[0][cancFil_value[index]];
+                    CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] ? true : false;
+                }
+                else {
+                    console.log(getDesign[0][cancFil_value[index]], "getDesign[0]")
+                    CancelFiled[data].value = getDesign[0][cancFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancFil_value[index]]);
+                    CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] === "0000-00-00" ? false : true;
+                }
+            });
+            setCancFilGetList((prevState) => ({
+                ...prevState,
+            }));
         }
-      },[getDesign])
+    }, [getDesign])
 
     return (
         <div className="container">
 
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
+                    <Grid>
+                        <div className="Fieldheadings">Client Petitioner</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "client_petition")}
+                            value={CancelFiled.client_petition.value}
+                            error={CancelFiled.client_petition.error}
+                            errmsg={CancelFiled.client_petition.errmsg}
+                            disabled={CancelFiled.client_petition.disabled}
+                        />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={"Client Petitioner"}
-                        changeData={(data) => checkValidation(data, "client_petition")}
-                        value={CancelFiled.client_petition.value}
-                        error={CancelFiled.client_petition.error}
-                        errmsg={CancelFiled.client_petition.errmsg}
-                        disabled={CancelFiled.client_petition.disabled}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Design Number</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "des_number")}
+                            value={CancelFiled.des_number.value}
+                            error={CancelFiled.des_number.error}
+                            errmsg={CancelFiled.des_number.errmsg}
+                            disabled={CancelFiled.des_number.disabled}
+                        />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={"Design Number"}
-                        changeData={(data) => checkValidation(data, "des_number")}
-                        value={CancelFiled.des_number.value}
-                        error={CancelFiled.des_number.error}
-                        errmsg={CancelFiled.des_number.errmsg}
-                        disabled={CancelFiled.des_number.disabled}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Petitioner</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "petitioner")}
+                            value={CancelFiled.petitioner.value}
+                            error={CancelFiled.petitioner.error}
+                            errmsg={CancelFiled.petitioner.errmsg}
+                            disabled={CancelFiled.petitioner.disabled}
+                        />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={"Petitioner"}
-                        changeData={(data) => checkValidation(data, "petitioner")}
-                        value={CancelFiled.petitioner.value}
-                        error={CancelFiled.petitioner.error}
-                        errmsg={CancelFiled.petitioner.errmsg}
-                        disabled={CancelFiled.petitioner.disabled}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Responent Rep</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "respondent_rep")}
+                            value={CancelFiled.respondent_rep.value}
+                            error={CancelFiled.respondent_rep.error}
+                            errmsg={CancelFiled.respondent_rep.errmsg}
+                            disabled={CancelFiled.respondent_rep.disabled}
+                        />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={"Responent Rep"}
-                        changeData={(data) => checkValidation(data, "respondent_rep")}
-                        value={CancelFiled.respondent_rep.value}
-                        error={CancelFiled.respondent_rep.error}
-                        errmsg={CancelFiled.respondent_rep.errmsg}
-                        disabled={CancelFiled.respondent_rep.disabled}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Status</div>
+                        <Labelbox type="select"
+                            changeData={(data) => checkValidation(data, "status")}
+                            dropdown={cancFilGetList.getStatusList}
+                            value={CancelFiled.status.value}
+                            error={CancelFiled.status.error}
+                            errmsg={CancelFiled.status.errmsg}
+                            disabled={CancelFiled.status.disabled}
+                        />
+                    </Grid>
 
-                    <Labelbox type="select"
-                        placeholder={"Status"}
-                        changeData={(data) => checkValidation(data, "status")}
-                        dropdown={cancFilGetList.getStatusList}
-                        value={CancelFiled.status.value}
-                        error={CancelFiled.status.error}
-                        errmsg={CancelFiled.status.errmsg}
-                        disabled={CancelFiled.status.disabled}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Comments</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "comments")}
+                            value={CancelFiled.comments.value}
+                            error={CancelFiled.comments.error}
+                            errmsg={CancelFiled.comments.errmsg}
+                            disabled={CancelFiled.comments.disabled}
+                        />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={"Comments"}
-                        changeData={(data) => checkValidation(data, "comments")}
-                        value={CancelFiled.comments.value}
-                        error={CancelFiled.comments.error}
-                        errmsg={CancelFiled.comments.errmsg}
-                        disabled={CancelFiled.comments.disabled}
-                    />
                 </Grid>
             </Grid>
 

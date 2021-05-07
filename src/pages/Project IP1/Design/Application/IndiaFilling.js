@@ -123,7 +123,7 @@ function IndiaFilling(props) {
     getStatusList: []
   })
   const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
-  const getDesign =useSelector((state) => state.getDesignDetails)
+  const getDesign = useSelector((state) => state.getDesignDetails)
   const dispatch = useDispatch();
 
   function checkValidation(data, key, multipleId) {
@@ -161,7 +161,7 @@ function IndiaFilling(props) {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0],getDesign)).then(() => {
+      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
         // handleCancel()
       })
     }
@@ -174,17 +174,17 @@ function IndiaFilling(props) {
   const handleCancel = () => {
     let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 
-    let indiaFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+    let indiaFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant", "title", "class_id", "country_id", "priority_country_id", "priority_date", "status", "comments", "renewal_date"]
 
-    if(getDesign.length > 0){
+    if (getDesign.length > 0) {
       indiaFil_key.map((data, index) => {
         IndiaForm[data].value = getDesign[0][indiaFil_value[index]] ? getDesign[0][indiaFil_value[index]] : "";
       });
-    }else{
-    indiaFil_key.map((data) => {
-      IndiaForm[data].value = "";
-    });
-  }
+    } else {
+      indiaFil_key.map((data) => {
+        IndiaForm[data].value = "";
+      });
+    }
     setIndiaForm((prevState) => ({
       ...prevState,
     }));
@@ -196,34 +196,34 @@ function IndiaFilling(props) {
     dispatch(getIPStatus());
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id));
-  },[props.projectDetails])
+  }, [props.projectDetails])
 
-useEffect(()=>{
-  if(getDesign.length > 0){
-    let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
+  useEffect(() => {
+    if (getDesign.length > 0) {
+      let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 
-    let indiaFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+      let indiaFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant", "title", "class_id", "country_id", "priority_country_id", "priority_date", "status", "comments", "renewal_date"]
 
-    indiaFil_key.map((data, index) => {
-      console.log(indiaFil_value[index],indiaFil_value[index] !== "application_date","indiaFil_value[index]")
-      if(indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date"){
-      IndiaForm[data].value = getDesign[0][indiaFil_value[index]];
-      IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] ? true : false;
-      }
-      else{
-        console.log(getDesign[0][indiaFil_value[index]],"getDesign[0]")
-      IndiaForm[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
-      IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+      indiaFil_key.map((data, index) => {
+        console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", "indiaFil_value[index]")
+        if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date") {
+          IndiaForm[data].value = getDesign[0][indiaFil_value[index]];
+          IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] ? true : false;
+        }
+        else {
+          console.log(getDesign[0][indiaFil_value[index]], "getDesign[0]")
+          IndiaForm[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
+          IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
 
-      }
-    });
-    setIndiaForm((prevState) => ({
-      ...prevState,
-    }));
-  }
-},[getDesign])
+        }
+      });
+      setIndiaForm((prevState) => ({
+        ...prevState,
+      }));
+    }
+  }, [getDesign])
 
   useEffect(() => {
 
@@ -251,130 +251,175 @@ useEffect(()=>{
     <div className="container">
       <Grid container direction={"column"}>
         <Grid item xs={12} md={12} className="app_cont_domestic">
-          <Labelbox type="text"
-            placeholder={"File cover"}
-            changeData={(data) => checkValidation(data, "file_cover")}
-            value={IndiaForm.file_cover.value}
-            error={IndiaForm.file_cover.error}
-            errmsg={IndiaForm.file_cover.errmsg}
-            disabled={IndiaForm.file_cover.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Associate"}
-            changeData={(data) => checkValidation(data, "associate")}
-            value={IndiaForm.associate.value}
-            error={IndiaForm.associate.error}
-            errmsg={IndiaForm.associate.errmsg}
-            disabled={IndiaForm.associate.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Our Reference"}
-            changeData={(data) => checkValidation(data, "our_ref")}
-            value={IndiaForm.our_ref.value}
-            error={IndiaForm.our_ref.error}
-            errmsg={IndiaForm.our_ref.errmsg}
-            disabled={IndiaForm.our_ref.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Client Reference"}
-            changeData={(data) => checkValidation(data, "client_ref")}
-            value={IndiaForm.client_ref.value}
-            error={IndiaForm.client_ref.error}
-            errmsg={IndiaForm.client_ref.errmsg}
-            disabled={IndiaForm.client_ref.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Application Number"}
-            changeData={(data) => checkValidation(data, "app_num")}
-            value={IndiaForm.app_num.value}
-            error={IndiaForm.app_num.error}
-            errmsg={IndiaForm.app_num.errmsg}
-            disabled={IndiaForm.app_num.disabled}
-          />
-          <Labelbox type="datepicker"
-            placeholder={"Application Date"}
-            changeData={(data) => checkValidation(data, "app_date")}
-            value={IndiaForm.app_date.value}
-            error={IndiaForm.app_date.error}
-            errmsg={IndiaForm.app_date.errmsg}
-            disabled={IndiaForm.app_date.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Applicant"}
-            changeData={(data) => checkValidation(data, "applicant")}
-            value={IndiaForm.applicant.value}
-            error={IndiaForm.applicant.error}
-            errmsg={IndiaForm.applicant.errmsg}
-            disabled={IndiaForm.applicant.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Title"}
-            changeData={(data) => checkValidation(data, "title")}
-            value={IndiaForm.title.value}
-            error={IndiaForm.title.error}
-            errmsg={IndiaForm.title.errmsg}
-            disabled={IndiaForm.title.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"Class"}
-            dropdown={indFilGetList.getClassList}
-            changeData={(data) => checkValidation(data, "class")}
-            value={IndiaForm.class.value}
-            error={IndiaForm.class.error}
-            errmsg={IndiaForm.class.errmsg}
-            disabled={IndiaForm.class.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"Country"}
-            dropdown={indFilGetList.getCountryList}
-            changeData={(data) => checkValidation(data, "country")}
-            value={IndiaForm.country.value}
-            error={IndiaForm.country.error}
-            errmsg={IndiaForm.country.errmsg}
-            disabled={IndiaForm.country.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"priority Country"}
-            dropdown={indFilGetList.getCountryList}
-            changeData={(data) => checkValidation(data, "priority_country")}
-            value={IndiaForm.priority_country.value}
-            error={IndiaForm.priority_country.error}
-            errmsg={IndiaForm.priority_country.errmsg}
-            disabled={IndiaForm.priority_country.disabled}
-          />
-          <Labelbox type="datepicker"
-            placeholder={"priority Date"}
-            changeData={(data) => checkValidation(data, "priority_date")}
-            value={IndiaForm.priority_date.value}
-            error={IndiaForm.priority_date.error}
-            errmsg={IndiaForm.priority_date.errmsg}
-            disabled={IndiaForm.priority_date.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"Status"}
-            dropdown={indFilGetList.getStatusList}
-            changeData={(data) => checkValidation(data, "status")}
-            value={IndiaForm.status.value}
-            error={IndiaForm.status.error}
-            errmsg={IndiaForm.status.errmsg}
-            disabled={IndiaForm.status.disabled}
-          />
-          <Labelbox type="textarea"
-            placeholder={"Comments"}
-            changeData={(data) => checkValidation(data, "comments")}
-            value={IndiaForm.comments.value}
-            error={IndiaForm.comments.error}
-            errmsg={IndiaForm.comments.errmsg}
-            disabled={IndiaForm.comments.disabled}
-          />
-          <Labelbox type="datepicker"
-            placeholder={"Renewal Date"}
-            changeData={(data) => checkValidation(data, "renewal_date")}
-            value={IndiaForm.renewal_date.value}
-            error={IndiaForm.renewal_date.error}
-            errmsg={IndiaForm.renewal_date.errmsg}
-            disabled={IndiaForm.renewal_date.disabled}
-          />
+          <Grid>
+            <div className="Fieldheadings">File cover</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "file_cover")}
+              value={IndiaForm.file_cover.value}
+              error={IndiaForm.file_cover.error}
+              errmsg={IndiaForm.file_cover.errmsg}
+              disabled={IndiaForm.file_cover.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Associate</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "associate")}
+              value={IndiaForm.associate.value}
+              error={IndiaForm.associate.error}
+              errmsg={IndiaForm.associate.errmsg}
+              disabled={IndiaForm.associate.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Our Reference</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "our_ref")}
+              value={IndiaForm.our_ref.value}
+              error={IndiaForm.our_ref.error}
+              errmsg={IndiaForm.our_ref.errmsg}
+              disabled={IndiaForm.our_ref.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Client Reference</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "client_ref")}
+              value={IndiaForm.client_ref.value}
+              error={IndiaForm.client_ref.error}
+              errmsg={IndiaForm.client_ref.errmsg}
+              disabled={IndiaForm.client_ref.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Application Number</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "app_num")}
+              value={IndiaForm.app_num.value}
+              error={IndiaForm.app_num.error}
+              errmsg={IndiaForm.app_num.errmsg}
+              disabled={IndiaForm.app_num.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Application Date</div>
+            <Labelbox type="datepicker"
+              changeData={(data) => checkValidation(data, "app_date")}
+              value={IndiaForm.app_date.value}
+              error={IndiaForm.app_date.error}
+              errmsg={IndiaForm.app_date.errmsg}
+              disabled={IndiaForm.app_date.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Applicant</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "applicant")}
+              value={IndiaForm.applicant.value}
+              error={IndiaForm.applicant.error}
+              errmsg={IndiaForm.applicant.errmsg}
+              disabled={IndiaForm.applicant.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Title</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "title")}
+              value={IndiaForm.title.value}
+              error={IndiaForm.title.error}
+              errmsg={IndiaForm.title.errmsg}
+              disabled={IndiaForm.title.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Class</div>
+            <Labelbox type="select"
+              dropdown={indFilGetList.getClassList}
+              changeData={(data) => checkValidation(data, "class")}
+              value={IndiaForm.class.value}
+              error={IndiaForm.class.error}
+              errmsg={IndiaForm.class.errmsg}
+              disabled={IndiaForm.class.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Country</div>
+            <Labelbox type="select"
+              dropdown={indFilGetList.getCountryList}
+              changeData={(data) => checkValidation(data, "country")}
+              value={IndiaForm.country.value}
+              error={IndiaForm.country.error}
+              errmsg={IndiaForm.country.errmsg}
+              disabled={IndiaForm.country.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">priority Country</div>
+            <Labelbox type="select"
+              dropdown={indFilGetList.getCountryList}
+              changeData={(data) => checkValidation(data, "priority_country")}
+              value={IndiaForm.priority_country.value}
+              error={IndiaForm.priority_country.error}
+              errmsg={IndiaForm.priority_country.errmsg}
+              disabled={IndiaForm.priority_country.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">priority Date</div>
+            <Labelbox type="datepicker"
+              changeData={(data) => checkValidation(data, "priority_date")}
+              value={IndiaForm.priority_date.value}
+              error={IndiaForm.priority_date.error}
+              errmsg={IndiaForm.priority_date.errmsg}
+              disabled={IndiaForm.priority_date.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Status</div>
+            <Labelbox type="select"
+              dropdown={indFilGetList.getStatusList}
+              changeData={(data) => checkValidation(data, "status")}
+              value={IndiaForm.status.value}
+              error={IndiaForm.status.error}
+              errmsg={IndiaForm.status.errmsg}
+              disabled={IndiaForm.status.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Comments</div>
+            <Labelbox type="textarea"
+              changeData={(data) => checkValidation(data, "comments")}
+              value={IndiaForm.comments.value}
+              error={IndiaForm.comments.error}
+              errmsg={IndiaForm.comments.errmsg}
+              disabled={IndiaForm.comments.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Renewal Date</div>
+            <Labelbox type="datepicker"
+              changeData={(data) => checkValidation(data, "renewal_date")}
+              value={IndiaForm.renewal_date.value}
+              error={IndiaForm.renewal_date.error}
+              errmsg={IndiaForm.renewal_date.errmsg}
+              disabled={IndiaForm.renewal_date.disabled}
+            />
+          </Grid>
+
         </Grid>
       </Grid>
       <div className="custombtnOposition">

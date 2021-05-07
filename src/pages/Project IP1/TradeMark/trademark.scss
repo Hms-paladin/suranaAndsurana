@@ -1,36 +1,35 @@
-.tradeMarkContainer{
+.tradeMarkContainer {
     margin: 8px;
 }
 
-.uploadbox{
+.uploadbox {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     bottom: 10px;
-    
-    path{
-        fill:#023E7D;
+
+    path {
+        fill: #023e7d;
     }
     .ant-upload-select {
-        border: 1px solid #023E7D !important;
+        border: 1px solid #023e7d !important;
         background-color: #fff;
         box-shadow: 0px 0px 4px 2px #b8b6b6;
         border-radius: 5px !important;
-        padding-left:10px;
-        padding-right:10px;
+        padding-left: 10px;
+        padding-right: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width:160px;
-    
+        width: 160px;
     }
-    .uploadbox_tag{
+    .uploadbox_tag {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    div{
+    div {
         justify-content: space-between;
         display: flex;
         align-items: center;
@@ -38,9 +37,8 @@
         margin-right: 8px;
         margin-left: 3px;
     }
-    
 }
-.upload_file_inside{
+.upload_file_inside {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -48,75 +46,80 @@
 
 // trade Mark Application International Filed =>>
 
-
-
 // TradeMark Opposition-Filed  =>>
 
-.trademarkOpsosotionContainer{
+.trademarkOpsosotionContainer {
     margin: 15px;
 }
 
-.tradeMarkOpositionButton{
-    
+.tradeMarkOpositionButton {
     margin: 25px;
     text-align: center;
-    
 }
 
-.TMopositionbuttons{
+.TMopositionbuttons {
     width: 11% !important;
 }
 
-.custombtnOposition{
- text-align: right;
-margin: 0px 60px 30px 0px;
-position: relative;
-bottom: 20px;
-    
+.custombtnOposition {
+    text-align: right;
+    margin: 0px 60px 30px 0px;
+    position: relative;
+    bottom: 20px;
 }
-
 
 // TradeMark Oppsition-Defended :
 
-.customButtonOposition{
+.customButtonOposition {
     text-align: right;
     margin: 20px;
 }
 
-.TMOpositionButton{
+.TMOpositionButton {
     width: 10%;
 }
 
+.Fieldheading {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 1px;
+}
 
-.uploadbox_div{
+.Fieldheadings {
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 7px;
+}
+
+.uploadbox_div {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    
-    path{
-        fill:#023E7D;
+
+    path {
+        fill: #023e7d;
     }
     .ant-upload-select {
-        border: 1px solid #023E7D !important;
+        border: 1px solid #023e7d !important;
         background-color: #fff;
         box-shadow: 0px 0px 4px 2px #b8b6b6;
         border-radius: 5px !important;
-        padding-left:10px;
-        padding-right:10px;
+        padding-left: 10px;
+        padding-right: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width:155px;
+        width: 155px;
         position: relative;
         left: 14px;
     }
-    .uploadbox_tag{
+    .uploadbox_tag {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    div{
+    div {
         justify-content: space-between;
         display: flex;
         align-items: center;
@@ -124,5 +127,4 @@ bottom: 20px;
         margin-right: 8px;
         margin-left: 3px;
     }
-    
 }
