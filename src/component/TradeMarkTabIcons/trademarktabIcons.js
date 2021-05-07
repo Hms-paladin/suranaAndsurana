@@ -81,7 +81,7 @@ const HtmlTooltip = withStyles((theme) => ({
                                 :
                                 <div className="tabIconsView" onClick={() => tabBox(data.title)}>
                                     <Grid><img src={data.img} className="tabIconImage" /></Grid>
-                                    <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
+                                    <Grid> <div  style={{marginTop: -3}} className="tabiconTitle">{data.title}</div></Grid>
                                 </div>
                             }
 

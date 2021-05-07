@@ -79,7 +79,7 @@ function LibraryBook(props) {
     }
     return (
         <div>
-        { permission.allow_view==='N'&&<div>
+        { permission.allow_view==='Y'&&<div>
             <div className="lib_master_h">Library Book Maintenance</div>
             <div className="parent_div_lib">
                 <Grid container spacing={2} className="cont_parent_lib_grid">

@@ -16,7 +16,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
         client_type: Addclient_Form.client_type.value,
         contact_person_1: Addclient_Form.con_per_1.value,
         gender: Addclient_Form.gender_1.value,
-        dob: Addclient_Form.DOB_1.value,
+        dob: (Addclient_Form.DOB_1.value===""||Addclient_Form.DOB_1.value===null)?'0-0-0000':Addclient_Form.DOB_1.value,
         contact_no: Number(Addclient_Form.con_ph_1.value),
         email_id: Addclient_Form.email_id_1.value,
         state: Addclient_Form.state.value,

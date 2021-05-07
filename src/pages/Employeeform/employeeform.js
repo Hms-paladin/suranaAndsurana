@@ -22,7 +22,6 @@ function Employeeform(props) {
     const [bankNames, setBankNames] = useState([])
     const [dept, setdept] = useState({})
     const [sup_name, setsup_name] = useState({})
-    const [supervisor_name, setSupervisor_name] = useState()
     const [file, setfile] = useState("")
     const [fileList, setfileList] = useState("")
     const [EmpForm, setEmpFrom] = useState({
@@ -70,7 +69,7 @@ function Employeeform(props) {
         },
         EmpOfficialContact: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "allowNumaricOnly" }, { "name": "mobile" }],
+            validation: [{ "name": "required" }, { "name": "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -108,7 +107,7 @@ function Employeeform(props) {
         dispatch(getInterviewers());
     }, [])
 
-    console.log(props.emp_form_id,"props.emp_form_id")
+    console.log(props,"emp_form_id")
     //CandidateDetails
    
     useEffect(() => {
@@ -213,62 +212,39 @@ function Employeeform(props) {
         const getEmployeeFormDetails = getDetails[0] || []
 
         let formData = new FormData();
-        formData.append("name", getEmployeeFormDetails.name);
-        // formData.append("type_of_resource",getEmployeeFormDetails.type_of_resource)
-        formData.append("gender", getEmployeeFormDetails.gender);
-        // formData.append("dob",getEmployeeFormDetails.dob)
-        // formData.append("bas_qual",getEmployeeFormDetails.bas_qual)
-        // formData.append("add_quali_1",getEmployeeFormDetails.add_quali_1)
-        // formData.append("add_quali_2",getEmployeeFormDetails.add_quali_2)
-        // formData.append("institution",getEmployeeFormDetails.institution)
-        // formData.append("last_employer",getEmployeeFormDetails.last_employer)
-        // formData.append("start_date",getEmployeeFormDetails.last_empr_start_date)
-        // formData.append("end_date",getEmployeeFormDetails.last_empr_end_date)
-        // formData.append("skills",getEmployeeFormDetails.skills)
-        // formData.append("traits",getEmployeeFormDetails.traits)
-        // formData.append("certification",getEmployeeFormDetails.certification)
-        // formData.append("specialization",getEmployeeFormDetails.specialization)
-        // formData.append("achievement",getEmployeeFormDetails.achievement)
-        // formData.append("capabilities",getEmployeeFormDetails.capabilities)
-        // formData.append("talents",getEmployeeFormDetails.talents)
-        // formData.append("special_interest",getEmployeeFormDetails.special_interest)
-        // formData.append("con_ph_no",EmpForm.supervisor_ph.value)
-        // formData.append("email_addr",getEmployeeFormDetails.email_addr)
-        // formData.append("address",getEmployeeFormDetails.postal_addr)
-        // formData.append("state_of_domecile",getEmployeeFormDetails.state_of_domecile)
-        // formData.append("city",getEmployeeFormDetails.city)
-        // formData.append("status",getEmployeeFormDetails.status_resource)
-        formData.append("lang_known", getEmployeeFormDetails.lang_known);
-        formData.append("industry", getEmployeeFormDetails.industry);
+
+        
+        formData.append("resume_id", props.getCandidatesDetails&&props.getCandidatesDetails[0].resume_id);
         formData.append("designation", EmpForm.desgination.value);
         formData.append("doj", EmpForm.date_of_birth.value);
         formData.append("supervisor", EmpForm.supervisor_name.value);
-        formData.append("email", EmpForm.EmpOfficialEmail.value);
-        formData.append("supervisor_name",supervisor_name);
-        formData.append("supervisor_email", EmpForm.supervisor_email.value);
         formData.append("official_email", EmpForm.EmpOfficialEmail.value);
         formData.append("official_contact", EmpForm.EmpOfficialContact.value);
         formData.append("department", EmpForm.department.value);
         formData.append("employee__code", EmpForm.employee_code.value);
-
+        formData.append("upload_document", file);
         formData.append("account_number", EmpForm.account_no.value);
         formData.append("ifsc_code", EmpForm.ifsc_code.value);
         formData.append("bank_id", EmpForm.bank_name.value);
-
-        formData.append("upload_document", file);
-        formData.append("biometric_data", "notes");
-        formData.append("approved_by", localStorage.getItem("empId"));
-        formData.append("approved_date", moment().format("YYYY-MM-DD HH:m:s"));
-        formData.append("is_interviewer", localStorage.getItem("user_id"));
         formData.append("created_on", moment().format("YYYY-MM-DD HH:m:s"));
-        formData.append("updated_on", moment().format("YYYY-MM-DD HH:m:s"));
         formData.append("created_by", localStorage.getItem("empId"));
-        formData.append("updated_by", localStorage.getItem("empId"));
-        formData.append("ip_address", "Adress");
-        formData.append(
-            "task_id",
-            props.emp_form_id && props.emp_form_id.task_id
-        );
+        formData.append("task_id",props.emp_form_id && props.emp_form_id.task_id);
+        formData.append("supervisor_email", EmpForm.supervisor_email.value);
+
+        // formData.append("name", getEmployeeFormDetails.name);
+        // formData.append("gender", getEmployeeFormDetails.gender);
+        // formData.append("lang_known", getEmployeeFormDetails.lang_known);
+        // formData.append("industry", getEmployeeFormDetails.industry);
+        // formData.append("email", EmpForm.EmpOfficialEmail.value);
+        // formData.append("supervisor_name",supervisor_name);
+        // formData.append("biometric_data", "notes");
+        // formData.append("approved_by", localStorage.getItem("empId"));
+        // formData.append("approved_date", moment().format("YYYY-MM-DD HH:m:s"));
+        // formData.append("is_interviewer", localStorage.getItem("user_id"));
+        // formData.append("updated_on", moment().format("YYYY-MM-DD HH:m:s"));
+        // formData.append("updated_by", localStorage.getItem("empId"));
+        // formData.append("ip_address", "Adress");
+        // console.log(props.getCandidatesDetails&&props.getCandidatesDetails[0].resume_id,"formData")
         Axios({
             method: "post",
             url: apiurl + "insert_employee",
@@ -287,7 +263,7 @@ function Employeeform(props) {
             })
         handleCancel()
     }
-console.log(supervisor_name,"supervisor_name")
+
     const onSubmit = () => {
         var mainvalue = {};
         var targetkeys = Object.keys(EmpForm);
@@ -320,7 +296,7 @@ console.log(supervisor_name,"supervisor_name")
 
     const handleCancel = () => {
         let From_key = [
-            "date_of_birth", "supervisor_name", "supervisor_email", "supervisor_ph", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department"
+            "account_no","ifsc_code","bank_name","date_of_birth", "supervisor_name", "supervisor_email", "supervisor_ph", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department"
         ]
 
         From_key.map((data) => {
@@ -349,7 +325,7 @@ console.log(supervisor_name,"supervisor_name")
                     data == val.emp_id
                 ) 
             })
-            setSupervisor_name(data_res_id.name)
+            
             }
 
             Sup_nameGetId(data)
@@ -399,6 +375,7 @@ console.log(supervisor_name,"supervisor_name")
                     <div className="Employee_formdiv">
 
                         {!props.emp_list&&<div className="employeeform_row2">
+
                             <div className="employeeform_row2flex1">
                                 <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id ? val.resume_id : ""}</div></div>

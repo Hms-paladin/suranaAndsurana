@@ -99,13 +99,13 @@ function Resumesearch(props) {
         },
         exp_min: {
             value: "",
-            validation: [{ "name": "allowNumaricOnly1" }],
+            validation: [{ "name": "allowNumaricOnly" }],
             error: null,
             errmsg: null,
         },
         exp_max: {
             value: "",
-            validation: [{ "name": "allowNumaricOnly1" }, { "name": "customminValue", "params": "0" }],
+            validation: [{ "name": "allowNumaricOnly" }, { "name": "customminValue", "params": "0" }],
             error: null,
             errmsg: null,
         },

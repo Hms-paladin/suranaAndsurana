@@ -291,7 +291,7 @@ function Projectsearch(props) {
         ipProjectDataList.push(rowdataListobj);
       });
 
-      if (data.project_details.length === 0) {
+      if (data.project_details.length === 0&&index===0) {
         notification.success({
           message: " No Data found",
         })

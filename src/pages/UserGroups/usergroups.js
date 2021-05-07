@@ -31,7 +31,7 @@ const UserGroups = (props) => {
         var listarray = {
           "employee": "Kaveri",
           "group":"Interviewer,Employee",
-          "process_type": "<img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />",
+          "process_type": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
         }
         groupList.push(listarray);
         listarray = {

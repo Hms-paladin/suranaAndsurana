@@ -22,9 +22,9 @@ export const GetProject_Type = () => async dispatch => {
 }
 
 
-export const InsertIpProject = (projectform,VariableRate) => async dispatch => {
+export const InsertIpProject = (projectform,VariableRate,proj_type_name) => async dispatch => {
     try {
-console.log(VariableRate,"variable_rate")
+console.log(proj_type_name,"variable_rate")
         axios({
             method: "POST",
             url: apiurl + "insert_project_form",
@@ -62,7 +62,7 @@ console.log(VariableRate,"variable_rate")
             if (response.data.status === 1) {
                 dispatch({ type: INSERT_IPPROJECT, payload: true })
                 notification.success({
-                    message: "IP Project Inserted Successfully",
+                    message: proj_type_name+" Inserted Successfully",
                 });
                 return Promise.resolve();
             }

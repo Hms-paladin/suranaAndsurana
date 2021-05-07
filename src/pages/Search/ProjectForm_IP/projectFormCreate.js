@@ -74,6 +74,7 @@ function ProjectFormCreate(props) {
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
   const [disableCondition, setDisableCondition] = useState(true);
   const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
+  const [proj_type_name, setProj_type_name] = useState();
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -265,6 +266,15 @@ function ProjectFormCreate(props) {
         };
         dispatch(getFilingType(values));
       }
+
+      if(ProjectType.projectTypedata.length>0&&ProjectType.projectTypedata){
+        let data_res_id = ProjectType.projectTypedata.find((val) => { 
+        return (
+            data == val.id
+        ) 
+      })
+      setProj_type_name(data_res_id.value)
+      }
     }
 
     //Process type
@@ -367,7 +377,7 @@ function ProjectFormCreate(props) {
 
     if (filtererr.length > 1) {
     } else {
-      dispatch(InsertIpProject(projectform, sendVariableData)).then(
+      dispatch(InsertIpProject(projectform, sendVariableData,proj_type_name)).then(
         (response) => {
           handleCancel();
         }
