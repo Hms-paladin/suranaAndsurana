@@ -30,7 +30,7 @@ export default function OutofPacket(){
     ]
     return(
         <div className="parent_root_outpack">
-             <div className="pack_master_h">Out of Packet Advances / Expenses</div>
+             <div className="pack_master_h">Out of Pocket Advances / Expenses</div>
                 <div className="parent_div_pack">
                 <Grid container spacing={2} className="cont_parent_lib_grid">
                     <Grid item xs={12} container direction="row" alignItems="center" spacing={2} className="cont_lib_item_grid">
@@ -59,7 +59,7 @@ export default function OutofPacket(){
                            <div><div>Total Expense</div><div>1,820</div></div>
                     
                            <div><div>Balance</div><div>18,180</div></div>
-                           <div className="div_ope"><img src={OPExp}/><div className="ope_text">OPE Expenses</div></div>
+                           <NavLink to="/OpeExpense"><div className="div_ope"><img src={OPExp}/><div className="ope_text">OPE Expenses</div></div></NavLink> 
                            <NavLink to="/ope_advance"><div  className="div_ope"><img src={OPAdv}/><div className="ope_text">OPE Advances</div></div></NavLink> 
                            </div>
                        

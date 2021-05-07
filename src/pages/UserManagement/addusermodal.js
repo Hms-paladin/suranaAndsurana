@@ -126,7 +126,6 @@ function UserMasterModal(props) {
             "mobilenumber",
             "emailid",
             "usergroup"
-
         ];
 
         From_key.map((data) => {

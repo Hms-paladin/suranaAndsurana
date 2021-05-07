@@ -37,7 +37,7 @@ export const InsertUsergroup = (UserGroup, groupName) => async dispatch => {
             if (response.data.status === 1) {
                 dispatch({ type: INSERT_USERGROUP, payload: true })
                 notification.success({
-                    message: " inserted Successfully",
+                    message: " Inserted Successfully",
                 });
                 dispatch(getGroupName())
                 return Promise.resolve();

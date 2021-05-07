@@ -11,14 +11,12 @@ const intialState = {
     getGroupName: [],
     updateGroupName: [],
     deleteGroupMaster: []
-
 }
 
 
 export default function (state = [], action) {
     const { type, payload } = action;
     switch (type) {
-
         case INSERT_USERGROUP:
             return { ...state, InsertUsergroup: payload }
         case GET_GROUPNAME:
