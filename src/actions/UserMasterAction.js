@@ -26,7 +26,8 @@ import {
   GET_TABLE_SUBACTIVITY,
   GET_CHECKLIST,
   GET_CASE_TYPE,
-  GET_COST_RANGE
+  GET_COST_RANGE,
+  GET_USER_STAGELIST
 } from '../utils/Constants'
 export const get_Tablenames = () => async dispatch => {
   try {
@@ -104,7 +105,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           state?.industry?.value?state.industry.value||"":state?.institute?.value?state.institute.value||"":state?.capability?.value?state.capability.value||"":
           state?.talents?.value?state.talents.value||"":state?.resourse?.value?state.resourse.value||"":state?.designation?.value?state.designation.value||"":
           state?.question?.value?state.question.value||"":state?.court?.value?state.court.value||"":state?.department?.value?state.department.value||"":
-          state?.activity?.value?state.activity.value||"":state?.stage?.value?state.stage.value||"":state?.case_type?.value?state.case_type.value||"":
+          state?.activity?.value?state.activity.value||"":state?.stage_name?.value?state.stage_name.value||"":state?.case_type?.value?state.case_type.value||"":
           state?.range?.value?state.range.value||"":"",
         // "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         // state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
@@ -146,6 +147,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           dispatch(getTableActivity())
           dispatch(getCaseType())
           dispatch(getProjectCostRange())
+          dispatch(getStageList())
           // dispatch(getTableQualification())
           // dispatch(getTableResource())
           
@@ -171,14 +173,14 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
 
  
 
-  console.log(editId.group.group_id, "id_divya")
+  // console.log(editId.group.group_id, "id_divya")
   try {
     axios({
       method: 'POST',
       url: apiurl + 'common_update_text',
       data:
       {
-        "id":Editvisible?editId.group.group_id:"",
+        "id":Editvisible?editId?.group?.group_id:"",
         // "id":"1",
         "table_names":data,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
@@ -187,7 +189,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         state?.industry?.value?state.industry.value||"":state?.institute?.value?state.institute.value||"":state?.capability?.value?state.capability.value||"":
         state?.talents?.value?state.talents.value||"":state?.resourse?.value?state.resourse.value||"":state?.designation?.value?state.designation.value||"":
         state?.question?.value?state.question.value||"":state?.department?.value?state.department.value||"":state?.court?.value?state.court.value||"":
-         state?.activity?.value?state.activity.value||"":state?.stage?.value?state.stage.value||"":state?.case_type?.value?state.case_type.value||"":
+         state?.activity?.value?state.activity.value||"":state?.stage_name?.value?state.stage_name.value||"":state?.case_type?.value?state.case_type.value||"":
         state?.range?.value?state.range.value||"":"",
         // "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         // state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
@@ -232,6 +234,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         
         // dispatch(getTableCourt)
         // dispatch(getTableIndustry())
+        dispatch(getStageList())
         dispatch(getTableActivity())
         dispatch(getTableCourt())
         dispatch(getCaseType())
@@ -260,8 +263,8 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
         "check_list_id": Editvisible?editdata&&editdata.check_list_id:0,
         "check_list": UserMaster.checklist_name.value,
         "project_type_id": UserMaster.project_type.value,
-        "created_on": localStorage.getItem("empId"),
-        "created_by": localStorage.getItem("empId")
+        "created_on":"2021-03-02",
+        "created_by":"3"
       },
     })
       .then((response) => {
@@ -397,7 +400,8 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
 }
 
 // insert status insert api
-export const InsertStatus = (UserMaster,StatusId,Editvisible) => async dispatch => {
+export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => async dispatch => {
+  console.log("checkstatus",Statusvalue.value)
   try {
     axios({
       method: 'POST',
@@ -417,8 +421,8 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible) => async dispatch 
           notification.success({
             message:response.data.msg,
           });
-          dispatch(getTableStatus())
-          return Promise.resolve();
+          dispatch(getTableStatus(Statusvalue&&Statusvalue?.value.toString()))
+          // return Promise.resolve();
         }
       });
   }
@@ -555,7 +559,7 @@ const response = await axios({
   method: "post",
   url: apiurl + "get_s_tbl_m_status",
   data: {
-    "status_type":"Interview"
+    "status_type":id?.value
   },
 });
   return dispatch({ type: GET_TABLE_STATUS, payload: response.data.data});
@@ -629,10 +633,11 @@ export const getTableCourt = () => async (dispatch) => {
   return dispatch({ type: GET_TABLE_COURT, payload: response.data.data});
 };
 
-// export const getTableCourt = () => async (dispatch) => {
-//   const response = await axios.get(apiurl + "/get_court");
-//   return dispatch({ type: GET_TABLE_COURT, payload: response.data.data});
-// };
+
+export const getStageList = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_stage_list");
+  return dispatch({ type: GET_USER_STAGELIST, payload: response.data.data });
+};
 
 export const getSubStage = (id) => async (dispatch) => {
   const response = await axios({

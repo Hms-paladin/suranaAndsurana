@@ -196,7 +196,8 @@ export const GET_TABLE_CLASS = "GET_TABLE_CLASS"
 export const GET_TABLE_SUBACTIVITY = "GET_TABLE_SUBACTIVITY"
 export const GET_CHECKLIST = "GET_CHECKLIST"
 export const COMMON_UPDATE_TEXT = "COMMON_UPDATE_TEXT"
-export const GET_COST_RANGE = "GET_COST_RANGE"
+export const GET_COST_RANGE="GET_COST_RANGE"
+export const GET_USER_STAGELIST="GET_USER_STAGELIST"
 
 //employee list
 export const GET_EMPLOYEE_CODE = "GET_EMPLOYEE_CODE";
@@ -245,3 +246,7 @@ export const GET_GROUP_CONTROL_LIST = "GET_GROUP_CONTROL_LIST";
 // Task Time Sheet
 
 export const GET_TASK_LIST = "GET_TASK_LIST";
+
+
+// todolist other task
+export const GET_OTHER_TASK="GET_OTHER_TASK"

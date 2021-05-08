@@ -1,4 +1,5 @@
 import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES } from "../utils/Constants";
+import {GET_OTHER_TASK} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from "moment";
@@ -14,6 +15,7 @@ export const getHrTaskList = () =>async dispatch => {
             }
         })
         .then((response) => {
+           
             dispatch({type:GET_HRTODOLIST,payload:response.data.data})
         })
     }
@@ -86,5 +88,25 @@ export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch =>
         })
     }
     catch(err){
+    }
+}
+
+// other task
+export const getOtherTask = () =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'get_other_tasks',
+            data:{
+                "assignee_id":1
+            }
+        })
+        .then((response) => {
+            console.log(response,"checkresponse")
+            dispatch({type:GET_OTHER_TASK,payload:response.data})
+        })
+    }
+    catch(err){
+
     }
 }

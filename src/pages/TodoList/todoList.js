@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EnhancedTable from "../../component/DynTable/table";
 import DynModel from "../../component/Model/model";
-import { getHrTaskList } from "../../actions/TodoListAction";
+import { getHrTaskList,getOtherTask } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
 import { useParams, Link } from 'react-router-dom';
@@ -100,6 +100,7 @@ function TodoList(props) {
 
     useEffect(() => {
         dispatch(getHrTaskList())
+        dispatch(getOtherTask())
     }, [])
 
     // let { rowId } = useParams(false)
@@ -157,8 +158,11 @@ function TodoList(props) {
         if (props.getHrTodoList.assigned_by !== props.getHrTodoList.assignee_id) {
             alert("test")
         }
-    }, [props.getHrTodoList,])
 
+        console.log("othertask",props.getOtherTask)
+
+    }, [props.getHrTodoList,props.getOtherTask])
+  
     useEffect(() => {
         let projectTask = []
 
@@ -375,6 +379,7 @@ function TodoList(props) {
 const mapStateToProps = state => (
     {
         getHrTodoList: state.getHrTodoList.getHrToDoListTableData || [],
+        getOtherTask:state.getHrTodoList.getOtherTask||[]
     }
 )
 
