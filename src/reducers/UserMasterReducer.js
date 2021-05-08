@@ -22,6 +22,7 @@ import {
     GET_CHECKLIST,
     GET_USER_CLASS,
     GET_COST_RANGE,
+    GET_USER_STAGELIST,
     COMMON_UPDATE_TEXT
 
 } from  "../utils/Constants";
@@ -30,7 +31,7 @@ const intialState = {
     getTableCertification:[],getTableSpecification:[],getTableQualification:[],getTableLanguage:[],getTableIndustry:[],getTableInsitute:[],
     getTableCapability:[],getTableTalents:[],getTableResource:[],getTableDesgination:[],getTableQuestion:[],getTableDepartment:[],
     getTableActivity:[],getTableCourt:[],getSubStage:[],getClass:[],getSubActivity:[],getChecklist:[],get_user_class:[],Common_Update_text:[],
-    getRange:[]
+    getRange:[],getStage:[]
 }
 
 export default function (state = intialState, action) {
@@ -89,7 +90,9 @@ export default function (state = intialState, action) {
         case GET_USER_CLASS:
             return {...state, get_user_class: payload} 
         case GET_COST_RANGE:
-            return {...state, getRange:payload}    
+            return {...state, getRange:payload} 
+        case GET_USER_STAGELIST:
+            return {...state, getStage:payload}       
         case COMMON_UPDATE_TEXT:
             return {...state, Common_Update_text:payload}                                                 
         default:

@@ -197,6 +197,7 @@ export const GET_TABLE_SUBACTIVITY = "GET_TABLE_SUBACTIVITY"
 export const GET_CHECKLIST = "GET_CHECKLIST"
 export const COMMON_UPDATE_TEXT = "COMMON_UPDATE_TEXT"
 export const GET_COST_RANGE="GET_COST_RANGE"
+export const GET_USER_STAGELIST="GET_USER_STAGELIST"
 
 //employee list
 export const GET_EMPLOYEE_CODE = "GET_EMPLOYEE_CODE";
@@ -235,3 +236,6 @@ export const GET_ADJOURN_TAKEN_BY = "GET_ADJOURN_TAKEN_BY";
 // leave Approval
 export const GET_EMP_APPROVAL="GET_EMP_APPROVAL"
 export const UPDATE_EMP_APPROVAL="UPDATE_EMP_APPROVAL"
+
+// todolist other task
+export const GET_OTHER_TASK="GET_OTHER_TASK"
