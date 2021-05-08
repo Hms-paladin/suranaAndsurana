@@ -8,10 +8,12 @@ import CustomButton from '../../../component/Butttons/button';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Upload, message, Button, Icon } from 'antd';
 import moment from 'moment'
-import { getTradeMarkStatus,getClassDetails,getPoaDetails,getCountryDetails,getTradeMark,
-    getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
-    import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
-    import { useParams } from "react-router-dom";
+import {
+    getTradeMarkStatus, getClassDetails, getPoaDetails, getCountryDetails, getTradeMark,
+    getUsageDetails, insertTradeMark
+} from "../../../actions/tradeMarkAction";
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
+import { useParams } from "react-router-dom";
 
 import TabsTcons from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 
@@ -48,340 +50,349 @@ function TradeMarkInternational(properties) {
         dispatch(getPoaDetails());
         dispatch(getUsageDetails());
         dispatch(getCountryDetails());
-        
-      }, []);
+
+    }, []);
 
     useEffect(() => {
 
-        if(properties.tradeMark && properties.tradeMark[0]){
+        if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
             TradeMarkForm.status_id.value = obj.status_id;
-       
-            TradeMarkForm.associateRefernce.value =obj.associate_reference;
-            TradeMarkForm.ourReference.value =obj.our_reference;
-            TradeMarkForm.mark_id.value =obj.mark_id;
+
+            TradeMarkForm.associateRefernce.value = obj.associate_reference;
+            TradeMarkForm.ourRefernce.value = obj.our_reference;
+            TradeMarkForm.mark_id.value = obj.mark_id;
             //"upload_image" :selectedFile,
-           TradeMarkForm.associate.value =obj.associate;
-            TradeMarkForm.opositionNumber.value =obj.opposition_no;
-            TradeMarkForm.application_date.value =obj.application_date;
-            TradeMarkForm.country_id.value =obj.country_id;
+            TradeMarkForm.associate.value = obj.associate;
+            TradeMarkForm.application_date.value = obj.application_date;
+            TradeMarkForm.country_id.value = obj.country_id;
             TradeMarkForm.priority_details.value = obj.priority_details;
-             TradeMarkForm.userclaim.value =obj.user_claim;
-            TradeMarkForm.allotment.value =obj.allotment;
-            TradeMarkForm.goods_description.value =obj.goods_description;
+            TradeMarkForm.userclaim.value = obj.user_claim;
+            TradeMarkForm.allotment.value = obj.allotment;
+            TradeMarkForm.goods_description.value = obj.goods_description;
 
         }
 
         let tradeStatusData = []
         properties.tradeStatusList.map((data) =>
-    tradeStatusData.push({ value: data.Status,
-        id: data.status_id })
-    )
-    settradeStatusList({ tradeStatusData })
-    
-    let classDetailsData = []
-    properties.classDetailsList.map((data) =>
-    classDetailsData.push({ value: data.class,
-    id: data.class_id })
-)
-setclassDetList({ classDetailsData })
+            tradeStatusData.push({
+                value: data.Status,
+                id: data.status_id
+            })
+        )
+        settradeStatusList({ tradeStatusData })
 
-let POADetailsData = []
-    properties.POAList.map((data) =>
-    POADetailsData.push({ value: data.POA,
-    id: data.client_id })
-)
-setpoaList({ POADetailsData })
+        let classDetailsData = []
+        properties.classDetailsList.map((data) =>
+            classDetailsData.push({
+                value: data.class,
+                id: data.class_id
+            })
+        )
+        setclassDetList({ classDetailsData })
 
-let tmUsageDetailsData = []
-    properties.tmUsageDetailsList.map((data) =>
-    tmUsageDetailsData.push({ value: data.status,
-    id: data.status_id })
-)
-setusageDetList({ tmUsageDetailsData })
+        let POADetailsData = []
+        properties.POAList.map((data) =>
+            POADetailsData.push({
+                value: data.POA,
+                id: data.client_id
+            })
+        )
+        setpoaList({ POADetailsData })
 
-let countryListsData = []
-    properties.countriesList.map((data) =>
-    countryListsData.push({ value: data.country,
-    id: data.country_id })
-) 
-setcountryDetList({ countryListsData })
+        let tmUsageDetailsData = []
+        properties.tmUsageDetailsList.map((data) =>
+            tmUsageDetailsData.push({
+                value: data.status,
+                id: data.status_id
+            })
+        )
+        setusageDetList({ tmUsageDetailsData })
 
-
-
-}, [
-    properties.tradeStatusList,properties.classDetailsList,properties.POAList,properties.tmUsageDetailsList, properties.countriesList
-  ]);
-
-  const dispatch = useDispatch()
-  let { rowId } = useParams()
-  useEffect(() => {
-      dispatch(getProjectDetails(rowId))
-  }, [])
-  useEffect(() => {
-      setProjectDetails(properties.ProjectDetails);
-      properties.ProjectDetails.length > 0 && setidDetails({
-          project_id:properties.ProjectDetails[0].project_id,
-          client_id:properties.ProjectDetails[0].client_id,
-      })
-  }, [properties.ProjectDetails])
+        let countryListsData = []
+        properties.countriesList.map((data) =>
+            countryListsData.push({
+                value: data.country,
+                id: data.country_id
+            })
+        )
+        setcountryDetList({ countryListsData })
 
 
-  const [TradeMarkForm, setTradeMarkForm] = useState({
-    trademark_id: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-    },
-      project_id: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },associateRefernce: {
-        value: "",
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-    },ourRefernce : {
-        value: "",
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-    },associate: {
-        value: "",
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-    }, userclaim : {
-        value: "",
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-    },
-      status_id: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      class_id: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      usage_details_id: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      mark_id: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      application_no: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      application_date: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      upload_image: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      }, country_id : {
-        value: "",
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-    },
-      goods_description: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      usage_from_date: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      comments: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      internal_status: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      allotment: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      ip_india_status: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      amendment: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      orders: {
-          value: "",
-          validation: [{ "name": "required" },],
-          error: null,
-          errmsg: null,
-      },
-      priority_details: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      tmj_number: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      tmj_date: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      journel_extract: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      poa: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      certificate_date: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },renewal_certificate_date: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },created_on: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },updated_on: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },created_by: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },updated_by: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },ip_address: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
-      nextRenewal: {
-          value: "",
-          validation: [{ "name": "required" }],
-          error: null,
-          errmsg: null,
-      },
+
+    }, [
+        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList
+    ]);
+
+    const dispatch = useDispatch()
+    let { rowId } = useParams()
+    useEffect(() => {
+        dispatch(getProjectDetails(rowId))
+    }, [])
+    useEffect(() => {
+        setProjectDetails(properties.ProjectDetails);
+        properties.ProjectDetails.length > 0 && setidDetails({
+            project_id: properties.ProjectDetails[0].project_id,
+            client_id: properties.ProjectDetails[0].client_id,
+        })
+    }, [properties.ProjectDetails])
 
 
-  })
+    const [TradeMarkForm, setTradeMarkForm] = useState({
+        trademark_id: {
+            value: 0,
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        project_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        }, associateRefernce: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        }, ourRefernce: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        }, associate: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        }, userclaim: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        status_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        class_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        usage_details_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        mark_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        application_no: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        application_date: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        upload_image: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        }, country_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        goods_description: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        usage_from_date: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        comments: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        internal_status: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        allotment: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        ip_india_status: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        amendment: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        orders: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+        },
+        priority_details: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        tmj_number: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        tmj_date: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        journel_extract: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        poa: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        certificate_date: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, renewal_certificate_date: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, created_on: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, updated_on: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, created_by: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, updated_by: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        }, ip_address: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+        nextRenewal: {
+            value: "",
+            validation: [{ "name": "required" }],
+            error: null,
+            errmsg: null,
+        },
+
+
+    })
 
     function onSubmit() {
-      /*  var mainvalue = {};
-        var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
-        var filtererr = targetkeys.filter(
-            (obj) => TradeMarkForm[obj].error == true
-        ); */
+        /*  var mainvalue = {};
+          var targetkeys = Object.keys(TradeMarkForm);
+          for (var i in targetkeys) {
+              var errorcheck = ValidationLibrary.checkValidation(
+                  TradeMarkForm[targetkeys[i]].value,
+                  TradeMarkForm[targetkeys[i]].validation
+              );
+              TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
+              TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
+              mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
+          }
+          var filtererr = targetkeys.filter(
+              (obj) => TradeMarkForm[obj].error == true
+          ); */
         //console.log(filtererr.length);
-        let params  = {
-            "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
-            "status_id" :TradeMarkForm.status_id.value,
+        let params = {
+            "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
+            "status_id": TradeMarkForm.status_id.value,
             "associate_reference": TradeMarkForm.associateRefernce.value,
             "our_reference": TradeMarkForm.ourReference.value,
-            "mark_id":TradeMarkForm.mark_id.value,
-            "upload_image" :selectedFile,
-            "associate":TradeMarkForm.associate.value,
-            "application_no" :TradeMarkForm.application_no.value,
-            "application_date":TradeMarkForm.application_date.value,
-            "country_id":TradeMarkForm.country_id.value,
-            "priority_details":TradeMarkForm.priority_details.value,
-            "user_claim" : TradeMarkForm.userclaim.value,
-            "allotment":TradeMarkForm.allotment.value,
-            "goods_description":TradeMarkForm.goods_description.value,
-            "created_by" :localStorage.getItem("empId"),
-            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-            "updated_by" :localStorage.getItem("empId"),
-            "ip_address" :"ddf"
+            "mark_id": TradeMarkForm.mark_id.value,
+            "upload_image": selectedFile,
+            "associate": TradeMarkForm.associate.value,
+            "application_no": TradeMarkForm.application_no.value,
+            "application_date": TradeMarkForm.application_date.value,
+            "country_id": TradeMarkForm.country_id.value,
+            "priority_details": TradeMarkForm.priority_details.value,
+            "user_claim": TradeMarkForm.userclaim.value,
+            "allotment": TradeMarkForm.allotment.value,
+            "goods_description": TradeMarkForm.goods_description.value,
+            "created_by": localStorage.getItem("empId"),
+            "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+            "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+            "updated_by": localStorage.getItem("empId"),
+            "ip_address": "ddf"
         }
-        if(TradeMarkForm.class_id.value != ""){
-            params["class_id"] =TradeMarkForm.class_id.value;
+        if (TradeMarkForm.class_id.value != "") {
+            params["class_id"] = TradeMarkForm.class_id.value;
         }
         dispatch(insertTradeMark(params)).then(() => {
             handleCancel()
         })
-       /* if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
-        } else {
+        /* if (filtererr.length > 0) {
+             // setResumeFrom({ error: true });
+         } else {
+             
             
-           
-        }
-*/
+         }
+ */
         setTradeMarkForm(prevState => ({
             ...prevState
         }));
@@ -389,21 +400,21 @@ setcountryDetList({ countryListsData })
 
     const handleCancel = () => {
         let From_key = [
-            "project_id","associateRefernce","ourRefernce", "status_id", "class_id","associate","userclaim", "usage_details_id", "mark_id", "application_no", "application_date", 
+            "project_id", "associateRefernce", "ourRefernce", "status_id", "class_id", "associate", "userclaim", "usage_details_id", "mark_id", "application_no", "application_date",
             "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
-             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-              "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-               "ip_address"
+            "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
+            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
+            "ip_address"
         ]
 
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-              console.log("mapping", TradeMarkForm[data].value);
+                console.log("mapping", TradeMarkForm[data].value);
             } catch (error) {
-              throw error;
+                throw error;
             }
-          });
+        });
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
@@ -447,58 +458,52 @@ setcountryDetList({ countryListsData })
 
     return (
 
-        // <Grid container direction={"column"}>
-        //        <Grid item xs={12} md={12} className="app_cont_domestic">
-        //          <Labelbox type="text" placeholder={"Name of Opponent"}/>
-        //          <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}/>
-        //          <Labelbox type="text" placeholder={"Types of Grant"}/>
-        //          <Labelbox type="text" placeholder={"Patent Application Number"}/>
-        //          <Labelbox type="text" placeholder={"Patent Title"}/>
-        //          <Labelbox type="datepicker" placeholder={"Publication Date"}/>
-        //          <Labelbox type="text" placeholder={"Patent Applicant"}/>
-        //          <Labelbox type="text" placeholder={"Application Agent"}/>
-        //        </Grid>
-
-        //     </Grid>
 
         <div className="tradeMarkContainer">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
-                        dropdown={tradeStatusList.tradeStatusData} 
-                        value={TradeMarkForm.status_id.value}
-                        error={TradeMarkForm.status_id.error}
-                        errmsg={TradeMarkForm.status_id.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Status</div>
+                        <Labelbox type="select"
+                            placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                            dropdown={tradeStatusList.tradeStatusData}
+                            value={TradeMarkForm.status_id.value}
+                            error={TradeMarkForm.status_id.error}
+                            errmsg={TradeMarkForm.status_id.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={" Associate Reference"}
-                        changeData={(data) => checkValidation(data, "associateRefernce")}
-                        value={TradeMarkForm.associateRefernce.value}
-                        error={TradeMarkForm.associateRefernce.error}
-                        errmsg={TradeMarkForm.associateRefernce.errmsg} />
+                    <Grid><div className="Fieldheadings">Associate Reference</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "associateRefernce")}
+                            value={TradeMarkForm.associateRefernce.value}
+                            error={TradeMarkForm.associateRefernce.error}
+                            errmsg={TradeMarkForm.associateRefernce.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={" Our Reference"}
-                        changeData={(data) => checkValidation(data, "ourRefernce")}
-                        value={TradeMarkForm.ourRefernce.value}
-                        error={TradeMarkForm.ourRefernce.error}
-                        errmsg={TradeMarkForm.ourRefernce.errmsg} />
+                    <Grid><div className="Fieldheadings">Our Reference</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "ourRefernce")}
+                            value={TradeMarkForm.ourRefernce.value}
+                            error={TradeMarkForm.ourRefernce.error}
+                            errmsg={TradeMarkForm.ourRefernce.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="select"
-                        placeholder={" Class"} 
-                        dropdown={classDetList.classDetailsData}  
-                        changeData={(data) => checkValidation(data, "class_id")}
-                                        value={TradeMarkForm.class_id.value}
-                                        error={TradeMarkForm.class_id.error}
-                                        errmsg={TradeMarkForm.class_id.errmsg}/>
+                    <Grid><div className="Fieldheadings">Class</div>
+                        <Labelbox type="select"
+                            dropdown={classDetList.classDetailsData}
+                            changeData={(data) => checkValidation(data, "class_id")}
+                            value={TradeMarkForm.class_id.value}
+                            error={TradeMarkForm.class_id.error}
+                            errmsg={TradeMarkForm.class_id.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={" Mark"}
-                        changeData={(data) => checkValidation(data, "mark_id")}
-                        value={TradeMarkForm.mark_id.value}
-                        error={TradeMarkForm.mark_id.error}
-                        errmsg={TradeMarkForm.mark_id.errmsg} />
+                    <Grid><div className="Fieldheadings">Mark</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "mark_id")}
+                            value={TradeMarkForm.mark_id.value}
+                            error={TradeMarkForm.mark_id.error}
+                            errmsg={TradeMarkForm.mark_id.errmsg} />
+                    </Grid>
                     {/* <Labelbox> */}
                     <div className="uploadbox">
                         <div style={{ width: "280%" }}>
@@ -511,65 +516,73 @@ setcountryDetList({ countryListsData })
                     </div>
                     {/* </Labelbox> */}
 
-                    <Labelbox type="text"
-                        placeholder={" Associate"} 
-                        changeData={(data) => checkValidation(data, "associate")}
-                        value={TradeMarkForm.associate.value}
-                        error={TradeMarkForm.associate.error}
-                        errmsg={TradeMarkForm.associate.errmsg} 
+                    <Grid><div className="Fieldheadings">Associate</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "associate")}
+                            value={TradeMarkForm.associate.value}
+                            error={TradeMarkForm.associate.error}
+                            errmsg={TradeMarkForm.associate.errmsg}
                         />
 
-                    <Labelbox type="text"
-                        placeholder={" Application Number"}
-                        changeData={(data) => checkValidation(data, "application_no")}
-                        value={TradeMarkForm.application_no.value}
-                        error={TradeMarkForm.application_no.error}
-                        errmsg={TradeMarkForm.application_no.errmsg} />
+                    </Grid>
+                    <Grid><div className="Fieldheadings">Application Number</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "application_no")}
+                            value={TradeMarkForm.application_no.value}
+                            error={TradeMarkForm.application_no.error}
+                            errmsg={TradeMarkForm.application_no.errmsg} /></Grid>
 
-                    <Labelbox type="datepicker"
-                        placeholder={" Application Date"}
-                        disableFuture={true}
-                        changeData={(data) => checkValidation(data, "application_date")}
-                        value={TradeMarkForm.application_date.value}
-                        error={TradeMarkForm.application_date.error}
-                        errmsg={TradeMarkForm.application_date.errmsg} />
+                    <Grid><div className="Fieldheadings">Application Date</div>
+                        <Labelbox type="datepicker"
+                            disableFuture={true}
+                            changeData={(data) => checkValidation(data, "application_date")}
+                            value={TradeMarkForm.application_date.value}
+                            error={TradeMarkForm.application_date.error}
+                            errmsg={TradeMarkForm.application_date.errmsg} />
 
-                    <Labelbox type="select"
-                        placeholder={" Country"} 
-                        dropdown={countryDetList.countryListsData}  
-                        changeData={(data) => checkValidation(data, "country_id")}
-                                        value={TradeMarkForm.country_id.value}
-                                        error={TradeMarkForm.country_id.error}
-                                        errmsg={TradeMarkForm.country_id.errmsg}/>
+                    </Grid>
+                    <Grid><div className="Fieldheadings">Country</div>
+                        <Labelbox type="select"
+                            dropdown={countryDetList.countryListsData}
+                            changeData={(data) => checkValidation(data, "country_id")}
+                            value={TradeMarkForm.country_id.value}
+                            error={TradeMarkForm.country_id.error}
+                            errmsg={TradeMarkForm.country_id.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={" Priority Details"}
-                        changeData={(data) => checkValidation(data, "priority_details")}
-                        value={TradeMarkForm.priority_details.value}
-                        error={TradeMarkForm.priority_details.error}
-                        errmsg={TradeMarkForm.priority_details.errmsg} />
+                    <Grid><div className="Fieldheadings">Priority Details</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "priority_details")}
+                            value={TradeMarkForm.priority_details.value}
+                            error={TradeMarkForm.priority_details.error}
+                            errmsg={TradeMarkForm.priority_details.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={" User Claim"}
-                        changeData={(data) => checkValidation(data, "userclaim")}
-                        value={TradeMarkForm.userclaim.value}
-                        error={TradeMarkForm.userclaim.error}
-                        errmsg={TradeMarkForm.userclaim.errmsg} />
+                    <Grid><div className="Fieldheadings">User Claim</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "userclaim")}
+                            value={TradeMarkForm.userclaim.value}
+                            error={TradeMarkForm.userclaim.error}
+                            errmsg={TradeMarkForm.userclaim.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text"
-                        placeholder={" Allotment"}
-                        changeData={(data) => checkValidation(data, "allotment")}
-                        value={TradeMarkForm.allotment.value}
-                        error={TradeMarkForm.allotment.error}
-                        errmsg={TradeMarkForm.allotment.errmsg} />
-                    <div className="projectFormComments">
-                        <Labelbox type="textarea"
-                            placeholder={" Goods and Services Description"}
-                            changeData={(data) => checkValidation(data, "goods_description")}
-                            value={TradeMarkForm.goods_description.value}
-                            error={TradeMarkForm.goods_description.error}
-                            errmsg={TradeMarkForm.goods_description.errmsg} />
-                    </div>
+                    <Grid><div className="Fieldheadings">Allotment</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "allotment")}
+                            value={TradeMarkForm.allotment.value}
+                            error={TradeMarkForm.allotment.error}
+                            errmsg={TradeMarkForm.allotment.errmsg} />
+                    </Grid>
+                    <Grid><div className="Fieldheadings">Comments</div>
+                        <div className="projectFormComments">
+                            <Labelbox type="textarea"
+                                placeholder={" Goods and Services Description"}
+                                changeData={(data) => checkValidation(data, "goods_description")}
+                                value={TradeMarkForm.goods_description.value}
+                                error={TradeMarkForm.goods_description.error}
+                                errmsg={TradeMarkForm.goods_description.errmsg} />
+                        </div>
+                    </Grid>
 
 
                 </Grid>
@@ -577,7 +590,7 @@ setcountryDetList({ countryListsData })
 
             <Grid item xs={12} container justify="flex-end" >
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="timeSheetButtons" />
-                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}   custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} custombtnCSS="timeSheetButtons" />
 
             </Grid>
         </div >
@@ -587,14 +600,14 @@ setcountryDetList({ countryListsData })
 }
 const mapStateToProps = (state) =>
 ({
-    
+
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
+    classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
     POAList: state.tradeMarkReducer.getPOAList || [],
-    tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
-    countriesList : state.tradeMarkReducer.getCountryList || [],
+    tmUsageDetailsList: state.tradeMarkReducer.gettradeMarkUsageList || [],
+    countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
-    tradeMark : state.tradeMarkReducer.getTrademark || {},
+    tradeMark: state.tradeMarkReducer.getTrademark || {},
 });
 
 export default connect(mapStateToProps)(TradeMarkInternational);

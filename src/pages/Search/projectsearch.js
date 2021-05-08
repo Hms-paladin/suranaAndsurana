@@ -329,9 +329,10 @@ function Projectsearch(props) {
       <div className="searchfilterflex">
         <div className="searchfilterflex1">
           <div className="projsearchfilterdrpdwn">
+            
+          <div className="Fieldheading">Client Type</div>
             <Labelbox
               type="select"
-              placeholder="Client Type"
               dropdown={clientType.ClientType}
               changeData={(data) => checkValidation(data, "clienttype")}
               value={projectform.clienttype.value}
@@ -340,9 +341,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+          <div className="Fieldheading">Client</div>
             <Labelbox
               type="select"
-              placeholder="Client"
               dropdown={client.Client}
               changeData={(data) => checkValidation(data, "client")}
               value={projectform.client.value}
@@ -351,9 +352,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+          <div className="Fieldheading">Project Type</div>
             <Labelbox
               type="select"
-              placeholder="Project Type"
               dropdown={projectType.ProjectType}
               changeData={(data) => checkValidation(data, "projecttype")}
               value={projectform.projecttype.value}
@@ -362,9 +363,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+          <div className="Fieldheading">Project Name</div>
             <Labelbox
               type="select"
-              placeholder="Project Name"
               dropdown={projectName.ProjectName}
               changeData={(data) => checkValidation(data, "projectname")}
               value={projectform.projectname.value}
@@ -373,9 +374,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+          <div className="Fieldheading">Billing Type</div>
             <Labelbox
               type="select"
-              placeholder="Billing Type"
               dropdown={billableType.BillableType}
               changeData={(data) => checkValidation(data, "billabletype")}
               value={projectform.billabletype.value}
@@ -383,9 +384,8 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <Button className="projectsearchgo" onClick={onSearch}>
-            Go
-          </Button>
+          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} onBtnClick={onSearch} />
+         
         </div>
       </div>
 

@@ -123,7 +123,7 @@ function InternationalFilling(props) {
     getStatusList: []
   })
   const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
-  const getDesign =useSelector((state) => state.getDesignDetails)
+  const getDesign = useSelector((state) => state.getDesignDetails)
   const dispatch = useDispatch();
 
   function checkValidation(data, key, multipleId) {
@@ -174,17 +174,17 @@ function InternationalFilling(props) {
   const handleCancel = () => {
     let interFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 
-    let interFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
+    let interFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant", "title", "class_id", "country_id", "priority_country_id", "priority_date", "status", "comments", "renewal_date"]
 
-    if(getDesign.length > 0){
+    if (getDesign.length > 0) {
       interFil_key.map((data, index) => {
         InternationlForm[data].value = getDesign[0][interFil_value[index]] ? getDesign[0][interFil_value[index]] : "";
       });
-    }else{
+    } else {
       interFil_key.map((data) => {
         InternationlForm[data].value = "";
       });
-  }
+    }
 
     setInternationlForm((prevState) => ({
       ...prevState,
@@ -197,35 +197,35 @@ function InternationalFilling(props) {
     dispatch(getIPStatus());
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id));
-  },[props.projectDetails])
+  }, [props.projectDetails])
 
 
-  useEffect(()=>{
-    if(getDesign.length > 0){
+  useEffect(() => {
+    if (getDesign.length > 0) {
       let interFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 
-      let interFil_value = ["file_cover","associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id","country_id","priority_country_id", "priority_date" , "status","comments","renewal_date"]
-  
+      let interFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant", "title", "class_id", "country_id", "priority_country_id", "priority_date", "status", "comments", "renewal_date"]
+
       interFil_key.map((data, index) => {
-        console.log(interFil_value[index],interFil_value[index] !== "application_date","interFil_value[index]")
-        if(interFil_value[index] !== "application_date" && interFil_value[index] !== "priority_date" && interFil_value[index] !== "renewal_date"){
-        InternationlForm[data].value = getDesign[0][interFil_value[index]];
-        InternationlForm[data].disabled = getDesign[0][interFil_value[index]] ? true : false;
+        console.log(interFil_value[index], interFil_value[index] !== "application_date", "interFil_value[index]")
+        if (interFil_value[index] !== "application_date" && interFil_value[index] !== "priority_date" && interFil_value[index] !== "renewal_date") {
+          InternationlForm[data].value = getDesign[0][interFil_value[index]];
+          InternationlForm[data].disabled = getDesign[0][interFil_value[index]] ? true : false;
         }
-        else{
-          console.log(getDesign[0][interFil_value[index]],"getDesign[0]")
-        InternationlForm[data].value = getDesign[0][interFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][interFil_value[index]]);
-        InternationlForm[data].disabled = getDesign[0][interFil_value[index]] === "0000-00-00" ? false : true;
-  
+        else {
+          console.log(getDesign[0][interFil_value[index]], "getDesign[0]")
+          InternationlForm[data].value = getDesign[0][interFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][interFil_value[index]]);
+          InternationlForm[data].disabled = getDesign[0][interFil_value[index]] === "0000-00-00" ? false : true;
+
         }
       });
       setInternationlForm((prevState) => ({
         ...prevState,
       }));
     }
-  },[getDesign])
+  }, [getDesign])
 
 
 
@@ -253,130 +253,176 @@ function InternationalFilling(props) {
     <div className="container">
       <Grid container direction={"column"}>
         <Grid item xs={12} md={12} className="app_cont_domestic">
-          <Labelbox type="text"
-            placeholder={"File cover"}
-            changeData={(data) => checkValidation(data, "file_cover")}
-            value={InternationlForm.file_cover.value}
-            error={InternationlForm.file_cover.error}
-            errmsg={InternationlForm.file_cover.errmsg}
-            disabled={InternationlForm.file_cover.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Associate"}
-            changeData={(data) => checkValidation(data, "associate")}
-            value={InternationlForm.associate.value}
-            error={InternationlForm.associate.error}
-            errmsg={InternationlForm.associate.errmsg}
-            disabled={InternationlForm.associate.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Our Reference"}
-            changeData={(data) => checkValidation(data, "our_ref")}
-            value={InternationlForm.our_ref.value}
-            error={InternationlForm.our_ref.error}
-            errmsg={InternationlForm.our_ref.errmsg}
-            disabled={InternationlForm.our_ref.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Client Reference"}
-            changeData={(data) => checkValidation(data, "client_ref")}
-            value={InternationlForm.client_ref.value}
-            error={InternationlForm.client_ref.error}
-            errmsg={InternationlForm.client_ref.errmsg}
-            disabled={InternationlForm.client_ref.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Application Number"}
-            changeData={(data) => checkValidation(data, "app_num")}
-            value={InternationlForm.app_num.value}
-            error={InternationlForm.app_num.error}
-            errmsg={InternationlForm.app_num.errmsg}
-            disabled={InternationlForm.app_num.disabled}
-          />
-          <Labelbox type="datepicker"
-            placeholder={"Application Date"}
-            changeData={(data) => checkValidation(data, "app_date")}
-            value={InternationlForm.app_date.value}
-            error={InternationlForm.app_date.error}
-            errmsg={InternationlForm.app_date.errmsg}
-            disabled={InternationlForm.app_date.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Applicant"}
-            changeData={(data) => checkValidation(data, "applicant")}
-            value={InternationlForm.applicant.value}
-            error={InternationlForm.applicant.error}
-            errmsg={InternationlForm.applicant.errmsg}
-            disabled={InternationlForm.applicant.disabled}
-          />
-          <Labelbox type="text"
-            placeholder={"Title"}
-            changeData={(data) => checkValidation(data, "title")}
-            value={InternationlForm.title.value}
-            error={InternationlForm.title.error}
-            errmsg={InternationlForm.title.errmsg}
-            disabled={InternationlForm.title.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"Class"}
-            dropdown={interFilGetList.getClassList}
-            changeData={(data) => checkValidation(data, "class")}
-            value={InternationlForm.class.value}
-            error={InternationlForm.class.error}
-            errmsg={InternationlForm.class.errmsg}
-            disabled={InternationlForm.class.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"Country"}
-            dropdown={interFilGetList.getCountryList}
-            changeData={(data) => checkValidation(data, "country")}
-            value={InternationlForm.country.value}
-            error={InternationlForm.country.error}
-            errmsg={InternationlForm.country.errmsg}
-            disabled={InternationlForm.country.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"priority Country"}
-            dropdown={interFilGetList.getCountryList}
-            changeData={(data) => checkValidation(data, "priority_country")}
-            value={InternationlForm.priority_country.value}
-            error={InternationlForm.priority_country.error}
-            errmsg={InternationlForm.priority_country.errmsg}
-            disabled={InternationlForm.priority_country.disabled}
-          />
-          <Labelbox type="datepicker"
-            placeholder={"priority Date"}
-            changeData={(data) => checkValidation(data, "priority_date")}
-            value={InternationlForm.priority_date.value}
-            error={InternationlForm.priority_date.error}
-            errmsg={InternationlForm.priority_date.errmsg}
-            disabled={InternationlForm.priority_date.disabled}
-          />
-          <Labelbox type="select"
-            placeholder={"Status"}
-            dropdown={interFilGetList.getStatusList}
-            changeData={(data) => checkValidation(data, "status")}
-            value={InternationlForm.status.value}
-            error={InternationlForm.status.error}
-            errmsg={InternationlForm.status.errmsg}
-            disabled={InternationlForm.status.disabled}
-          />
-          <Labelbox type="textarea"
-            placeholder={"Comments"}
-            changeData={(data) => checkValidation(data, "comments")}
-            value={InternationlForm.comments.value}
-            error={InternationlForm.comments.error}
-            errmsg={InternationlForm.comments.errmsg}
-            disabled={InternationlForm.comments.disabled}
-          />
-          <Labelbox type="datepicker"
-            placeholder={"Renewal Date"}
-            changeData={(data) => checkValidation(data, "renewal_date")}
-            value={InternationlForm.renewal_date.value}
-            error={InternationlForm.renewal_date.error}
-            errmsg={InternationlForm.renewal_date.errmsg}
-            disabled={InternationlForm.renewal_date.disabled}
-          />
+          <Grid>
+            <div className="Fieldheadings">File cover</div>
+            <Labelbox type="text"
+              placeholder={"File cover"}
+              changeData={(data) => checkValidation(data, "file_cover")}
+              value={InternationlForm.file_cover.value}
+              error={InternationlForm.file_cover.error}
+              errmsg={InternationlForm.file_cover.errmsg}
+              disabled={InternationlForm.file_cover.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Associate</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "associate")}
+              value={InternationlForm.associate.value}
+              error={InternationlForm.associate.error}
+              errmsg={InternationlForm.associate.errmsg}
+              disabled={InternationlForm.associate.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Our Reference</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "our_ref")}
+              value={InternationlForm.our_ref.value}
+              error={InternationlForm.our_ref.error}
+              errmsg={InternationlForm.our_ref.errmsg}
+              disabled={InternationlForm.our_ref.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Client Reference</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "client_ref")}
+              value={InternationlForm.client_ref.value}
+              error={InternationlForm.client_ref.error}
+              errmsg={InternationlForm.client_ref.errmsg}
+              disabled={InternationlForm.client_ref.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Application Number</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "app_num")}
+              value={InternationlForm.app_num.value}
+              error={InternationlForm.app_num.error}
+              errmsg={InternationlForm.app_num.errmsg}
+              disabled={InternationlForm.app_num.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Application Date</div>
+            <Labelbox type="datepicker"
+              changeData={(data) => checkValidation(data, "app_date")}
+              value={InternationlForm.app_date.value}
+              error={InternationlForm.app_date.error}
+              errmsg={InternationlForm.app_date.errmsg}
+              disabled={InternationlForm.app_date.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Applicant</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "applicant")}
+              value={InternationlForm.applicant.value}
+              error={InternationlForm.applicant.error}
+              errmsg={InternationlForm.applicant.errmsg}
+              disabled={InternationlForm.applicant.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Title</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "title")}
+              value={InternationlForm.title.value}
+              error={InternationlForm.title.error}
+              errmsg={InternationlForm.title.errmsg}
+              disabled={InternationlForm.title.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Class</div>
+            <Labelbox type="select"
+              dropdown={interFilGetList.getClassList}
+              changeData={(data) => checkValidation(data, "class")}
+              value={InternationlForm.class.value}
+              error={InternationlForm.class.error}
+              errmsg={InternationlForm.class.errmsg}
+              disabled={InternationlForm.class.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Country</div>
+            <Labelbox type="select"
+              dropdown={interFilGetList.getCountryList}
+              changeData={(data) => checkValidation(data, "country")}
+              value={InternationlForm.country.value}
+              error={InternationlForm.country.error}
+              errmsg={InternationlForm.country.errmsg}
+              disabled={InternationlForm.country.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">priority Country</div>
+            <Labelbox type="select"
+              dropdown={interFilGetList.getCountryList}
+              changeData={(data) => checkValidation(data, "priority_country")}
+              value={InternationlForm.priority_country.value}
+              error={InternationlForm.priority_country.error}
+              errmsg={InternationlForm.priority_country.errmsg}
+              disabled={InternationlForm.priority_country.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">priority Date</div>
+            <Labelbox type="datepicker"
+              changeData={(data) => checkValidation(data, "priority_date")}
+              value={InternationlForm.priority_date.value}
+              error={InternationlForm.priority_date.error}
+              errmsg={InternationlForm.priority_date.errmsg}
+              disabled={InternationlForm.priority_date.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Status</div>
+            <Labelbox type="select"
+              dropdown={interFilGetList.getStatusList}
+              changeData={(data) => checkValidation(data, "status")}
+              value={InternationlForm.status.value}
+              error={InternationlForm.status.error}
+              errmsg={InternationlForm.status.errmsg}
+              disabled={InternationlForm.status.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Comments</div>
+            <Labelbox type="textarea"
+              changeData={(data) => checkValidation(data, "comments")}
+              value={InternationlForm.comments.value}
+              error={InternationlForm.comments.error}
+              errmsg={InternationlForm.comments.errmsg}
+              disabled={InternationlForm.comments.disabled}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Renewal Date</div>
+            <Labelbox type="datepicker"
+              changeData={(data) => checkValidation(data, "renewal_date")}
+              value={InternationlForm.renewal_date.value}
+              error={InternationlForm.renewal_date.error}
+              errmsg={InternationlForm.renewal_date.errmsg}
+              disabled={InternationlForm.renewal_date.disabled}
+            />
+          </Grid>
+
         </Grid>
       </Grid>
       <div className="custombtnOposition">

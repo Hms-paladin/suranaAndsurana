@@ -85,7 +85,7 @@ function RectificationDefended(props) {
         } else {
             dispatch(InsertDesign(RectificationDefended, props.projectDetails && props.projectDetails[0])).then(() => {
                 handleCancel()
-              })
+            })
         }
         setRectificationDefended(prevState => ({
             ...prevState
@@ -109,55 +109,74 @@ function RectificationDefended(props) {
 
     const handleCancel = () => {
         let rectDef_key = ["des_number", "respondent", "petitioner_rep", "status", "comments"]
-    
+
         rectDef_key.map((data) => {
             RectificationDefended[data].value = "";
         });
         setRectificationDefended((prevState) => ({
-          ...prevState,
+            ...prevState,
         }));
-      };
+    };
 
     return (
         <div className="container">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Labelbox type="text"
-                        placeholder={"Design Number"}
-                        changeData={(data) => checkValidation(data, "des_number")}
-                        value={RectificationDefended.des_number.value}
-                        error={RectificationDefended.des_number.error}
-                        errmsg={RectificationDefended.des_number.errmsg}
-                    />
-                    <Labelbox type="text"
-                        placeholder={"Respondent"}
-                        changeData={(data) => checkValidation(data, "respondent")}
-                        value={RectificationDefended.respondent.value}
-                        error={RectificationDefended.respondent.error}
-                        errmsg={RectificationDefended.respondent.errmsg}
-                    />
-                    <Labelbox type="text"
-                        placeholder={"Petitioner Rep"}
-                        changeData={(data) => checkValidation(data, "petitioner_rep")}
-                        value={RectificationDefended.petitioner_rep.value}
-                        error={RectificationDefended.petitioner_rep.error}
-                        errmsg={RectificationDefended.petitioner_rep.errmsg}
-                    />
-                    <Labelbox type="select"
-                        placeholder={"Status"}
-                        changeData={(data) => checkValidation(data, "status")}
-                        dropdown={rectDefGetList.getStatusList}
-                        value={RectificationDefended.status.value}
-                        error={RectificationDefended.status.error}
-                        errmsg={RectificationDefended.status.errmsg}
-                    />
-                    <Labelbox type="text"
-                        placeholder={"Comments"}
-                        changeData={(data) => checkValidation(data, "comments")}
-                        value={RectificationDefended.comments.value}
-                        error={RectificationDefended.comments.error}
-                        errmsg={RectificationDefended.comments.errmsg}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Design Number</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "des_number")}
+                            value={RectificationDefended.des_number.value}
+                            error={RectificationDefended.des_number.error}
+                            errmsg={RectificationDefended.des_number.errmsg}
+                        />
+                    </Grid>
+
+
+                    <Grid>
+                        <div className="Fieldheadings">Respondent</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "respondent")}
+                            value={RectificationDefended.respondent.value}
+                            error={RectificationDefended.respondent.error}
+                            errmsg={RectificationDefended.respondent.errmsg}
+                        />
+                    </Grid>
+
+
+                    <Grid>
+                        <div className="Fieldheadings">Petitioner Rep</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "petitioner_rep")}
+                            value={RectificationDefended.petitioner_rep.value}
+                            error={RectificationDefended.petitioner_rep.error}
+                            errmsg={RectificationDefended.petitioner_rep.errmsg}
+                        />
+                    </Grid>
+
+
+                    <Grid>
+                        <div className="Fieldheadings">Status</div>
+                        <Labelbox type="select"
+                            changeData={(data) => checkValidation(data, "status")}
+                            dropdown={rectDefGetList.getStatusList}
+                            value={RectificationDefended.status.value}
+                            error={RectificationDefended.status.error}
+                            errmsg={RectificationDefended.status.errmsg}
+                        />
+                    </Grid>
+
+
+                    <Grid>
+                        <div className="Fieldheadings">Comments</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "comments")}
+                            value={RectificationDefended.comments.value}
+                            error={RectificationDefended.comments.error}
+                            errmsg={RectificationDefended.comments.errmsg}
+                        />
+                    </Grid>
+
                 </Grid>
             </Grid>
             <div className="custombtnOposition">

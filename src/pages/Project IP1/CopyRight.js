@@ -7,11 +7,11 @@ import { Upload } from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copyrightAction";
+import { insertCopyright, getCopyRight, updateCopyright } from "../../actions/copyrightAction";
 
 
 
-  const CopyRight = (props) => {
+const CopyRight = (props) => {
 
     const dispatch = useDispatch()
     const [IdDetails, setIdDetails] = useState({});
@@ -42,41 +42,41 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
             error: null,
             errmsg: null,
         },
-  
+
     })
     useEffect(() => {
         setIdDetails(props.id_Props)
         dispatch(getCopyRight(props?.id_Props?.project_id))
-      }, [props.id_Props])
-     
+    }, [props.id_Props])
+
     useEffect(() => {
 
-    console.log(props.getCopyRightData,"getCopyRightData")
-    
-    if(props.getCopyRightData.length>0){
-    let CopyRightData = props.getCopyRightData
- 
-    // props.getCopyRightData.map((data) => CopyRightData.push({
-    //     title: data.title,
-    //     type_of_work: data.type_of_work,
-    //     upload_images: data.upload_images,
-    // }));
-        copy_Right["title"].value =CopyRightData[0].title || ""
-        copy_Right["type_of_work"].value = CopyRightData[0].type_of_work|| ""
-        copy_Right["reference"].value =CopyRightData[0].reference || ""
-        copy_Right["status"].value = CopyRightData[0].status|| ""
-        setFileupload(CopyRightData[0].upload_images)
-    }
-    
-    setCopy_Right((prevState) => ({
-        ...prevState,
-      }));
-    // copy_Right["reference"].value = copyright.reference|| ""
-  
-    // console.log(props.getCopyRightData.length ,"ss")
-    // console.log(CopyRightData,"api data");
+        console.log(props.getCopyRightData, "getCopyRightData")
+
+        if (props.getCopyRightData.length > 0) {
+            let CopyRightData = props.getCopyRightData
+
+            // props.getCopyRightData.map((data) => CopyRightData.push({
+            //     title: data.title,
+            //     type_of_work: data.type_of_work,
+            //     upload_images: data.upload_images,
+            // }));
+            copy_Right["title"].value = CopyRightData[0].title || ""
+            copy_Right["type_of_work"].value = CopyRightData[0].type_of_work || ""
+            copy_Right["reference"].value = CopyRightData[0].reference || ""
+            copy_Right["status"].value = CopyRightData[0].status || ""
+            setFileupload(CopyRightData[0].upload_images)
+        }
+
+        setCopy_Right((prevState) => ({
+            ...prevState,
+        }));
+        // copy_Right["reference"].value = copyright.reference|| ""
+
+        // console.log(props.getCopyRightData.length ,"ss")
+        // console.log(CopyRightData,"api data");
     }, [props.getCopyRightData])
- 
+
 
 
     function onSubmit() {
@@ -99,19 +99,19 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
             // setCopy_Right({ error: true });
         } else {
             // setCopy_Right({ error: false });
-            if(props.getCopyRightData.length>0){
-                var copy_right_id=props.getCopyRightData[0].copy_right_id
+            if (props.getCopyRightData.length > 0) {
+                var copy_right_id = props.getCopyRightData[0].copy_right_id
                 console.log(copy_right_id)
-                dispatch(updateCopyright(copy_Right,IdDetails,fileupload,copy_right_id)).then(() => {
+                dispatch(updateCopyright(copy_Right, IdDetails, fileupload, copy_right_id)).then(() => {
                     handleCancel()
                 })
-            }else{
-                dispatch(insertCopyright(copy_Right,IdDetails,fileupload)).then(() => {
+            } else {
+                dispatch(insertCopyright(copy_Right, IdDetails, fileupload)).then(() => {
                     handleCancel()
-            
-             })
+
+                })
             }
-            
+
         }
 
         setCopy_Right(prevState => ({
@@ -121,7 +121,7 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
 
     const handleCancel = () => {
         let ResumeFrom_key = [
-            "type_of_work","status","reference","title"
+            "type_of_work", "status", "reference", "title"
         ]
 
         ResumeFrom_key.map((data) => {
@@ -172,46 +172,63 @@ import { insertCopyright,getCopyRight,updateCopyright } from "../../actions/copy
     return (
         <div >
             <div className="copyright_div">
-                <Labelbox type="text" placeholder={"Title"}
-                    changeData={(data) => checkValidation(data, "title")}
-                    value={copy_Right.title.value}
-                    error={copy_Right.title.error}
-                    errmsg={copy_Right.title.errmsg} />
+                <Grid>
+                    <div className="Fieldheadings">Title</div>
+                    <Labelbox type="text"
+                        changeData={(data) => checkValidation(data, "title")}
+                        value={copy_Right.title.value}
+                        error={copy_Right.title.error}
+                        errmsg={copy_Right.title.errmsg} />
+                </Grid>
 
-                <Labelbox type="text" placeholder={"Type of work"}
-                    changeData={(data) => checkValidation(data, "type_of_work")}
-                    value={copy_Right.type_of_work.value}
-                    error={copy_Right.type_of_work.error}
-                    errmsg={copy_Right.type_of_work.errmsg} />
+                <Grid>
+                    <div className="Fieldheadings">Type of work</div>
+                    <Labelbox type="text"
+                        changeData={(data) => checkValidation(data, "type_of_work")}
+                        value={copy_Right.type_of_work.value}
+                        error={copy_Right.type_of_work.error}
+                        errmsg={copy_Right.type_of_work.errmsg} />
+                </Grid>
 
-                <div className="uploadbox_div"  >
-                    <div>
-                        <Upload {...props} className="uploadbox_tag"
+                <Grid>
+                    <div className="Fieldheadings">Upload Image</div>
+                    <div className="uploadbox_div"  >
+                        <div>
+                            <Upload {...props} className="uploadbox_tag"
                             // action='https://www.mocky.io/v2/5cc8019d300000980a055e76' 
                             // onChange={(e)=>onFileChange()}
                             >
-                                
-                            <div className="upload_file_inside" ><label style={{whiteSpace:'nowrap'}}>Upload Image</label><PublishIcon /></div>
-                        </Upload>
-                        
-                    </div>
-                </div>
-                </div>
-                <div className="copyright_div">
-                <Labelbox type="text" placeholder={"Reference"}
-                    changeData={(data) => checkValidation(data, "reference")}
-                    value={copy_Right.reference.value}
-                    error={copy_Right.reference.error}
-                    errmsg={copy_Right.reference.errmsg} />
 
-                <Labelbox type="text" placeholder={"Status"}
-                    changeData={(data) => checkValidation(data, "status")}
-                    value={copy_Right.status.value}
-                    error={copy_Right.status.error}
-                    errmsg={copy_Right.status.errmsg} />
+                                <div className="upload_file_inside" ><label style={{ whiteSpace: 'nowrap' }}>Upload Image</label><PublishIcon /></div>
+                            </Upload>
+
+                        </div>
+                    </div>
+                </Grid>
+
+            </div>
+            <div className="copyright_div">
+                <Grid>
+                    <div className="Fieldheadings">Reference</div>
+                    <Labelbox type="text"
+                        changeData={(data) => checkValidation(data, "reference")}
+                        value={copy_Right.reference.value}
+                        error={copy_Right.reference.error}
+                        errmsg={copy_Right.reference.errmsg} />
+                </Grid>
+
+                <Grid>
+                    <div className="Fieldheadings">Status</div>
+                    <Labelbox type="text"
+                        changeData={(data) => checkValidation(data, "status")}
+                        value={copy_Right.status.value}
+                        error={copy_Right.status.error}
+                        errmsg={copy_Right.status.errmsg} />
+                </Grid>
+
             </div>
             <Grid item xs={12} container justify="flex-end" className="patent_btns">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  onBtnClick={onSubmit}/>
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
             </Grid>
         </div>
