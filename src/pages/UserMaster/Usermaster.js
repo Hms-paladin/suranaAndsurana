@@ -24,7 +24,6 @@ import {
   getActivity,
   getProjectType,
   UsergetStatus,
-  getProjectCostRange,
   getCaseType,
 } from "../../actions/MasterDropdowns";
 import {
@@ -50,6 +49,8 @@ import {
   getSubActivity,
   getCheckList,
   Common_Update_text,
+  getProjectCostRange,
+
 } from "../../actions/UserMasterAction";
 
 const UserMaster = (props) => {
@@ -180,19 +181,19 @@ const UserMaster = (props) => {
   const [UserMaster, setUserMaster] = useState({
     tablename: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     groupname: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     status_type: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -399,9 +400,10 @@ const UserMaster = (props) => {
       });
       settable_name_value(value);
     }
-    // settable_name_value((prevState) => ({
-    //   ...prevState,
-    // }));
+    if(key==="status_type"){
+      dispatch(getTableStatus(UserMaster.status_type.value.toString()))
+    }
+    
     console.log("tnmae", table_name_value.table_names);
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -905,6 +907,9 @@ const UserMaster = (props) => {
   // },[props,UserMaster])
   //  insert approve
   function Submit(data) {
+     if(data===29){
+       const From_key=[""]
+     }
     var mainvalue = {};
     var targetkeys = Object.keys(UserMaster);
     for (var i in targetkeys) {
@@ -917,8 +922,8 @@ const UserMaster = (props) => {
       mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-
-    if (filtererr.length > 35) {
+    console.log("filterr",targetkeys)
+    if (filtererr.length >35) {
     } else {
       if (data === 21) {
         dispatch(
@@ -933,7 +938,7 @@ const UserMaster = (props) => {
           // handleCancel()
         });
       } else if (data === 20) {
-        dispatch(InsertSubActivity(UserMaster)).then(() => {
+        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible)).then(() => {
           setEditvisible(false);
           // handleCancel()
         });
@@ -990,7 +995,7 @@ const UserMaster = (props) => {
           });
         }
       } else if (data === 26) {
-        dispatch(InsertSubstage(UserMaster)).then(() => {
+        dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible)).then(() => {
           setEditvisible(false);
           // handleCancel()
         });
@@ -1180,18 +1185,14 @@ const UserMaster = (props) => {
     setUserMaster((prevState) => ({
       ...prevState,
     }));
+    // console.log",EditStoreData)
   };
   const handleCancel = () => {
     let From_key = [
-      "groupname",
-      "skill_name",
-      "class_name",
-      "class_type",
-      "description",
-      "acticity",
-      "activity_drop",
-      "project_type",
-      "checklist_name",
+      "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
+      "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
+      "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
+      "court","range","stage_dropdown","stage_name","case_type","activity_drop"
     ];
 
     From_key.map((data) => {
@@ -1241,7 +1242,8 @@ const UserMaster = (props) => {
                 type="select"
                 placeholder={"Status Type"}
                 dropdown={tablevalues.get_status_type}
-                //stringvalue
+                // stringvalue
+                // mode="multiple"
                 changeData={(data) => checkValidation(data, "status_type")}
                 value={UserMaster.status_type.value}
                 error={UserMaster.status_type.error}
@@ -1811,7 +1813,7 @@ const mapStateToProps = (state) => ({
   Department: state.UserMasterReducer.getTableDepartment,
   Activity: state.UserMasterReducer.getTableActivity,
   Court: state.UserMasterReducer.getTableCourt,
-  Range: state.getOptions.getProjectCostRange,
+  Range: state.UserMasterReducer.getRange,
   CaseType: state.getOptions.getCaseType,
   SubStage_data: state.UserMasterReducer.getSubStage,
   Class_Table_Data: state.UserMasterReducer.getClass,
