@@ -48,7 +48,7 @@ export default class Labelbox extends Component {
 		var timeformat = dateFormat(time, "hh:MM:ss");
 		console.log("timeformat", timeformat)
 		this.setState({ selectedtime: time });
-		this.props.changeData && this.props.changeData(timeformat,time);
+		this.props.changeData && this.props.changeData(time);
 	};
 
 	componentWillReceiveProps(props) {
