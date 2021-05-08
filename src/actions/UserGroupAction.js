@@ -1,8 +1,59 @@
-import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, DELETE_GROUPNAME } from "../utils/Constants";
+import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, 
+    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,GET_GROUP_CONTROL_LIST} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
 import moment from 'moment'
+
+export const getGroupList = () => async dispatch => {
+    try {
+
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_group',
+        })
+            .then((response) => {
+                dispatch({ type: GET_GROUP_LIST, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const getEmployeeList = () => async dispatch => {
+    try {
+
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_employee_list',
+        })
+            .then((response) => {
+                dispatch({ type: GET_EMP_LIST, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const getEmployeeGroupDetails = () => async dispatch => {
+    try {
+
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_employee_group',
+        })
+            .then((response) => {
+                dispatch({ type: GET_EMP_GROUP_LIST, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+
 export const getGroupName = () => async dispatch => {
     try {
 
@@ -13,6 +64,29 @@ export const getGroupName = () => async dispatch => {
             .then((response) => {
                 dispatch({ type: GET_GROUPNAME, payload: response.data.data })
             })
+
+    } catch (err) {
+
+    }
+}
+
+
+export const InsertUsergroupMaster = (data) => async dispatch => {
+    try {
+        axios({
+            method: "POST",
+            url: apiurl + "insert_employee_group",
+            data: data,
+        }).then((response) => {
+            if (response.data.status === 1) {
+                dispatch({ type: INSERT_USERGROUP, payload: true })
+                notification.success({
+                    message: " inserted Successfully",
+                });
+                dispatch(getGroupName())
+                return Promise.resolve();
+            }
+        });
 
     } catch (err) {
 
@@ -107,6 +181,22 @@ export const deleteGroupName = (deleteID) => async dispatch => {
                 return Promise.resolve();
             }
         });
+
+    } catch (err) {
+
+    }
+}
+
+export const getGroupControlList = () => async dispatch => {
+    try {
+
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_group_control',
+        })
+            .then((response) => {
+                dispatch({ type: GET_GROUP_CONTROL_LIST, payload: response.data.data })
+            })
 
     } catch (err) {
 
