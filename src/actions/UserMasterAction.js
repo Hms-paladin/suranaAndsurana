@@ -25,7 +25,8 @@ import {
   GET_TABLE_CLASS,
   GET_TABLE_SUBACTIVITY,
   GET_CHECKLIST,
-  GET_CASE_TYPE
+  GET_CASE_TYPE,
+  GET_COST_RANGE
 } from '../utils/Constants'
 export const get_Tablenames = () => async dispatch => {
   try {
@@ -97,15 +98,23 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
       {
 
         "table_names":data,
-        "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
-        state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
-        state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
-        state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
-        state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
-        state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
-        state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
-        state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
-        "created_by":"2"
+        "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state.skill_name.value||"":
+          state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
+          state?.specialization_name?.value?state.specialization_name.value||"":state?.qualification_name?.value?state.qualification_name.value||"":
+          state?.industry?.value?state.industry.value||"":state?.institute?.value?state.institute.value||"":state?.capability?.value?state.capability.value||"":
+          state?.talents?.value?state.talents.value||"":state?.resourse?.value?state.resourse.value||"":state?.designation?.value?state.designation.value||"":
+          state?.question?.value?state.question.value||"":state?.court?.value?state.court.value||"":state?.department?.value?state.department.value||"":
+          state?.activity?.value?state.activity.value||"":state?.stage?.value?state.stage.value||"":state?.case_type?.value?state.case_type.value||"":
+          state?.range?.value?state.range.value||"":"",
+        // "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
+        // state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
+        // state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
+        // state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
+        // state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
+        // state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
+        // state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
+        // state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
+        "created_by":localStorage.getItem("empId")
        
 
       },
@@ -116,32 +125,36 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
 
           notification.success({
             message: response.data.msg,
-        });
+        })
+       
         dispatch({ type: COMMON_INSERT_TEXT, payload: response.data.status })
-
           dispatch(getTableGroup())
           dispatch(getTableSkills())
           dispatch(getTableTraits())
-          dispatch(getTableCapability())
           dispatch(getTableCertification())
-          dispatch(getTableCourt())
-          dispatch(getTableDepartment())
-          dispatch(getTableDesgination())
-          dispatch(getTableQualification())
-          dispatch(getTableResource())
           dispatch(getTableSpecification())
-          dispatch(getTableTalents())
-          dispatch(getTableCourt)
+          dispatch(getTableQualification())
           dispatch(getTableIndustry())
           dispatch(getTableInsitute())
-          dispatch(getTableActivity())
+          dispatch(getTableCapability())
+          dispatch(getTableTalents())
+          dispatch(getTableResource())
+          dispatch(getTableDesgination())
+          dispatch(getTableQuestion())
           dispatch(getTableCourt())
+          dispatch(getTableDepartment())
+          dispatch(getTableActivity())
           dispatch(getCaseType())
+          dispatch(getProjectCostRange())
+          // dispatch(getTableQualification())
+          // dispatch(getTableResource())
+          
+          
+          // dispatch(getTableCourt)
+          // dispatch(getTableIndustry())
+          
+          // dispatch(getTableCourt())
           return Promise.resolve();
-        }else{
-          notification.success({
-            message: response.data.msg,
-        });
         }
 
       });
@@ -168,14 +181,22 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         "id":Editvisible?editId.group.group_id:"",
         // "id":"1",
         "table_names":data,
-        "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
-        state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
-        state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
-        state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
-        state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
-        state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
-        state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
-        state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
+        "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
+        state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
+        state?.specialization_name?.value?state.specialization_name.value||"":state?.qualification_name?.value?state.qualification_name.value||"":
+        state?.industry?.value?state.industry.value||"":state?.institute?.value?state.institute.value||"":state?.capability?.value?state.capability.value||"":
+        state?.talents?.value?state.talents.value||"":state?.resourse?.value?state.resourse.value||"":state?.designation?.value?state.designation.value||"":
+        state?.question?.value?state.question.value||"":state?.department?.value?state.department.value||"":state?.court?.value?state.court.value||"":
+         state?.activity?.value?state.activity.value||"":state?.stage?.value?state.stage.value||"":state?.case_type?.value?state.case_type.value||"":
+        state?.range?.value?state.range.value||"":"",
+        // "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
+        // state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
+        // state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
+        // state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
+        // state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
+        // state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
+        // state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
+        // state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
         "updated_by":localStorage.getItem("empId")
 
       },
@@ -185,25 +206,32 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         if (response.data.status === 1) {
 
           notification.success({
-            message: response.data.msg,
+            message:'Updated Successfully',
           });
         dispatch({ type: COMMON_UPDATE_TEXT, payload: response.data.status })
 
         dispatch(getTableGroup())
         dispatch(getTableSkills())
         dispatch(getTableTraits())
-        dispatch(getTableCapability())
         dispatch(getTableCertification())
-        dispatch(getTableCourt())
-        dispatch(getTableDepartment())
-        dispatch(getTableDesgination())
-        dispatch(getTableQualification())
-        dispatch(getTableResource())
         dispatch(getTableSpecification())
-        dispatch(getTableTalents())
-        dispatch(getTableCourt)
+        dispatch(getTableQualification())
         dispatch(getTableIndustry())
         dispatch(getTableInsitute())
+        dispatch(getTableCapability())
+        dispatch(getTableTalents())
+        dispatch(getTableResource())
+       dispatch(getTableDesgination())
+        dispatch(getTableCourt())
+        dispatch(getTableDepartment())
+        dispatch(getTableQuestion())
+        dispatch(getProjectCostRange())
+        // dispatch(getTableDesgination())
+        // dispatch(getTableQualification())
+        
+        
+        // dispatch(getTableCourt)
+        // dispatch(getTableIndustry())
         dispatch(getTableActivity())
         dispatch(getTableCourt())
         dispatch(getCaseType())
@@ -232,8 +260,8 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
         "check_list_id": Editvisible?editdata&&editdata.check_list_id:0,
         "check_list": UserMaster.checklist_name.value,
         "project_type_id": UserMaster.project_type.value,
-        "created_on": "2021-03-02",
-        "created_by": "3"
+        "created_on": localStorage.getItem("empId"),
+        "created_by": localStorage.getItem("empId")
       },
     })
       .then((response) => {
@@ -287,7 +315,7 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
             message: response.data.msg,
           });
           // dispatch(getClass())
-          dispatch(getTableClass())
+          dispatch(getTableClass(UserMaster.class_type.value))
           return Promise.resolve();
         }
       });
@@ -301,7 +329,7 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
 }
 
 // subactivity insert api 
-export const InsertSubActivity = (UserMaster) => async dispatch => {
+export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispatch => {
   try {
     axios({
       method: 'POST',
@@ -310,15 +338,16 @@ export const InsertSubActivity = (UserMaster) => async dispatch => {
       {
         "activity": UserMaster.activity_drop.value,
         "sub_activity": UserMaster.sub_activity.value,
+        "sub_activity_id":Editvisible?EditId.sub_activity_id:0,
       },
     })
       .then((response) => {
         if (response.data.status === 1) {
         dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
           notification.success({
-            message: 'Inserted Successfully',
+            message:response.data.msg,
           });
-          dispatch(getSubActivity())
+          dispatch(getSubActivity(UserMaster.activity_drop.value))
           return Promise.resolve();
         }
       });
@@ -331,7 +360,7 @@ export const InsertSubActivity = (UserMaster) => async dispatch => {
 }
 
 // stage insert api
-export const InsertSubstage = (UserMaster, props) => async dispatch => {
+export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatch => {
   console.log(UserMaster,"checkvalue")
   try {
     axios({
@@ -340,7 +369,7 @@ export const InsertSubstage = (UserMaster, props) => async dispatch => {
       data:
       {
         "stage_id": UserMaster.stage_dropdown.value,
-        "sub_stage_id": UserMaster.stage_dropdown.value,
+        "sub_stage_id": Editvisible?stageId&&stageId.sub_stage_id:0,
         "sub_stage": UserMaster.sub_stage.value,
         "created_on": "2021-03-02",
         "created_by": "3"
@@ -354,7 +383,7 @@ export const InsertSubstage = (UserMaster, props) => async dispatch => {
             message: response.data.msg,
           });
 
-          dispatch(getSubStage( UserMaster.stage_dropdown.value))
+          dispatch(getSubStage(UserMaster.stage_dropdown.value))
           return Promise.resolve();
         }
        
@@ -375,8 +404,7 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible) => async dispatch 
       url: apiurl + 'insert_status_master',
       data:
       {
-        //"status_id":Editvisible?StatusId.status_id:0,
-        // "status_type": UserMaster.status_type.value,
+        "status_id":Editvisible?StatusId.status_id:0,
         "status_type":UserMaster.status_type.value,
         "status": UserMaster.status_name.value,
         "created_on": "2021-02-01",
@@ -601,6 +629,11 @@ export const getTableCourt = () => async (dispatch) => {
   return dispatch({ type: GET_TABLE_COURT, payload: response.data.data});
 };
 
+// export const getTableCourt = () => async (dispatch) => {
+//   const response = await axios.get(apiurl + "/get_court");
+//   return dispatch({ type: GET_TABLE_COURT, payload: response.data.data});
+// };
+
 export const getSubStage = (id) => async (dispatch) => {
   const response = await axios({
     method: "post",
@@ -640,4 +673,13 @@ export const getCheckList = (id) => async (dispatch) => {
     url: apiurl + "get_checklist_collection",
   });
   return dispatch({ type: GET_CHECKLIST, payload: response.data.data });
+};
+
+
+export const getProjectCostRange = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_range");
+  return dispatch({
+    type: GET_COST_RANGE,
+    payload: response.data.data,
+  });
 };
