@@ -248,5 +248,5 @@ export const GET_GROUP_CONTROL_LIST = "GET_GROUP_CONTROL_LIST";
 export const GET_TASK_LIST = "GET_TASK_LIST";
 
 
-// todolist other task
+// todoList other task
 export const GET_OTHER_TASK="GET_OTHER_TASK"
