@@ -305,7 +305,7 @@ function AddClient() {
       // setAddclient_Form({ error: true });
     } else {
       dispatch(InsertClient(Addclient_Form, fileupload)).then((response) => {
-        // onStateClear()
+        onStateClear()
       })
     }
 
