@@ -49,7 +49,6 @@ function UserGroup(props) {
                 action: <><img src={Edit} className="editicon" onClick={()=>( permission.allow_edit==='Y'?(editGroupNames(data.id, groupid)):rights())}  /> 
                         <img src={Delete} className="editicon" onClick={()=>( permission.allow_delete==='Y'?(deleteGroupNames(data.id)):rights())}  /></>
             },
-
             )
         })
         // setUserGroupName(usergroup)

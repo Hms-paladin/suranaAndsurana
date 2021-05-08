@@ -9,6 +9,21 @@ import './timesheets.scss'
 
 function ProjectwiseTS() {
     const { Panel } = Collapse;
+    // const empname = [
+    //     {
+    //         label: "Employee Name1",
+    //         value: "1"
+    //     },
+    //     {
+    //         label: "Employee Name2",
+    //         value: "2"
+    //     },
+    //     {
+    //         label: "Employee Name3",
+    //         value: "3"
+    //     }
+    // ]
+    const empname = "Employee Name";
     const headCells = [
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub Activity" },
@@ -20,17 +35,22 @@ function ProjectwiseTS() {
         { id: "tothours", label: "Total hours" }
     ];
     const getRows = [
-        { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021",actualstart:"12-05-2021/9:00",actualend:"13-05-2021/9:00",tothours:"23hr"},
-        { activity: <Link to=""><div className="ProjectTaskId">Hearing</div></Link>, subactivity: "Non-Effective", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021",actualstart:"12-05-2021/9:00",actualend:"13-05-2021/9:00",tothours:"22hr"},
+        { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "23hr" },
+        { activity: <Link to=""><div className="ProjectTaskId">Hearing</div></Link>, subactivity: "Non-Effective", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "22hr" },
     ];
-    const getDesignRows=[
-        { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021",actualstart:"12-05-2021/9:00",actualend:"13-05-2021/9:00",tothours:"23hr"},
+    const getDesignRows = [
+        { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "23hr" },
     ];
     return (
         <div>
-            <div className="DRtitle">Project Wise Time sheet</div>
+
+            <div className="DRtitle">Project Wise Time sheet - {empname}</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
+                    <Grid item xs={2} container direction="column" spacing={1}>
+                        <div className="Reporthead">Employee Name</div>
+                        <Labelbox type="select"></Labelbox>
+                    </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">Project type</div>
                         <Labelbox type="select"></Labelbox>

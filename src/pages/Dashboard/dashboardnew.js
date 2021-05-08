@@ -125,7 +125,7 @@ function DashboardNew() {
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
-      title: "OPE",
+      title: "OPA/Expenses",
       path: "/outofpacket",
     },
     {
