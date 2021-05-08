@@ -10,11 +10,11 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
   try {
 
     var DocumentData = new FormData();
-    DocumentData.set("client", Addclient_Form.client_name.value )
+    DocumentData.set("client_name", Addclient_Form.client_name.value )
     DocumentData.set("industry", Addclient_Form.industrty.value)
     DocumentData.set("client_type", Addclient_Form.client_type.value )
     
-    DocumentData.set("contact_person_1", Addclient_Form.client_name.value||0 )
+    DocumentData.set("contact_person_1", Addclient_Form.con_per_1.value||0 )
     DocumentData.set("gender",Addclient_Form.gender_1.value )
     DocumentData.set("dob", (Addclient_Form.DOB_1.value===""||Addclient_Form.DOB_1.value===null)?'0-0-0000':Addclient_Form.DOB_1.value)
     
