@@ -221,7 +221,7 @@ function Projectsearch(props) {
     // }
 
 
-    dispatch(getProjectSearchTableData(projectform)).then((response) => {
+    dispatch(getProjectSearchTableData(projectform)).then((project_details) => {
 
       stateClear();
     });
@@ -290,12 +290,6 @@ function Projectsearch(props) {
         }
         ipProjectDataList.push(rowdataListobj);
       });
-
-      if (data.project_details.length === 0&&index===0) {
-        notification.success({
-          message: " No Data found",
-        })
-      }
 
       multipleTab.push(
         <Panel

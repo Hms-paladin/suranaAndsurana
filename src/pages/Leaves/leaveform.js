@@ -12,6 +12,8 @@ import { getEmployeeList, getClientlist } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
+import dateFormat from 'dateformat';
+import moment from 'moment';
 import './leaveupdate.scss';
 const headCells = [
     { id: 'leavetype', label: 'Leave Type' },
@@ -122,7 +124,7 @@ function LeaveForm(props) {
         },
         exam_days: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "allowNumaricOnly" }],
+            validation: [{ "name": "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly" }],
             error: null,
             errmsg: null,
         },
@@ -185,14 +187,14 @@ function LeaveForm(props) {
     }
 
     const onEditLeaveForm = (val) => {
-        console.log(val, "valval")
+        console.log(val, dateFormat(val.from_time, "hh:MM:ss"), "valval")
         setEditBtn(true)
         console.log(val.subject_details, "valval")
         Leave_Form.leavetype.value = val.leave_type_id || ""
         Leave_Form.fromdate.value = val.from_date || ""
         Leave_Form.todate.value = val.to_date || ""
-        Leave_Form.fromtime.value = val.from_time || ""
-        Leave_Form.totime.value = val.to_time || ""
+        Leave_Form.fromtime.value = dateFormat(val.from_time, "hh:MM:ss") || ""
+        Leave_Form.totime.value = dateFormat(val.to_time, "hh:MM:ss") || ""
         Leave_Form.reasoncmt.value = val.leave_reason || ""
         Leave_Form.address.value = val.address || ""
         Leave_Form.contactperson.value = val.contact_number || ""
@@ -271,6 +273,13 @@ function LeaveForm(props) {
             errmsg: errorcheck.msg,
             validation: Leave_Form[key].validation,
         };
+
+        if (data && key == "tot_leave") {
+            Leave_Form.exam_days.validation[1].params = data
+            setLeaveForm((prevState) => ({
+              ...prevState,
+            }));
+          }
 
         if (key === "leavetype" && data) {
             handleCancel()

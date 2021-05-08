@@ -208,7 +208,7 @@ export default class Labelbox extends Component {
 								margin="normal"
 								inputVariant="outlined"
 								id="time-picker"
-								value={this.props.value || new Date()}
+								value={new Date('05:25:57') || new Date()}
 								onChange={(time) => this.timepickerChange(time)}
 								KeyboardButtonProps={{
 									'aria-label': 'change time',

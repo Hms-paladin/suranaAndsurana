@@ -20,6 +20,15 @@ export const getProjectSearchTableData = (data) => async dispatch => {
         })
             .then((response) => {
                 dispatch({ type: GET_PROJECT_SEARCH_TABLEDATA, payload: response.data.data })
+
+                var checkAllTrue = response.data.data.every((data)=>{
+                    return (data.project_details.length === 0)
+                })
+                if(checkAllTrue){
+                    notification.success({
+                        message: " No Data found",
+                      })
+                    }
                
             })
 
