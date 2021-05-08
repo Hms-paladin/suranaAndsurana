@@ -373,10 +373,18 @@ function ProjectFormCreate(props) {
     }
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
-    console.log(filtererr.length, "filtererr.length")
 
-    if (filtererr.length > 1) {
-    } else {
+    if (projectform.billable_type.value&&projectform.billable_type.value===2&&filtererr.length <= 3 ) {
+      dispatch(InsertIpProject(projectform, sendVariableData,proj_type_name)).then(
+        (response) => {
+          handleCancel();
+        }
+      );
+    } 
+    else if (filtererr.length > 1) {
+
+    }
+    else {
       dispatch(InsertIpProject(projectform, sendVariableData,proj_type_name)).then(
         (response) => {
           handleCancel();
