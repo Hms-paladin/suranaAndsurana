@@ -4,6 +4,7 @@ import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT} from '../utils/Consta
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
+import moment from 'moment';
 import {
   GET_TABLE_STATUS,
   GET_TABLE_SKILLS,
@@ -90,7 +91,6 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
 
  
   try {
-  // try {
     axios({
       method: 'POST',
       url: apiurl + 'common_insert_text',
@@ -106,14 +106,6 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           state?.question?.value?state.question.value||"":state?.court?.value?state.court.value||"":state?.department?.value?state.department.value||"":
           state?.activity?.value?state.activity.value||"":state?.stage_name?.value?state.stage_name.value||"":state?.case_type?.value?state.case_type.value||"":
           state?.range?.value?state.range.value||"":"",
-        // "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
-        // state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
-        // state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
-        // state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
-        // state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
-        // state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
-        // state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
-        // state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
         "created_by":localStorage.getItem("empId")
        
 
@@ -147,14 +139,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           dispatch(getCaseType())
           dispatch(getProjectCostRange())
           dispatch(getStageList())
-          // dispatch(getTableQualification())
-          // dispatch(getTableResource())
-          
-          
-          // dispatch(getTableCourt)
-          // dispatch(getTableIndustry())
-          
-          // dispatch(getTableCourt())
+       
           return Promise.resolve();
         }
 
@@ -172,7 +157,6 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
 
  
 
-  // console.log(editId.group.group_id, "id_divya")
   try {
     axios({
       method: 'POST',
@@ -180,7 +164,6 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
       data:
       {
         "id":Editvisible?editId?.group?.group_id:"",
-        // "id":"1",
         "table_names":data,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
@@ -190,14 +173,6 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         state?.question?.value?state.question.value||"":state?.department?.value?state.department.value||"":state?.court?.value?state.court.value||"":
          state?.activity?.value?state.activity.value||"":state?.stage_name?.value?state.stage_name.value||"":state?.case_type?.value?state.case_type.value||"":
         state?.range?.value?state.range.value||"":"",
-        // "text_val":state?.traits_name?.value ? state?.traits_name?.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
-        // state?.groupname?.value ? state?.groupname?.value||"":state?.specialization_name?.value?state?.specialization_name?.value||"":
-        // state?.specialization_name?.value?state?.specialization_name?.value||"":state?.certification_name?.value?state?.certification_name?.value||"":
-        // state?.qualification_name?.value?state?.qualification_name?.value||"":state?.industry?.value?state?.industry?.value||"":
-        // state?.institute?.value?state?.institute?.value||"":state?.capability?.value?state?.capability?.value||"":
-        // state?.talents?.value?state?.talents?.value||"":state?.resourse?.value?state?.resourse?.value||"":
-        // state?.designation?.value?state?.designation?.value||"":state?.department?.value?state?.department?.value||"":
-        // state?.activity?.value?state?.activity?.value||"":state?.stage?.value?state?.stage?.value||"":state?.case_type?.value?state?.case_type?.value||"":"0",
         "updated_by":localStorage.getItem("empId")
 
       },
@@ -227,12 +202,6 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         dispatch(getTableDepartment())
         dispatch(getTableQuestion())
         dispatch(getProjectCostRange())
-        // dispatch(getTableDesgination())
-        // dispatch(getTableQualification())
-        
-        
-        // dispatch(getTableCourt)
-        // dispatch(getTableIndustry())
         dispatch(getStageList())
         dispatch(getTableActivity())
         dispatch(getTableCourt())
@@ -262,7 +231,7 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
         "check_list_id": Editvisible?editdata&&editdata.check_list_id:0,
         "check_list": UserMaster.checklist_name.value,
         "project_type_id": UserMaster.project_type.value,
-        "created_on":"2021-03-02",
+        "created_on":moment().format("YYYY-MM-DD HH:m:s"),
         "created_by":localStorage.getItem("empId")
       },
     })
@@ -303,7 +272,7 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
         "class_type":UserMaster.class_type.value,
         "class":UserMaster.class_name.value,
         "class_description":UserMaster.description.value,
-        "created_on":"2021-03-02",
+        "created_on":moment().format("YYYY-MM-DD HH:m:s"),
         "created_by":localStorage.getItem("empId")
       },
     })
@@ -373,8 +342,8 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
         "stage_id": UserMaster.stage_dropdown.value,
         "sub_stage_id": Editvisible?stageId&&stageId.sub_stage_id:0,
         "sub_stage": UserMaster.sub_stage.value,
-        "created_on": "2021-03-02",
-        "created_by": localStorage.getItem("empId")
+        "created_on": moment().format("YYYY-MM-DD HH:m:s"),
+        "created_by":localStorage.getItem("empId")
       },
     })
       .then((response) => {
@@ -410,8 +379,8 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
         "status_id":Editvisible?StatusId.status_id:0,
         "status_type":Statusvalue?.value,
         "status": UserMaster.status_name.value,
-        "created_on": "2021-02-01",
-        "created_by": localStorage.getItem("empId")
+        "created_on": moment().format("YYYY-MM-DD HH:m:s"),
+        "created_by":localStorage.getItem("empId")
       }
     })
       .then((response) => {
