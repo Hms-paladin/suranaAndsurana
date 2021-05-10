@@ -90,7 +90,6 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
 
  
   try {
-  console.log(data, "name_divya")
   // try {
     axios({
       method: 'POST',
@@ -125,7 +124,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
         if (response.data.status === 1) {
 
           notification.success({
-            message: response.data.msg,
+            message:response.data.msg
         })
        
         dispatch({ type: COMMON_INSERT_TEXT, payload: response.data.status })
@@ -264,7 +263,7 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
         "check_list": UserMaster.checklist_name.value,
         "project_type_id": UserMaster.project_type.value,
         "created_on":"2021-03-02",
-        "created_by":"3"
+        "created_by":localStorage.getItem("empId")
       },
     })
       .then((response) => {
@@ -305,7 +304,7 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
         "class":UserMaster.class_name.value,
         "class_description":UserMaster.description.value,
         "created_on":"2021-03-02",
-        "created_by":"3"
+        "created_by":localStorage.getItem("empId")
       },
     })
       .then((response) => {
@@ -375,7 +374,7 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
         "sub_stage_id": Editvisible?stageId&&stageId.sub_stage_id:0,
         "sub_stage": UserMaster.sub_stage.value,
         "created_on": "2021-03-02",
-        "created_by": "3"
+        "created_by": localStorage.getItem("empId")
       },
     })
       .then((response) => {
@@ -401,7 +400,7 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
 
 // insert status insert api
 export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => async dispatch => {
-  alert(Statusvalue&&Statusvalue?.value)
+  // alert(Statusvalue&&Statusvalue?.value)
   try {
     axios({
       method: 'POST',
@@ -412,17 +411,18 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
         "status_type":Statusvalue?.value,
         "status": UserMaster.status_name.value,
         "created_on": "2021-02-01",
-        "created_by": "2"
+        "created_by": localStorage.getItem("empId")
       }
     })
       .then((response) => {
-        dispatch({ type: INSERT_STATUS, payload: response.data.status })
         if (response.data.status === 1) {
           notification.success({
             message:response.data.msg,
           });
-          dispatch(getTableStatus(Statusvalue&&Statusvalue?.value))
-          // return Promise.resolve();
+         dispatch({ type: INSERT_STATUS, payload: response.data.status })
+        console.log(Statusvalue&&Statusvalue?.value,"resposeidcheck")
+          dispatch(getTableStatus({value:Statusvalue&&Statusvalue?.value}))
+          return Promise.resolve();
         }
       });
   }
