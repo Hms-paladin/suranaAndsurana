@@ -401,7 +401,7 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
 
 // insert status insert api
 export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => async dispatch => {
-  console.log("checkstatus",Statusvalue.value)
+  alert(Statusvalue&&Statusvalue?.value)
   try {
     axios({
       method: 'POST',
@@ -409,7 +409,7 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
       data:
       {
         "status_id":Editvisible?StatusId.status_id:0,
-        "status_type":UserMaster.status_type.value,
+        "status_type":Statusvalue?.value,
         "status": UserMaster.status_name.value,
         "created_on": "2021-02-01",
         "created_by": "2"
@@ -421,7 +421,7 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
           notification.success({
             message:response.data.msg,
           });
-          dispatch(getTableStatus(Statusvalue&&Statusvalue?.value.toString()))
+          dispatch(getTableStatus(Statusvalue&&Statusvalue?.value))
           // return Promise.resolve();
         }
       });
@@ -554,7 +554,7 @@ export const getClass = (id) => async (dispatch) => {
 
 // table get api
 export const getTableStatus = (id) => async (dispatch) => {
- 
+//  alert(id?.value)
 const response = await axios({
   method: "post",
   url: apiurl + "get_s_tbl_m_status",

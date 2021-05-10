@@ -400,18 +400,101 @@ const UserMaster = (props) => {
         
       });
       settable_name_value(value);
-        // UserMaster.groupname.validation.push({name:"Field required"})
+        
        
-        let From_key = [
-          "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
-          "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
-          "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-          "court","range","stage_dropdown","stage_name","case_type","activity_drop"
-        ];
-    
-        From_key.map((data) => {
-          UserMaster[data].validation.push({name:"Field required"})
+        // let From_key = [
+        //   "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
+        //   "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
+        //   "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
+        //   "court","range","stage_dropdown","stage_name","case_type","activity_drop"
+        // ];
+      if(data===3){
+         UserMaster.groupname.validation.push({name:"required"})
+      }
+      else if(data===4){
+        const From_key=["status_type","status_name"]
+       From_key.map((data) => {
+         UserMaster[data].validation.push({name:"required"})
+       });
+     }
+      else if(data===5){
+        UserMaster.skill_name.validation.push({name:"required"})
+     }else if(data===6){
+      UserMaster.traits_name.validation.push({name:"required"})
+     }
+     else if(data===7){
+      UserMaster.certification_name.validation.push({name:"required"})
+     } 
+     else if(data===8){
+      UserMaster.specialization_name.validation.push({name:"required"})
+     } 
+     else if(data===9){
+      UserMaster.qualification_name.validation.push({name:"required"})
+     } 
+     else if(data===11){
+      UserMaster.industry.validation.push({name:"required"})
+     } 
+     else if(data===12){
+      UserMaster.institute.validation.push({name:"required"})
+     } 
+     else if(data===13){
+      UserMaster.capability.validation.push({name:"required"})
+     }
+     else if(data===14){
+      UserMaster.talents.validation.push({name:"required"})
+     } 
+     else if(data===15){
+      UserMaster.resourse.validation.push({name:"required"})
+     }
+     else if(data===16){
+      UserMaster.designation.validation.push({name:"required"})
+     }
+     else if(data===17){
+      UserMaster.question.validation.push({name:"required"})
+     }
+     else if(data===18){
+      UserMaster.department.validation.push({name:"required"})
+     }
+     else if(data===19){
+      UserMaster.activity.validation.push({name:"required"})
+     }
+     else if(data===20){
+       const From_key=["sub_activity","activity_drop"]
+       From_key.map((data) => {
+          UserMaster[data].validation.push({name:"required"})
         });
+     } 
+     else if(data===21){
+      const From_key=["class_name","class_type","description"]
+      From_key.map((data) => {
+         UserMaster[data].validation.push({name:"required"})
+       });
+    }   
+     else if(data===23){
+      UserMaster.court.validation.push({name:"required"})
+     }
+     else if(data===24){
+      UserMaster.range.validation.push({name:"required"})
+     }
+     else if(data===25){
+      UserMaster.stage_name.validation.push({name:"required"})
+     } 
+     else if(data===26){
+      const From_key=["sub_stage","stage_dropdown"]
+      From_key.map((data) => {
+         UserMaster[data].validation.push({name:"required"})
+       });
+     }
+     else if(data===28){
+      UserMaster.case_type.validation.push({name:"required"})
+     }
+     else if(data===29){
+      const From_key=["project_type","checklist_name"]
+      From_key.map((data) => {
+         UserMaster[data].validation.push({name:"required"})
+       });
+     }          
+       
       console.log("fromkey", UserMaster.groupname.validation)
 
       
@@ -423,9 +506,6 @@ const UserMaster = (props) => {
         
       });
       setStatusvalue(value)
-      // setStatusvalue((prevState) => ({
-      //   ...prevState,
-      // }));
       dispatch(getTableStatus(value))
       console.log("statuscheck",Statusvalue)
     }
@@ -946,6 +1026,11 @@ const UserMaster = (props) => {
   // },[props,UserMaster])
   //  insert approve
   function Submit(data) {
+    // var value=props&&props.StatusTableData.filter((data, index) => {
+    //    return data.status_id==data
+    // })
+    
+    // console.log("checkvalue",Statusvalue)
     setStatusvalue((prevState) => ({
       ...prevState,
     }));
@@ -961,7 +1046,6 @@ const UserMaster = (props) => {
       mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-    console.log("filterr",targetkeys)
     if (filtererr.length >0) {
     } else {
       if (data === 21) {
@@ -987,7 +1071,7 @@ const UserMaster = (props) => {
           InsertCheckList(UserMaster, EditStoreData.ChecklistEdit, Editvisible)
         ).then(() => {
           setEditvisible(false);
-          // handleCancel()
+          handleCancel()
         });
       } else if (
         data === 3 ||
@@ -1037,14 +1121,14 @@ const UserMaster = (props) => {
       } else if (data === 26) {
         dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible)).then(() => {
           setEditvisible(false);
-          // handleCancel()
+          handleCancel()
         });
       } else if (data === 4) {
         dispatch(
           InsertStatus(UserMaster, EditStoreData.StatusEdit, Editvisible,Statusvalue)
         ).then(() => {
           setEditvisible(false);
-          // handleCancel()
+          handleCancel()
         });
       }
     }
@@ -1185,11 +1269,13 @@ const UserMaster = (props) => {
   };
 
   const EditStatus = (id, data) => {
-    UserMaster.status_type.value = data.status_type;
-    UserMaster.status_name.value = data.status;
+    UserMaster.status_type.value = data.status_id.toString();
     var StatusEdit = props.StatusTableData.find((data) => {
       return data.status_id == id;
     });
+    console.log("testuservale",)
+    UserMaster.status_name.value = data.status;
+    
     setEditvisible(true);
 
     setEditStoreData({ StatusEdit });
@@ -1232,7 +1318,7 @@ const UserMaster = (props) => {
       "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
       "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
       "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop"
+      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage"
     ];
 
     From_key.map((data) => {
