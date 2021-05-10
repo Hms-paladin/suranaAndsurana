@@ -46,15 +46,17 @@ function UserGroup(props) {
             usergroup.push({
                 sno: index + 1,
                 group: data.group_name,
-                action: <><img src={Edit} className="editicon" onClick={()=>( permission.allow_edit==='Y'?(editGroupNames(data.id, groupid)):rights())}  /> 
-                        <img src={Delete} className="editicon" onClick={()=>( permission.allow_delete==='Y'?(deleteGroupNames(data.id)):rights())}  /></>
-            },
+                action: <><img src={Edit} className="editicon" onClick={()=>editGroupNames(data.id, groupid)}  /> 
+                        <img src={Delete} className="editicon" onClick={()=>deleteGroupNames(data.id)}  /></>
 
+                        //  action: <><img src={Edit} className="editicon" onClick={()=>( permission.allow_edit==='Y'?(editGroupNames(data.id, groupid)):rights())}  /> 
+                        // <img src={Delete} className="editicon" onClick={()=>( permission.allow_delete==='Y'?(deleteGroupNames(data.id)):rights())}  /></>
+            },
             )
         })
-        // setUserGroupName(usergroup)
+        setUserGroupName(usergroup)
 
-        permission.allow_view==='Y'?setUserGroupName(usergroup):setUserGroupName([]);
+        // permission.allow_view==='Y'?setUserGroupName(usergroup):setUserGroupName([]);
     }, [props.UserGroupName])
 
     const editGroupNames = (id) => {
@@ -108,7 +110,8 @@ function UserGroup(props) {
         <div>
             <div className="UserGroup">
                 <div>User Group</div>
-                <img src={PlusIcon} className="plusicon" onClick={() => (permission.allow_add==='Y'?setUsergroupModel(true):rights())} />
+                {/* <img src={PlusIcon} className="plusicon" onClick={() => (permission.allow_add==='Y'?setUsergroupModel(true):rights())} /> */}
+                <img src={PlusIcon} className="plusicon" onClick={() => setUsergroupModel(true)} />
                 <DynModel modelTitle={"ADD USER GROUP"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} content={<UserGroupModal handleChangeCloseModel={(bln) => setUsergroupModel(bln)} editbtn={onEdit}
                     handleChangeCloseModel={(bln) => handleFieldNull(bln)}
                     editGrouplist={editGroupName}

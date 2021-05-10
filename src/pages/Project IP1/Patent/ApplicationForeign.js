@@ -5,21 +5,22 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
-import { getTradeMarkStatus,getCountryDetails,
-  } from "../../../actions/tradeMarkAction";
-import {insertPatent} from  "../../../actions/PatentAction";
+import {
+    getTradeMarkStatus, getCountryDetails,
+} from "../../../actions/tradeMarkAction";
+import { insertPatent } from "../../../actions/PatentAction";
 import moment from 'moment'
 
 function ApplicationForeign(props) {
     const [projectDetails, setProjectDetails] = useState({})
-  const [idDetails, setidDetails] = useState({})
-  const dispatch = useDispatch()
-  const [tradeStatusList, settradeStatusList] = useState({})
-  const [countryDetList, setcountryDetList] = useState({})
-  
-  const [patentForm, setpatentForm] = useState({
+    const [idDetails, setidDetails] = useState({})
+    const dispatch = useDispatch()
+    const [tradeStatusList, settradeStatusList] = useState({})
+    const [countryDetList, setcountryDetList] = useState({})
+
+    const [patentForm, setpatentForm] = useState({
 
         file_cover: {
             value: "",
@@ -98,41 +99,45 @@ function ApplicationForeign(props) {
 
 
     })
-    
+
     let { rowId } = useParams()
-  useEffect(() => {
-    dispatch(getProjectDetails(rowId))
-    dispatch(getTradeMarkStatus());
-    dispatch(getCountryDetails());
-    
-  }, []);
+    useEffect(() => {
+        dispatch(getProjectDetails(rowId))
+        dispatch(getTradeMarkStatus());
+        dispatch(getCountryDetails());
 
-  useEffect(() => {
-    setProjectDetails(props.ProjectDetails);
-    props.ProjectDetails.length > 0 && setidDetails({
-        project_id:props.ProjectDetails[0].project_id,
-        client_id:props.ProjectDetails[0].client_id,
-    })
+    }, []);
 
-    let tradeStatusData = []
-    props.tradeStatusList.map((data) =>
-tradeStatusData.push({ value: data.Status,
-    id: data.status_id })
-)
-settradeStatusList({ tradeStatusData })
+    useEffect(() => {
+        setProjectDetails(props.ProjectDetails);
+        props.ProjectDetails.length > 0 && setidDetails({
+            project_id: props.ProjectDetails[0].project_id,
+            client_id: props.ProjectDetails[0].client_id,
+        })
 
-let countryListsData = []
-props.countriesList.map((data) =>
-countryListsData.push({ value: data.country,
-id: data.country_id })
-) 
-setcountryDetList({ countryListsData })
+        let tradeStatusData = []
+        props.tradeStatusList.map((data) =>
+            tradeStatusData.push({
+                value: data.Status,
+                id: data.status_id
+            })
+        )
+        settradeStatusList({ tradeStatusData })
+
+        let countryListsData = []
+        props.countriesList.map((data) =>
+            countryListsData.push({
+                value: data.country,
+                id: data.country_id
+            })
+        )
+        setcountryDetList({ countryListsData })
 
 
 
-}, [props.ProjectDetails,
-props.tradeStatusList,props.countriesList
-]);
+    }, [props.ProjectDetails,
+    props.tradeStatusList, props.countriesList
+    ]);
 
     function onSubmit() {
         var mainvalue = {};
@@ -151,33 +156,33 @@ props.tradeStatusList,props.countriesList
         );
         console.log(filtererr.length);
 
-        let params ={
-            "project_id":idDetails.project_id,
-            "file_cover":patentForm.file_cover.value,
-            "our_reference":patentForm.our_ref.value,
-            "client_reference":patentForm.client_ref.value,
-            "application_no":patentForm.app_num.value,
-            "application_date":patentForm.app_date.value,
-            "priority_country":patentForm.priority_country.value,
-            "priority_application_no":patentForm.priority_num.value,
-            "priority_date":patentForm.priority_date.value,
-            "patent_title":patentForm.title.value,
-            "associate":patentForm.associate.value,
-            "status_id":patentForm.status.value,
-            "comments":patentForm.comments.value,
-            "created_by" :localStorage.getItem("empId"),
-            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-            "updated_by" :localStorage.getItem("empId"),
-            }
+        let params = {
+            "project_id": idDetails.project_id,
+            "file_cover": patentForm.file_cover.value,
+            "our_reference": patentForm.our_ref.value,
+            "client_reference": patentForm.client_ref.value,
+            "application_no": patentForm.app_num.value,
+            "application_date": patentForm.app_date.value,
+            "priority_country": patentForm.priority_country.value,
+            "priority_application_no": patentForm.priority_num.value,
+            "priority_date": patentForm.priority_date.value,
+            "patent_title": patentForm.title.value,
+            "associate": patentForm.associate.value,
+            "status_id": patentForm.status.value,
+            "comments": patentForm.comments.value,
+            "created_by": localStorage.getItem("empId"),
+            "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+            "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+            "updated_by": localStorage.getItem("empId"),
+        }
 
-       
+
         if (filtererr.length > 0) {
             // setpatentForm({ error: true });
         } else {
             dispatch(insertPatent(params)).then(() => {
                 handleCancel()
-              })
+            })
         }
 
         setpatentForm(prevState => ({
@@ -187,8 +192,8 @@ props.tradeStatusList,props.countriesList
 
     const handleCancel = () => {
         let formKey = [
-            "file_cover", "our_ref","associate", "title","client_ref", "app_num","app_date", "comments","status", "priority_country"
-    ,"priority_num", "priority_date"
+            "file_cover", "our_ref", "associate", "title", "client_ref", "app_num", "app_date", "comments", "status", "priority_country"
+            , "priority_num", "priority_date"
         ]
 
         formKey.map((data) => {
@@ -238,79 +243,118 @@ props.tradeStatusList,props.countriesList
         <div>
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Labelbox type="text" placeholder={"File Cover"}
-                        changeData={(data) => checkValidation(data, "file_cover")}
-                        value={patentForm.file_cover.value}
-                        error={patentForm.file_cover.error}
-                        errmsg={patentForm.file_cover.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">File Cover</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "file_cover")}
+                            value={patentForm.file_cover.value}
+                            error={patentForm.file_cover.error}
+                            errmsg={patentForm.file_cover.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text" placeholder={"Our Reference"}
-                        changeData={(data) => checkValidation(data, "our_ref")}
-                        value={patentForm.our_ref.value}
-                        error={patentForm.our_ref.error}
-                        errmsg={patentForm.our_ref.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Our Reference</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "our_ref")}
+                            value={patentForm.our_ref.value}
+                            error={patentForm.our_ref.error}
+                            errmsg={patentForm.our_ref.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text" placeholder={"Client Reference"}
-                        changeData={(data) => checkValidation(data, "client_ref")}
-                        value={patentForm.client_ref.value}
-                        error={patentForm.client_ref.error}
-                        errmsg={patentForm.client_ref.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Client Reference</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "client_ref")}
+                            value={patentForm.client_ref.value}
+                            error={patentForm.client_ref.error}
+                            errmsg={patentForm.client_ref.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="number" placeholder={"Application number"}
-                        changeData={(data) => checkValidation(data, "app_num")}
-                        value={patentForm.app_num.value}
-                        error={patentForm.app_num.error}
-                        errmsg={patentForm.app_num.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Application number</div>
+                        <Labelbox type="number"
+                            changeData={(data) => checkValidation(data, "app_num")}
+                            value={patentForm.app_num.value}
+                            error={patentForm.app_num.error}
+                            errmsg={patentForm.app_num.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="datepicker" placeholder={"Application Date"}
-                        changeData={(data) => checkValidation(data, "app_date")}
-                        value={patentForm.app_date.value}
-                        error={patentForm.app_date.error}
-                        errmsg={patentForm.app_date.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Application Date</div>
+                        <Labelbox type="datepicker"
+                            changeData={(data) => checkValidation(data, "app_date")}
+                            value={patentForm.app_date.value}
+                            error={patentForm.app_date.error}
+                            errmsg={patentForm.app_date.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="number" placeholder={"Priority No"}
-                        changeData={(data) => checkValidation(data, "priority_num")}
-                        value={patentForm.priority_num.value}
-                        error={patentForm.priority_num.error}
-                        errmsg={patentForm.priority_num.errmsg} />
-                    <Labelbox type="datepicker" placeholder={"Priority Date"}
-                        changeData={(data) => checkValidation(data, "priority_date")}
-                        value={patentForm.priority_date.value}
-                        error={patentForm.priority_date.error}
-                        errmsg={patentForm.priority_date.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Priority No</div>
+                        <Labelbox type="number"
+                            changeData={(data) => checkValidation(data, "priority_num")}
+                            value={patentForm.priority_num.value}
+                            error={patentForm.priority_num.error}
+                            errmsg={patentForm.priority_num.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="text" placeholder={"Title"}
-                        changeData={(data) => checkValidation(data, "title")}
-                        value={patentForm.title.value}
-                        error={patentForm.title.error}
-                        errmsg={patentForm.title.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Priority Date</div>
+                        <Labelbox type="datepicker"
+                            changeData={(data) => checkValidation(data, "priority_date")}
+                            value={patentForm.priority_date.value}
+                            error={patentForm.priority_date.error}
+                            errmsg={patentForm.priority_date.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="select" placeholder={"Country"}
-                    dropdown={countryDetList.countryListsData}  
-                    changeData={(data) => checkValidation(data, "priority_country")}
-                    value={patentForm.priority_country.value}
-                    error={patentForm.priority_country.error}
-                    errmsg={patentForm.priority_country.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Title</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "title")}
+                            value={patentForm.title.value}
+                            error={patentForm.title.error}
+                            errmsg={patentForm.title.errmsg} />
+                    </Grid>
+
+                    <Grid>
+                        <div className="Fieldheadings">Country</div>
+                        <Labelbox type="select"
+                            dropdown={countryDetList.countryListsData}
+                            changeData={(data) => checkValidation(data, "priority_country")}
+                            value={patentForm.priority_country.value}
+                            error={patentForm.priority_country.error}
+                            errmsg={patentForm.priority_country.errmsg} />
+                    </Grid>
 
 
-                    <Labelbox type="text" placeholder={"Associate"}
-                        changeData={(data) => checkValidation(data, "associate")}
-                        value={patentForm.associate.value}
-                        error={patentForm.associate.error}
-                        errmsg={patentForm.associate.errmsg} />
+                    <Grid>
+                        <div className="Fieldheadings">Associate</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "associate")}
+                            value={patentForm.associate.value}
+                            error={patentForm.associate.error}
+                            errmsg={patentForm.associate.errmsg} />
+                    </Grid>
 
-                    <Labelbox type="select" placeholder={"Status"}
-                    changeData={(data) => checkValidation(data, "status")}
-                    dropdown={tradeStatusList.tradeStatusData} 
-                    value={patentForm.status.value}
-                    error={patentForm.status.error}
-                    errmsg={patentForm.status.errmsg}
-                    />
-                    <div className="coments_div"><Labelbox type="text" placeholder={"Comments"}
-                        changeData={(data) => checkValidation(data, "comments")}
-                        value={patentForm.comments.value}
-                        error={patentForm.comments.error}
-                        errmsg={patentForm.comments.errmsg} /></div>
+                    <Grid>
+                        <div className="Fieldheadings">Status</div>
+                        <Labelbox type="select"
+                            changeData={(data) => checkValidation(data, "status")}
+                            dropdown={tradeStatusList.tradeStatusData}
+                            value={patentForm.status.value}
+                            error={patentForm.status.error}
+                            errmsg={patentForm.status.errmsg}
+                        />
+                    </Grid>
+
+                    <Grid>
+                        <div className="Fieldheadings">TiCommentstle</div>
+                        <div className="coments_div"><Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "comments")}
+                            value={patentForm.comments.value}
+                            error={patentForm.comments.error}
+                            errmsg={patentForm.comments.errmsg} /></div>
+                    </Grid>
+
 
 
                 </Grid>
@@ -319,7 +363,7 @@ props.tradeStatusList,props.countriesList
             </Grid>
             <div className="custombtnOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"TMopositionbuttons"} onBtnClick={onSubmit} />
-                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS={"TMopositionbuttons"} />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} custombtnCSS={"TMopositionbuttons"} />
             </div>
         </div>
     )
@@ -327,9 +371,9 @@ props.tradeStatusList,props.countriesList
 
 const mapStateToProps = (state) =>
 ({
-    
+
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    countriesList : state.tradeMarkReducer.getCountryList || [],
+    countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 

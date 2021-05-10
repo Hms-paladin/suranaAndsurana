@@ -125,7 +125,7 @@ export const GET_TRADEMARK_USAGE_DETS = "GET_TRADEMARK_USAGE_DETS";
 export const GET_POA = "GET_POA";
 export const INSERT_TRADE_MARK = "INSERT_TRADE_MARK";
 export const INSERT_TIME_SHEET = "INSERT_TIME_SHEET";
-export const GET_TRADE_MARK ="GET_TRADE_MARK";
+export const GET_TRADE_MARK = "GET_TRADE_MARK";
 //Design
 export const GET_DESIGN_DETAILS = "GET_DESIGN_DETAILS";
 //patent
@@ -234,8 +234,19 @@ export const UPDATE_TICKET_STATUS = "UPDATE_TICKET_STATUS";
 export const GET_ADJOURN_TAKEN_BY = "GET_ADJOURN_TAKEN_BY";
 
 // leave Approval
-export const GET_EMP_APPROVAL="GET_EMP_APPROVAL"
-export const UPDATE_EMP_APPROVAL="UPDATE_EMP_APPROVAL"
+export const GET_EMP_APPROVAL = "GET_EMP_APPROVAL";
+export const UPDATE_EMP_APPROVAL = "UPDATE_EMP_APPROVAL";
 
-// todolist other task
+//Group
+export const GET_GROUP_LIST = "GET_GROUP_LIST";
+export const GET_EMP_LIST = "GET_EMP_LIST";
+export const GET_EMP_GROUP_LIST = "GET_EMP_GROUP_LIST";
+export const GET_GROUP_CONTROL_LIST = "GET_GROUP_CONTROL_LIST";
+
+// Task Time Sheet
+
+export const GET_TASK_LIST = "GET_TASK_LIST";
+
+
+// todoList other task
 export const GET_OTHER_TASK="GET_OTHER_TASK"

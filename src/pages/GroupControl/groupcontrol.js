@@ -9,7 +9,10 @@ import DynModel from "../../component/Model/model";
 import './groupcontrol.scss'
 import { Checkbox } from 'antd';
 import Edit from "../../images/pencil.svg";
-
+import {
+  getGroupControlList
+} from "../../actions/UserGroupAction";
+import { connect, useDispatch } from "react-redux";
 const GroupControl = (props) => {
   const header = [
     // { id: 'table_name', label: 'Table Name' },
@@ -18,12 +21,37 @@ const GroupControl = (props) => {
 
     { id: 'edit', label: 'Edit' },
   ];
-
+  const dispatch = useDispatch();
   const [GroupControlList, setGroupControlList] = useState([])
   // const [groupcontrol, setGroupcontrolmodel] = useState(false);
-
+  const [usergroupmodel, setUsergroupmodel] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
+
   useEffect(() => {
+    dispatch(getGroupControlList());
+
+  }, []);
+
+  useEffect(() => {
+    
+    
+    var dets = props.getGroupControlLists;
+    var groupList = [];
+    for(var i=0; i< dets.length; i++){
+      var listarray = {
+        "control": dets[i].control,
+        "group":dets[i].group_name,
+        "edit": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
+      }
+      groupList.push(listarray);
+        
+        
+    }
+    setGroupControlList({ groupList })
+
+  }, [props.groupLists
+  ]);
+ /* useEffect(() => {
 
     if (isLoaded) {
 
@@ -50,7 +78,7 @@ const GroupControl = (props) => {
       setIsLoaded(false);
     }
 
-  })
+  }) */
 
   return (
     <div>
@@ -59,6 +87,37 @@ const GroupControl = (props) => {
         <EnhancedTable headCells={header}
           rows={GroupControlList.length == 0 ? GroupControlList : GroupControlList.groupList} />
       </div>
+      <DynModel
+          modelTitle={"Edit Group Membership"}
+          handleChangeModel={usergroupmodel}
+          handleChangeCloseModel={(bln) => setUsergroupmodel(bln)}
+          content={
+            <div className="successModel">
+
+              <div> <label className="usergroup_label">Employee :&nbsp;Kaveri</label></div>
+              <div className="usergroupmodelDiv">
+                <div className="usergroupcheckboxDiv"><Checkbox  /> &nbsp;&nbsp;<label style={{color:'black'}}>Interview Approval</label> </div>
+                <div  className="usergroupcheckboxDiv"> <Checkbox  />&nbsp;&nbsp;<label style={{color:'black'}}>Interviewer</label> </div>
+                <div  className="usergroupcheckboxDiv"> <Checkbox  />&nbsp;&nbsp;<label style={{color:'black'}}>HR Assistant</label> </div>
+              </div>
+              <div className="customUsergroupbtn">
+                <CustomButton
+                  btnName={"Save"}
+                  btnCustomColor="customPrimary"
+                  custombtnCSS={"btnUsergroup"}
+                  onBtnClick={()=>setUsergroupmodel(false)}
+                />
+                <CustomButton
+                 btnName={"Cancel"} 
+                 custombtnCSS={"btnUsergroup"}
+                 onBtnClick={()=>setUsergroupmodel(false)}
+                  />
+              </div>
+            </div>
+
+          }
+          width={400}
+        />
       {/* <DynModel
         modelTitle={"Edit Group Membership"}
         handleChangeModel={groupcontrol}
@@ -93,5 +152,11 @@ const GroupControl = (props) => {
   )
 }
 
+const mapStateToProps = (state) =>
+// console.log(state.getOptions.getProcessType, "getProcessType")
+({
 
-export default (GroupControl);
+  getGroupControlLists: state.UserGroupReducer.getGroupControlLists || [],
+});
+
+export default connect(mapStateToProps)(GroupControl);

@@ -56,15 +56,22 @@ function NewUserMaster(props){
             state: userlist[m].active_flag===1?<div><button className="btnActive">Active</button></div>:<div><button className="btnInActive">InActive</button></div>,
             action: (
                 <>
-                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit==='Y'?(onEditUser(userlist[index])):rights())}  />{" "}
-                  <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_delete==='Y'?(onDeleteUser(userlist[index].user_id)):rights())} />
+                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditUser(userlist[index])}  />{" "}
+                  <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>onDeleteUser(userlist[index].user_id)} />
                 </>
               ),
+            //   action: (
+            //     <>
+            //       <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit==='Y'?(onEditUser(userlist[index])):rights())}  />{" "}
+            //       <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_delete==='Y'?(onDeleteUser(userlist[index].user_id)):rights())} />
+            //     </>
+            //   ),
           };
           Userlist.push(listarray);
         }
 
-        permission.allow_view==='Y'?setUserList({ Userlist }):setUserList([]);
+        setUserList({ Userlist })
+        // permission.allow_view==='Y'?setUserList({ Userlist }):setUserList([]);
     
       }, [props.getUserList])
 
@@ -100,7 +107,8 @@ function NewUserMaster(props){
         <div>
             <div className="UserGroup">
                 <div>User Master</div>
-                <img src={PlusIcon} className="plusicon"  onClick={() => ( permission.allow_add==='Y'? (setUserAddEdit(false),setUsergroupModel(true)):rights())} />
+                <img src={PlusIcon} className="plusicon"  onClick={() => setUserAddEdit(false),setUsergroupModel(true)} />
+                {/* <img src={PlusIcon} className="plusicon"  onClick={() => ( permission.allow_add==='Y'? (setUserAddEdit(false),setUsergroupModel(true)):rights())} /> */}
                 <DynModel modelTitle={UserAddEdit?"EDIT USER":"ADD USER"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} width={1000} 
                  content={UserAddEdit?<UserMasterModal user_data={UserData} closeModel={()=>(setUsergroupModel(false),setUserData({}))}/>:<UserMasterModal user_add={""} closeModel={()=>setUsergroupModel(false)}/>} />
 

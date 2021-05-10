@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../../helpers/labelbox/labelbox';
 import CustomButton from "../../../../component/Butttons/button";
@@ -84,7 +84,7 @@ function RectificationFiled(props) {
         } else {
             dispatch(InsertDesign(RectificationFiled, props.projectDetails && props.projectDetails[0])).then(() => {
                 handleCancel()
-              })
+            })
         }
         setCancelDefended(prevState => ({
             ...prevState
@@ -109,57 +109,73 @@ function RectificationFiled(props) {
 
     const handleCancel = () => {
         let rectFil_key = ["des_number", "petitioner", "respondent_rep", "status", "comments"]
-    
+
         rectFil_key.map((data) => {
             RectificationFiled[data].value = "";
         });
         setCancelDefended((prevState) => ({
-          ...prevState,
+            ...prevState,
         }));
-      };
+    };
 
-      console.log(RectificationFiled,"RectificationFiled")
+    console.log(RectificationFiled, "RectificationFiled")
 
     return (
         <div className="container">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Labelbox type="text"
-                        placeholder={"Design Number"}
-                        changeData={(data) => checkValidation(data, "des_number")}
-                        value={RectificationFiled.des_number.value}
-                        error={RectificationFiled.des_number.error}
-                        errmsg={RectificationFiled.des_number.errmsg}
-                    />
-                    <Labelbox type="text"
-                        placeholder={"Petitioner"}
-                        changeData={(data) => checkValidation(data, "petitioner")}
-                        value={RectificationFiled.petitioner.value}
-                        error={RectificationFiled.petitioner.error}
-                        errmsg={RectificationFiled.petitioner.errmsg}
-                    />
-                    <Labelbox type="text"
-                        placeholder={"Respondent Rep"}
-                        changeData={(data) => checkValidation(data, "respondent_rep")}
-                        value={RectificationFiled.respondent_rep.value}
-                        error={RectificationFiled.respondent_rep.error}
-                        errmsg={RectificationFiled.respondent_rep.errmsg}
-                    />
-                    <Labelbox type="select"
-                        placeholder={"Status"}
-                        changeData={(data) => checkValidation(data, "status")}
-                        dropdown={rectFilGetList.getStatusList}
-                        value={RectificationFiled.status.value}
-                        error={RectificationFiled.status.error}
-                        errmsg={RectificationFiled.status.errmsg}
-                    />
-                    <Labelbox type="text"
-                        placeholder={"Comments"}
-                        changeData={(data) => checkValidation(data, "comments")}
-                        value={RectificationFiled.comments.value}
-                        error={RectificationFiled.comments.error}
-                        errmsg={RectificationFiled.comments.errmsg}
-                    />
+                    <Grid>
+                        <div className="Fieldheadings">Design Number</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "des_number")}
+                            value={RectificationFiled.des_number.value}
+                            error={RectificationFiled.des_number.error}
+                            errmsg={RectificationFiled.des_number.errmsg}
+                        />
+                    </Grid>
+
+
+                    <Grid>
+                        <div className="Fieldheadings">Petitioner</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "petitioner")}
+                            value={RectificationFiled.petitioner.value}
+                            error={RectificationFiled.petitioner.error}
+                            errmsg={RectificationFiled.petitioner.errmsg}
+                        />
+                    </Grid>
+
+                    <Grid>
+                        <div className="Fieldheadings">Respondent Rep</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "respondent_rep")}
+                            value={RectificationFiled.respondent_rep.value}
+                            error={RectificationFiled.respondent_rep.error}
+                            errmsg={RectificationFiled.respondent_rep.errmsg}
+                        />
+                    </Grid>
+
+                    <Grid>
+                        <div className="Fieldheadings">Status</div>
+                        <Labelbox type="select"
+                            changeData={(data) => checkValidation(data, "status")}
+                            dropdown={rectFilGetList.getStatusList}
+                            value={RectificationFiled.status.value}
+                            error={RectificationFiled.status.error}
+                            errmsg={RectificationFiled.status.errmsg}
+                        />
+                    </Grid>
+
+                    <Grid>
+                        <div className="Fieldheadings">Comments</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "comments")}
+                            value={RectificationFiled.comments.value}
+                            error={RectificationFiled.comments.error}
+                            errmsg={RectificationFiled.comments.errmsg}
+                        />
+                    </Grid>
+
                 </Grid>
             </Grid>
             <div className="custombtnOposition">

@@ -227,6 +227,7 @@ function AddClient() {
       setcityList({ cityData });
     });
   }, []);
+  
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -323,31 +324,39 @@ async function onfileupload() {
       });
     } else {
 
-    let wait=await check()
-    function check(){
+    // let wait=await check()
+    // function check(){
       
-      return new Promise((resolve)=>{
-        setFileupload((prevState) => (
-          [...prevState, {
-            poa_name: Addclient_Form.poa_name.value,
-            selectedFile: "",
-          }]
+    //   return new Promise((resolve)=>{
+    //     setFileupload((prevState) => (
+    //       [...prevState, {
+    //         poa_name: Addclient_Form.poa_name.value,
+    //         selectedFile: "",
+    //       }]
          
-        ));
+    //     ));
 
        
        
       
-      })
-      Addclient_Form["poa_name"].value=""
+    //   })
+    //   Addclient_Form["poa_name"].value=""
  
-    //  return Promise.resolve(true);
-    }
+    // //  return Promise.resolve(true);
+    // }
   
      
 
-    }
+    // }
+    setFileupload((prevState) => (
+      [...prevState, {
+        poa_name: Addclient_Form.poa_name.value,
+        selectedFile: "",
+      }]
+     
+    ));
   }
+}
 
 
   const onStateClear = () => {

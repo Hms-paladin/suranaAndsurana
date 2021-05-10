@@ -75,16 +75,15 @@ function UserMasterModal(props) {
             Employee_List.push({ value: data.EmpName, id: data.emp_id })
         })
        
-
+        
         setEmployeeList(Employee_List)
-
+        }
         // UserGroup
         const UserGroup = []
         props.UserGroup.map((data, index) => {
             UserGroup.push({ value: data.group_name, id: data.id })
         })
         setUserGroup({ UserGroup })
-    }
 
     }, [props.EmployeeList, props.UserGroup])
 
@@ -126,7 +125,6 @@ function UserMasterModal(props) {
             "mobilenumber",
             "emailid",
             "usergroup"
-
         ];
 
         From_key.map((data) => {

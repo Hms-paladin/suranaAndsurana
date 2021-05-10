@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "date-fns": "^2.17.0",
     "dateformat": "^4.5.1",
+    "insert-css": "^2.0.0",
     "materialui-pagination": "0.0.6",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",

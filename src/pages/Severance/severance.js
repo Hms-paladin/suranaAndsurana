@@ -33,7 +33,7 @@ function Severance(props) {
     }
     return (
         <div>
-       { permission.allow_view==='Y'&&<div>
+       {/* { permission.allow_view==='Y'&&<div> */}
             <div className="heading">Severance</div>
             <div className="severanceContainer">
                 <div className="severanceHeader">
@@ -96,10 +96,8 @@ function Severance(props) {
 
                 </div>
             </div>
-        </div>
-         }
-        
-       
+        {/* </div> } */}
+
     </div>
     )
 }

@@ -15,6 +15,7 @@ function App() {
     localStorage.setItem("empId", JSON.stringify(data.data[0].emp_id));
     localStorage.setItem("user_id", JSON.stringify(data.data[0].user_id));
     localStorage.setItem("user_name", JSON.stringify(data.data[0].user_name));
+    localStorage.setItem("designation", JSON.stringify(data.data[0].designation));
     setAuthTokens(data);
   }
   dispatch(getUserPermission());

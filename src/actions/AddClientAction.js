@@ -6,32 +6,40 @@ import { notification } from "antd";
 
 
 export const InsertClient = (Addclient_Form, Document_Form) => async dispatch => {
+  console.log(Addclient_Form,"Addclient_Form")
   try {
+
+    var DocumentData = new FormData();
+    DocumentData.set("client_name", Addclient_Form.client_name.value )
+    DocumentData.set("industry", Addclient_Form.industrty.value)
+    DocumentData.set("client_type", Addclient_Form.client_type.value )
+    
+    DocumentData.set("contact_person_1", Addclient_Form.con_per_1.value||0 )
+    DocumentData.set("gender",Addclient_Form.gender_1.value )
+    DocumentData.set("dob", (Addclient_Form.DOB_1.value===""||Addclient_Form.DOB_1.value===null)?'0-0-0000':Addclient_Form.DOB_1.value)
+    
+    DocumentData.set("contact_no", Number(Addclient_Form.con_ph_1.value))
+    DocumentData.set("email_id", Addclient_Form.email_id_1.value )
+    DocumentData.set("state", Addclient_Form.state.value)
+    DocumentData.set("city", Addclient_Form.city.value )
+    DocumentData.set("address", Addclient_Form.postal_address.value)
+    DocumentData.set("contact_person_2", Addclient_Form.cont_per_2.value||0 )
+    DocumentData.set("ct_gender", Addclient_Form.gender_2.value||0)
+    DocumentData.set("ct_dob", Addclient_Form.DOB_2.value||'0-0-0000' )
+
+    DocumentData.set("ct_contact_no", Number(Addclient_Form.con_ph_2.value) || 0)
+    DocumentData.set("ct_email_id", Addclient_Form.emai_id_2.value||0 )
+
+
+    DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
+    DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
+    DocumentData.set("created_by", localStorage.getItem("empId"))
+    DocumentData.set("updated_by", localStorage.getItem("empId"))
+
     Axios({
       method: 'POST',
       url: apiurl + 'insert_client',
-      data: {
-        client: Addclient_Form.client_name.value,
-        industry: Addclient_Form.industrty.value,
-        client_type: Addclient_Form.client_type.value,
-        contact_person_1: Addclient_Form.con_per_1.value,
-        gender: Addclient_Form.gender_1.value,
-        dob: Addclient_Form.DOB_1.value,
-        contact_no: Number(Addclient_Form.con_ph_1.value),
-        email_id: Addclient_Form.email_id_1.value,
-        state: Addclient_Form.state.value,
-        city: Addclient_Form.city.value,
-        address: Addclient_Form.postal_address.value,
-        contact_person_2: Addclient_Form.cont_per_2.value || 0,
-        ct_gender: Addclient_Form.gender_2.value || 0,
-        ct_dob: Addclient_Form.DOB_2.value || 0,
-        ct_contact_no: Number(Addclient_Form.con_ph_2.value) || 0,
-        ct_email_id: Addclient_Form.emai_id_2.value || 0,
-        created_on: moment().format("YYYY-MM-DD HH:m:s"),
-        updated_on: moment().format("YYYY-MM-DD HH:m:s"),
-        created_by: localStorage.getItem("empId"),
-        updated_by: localStorage.getItem("empId"),
-      }
+      data: DocumentData
     }).then((response) => {
       if (response.data.status === 1) {
         dispatch({ type: ADD_CLIENT, payload: response.data.status })

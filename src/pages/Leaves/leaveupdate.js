@@ -187,15 +187,16 @@ function LeaveUpdate(props) {
             current_balance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
             action: (
                 <>
-                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit&&permission.allow_edit==='N'?(onEditLeaveForm(leaveUpdateList[index])):rights())}    />{" "}
+                    <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])}    />{" "}
+                  {/* <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit&&permission.allow_edit==='N'?(onEditLeaveForm(leaveUpdateList[index])):rights())}    />{" "} */}
                   {/* <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} /> */}
                 </>
               ),
           };
           updatelist.push(listarray);
         }
-        // setUpdatelist({ updatelist });
-        permission.allow_view==='Y'?setUpdatelist({ updatelist }):setUpdatelist([]);
+        setUpdatelist({ updatelist });
+        // permission.allow_view==='Y'?setUpdatelist({ updatelist }):setUpdatelist([]);
       }, [props.getUpdateTableData])
 
     function checkValidation(data, key) {
@@ -417,7 +418,7 @@ function LeaveUpdate(props) {
 
                     <Grid item xs={3} container direction="row" spacing={2}>
                         <Grid item xs={6}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?onSubmit:rights} />
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>

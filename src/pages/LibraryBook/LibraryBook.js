@@ -79,7 +79,7 @@ function LibraryBook(props) {
     }
     return (
         <div>
-        { permission.allow_view==='N'&&<div>
+        {/* { permission.allow_view==='Y'&&<div> */}
             <div className="lib_master_h">Library Book Maintenance</div>
             <div className="parent_div_lib">
                 <Grid container spacing={2} className="cont_parent_lib_grid">
@@ -126,7 +126,7 @@ function LibraryBook(props) {
                 <DynModel modelTitle={"Receiving of Books"} handleChangeModel={receivingbooksmodal} handleChangeCloseModel={(bln) => setreceivingbooksmodal(bln)} width={850} content={<ReceiveBooksModal />} />
                 <DynModel modelTitle={"Issue of Books"} handleChangeModel={issuebooksmodal} handleChangeCloseModel={(bln) => setissuebooksmodal(bln)} width={850} content={<IssueBooksModal />} />
             </div>
-        </div> }
+        {/* </div> } */}
 
         </div>
     )

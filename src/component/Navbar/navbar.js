@@ -153,10 +153,12 @@ function Navbar(props) {
       //user management
       { active: "usermanagement",path: "", title: "User Management", img: Usergroups ,submenu:true,
       subtree:[
-        { path: "/usergroup", title: "User Group", img: Usergroups },
+        // { path: "/usergroup", title: "User Group", img: Usergroups },
+        { path: "/usergroups", title: "User Groups", img: Usergroups },
         { path: "/newusermaster", title: "User Master", img: MasterIcon },
-        { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-        { path: "/userrights", title: "User Access Rights", img: MasterIcon }
+        { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+        // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
+        // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
       ]},
     
       //Online Test
@@ -263,7 +265,7 @@ function Navbar(props) {
               <div className="userName">
                 {JSON.parse(localStorage.getItem("token")).user_name}
               </div>
-              <div className="userPosition">HOD</div>
+              <div className="userPosition">{JSON.parse(localStorage.getItem("token")).designation}</div>
             </div>
             {/* <ArrowDropDownCircleIcon className="customIconArrow_header" /> */}
             <div className="logoutModel">

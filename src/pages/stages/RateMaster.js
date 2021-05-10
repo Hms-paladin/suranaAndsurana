@@ -137,8 +137,8 @@ const RateMaster = (props) => {
       };
       rateList.push(listarray);
     }
-    // setvarRateList({ rateList });
-    permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
+    setvarRateList({ rateList });
+    // permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
 
   const onSubmit = () => {
@@ -570,7 +570,7 @@ const RateMaster = (props) => {
               btnCustomColor="customPrimary"
               custombtnCSS="custom_save"
               // onBtnClick={onSubmit}
-              onBtnClick={permission.allow_add==="Y"?onSubmit:rights}
+              onBtnClick={onSubmit}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>
