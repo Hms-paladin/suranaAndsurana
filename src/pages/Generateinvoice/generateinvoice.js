@@ -70,7 +70,7 @@ console.log(props.UserPermission,"props.UserPermission")
     }
     return (
         <div>
-            { permission.allow_view==='Y'&&<div>
+            {/* { permission.allow_view==='Y'&&<div> */}
             <Grid container spacing={3}>
                 <Grid item xs={4}>
                     <Labelbox type="select"
@@ -104,7 +104,7 @@ console.log(props.UserPermission,"props.UserPermission")
                 <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" onBtnClick={permission.allow_add==="Y"?'':rights}/>
             </div>
 
-        </div> }
+        {/* </div> } */}
 
         </div>
     )

@@ -34,7 +34,7 @@ function EmployeeFeedback(props) {
 
     return (
         <div>
-             { permission.allow_view==='Y'&&<div>
+             {/* { permission.allow_view==='Y'&&<div> */}
             <div className="headerpage">Employee Feedback</div>
             <div className="fbContainer">
                 <div className="feedbackSubheading">Which of the following influenced your decision to leave the company?  </div>
@@ -105,10 +105,8 @@ function EmployeeFeedback(props) {
 
 
             </div>
-            </div>
-         }
-       
-       
+            {/* </div> } */}
+
     </div>
     )
 }

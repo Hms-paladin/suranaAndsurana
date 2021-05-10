@@ -518,7 +518,7 @@ function TicketCreation(props) {
     }
     return (
         <div> 
-         { permission.allow_view==='Y'&&<div >
+         {/* { permission.allow_view==='Y'&&<div > */}
             <div className="Titlediv">Recruitment Request Tickets</div>
              <div className="ticketContainer">
                 <div className="ticketGrid">
@@ -667,15 +667,16 @@ function TicketCreation(props) {
                     </Grid>
                 </div>
                 <div className="ticketbtn">
-                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(1):rights())}  />
-                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(""):rights())}  />
+                    {/* <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(1):rights())}  />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(""):rights())}  /> */}
+
+                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>onSubmit(1)}  />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>onSubmit("")}  />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
                 </div>
 
             </div >
-            </div >
-        
-      }
+            {/* </div > } */}
      
     </div>
     )

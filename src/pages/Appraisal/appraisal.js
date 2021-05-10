@@ -129,7 +129,7 @@ function Appraisal(props) {
     }
     return (
         <div>
-       { permission.allow_view==='Y'&& <div>
+       {/* { permission.allow_view==='Y'&& <div> */}
             <div>Appraisal</div>
             <div className="appraisalContainer">
                 <div className="empDetails">
@@ -431,7 +431,7 @@ function Appraisal(props) {
 
 
 
-        </div > }
+        {/* </div > } */}
         </div>
     )
 }

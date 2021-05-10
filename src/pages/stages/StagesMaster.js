@@ -103,8 +103,8 @@ const StagesMaster = (props) => {
     }
     rateList.push(listarray);
   }
-  // setStageMasterList({ rateList })
-  permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
+  setStageMasterList({ rateList })
+  // permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
 
   //ProjectType
   let projectTypedata = []
@@ -313,7 +313,7 @@ const StagesMaster = (props) => {
         
           </Grid>   */}
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
-          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?onSubmit:rights} />
+          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
           <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
         </Grid>
       </Grid>
