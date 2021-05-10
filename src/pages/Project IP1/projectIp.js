@@ -503,7 +503,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
       designation: data.designation,
       activity: data.activity,
       sub_activity: data.sub_activity,
-      court: data.location,
+      court: data.court,
       costRange: data.range,
       lowerLimit: data.lower_limit,
       upperLimit: data.upper_limit,
@@ -513,7 +513,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
       changeData={(data) => onchangeapplicableAmount(data, "amountapplicable" + index)}
       value={ applicableamount['amountapplicable' + index]}
       />,
-      UOM: data.unit,
+      UOM: data.unit_of_measure,
       del: (
         <DeleteIcon
           style={{ cursor: "pointer", width: 19 }}

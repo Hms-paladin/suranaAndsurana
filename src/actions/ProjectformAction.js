@@ -23,8 +23,8 @@ export const GetProject_Type = () => async dispatch => {
 
 
 export const InsertIpProject = (projectform,VariableRate,proj_type_name) => async dispatch => {
+    console.log(proj_type_name,"variable_rate")
     try {
-console.log(proj_type_name,"variable_rate")
         axios({
             method: "POST",
             url: apiurl + "insert_project_form",

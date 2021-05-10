@@ -375,6 +375,7 @@ function ProjectFormCreate(props) {
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
 
     if (projectform.billable_type.value&&projectform.billable_type.value===2&&filtererr.length <= 3 ) {
+      console.log(sendVariableData,"variable_rate")
       dispatch(InsertIpProject(projectform, sendVariableData,proj_type_name)).then(
         (response) => {
           handleCancel();
