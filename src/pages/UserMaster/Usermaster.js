@@ -374,7 +374,7 @@ const UserMaster = (props) => {
     },
   });
 
-  function checkValidation(data, key, stringvalue) {
+  function checkValidation(data, key) {
     console.log(data, key, "tablename");
     // if(key === 'tablename'){
     //   // setUserTableHeader(tableHeaderMaster[`header${data}`])
@@ -401,86 +401,118 @@ const UserMaster = (props) => {
       });
       settable_name_value(value);
       if(data===3){
-         UserMaster.groupname.validation.push({name:"required"})
+        validationHide()
+         UserMaster.groupname.validation=[{name:"required"}]
+        
       }
       else if(data===4){
+        validationHide()
         const From_key=["status_type","status_name"]
        From_key.map((data) => {
          UserMaster[data].validation.push({name:"required"})
+        
        });
+       
+      
      }
       else if(data===5){
-        UserMaster.skill_name.validation.push({name:"required"})
+        validationHide()
+        UserMaster.skill_name.validation=[{name:"required"}]
+       
+        
      }else if(data===6){
+      validationHide()
       UserMaster.traits_name.validation.push({name:"required"})
+      
      }
      else if(data===7){
+      validationHide()
       UserMaster.certification_name.validation.push({name:"required"})
      } 
      else if(data===8){
+      validationHide()
       UserMaster.specialization_name.validation.push({name:"required"})
      } 
      else if(data===9){
+      validationHide()
       UserMaster.qualification_name.validation.push({name:"required"})
      } 
      else if(data===11){
+      validationHide()
       UserMaster.industry.validation.push({name:"required"})
      } 
      else if(data===12){
+      validationHide()
       UserMaster.institute.validation.push({name:"required"})
+      
      } 
      else if(data===13){
+      handleCancel()
       UserMaster.capability.validation.push({name:"required"})
      }
      else if(data===14){
+      validationHide()
       UserMaster.talents.validation.push({name:"required"})
      } 
      else if(data===15){
+      validationHide()
       UserMaster.resourse.validation.push({name:"required"})
      }
      else if(data===16){
+      validationHide()
       UserMaster.designation.validation.push({name:"required"})
      }
      else if(data===17){
+      validationHide()
       UserMaster.question.validation.push({name:"required"})
      }
      else if(data===18){
+      validationHide()
       UserMaster.department.validation.push({name:"required"})
      }
      else if(data===19){
+      validationHide()
       UserMaster.activity.validation.push({name:"required"})
      }
      else if(data===20){
+      validationHide()
        const From_key=["sub_activity","activity_drop"]
        From_key.map((data) => {
           UserMaster[data].validation.push({name:"required"})
         });
      } 
      else if(data===21){
+      validationHide()
       const From_key=["class_name","class_type","description"]
       From_key.map((data) => {
          UserMaster[data].validation.push({name:"required"})
        });
     }   
      else if(data===23){
+      validationHide()
       UserMaster.court.validation.push({name:"required"})
      }
      else if(data===24){
+      validationHide()
       UserMaster.range.validation.push({name:"required"})
      }
      else if(data===25){
+      validationHide()
       UserMaster.stage_name.validation.push({name:"required"})
      } 
      else if(data===26){
+      validationHide()
       const From_key=["sub_stage","stage_dropdown"]
       From_key.map((data) => {
          UserMaster[data].validation.push({name:"required"})
        });
      }
      else if(data===28){
+      validationHide()
       UserMaster.case_type.validation.push({name:"required"})
      }
      else if(data===29){
+      validationHide()
       const From_key=["project_type","checklist_name"]
       From_key.map((data) => {
          UserMaster[data].validation.push({name:"required"})
@@ -1038,6 +1070,7 @@ const UserMaster = (props) => {
       mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
+    console.log(UserMaster,"filtererror")
     if (filtererr.length >0) {
     } else {
       if (data === 21) {
@@ -1092,7 +1125,7 @@ const UserMaster = (props) => {
           // alert("hai")
           dispatch(
             Common_Update_text(
-              table_name_value.table_names,
+              table_name_value,
               UserMaster,
               EditStoreData,
               Editvisible
@@ -1103,7 +1136,7 @@ const UserMaster = (props) => {
           });
         } else {
           dispatch(
-            Common_insert_text(table_name_value.table_names, UserMaster)
+            Common_insert_text(table_name_value, UserMaster)
           ).then(() => {
             setEditvisible(false);
             handleCancel()
@@ -1321,7 +1354,23 @@ const UserMaster = (props) => {
       ...prevState,
     }));
   };
-  console.log(UserMaster.status_type.value, "testing");
+  const validationHide = () => {
+    let From_key = [
+      "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
+      "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
+      "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
+      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage"
+    ];
+
+    From_key.map((data) => {
+      UserMaster[data].validation =[];
+    });
+  
+  
+    setUserMaster((prevState) => ({
+      ...prevState,
+    }));
+  };
   return (
     <div className="user_master_parent">
       <div className="user_master_h">User Master</div>

@@ -307,13 +307,14 @@ export const updateLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
 
 // leave get approval
 export const getEmpApproval = (data) => async dispatch => {
+    console.log(data,"checkdata")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'get_leave_approval',
             data: {
-                "employee_id": data === "Casual Leave" ? 9 : data === "Permission" ? 192 : data === "On Duty" ? 1 : data === "CEP Approval" ? 193 : 0,
-                "emp_leave_id": data === "On Duty" ? 2 : data === "Casual Leave" ? 8 : data === "Permission" ? 37 : data === "CEP Approval" ? 54 : 0
+                "employee_id":data.employee_id||0,
+                "emp_leave_id":data.emp_leave_id||0
             }
         })
             .then((response) => {
@@ -328,6 +329,7 @@ export const getEmpApproval = (data) => async dispatch => {
 
 
 export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => {
+    alert(leaveId)
     try {
         axios({
             method: 'POST',
@@ -338,9 +340,9 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
             },
         })
             .then((response) => {
-                console.log("reject", response)
-                dispatch({ type: UPDATE_EMP_APPROVAL, payload: response.data.status })
+               
                 dispatch(getEmpApproval(leaveId))
+                return Promise.resolve();
             })
     }
     catch (err) {
