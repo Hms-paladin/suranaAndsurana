@@ -5,22 +5,24 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import EnhancedTable from '../../../component/DynTable/table';
 import { useParams, Link } from 'react-router-dom';
 import { Collapse } from 'antd';
+import { Select } from 'antd';
 import './timesheets.scss'
 
 function ProjectwiseTS() {
     const { Panel } = Collapse;
-    // const empname = [
+    const { Option } = Select;
+    // const ddl_empname = [
     //     {
     //         label: "Employee Name1",
-    //         value: "1"
+    //         id: "1"
     //     },
     //     {
     //         label: "Employee Name2",
-    //         value: "2"
+    //         id: "2"
     //     },
     //     {
     //         label: "Employee Name3",
-    //         value: "3"
+    //         id: "3"
     //     }
     // ]
     const empname = "Employee Name";
