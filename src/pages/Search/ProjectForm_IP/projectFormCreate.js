@@ -71,12 +71,12 @@ function ProjectFormCreate(props) {
   const [addTableData, setAddTableData] = useState();
   const [showVariableTable, setShowVariableTable] = useState([]);
   const [sendVariableData, setSendVariableData] = useState([]);
-  const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [varRatePlusIcon, setVarRatePlusIcon] = useState(false);
   const [disableCondition, setDisableCondition] = useState(true);
   const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
   const [proj_type_name, setProj_type_name] = useState();
   const [activityid, setActivityid] = useState();
+  const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -518,20 +518,12 @@ function ProjectFormCreate(props) {
 
     
 
-    const Activityid = (id) => {
-      setActivityid(id)
+    const Activityid = (data) => {
+      console.log(data,"datadatadatas")
+      // setActivityid(id)
 
     }
-    const addSearchDatas = () => {
-      dispatch(SearchVariableRate(activityid))
-        .then((response) => {
-          handleCancel();
-          // props.setShowSearchTable()
-
-
-        })
-
-    }
+   
 
     return (
       <div>
@@ -540,7 +532,7 @@ function ProjectFormCreate(props) {
           variabletablechange={true}
           setShowSearchTable={() => setAddsearchdata(true)}
           setNoSearchResult={() => setNotfoundmodel(true)}
-          Activityid={(id) => Activityid(id)}
+          Activityid={(data) => Activityid(data)}
         />
         {searchdata && (
           <div className="addvariableData">
@@ -576,26 +568,7 @@ function ProjectFormCreate(props) {
           }
           width={400}
         />
-        <DynModel
-          modelTitle={"Billing Criteria Not Found"}
-          handleChangeModel={notfoundmodel}
-          handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
-          content={
-            <div className="successModel">
-              <div>
-                {" "}
-                <label className="notfound_label">
-                  Do You Want To Continue ?
-                </label>
-              </div>
-              <div className="customNotFoundbtn">
-                <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={addSearchDatas} />
-                <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
-              </div>
-            </div>
-          }
-          width={400}
-        />
+      
       </div>
     );
   };
