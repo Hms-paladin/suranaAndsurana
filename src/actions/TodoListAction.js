@@ -102,8 +102,7 @@ export const getOtherTask = () =>async dispatch => {
             }
         })
         .then((response) => {
-            console.log(response,"checkresponse")
-            dispatch({type:GET_OTHER_TASK,payload:response.data})
+            dispatch({type:GET_OTHER_TASK,payload:response.data.data})
         })
     }
     catch(err){

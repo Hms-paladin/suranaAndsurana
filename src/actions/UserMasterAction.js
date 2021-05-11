@@ -97,7 +97,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
       data:
       {
 
-        "table_names":data,
+        "table_names":data.table_names,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state.skill_name.value||"":
           state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
           state?.specialization_name?.value?state.specialization_name.value||"":state?.qualification_name?.value?state.qualification_name.value||"":
@@ -116,7 +116,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
         if (response.data.status === 1) {
 
           notification.success({
-            message:response.data.msg
+            message:data.display_name+""+response.data.msg
         })
        
         dispatch({ type: COMMON_INSERT_TEXT, payload: response.data.status })
@@ -164,7 +164,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
       data:
       {
         "id":Editvisible?editId?.group?.group_id:"",
-        "table_names":data,
+        "table_names":data?.table_names,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
         state?.specialization_name?.value?state.specialization_name.value||"":state?.qualification_name?.value?state.qualification_name.value||"":
