@@ -414,7 +414,7 @@ function InternationalFilling(props) {
 
           <Grid>
             <div className="Fieldheadings">Renewal Date</div>
-            <Labelbox type="datepicker"
+            <Labelbox type="datepicker" disablePas={true}
               changeData={(data) => checkValidation(data, "renewal_date")}
               value={InternationlForm.renewal_date.value}
               error={InternationlForm.renewal_date.error}

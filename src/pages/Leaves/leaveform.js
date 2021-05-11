@@ -36,7 +36,7 @@ function LeaveForm(props) {
     const [noOfDays, setNoOfDays] = useState(0)
 
     const [minDate, setMinDate] = useState(0)
-
+    const [other_days, setother_days] = useState()
     const [plusicon, setPlusicon] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
     const [editBtn, setEditBtn] = useState(false)
@@ -181,6 +181,19 @@ function LeaveForm(props) {
     const onFileChange = () => {
 
     }
+    useEffect(() => {
+        if (Leave_Form.tot_leave.value === "" && Leave_Form.exam_days.value === "") {
+            Leave_Form.other_days.value = "";
+        } else {
+            let otherdays = Leave_Form.tot_leave.value - Leave_Form.exam_days.value;
+            setother_days(otherdays)
+        }
+
+
+
+    }, [Leave_Form.tot_leave.value, Leave_Form.exam_days.value])
+    Leave_Form.other_days.value = other_days;
+
 
     function onDeleteLeaveForm(emp_leave_id) {
         dispatch(deleteLeaveForm(emp_leave_id))
@@ -263,6 +276,8 @@ function LeaveForm(props) {
         if (key === "fromtime") {
         }
 
+
+
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Leave_Form[key].validation
@@ -277,9 +292,9 @@ function LeaveForm(props) {
         if (data && key == "tot_leave") {
             Leave_Form.exam_days.validation[1].params = data
             setLeaveForm((prevState) => ({
-              ...prevState,
+                ...prevState,
             }));
-          }
+        }
 
         if (key === "leavetype" && data) {
             handleCancel()

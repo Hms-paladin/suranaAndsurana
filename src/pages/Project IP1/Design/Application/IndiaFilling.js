@@ -411,7 +411,7 @@ function IndiaFilling(props) {
 
           <Grid>
             <div className="Fieldheadings">Renewal Date</div>
-            <Labelbox type="datepicker"
+            <Labelbox type="datepicker" disablePas={true}
               changeData={(data) => checkValidation(data, "renewal_date")}
               value={IndiaForm.renewal_date.value}
               error={IndiaForm.renewal_date.error}
