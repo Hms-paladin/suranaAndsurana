@@ -40,11 +40,15 @@ function checkListCreation() {
                         <Labelbox type="text" /></div>
                     <div>  <div className="TThead">Check List Type</div>
                         <Labelbox type="select" /></div>
-                    <div>  <div className="TThead">Frequency</div>
+                    <div>  <div className="TThead">Activity</div>
                         <Labelbox type="select" /></div>
                 </div>
-                <div className="firstrowFields">
-                    <div>  <div className="TThead">Task</div>
+                <div className="secondrowFields">
+                    <div>  <div className="TThead">Sub Activity</div>
+                        <Labelbox type="select" /></div>
+                    <div>  <div className="TThead">Frequency</div>
+                        <Labelbox type="select" /></div>
+                    <div className="taskfield">  <div className="TThead">Task</div>
                         <Labelbox type="text" /></div>
                     <div> <div className="TThead"></div><CustomButton btnName={"Add"} custombtnCSS="customaddbtn" btnCustomColor="customPrimary" /></div>
                 </div>

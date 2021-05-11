@@ -7,36 +7,47 @@
     top: 2px;
 }
 
-.mainHeading{
+.mainHeading {
     font-size: 16px;
     font-weight: 600;
 }
 
 .firstrowFields {
     display: flex;
-    >div{
+    > div {
         width: 20%;
         margin: 5px 10px;
     }
 }
 
-.customaddbtn{
+.secondrowFields {
+    display: flex;
+    > div {
+        width: 19%;
+        margin: 5px 8px;
+    }
+    .taskfield{
+        width: 39%;
+    }
+}
+
+.customaddbtn {
     width: 40% !important;
     margin-top: 15px !important;
 }
 
-.custombtn{
+.custombtn {
     width: 10% !important;
 }
 
-.checklistBtn{
+.checklistBtn {
     text-align: center;
     padding-top: 8px;
 }
 
 // Check List Assigning
 
-.clAssignFields{
+.clAssignFields {
     width: 80%;
     padding: 30px 10px;
     margin-top: 10px;
@@ -44,7 +55,7 @@
     border-radius: 10px;
 }
 
-.checklistAssignBtn{
+.checklistAssignBtn {
     text-align: center;
     padding: 35px 0px;
 }

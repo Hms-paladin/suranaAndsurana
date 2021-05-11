@@ -30,7 +30,7 @@ import Stagemaster from '../../images/stagemaster.svg';
 import Usergroups from '../../images/usergroups.svg';
 import Dashboard from '../../images/dashboard.svg';
 
-import {createStyles } from '@material-ui/core/styles'
+import { createStyles } from '@material-ui/core/styles'
 
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -96,7 +96,7 @@ function Navbar(props) {
   const history = useHistory();
   const [pathname, setpathname] = useState(window.location.pathname)
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+
   const [open, setOpen] = React.useState(false)
 
   const [menuItems, setMenuItems] = useState(
@@ -118,7 +118,7 @@ function Navbar(props) {
 
       // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
       // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
-     
+
       // { path: "/severance", title: "Severance", img: Stagemaster },
       // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
       // { path: "/usermaster", title: "User Master", img: Stagemaster },
@@ -131,47 +131,55 @@ function Navbar(props) {
       // //user rights
       // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
 
-       //severance
-       { active: "severance",path: "", title: "Severance", img: Stagemaster ,submenu:true,
-       subtree:[
-         { path: "/severance", title: "Exit Interview Form", img: Usergroups },
-         { path: "/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
-         { path: "/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
-       ]},
+      //severance
+      {
+        active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
+        subtree: [
+          { path: "/severance", title: "Exit Interview Form", img: Usergroups },
+          { path: "/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
+          { path: "/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
+        ]
+      },
 
       //master
-      { active: "master",path: "", title: "Master", img: MasterIcon ,submenu:true,
-      subtree:[
-        { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-        { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
-        { path: "/leaveupdate", title: "Leave Master", img: MasterIcon },
-        { path: "/usermaster", title: "User Master", img: MasterIcon },
-        { path: "/checklistCreation", title: "CheckList Creation", img: MasterIcon },
+      {
+        active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
+        subtree: [
+          { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+          { path: "/stagesmaster", title: "Stage Template", img: Stagemaster },
+          { path: "/leaveupdate", title: "Leave Master", img: MasterIcon },
+          { path: "/usermaster", title: "User Master", img: MasterIcon },
+          { path: "/checklistCreation", title: "CheckList Creation", img: MasterIcon },
 
-      ]},
+        ]
+      },
 
       //user management
-      { active: "usermanagement",path: "", title: "User Management", img: Usergroups ,submenu:true,
-      subtree:[
-        // { path: "/usergroup", title: "User Group", img: Usergroups },
-        { path: "/usergroups", title: "User Groups", img: Usergroups },
-        { path: "/newusermaster", title: "User Master", img: MasterIcon },
-        { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
-        // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-        // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
-      ]},
-    
+      {
+        active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
+        subtree: [
+          // { path: "/usergroup", title: "User Group", img: Usergroups },
+          { path: "/usergroups", title: "User Groups", img: Usergroups },
+          { path: "/newusermaster", title: "User Master", img: MasterIcon },
+          { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+          // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
+          // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
+        ]
+      },
+
       //Online Test
-      { active: "onlinetest",path: "", title: "Online Test", img: MasterIcon ,submenu:true,
-      subtree:[
-        { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-        { path: "/testtemplate", title: "Test Template", img: MasterIcon }
-      ]},
+      {
+        active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
+        subtree: [
+          { path: "/addquestion", title: "Add Questions", img: MasterIcon },
+          { path: "/testtemplate", title: "Test Template", img: MasterIcon }
+        ]
+      },
 
       // //Online Test
       // { path: "/addquestion", title: "Add Questions", img: MasterIcon },
       // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
-    
+
     ]
   );
 
@@ -184,7 +192,7 @@ function Navbar(props) {
     history.push("/login")
     // window.location.reload()
   }
-// console.log(pathname,"pathname")
+  // console.log(pathname,"pathname")
   const [severanceopen, setSeveranceopen] = React.useState(false);
   const [masteropen, setMasteropen] = React.useState(false);
   const [userManageopen, setUserManageopen] = React.useState(false);
@@ -195,26 +203,26 @@ function Navbar(props) {
     setOpen(!open);
   };
   const handleClicksub = (active) => {
-    if(active==="severance")
-    setSeveranceopen(!severanceopen)
-    if(active==="master")
-    setMasteropen(!masteropen)
-    if(active==="usermanagement")
-    setUserManageopen(!userManageopen) 
-    if(active==="onlinetest")
-    setOnlineTestopen(!onlineTestopen)  
+    if (active === "severance")
+      setSeveranceopen(!severanceopen)
+    if (active === "master")
+      setMasteropen(!masteropen)
+    if (active === "usermanagement")
+      setUserManageopen(!userManageopen)
+    if (active === "onlinetest")
+      setOnlineTestopen(!onlineTestopen)
 
   };
-  
+
   const handlesubopen = (active) => {
-    if(active==="severance")
-    return severanceopen
-    if(active==="master")
-    return masteropen
-    if(active==="usermanagement")
-    return userManageopen 
-    if(active==="onlinetest")
-    return onlineTestopen  
+    if (active === "severance")
+      return severanceopen
+    if (active === "master")
+      return masteropen
+    if (active === "usermanagement")
+      return userManageopen
+    if (active === "onlinetest")
+      return onlineTestopen
 
   };
 
@@ -234,7 +242,7 @@ function Navbar(props) {
       menuItemActive: {
         width: drawerWidth,
         color: 'white',
-        backgroundColor:'#0353a4',
+        backgroundColor: '#0353a4',
       },
       menuItemIcon: {
         color: 'white',
@@ -297,50 +305,52 @@ function Navbar(props) {
 
           <div className="suranaLogo"><img src={logo} /></div>
           {menuItems.map((data, index) => {
-            if(!data.submenu){
-            return (
-              
-              <Link to={data.path} onClick={() => handleClick(data)}>
+            if (!data.submenu) {
+              return (
 
-                <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
+                <Link to={data.path} onClick={() => handleClick(data)}>
 
-                  <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
-                  <img src={data.img} className="menuListIcon" />
-                  <div className="SiderResume_Button">{data.title}</div>
-                  {/* {open ? <ExpandMore /> : <ArrowForwardIosIcon style={{ fontSize: 15 }} />} */}
-                </div>
+                  <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
 
-              </Link>
-            )}
-            else{
-              
-              return(
-              <List component="nav" className={classes1.appMenu} disablePadding>
-              <ListItem button onClick={()=>handleClicksub(data.active)} className={classes1.menuItem}>
-                <ListItemIcon className={classes1.menuItemIcon}>
-                  {/* <IconLibraryBooks /> */}
-                  <img src={data.img} className="menuListIcon" />
-                </ListItemIcon>
-                <ListItemText className={classes1.menuItem} primary={data.title} />
-                {handlesubopen(data.active) ? <IconExpandLess /> : <IconExpandMore />}
-              </ListItem>
-              <Collapse in={handlesubopen(data.active)} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                {data.subtree.map((subdata, index) => {
-                  return(
-                    <Link to={subdata.path} onClick={() => handleClick(subdata)}> 
-                    <div id="submenu_div" className={subdata.path===pathname?classes1.menuItemActive:classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
-                      <ListItem button className={classes1.menuItem} >
-                        <ListItemText className={classes1.menuItem} inset primary={subdata.title} />
-                      </ListItem>
-                      </div>
-                    </Link>
-                  ) }
-                )}
-                </List>
-              </Collapse>
-             </List> )
+                    <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
+                    <img src={data.img} className="menuListIcon" />
+                    <div className="SiderResume_Button">{data.title}</div>
+                    {/* {open ? <ExpandMore /> : <ArrowForwardIosIcon style={{ fontSize: 15 }} />} */}
+                  </div>
+
+                </Link>
+              )
+            }
+            else {
+
+              return (
+                <List component="nav" className={classes1.appMenu} disablePadding>
+                  <ListItem button onClick={() => handleClicksub(data.active)} className={classes1.menuItem}>
+                    <ListItemIcon className={classes1.menuItemIcon}>
+                      {/* <IconLibraryBooks /> */}
+                      <img src={data.img} className="menuListIcon" />
+                    </ListItemIcon>
+                    <ListItemText className={classes1.menuItem} primary={data.title} />
+                    {handlesubopen(data.active) ? <IconExpandLess /> : <IconExpandMore />}
+                  </ListItem>
+                  <Collapse in={handlesubopen(data.active)} timeout="auto" unmountOnExit>
+                    <Divider />
+                    <List component="div" disablePadding>
+                      {data.subtree.map((subdata, index) => {
+                        return (
+                          <Link to={subdata.path} onClick={() => handleClick(subdata)}>
+                            <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
+                              <ListItem button className={classes1.menuItem} >
+                                <ListItemText className={classes1.menuItem} inset primary={subdata.title} />
+                              </ListItem>
+                            </div>
+                          </Link>
+                        )
+                      }
+                      )}
+                    </List>
+                  </Collapse>
+                </List>)
             }
           })}
 
@@ -355,7 +365,7 @@ function Navbar(props) {
             </ListItem>
           </List>
         </Collapse> */}
-        
+
       </Drawer>
       <main className={` MasterContainer ${classes.content}`}>
         <Toolbar />

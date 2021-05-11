@@ -44,7 +44,7 @@ const RateMaster = (props) => {
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
   const [permission, setPermission] = useState([])
-  // const [amountDis,setAmountDis] =useState(true);
+  const [activity_id, setActivity_id] = useState();
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -118,6 +118,7 @@ const RateMaster = (props) => {
   useEffect(() => {
     dispatch(getVariableRateTableData());
   }, []);
+
   useEffect(() => {
 
     let variableRateList = [];
@@ -173,6 +174,9 @@ const RateMaster = (props) => {
   };
   function checkValidation(data, key, multipleId) {
 
+    if (key === "activity") {
+      setActivity_id(data)
+    }
 
     if (data && key == "range_project_cost") {
       setEnabled(false)
@@ -254,7 +258,11 @@ const RateMaster = (props) => {
       ...prevState,
       [key]: dynObj,
     }));
+
   }
+
+  console.log(activity_id, "Activity_id")
+
   const handleCancel = () => {
     setEnabled(true)
     let From_key = [
@@ -433,6 +441,8 @@ const RateMaster = (props) => {
     // setRateMaster({ error: true });
 
     // } else {
+    props.Activityid(activity_id);
+
     dispatch(SearchVariableRate(RateMaster))
       .then((response) => {
         handleCancel();
@@ -448,24 +458,24 @@ const RateMaster = (props) => {
   }
 
   useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-       let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-       return (
-           "Variable Rate Master" == val.screen_name
-       ) 
-   })
-   setPermission(data_res_id)
-   }
+    if (props.UserPermission.length > 0 && props.UserPermission[0].item[0].item) {
+      let data_res_id = props.UserPermission[0].item[0].item.find((val) => {
+        return (
+          "Variable Rate Master" == val.screen_name
+        )
+      })
+      setPermission(data_res_id)
+    }
 
-   }, [props.UserPermission]);
+  }, [props.UserPermission]);
 
-   function rights(){
+  function rights() {
     notification.success({
-        message: "You Dont't Have Rights To Access This Page",
+      message: "You Dont't Have Rights To Access This Page",
     });
   }
 
-   console.log(permission,"permission");
+  console.log(permission, "permission");
   return (
     <div>
       <div className="var_rate_master">Variable Rate Master</div>

@@ -245,7 +245,7 @@ const StagesMaster = (props) => {
   }
   return (
     <div>
-       <div className="var_rate_master">Stage Master</div>
+       <div className="var_rate_master">Stage Template</div>
       <Grid container spacing={3} className="stage_firstgrid">
         <Grid item xs={5} spacing={4} direction={"column"}>
         </Grid>

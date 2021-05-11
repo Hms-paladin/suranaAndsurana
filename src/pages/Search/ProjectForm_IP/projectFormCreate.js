@@ -24,6 +24,7 @@ import SuccessIcon from "../../../images/successicon.svg";
 import { InsertIpProject } from "../../../actions/ProjectformAction";
 import PlusIcon from "../../../images/plusIcon.svg";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { SearchVariableRate } from "../../../actions/VariableRateMaster"
 // Table Data ==>
 
 const header = [
@@ -75,6 +76,7 @@ function ProjectFormCreate(props) {
   const [disableCondition, setDisableCondition] = useState(true);
   const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
   const [proj_type_name, setProj_type_name] = useState();
+  const [activityid, setActivityid] = useState();
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -267,13 +269,13 @@ function ProjectFormCreate(props) {
         dispatch(getFilingType(values));
       }
 
-      if(ProjectType.projectTypedata.length>0&&ProjectType.projectTypedata){
-        let data_res_id = ProjectType.projectTypedata.find((val) => { 
-        return (
+      if (ProjectType.projectTypedata.length > 0 && ProjectType.projectTypedata) {
+        let data_res_id = ProjectType.projectTypedata.find((val) => {
+          return (
             data == val.id
-        ) 
-      })
-      setProj_type_name(data_res_id.value)
+          )
+        })
+        setProj_type_name(data_res_id.value)
       }
     }
 
@@ -374,19 +376,19 @@ function ProjectFormCreate(props) {
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
 
-    if (projectform.billable_type.value&&projectform.billable_type.value===2&&filtererr.length <= 3 ) {
-      console.log(sendVariableData,"variable_rate")
-      dispatch(InsertIpProject(projectform, sendVariableData,proj_type_name)).then(
+    if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length <= 3) {
+      console.log(sendVariableData, "variable_rate")
+      dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
           handleCancel();
         }
       );
-    } 
+    }
     else if (filtererr.length > 1) {
 
     }
     else {
-      dispatch(InsertIpProject(projectform, sendVariableData,proj_type_name)).then(
+      dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
           handleCancel();
         }
@@ -514,6 +516,23 @@ function ProjectFormCreate(props) {
       setSuccessmodel(true);
     }
 
+    
+
+    const Activityid = (id) => {
+      setActivityid(id)
+
+    }
+    const addSearchDatas = () => {
+      dispatch(SearchVariableRate(activityid))
+        .then((response) => {
+          handleCancel();
+          // props.setShowSearchTable()
+
+
+        })
+
+    }
+
     return (
       <div>
         <VariableRate
@@ -521,6 +540,7 @@ function ProjectFormCreate(props) {
           variabletablechange={true}
           setShowSearchTable={() => setAddsearchdata(true)}
           setNoSearchResult={() => setNotfoundmodel(true)}
+          Activityid={(id) => Activityid(id)}
         />
         {searchdata && (
           <div className="addvariableData">
@@ -569,7 +589,7 @@ function ProjectFormCreate(props) {
                 </label>
               </div>
               <div className="customNotFoundbtn">
-                <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+                <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={addSearchDatas} />
                 <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
               </div>
             </div>
@@ -685,7 +705,7 @@ function ProjectFormCreate(props) {
           <Grid item xs={4}>
             <div className="Fieldheading">Client</div>
             <Labelbox
-              type="select"  dropdown={client.Client}
+              type="select" dropdown={client.Client}
               changeData={(data) => checkValidation(data, "client")}
               value={projectform.client.value}
               error={projectform.client.error}
@@ -704,7 +724,7 @@ function ProjectFormCreate(props) {
               error={projectform.projectname.error}
               errmsg={projectform.projectname.errmsg} /></Grid>
           <Grid item xs={6}> <div className="Fieldheading">Project Type</div>
-            <Labelbox type="select" 
+            <Labelbox type="select"
               dropdown={ProjectType.projectTypedata}
               changeData={(data) => checkValidation(data, "project_type")}
               value={projectform.project_type.value}
@@ -712,7 +732,7 @@ function ProjectFormCreate(props) {
               errmsg={projectform.project_type.errmsg} /></Grid>
           {projectform.project_type.value === 1 ? (
             <> <Grid item xs={6}> <div className="Fieldheading">Project Sub Type</div>
-              <Labelbox type="select" 
+              <Labelbox type="select"
                 dropdown={SubType_Project.projectSubTypeValue}
                 changeData={(data) => checkValidation(data, "project_Subtype")}
                 value={projectform.project_Subtype.value}
@@ -720,35 +740,35 @@ function ProjectFormCreate(props) {
                 errmsg={projectform.project_Subtype.errmsg} />
             </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Process Type</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={ProcessType.Processtypevalue}
                   changeData={(data) => checkValidation(data, "process_type")}
                   value={projectform.process_type.value}
                   error={projectform.process_type.error}
                   errmsg={projectform.process_type.errmsg} />  </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Filing Type</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={filingType.FilingType}
                   changeData={(data) => checkValidation(data, "filing_type")}
                   value={projectform.filing_type.value}
                   error={projectform.filing_type.error}
                   errmsg={projectform.filing_type.errmsg} /></Grid>
               <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
                   error={projectform.hod_attorny.error}
                   errmsg={projectform.hod_attorny.errmsg} /> </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "employeelist")}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} /></Grid>
               <Grid item xs={6}> <div className="Fieldheading">Billable Type</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={BillableType.BillableData}
                   changeData={(data) => checkValidation(data, "billable_type")}
                   value={projectform.billable_type.value}
@@ -759,7 +779,7 @@ function ProjectFormCreate(props) {
                 {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""}
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
-                <Labelbox type="text" 
+                <Labelbox type="text"
                   changeData={(data) => checkValidation(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
                   error={projectform.projectcostrange.error}
@@ -767,22 +787,22 @@ function ProjectFormCreate(props) {
               {projectform.billable_type.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}> <div className="Fieldheading">Base Rate</div>
-                    <Labelbox type="text" 
+                    <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
                       errmsg={projectform.baseRate.errmsg} /></Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Unit of Measurement</div>
-                    <Labelbox type="select" 
+                    <Labelbox type="select"
                       dropdown={projectUnit.projectUnitdata}
                       changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
                       error={projectform.unit_measurement.error}
                       errmsg={projectform.unit_measurement.errmsg} />
                   </Grid>
-                  <Grid item xs={3}> <div className="Fieldheading">Limit</div> <Labelbox type="text"  /></Grid>
+                  <Grid item xs={3}> <div className="Fieldheading">Limit</div> <Labelbox type="text" /></Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Additional Rate Hourly</div>
-                    <Labelbox type="text" 
+                    <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "additionalRate")}
                       value={projectform.additionalRate.value}
                       error={projectform.additionalRate.error}
@@ -790,13 +810,13 @@ function ProjectFormCreate(props) {
               ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}> <div className="Fieldheading">Base Rate</div>
-                    <Labelbox type="text" 
+                    <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
                       errmsg={projectform.baseRate.errmsg} />  </Grid>
                   <Grid item xs={6}> <div className="Fieldheading">Unit of Measurement</div>
-                    <Labelbox type="select" 
+                    <Labelbox type="select"
                       dropdown={projectUnit.projectUnitdata}
                       changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
@@ -807,7 +827,7 @@ function ProjectFormCreate(props) {
               )}
               <Grid item xs={6}> <div className="Fieldheading">Comments</div>
                 <div className="projectFormComments">
-                  <Labelbox type="textarea" 
+                  <Labelbox type="textarea"
                     changeData={(data) => checkValidation(data, "comments")}
                     value={projectform.comments.value}
                     error={projectform.comments.error}
@@ -815,28 +835,28 @@ function ProjectFormCreate(props) {
               <Grid item xs={6}></Grid>
             </>) : projectform.project_type.value === 6 ? (
               <><Grid item xs={6}> <div className="Fieldheading">Filing Type</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={filingType.FilingType}
                   changeData={(data) => checkValidation(data, "filing_type")}
                   value={projectform.filing_type.value}
                   error={projectform.filing_type.error}
                   errmsg={projectform.filing_type.errmsg} /></Grid>
                 <Grid item xs={6}> <div className="Fieldheading">Direct Responsible Attorney</div>
-                  <Labelbox type="select" 
+                  <Labelbox type="select"
                     dropdown={employeeList.EmployeeList}
                     changeData={(data) => checkValidation(data, "hod_attorny")}
                     value={projectform.hod_attorny.value}
                     error={projectform.hod_attorny.error}
                     errmsg={projectform.hod_attorny.errmsg} /></Grid>
                 <Grid item xs={6}> <div className="Fieldheading">Deputy Direct Responsible Attorney</div>
-                  <Labelbox type="select" 
+                  <Labelbox type="select"
                     dropdown={employeeList.EmployeeList}
                     changeData={(data) => checkValidation(data, "employeelist")}
                     value={projectform.employeelist.value}
                     error={projectform.employeelist.error}
                     errmsg={projectform.employeelist.errmsg} /></Grid>
                 <Grid item xs={6}> <div className="Fieldheading">Billable Type</div>
-                  <Labelbox type="select" 
+                  <Labelbox type="select"
                     dropdown={BillableType.BillableData}
                     changeData={(data) => checkValidation(data, "billable_type")}
                     value={projectform.billable_type.value}
@@ -848,7 +868,7 @@ function ProjectFormCreate(props) {
                   {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""} </Grid>
 
                 <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
-                  <Labelbox type="text" 
+                  <Labelbox type="text"
                     changeData={(data) => checkValidation(data, "projectcostrange")}
                     value={projectform.projectcostrange.value}
                     error={projectform.projectcostrange.error}
@@ -857,14 +877,14 @@ function ProjectFormCreate(props) {
                 {projectform?.billable_type?.value === 3 ? (
                   <Grid xs={12} container direction="row" spacing={2}>
                     <Grid item xs={3}> <div className="Fieldheading">Base Rate</div>
-                      <Labelbox type="text" 
+                      <Labelbox type="text"
                         changeData={(data) => checkValidation(data, "baseRate")}
                         value={projectform.baseRate.value}
                         error={projectform.baseRate.error}
                         errmsg={projectform.baseRate.errmsg} />
                     </Grid>
                     <Grid item xs={3}> <div className="Fieldheading">Unit of Measurement</div>
-                      <Labelbox type="select" 
+                      <Labelbox type="select"
                         dropdown={projectUnit.projectUnitdata}
                         changeData={(data) => checkValidation(data, "unit_measurement")}
                         value={projectform.unit_measurement.value}
@@ -872,7 +892,7 @@ function ProjectFormCreate(props) {
                         errmsg={projectform.unit_measurement.errmsg} />
                     </Grid>
                     <Grid item xs={3}> <div className="Fieldheading">Limit</div>
-                      <Labelbox type="text" 
+                      <Labelbox type="text"
                         changeData={(data) => checkValidation(data, "limit")}
                         value={projectform.limit.value}
                         error={projectform.limit.error}
@@ -888,13 +908,13 @@ function ProjectFormCreate(props) {
                 ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                   <Grid item xs={6} container direction="row" spacing={2}>
                     <Grid item xs={6}> <div className="Fieldheading">Base Rate</div>
-                      <Labelbox type="text" 
+                      <Labelbox type="text"
                         changeData={(data) => checkValidation(data, "baseRate")}
                         value={projectform.baseRate.value}
                         error={projectform.baseRate.error}
                         errmsg={projectform.baseRate.errmsg} /> </Grid>
                     <Grid item xs={6}> <div className="Fieldheading">Unit of Measurement</div>
-                      <Labelbox type="select" 
+                      <Labelbox type="select"
                         dropdown={projectUnit.projectUnitdata}
                         changeData={(data) => checkValidation(data, "unit_measurement")}
                         value={projectform.unit_measurement.value}
@@ -905,7 +925,7 @@ function ProjectFormCreate(props) {
                 )}
                 <Grid item xs={6}> <div className="Fieldheading">Comments</div>
                   <div className="projectFormComments">
-                    <Labelbox type="textarea" 
+                    <Labelbox type="textarea"
                       changeData={(data) => checkValidation(data, "comments")}
                       value={projectform.comments.value}
                       error={projectform.comments.error}
@@ -916,7 +936,7 @@ function ProjectFormCreate(props) {
               </>
             ) : projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5 ? (<>
               <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "employeelist")}
                   value={projectform.employeelist.value}
@@ -924,7 +944,7 @@ function ProjectFormCreate(props) {
                   errmsg={projectform.employeelist.errmsg} />
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
-                <Labelbox type="select" 
+                <Labelbox type="select"
                   dropdown={employeeList.EmployeeList}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
@@ -933,7 +953,7 @@ function ProjectFormCreate(props) {
                 />
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
-                <Labelbox type="text" 
+                <Labelbox type="text"
                   changeData={(data) => checkValidation(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
                   error={projectform.projectcostrange.error}
@@ -941,7 +961,7 @@ function ProjectFormCreate(props) {
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Billable Type</div>
                 <Labelbox
-                  type="select" 
+                  type="select"
                   dropdown={BillableType.BillableData}
                   changeData={(data) => checkValidation(data, "billable_type")}
                   value={projectform.billable_type.value}
@@ -954,7 +974,7 @@ function ProjectFormCreate(props) {
 
               <Grid item xs={6}> <div className="Fieldheading">Comments</div>
                 <div className="projectFormComments">
-                  <Labelbox type="textarea" 
+                  <Labelbox type="textarea"
                     changeData={(data) => checkValidation(data, "comments")}
                     value={projectform.comments.value}
                     error={projectform.comments.error}
@@ -964,14 +984,14 @@ function ProjectFormCreate(props) {
               {projectform?.billable_type?.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}> <div className="Fieldheading">Base Rate</div>
-                    <Labelbox type="text" 
+                    <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
                       errmsg={projectform.baseRate.errmsg} />
                   </Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Unit of Measurement</div>
-                    <Labelbox type="select" 
+                    <Labelbox type="select"
                       dropdown={projectUnit.projectUnitdata}
                       changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
@@ -980,14 +1000,14 @@ function ProjectFormCreate(props) {
                   </Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Limit</div>
                     <Labelbox
-                      type="text" 
+                      type="text"
                       changeData={(data) => checkValidation(data, "limit")}
                       value={projectform.limit.value}
                       error={projectform.limit.error}
                       errmsg={projectform.limit.errmsg} />
                   </Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Additional Rate Hourly</div>
-                    <Labelbox type="text" 
+                    <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "additionalRate")}
                       value={projectform.additionalRate.value}
                       error={projectform.additionalRate.error}
@@ -1005,7 +1025,7 @@ function ProjectFormCreate(props) {
                   </Grid>
                   <Grid item xs={6}>
                     <div className="Fieldheading">Unit of Measurement</div> <Labelbox
-                      type="select" 
+                      type="select"
                       dropdown={projectUnit.projectUnitdata}
                       changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
