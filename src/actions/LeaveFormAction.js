@@ -336,7 +336,7 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
             url: apiurl + 'update_leave_approval',
             data: {
                 "emp_leave_id": leaveId,
-                "approve_status": leaveStatus === true ? 1 : 2
+                "approve_status": leaveStatus === true ?1:2
             },
         })
             .then((response) => {
