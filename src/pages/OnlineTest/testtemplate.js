@@ -9,18 +9,14 @@ import Delete from '../../images/dashboard/delete.svg';
 import './onlinetest.scss'
 function TestTemplate(props) {
     const [pathname, setPathName] = useState(window.location.pathname)
-    const [addcontrols, setAddControls] = useState(false)
     const [MultipleQuestion, setMultipleQuestion] = useState([])
-    var [multiple, setMultiple] = useState([])
-    const QuesObj={
-        comp:<AddQuestions/>,
-        index:0
-    }
+    
     function addcontrolsfunc() {        
-        // multiple.push(QuesObj)
-        // console.log("MultipleQuestion", multiple)
+        // MultipleQuestion.push(QuesObj)
+        // console.log("MultipleQuestion", MultipleQuestion)
         const component_arr = [...MultipleQuestion,<AddQuestions/>]
         setMultipleQuestion(component_arr)
+        console.log("MultipleQuestion", MultipleQuestion)
     }
     const deletecomp = (index) => {
         // const del=multiple
@@ -30,7 +26,9 @@ function TestTemplate(props) {
         let temp = [...MultipleQuestion]
         temp.splice(index,1)
         setMultipleQuestion(temp)
+        console.log("MultipleQuestion", MultipleQuestion)
     }
+     
    
     return (
         <div>
@@ -70,12 +68,10 @@ function TestTemplate(props) {
                         </Grid>
                     </Grid>
                 </div>
-
-
                
                 {MultipleQuestion.map((data, index) =>{
                     return (
-                    <div className="TTcategory" key={index}>
+                        <div className="TTcategory">
                         <Grid item xs={12} container direction="row" spacing={2}>
                             <Grid item xs={3} container direction="column">
                                 <div className="TThead">Category</div>
@@ -90,7 +86,7 @@ function TestTemplate(props) {
                                 <Labelbox type="select"></Labelbox>
                             </Grid>
                             <Grid item xs={1} container direction="row" justify="center" alignItems="center">
-                                <img src={Delete} className="plusicon" onClick={() => deletecomp(index)} />
+                                <img src={Delete} className="plusicon" onClick={deletecomp}/>
                             </Grid>
                         </Grid>
                     </div>
