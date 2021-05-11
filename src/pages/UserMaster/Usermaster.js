@@ -400,14 +400,6 @@ const UserMaster = (props) => {
         
       });
       settable_name_value(value);
-        
-       
-        // let From_key = [
-        //   "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
-        //   "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
-        //   "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-        //   "court","range","stage_dropdown","stage_name","case_type","activity_drop"
-        // ];
       if(data===3){
          UserMaster.groupname.validation.push({name:"required"})
       }
@@ -1110,7 +1102,6 @@ const UserMaster = (props) => {
             setEditvisible(false);
           });
         } else {
-          // alert("divya")
           dispatch(
             Common_insert_text(table_name_value.table_names, UserMaster)
           ).then(() => {
