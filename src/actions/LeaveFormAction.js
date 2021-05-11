@@ -329,7 +329,6 @@ export const getEmpApproval = (data) => async dispatch => {
 
 
 export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => {
-    alert(leaveId)
     try {
         axios({
             method: 'POST',
