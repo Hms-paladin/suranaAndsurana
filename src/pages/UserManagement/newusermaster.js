@@ -107,7 +107,7 @@ function NewUserMaster(props){
         <div>
             <div className="UserGroup">
                 <div>User Master</div>
-                <img src={PlusIcon} className="plusicon"  onClick={() => setUserAddEdit(false),setUsergroupModel(true)} />
+                <img src={PlusIcon} className="plusicon"  onClick={() => (setUserAddEdit(false),setUsergroupModel(true))} />
                 {/* <img src={PlusIcon} className="plusicon"  onClick={() => ( permission.allow_add==='Y'? (setUserAddEdit(false),setUsergroupModel(true)):rights())} /> */}
                 <DynModel modelTitle={UserAddEdit?"EDIT USER":"ADD USER"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} width={1000} 
                  content={UserAddEdit?<UserMasterModal user_data={UserData} closeModel={()=>(setUsergroupModel(false),setUserData({}))}/>:<UserMasterModal user_add={""} closeModel={()=>setUsergroupModel(false)}/>} />
