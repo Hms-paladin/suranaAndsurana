@@ -200,12 +200,13 @@ function LeaveForm(props) {
     }
 
     function timeToEpoch(time) {
-        var time = time
-        var array = time.split(":");
-        var seconds = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
-        console.log(seconds,"seconds")
-        var d = new Date();
-        d.setTime(seconds);
+        // var time = time
+        // var array = time.split(":");
+        // var seconds = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
+        // console.log(seconds,"seconds")
+        var d = new Date("12-30-2017 "+time)
+        // d.setTime(seconds);
+        // console.log(d,"Leave_Form")
         return d
     }
 
@@ -216,8 +217,8 @@ function LeaveForm(props) {
         Leave_Form.leavetype.value = val.leave_type_id || ""
         Leave_Form.fromdate.value = val.from_date || ""
         Leave_Form.todate.value = val.to_date || ""
-        Leave_Form.fromtime.value = timeToEpoch(val.from_time) || ""
-        Leave_Form.totime.value = timeToEpoch(val.to_time) || ""
+        Leave_Form.fromtime.value = val.from_time!=null?timeToEpoch(val.from_time) : ""
+        Leave_Form.totime.value =  val.to_time!=null?timeToEpoch(val.to_time) : ""
         Leave_Form.reasoncmt.value = val.leave_reason || ""
         Leave_Form.address.value = val.address || ""
         Leave_Form.contactperson.value = val.contact_number || ""
@@ -240,7 +241,7 @@ function LeaveForm(props) {
             ...prevState,
         }));
 
-        console.log(val, "emp_leave_cep_sub_id")
+        console.log(val.leave_type_id, "leave_type_id")
     }
     console.log(examSchedule, "Leave_Form")
 
@@ -284,6 +285,7 @@ function LeaveForm(props) {
 
     function checkValidation(data, key) {
         if (key === "fromtime") {
+            console.log(moment(data).format('HH:mm:ss'),"check")
         }
 
 
@@ -403,7 +405,7 @@ function LeaveForm(props) {
                 todate: TableData[m].to_date === 0 ? '0' : TableData[m].to_date,
                 fromtime: TableData[m].from_time === 0 ? '0' : TableData[m].from_time,
                 totime: TableData[m].to_time === 0 ? '0' : TableData[m].to_time,
-                status: TableData[m].approve_status === 1 ? 'Approved' : "Pending",
+                status: TableData[m].approve_status === (null) ||TableData[m].approve_status === 0 ? 'Pending' : TableData[m].approve_status === 1?"Approved":"Rejected",
                 action: (
                     <>
                         <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onEditLeaveForm(TableData[index])} />{" "}
@@ -478,6 +480,7 @@ function LeaveForm(props) {
                     handleCancel()
                 })
             } else {
+                console.log(Leave_Form,"Leave_Form")
                 dispatch(insertLeaveForm(Leave_Form)).then(() => {
                     dispatch(getLeaveForm(Leave_Form.leavetype.value));
                     handleCancel()
@@ -492,7 +495,7 @@ function LeaveForm(props) {
     }
 
     const onUpdate = (data) => {
-
+        console.log(Leave_Form,"Leave_Form")
         if (data === "othertype") {
             dispatch(updateLeaveFrom(Leave_Form)).then((response) => {
                 handleCancel();
