@@ -17,9 +17,6 @@ import DynModel from "../../component/Model/model";
 
 const RateMaster = (props) => {
   const header = [
-    // { id: 'table_names', label: 'Table Name' },
-
-
     { id: "designation", label: "Designation" },
     { id: "activity", label: "Activity" },
     { id: "sub_activity", label: "Sub Activity" },
@@ -113,6 +110,7 @@ const RateMaster = (props) => {
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
+    
     // setAmountDis(false)
   }, [props.variabletablechange, props.variablebtnchange]);
   // useEffect(() => {
