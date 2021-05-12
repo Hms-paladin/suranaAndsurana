@@ -198,7 +198,7 @@ function TodoList(props) {
             }
         
             otherTask.push({
-                task:<div onClick={() => OtherTaskFunction( showName,showId,data)}>{data.task}</div>,
+                task:<div onClick={() => OtherTaskFunction( showName,showId,data)} className="ProjectTaskId">{data.task}</div>,
                 empname:data.employee,
                 activity:data.activity,
                 sub_activity:data.sub_activity,
