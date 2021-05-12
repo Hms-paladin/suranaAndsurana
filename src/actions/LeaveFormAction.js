@@ -346,3 +346,22 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
     catch (err) {
     }
 }
+
+export const getUnblockUser = (leaveStatus, leaveId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'update_leave_approval',
+            data: {
+                "emp_leave_id": leaveId,
+                "approve_status": leaveStatus === true ?1:2
+            },
+        })
+            .then((response) => {
+                dispatch(getUnblockUser(leaveId))
+                return Promise.resolve();
+            })
+    }
+    catch (err) {
+    }
+}

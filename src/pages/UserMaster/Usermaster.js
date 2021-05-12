@@ -177,6 +177,7 @@ const UserMaster = (props) => {
   });
   const [userTableHeader, setUserTableHeader] = useState([]);
   const [getTablename, setgetTablename] = useState([]);
+  const [substageId,setsubstageId]=useState([])
   const [tablevalues, settablevalues] = useState([]);
   const [Statusvalue,setStatusvalue]=useState("")
   const [UserMaster, setUserMaster] = useState({
@@ -378,22 +379,24 @@ const UserMaster = (props) => {
 
     if (key === "stage_dropdown") {
       dispatch(getSubStage(data));
+      setsubstageId(data) 
     }
     if (key === "class_type") {
       dispatch(getTableClass(data));
     }
-    if (key === "activity_drop") {
+    if (data&&key === "activity_drop") {
       dispatch(getSubActivity(data));
     }
-    if (key === "stage_dropdown") {
-      dispatch(getTableStatus(UserMaster.status_type.value));
-    }
+    // if (key === "status_type") {
+    //   dispatch(getTableStatus(data));
+    // }
     if (data && key === "tablename") {
       var value = props.table_name.find((item) => {
         return item.table_id == data;
         
       });
       settable_name_value(value);
+    
       if(data===3){
         validationHide()
          UserMaster.groupname.validation=[{name:"required"}]
@@ -539,9 +542,7 @@ const UserMaster = (props) => {
     }));
   }
 
-  const ValidationTrue=()=>{
-    
-  }
+ 
   const [UserGroupsList, setUserGroupsList] = useState([]);
   const [table_name_value, settable_name_value] = useState([]);
   const [TableData, setTableData] = useState([]);
@@ -1022,10 +1023,14 @@ const UserMaster = (props) => {
   }, [props, table_name_value.table_names]);
 
   function Submit(data) {
-    
+    // alert(substageId)
     setStatusvalue((prevState) => ({
       ...prevState,
     }));
+    setsubstageId((prevState) => ({
+      ...prevState,
+    }));
+    
     var mainvalue = {};
     var targetkeys = Object.keys(UserMaster);
     for (var i in targetkeys) {
@@ -1046,15 +1051,16 @@ const UserMaster = (props) => {
             UserMaster,
             EditStoreData.ClassEdit,
             Editvisible,
-            props.Class_Table_Data.class_id,
-            Statusvalue
+            // props.Class_Table_Data.class_id,
+            // Statusvalue,
+            props.Class_Table_Data&&props?.Class_Table_Data[0]?.class_type
           )
         ).then(() => {
           setEditvisible(false);
           handleCancel()
         });
       } else if (data === 20) {
-        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible)).then(() => {
+        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
           setEditvisible(false);
           handleCancel()
         });
@@ -1109,7 +1115,7 @@ const UserMaster = (props) => {
           });
         }
       } else if (data === 26) {
-        dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible)).then(() => {
+        dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
           setEditvisible(false);
           handleCancel()
         });
@@ -1122,7 +1128,7 @@ const UserMaster = (props) => {
         });
       }
     }
-
+  //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
     setUserMaster((prevState) => ({
       ...prevState,
     }));
@@ -1349,7 +1355,7 @@ const UserMaster = (props) => {
             type="select"
             placeholder={"Table Name"}
             changeData={(data) =>
-              checkValidation(data, "tablename", table_name_value.table_names)
+              checkValidation(data, "tablename")
             }
             value={UserMaster.tablename.value}
             error={UserMaster.tablename.error}

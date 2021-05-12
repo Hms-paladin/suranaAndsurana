@@ -265,7 +265,7 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
 
 
 // class insert api 
-export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch => {
+export const InsertClass = (UserMaster,ClassId,Editvisible,Classtype_id) => async dispatch => {
   try {
     axios({
       method: 'POST',
@@ -284,13 +284,12 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
       .then((response) => {
 
         if (response.data.status === 1) {
-        dispatch({ type: INSERT_CLASS, payload: response.data.status })
-
           notification.success({
             message: response.data.msg,
           });
           // dispatch(getClass())
-          dispatch(getTableClass(UserMaster.class_type.value))
+          dispatch({ type: INSERT_CLASS, payload: response.data.status })
+          dispatch(getTableClass(Classtype_id))
           return Promise.resolve();
         }
       });
@@ -304,7 +303,8 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
 }
 
 // subactivity insert api 
-export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispatch => {
+export const InsertSubActivity = (UserMaster,EditId,Editvisible,ActivityId) => async dispatch => {
+ 
   try {
     axios({
       method: 'POST',
@@ -318,11 +318,12 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispat
     })
       .then((response) => {
         if (response.data.status === 1) {
-        dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
           notification.success({
             message:response.data.msg,
           });
-          dispatch(getSubActivity(UserMaster.activity_drop.value))
+          dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
+
+          dispatch(getSubActivity(ActivityId))
           return Promise.resolve();
         }
       });
@@ -335,7 +336,7 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispat
 }
 
 // stage insert api
-export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatch => {
+export const InsertSubstage = (UserMaster,stageId, Editvisible,id) => async dispatch => {
   try {
     axios({
       method: 'POST',
@@ -350,13 +351,13 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
       },
     })
       .then((response) => {
-        dispatch({ type: INSERT_SUBSTAGE, payload: response.data.status })
         if (response.data.status === 1) {
           notification.success({
             message: response.data.msg,
           });
-
-          dispatch(getSubStage(UserMaster.stage_dropdown.value))
+          dispatch({ type: INSERT_SUBSTAGE, payload: response.data.status })
+          
+          dispatch(getSubStage(id))
           return Promise.resolve();
         }
        
@@ -608,6 +609,7 @@ export const getStageList = () => async (dispatch) => {
 };
 
 export const getSubStage = (id) => async (dispatch) => {
+  // alert(id)
   const response = await axios({
     method: "post",
     url: apiurl + "get_sub_stage",
