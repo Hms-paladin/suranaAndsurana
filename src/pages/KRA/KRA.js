@@ -104,7 +104,7 @@ const KRA = (props) => {
                                     errmsg={kpi_form.activity.errmsg}
                                 /></div>
                             </Grid>
-                            <Grid item xs={2}>
+                            {/* <Grid item xs={2}>
                             <div className="KRAhead"><label style={{ fontSize: 15 }}>Sub Activity</label></div>
                                 <div style={{ width: '100%', display: 'inline-block' }}>
                                 <Labelbox
@@ -116,7 +116,7 @@ const KRA = (props) => {
                                     error={kpi_form.subactivity.error}
                                     errmsg={kpi_form.subactivity.errmsg}
                                 /></div>
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={2}>
                             <div className="KRAhead"><label style={{ fontSize: 15 }}>Percentage</label></div>
                                 <div style={{ width: '100%', display: 'inline-block' }}>

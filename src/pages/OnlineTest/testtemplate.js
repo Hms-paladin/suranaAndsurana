@@ -9,25 +9,29 @@ import Delete from '../../images/dashboard/delete.svg';
 import './onlinetest.scss'
 function TestTemplate(props) {
     const [pathname, setPathName] = useState(window.location.pathname)
-    const[addcontrols,setAddControls]=useState(false)
-    const[MultipleQuestion,setMultipleQuestion]=useState([])
-    const additionals={controls:[]};
-
-    function addcontrolsfunc(){
-        let multipleTab ={}
-        multipleTab.questions=<AddQuestions/>
-        setMultipleQuestion((prevState) => ([
-            ...prevState,multipleTab["questions"]
-        ]));
-        // setMultipleQuestion(multipleTab)
-        console.log("MultipleQuestion",MultipleQuestion)
+    const [addcontrols, setAddControls] = useState(false)
+    const [MultipleQuestion, setMultipleQuestion] = useState([])
+    var [multiple, setMultiple] = useState([])
+    const QuesObj={
+        comp:<AddQuestions/>,
+        index:0
     }
-    function deletecontrolsfunc(){
-        // var splice=MultipleQuestion.pop();
-       var splice=MultipleQuestion.pop();
-       console.log(splice,"splice")
-       alert(splice)
+    function addcontrolsfunc() {        
+        // multiple.push(QuesObj)
+        // console.log("MultipleQuestion", multiple)
+        const component_arr = [...MultipleQuestion,<AddQuestions/>]
+        setMultipleQuestion(component_arr)
     }
+    const deletecomp = (index) => {
+        // const del=multiple
+        // del.splice(index,1)
+        // multiple=del
+        // console.log("MultipleQuestion", multiple)
+        let temp = [...MultipleQuestion]
+        temp.splice(index,1)
+        setMultipleQuestion(temp)
+    }
+   
     return (
         <div>
             <div className="AQTitle">Test Template</div>
@@ -46,7 +50,7 @@ function TestTemplate(props) {
                         <Labelbox type="select"></Labelbox>
                     </Grid>
                 </Grid>
-         
+
                 <div className="TTcategory">
                     <Grid item xs={12} container direction="row" spacing={2}>
                         <Grid item xs={3} container direction="column">
@@ -63,14 +67,38 @@ function TestTemplate(props) {
                         </Grid>
                         <Grid item xs={1} container direction="row" justify="center" alignItems="center">
                             <img src={PlusIcon} className="plusicon" onClick={addcontrolsfunc} />
-                            {/* <img src={Delete} className="plusicon" onClick={deletecontrolsfunc} /> */}
                         </Grid>
                     </Grid>
                 </div>
-              <div>{MultipleQuestion}</div>
+
+
+               
+                {MultipleQuestion.map((data, index) =>{
+                    return (
+                    <div className="TTcategory" key={index}>
+                        <Grid item xs={12} container direction="row" spacing={2}>
+                            <Grid item xs={3} container direction="column">
+                                <div className="TThead">Category</div>
+                                <Labelbox type="select"></Labelbox>
+                            </Grid>
+                            <Grid item xs={3} container direction="column">
+                                <div className="TThead">Sub Category</div>
+                                <Labelbox type="select"></Labelbox>
+                            </Grid>
+                            <Grid item xs={3} container direction="column">
+                                <div className="TThead">No .of Questions</div>
+                                <Labelbox type="select"></Labelbox>
+                            </Grid>
+                            <Grid item xs={1} container direction="row" justify="center" alignItems="center">
+                                <img src={Delete} className="plusicon" onClick={() => deletecomp(index)} />
+                            </Grid>
+                        </Grid>
+                    </div>
+                )}
+                )}
                 <div id="TTbtns">
-                <Link to="/onlinetest"><CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={()=>setPathName("/onlinetest")} /></Link>
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
+                    <Link to="/onlinetest"><CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setPathName("/onlinetest")} /></Link>
+                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
                 </div>
             </div>
         </div>

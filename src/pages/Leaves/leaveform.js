@@ -36,7 +36,7 @@ function LeaveForm(props) {
     const [noOfDays, setNoOfDays] = useState(0)
 
     const [minDate, setMinDate] = useState(0)
-
+    const [other_days, setother_days] = useState()
     const [plusicon, setPlusicon] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
     const [editBtn, setEditBtn] = useState(false)
@@ -181,20 +181,43 @@ function LeaveForm(props) {
     const onFileChange = () => {
 
     }
+    useEffect(() => {
+        if (Leave_Form.tot_leave.value === "" && Leave_Form.exam_days.value === "") {
+            Leave_Form.other_days.value = "";
+        } else {
+            let otherdays = Leave_Form.tot_leave.value - Leave_Form.exam_days.value;
+            setother_days(otherdays)
+        }
+
+
+
+    }, [Leave_Form.tot_leave.value, Leave_Form.exam_days.value])
+    Leave_Form.other_days.value = other_days;
+
 
     function onDeleteLeaveForm(emp_leave_id) {
         dispatch(deleteLeaveForm(emp_leave_id))
     }
 
+    function timeToEpoch(time) {
+        var time = time
+        var array = time.split(":");
+        var seconds = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
+        console.log(seconds,"seconds")
+        var d = new Date();
+        d.setTime(seconds);
+        return d
+    }
+
     const onEditLeaveForm = (val) => {
-        console.log(val, dateFormat(val.from_time, "hh:MM:ss"), "valval")
+
         setEditBtn(true)
         console.log(val.subject_details, "valval")
         Leave_Form.leavetype.value = val.leave_type_id || ""
         Leave_Form.fromdate.value = val.from_date || ""
         Leave_Form.todate.value = val.to_date || ""
-        Leave_Form.fromtime.value = dateFormat(val.from_time, "hh:MM:ss") || ""
-        Leave_Form.totime.value = dateFormat(val.to_time, "hh:MM:ss") || ""
+        Leave_Form.fromtime.value = timeToEpoch(val.from_time) || ""
+        Leave_Form.totime.value = timeToEpoch(val.to_time) || ""
         Leave_Form.reasoncmt.value = val.leave_reason || ""
         Leave_Form.address.value = val.address || ""
         Leave_Form.contactperson.value = val.contact_number || ""
@@ -263,6 +286,8 @@ function LeaveForm(props) {
         if (key === "fromtime") {
         }
 
+
+
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             Leave_Form[key].validation
@@ -277,9 +302,9 @@ function LeaveForm(props) {
         if (data && key == "tot_leave") {
             Leave_Form.exam_days.validation[1].params = data
             setLeaveForm((prevState) => ({
-              ...prevState,
+                ...prevState,
             }));
-          }
+        }
 
         if (key === "leavetype" && data) {
             handleCancel()
