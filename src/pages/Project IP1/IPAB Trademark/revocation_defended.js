@@ -6,52 +6,67 @@ import './IPABTrademark.scss'
 function RevocationDefended(){
     return(
         <div>
+            <div className="ipab">
             <Grid item xs={12} container direction="row" spacing={2}>
             <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Client - Respondent"></Labelbox>
+                    <div>Client - Respondent</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Mark"></Labelbox>
+                <div>Mark</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Trade Mark No"></Labelbox>
+                <div>Trade Mark No</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select" placeholder="Class"></Labelbox>
+                <div>Class</div>
+                    <Labelbox type="select"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="datepicker" placeholder="Revocation Filing Date"></Labelbox>
-                </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Serial No"></Labelbox>
-                </Grid>
-                <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Org Appeal No"></Labelbox>
-                </Grid>
-                <Grid item xs={2}>
-                    <Labelbox type="datepicker" placeholder="Date of Hearing"></Labelbox>
-                </Grid>
-                <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Applicant"></Labelbox>
-                </Grid>
-                <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Applicant - Rep"></Labelbox>
+                <div>Revocation Filing Date</div>
+                    <Labelbox type="datepicker"></Labelbox>
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select" placeholder="Filing Type"></Labelbox>
+                <div>Serial No</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select" placeholder="Status"></Labelbox>
+                <div>Org Appeal No</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Comments"></Labelbox>
+                <div>Date of Hearing</div>
+                    <Labelbox type="datepicker"></Labelbox>
+                </Grid>
+                <Grid item xs={2}>
+                <div>Applicant</div>
+                    <Labelbox type="text"></Labelbox>
+                </Grid>
+                <Grid item xs={2}>
+                <div>Applicant - Rep</div>
+                    <Labelbox type="text"></Labelbox>
+                </Grid>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={2}>
+                <div>Filing Type</div>
+                    <Labelbox type="select"></Labelbox>
+                </Grid>
+                <Grid item xs={2}>
+                <div>Status</div>
+                    <Labelbox type="select"></Labelbox>
+                </Grid>
+                <Grid item xs={2}>
+                <div>Comments</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
             </Grid>
+            </div>
             <div className="trademarkbtn">
                 <CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick="" />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />

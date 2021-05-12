@@ -6,52 +6,67 @@ import './IPABTrademark.scss'
 function IPABRectificationFiled() {
     return (
         <div>
+            <div className="ipab">
             <Grid item xs={12} container direction="row" spacing={2}>
-            <Grid item xs={1}></Grid>
+                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Client - Applicant"></Labelbox>
+                    <div>Client - Applicant</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Mark"></Labelbox>
+                    <div>Mark</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Trade Mark No"></Labelbox>
+                    <div>Trade Mark No</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select" placeholder="Class"></Labelbox>
+                    <div>Class</div>
+                    <Labelbox type="select"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="datepicker" placeholder="Rectification Filing Date"></Labelbox>
+                    <div>Rectification Filing Date</div>
+                    <Labelbox type="datepicker"></Labelbox>
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Serial No"></Labelbox>
+                    <div>Serial No</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Org Appeal No"></Labelbox>
+                    <div>Org Appeal No</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="datepicker" placeholder="Date of Hearing"></Labelbox>
+                    <div>Date of Hearing</div>
+                    <Labelbox type="datepicker"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Respondent"></Labelbox>
+                    <div>Respondent</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Respondent - Rep"></Labelbox>
+                    <div>Respondent - Rep</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select" placeholder="Filing Type"></Labelbox>
+                    <div>Filing Type</div>
+                    <Labelbox type="select"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select" placeholder="Status"></Labelbox>
+                    <div>Status</div>
+                    <Labelbox type="select"></Labelbox>
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder="Comments"></Labelbox>
+                    <div>Comments</div>
+                    <Labelbox type="text"></Labelbox>
                 </Grid>
             </Grid>
+            </div>
             <div className="trademarkbtn">
                 <CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick="" />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
