@@ -339,7 +339,6 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
             },
         })
             .then((response) => {
-               
                 dispatch(getEmpApproval(leaveId))
                 return Promise.resolve();
             })
