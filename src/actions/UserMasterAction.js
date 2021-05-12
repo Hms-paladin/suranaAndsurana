@@ -336,6 +336,7 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispat
 
 // stage insert api
 export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatch => {
+  alert(Editvisible)
   try {
     axios({
       method: 'POST',
