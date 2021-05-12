@@ -40,7 +40,7 @@ const RateMaster = (props) => {
   const [projectUnit, setprojectUnit] = useState({});
   const [projectTableName, setprojectTableName] = useState({});
   const [projectDesignation, setprojectDesignation] = useState({});
-  const [amountError, setamountError] = useState("");
+  const [modelclose, setmodelclose] = useState();
   const [variablebtnchange, setVariablebtnchange] = useState(true)
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
@@ -147,7 +147,6 @@ const RateMaster = (props) => {
   }, [props.getTableData])
 
   const onSubmit = () => {
-    console.log(RateMaster, "RateMaster")
 
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
@@ -169,14 +168,15 @@ const RateMaster = (props) => {
     } else {
       dispatch(InsertVariableRate(RateMaster)).then((response) => {
         dispatch(SearchVariableRate(RateMaster)).then((response) => {
+          setNotfoundmodel(false);
           props.setShowSearchTable()
-          setNotfoundmodel(false)
-
         })
         handleCancel();
 
       });
     }
+    console.log(props.lenghtData, "props.lenghtData")
+
 
     setRateMaster((prevState) => ({
       ...prevState,
@@ -271,7 +271,6 @@ const RateMaster = (props) => {
 
   }
 
-  console.log(activity_id, "Activity_id")
 
   const handleCancel = () => {
     setEnabled(true)
@@ -304,14 +303,12 @@ const RateMaster = (props) => {
   useEffect(() => {
     if (props.lenghtData !== 0) {
       setNotfoundmodel(false);
-
-
     } else {
-
       setNotfoundmodel(true)
     }
 
   }, [props.searchVariableRate, props.lenghtData]);
+
 
 
   useEffect(() => {
@@ -463,20 +460,11 @@ const RateMaster = (props) => {
     // setRateMaster({ error: true });
 
     // } else {
-    props.Activityid(RateMaster);
 
 
     dispatch(SearchVariableRate(RateMaster))
-      .then((response) => {
-        if (props.lenghtData !== 0) {
-          setNotfoundmodel(false);
-          // handleCancel();
-        } else {
-        }
-
+      .then(() => {
         props.setShowSearchTable()
-
-
       })
 
     setRateMaster((prevState) => ({

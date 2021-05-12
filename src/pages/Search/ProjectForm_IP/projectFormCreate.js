@@ -497,6 +497,7 @@ function ProjectFormCreate(props) {
     props.EmployeeList,
     props.ProjectCostRange,
   ]);
+  
   function addSearchData() {
     setAddsearchdata(true);
     setSearchdata(false);
@@ -516,14 +517,14 @@ function ProjectFormCreate(props) {
       setSuccessmodel(true);
     }
 
-    
 
-    const Activityid = (data) => {
-      console.log(data,"datadatadatas")
+
+    const newInsertrow = (data) => {
+      console.log(data, "datadatadatas")
       // setActivityid(id)
 
     }
-   
+
 
     return (
       <div>
@@ -532,7 +533,7 @@ function ProjectFormCreate(props) {
           variabletablechange={true}
           setShowSearchTable={() => setAddsearchdata(true)}
           setNoSearchResult={() => setNotfoundmodel(true)}
-          Activityid={(data) => Activityid(data)}
+          newInsertrow={(data) => newInsertrow(data)}
         />
         {searchdata && (
           <div className="addvariableData">
@@ -568,7 +569,7 @@ function ProjectFormCreate(props) {
           }
           width={400}
         />
-      
+
       </div>
     );
   };
