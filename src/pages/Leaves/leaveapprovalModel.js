@@ -5,6 +5,10 @@ import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
 import {connect,useDispatch} from 'react-redux'
 import moment from "moment";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import {notification} from 'antd'
+import dateFormat from 'dateformat';
 import {getEmpApproval,EmployeeLeaveApprove} from '../../actions/LeaveFormAction'
 const examDetails = [{ subject: "Human Rights", date: "12-Mar-2021" },
 { subject: "Environment Law", date: "13-Mar-2021" },
@@ -30,7 +34,8 @@ function LeaveApproval(props) {
             Approvaldata.push({
                 empname:data.name===null?"-":data.name,
                 leavetype:data.leave_type,
-                from:moment(data.from_date).format("DD-MMM-YYYY"),to:moment(data.to_date).format("DD-MMM-YYYY"),
+                from:moment(data.from_date===null?"-":data.from_date).format("DD-MMM-YYYY"),
+                to:moment(data.to_date===null?"-":data.to_date).format("DD-MMM-YYYY"),
                 balance:data.current_balance===null?"-":data.current_balance,
                 leavereason:data.leave_reason===null?"-":data.leave_reason,
                 remarks:data.remarks===null?"-":data.remarks,
@@ -67,12 +72,34 @@ function LeaveApproval(props) {
         dispatch(EmployeeLeaveApprove(Leave_status,props.getLeaveApproval[0]&&props.getLeaveApproval[0].emp_leave_id,props.getLeaveApproval[0]&&props.getLeaveApproval[0].approve_status)).then((response) => {
             props.closemodal()
         })
-    //     setLeave_status(prevState =>({
-    //   ...prevState,
-    //     }))
+  
     
     }
-   console.log("propsid",props.LeaveData)    
+   const DownloadPdf = () => {
+    const doc = new jsPDF("a3");
+    var bodydata = [];
+    props.getLeaveApproval[0]&&props.getLeaveApproval[0].subject_details.map((data,index) => {
+      bodydata.push([index + 1,data.subject, moment(data.subject_date).format("DD-MMM-YYYY")]);
+    });
+    doc.autoTable({
+      beforePageContent: function (data) {
+        doc.text("Hall Ticket", 15, 23); // 15,13 for css
+      },
+      margin: { top: 30 },
+      showHead: "everyPage",
+      theme: "striped",
+      head: [["S.No","Subject","Subject Date"]],
+      body: bodydata,
+    });
+    doc.save("Hall Ticket.pdf");
+  };  
+  
+  const Notification = () => {
+    notification.warning({
+      message: "No Data Found",
+      placement: "topRight",
+    });
+  }; 
     return (
         <div className="leaveContainer">
             <div className="leaveModelFields">
@@ -144,7 +171,7 @@ function LeaveApproval(props) {
             </div>
             <div className="leaveModelFields">
                 {(ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
-                ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId === 37) &&
+                ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId ===37) &&
                     <>
                         <div>
                             <div>Client</div>
@@ -196,7 +223,10 @@ function LeaveApproval(props) {
 
                             </div>
                             <div className="btnAlign">
-                                <CustomButton btnName={"Download Hall Ticket"} btnCustomColor="customPrimary" custombtnCSS="customBtndwn" />
+                            {props.getLeaveApproval[0]&&props.getLeaveApproval[0].subject_details.length===0?
+                              <CustomButton btnName={"Download Hall Ticket"} btnCustomColor="customPrimary" custombtnCSS="customBtndwn" onBtnClick={Notification}/>
+
+                               : <CustomButton btnName={"Download Hall Ticket"} btnCustomColor="customPrimary" custombtnCSS="customBtndwn" onBtnClick={DownloadPdf}/>}
                             </div>
                         </div>
                     </>}

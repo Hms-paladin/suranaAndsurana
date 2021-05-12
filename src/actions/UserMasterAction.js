@@ -38,7 +38,6 @@ export const get_Tablenames = () => async dispatch => {
       url: apiurl + 'get_table_names',
     })
       .then((response) => {
-        console.log("resuser", response)
         dispatch(
           {
             type: GET_TABLE_NAME,
@@ -97,7 +96,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
       data:
       {
 
-        "table_names":data.table_names,
+        "table_names":data,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state.skill_name.value||"":
           state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
           state?.specialization_name?.value?state.specialization_name.value||"":state?.qualification_name?.value?state.qualification_name.value||"":
@@ -112,11 +111,10 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
       },
     })
       .then((response) => {
-        console.log("names", response)
         if (response.data.status === 1) {
 
           notification.success({
-            message:data.display_name+""+response.data.msg
+            message:response.data.msg
         })
        
         dispatch({ type: COMMON_INSERT_TEXT, payload: response.data.status })
@@ -163,8 +161,17 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
       url: apiurl + 'common_update_text',
       data:
       {
-        "id":Editvisible?editId?.group?.group_id:"",
-        "table_names":data?.table_names,
+        "id":Editvisible&&state?.groupname?.value?editId?.group?.group_id:state?.skill_name?.value ?editId?.skills.skill_id:
+        state?.traits_name?.value?editId?.traits.traitTable:state?.certification_name?.value?editId?.certification.certification_id:
+        state?.specialization_name?.value?editId?.specification.specialization_id:state?.qualification_name?.value?editId?.qualification.qualification_id:
+        state?.industry?.value?editId?.industry.industry_id:state?.institute?.value?editId?.institute.institute_id:
+        state?.capability?.value?editId?.capability.capability_id:state?.talents?.value?editId?.talents.talent_id:
+        state?.resourse?.value?editId?.resource.resource_type_id:state?.designation?.value?editId?.designation.designation_id:
+        state?.question?.value?editId?.question.question_id:state?.department?.value?editId?.department.department_id:
+        state?.activity?.value?editId?.activity.activity_id:state?.court?.value?editId?.court.location_id:
+        state?.range?.value?editId?.range.range_id:state?.stage_name?.value?editId?.stage.stage_id:
+        state?.case_type?.value?editId?.casetype.case_type_id:0,
+        "table_names":data,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
         state?.specialization_name?.value?state.specialization_name.value||"":state?.qualification_name?.value?state.qualification_name.value||"":
@@ -178,11 +185,10 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
       },
     })
       .then((response) => {
-        console.log("names", response)
         if (response.data.status === 1) {
 
           notification.success({
-            message:'Updated Successfully',
+            message:response.data.msg,
           });
         dispatch({ type: COMMON_UPDATE_TEXT, payload: response.data.status })
 
@@ -259,8 +265,7 @@ export const InsertCheckList = (UserMaster,editdata,Editvisible) => async dispat
 
 
 // class insert api 
-export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch => {
-  console.log(UserMaster.class_type.value, "ttt_s")
+export const InsertClass = (UserMaster,ClassId,Editvisible,Classtype_id) => async dispatch => {
   try {
     axios({
       method: 'POST',
@@ -277,16 +282,14 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
       },
     })
       .then((response) => {
-        console.log("names", response)
 
         if (response.data.status === 1) {
-        dispatch({ type: INSERT_CLASS, payload: response.data.status })
-
           notification.success({
             message: response.data.msg,
           });
           // dispatch(getClass())
-          dispatch(getTableClass(UserMaster.class_type.value))
+          dispatch({ type: INSERT_CLASS, payload: response.data.status })
+          dispatch(getTableClass(Classtype_id))
           return Promise.resolve();
         }
       });
@@ -300,7 +303,8 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,id) => async dispatch
 }
 
 // subactivity insert api 
-export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispatch => {
+export const InsertSubActivity = (UserMaster,EditId,Editvisible,ActivityId) => async dispatch => {
+ 
   try {
     axios({
       method: 'POST',
@@ -314,11 +318,12 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispat
     })
       .then((response) => {
         if (response.data.status === 1) {
-        dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
           notification.success({
             message:response.data.msg,
           });
-          dispatch(getSubActivity(UserMaster.activity_drop.value))
+          dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
+
+          dispatch(getSubActivity(ActivityId))
           return Promise.resolve();
         }
       });
@@ -331,8 +336,7 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible) => async dispat
 }
 
 // stage insert api
-export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatch => {
-  console.log(UserMaster,"checkvalue")
+export const InsertSubstage = (UserMaster,stageId, Editvisible,id) => async dispatch => {
   try {
     axios({
       method: 'POST',
@@ -347,14 +351,13 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible) => async dispatc
       },
     })
       .then((response) => {
-        console.log("response",response)
-        dispatch({ type: INSERT_SUBSTAGE, payload: response.data.status })
         if (response.data.status === 1) {
           notification.success({
             message: response.data.msg,
           });
-
-          dispatch(getSubStage(UserMaster.stage_dropdown.value))
+          dispatch({ type: INSERT_SUBSTAGE, payload: response.data.status })
+          
+          dispatch(getSubStage(id))
           return Promise.resolve();
         }
        
@@ -389,7 +392,6 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
             message:response.data.msg,
           });
          dispatch({ type: INSERT_STATUS, payload: response.data.status })
-        console.log(Statusvalue&&Statusvalue?.value,"resposeidcheck")
           dispatch(getTableStatus({value:Statusvalue&&Statusvalue?.value}))
           return Promise.resolve();
         }
@@ -416,7 +418,6 @@ export const getUser = () => async dispatch => {
       },
     }).then((response) => {
       if (response.data.status === 1) {
-        // console.log(response.data.data.length,"//")
         dispatch({ type: GET_USER, payload: response.data.data })
         return Promise.resolve();
       }
@@ -496,7 +497,6 @@ export const getCandidateName = () => async dispatch => {
       url: apiurl + "getCandidateName",
     }).then((response) => {
       if (response.data.status === 1) {
-        // console.log(response.data.data.length,"//")
         dispatch({ type: GET_CANDIDATES_NAMES, payload: response.data.data })
         return Promise.resolve();
       }
@@ -609,6 +609,7 @@ export const getStageList = () => async (dispatch) => {
 };
 
 export const getSubStage = (id) => async (dispatch) => {
+  // alert(id)
   const response = await axios({
     method: "post",
     url: apiurl + "get_sub_stage",

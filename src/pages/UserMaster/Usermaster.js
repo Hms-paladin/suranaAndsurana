@@ -177,6 +177,7 @@ const UserMaster = (props) => {
   });
   const [userTableHeader, setUserTableHeader] = useState([]);
   const [getTablename, setgetTablename] = useState([]);
+  const [substageId,setsubstageId]=useState([])
   const [tablevalues, settablevalues] = useState([]);
   const [Statusvalue,setStatusvalue]=useState("")
   const [UserMaster, setUserMaster] = useState({
@@ -375,42 +376,36 @@ const UserMaster = (props) => {
   });
 
   function checkValidation(data, key) {
-    console.log(data, key, "tablename");
-    // if(key === 'tablename'){
-    //   // setUserTableHeader(tableHeaderMaster[`header${data}`])
-    //   settableid(data)
-    // }
 
     if (key === "stage_dropdown") {
       dispatch(getSubStage(data));
+      setsubstageId(data) 
     }
     if (key === "class_type") {
       dispatch(getTableClass(data));
     }
-    if (key === "activity_drop") {
+    if (data&&key === "activity_drop") {
       dispatch(getSubActivity(data));
     }
-    if (key === "stage_dropdown") {
-      dispatch(getTableStatus(UserMaster.status_type.value));
-    }
+    // if (key === "status_type") {
+    //   dispatch(getTableStatus(data));
+    // }
     if (data && key === "tablename") {
       var value = props.table_name.find((item) => {
-        setEditvisible(false);
         return item.table_id == data;
         
       });
       settable_name_value(value);
+    
       if(data===3){
         validationHide()
          UserMaster.groupname.validation=[{name:"required"}]
-        
       }
       else if(data===4){
         validationHide()
         const From_key=["status_type","status_name"]
        From_key.map((data) => {
          UserMaster[data].validation.push({name:"required"})
-        
        });
        
       
@@ -518,9 +513,6 @@ const UserMaster = (props) => {
          UserMaster[data].validation.push({name:"required"})
        });
      }          
-       
-      console.log("fromkey", UserMaster.groupname.validation)
-
       
     }
     if(key==="status_type"){
@@ -531,10 +523,8 @@ const UserMaster = (props) => {
       });
       setStatusvalue(value)
       dispatch(getTableStatus(value))
-      console.log("statuscheck",Statusvalue)
     }
     
-    console.log("tnmae", table_name_value.table_names);
  
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -546,16 +536,13 @@ const UserMaster = (props) => {
       errmsg: errorcheck.msg,
       validation: UserMaster[key].validation,
     };
-    console.log("dynobj",dynObj)
     setUserMaster((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
   }
 
-  const ValidationTrue=()=>{
-    
-  }
+ 
   const [UserGroupsList, setUserGroupsList] = useState([]);
   const [table_name_value, settable_name_value] = useState([]);
   const [TableData, setTableData] = useState([]);
@@ -665,7 +652,6 @@ const UserMaster = (props) => {
       ProjectType,
       get_status_type,
     });
-    console.log(props, "props");
     // table data
     let group_data = [];
     let skills_data = [];
@@ -866,7 +852,7 @@ const UserMaster = (props) => {
           <img
             src={Edit}
             className="edit_p"
-            onClick={() => CommonEdit(index + 1, data)}
+            onClick={() => CommonEdit(data.question_id, data)}
           />
         ),
       });
@@ -1033,31 +1019,18 @@ const UserMaster = (props) => {
       checklist_data,
     });
 
-    // var value = props.Status.filter((item) => {
-    //   setEditvisible(false);
-    //   return item.value;
-      
-    // });
-    // setStatusvalue(value)
-    // console.log(Statusvalue, "ddd");
-
+ 
   }, [props, table_name_value.table_names]);
-  // useEffect(() => {
-  //   if(Editvisible){
-  //     UserMaster.project_type.value=props.CheckList_Data.project_type,
-  //     UserMaster.checklist_name=props.CheckList_Data.project_type
-  //   }
-  // },[props,UserMaster])
-  //  insert approve
+
   function Submit(data) {
-    // var value=props&&props.StatusTableData.filter((data, index) => {
-    //    return data.status_id==data
-    // })
-    
-    // console.log("checkvalue",Statusvalue)
+    // alert(substageId)
     setStatusvalue((prevState) => ({
       ...prevState,
     }));
+    setsubstageId((prevState) => ({
+      ...prevState,
+    }));
+    
     var mainvalue = {};
     var targetkeys = Object.keys(UserMaster);
     for (var i in targetkeys) {
@@ -1070,7 +1043,6 @@ const UserMaster = (props) => {
       mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-    console.log(UserMaster,"filtererror")
     if (filtererr.length >0) {
     } else {
       if (data === 21) {
@@ -1079,15 +1051,16 @@ const UserMaster = (props) => {
             UserMaster,
             EditStoreData.ClassEdit,
             Editvisible,
-            props.Class_Table_Data.class_id,
-            Statusvalue
+            // props.Class_Table_Data.class_id,
+            // Statusvalue,
+            props.Class_Table_Data&&props?.Class_Table_Data[0]?.class_type
           )
         ).then(() => {
           setEditvisible(false);
           handleCancel()
         });
       } else if (data === 20) {
-        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible)).then(() => {
+        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
           setEditvisible(false);
           handleCancel()
         });
@@ -1122,10 +1095,9 @@ const UserMaster = (props) => {
         data === 28
       ) {
         if (Editvisible) {
-          // alert("hai")
           dispatch(
             Common_Update_text(
-              table_name_value,
+              table_name_value.table_names,
               UserMaster,
               EditStoreData,
               Editvisible
@@ -1136,14 +1108,14 @@ const UserMaster = (props) => {
           });
         } else {
           dispatch(
-            Common_insert_text(table_name_value, UserMaster)
+            Common_insert_text(table_name_value.table_names, UserMaster)
           ).then(() => {
             setEditvisible(false);
             handleCancel()
           });
         }
       } else if (data === 26) {
-        dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible)).then(() => {
+        dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
           setEditvisible(false);
           handleCancel()
         });
@@ -1156,7 +1128,7 @@ const UserMaster = (props) => {
         });
       }
     }
-
+  //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
     setUserMaster((prevState) => ({
       ...prevState,
     }));
@@ -1179,13 +1151,13 @@ const UserMaster = (props) => {
       return data.specialization_id == id;
     });
     var qualification = props.Qualification_data.find((data) => {
-      return data.qual_name == id;
+      return data.qualification_id == id;
     });
     var industry = props.Industry.find((data) => {
       return data.industry_id == id;
     });
     var institute = props.Institute.find((data) => {
-      return data.industry_id == id;
+      return data.institute_id == id;
     });
     var capability = props.Capability.find((data) => {
       return data.capability_id == id;
@@ -1199,15 +1171,16 @@ const UserMaster = (props) => {
     var designation = props.Designation.find((data) => {
       return data.designation_id == id;
     });
+    var question=props.Question.find((data)=>{
+      return data.question_id==id
+    })
     var department = props.Department.find((data) => {
       return data.department_id == id;
     });
     var activity = props.Activity.find((data) => {
       return data.activity_id == id;
     });
-    var activity = props.Activity.find((data) => {
-      return data.activity_id == id;
-    });
+   
     var court = props.Court.find((data) => {
       return data.location_id == id;
     });
@@ -1216,6 +1189,9 @@ const UserMaster = (props) => {
     });
     var stage = props.stage.find((data) => {
       return data.stage_id == id;
+    });
+    var casetype = props.CaseType.find((data) => {
+      return data.case_type_id == id;
     });
     UserMaster.groupname.value = data.group_name;
     UserMaster.skill_name.value = data.skill_name;
@@ -1226,7 +1202,7 @@ const UserMaster = (props) => {
     UserMaster.industry.value = data.industry;
     UserMaster.institute.value = data.institute;
     UserMaster.capability.value = data.capability;
-    UserMaster.talents.value = data.talent_id;
+    UserMaster.talents.value = data.talent;
     UserMaster.resourse.value = data.resource_type;
     UserMaster.designation.value = data.designation;
     UserMaster.question.value = data.questions;
@@ -1250,10 +1226,12 @@ const UserMaster = (props) => {
       resource,
       department,
       designation,
+      question,
       activity,
       court,
       range,
       stage,
+      casetype
     });
     setUserMaster((prevState) => ({
       ...prevState,
@@ -1268,7 +1246,6 @@ const UserMaster = (props) => {
       return data.check_list_id == id;
     });
     setEditStoreData({ ChecklistEdit });
-    console.log(EditStoreData, "true");
     setUserMaster((prevState) => ({
       ...prevState,
     }));
@@ -1286,7 +1263,6 @@ const UserMaster = (props) => {
     setEditvisible(true);
 
     setEditStoreData({ ClassEdit });
-    console.log(EditStoreData.ClassEdit, "true");
     setUserMaster((prevState) => ({
       ...prevState,
     }));
@@ -1297,13 +1273,11 @@ const UserMaster = (props) => {
     var StatusEdit = props.StatusTableData.find((data) => {
       return data.status_id == id;
     });
-    console.log("testuservale",)
     UserMaster.status_name.value = data.status;
     
     setEditvisible(true);
 
     setEditStoreData({ StatusEdit });
-    console.log(EditStoreData, "true");
     setUserMaster((prevState) => ({
       ...prevState,
     }));
@@ -1335,7 +1309,6 @@ const UserMaster = (props) => {
     setUserMaster((prevState) => ({
       ...prevState,
     }));
-    // console.log",EditStoreData)
   };
   const handleCancel = () => {
     let From_key = [
@@ -1382,7 +1355,7 @@ const UserMaster = (props) => {
             type="select"
             placeholder={"Table Name"}
             changeData={(data) =>
-              checkValidation(data, "tablename", table_name_value.table_names)
+              checkValidation(data, "tablename")
             }
             value={UserMaster.tablename.value}
             error={UserMaster.tablename.error}
