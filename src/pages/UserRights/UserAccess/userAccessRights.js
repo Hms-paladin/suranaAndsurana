@@ -931,7 +931,6 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state) => (
   {
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
-    // getInsertStatus: state.variableRateMaster.insertVariableRateStatus,
     // UserPermission: state.UserPermissionReducer.getUserPermission,
   }
 );

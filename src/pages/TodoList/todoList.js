@@ -233,15 +233,15 @@ function TodoList(props) {
         }, {
             id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         },
-            {
-                id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal View</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-            },
-            // {
-            //     id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-            // },
-            {
-                id: <Link to={'MP_Appraisal'}><div className="ProjectTaskId">MP Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-            },
+        {
+            id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal View</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        },
+        // {
+        //     id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        // },
+        {
+            id: <Link to={'MP_Appraisal'}><div className="ProjectTaskId">MP Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        },
         )
 
         setOtherTodoList(otherTask)
