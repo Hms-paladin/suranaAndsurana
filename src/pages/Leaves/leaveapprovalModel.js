@@ -144,7 +144,7 @@ function LeaveApproval(props) {
             </div>
             <div className="leaveModelFields">
                 {(ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
-                ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId === 37) &&
+                ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId ===37) &&
                     <>
                         <div>
                             <div>Client</div>
