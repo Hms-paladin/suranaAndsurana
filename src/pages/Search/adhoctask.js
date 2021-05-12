@@ -175,8 +175,8 @@ function AdhocTaskModal(props) {
 
 
     return (
-        <div >
-            <div style={{fontWeight:"600",fontSize:"20px"}}>Adhoc Task</div>
+        <div className="adhoc_container" style={{backgroundColor:"white",borderRadius:"5px",padding:"15px"}}>
+            <div style={{fontWeight:"600",fontSize:"20px",paddingBottom:"10px"}}>Adhoc Task</div>
             <div className="AdhocTask">
                 <Grid item xs={10} >
                     <LabelBox type="text"
