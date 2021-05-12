@@ -12,9 +12,10 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import Edit from "../../images/pencil.svg";
 import {
   getGroupList,getEmployeeGroupDetails,
-  getEmployeeList,InsertUsergroupMaster,
+  getEmployeeList,InsertUsergroupMaster,editEmployeeGroup,
 } from "../../actions/UserGroupAction";
-
+import { apiurl } from "../../utils/baseUrl.js";
+import axios from "axios";
 const UserGroups = (props) => {
   const dispatch = useDispatch();
   const header = [
@@ -28,8 +29,13 @@ const UserGroups = (props) => {
   const [UserGroupsList, setUserGroupsList] = useState([])
   const [usergroupmodel, setUsergroupmodel] = useState(false);
 
+  const [groupsListModel, setgroupsListModel] = useState([])
+
   const [employees, setemployees] = useState({})
   const [groups, setgroups] = useState({})
+
+  const [empName, setempName] = useState("")
+  const [checkedGroups, setcheckedGroups] = useState([])
 
   const [isLoaded, setIsLoaded] = useState(true);
 
@@ -78,11 +84,15 @@ const UserGroups = (props) => {
 
     var dets = props.employeeGroupDetLists;
     var groupList = [];
-    for(var i=0; i< dets.length; i++){
-      var listarray = {
+    for(let i=0; i< dets.length; i++){
+     // var o = dets[i];
+      let o = JSON.parse(JSON.stringify(dets[i]));
+     
+      let a = <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>onModealOpen(true,o)} />
+      let listarray = {
         "employee": dets[i].name,
         "group":dets[i].group_name,
-        "process_type": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
+        "process_type": a,
       }
       groupList.push(listarray);
         
@@ -93,33 +103,38 @@ const UserGroups = (props) => {
   }, [props.groupLists,
   props.employeeLists,props.employeeGroupDetLists
   ]);
-/*
-  useEffect(() => {
 
-    if (isLoaded) {
 
-        var groupList = [];
+ function onModealOpen(flg,obj){
+console.log("");
+setempName(obj.name);
+try {
 
-        var listarray = {
-          "employee": "Kaveri",
-          "group":"Interviewer,Employee",
-          "process_type": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
-        }
-        groupList.push(listarray);
-        listarray = {
-          "employee": "Pradish",
-          "group": "Interviewer,Employee",
-          "process_type": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>setUsergroupmodel(true)} />,
-        }
-        groupList.push(listarray);
-        
-        setUserGroupsList({ groupList })
-
-      setIsLoaded(false);
-    }
-
+  axios({
+      method: 'POST',
+      url: apiurl + 'get_emp_group_details',
+      data: {
+          "emp_id":obj.emp_id
+      }
   })
-*/
+      .then((response) => {
+        var groups = response.data.data ;
+        for(var i=0;i < groups.length; i++){
+          groups[i]['emp_id']=obj.emp_id;
+        }
+        setcheckedGroups(groups);
+          //dispatch({ type: GET_GROUP_EMP, payload: response.data.data })
+          
+      })
+
+} catch (err) {
+  console.log("error", err);
+}
+setUsergroupmodel(flg,obj);
+
+ }
+
+
   function onSubmit() {
     var groups=[userForm.group.value];
     groups.push()
@@ -152,6 +167,52 @@ const UserGroups = (props) => {
       ...prevState,
     }));
   };
+
+  function submitGroup(){
+      
+    let obj={"group":[]}; 
+    for(var i=0; i< checkedGroups.length; i++ ){
+     let oo=checkedGroups[i];
+     let pOb = {
+       "group_id": oo.group_id,
+       "emp_id": oo.emp_id,
+       "is_checked": oo.is_checked,
+        };
+        obj.group.push(pOb);
+    }
+   
+
+    dispatch(editEmployeeGroup(obj));
+    setUsergroupmodel(false);
+   }
+   function handelCheck(event,data){
+    console.log("mapping", data);
+   let oo= checkedGroups;
+   let d=[];
+   for(var i=0;i < oo.length; i++){
+     if(oo[i] && oo[i].group_id == data.group_id ){
+       if(data.is_checked == 0){
+        oo[i].is_checked =1;
+        data.is_checked =1;
+       }else{
+        oo[i].is_checked =0;
+        data.is_checked =0;
+      }
+      d.push(data);
+    }else{
+      d.push(oo[i]);
+    }
+  }
+
+  setcheckedGroups(
+    prevState => ({
+        ...prevState,
+    })
+);
+
+
+setcheckedGroups(d);
+   }
   function checkValidation(data, key, multipleId) {
 
     var errorcheck = ValidationLibrary.checkValidation(
@@ -242,18 +303,23 @@ const UserGroups = (props) => {
           content={
             <div className="successModel">
 
-              <div> <label className="usergroup_label">Employee :&nbsp;Kaveri</label></div>
+              <div> <label className="usergroup_label">Employee :&nbsp; {empName}</label></div>
               <div className="usergroupmodelDiv">
-                <div className="usergroupcheckboxDiv"><Checkbox  /> &nbsp;&nbsp;<label style={{color:'black'}}>Interview Approval</label> </div>
-                <div  className="usergroupcheckboxDiv"> <Checkbox  />&nbsp;&nbsp;<label style={{color:'black'}}>Interviewer</label> </div>
-                <div  className="usergroupcheckboxDiv"> <Checkbox  />&nbsp;&nbsp;<label style={{color:'black'}}>HR Assistant</label> </div>
-              </div>
+              {checkedGroups.length > 0 && checkedGroups.map((data) => {
+                return (
+             
+                <div className="usergroupcheckboxDiv"><Checkbox  checked={data.is_checked} onClick={(event) => handelCheck(event,data)} name={data.group_id} /> &nbsp;&nbsp;<label style={{color:'black'}}>{data.group_name}</label> </div>
+            
+
+)
+
+})}   </div>
               <div className="customUsergroupbtn">
                 <CustomButton
                   btnName={"Save"}
                   btnCustomColor="customPrimary"
                   custombtnCSS={"btnUsergroup"}
-                  onBtnClick={()=>setUsergroupmodel(false)}
+                  onBtnClick={()=>submitGroup()}
                 />
                 <CustomButton
                  btnName={"Cancel"} 
@@ -277,6 +343,7 @@ const mapStateToProps = (state) =>
   groupLists: state.UserGroupReducer.groupLists || [],
   employeeLists: state.UserGroupReducer.employeeLists || [],
   employeeGroupDetLists : state.UserGroupReducer.employeeGroupDetLists || [],
+  getGroupsForEmp : state.UserGroupReducer.getGroupsForEmp || [],
 });
 
 export default connect(mapStateToProps)(UserGroups);
