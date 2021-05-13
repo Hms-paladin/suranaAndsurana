@@ -50,7 +50,7 @@ export default function OutofPacket(){
                   </Grid> 
                   </Grid> 
                            <div className="div_pack_cont">
-                           <div><div>e</div><div>11-Mar-2021</div></div>
+                           <div><div>From Date</div><div>11-Mar-2021</div></div>
                     
                            <div><div>To Date</div><div>30-Mar-2021</div></div>
                 

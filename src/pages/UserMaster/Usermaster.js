@@ -19,7 +19,8 @@ import {
   InsertSubstage,
   InsertStatus,
   UpdateSubstage,
-  UpdateSubActivity
+  UpdateSubActivity,
+  getControls
 } from "../../actions/UserMasterAction";
 import {
   getActivity,
@@ -163,7 +164,10 @@ const UserMaster = (props) => {
     { id: "case", label: "Case Type Name" },
     { id: "edit", label: "Edit" },
   ];
-
+  const header26 = [
+    { id: "control", label: "Control Name" },
+    { id: "", label: "Edit" },
+  ];
   const dispatch = useDispatch();
   const [tableHeaderMaster, setTableHeaderMaster] = useState({
     header1: [
@@ -375,6 +379,12 @@ const UserMaster = (props) => {
       error: null,
       errmsg: null,
     },
+    control:{
+      value:"",
+      validation:[{"name":"required"}],
+      error:null,
+      errmsg:null,
+  }
   });
 
   function checkValidation(data, key) {
@@ -515,7 +525,11 @@ const UserMaster = (props) => {
       From_key.map((data) => {
          UserMaster[data].validation.push({name:"required"})
        });
-     }          
+     } 
+     else if(data===30){
+      validationHide()
+      UserMaster.control.validation.push({name:"required"})
+     }         
       
     }
     if(key==="status_type"){
@@ -585,6 +599,7 @@ const UserMaster = (props) => {
     dispatch(getSubActivity());
     dispatch(getTableGroup(table_name_value.table_names));
     dispatch(getCheckList());
+    dispatch(getControls())
   }, []);
 
   useEffect(() => {
@@ -680,6 +695,7 @@ const UserMaster = (props) => {
     let class_data = [];
     let sub_activity = [];
     let checklist_data = [];
+    let control_data=[]
     props.GroupData.map((data) => {
       group_data.push({
         groupname: data.group_name,
@@ -996,6 +1012,19 @@ const UserMaster = (props) => {
         ),
       });
     });
+    props.getTableControl.map((data, index) => {
+      control_data.push({
+        control: data.control,
+        edit: (
+          <img
+            src={Edit}
+            className="edit_p"
+            onClick={() => CommonEdit(data.screen_control_id, data)}
+          />
+        ),
+      });
+    });
+
     setTableData({
       get_table_status_data,
       skills_data,
@@ -1021,6 +1050,7 @@ const UserMaster = (props) => {
       sub_activity,
       group_data,
       checklist_data,
+      control_data
     });
 
  
@@ -1104,7 +1134,8 @@ const UserMaster = (props) => {
         data === 24 ||
         data === 25 ||
         data === 27 ||
-        data === 28
+        data === 28 ||
+        data === 30
       ) {
         if (Editvisible) {
           dispatch(
@@ -1213,6 +1244,9 @@ const UserMaster = (props) => {
     var casetype = props.CaseType.find((data) => {
       return data.case_type_id == id;
     });
+    var control =props.getTableControl.find((data)=>{
+      return data.screen_control_id==id
+    })
     UserMaster.groupname.value = data.group_name;
     UserMaster.skill_name.value = data.skill_name;
     UserMaster.certification_name.value = data.certification;
@@ -1232,6 +1266,7 @@ const UserMaster = (props) => {
     UserMaster.range.value = data.range;
     UserMaster.stage_name.value = data.stage;
     UserMaster.case_type.value = data.case_type;
+    UserMaster.control.value=data.control
     setEditStoreData({
       group,
       traits,
@@ -1251,7 +1286,8 @@ const UserMaster = (props) => {
       court,
       range,
       stage,
-      casetype
+      casetype,
+      control
     });
     setUserMaster((prevState) => ({
       ...prevState,
@@ -1335,7 +1371,7 @@ const UserMaster = (props) => {
       "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
       "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
       "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage"
+      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage","control"
     ];
 
     From_key.map((data) => {
@@ -1352,7 +1388,7 @@ const UserMaster = (props) => {
       "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
       "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
       "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage"
+      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage","control"
     ];
 
     From_key.map((data) => {
@@ -1750,6 +1786,15 @@ const UserMaster = (props) => {
               />
             </div>
           )}
+              {UserMaster.tablename.value === 30 && (
+              <Labelbox
+                type="text"
+                placeholder={"Control Name"}
+                changeData={(data) => checkValidation(data, "control")}
+                value={UserMaster.control.value}
+                error={UserMaster.control.error}
+                errmsg={UserMaster.control.errmsg}
+              />)}
 
           <div>
             {UserMaster.tablename.value >= 3 && (
@@ -1941,9 +1986,9 @@ const UserMaster = (props) => {
           />
         )}
 
-        {/* {UserMaster.tablename.value===28&&<EnhancedTable headCells={header24}
-          rows={TableData.class_data}
-           aligncss="aligncss"/>}  */}
+        {UserMaster.tablename.value===30&&<EnhancedTable headCells={header26}
+          rows={TableData.control_data}
+           aligncss="aligncss"/>} 
       </div>
     </div>
   );
@@ -1983,7 +2028,8 @@ const mapStateToProps = (state) => ({
   ClassDropdown: state.UserMasterReducer.get_user_class,
   Update_text: state.UserMasterReducer.Common_Update_text,
   UpdateSubstage:state.UserMasterReducer.Update_Substage,
-  UpdateSubActivity:state.UserMasterReducer.Update_subactivity
+  UpdateSubActivity:state.UserMasterReducer.Update_subactivity,
+  getTableControl:state.UserMasterReducer.getControls
 });
 
 export default connect(mapStateToProps)(UserMaster);

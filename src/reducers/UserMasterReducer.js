@@ -23,15 +23,15 @@ import {
     GET_USER_CLASS,
     GET_COST_RANGE,
     GET_USER_STAGELIST,
-    COMMON_UPDATE_TEXT
-
+    COMMON_UPDATE_TEXT,
+    GET_CONTROLS
 } from  "../utils/Constants";
 const intialState = {
     getCandidateName:[],getUser:[],TableNamedropdownData: [],getTableStatus:[],getTableGroup:[],getTableSkills:[],getTableTraits:[],
     getTableCertification:[],getTableSpecification:[],getTableQualification:[],getTableLanguage:[],getTableIndustry:[],getTableInsitute:[],
     getTableCapability:[],getTableTalents:[],getTableResource:[],getTableDesgination:[],getTableQuestion:[],getTableDepartment:[],
     getTableActivity:[],getTableCourt:[],getSubStage:[],getClass:[],getSubActivity:[],getChecklist:[],get_user_class:[],Common_Update_text:[],
-    getRange:[],getStage:[],Update_Substage:[],Update_subactivity:[]
+    getRange:[],getStage:[],Update_Substage:[],Update_subactivity:[],getControls:[]
 }
 
 export default function (state = intialState, action) {
@@ -98,7 +98,9 @@ export default function (state = intialState, action) {
         case UPDATE_SUBSTAGE:
             return {...state, Update_Substage:payload}
         case UPDATE_SUBACTIVITY:
-            return {...state, Update_subactivity:payload}                                                        
+            return {...state, Update_subactivity:payload} 
+        case GET_CONTROLS:
+            return {...state, getControls:payload}                                                           
         default:
             return state;
     }
