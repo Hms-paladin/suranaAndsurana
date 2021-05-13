@@ -55,7 +55,7 @@ const RateMaster = (props) => {
     },
     lower_limit: {
       value: "",
-      validation: [{ name: "allowNumaricOnly" }],
+      validation: [{ name: "numericanddot" }],
       error: null,
       errmsg: null,
     },
@@ -79,7 +79,7 @@ const RateMaster = (props) => {
     },
     upper_limit: {
       value: "",
-      validation: [{ "name": "allowNumaricOnly" }, { "name": "customminValue", "params": "0" }],
+      validation: [{ "name": "numericanddot" }, { "name": "customminValue", "params": "0" }],
       error: null,
       errmsg: null,
     },
@@ -110,7 +110,7 @@ const RateMaster = (props) => {
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
-    
+
     // setAmountDis(false)
   }, [props.variabletablechange, props.variablebtnchange]);
   // useEffect(() => {

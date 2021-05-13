@@ -136,12 +136,12 @@ class ValidationLibrary extends Component {
           }
         }
       }
-      //  else if (validatorsArray[valid].name == "alphabetsandSpecialChar") {
-      //   var re = /^[ A-Za-z_@./#&+-]\z*$/;
-      //   if (re.test(textValue) == false) {
-      //     return { msg: "Please Enter Alphabets only", state: false };
-      //   }
-      // } 
+       else if (validatorsArray[valid].name == "numericanddot") {
+        var re = /^[0-9]*\.?[0-9]*$/;
+        if (re.test(textValue) == false) {
+          return { msg: "Please Enter Numeric and dot only", state: false };
+        }
+      } 
       else if (validatorsArray[valid].name == "PercentageCGPA") {
         var re = /	^100$|^\d{0,2}(\.\d{1,2})? *%?$/;
         if (re.test(textValue) == false || Number(textValue) == "00") {

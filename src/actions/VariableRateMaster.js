@@ -145,7 +145,7 @@ export const InsertVariableRate = (RateMaster) => async dispatch => {
       if (response.data.status === 1) {
         dispatch({ type: INSERT_VARIABLERATE, payload: true })
         notification.success({
-          message: "Variable Rate Master Updated Successfully",
+          message: "Variable Rate Added successfully",
         });
         return Promise.resolve();
       }
