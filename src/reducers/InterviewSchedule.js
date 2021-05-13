@@ -1,18 +1,19 @@
 import {GET_INTERVIEWERS,GET_DESIGNATION} from '../utils/Constants.js'
-const initalState = {
-    GetInterviewers:{},
-    GetDesignation:{}
+const intialState = {
+    GetInterviewers:[],GetDesignation:[]
 }
 
-export default function(state=initalState,action) {
-    const {type,payload} = action;
-    switch(type) {
+export default function (state = intialState, action) {
+    const { type, payload } = action;
+    switch (type) {
+       
         case GET_INTERVIEWERS:
-            return payload
+            return  { ...state, GetInterviewers: payload }  
         case GET_DESIGNATION:
-                return payload
+            return  { ...state, GetDesignation: payload }
+       
         default:
-            return state;    
+            return state;
     }
-   
+
 }

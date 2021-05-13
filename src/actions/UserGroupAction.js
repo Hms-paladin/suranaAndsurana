@@ -195,7 +195,7 @@ export const updateGroupName = (UserGroup) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: UPDATE_GROUP_NAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
@@ -230,7 +230,7 @@ export const editEmployeeGroup = (UserGroup) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: EDIT_GROUP_NAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
@@ -266,7 +266,7 @@ export const editGroupControl = (UserGroup) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: EDIT_GROUP_CONTROL, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))

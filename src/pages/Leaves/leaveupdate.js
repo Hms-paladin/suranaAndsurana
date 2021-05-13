@@ -276,9 +276,13 @@ function LeaveUpdate(props) {
         }
         var filtererr = targetkeys.filter((obj) => Leave_Update[obj].error == true);
 
-        if (filtererr.length > 0 || employeeCode==="") {
+        if (filtererr.length > 0 || employeeCode==="" || employeeName==="") {
            if(employeeCode===""){setErrEmployee(true)}
-
+           if(employeeName===""){
+            notification.success({
+                message: "Employee Details Not Found With This Selected Dates",
+              });
+            }
         } 
         else{
             if(editBtn){
