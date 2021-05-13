@@ -1,6 +1,6 @@
 import {  INSERT_ACTIVITY,COMMON_INSERT_TEXT,GET_TABLE_NAME,INSERT_USER, GET_USER, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES ,INSERT_STATUS,INSERT_SUBSTAGE,INSERT_CLASS,INSERT_CHECKLIST} from "../utils/Constants";
 
-import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT} from '../utils/Constants'
+import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT,UPDATE_SUBSTAGE,UPDATE_SUBACTIVITY} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
@@ -292,6 +292,13 @@ export const InsertClass = (UserMaster,ClassId,Editvisible,Classtype_id) => asyn
           dispatch(getTableClass(Classtype_id))
           return Promise.resolve();
         }
+        else if (response.data.status === 0) {
+          notification.success({
+            message: response.data.data,
+          });
+          return Promise.resolve();
+
+        }
       });
 
   }
@@ -313,7 +320,7 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible,ActivityId) => a
       {
         "activity": UserMaster.activity_drop.value,
         "sub_activity": UserMaster.sub_activity.value,
-        "sub_activity_id":Editvisible?EditId.sub_activity_id:0,
+        // "sub_activity_id":Editvisible?EditId.sub_activity_id:0,
       },
     })
       .then((response) => {
@@ -326,6 +333,12 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible,ActivityId) => a
           dispatch(getSubActivity(ActivityId))
           return Promise.resolve();
         }
+        else if (response.data.status === 0) {
+          notification.success({
+            message:response.data.msg,
+          });
+          return Promise.resolve();
+        } 
       });
   }
   catch (err) {
@@ -335,8 +348,48 @@ export const InsertSubActivity = (UserMaster,EditId,Editvisible,ActivityId) => a
   }
 }
 
+// subactivity update api 
+export const UpdateSubActivity = (UserMaster,EditId,Editvisible,ActivityId) => async dispatch => {
+ 
+  try {
+    axios({
+      method: 'POST',
+      url: apiurl + 'update_sub_activity',
+      data:
+      {
+        "activity": UserMaster.activity_drop.value,
+        "sub_activity": UserMaster.sub_activity.value,
+        "sub_activity_id":Editvisible?EditId.sub_activity_id:0,
+      },
+    })
+      .then((response) => {
+        if (response.data.status === 1) {
+          notification.success({
+            message:response.data.msg,
+          });
+          dispatch({ type: UPDATE_SUBACTIVITY, payload: response.data.status })
+
+          dispatch(getSubActivity(ActivityId))
+          return Promise.resolve();
+        }
+        else if (response.data.status === 0) {
+          notification.success({
+            message:response.data.msg,
+          });
+          return Promise.resolve();
+        }  
+      });
+  }
+  catch (err) {
+    notification.error({
+      message: 'Something Went Wrong,Record Not Added',
+    });
+  }
+}
+
+
 // stage insert api
-export const InsertSubstage = (UserMaster,stageId, Editvisible,id) => async dispatch => {
+export const InsertSubstage = (UserMaster,id) => async dispatch => {
   try {
     axios({
       method: 'POST',
@@ -344,7 +397,7 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible,id) => async disp
       data:
       {
         "stage_id": UserMaster.stage_dropdown.value,
-        "sub_stage_id": Editvisible?stageId&&stageId.sub_stage_id:0,
+        // "sub_stage_id": Editvisible?stageId&&stageId.sub_stage_id:0,
         "sub_stage": UserMaster.sub_stage.value,
         "created_on": moment().format("YYYY-MM-DD HH:m:s"),
         "created_by":localStorage.getItem("empId")
@@ -370,6 +423,41 @@ export const InsertSubstage = (UserMaster,stageId, Editvisible,id) => async disp
   }
 }
 
+export const UpdateSubstage = (UserMaster,stageId, Editvisible,id) => async dispatch => {
+  try {
+    axios({
+      method: 'POST',
+      url: apiurl + 'update_sub_stage',
+      data:
+      {
+        
+        "stage_id":UserMaster.stage_dropdown.value,
+        "sub_stage_id":Editvisible?stageId&&stageId.sub_stage_id:0,
+        "sub_stage":UserMaster.sub_stage.value,   
+        "updated_on":moment().format("YYYY-MM-DD HH:m:s"),
+        "updated_by":localStorage.getItem("empId")
+        
+      },
+    })
+      .then((response) => {
+        if (response.data.status === 1) {
+          notification.success({
+            message: response.data.msg,
+          });
+          dispatch({ type: UPDATE_SUBSTAGE, payload: response.data.status })
+          
+          dispatch(getSubStage(id))
+          return Promise.resolve();
+        }
+       
+      });
+  }
+  catch (err) {
+    notification.error({
+      message: 'Something Went Wrong,Record Not Added',
+    });
+  }
+}
 // insert status insert api
 export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => async dispatch => {
   // alert(Statusvalue&&Statusvalue?.value)
@@ -391,9 +479,18 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
           notification.success({
             message:response.data.msg,
           });
+          
+
          dispatch({ type: INSERT_STATUS, payload: response.data.status })
           dispatch(getTableStatus({value:Statusvalue&&Statusvalue?.value}))
           return Promise.resolve();
+        }
+        else if (response.data.status === 0) {
+          notification.success({
+            message:response.data.msg,
+          });
+          return Promise.resolve();
+
         }
       });
   }
@@ -658,3 +755,5 @@ export const getProjectCostRange = () => async (dispatch) => {
     payload: response.data.data,
   });
 };
+
+

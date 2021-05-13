@@ -6,9 +6,10 @@ import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
 function UnblockUserActive() {
     const [change, setChange] = useState(false)
-
+    const [loading,setloading]=useState(true)
     function changeSwitch(){
         setChange(!change)
+        setloading(false)
     }
 console.log(change,"change")
     return (
@@ -18,7 +19,7 @@ console.log(change,"change")
                 <div className="empStatus">Status</div>
                 {/* <div className="empActive">ACTIVE</div> */}
                 <div className={change?"useActivechange":"useActives"}>
-                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked  onClick={changeSwitch}/>
+                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked  onChange={changeSwitch} loading={loading}/>
                 </div>
             </div>
             <div className="userbtnActive">
