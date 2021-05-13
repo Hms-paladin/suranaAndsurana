@@ -119,7 +119,7 @@ export const InsertUsergroupMaster = (data) => async dispatch => {
                 notification.success({
                     message: " inserted Successfully",
                 });
-                dispatch(getGroupName())
+                dispatch(getEmployeeGroupDetails())
                 return Promise.resolve();
             }
         });
@@ -140,6 +140,8 @@ export const InsertGroupControlMaster = (data) => async dispatch => {
                 notification.success({
                     message: " inserted Successfully",
                 });
+                dispatch(getGroupControlList())
+                
                 dispatch(getGroupName())
                 return Promise.resolve();
             }
