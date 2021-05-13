@@ -19,7 +19,7 @@ console.log(change,"change")
                 <div className="empStatus">Status</div>
                 {/* <div className="empActive">ACTIVE</div> */}
                 <div className={change?"useActivechange":"useActives"}>
-                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked  onChange={changeSwitch} loading={loading}/>
+                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked  onChange={changeSwitch}/>
                 </div>
             </div>
             <div className="userbtnActive">
