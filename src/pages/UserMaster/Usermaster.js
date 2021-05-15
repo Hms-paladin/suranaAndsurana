@@ -63,8 +63,8 @@ const UserMaster = (props) => {
     { id: "", label: "Edit" },
   ];
   const header2 = [
-    { id: "type", label: "Status" },
-    { id: "statusname", label: "Status Type" },
+    { id: "type", label: "Status Type" },
+    { id: "statusname", label: "Status Name" },
     { id: "edit", label: "Edit" },
   ];
   const header3 = [
@@ -96,7 +96,7 @@ const UserMaster = (props) => {
     { id: "edit", label: "Edit" },
   ];
   const header10 = [
-    { id: "Capalitity", label: "Capalitity Name" },
+    { id: "Capalitity", label: "Capability Name" },
     { id: "edit", label: "Edit" },
   ];
   const header11 = [
@@ -455,7 +455,7 @@ const UserMaster = (props) => {
       
      } 
      else if(data===13){
-      handleCancel()
+      validationHide()
       UserMaster.capability.validation.push({name:"required"})
      }
      else if(data===14){
