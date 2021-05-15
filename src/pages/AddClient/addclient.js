@@ -26,6 +26,7 @@ function AddClient() {
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
   const [Addclient_Form, setAddclient_Form] = useState({
+    
     client_name: {
       value: "",
       validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphabetwithspace" }],
