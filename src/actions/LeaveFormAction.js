@@ -61,7 +61,7 @@ export const getEmpAvailableBalance = (employee_id, leave_type_id) => async disp
 
 export const insertLeaveForm = (Leave_Form) => async dispatch => {
 
-
+    console.log(Leave_Form,"test1")
     try {
         axios({
             method: 'POST',
@@ -71,8 +71,8 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
                 "leave_type_id": Leave_Form.leavetype.value,
                 "from_date": Leave_Form.fromdate.value || 0,
                 "to_date": Leave_Form.todate.value || 0,
-                "from_time": moment(Leave_Form.fromtime.value).format('hh:MM:ss') || 0,
-                "to_time": moment(Leave_Form.totime.value).format('hh:MM:ss') || 0,
+                "from_time": (Leave_Form.fromtime.value!==null && Leave_Form.fromtime.value!=='')?moment(Leave_Form.fromtime.value).format('HH:MM:ss') : '00:00:00',
+                "to_time":  (Leave_Form.totime.value!==null && Leave_Form.totime.value!=='')?moment(Leave_Form.totime.value).format('HH:MM:ss') : '00:00:00',
                 "reason": Leave_Form.reasoncmt.value || 0,
                 "address": Leave_Form.address.value || 0,
                 "contact_number": Leave_Form.contactperson.value || 0,
@@ -133,8 +133,8 @@ export const updateLeaveFrom = (Leave_Form) => async dispatch => {
                 "employee_id": localStorage.getItem("empId"),
                 "from_date": Leave_Form.fromdate.value || 0,
                 "to_date": Leave_Form.todate.value || 0,
-                "from_time":  moment(Leave_Form.fromtime.value).format('HH:mm:ss') || 0,
-                "to_time": moment(Leave_Form.totime.value).format('HH:mm:ss') || 0,
+                "from_time": (Leave_Form.fromtime.value!==null && Leave_Form.fromtime.value!=='')?moment(Leave_Form.fromtime.value).format('HH:MM:ss') : '00:00:00',
+                "to_time":  (Leave_Form.totime.value!==null && Leave_Form.totime.value!=='')?moment(Leave_Form.totime.value).format('HH:MM:ss') : '00:00:00',
                 "reason": Leave_Form.reasoncmt.value || 0,
                 "address": Leave_Form.address.value || 0,
                 "contact_number": Leave_Form.contactperson.value || 0,
@@ -146,7 +146,7 @@ export const updateLeaveFrom = (Leave_Form) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: UPDATE_LEAVE_FROM, payload: response.data.status })
                 dispatch(getLeaveForm(Leave_Form.leavetype.value))
@@ -287,7 +287,7 @@ export const updateLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Form updated sucessfully",
+                    message: "Leave Form Updated Successfully",
                 });
                 dispatch({ type: INSERT_LEAVE_FORM_CEP, payload: response.data.status })
                 dispatch(getLeaveForm())

@@ -1,8 +1,7 @@
 import { combineReducers } from "redux";
 import getInterviewquestions from "./interviewReducer";
 import ResumeSearchStatus from "./ResumeSearch";
-import GetInterviewers from "./InterviewSchedule";
-import GetDesignation from "./InterviewSchedule";
+import InterviewSchedule from "./InterviewSchedule";
 import GetEmployeeApprove from "./EmployeeApproveReducer";
 import insertInterviewquestions from "./interviewReducer";
 import getemplyoeeformid from "./employeeformReducer";
@@ -38,8 +37,7 @@ import getTaskList from './TimeSheetReducer';
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
-  GetInterviewers,
-  GetDesignation,
+  InterviewSchedule,
   GetEmployeeApprove,
   insertInterviewquestions,
   interviewApproverTableData,

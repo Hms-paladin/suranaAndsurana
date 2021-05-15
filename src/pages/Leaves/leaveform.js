@@ -35,7 +35,7 @@ function LeaveForm(props) {
     const [clientlist, setClientlist] = useState({})
     const [noOfDays, setNoOfDays] = useState(0)
 
-    const [minDate, setMinDate] = useState(0)
+    const [minDate, setMinDate] = useState(new Date())
     const [other_days, setother_days] = useState()
     const [plusicon, setPlusicon] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
@@ -176,7 +176,7 @@ function LeaveForm(props) {
 
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.todate.value) - Date.parse(Leave_Form.fromdate.value)) / 86400000)
-        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff)
+        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff+1)
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
     const onFileChange = () => {
@@ -207,7 +207,7 @@ function LeaveForm(props) {
         // console.log(seconds,"seconds")
         var d = new Date("12-30-2017 "+time)
         // d.setTime(seconds);
-        // console.log(d,"Leave_Form")
+        console.log(d,"Leave_Form")
         return d
     }
 

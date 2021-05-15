@@ -83,7 +83,7 @@ export const getCopyRight = (id) => async dispatch => {
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Copyright Updated sucessfully",
+                    message: "Copyright Updated Successfully",
                   });
                 dispatch({type:UPDATE_COPYRIGHT,payload:response.data.status})
                 dispatch(getCopyRight(IdDetails.project_id))
