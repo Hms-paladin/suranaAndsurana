@@ -6,13 +6,11 @@ import Tabcontent from "../../component/TradeMarkTabIcons/trademarktabIcons";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { InesertResume } from "../../actions/ResumeAction";
 import AddIcon from "../../images/addIcon.svg";
 import CustomButton from "../../component/Butttons/button";
 import { message } from "antd";
 import DynModel from "../../component/Model/model";
 import AddDataModel from "./adddataModel";
-import InterimModel from "./interimModel";
 import {
   getCaseType,
   getEmployeeList,

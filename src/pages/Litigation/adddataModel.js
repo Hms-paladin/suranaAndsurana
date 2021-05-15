@@ -143,14 +143,56 @@ const AddDataModel = (props) => {
       ...prevState,
     }));
   };
+
+  const handleValidation = () => {
+    let ResumeFrom_key = [
+      "name",
+      "phoneno",
+      "emailid",
+      "address",
+      "interimname",
+      "interimapplicationno",
+      "interimapplicationdate",
+      "interimdetails",
+    ];
+    ResumeFrom_key.map((data) => {
+      Litigation_Form[data].validation = [];
+    });
+    setResumeFrom((prevState) => ({
+      ...prevState,
+    }));
+  };
   useEffect(() => {
     setLitiID(props.Litigation_ID);
   }, [props.Litigation_ID]);
   function checkValidation(data, key, multipleId) {
-    if (data && data == 5 && key === "counsel") {
+    if (data && data === 5 && key === "counsel") {
       setIteriumModel(true);
+      handleValidation();
+
+      let ResumeFrom_key = [
+        "interimname",
+        "interimapplicationno",
+        "interimapplicationdate",
+        "interimdetails",
+      ];
+      ResumeFrom_key.map((data) => {
+        Litigation_Form[data].validation = [{ name: "required" }];
+      });
+      setResumeFrom((prevState) => ({
+        ...prevState,
+      }));
     } else if (data && data !== 5 && key === "counsel") {
       setIteriumModel(false);
+      handleValidation();
+
+      let ResumeFrom_key = ["name", "phoneno", "emailid", "address"];
+      ResumeFrom_key.map((data) => {
+        Litigation_Form[data].validation = [{ name: "required" }];
+      });
+      setResumeFrom((prevState) => ({
+        ...prevState,
+      }));
     }
 
     var errorcheck = ValidationLibrary.checkValidation(

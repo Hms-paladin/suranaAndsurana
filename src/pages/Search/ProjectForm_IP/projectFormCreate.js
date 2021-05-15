@@ -141,7 +141,7 @@ function ProjectFormCreate(props) {
     },
     projectcostrange: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{"name":"allowNumaricOnly1"}],
       error: null,
       errmsg: null,
     },
@@ -153,19 +153,19 @@ function ProjectFormCreate(props) {
     },
     baseRate: {
       value: "",
-      validation: [{ name: "required" }, { "name": "custommaxValue", "params": "0" }],
+      validation: [{ name: "required" }, { "name": "custommaxValue", "params": "0" },{"name":"allowNumaricOnly1"}],
       error: null,
       errmsg: null,
     },
     limit: {
       value: "0",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{"name":"allowNumaricOnly1"}],
       error: null,
       errmsg: null,
     },
     additionalRate: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" },{"name":"allowNumaricOnly1"}],
       error: null,
       errmsg: null,
     },
@@ -422,7 +422,6 @@ function ProjectFormCreate(props) {
     From_key.map((data) => {
       try {
         projectform[data].value = "";
-        console.log("mapping", projectform[data].value);
       } catch (error) {
         throw error;
       }
@@ -498,11 +497,6 @@ function ProjectFormCreate(props) {
     props.ProjectCostRange,
   ]);
   
-  function addSearchData() {
-    setAddsearchdata(true);
-    setSearchdata(false);
-    setSuccessmodel(true);
-  }
   const variablerateModel = () => {
     function onSearch() {
       setSearchdata(true);
