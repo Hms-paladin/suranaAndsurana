@@ -40,7 +40,7 @@ function DynModelView(props) {
 
   }, [props.res_data_id])
 
-  console.log(getdata.type_of_resource,"type_of_resource")
+  console.log(getdata.type_of_resource, "type_of_resource")
 
 
   function handleCancel() {
@@ -66,6 +66,7 @@ function DynModelView(props) {
       onCancel={handleCancel}
     >
       {getdata.map((val, index) => {
+        console.log(val, "gender")
         return (
           <div className="Employee_formdiv">
 
@@ -74,10 +75,10 @@ function DynModelView(props) {
                 <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                 <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id ? val.resume_id : ""}</div></div>
                 <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == "M" ? "Male" : "Female"}</div></div>
               </div>
               <div className="employeeform_row2flex2">
-                <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skills ? val.skills : "-"}</div></div>
+                <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skill_name ? val.skill_name : "-"}</div></div>
                 <div className="employeeform_r2 traitsdiv"><div className="headcolor">Traits</div><div className="employeecont">{val.traits ? val.traits : "-"}</div></div>
               </div>
             </div>
@@ -107,7 +108,7 @@ function DynModelView(props) {
             </div>
 
             {val.type_of_resource !== 'Intern' && <div className="expDetailes">
-            <div className="tableHeading">Previous Employer Details</div>
+              <div className="tableHeading">Previous Employer Details</div>
               <div className="educationtable">
                 <div className="EmployeeHeader">
                   <div>S.No</div>
@@ -122,7 +123,7 @@ function DynModelView(props) {
                 {val.experience.map((values, index) => {
                   return (
                     <div className="EmployeeRow">
-                      <div>{index+1}</div>
+                      <div>{index + 1}</div>
                       <div>{values.industry}</div>
                       <div>{values.company_name}</div>
                       <div>{values.city}</div>
@@ -138,8 +139,8 @@ function DynModelView(props) {
               </div>
             </div>}
             <div className="employeeform_row3">
-              <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certifications ? val.certifications : "-"}</div></div>
-              <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specialization ? val.specialization : "-"}</div></div>
+              <div className="employeeform_r2"><div className="headcolor">Certifications</div><div className="employeecont">{val.certification ? val.certification : "-"}</div></div>
+              <div className="employeeform_r2 traitsdiv"><div className="headcolor">Specialization</div><div className="employeecont">{val.specilization ? val.specilization : "-"}</div></div>
               <div className="employeeform_r2 traitsdiv"><div className="headcolor">Achievements</div><div className="employeecont">{val.achievement ? val.achievement : "-"}</div></div>
             </div>
             <div className="employeeform_row4">
@@ -155,7 +156,7 @@ function DynModelView(props) {
             <div className="employeeform_row6">
               <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>
               <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city : "-"}</div></div>
-              <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known : "-"}</div></div>
+              <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.language ? val.language : "-"}</div></div>
               <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource : "-"}</div></div>
 
             </div>

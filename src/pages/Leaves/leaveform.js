@@ -35,7 +35,7 @@ function LeaveForm(props) {
     const [clientlist, setClientlist] = useState({})
     const [noOfDays, setNoOfDays] = useState(0)
 
-    const [minDate, setMinDate] = useState(0)
+    const [minDate, setMinDate] = useState(new Date())
     const [other_days, setother_days] = useState()
     const [plusicon, setPlusicon] = useState(0)
     const [employeeList, setEmployeeList] = useState({});
@@ -175,7 +175,7 @@ function LeaveForm(props) {
 
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.todate.value) - Date.parse(Leave_Form.fromdate.value)) / 86400000)
-        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff)
+        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff+1)
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
     const onFileChange = () => {
@@ -206,7 +206,7 @@ function LeaveForm(props) {
         // console.log(seconds,"seconds")
         var d = new Date("12-30-2017 "+time)
         // d.setTime(seconds);
-        // console.log(d,"Leave_Form")
+        console.log(d,"Leave_Form")
         return d
     }
 
@@ -514,6 +514,7 @@ function LeaveForm(props) {
     }
 
     const handleCancel = () => {
+        setEditBtn(false)
         let From_key = [
             "leavetype", "fromdate", "todate", "reasoncmt", "address", "contactperson", "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date", "remarks"
         ];
@@ -639,6 +640,7 @@ function LeaveForm(props) {
                                     value={Leave_Form.totime.value}
                                     error={Leave_Form.totime.error}
                                     errmsg={Leave_Form.totime.errmsg} />
+                                  
                                 </div>
                             </Grid>
                             <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>10 </div> </Grid>
@@ -724,7 +726,9 @@ function LeaveForm(props) {
                                     changeData={(data) => checkValidation(data, "tot_leave")}
                                     value={Leave_Form.tot_leave.value}
                                     error={Leave_Form.tot_leave.error}
-                                    errmsg={Leave_Form.tot_leave.errmsg} />
+                                    errmsg={Leave_Form.tot_leave.errmsg} 
+                                    maxlength={3}
+                                    />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
@@ -734,7 +738,9 @@ function LeaveForm(props) {
                                         changeData={(data) => checkValidation(data, "exam_days")}
                                         value={Leave_Form.exam_days.value}
                                         error={Leave_Form.exam_days.error}
-                                        errmsg={Leave_Form.exam_days.errmsg} />
+                                        errmsg={Leave_Form.exam_days.errmsg} 
+                                        maxlength={3}
+                                        />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
@@ -855,8 +861,8 @@ function LeaveForm(props) {
                     <Grid item xs={5} container direction="row" spacing={2}>
                         <Grid item xs={4}>
                             {editBtn ? <CustomButton btnName={"Update"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onUpdate(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} /> :
-                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
-                        <Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={onCancel} /></Grid>
+                               Leave_Form.leavetype.value>=35&& <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
+                         {Leave_Form.leavetype.value>=35&&<Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={onCancel} /></Grid>}
                     </Grid></Grid>
             </div>{Leave_Form.leavetype.value !== 40 && <div className="leavetableformat">
                 <EnhancedTable headCells={headCells} tabletitle={"Leave Status"} rows={leaveFormTable.length == 0 ? leaveFormTable : leaveFormTable} />

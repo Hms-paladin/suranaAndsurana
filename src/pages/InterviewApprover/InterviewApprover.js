@@ -168,9 +168,9 @@ function InterviewApprover(props) {
   return (
     <div className="interviewapprove_root">
       {/* <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} contents={<div>sdfghjkl</div>}> */}
-      <div>
+      {/* <div>
         <img src={Back} style={{ width: "30px" }} />
-      </div>
+      </div> */}
       <div className="interview_head">
         <div>
           <label>

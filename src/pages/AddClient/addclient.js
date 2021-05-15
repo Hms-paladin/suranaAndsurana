@@ -26,7 +26,7 @@ function AddClient() {
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
   const [Addclient_Form, setAddclient_Form] = useState({
-    
+
     client_name: {
       value: "",
       validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphabetwithspace" }],
@@ -85,7 +85,7 @@ function AddClient() {
       errmsg: null,
     },
     cont_per_2: {
-      
+
       value: "",
       valueById: "",
       validation: [{ name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
@@ -144,7 +144,7 @@ function AddClient() {
     // },
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log("uploading", info.file, info.fileList);
+        console.log("uploading", info.fileList);
       }
       if (info.file.status === 'done') {
 
@@ -228,7 +228,7 @@ function AddClient() {
       setcityList({ cityData });
     });
   }, []);
-  
+
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -314,10 +314,11 @@ function AddClient() {
       ...prevState,
     }));
     setFileupload([])
+    // setselectedFile([])
   }
 
 
-async function onfileupload() {
+  async function onfileupload() {
 
     if (Addclient_Form.poa_name.value === '') {
       notification.success({
@@ -325,39 +326,39 @@ async function onfileupload() {
       });
     } else {
 
-    // let wait=await check()
-    // function check(){
-      
-    //   return new Promise((resolve)=>{
-    //     setFileupload((prevState) => (
-    //       [...prevState, {
-    //         poa_name: Addclient_Form.poa_name.value,
-    //         selectedFile: "",
-    //       }]
-         
-    //     ));
+      // let wait=await check()
+      // function check(){
 
-       
-       
-      
-    //   })
-    //   Addclient_Form["poa_name"].value=""
- 
-    // //  return Promise.resolve(true);
-    // }
-  
-     
+      //   return new Promise((resolve)=>{
+      //     setFileupload((prevState) => (
+      //       [...prevState, {
+      //         poa_name: Addclient_Form.poa_name.value,
+      //         selectedFile: "",
+      //       }]
 
-    // }
-    setFileupload((prevState) => (
-      [...prevState, {
-        poa_name: Addclient_Form.poa_name.value,
-        selectedFile: "",
-      }]
-     
-    ));
+      //     ));
+
+
+
+
+      //   })
+      //   Addclient_Form["poa_name"].value=""
+
+      // //  return Promise.resolve(true);
+      // }
+
+
+
+      // }
+      setFileupload((prevState) => (
+        [...prevState, {
+          poa_name: Addclient_Form.poa_name.value,
+          selectedFile: "",
+        }]
+
+      ));
+    }
   }
-}
 
 
   const onStateClear = () => {
@@ -513,7 +514,7 @@ async function onfileupload() {
               <div className="uploadfileSpace">
                 {" "}
                 {/* <input type="file" onChange={handleImagePreview} /> */}
-                <Upload {...props} accept=".pdf">
+                <Upload {...props} accept=".pdf" >
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload>
                 {/* <PublishIcon/> */}
@@ -524,12 +525,12 @@ async function onfileupload() {
               </div>
 
             </div>
-            <div className="doc_upload_div"><div style={{width:'50%'}}>POA</div>  <div>File Name</div></div>
+            <div className="doc_upload_div"><div style={{ width: '50%' }}>POA</div>  <div>File Name</div></div>
             {fileupload.map((data) => {
               return (<>
-               
+
                 <div className="doc_upload_items">
-                  <div style={{width:'50%'}}>{data.poa_name}</div>
+                  <div style={{ width: '50%' }}>{data.poa_name}</div>
                   <div>{""}</div>
                 </div></>
               )

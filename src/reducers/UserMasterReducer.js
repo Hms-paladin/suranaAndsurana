@@ -1,4 +1,4 @@
-import { GET_TABLE_NAME,GET_USER,EDIT_USER,DELETE_USER,GET_CANDIDATES_NAMES, GET_TABLE_GROUP} from "../utils/Constants";
+import { GET_TABLE_NAME,GET_USER,EDIT_USER,DELETE_USER,GET_CANDIDATES_NAMES, GET_TABLE_GROUP, UPDATE_SUBSTAGE, UPDATE_SUBACTIVITY} from "../utils/Constants";
 import {
     GET_TABLE_STATUS,
     GET_TABLE_TRATITS,
@@ -31,7 +31,7 @@ const intialState = {
     getTableCertification:[],getTableSpecification:[],getTableQualification:[],getTableLanguage:[],getTableIndustry:[],getTableInsitute:[],
     getTableCapability:[],getTableTalents:[],getTableResource:[],getTableDesgination:[],getTableQuestion:[],getTableDepartment:[],
     getTableActivity:[],getTableCourt:[],getSubStage:[],getClass:[],getSubActivity:[],getChecklist:[],get_user_class:[],Common_Update_text:[],
-    getRange:[],getStage:[]
+    getRange:[],getStage:[],Update_Substage:[],Update_subactivity:[]
 }
 
 export default function (state = intialState, action) {
@@ -94,7 +94,11 @@ export default function (state = intialState, action) {
         case GET_USER_STAGELIST:
             return {...state, getStage:payload}       
         case COMMON_UPDATE_TEXT:
-            return {...state, Common_Update_text:payload}                                                 
+            return {...state, Common_Update_text:payload} 
+        case UPDATE_SUBSTAGE:
+            return {...state, Update_Substage:payload}
+        case UPDATE_SUBACTIVITY:
+            return {...state, Update_subactivity:payload}                                                        
         default:
             return state;
     }

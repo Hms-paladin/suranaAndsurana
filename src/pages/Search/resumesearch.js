@@ -262,6 +262,8 @@ function Resumesearch(props) {
             })
         )
         setTest(!test)
+
+        console.log(checkList,"checkList")
     }
     const viewCandidate = (id) => {
         setViewId(id)
@@ -434,7 +436,7 @@ function Resumesearch(props) {
                 </div>
                 <div className="searchinterviewbtn">
                     <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div>
-                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} />
+                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} />
 
             </div>
             <DynModelView

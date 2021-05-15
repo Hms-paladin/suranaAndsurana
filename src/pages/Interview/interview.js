@@ -151,7 +151,7 @@ function InerviewScreen(props) {
     }
     if (key === "init_status" && "Selected" === initId.value) {
       if (
-        int_details.Intview_data[0].approver !== null &&
+        // int_details.Intview_data[0].approver !== null &&
         int_details.Intview_data[0].round == 27
       ) {
         setdropDownSel(true);

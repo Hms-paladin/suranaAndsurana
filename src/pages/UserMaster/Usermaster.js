@@ -18,6 +18,8 @@ import {
   InsertCheckList,
   InsertSubstage,
   InsertStatus,
+  UpdateSubstage,
+  UpdateSubActivity
 } from "../../actions/UserMasterAction";
 import {
   getActivity,
@@ -57,7 +59,7 @@ const UserMaster = (props) => {
   const header1 = [
     // { id: 'table_name', label: 'Table Name' },
     { id: "groupname", label: "Group Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header2 = [
     { id: "type", label: "Status" },
@@ -391,6 +393,7 @@ const UserMaster = (props) => {
     //   dispatch(getTableStatus(data));
     // }
     if (data && key === "tablename") {
+      handleCancel()
       var value = props.table_name.find((item) => {
         return item.table_id == data;
         
@@ -516,6 +519,7 @@ const UserMaster = (props) => {
       
     }
     if(key==="status_type"){
+      UserMaster.status_name.value=""
       var value = tablevalues.get_status_type.find((item) => {
         setEditvisible(false);
         return item.id == data;
@@ -1060,10 +1064,18 @@ const UserMaster = (props) => {
           handleCancel()
         });
       } else if (data === 20) {
+        if(Editvisible){
+        dispatch(UpdateSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
+          setEditvisible(false);
+          handleCancel()
+        });
+      }
+      else{
         dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
           setEditvisible(false);
           handleCancel()
         });
+      }
       } else if (data === 29) {
         dispatch(
           InsertCheckList(UserMaster, EditStoreData.ChecklistEdit, Editvisible)
@@ -1115,10 +1127,18 @@ const UserMaster = (props) => {
           });
         }
       } else if (data === 26) {
-        dispatch(InsertSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
+        if(Editvisible){
+        dispatch(UpdateSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
           setEditvisible(false);
           handleCancel()
         });
+      }
+      else{
+        dispatch(InsertSubstage(UserMaster,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
+          setEditvisible(false);
+          handleCancel()
+        });
+      }
       } else if (data === 4) {
         dispatch(
           InsertStatus(UserMaster, EditStoreData.StatusEdit, Editvisible,Statusvalue)
@@ -1962,6 +1982,8 @@ const mapStateToProps = (state) => ({
   CheckList_Data: state.UserMasterReducer.getChecklist,
   ClassDropdown: state.UserMasterReducer.get_user_class,
   Update_text: state.UserMasterReducer.Common_Update_text,
+  UpdateSubstage:state.UserMasterReducer.Update_Substage,
+  UpdateSubActivity:state.UserMasterReducer.Update_subactivity
 });
 
 export default connect(mapStateToProps)(UserMaster);
