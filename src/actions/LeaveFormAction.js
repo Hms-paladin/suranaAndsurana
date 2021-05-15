@@ -183,8 +183,7 @@ export const deleteLeaveForm = (emp_leave_id) => async dispatch => {
     }
 }
 
-export const insertLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
-
+export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispatch => {
     let subject_details = []
     examSchedule.length > 0 && examSchedule.map((data, index) =>
         subject_details.push({
@@ -207,7 +206,7 @@ export const insertLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
 
     DocumentData.set("no_other_days", Leave_Form.other_days.value || 0)
 
-    DocumentData.set("hall_ticket", null)
+    DocumentData.set("hall_ticket", filedata)
     DocumentData.set("description", Leave_Form.reasoncmt.value || 0)
     DocumentData.set("remarks", Leave_Form.remarks.value || 0)
     DocumentData.set("subject", JSON.stringify(subject_details) || 0)
@@ -241,7 +240,7 @@ export const insertLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
 }
 
 
-export const updateLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
+export const updateLeaveCep = (Leave_Form, examSchedule,filedata) => async dispatch => {
     console.log(examSchedule, "examSchedule1")
     let subject_details = []
     examSchedule.length > 0 && examSchedule.map((data, index) =>
@@ -265,7 +264,7 @@ export const updateLeaveCep = (Leave_Form, examSchedule) => async dispatch => {
     DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
 
     DocumentData.set("no_other_days", Leave_Form.other_days.value || 0)
-    DocumentData.set("hall_ticket", null)
+    DocumentData.set("hall_ticket", filedata)
     DocumentData.set("description", Leave_Form.reasoncmt.value || 0)
     DocumentData.set("remarks", Leave_Form.remarks.value || 0)
     DocumentData.set("subject", JSON.stringify(subject_details) || 0)
