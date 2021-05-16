@@ -8,7 +8,9 @@ import { Switch } from 'antd';
 import './usermanagement.scss';
 import { getUserGroup } from "../../actions/MasterDropdowns";
 import {insertUser,editUser,getCandidateName} from "../../actions/UserMasterAction";
-
+import {
+    getGroupList
+  } from "../../actions/UserGroupAction";
 
 function UserMasterModal(props) {
     const dispatch = useDispatch();
@@ -18,7 +20,7 @@ function UserMasterModal(props) {
     const [changeActive, setChangeActive] = useState(true)
     const [errPassword, setErrPassword] = useState(false)
     const [user_Id, setUser_Id] = useState(0)
-
+    const [groups, setgroups] = useState({})
     const [UserMaster, setUserMaster] = useState({
         emp_name: {
             value: "",
@@ -55,6 +57,7 @@ function UserMasterModal(props) {
 
     ////// api dispatch
     useEffect(() => {
+        dispatch(getGroupList())
         dispatch(getCandidateName())
         dispatch(getUserGroup())
     }, [])
@@ -69,6 +72,16 @@ function UserMasterModal(props) {
 
 
     useEffect(() => {
+       
+        let groupsData = []
+        props.groupLists.map((data) =>
+        groupsData.push({
+            value: data.group_name,
+            id: data.group_id
+          })
+        )
+        setgroups({ groupsData })
+        
         if(!props.user_data){
         const Employee_List = []
         props.EmployeeList.map((data, index) => {
@@ -85,7 +98,7 @@ function UserMasterModal(props) {
         })
         setUserGroup({ UserGroup })
 
-    }, [props.EmployeeList, props.UserGroup])
+    }, [props.EmployeeList, props.UserGroup,props.groupLists])
 
       
     // function SwitchChange() {
@@ -269,8 +282,10 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">User Group</div>
                         <Labelbox type="select"
+
+
                             changeData={(data) => checkValidation(data, "usergroup")}
-                            dropdown={userGroup.UserGroup}
+                            dropdown={groups.groupsData}
                             value={UserMaster.usergroup.value}
                             error={UserMaster.usergroup.error}
                             errmsg={UserMaster.usergroup.errmsg} />
@@ -298,6 +313,8 @@ function UserMasterModal(props) {
 const mapStateToProps = (state) =>
 (
     {
+        groupLists: state.UserGroupReducer.groupLists || [],
+        getUserList: state.UserMasterReducer.getUser || [],
         EmployeeList: state.UserMasterReducer.getCandidateName || [],
         UserGroup: state.getOptions.getUserGroup || [],
 
