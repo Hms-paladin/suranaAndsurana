@@ -56,20 +56,55 @@ function TradeMarkInternational(properties) {
         if(properties.tradeMark && properties.tradeMark[0]){
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
+            
             TradeMarkForm.status_id.value = obj.status_id;
-       
-            TradeMarkForm.associateRefernce.value =obj.associate_reference;
-            TradeMarkForm.ourReference.value =obj.our_reference;
+             if(obj.status_id && obj.status_id.length)
+                  TradeMarkForm.status_id.disabled = true;
+
+            TradeMarkForm.associateRefernce.value =obj.associatereference;
+            if(obj.associateRefernce && obj.associatereference.length)
+              TradeMarkForm.associateRefernce.disabled =true;
+              
+
+            TradeMarkForm.ourRefernce.value =obj.our_reference;
+            if(obj.ourRefernce && obj.our_reference.length)
+                TradeMarkForm.our_reference.disabled =true;
+
             TradeMarkForm.mark_id.value =obj.mark_id;
+            if(obj.mark_id && obj.mark_id.length)
+            TradeMarkForm.mark_id.disabled =true;
             //"upload_image" :selectedFile,
            TradeMarkForm.associate.value =obj.associate;
+             if(obj.associate && obj.associate.length)
+             TradeMarkForm.associate.disabled =true;
+
             TradeMarkForm.opositionNumber.value =obj.opposition_no;
+             if(obj.opositionNumber && obj.opositionNumber.length)
+              TradeMarkForm.opositionNumber.disabled =true;
+
             TradeMarkForm.application_date.value =obj.application_date;
+             if(obj.application_date && obj.application_date.length)
+             TradeMarkForm.application_date.disabled =true;
+
             TradeMarkForm.country_id.value =obj.country_id;
+            if(obj.country_id && obj.country_id.length)
+            TradeMarkForm.country_id.disabled =true;
+
             TradeMarkForm.priority_details.value = obj.priority_details;
+            if(obj.priority_details && obj.priority_details.length)
+            TradeMarkForm.priority_details.disabled =true;
+
              TradeMarkForm.userclaim.value =obj.user_claim;
+             if(obj.user_claim && obj.user_claim.length)
+             TradeMarkForm.user_claim.disabled =true;
+
             TradeMarkForm.allotment.value =obj.allotment;
+            if(obj.allotment && obj.allotment.length)
+            TradeMarkForm.allotment.disabled =true;
+
             TradeMarkForm.goods_description.value =obj.goods_description;
+            if(obj.goods_description && obj.goods_description.length)
+            TradeMarkForm.goods_description.disabled =true;
 
         }
 
@@ -134,199 +169,234 @@ setcountryDetList({ countryListsData })
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
+        disabled: false,
     },
       project_id: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },associateRefernce: {
         value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
+        disabled: false,
     },ourRefernce : {
         value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
+        disabled: false,
     },associate: {
         value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
+        disabled: false,
     }, userclaim : {
         value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
+        disabled: false,
     },
       status_id: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       class_id: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       usage_details_id: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       mark_id: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       application_no: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       application_date: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       upload_image: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       }, country_id : {
         value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
+        disabled: false,
     },
       goods_description: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       usage_from_date: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       comments: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       internal_status: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       allotment: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       ip_india_status: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       amendment: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       orders: {
           value: "",
           validation: [{ "name": "required" },],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       priority_details: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       tmj_number: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       tmj_date: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       journel_extract: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       poa: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       certificate_date: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },renewal_certificate_date: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },created_on: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },updated_on: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },created_by: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },updated_by: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },ip_address: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
       nextRenewal: {
           value: "",
           validation: [{ "name": "required" }],
           error: null,
           errmsg: null,
+          disabled: false,
       },
 
 
@@ -352,7 +422,7 @@ setcountryDetList({ countryListsData })
             "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
             "status_id" :TradeMarkForm.status_id.value,
             "associate_reference": TradeMarkForm.associateRefernce.value,
-            "our_reference": TradeMarkForm.ourReference.value,
+            "our_reference": TradeMarkForm.ourRefernce.value,
             "mark_id":TradeMarkForm.mark_id.value,
             "upload_image" :selectedFile,
             "associate":TradeMarkForm.associate.value,
@@ -469,36 +539,47 @@ setcountryDetList({ countryListsData })
                         dropdown={tradeStatusList.tradeStatusData} 
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
-                        errmsg={TradeMarkForm.status_id.errmsg} />
+                        errmsg={TradeMarkForm.status_id.errmsg} 
+                        disabled={TradeMarkForm.status_id.disabled}
+                        />
 
                     <Labelbox type="text"
                         placeholder={" Associate Reference"}
                         changeData={(data) => checkValidation(data, "associateRefernce")}
                         value={TradeMarkForm.associateRefernce.value}
                         error={TradeMarkForm.associateRefernce.error}
-                        errmsg={TradeMarkForm.associateRefernce.errmsg} />
+                        errmsg={TradeMarkForm.associateRefernce.errmsg}
+                        disabled={TradeMarkForm.associateRefernce.disabled} 
+                        
+                        />
 
                     <Labelbox type="text"
                         placeholder={" Our Reference"}
                         changeData={(data) => checkValidation(data, "ourRefernce")}
                         value={TradeMarkForm.ourRefernce.value}
                         error={TradeMarkForm.ourRefernce.error}
-                        errmsg={TradeMarkForm.ourRefernce.errmsg} />
+                        errmsg={TradeMarkForm.ourRefernce.errmsg} 
+                        disabled={TradeMarkForm.ourRefernce.disabled}
+                        />
 
                     <Labelbox type="select"
                         placeholder={" Class"} 
                         dropdown={classDetList.classDetailsData}  
                         changeData={(data) => checkValidation(data, "class_id")}
-                                        value={TradeMarkForm.class_id.value}
-                                        error={TradeMarkForm.class_id.error}
-                                        errmsg={TradeMarkForm.class_id.errmsg}/>
+                        value={TradeMarkForm.class_id.value}
+                        error={TradeMarkForm.class_id.error}
+                        errmsg={TradeMarkForm.class_id.errmsg}
+                        disabled={TradeMarkForm.class_id.disabled}
+                        />
 
                     <Labelbox type="text"
                         placeholder={" Mark"}
                         changeData={(data) => checkValidation(data, "mark_id")}
                         value={TradeMarkForm.mark_id.value}
                         error={TradeMarkForm.mark_id.error}
-                        errmsg={TradeMarkForm.mark_id.errmsg} />
+                        errmsg={TradeMarkForm.mark_id.errmsg} 
+                        disabled={TradeMarkForm.mark_id.disabled}
+                        />
                     {/* <Labelbox> */}
                     <div className="uploadbox">
                         <div style={{ width: "280%" }}>
@@ -517,6 +598,7 @@ setcountryDetList({ countryListsData })
                         value={TradeMarkForm.associate.value}
                         error={TradeMarkForm.associate.error}
                         errmsg={TradeMarkForm.associate.errmsg} 
+                        disabled={TradeMarkForm.associate.disabled}
                         />
 
                     <Labelbox type="text"
@@ -524,7 +606,9 @@ setcountryDetList({ countryListsData })
                         changeData={(data) => checkValidation(data, "application_no")}
                         value={TradeMarkForm.application_no.value}
                         error={TradeMarkForm.application_no.error}
-                        errmsg={TradeMarkForm.application_no.errmsg} />
+                        errmsg={TradeMarkForm.application_no.errmsg} 
+                        disabled={TradeMarkForm.application_no.disabled}
+                        />
 
                     <Labelbox type="datepicker"
                         placeholder={" Application Date"}
@@ -532,7 +616,9 @@ setcountryDetList({ countryListsData })
                         changeData={(data) => checkValidation(data, "application_date")}
                         value={TradeMarkForm.application_date.value}
                         error={TradeMarkForm.application_date.error}
-                        errmsg={TradeMarkForm.application_date.errmsg} />
+                        errmsg={TradeMarkForm.application_date.errmsg} 
+                        disabled={TradeMarkForm.application_date.disabled}
+                        />
 
                     <Labelbox type="select"
                         placeholder={" Country"} 
@@ -540,35 +626,45 @@ setcountryDetList({ countryListsData })
                         changeData={(data) => checkValidation(data, "country_id")}
                                         value={TradeMarkForm.country_id.value}
                                         error={TradeMarkForm.country_id.error}
-                                        errmsg={TradeMarkForm.country_id.errmsg}/>
+                                        errmsg={TradeMarkForm.country_id.errmsg}
+                                        disabled={TradeMarkForm.country_id.disabled}
+                                        />
 
                     <Labelbox type="text"
                         placeholder={" Priority Details"}
                         changeData={(data) => checkValidation(data, "priority_details")}
                         value={TradeMarkForm.priority_details.value}
                         error={TradeMarkForm.priority_details.error}
-                        errmsg={TradeMarkForm.priority_details.errmsg} />
+                        errmsg={TradeMarkForm.priority_details.errmsg} 
+                        disabled={TradeMarkForm.priority_details.disabled}
+                        />
 
                     <Labelbox type="text"
                         placeholder={" User Claim"}
                         changeData={(data) => checkValidation(data, "userclaim")}
                         value={TradeMarkForm.userclaim.value}
                         error={TradeMarkForm.userclaim.error}
-                        errmsg={TradeMarkForm.userclaim.errmsg} />
+                        errmsg={TradeMarkForm.userclaim.errmsg} 
+                        disabled={TradeMarkForm.userclaim.disabled}
+                        />
 
                     <Labelbox type="text"
                         placeholder={" Allotment"}
                         changeData={(data) => checkValidation(data, "allotment")}
                         value={TradeMarkForm.allotment.value}
                         error={TradeMarkForm.allotment.error}
-                        errmsg={TradeMarkForm.allotment.errmsg} />
+                        errmsg={TradeMarkForm.allotment.errmsg} 
+                        disabled={TradeMarkForm.allotment.disabled}
+                        />
                     <div className="projectFormComments">
                         <Labelbox type="textarea"
                             placeholder={" Goods and Services Description"}
                             changeData={(data) => checkValidation(data, "goods_description")}
                             value={TradeMarkForm.goods_description.value}
                             error={TradeMarkForm.goods_description.error}
-                            errmsg={TradeMarkForm.goods_description.errmsg} />
+                            errmsg={TradeMarkForm.goods_description.errmsg} 
+                            disabled={TradeMarkForm.goods_description.disabled}
+                            />
                     </div>
 
 
