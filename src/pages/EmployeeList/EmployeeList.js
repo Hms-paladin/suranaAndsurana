@@ -8,7 +8,7 @@ import { useDispatch, connect } from "react-redux";
 import { getDesignationList, getDepartment} from '../../actions/MasterDropdowns'
 import { getEmployeeListSearch,getEmployeeCode} from '../../actions/EmployeeListAction'
 import ValidationLibrary from "../../helpers/validationfunction";
-
+import moment from 'moment'
 import DynModel from "../../component/Model/model";
 import Employeeform from '../Employeeform/employeeform';
 import Axios from 'axios';
@@ -26,6 +26,8 @@ function EmployeeList(props){
     const [Employee_Data, setEmployee_Data] = useState([])
     const [stateClear, setStateClear] = useState(false)
     const [resume_id, setResume_id] = useState("")
+
+   
     const [EmpList, setEmpList] = useState({
         empcode: {
             value:"",
@@ -106,8 +108,8 @@ useEffect(() => {
         gender: employee_list[m].gender,
         designation: employee_list[m].designation,
         department: employee_list[m].department,
-        dob: employee_list[m].dob,
-        doj: employee_list[m].doj,
+        dob: employee_list[m].dob?moment(employee_list[m].dob).format('DD-MM-YYYY'):0,
+        doj: employee_list[m].doj?moment(employee_list[m].doj).format('DD-MM-YYYY'):0,
         experience: employee_list[m].experience,
         supervisor_name: employee_list[m].supervisor_name,
    
