@@ -411,8 +411,8 @@ function LeaveForm(props) {
                 leavetype: TableData[m].status,
                 fromdate: TableData[m].from_date === 0 ? '0' : TableData[m].from_date,
                 todate: TableData[m].to_date === 0 ? '0' : TableData[m].to_date,
-                fromtime: TableData[m].from_time === 0 ? '0' : moment(TableData[m].from_time,"HH:mm:ss").format("hh:mm:ss A"),
-                totime: TableData[m].to_time === 0 ? '0' :moment(TableData[m].to_time,"HH:mm:ss").format("hh:mm:ss A"),
+                fromtime: (TableData[m].from_time === "00:00:00" || TableData[m].from_time ===null) ? 0 : moment(TableData[m].from_time,"HH:mm:ss").format("hh:mm:ss A"),
+                totime: (TableData[m].to_time === "00:00:00" || TableData[m].to_time ===null) ? 0 :moment(TableData[m].to_time,"HH:mm:ss").format("hh:mm:ss A"),
                 status: TableData[m].approve_status === (null) ||TableData[m].approve_status === 0 ? 'Pending' : TableData[m].approve_status === 1?"Approved":"Rejected",
                 action: (
                     <>
