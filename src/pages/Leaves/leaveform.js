@@ -34,7 +34,7 @@ function LeaveForm(props) {
     const [empLeaveBal, setEmpLeaveBal] = useState("")
     const [clientlist, setClientlist] = useState({})
     const [noOfDays, setNoOfDays] = useState(0)
-
+    const [filedata, setFileData] = useState({})
     const [minDate, setMinDate] = useState(new Date())
     const [other_days, setother_days] = useState()
     const [plusicon, setPlusicon] = useState(0)
@@ -179,9 +179,15 @@ function LeaveForm(props) {
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff+1)
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
-    const onFileChange = () => {
-
+    const onFileChange = (event) => {
+        setFileData(event.target.files[0])
+        console.log(filedata,"filedata")
     }
+    const onFileDelete=()=>{
+        setFileData({})
+        console.log(filedata,"filedata")
+    }
+   
     useEffect(() => {
         if (Leave_Form.tot_leave.value === "" && Leave_Form.exam_days.value === "") {
             Leave_Form.other_days.value = "";
@@ -212,7 +218,7 @@ function LeaveForm(props) {
     }
 
     const onEditLeaveForm = (val) => {
-
+        handleCancel()
         setEditBtn(true)
         console.log(val.subject_details, "valval")
         Leave_Form.leavetype.value = val.leave_type_id || ""
@@ -233,6 +239,7 @@ function LeaveForm(props) {
         Leave_Form.other_days.value = val.no_other_days || ""
         Leave_Form.reasoncmt.value = val.leave_reason || ""
         Leave_Form.remarks.value = val.remarks || ""
+        setFileData(val.hall_ticket)
         val.subject_details != "" ? setExamSchedule(val.subject_details) : setExamSchedule([])
 
         // setEmp_leave_cep_sub_id(val.emp_leave_cep_sub_id)
@@ -476,7 +483,7 @@ function LeaveForm(props) {
 
         } else {
             if (Leave_Form.leavetype.value === 40) {
-                dispatch(insertLeaveCep(Leave_Form, examSchedule)).then(() => {
+                dispatch(insertLeaveCep(Leave_Form, examSchedule,filedata)).then(() => {
                     // dispatch(getLeaveForm(Leave_Form.leavetype.value));
                     handleCancel()
                 })
@@ -503,7 +510,7 @@ function LeaveForm(props) {
             });
 
         } else {
-            dispatch(updateLeaveCep(Leave_Form, examSchedule)).then(() => {
+            dispatch(updateLeaveCep(Leave_Form, examSchedule,filedata)).then(() => {
                 // dispatch(getLeaveForm(Leave_Form.leavetype.value));
                 handleCancel()
             })
@@ -755,15 +762,28 @@ function LeaveForm(props) {
                                 </div>
                             </Grid>
                             <Grid item xs={4}>
+                                <div style={{display:'flex',alignItems: 'flex-end'}}>
+                                <div>
                                 <div className="leaveFieldheading">Upload Hall Ticket</div>
                                 <div className="uploadleave_form">
                                     <div>
 
                                         <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
-                                            onChange={onFileChange} id="pdfupload" /> <PublishIcon />
+                                            onChange={(data)=>onFileChange(data)} id="pdfupload" /> <PublishIcon />
+
                                     </div>
+                                   
 
                                 </div>
+                                </div>
+                                {filedata&&filedata.length>0&&editBtn&&<div className="image_box">
+                                <div className="image_text">
+                                {filedata.length>0?filedata.substr(35):''}
+                                </div>
+                                <div><img src={Delete} onClick={onFileDelete} style={{ width: '20px',cursor:'pointer' }} /> </div>
+                                        </div> }
+                                        </div>
+                               
                             </Grid>
                             <Grid item xs={12}>
                                 <div className="leaveMainHeader">Examination Schedule </div>
@@ -865,9 +885,12 @@ function LeaveForm(props) {
                                Leave_Form.leavetype.value>=35&& <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
                          {Leave_Form.leavetype.value>=35&&<Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={onCancel} /></Grid>}
                     </Grid></Grid>
-            </div>{Leave_Form.leavetype.value !== 40 && <div className="leavetableformat">
+            </div>
+            {/* {Leave_Form.leavetype.value !== 40 &&  */}
+            <div className="leavetableformat">
                 <EnhancedTable headCells={headCells} tabletitle={"Leave Status"} rows={leaveFormTable.length == 0 ? leaveFormTable : leaveFormTable} />
-            </div>}
+            </div>
+            {/* } */}
         </div>
     )
 }

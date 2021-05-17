@@ -2,7 +2,7 @@ import {
     GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK,
     GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
-    GET_PROJECT_STAGES_LIST
+    GET_PROJECT_STAGES_LIST,GET_TASK_LIST,GET_TASK_TIME_SHEET,GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -109,6 +109,34 @@ export const insertTimeSheet = (params, id) => async dispatch => {
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
+                var msg = response.data.msg;
+                notification.success({
+                    message: "Time sheet updated",
+                });
+                dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
+
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
+
+export const insertTimeSheetbyTime = (params, time) => async dispatch => {
+    var url = 'insert_stop_time';
+    if(time == true){
+        url =  'insert_start_time'
+    }
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + url,
+            data: params
+        }).then((response) => {
+            if (response.data.status === 1) {
+                dispatch(getTaskList());
                 var msg = response.data.msg;
                 notification.success({
                     message: "Time sheet updated",
@@ -322,3 +350,80 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
 }
 
 
+export const getTaskList = (stageId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_task_list',
+            data: {
+                "assignee_id": 4,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_TASK_LIST, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+
+export const getTaskTimeSheet = (taskId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_task_timesheet',
+            data: {
+                "task_id": taskId,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_TASK_TIME_SHEET, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+export const getHearingDetails = (data) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_task_timesheet',
+            data: {
+                "project_id":data.project_id,
+                "task_id":data.task_id
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_HEARING_DETS, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}//GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
+
+export const InsertHearingDets = (data) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_hearing',
+            data: data
+        })
+            .then(function (response) {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Hearing Details Added Successfully',
+                    });
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+        notification.error({
+            message: 'Record Not Added',
+        });
+    }
+}

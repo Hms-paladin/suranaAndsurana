@@ -78,7 +78,7 @@ function LeaveUpdate(props) {
         console.log("test,",val)
        Leave_Update.leavetype.value = val.leave_type_id
        setEligible_leave(val.eligible_leave)
-       setLeaveupdateEdit(true)
+    //    setLeaveupdateEdit(true)
        setLeaveEditMasId(val.emp_leave_mas_id)
        setEditBtn(true)
         setleaveUpdate((prevState) => ({
@@ -217,7 +217,7 @@ function LeaveUpdate(props) {
         }
         if(key==='leavetype'){
             setEligible_leave("")
-            setLeaveupdateEdit(false)
+            // setLeaveupdateEdit(false)
             setEditBtn(false)
         }
         
