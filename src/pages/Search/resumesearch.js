@@ -4,6 +4,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Radio, Select, Checkbox } from 'antd';
 import EnhancedTable from '../../component/DynTable/table';
 import DynModel from './model';
+
 import { useDispatch, connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
@@ -15,7 +16,7 @@ import DynModelView from "../Interview/model";
 import './search.scss'
 import ResumeForm from '../Resume/resume';
 import Edit from "../../images/editable.svg";
-
+import DynModelEdit from './DynModelEdit'
 
 
 
@@ -48,6 +49,7 @@ function Resumesearch(props) {
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
     const [viewId, setViewId] = useState("")
     const [candidateViewModel, setCandidateViewModel] = useState(false)
+    const[editModel,setEditModel]=useState(false)
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -265,6 +267,7 @@ function Resumesearch(props) {
 
         console.log(checkList,"checkList")
     }
+    // console.log(checkList,"checkList")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
@@ -282,6 +285,7 @@ function Resumesearch(props) {
                 />  <img
                         src={Edit}
                         className="viewCandidatesList"
+                        onClick={()=>setEditModel(true)}
                     // onClick={() => viewCandidate(data.resume_id)}
                     />
                 </>, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
@@ -296,6 +300,8 @@ function Resumesearch(props) {
         console.log()
     }, [props.GetRowData, test])
 
+  
+    
     function onSearch() {
         dispatch(searchRowdata({
             "skill_id": ResumeSearch_Form.skills.valueById ? ResumeSearch_Form.skills.valueById : "",
@@ -444,6 +450,12 @@ function Resumesearch(props) {
                 handleChangeModel={candidateViewModel}
                 handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
                 res_data_id={viewId}
+            />
+            <DynModelEdit
+                modelTitle={"Edit Resume"}
+                handleChangeModel={editModel}
+                handleChangeCloseModel={(bln) => setEditModel(bln)}
+                // res_data_id={viewId}
             />
         </div>
 
