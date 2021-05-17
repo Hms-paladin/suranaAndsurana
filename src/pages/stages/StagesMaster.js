@@ -144,8 +144,10 @@ const StagesMaster = (props) => {
   }, [props.ProcessType,props.ProcessType,props.getSubStage,props.ProjectSubtype])
 
 
-  const onSubmit = () => {
-    
+  const onSubmit = (data) => {
+    if(RateMaster.project_type.value!==1){
+       ValidationHide()
+    }
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
     for (var i in targetkeys) {
@@ -179,22 +181,21 @@ const StagesMaster = (props) => {
 
   function checkValidation(data, key, multipleId) {
     //_____________________
-      
-    if (data === 1 && key == "project_type") {
+   
+     if (data === 1 && key == "project_type") {
       ValidationHide()
       RateMaster.sub_project_type.validation.push({name:"required"})
       RateMaster.process_type.validation.push({name:"required"})
       dispatch(getProjectSubType(data))
-      
       setEnabled(false)
-      
-
-   
     } else if (data !== 1 && key == "project_type")
-     {
-      // ValidationHide()
+     {  
+      ValidationHide()
        setEnabled(true)
       }
+     if( data&&key == "project_type"){
+       ValidationHide()
+     }
      //________________________________________________________________
      if (key == "sub_project_type" && data) {
       //process type
@@ -202,13 +203,20 @@ const StagesMaster = (props) => {
         ProjectType:RateMaster.project_type.value,ProjectSubtype:data
       }))
     }
+     if(data===4 && key=="sub_project_type"){
+      RateMaster.process_type.validation=[{name:""}]
+    }
+    else if(data!==4 && key=="sub_project_type"){
+      RateMaster.process_type.validation=[{name:"required"}]
+    }
     //________________________________________________________________
     if (key === "stages" && data) {
-      RateMaster.sub_stages.validation.push(({name:"required"}))
+      // RateMaster.sub_stages.validation.push(({name:"required"}))
       dispatch(getSubStage(data))
-      setStageEnabled(false)
+      // setStageEnabled(false)
     } else if (data !== 1 && key == "project_type") {
-      setStageEnabled(true) }
+      // setStageEnabled(true) 
+    }
 
     if (data && key === "noOfDays") {
       RateMaster[key].validation[1].params = RateMaster.compliance.value
@@ -218,8 +226,9 @@ const StagesMaster = (props) => {
     }
     if (key === "sub_project_type"){
       RateMaster.sub_project_type.validation=[]
+      // RateMaster.process_type.validation=[]
     }
-    if(key === "process_type"){
+    if( key === "process_type"){
       RateMaster.process_type.validation=[]
     }
     var errorcheck = ValidationLibrary.checkValidation(
@@ -240,7 +249,7 @@ const StagesMaster = (props) => {
   }
   const handleCancel = () => {
     let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance"]
-    setStageEnabled(true)
+    // setStageEnabled(true)
     setEnabled(true)
     From_key.map((data) => {
       RateMaster[data].value = ""
@@ -250,7 +259,7 @@ const StagesMaster = (props) => {
     }));
   }
   const ValidationHide = () => {
-    let From_key = ["sub_project_type", "process_type"]
+    let From_key = ["sub_project_type", "process_type","sub_stages"]
   
     From_key.map((data) => {
       RateMaster[data].validation = []
@@ -318,7 +327,7 @@ const StagesMaster = (props) => {
             errmsg={RateMaster.sub_project_type.errmsg}
           />
           <Labelbox type="select" placeholder={"Sub Stage"}
-            disabled={stageDisable}
+            // disabled={stageDisable}
             changeData={(data) => checkValidation(data, "sub_stages")}
             dropdown={subStage.substagedata}
             value={RateMaster.sub_stages.value}

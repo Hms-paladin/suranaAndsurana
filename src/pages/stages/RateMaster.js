@@ -45,7 +45,7 @@ const RateMaster = (props) => {
   const [permission, setPermission] = useState([])
   const [activity_id, setActivity_id] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
-
+  const [project_id,setproject_id]=useState(false)
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -167,19 +167,20 @@ const RateMaster = (props) => {
       dispatch(InsertVariableRate(RateMaster)).then((response) => {
         dispatch(SearchVariableRate(RateMaster)).then((response) => {
           setNotfoundmodel(false);
-          props.setShowSearchTable()
+          // props&&props.setShowSearchTable()
         })
         handleCancel();
 
       });
     }
-    console.log(props.lenghtData, "props.lenghtData")
+    // console.log(props.lenghtData, "props.lenghtData")
 
 
     setRateMaster((prevState) => ({
       ...prevState,
     }));
   };
+  // console.log("checkval",props.)
   function checkValidation(data, key, multipleId) {
 
     if (key === "activity") {
@@ -298,14 +299,14 @@ const RateMaster = (props) => {
     }));
   };
 
-  useEffect(() => {
-    if (props.lenghtData !== 0) {
-      setNotfoundmodel(false);
-    } else {
-      setNotfoundmodel(true)
-    }
+  // useEffect(() => {
+  //   if (props.lenghtData !== 0) {
+  //     setNotfoundmodel(false);
+  //   } else {
+  //     setNotfoundmodel(true)
+  //   }
 
-  }, [props.searchVariableRate, props.lenghtData]);
+  // }, [props.searchVariableRate, props.lenghtData]);
 
 
 

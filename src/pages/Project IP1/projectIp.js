@@ -702,12 +702,12 @@ console.log(showVariableTable,"showVariableTable")
 
                             </Grid>
                             <Grid item xs={12}>
-                                <div className="projectIpFields">
+                                <div className="Fields">
                                     {props.ProjectDetails[0] && props.ProjectDetails[0].filing_type !== null && <div className="projectIpdata">
                                         <div className="projectTitle">Filing Type</div>
                                         <div>{data.filing_type}</div>
                                     </div>}
-                                    <div className="projectIpdata">
+                                    <div className="data">
                                         <div className="projectTitle">Billable Type</div>
                                         <div>{data.billable_type}</div>
                                     </div>
@@ -715,7 +715,7 @@ console.log(showVariableTable,"showVariableTable")
                                         <div className="projectTitle">HOD / Attorney</div>
                                         <div>{data.HR}</div>
                                     </div>
-                                    <div className="projectIpdata">
+                                    <div className="data">
                                         <div className="projectTitle">Counsel</div>
                                         <div>{data.councel}</div>
                                     </div>
@@ -724,7 +724,7 @@ console.log(showVariableTable,"showVariableTable")
                             </Grid>
                             <Grid item xs={12}>
                                 <div className="projectIpFields">
-                                    <div className="projectIpdata">
+                                    <div className="data">
                                         <div className="projectTitle">Comments</div>
                                         <div>{data.comments}</div>
                                     </div>

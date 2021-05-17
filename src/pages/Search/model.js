@@ -25,6 +25,7 @@ function DynModel(props) {
   const [finalRound, setFinalRound] = useState(false);
   const [interviewApprover, setInterviewApprover] = useState([]);
   const [finalIntId, setFinalIntId] = useState(0);
+  const [uncheck, setUncheck] = useState(false)
 
   const [Interviewschedule, setInterviewschedule] = useState({
     desgination: {
@@ -124,7 +125,11 @@ function DynModel(props) {
     }));
   }
   useEffect(() => {
-
+    let check=[]
+    check.push(props.checkList)
+    // props.checkList.map((key, value) => {
+      console.log(props.checkList.length, "key")
+    // })
   }, [props.checkList])
 
   React.useEffect(() => {
@@ -159,6 +164,9 @@ function DynModel(props) {
     setInterviewschedule(prevState => ({
       ...prevState
     }));
+
+    setUncheck(!uncheck)
+
   };
 
 

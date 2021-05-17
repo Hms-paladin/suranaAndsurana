@@ -47,7 +47,7 @@ export const insertPatent = (params) => async dispatch => {
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Patent added sucessfully",
+                    message: "Patent Added Successfully",
                   });
                 dispatch({type:INSERT_PATENT,payload:response.data.status})
               return Promise.resolve();

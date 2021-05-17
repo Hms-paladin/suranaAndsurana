@@ -26,6 +26,7 @@ export const getVariableRateTableData = () => async dispatch => {
 }
 
 export const getProjectVariableRate = (project_id) => async dispatch => {
+  console.log("projectid",project_id)
   try {
 
     axios({
@@ -100,6 +101,7 @@ export const InsertProjectVariableRate = (RateMaster) => async dispatch => {
               });
             }
             loop = 1;
+            console.log("check",data.project_id)
             dispatch(getProjectVariableRate(data.project_id))
             //   dispatch({type:INSERT_VARIABLERATE,payload:true})
 

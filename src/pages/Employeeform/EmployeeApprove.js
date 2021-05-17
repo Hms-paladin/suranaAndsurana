@@ -80,7 +80,7 @@ function EmployeeApprove(props) {
         <div>
             {employee.map((data) => {
                 return (<div>
-                    <Labelbox type="text" placeholder="Employee Id" disabled={true} value={data.emp_code} />
+                    <Labelbox type="text" placeholder="Employee Id" disabled={true} value={data.emp_code==null?"":data.emp_code} />
                     <Labelbox type="text" placeholder="Employee N" disabled={true} value={data.name} />
                     <Labelbox type="text" placeholder="Designation" disabled={true} value={data.designation} />
                     <div className="employeeform_save">

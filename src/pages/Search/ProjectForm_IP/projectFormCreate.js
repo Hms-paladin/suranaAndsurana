@@ -914,7 +914,9 @@ function ProjectFormCreate(props) {
                       error={projectform.unit_measurement.error}
                       errmsg={projectform.unit_measurement.errmsg} /> </Grid></Grid>
               ) : (
-                <Grid item xs={6}></Grid>
+                <Grid item xs={6}>
+                  
+                </Grid>
               )}
               <Grid item xs={6}> <div className="Fieldheading">Comments</div>
                 <div className="projectFormComments">

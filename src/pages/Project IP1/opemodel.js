@@ -46,7 +46,7 @@ function OpeModel(props) {
         },
         amount: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "10" }, { "name": "allowNumaricOnly" }],
             error: null,
             errmsg: null,
         },
