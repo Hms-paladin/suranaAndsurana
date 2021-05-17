@@ -144,8 +144,10 @@ const StagesMaster = (props) => {
   }, [props.ProcessType,props.ProcessType,props.getSubStage,props.ProjectSubtype])
 
 
-  const onSubmit = () => {
-    
+  const onSubmit = (data) => {
+    if(RateMaster.project_type.value!==1){
+       ValidationHide()
+    }
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
     for (var i in targetkeys) {
@@ -185,22 +187,25 @@ const StagesMaster = (props) => {
       RateMaster.sub_project_type.validation.push({name:"required"})
       RateMaster.process_type.validation.push({name:"required"})
       dispatch(getProjectSubType(data))
-      
       setEnabled(false)
-      
-
-   
     } else if (data !== 1 && key == "project_type")
-     {
-      // ValidationHide()
+     {  
+       ValidationHide()
        setEnabled(true)
       }
+     
+      // console.log(disabled,"true")
+
      //________________________________________________________________
      if (key == "sub_project_type" && data) {
       //process type
       dispatch(getProcessType({
         ProjectType:RateMaster.project_type.value,ProjectSubtype:data
       }))
+    }
+     if(data===4 && key=="sub_project_type"){
+      alert("hai")
+      RateMaster.process_type.validation.push([])
     }
     //________________________________________________________________
     if (key === "stages" && data) {
@@ -218,10 +223,14 @@ const StagesMaster = (props) => {
     }
     if (key === "sub_project_type"){
       RateMaster.sub_project_type.validation=[]
+      // RateMaster.process_type.validation=[]
     }
-    if(key === "process_type"){
+    if( key === "process_type"){
       RateMaster.process_type.validation=[]
     }
+    // if(data===2 || data===3 &&key==="project_type"){
+    //   ValidationHide()
+    // }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       RateMaster[key].validation
