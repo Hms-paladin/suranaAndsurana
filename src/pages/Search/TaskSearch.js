@@ -1,3 +1,4 @@
+  
 import React, { useState,useEffect } from 'react';
 // import './search.s/css';
 import '../task/Task.scss';
@@ -35,12 +36,11 @@ import TaskStatus from '../Search/taskstatus'
 import { getTaskList } from "../../actions/projectTaskAction";
 
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles} from '@material-ui/core/styles';
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
 
 import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
-import { getTaskList } from '../../actions/TimeSheetAction';
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -87,10 +87,6 @@ function Task(props) {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
-    useEffect(() => {
-        dispatch(getTaskList())
-    }, [])
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -156,7 +152,6 @@ setStartModelOpen(flg);
                                 <p className="num_align_side" onClick={stopModel}>1</p>
                                 <Divider />
                                 {/* <HtmlTooltip open={open}  onOpen={handleOpen} arrow
-
                                     title={<Timesheetmodel />}
                                     onMouseEnter={()=>setOpen(true)}
                                     onMouseLeave={()=>setOpen(true)}
