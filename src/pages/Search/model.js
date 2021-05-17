@@ -55,7 +55,7 @@ function DynModel(props) {
   useEffect(() => {
     // dispatch(getInterviewApprover());
     dispatch(GetInterviewers());
-    
+
   }
     , [])
   const stateClear = () => {
@@ -83,21 +83,21 @@ function DynModel(props) {
   };
   useEffect(() => {
     let InterviewApprover = []
-    props.GetInterviewers.length>0&&props.GetInterviewers.map((data, index) =>
+    props.GetInterviewers.length > 0 && props.GetInterviewers.map((data, index) =>
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
 
-    if( props.GetInterviewers.length>0&& props.GetInterviewers){
-      let data_res_id =  props.GetInterviewers.find((val) => { 
-      return (
+    if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+      let data_res_id = props.GetInterviewers.find((val) => {
+        return (
           "Venkat" == val.name
-      ) 
-    })
-    setFinalIntId(data_res_id.emp_id)
+        )
+      })
+      setFinalIntId(data_res_id.emp_id)
     }
   }, [props.GetInterviewers])
 
-  console.log(finalIntId,"GetInterviewers") 
+  console.log(finalIntId, "GetInterviewers")
   function checkValidation(data, key, multipleId) {
 
     if (data == 27 && key === "round") {
@@ -123,7 +123,9 @@ function DynModel(props) {
       [key]: dynObj,
     }));
   }
+  useEffect(() => {
 
+  }, [props.checkList])
 
   React.useEffect(() => {
     setVisible(props.handleChangeModel)
@@ -148,7 +150,9 @@ function DynModel(props) {
     if (filtererr.length > 0) {
     } else {
       dispatch(InesertInterviewDetails(Interviewschedule, props.selectedId)).then((response) => {
+        // console.log(props.checkList, "checkList")
         stateClear()
+
       })
     }
 
@@ -255,8 +259,8 @@ function DynModel(props) {
             type="select"
             placeholder={"Interviewer"}
             // dropdown={interviewerdata.Interviewer}
-            disabled={finalRound ? true:false}
-            dropdown={ interviewApprover.InterviewApprover}
+            disabled={finalRound ? true : false}
+            dropdown={interviewApprover.InterviewApprover}
             changeData={(data) => checkValidation(data, "interviewer")}
             value={Interviewschedule.interviewer.value}
             error={Interviewschedule.interviewer.error}

@@ -7,8 +7,12 @@ import DynModel from "../../component/Model/model";
 import ValidationLibrary from "../../helpers/validationfunction";
 import EditTimeSheet from './Timesheet/Timesheet'
 import Adjournment from './Adjournment'
-export default function Hearing(props){
- 
+
+import { getHearingDetails,InsertHearingDets } from "../../actions/projectTaskAction";
+
+import { useDispatch, connect } from "react-redux";
+export function Hearing(props){
+  const dispatch = useDispatch();
 // timesheet modal
 const [OpenSheet,setOpenSheet]=useState(false)
 const handleChangeModel=()=>{
@@ -18,6 +22,19 @@ const [adjourn,setadjourn]=useState(false)
 const Adjourn_Model=()=>{
     setadjourn(true)
 }
+
+useEffect(() => {
+  if(props.rowData){
+  dispatch(getHearingDetails(props.rowData));
+  }
+
+}, []);
+
+useEffect(() => {
+       
+  
+}, [props.rowData,props.getHearingDets
+]);
 const [HearingData, setHearingData] = useState({
     nexthearing: {
       value: "",
@@ -59,7 +76,22 @@ function onSubmit() {
     //     dispatch(GetLitigation(projtId));
     //   });
     }
-
+    var data ={
+      "project_id":props.rowData.project_id,
+      "task_id":props.rowData.task_id,
+      "hearing_outcome":"test",
+      "hearing_date":"2020-03-17",
+      "next_hearing_date":"0",
+      "adjournment_taken_by":"1",
+      "created_on":"2021-03-21",
+      "created_by":"4", 
+      "reason":"hello",
+      "hearing_id":"8",
+      "active_status":"1"
+      }
+    dispatch(InsertHearingDets(data)).then((response) => {
+      handleCancel();
+    })
     setHearingData((prevState) => ({
       ...prevState,
     }));
@@ -132,3 +164,8 @@ function onSubmit() {
       </div>
   )
 }
+const mapStateToProps = (state) =>
+({
+    getHearingDets: state.projectTasksReducer.getHearingDets,
+});
+export default connect(mapStateToProps)(Hearing);

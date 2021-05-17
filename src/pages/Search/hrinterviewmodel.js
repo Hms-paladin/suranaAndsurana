@@ -182,12 +182,10 @@ const HrInterviewModel = (props) => {
 
 
   if (rounds === Interviewschedule.round.value) {
-    // alert("test")
   }
 
   // roundName
   useEffect(() => {
-
     if (roundDropdownValues.hr_round) {
       const getDisableId = roundDropdownValues.hr_round.filter((data) => {
 
@@ -197,6 +195,7 @@ const HrInterviewModel = (props) => {
         roundDropdownValues.hr_round[i].disable = true
       }
     }
+    
   }, [props])
 
 
