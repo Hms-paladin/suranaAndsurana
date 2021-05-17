@@ -217,7 +217,7 @@ function LeaveForm(props) {
     }
 
     const onEditLeaveForm = (val) => {
-
+        handleCancel()
         setEditBtn(true)
         console.log(val.subject_details, "valval")
         Leave_Form.leavetype.value = val.leave_type_id || ""
@@ -761,7 +761,7 @@ function LeaveForm(props) {
                                 </div>
                             </Grid>
                             <Grid item xs={4}>
-                                <div style={{display:'flex'}}>
+                                <div style={{display:'flex',alignItems: 'flex-end'}}>
                                 <div>
                                 <div className="leaveFieldheading">Upload Hall Ticket</div>
                                 <div className="uploadleave_form">
@@ -775,9 +775,9 @@ function LeaveForm(props) {
 
                                 </div>
                                 </div>
-                                {filedata.length>0&&editBtn&&<div className="image_box">
+                                {filedata&&filedata.length>0&&editBtn&&<div className="image_box">
                                 <div className="image_text">
-                                {filedata.length>0?filedata:''}
+                                {filedata.length>0?filedata.substr(35):''}
                                 </div>
                                 <div><img src={Delete} onClick={onFileDelete} style={{ width: '20px',cursor:'pointer' }} /> </div>
                                         </div> }

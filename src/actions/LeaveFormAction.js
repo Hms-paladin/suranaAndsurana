@@ -241,7 +241,7 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
 
 
 export const updateLeaveCep = (Leave_Form, examSchedule,filedata) => async dispatch => {
-    console.log(examSchedule, "examSchedule1")
+    console.log(filedata, "examSchedule1")
     let subject_details = []
     examSchedule.length > 0 && examSchedule.map((data, index) =>
         subject_details.push({
