@@ -130,11 +130,11 @@ function LeaveApproval(props) {
                         </div>
                         <div>
                             <div>From </div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].fromtime}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].fromtime!==null?ApprovalData[0].fromtime:''}</div>
                         </div>
                         <div>
                             <div>To</div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].totime}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].totime!==null?ApprovalData[0].totime:''}</div>
                         </div>
 
                     </>}
@@ -143,11 +143,12 @@ function LeaveApproval(props) {
                     <>
                         <div>
                             <div>From</div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].from}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].from!==null?ApprovalData[0].from:''} </div>
                         </div>
                         <div>
                             <div>To </div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].to}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].to!="Invalid date"?ApprovalData[0].to:'00-00-0000'}</div>
+                            {/* {console.log(ApprovalData[0])} */}
                         </div>
                         <div>
                             <div>Balance</div>

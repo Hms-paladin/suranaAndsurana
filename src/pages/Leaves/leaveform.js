@@ -41,6 +41,7 @@ function LeaveForm(props) {
     const [employeeList, setEmployeeList] = useState({});
     const [editBtn, setEditBtn] = useState(false)
     const [leaveFormTable, setLeaveFormTable] = useState({});
+    const [emp_leave_id, setEmp_leave_id] = useState(0)
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
@@ -243,7 +244,7 @@ function LeaveForm(props) {
         val.subject_details != "" ? setExamSchedule(val.subject_details) : setExamSchedule([])
 
         // setEmp_leave_cep_sub_id(val.emp_leave_cep_sub_id)
-        // setEmp_leave_id(val.emp_leave_id)
+        setEmp_leave_id(val.emp_leave_id)
 
         setLeaveForm(prevState => ({
             ...prevState,
@@ -409,8 +410,8 @@ function LeaveForm(props) {
             const index = m;
             var listarray = {
                 leavetype: TableData[m].status,
-                fromdate: TableData[m].from_date === 0 ? '0' : TableData[m].from_date,
-                todate: TableData[m].to_date === 0 ? '0' : TableData[m].to_date,
+                fromdate:  (TableData[m].from_date === "0000-00-00" || TableData[m].from_date ===null) ? 0 : moment(TableData[m].from_date).format("DD-MM-YYYY"), 
+                todate:  (TableData[m].to_date === "0000-00-00" || TableData[m].to_date ===null) ? 0 : moment(TableData[m].to_date).format("DD-MM-YYYY"), 
                 fromtime: (TableData[m].from_time === "00:00:00" || TableData[m].from_time ===null) ? 0 : moment(TableData[m].from_time,"HH:mm:ss").format("hh:mm:ss A"),
                 totime: (TableData[m].to_time === "00:00:00" || TableData[m].to_time ===null) ? 0 :moment(TableData[m].to_time,"HH:mm:ss").format("hh:mm:ss A"),
                 status: TableData[m].approve_status === (null) ||TableData[m].approve_status === 0 ? 'Pending' : TableData[m].approve_status === 1?"Approved":"Rejected",
@@ -442,7 +443,7 @@ function LeaveForm(props) {
     }
 
     function onSubmit(value) {
-        console.log(value, "valuetype")
+        console.log(Leave_Form.fromtime.value, "valuetype")
         if (Leave_Form.leavetype.value) {
             if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
                 const From_key = [
@@ -505,12 +506,12 @@ function LeaveForm(props) {
     const onUpdate = (data) => {
         console.log(Leave_Form,"Leave_Form")
         if (data === "othertype") {
-            dispatch(updateLeaveFrom(Leave_Form)).then((response) => {
+            dispatch(updateLeaveFrom(Leave_Form,emp_leave_id)).then((response) => {
                 handleCancel();
             });
 
         } else {
-            dispatch(updateLeaveCep(Leave_Form, examSchedule,filedata)).then(() => {
+            dispatch(updateLeaveCep(Leave_Form, examSchedule,filedata,emp_leave_id)).then(() => {
                 // dispatch(getLeaveForm(Leave_Form.leavetype.value));
                 handleCancel()
             })

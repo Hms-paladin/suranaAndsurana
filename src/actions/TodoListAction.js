@@ -98,7 +98,7 @@ export const getOtherTask = () =>async dispatch => {
             method: 'POST',
             url: apiurl +'get_other_tasks',
             data:{
-                "assignee_id":1
+                "assignee_id":localStorage.getItem("empId")
             }
         })
         .then((response) => {

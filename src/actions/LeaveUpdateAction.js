@@ -24,7 +24,7 @@ export const insertLeaveUpdate = (params,employee_id,eligible_leave,employee_cod
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Balance added sucessfully",
+                    message: "Leave Balance Added Successfully",
                   });
                 dispatch({type:INSERT_LEAVE_UPDATE,payload:response.data.status})
                 dispatch(getLeaveBalance(params,employee_code))
