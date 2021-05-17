@@ -14,7 +14,8 @@ const intialState = {
     getControl:[],
     updateGroupName: [],
     deleteGroupMaster: [],
-    groupLists :[], employeeLists :[], employeeGroupDetLists :[] , getGroupControlLists :[],getGroupsForEmp:[]
+    groupLists :[], employeeLists :[], employeeGroupDetLists :[] , getGroupControlLists :[],getGroupsForEmp:[],
+    getTaskLists :[],
 
 }
 
@@ -48,7 +49,8 @@ export default function (state = [], action) {
                 case  EDIT_GROUP_CONTROL:
                         return { ...state, editGroupControl: payload }  
                 case INSERT_GROUP_CONTROL:
-                return { ...state, InsertGroupControlMaster: payload }  
+                return { ...state, InsertGroupControlMaster: payload }
+                
         default:
             return state;
     }
