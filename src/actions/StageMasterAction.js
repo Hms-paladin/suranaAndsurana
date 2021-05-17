@@ -70,7 +70,7 @@ export const InsertStageMaster = (RateMaster) => async dispatch => {
             if (response.data.status === 1) {
                 dispatch(getStageMaster())
                 notification.success({
-                  message: 'Stage Master Updated Successfully',
+                  message: 'Stage Master Added Successfully',
                 });
                 return Promise.resolve();
             }else if (response.data.status === 0){

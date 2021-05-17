@@ -28,7 +28,8 @@ import {
   GET_CHECKLIST,
   GET_CASE_TYPE,
   GET_COST_RANGE,
-  GET_USER_STAGELIST
+  GET_USER_STAGELIST,
+  GET_CONTROLS
 } from '../utils/Constants'
 export const get_Tablenames = () => async dispatch => {
   try {
@@ -104,7 +105,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           state?.talents?.value?state.talents.value||"":state?.resourse?.value?state.resourse.value||"":state?.designation?.value?state.designation.value||"":
           state?.question?.value?state.question.value||"":state?.court?.value?state.court.value||"":state?.department?.value?state.department.value||"":
           state?.activity?.value?state.activity.value||"":state?.stage_name?.value?state.stage_name.value||"":state?.case_type?.value?state.case_type.value||"":
-          state?.range?.value?state.range.value||"":"",
+          state?.range?.value?state.range.value||"":state?.control.value?state.control.value||"":"",
         "created_by":localStorage.getItem("empId")
        
 
@@ -137,7 +138,7 @@ export const Common_insert_text = (data, state=false) => async dispatch => {
           dispatch(getCaseType())
           dispatch(getProjectCostRange())
           dispatch(getStageList())
-       
+          dispatch(getControls())
           return Promise.resolve();
         }
 
@@ -170,7 +171,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         state?.question?.value?editId?.question.question_id:state?.department?.value?editId?.department.department_id:
         state?.activity?.value?editId?.activity.activity_id:state?.court?.value?editId?.court.location_id:
         state?.range?.value?editId?.range.range_id:state?.stage_name?.value?editId?.stage.stage_id:
-        state?.case_type?.value?editId?.casetype.case_type_id:0,
+        state?.case_type?.value?editId?.casetype.case_type_id:state?.control.value?editId?.control.screen_control_id:0,
         "table_names":data,
         "text_val":state?.groupname?.value?state.groupname.value||"":state?.skill_name?.value ? state?.skill_name?.value||"":
         state?.traits_name?.value ? state.traits_name.value||"":state?.certification_name?.value?state.certification_name.value||"":
@@ -179,7 +180,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         state?.talents?.value?state.talents.value||"":state?.resourse?.value?state.resourse.value||"":state?.designation?.value?state.designation.value||"":
         state?.question?.value?state.question.value||"":state?.department?.value?state.department.value||"":state?.court?.value?state.court.value||"":
          state?.activity?.value?state.activity.value||"":state?.stage_name?.value?state.stage_name.value||"":state?.case_type?.value?state.case_type.value||"":
-        state?.range?.value?state.range.value||"":"",
+        state?.range?.value?state.range.value||"":state?.control.value?state.control.value||"":"",
         "updated_by":localStorage.getItem("empId")
 
       },
@@ -203,7 +204,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         dispatch(getTableCapability())
         dispatch(getTableTalents())
         dispatch(getTableResource())
-       dispatch(getTableDesgination())
+        dispatch(getTableDesgination())
         dispatch(getTableCourt())
         dispatch(getTableDepartment())
         dispatch(getTableQuestion())
@@ -212,7 +213,7 @@ export const Common_Update_text = (data, state,editId,Editvisible) => async disp
         dispatch(getTableActivity())
         dispatch(getTableCourt())
         dispatch(getCaseType())
-        
+        dispatch(getControls())
         return Promise.resolve();
         }
 
@@ -756,4 +757,11 @@ export const getProjectCostRange = () => async (dispatch) => {
   });
 };
 
+export const getControls = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "get",
+    url: apiurl + "get_controls",
+  });
+  return dispatch({ type: GET_CONTROLS, payload: response.data.data });
+};
 
