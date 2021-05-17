@@ -297,7 +297,7 @@ export const deleteGroupName = (deleteID) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Deleted sucessfully",
+                    message: "Deleted Successfully",
                 });
                 dispatch({ type: DELETE_GROUPNAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
