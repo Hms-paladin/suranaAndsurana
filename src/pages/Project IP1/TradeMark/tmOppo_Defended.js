@@ -7,17 +7,15 @@ import ValidationLibrary from "../../../helpers/validationfunction";
 import PublishIcon from '@material-ui/icons/Publish';
 import CustomButton from '../../../component/Butttons/button';
 import moment from 'moment'
-import {
-    getTradeMarkStatus, getClassDetails, getPoaDetails, getCountryDetails, getTradeMark,
-    getUsageDetails, insertTradeMark
-} from "../../../actions/tradeMarkAction";
-import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
-import { useParams } from "react-router-dom";
+import { getTradeMarkStatus,getClassDetails,getPoaDetails,getCountryDetails,getTradeMark,
+    getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
+    import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+    import { useParams } from "react-router-dom";
 function TradeMarkOposition2(properties) {
 
     const props = {
         name: 'file',
-
+       
         onChange(info) {
             if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
@@ -46,14 +44,14 @@ function TradeMarkOposition2(properties) {
         dispatch(getPoaDetails());
         dispatch(getUsageDetails());
         dispatch(getCountryDetails());
-
-
-
-    }, []);
+        
+        
+        
+      }, []);
 
     useEffect(() => {
 
-        if (properties.tradeMark && properties.tradeMark[0]) {
+        if(properties.tradeMark && properties.tradeMark[0]){
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
            
@@ -444,55 +442,55 @@ setcountryDetList({ countryListsData })
   })
 
     function onSubmit() {
-        /*  var mainvalue = {};
-          var targetkeys = Object.keys(TradeMarkForm);
-          for (var i in targetkeys) {
-              var errorcheck = ValidationLibrary.checkValidation(
-                  TradeMarkForm[targetkeys[i]].value,
-                  TradeMarkForm[targetkeys[i]].validation
-              );
-              TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-              TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-              mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-          }
-          var filtererr = targetkeys.filter(
-              (obj) => TradeMarkForm[obj].error == true
-          ); */
+      /*  var mainvalue = {};
+        var targetkeys = Object.keys(TradeMarkForm);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                TradeMarkForm[targetkeys[i]].value,
+                TradeMarkForm[targetkeys[i]].validation
+            );
+            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
+            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => TradeMarkForm[obj].error == true
+        ); */
         //console.log(filtererr.length);
-        let params = {
-            "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
-            "status_id": TradeMarkForm.status_id.value,
+        let params  = {
+            "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
+            "status_id" :TradeMarkForm.status_id.value,
             "our_reference": TradeMarkForm.ourReference.value,
-            "mark_id": TradeMarkForm.mark_id.value,
-            "upload_image": selectedFile,
-            "application_no": TradeMarkForm.application_no.value,
-            "application_date": TradeMarkForm.application_date.value,
-            "tmj_number": TradeMarkForm.tmj_number.value,
-            "tmj_date": TradeMarkForm.tmj_date.value,
-            "opposition_no": TradeMarkForm.opositionNumber.value,
+            "mark_id":TradeMarkForm.mark_id.value,
+            "upload_image" :selectedFile,
+            "application_no" :TradeMarkForm.application_no.value,
+            "application_date":TradeMarkForm.application_date.value,
+            "tmj_number":TradeMarkForm.tmj_number.value,
+            "tmj_date":TradeMarkForm.tmj_date.value,
+            "opposition_no":TradeMarkForm.opositionNumber.value,
             "applicant": TradeMarkForm.applicant.value,
             "applicant_agent": TradeMarkForm.applicantAgent.value,
-            "internal_status": TradeMarkForm.internal_status.value,
-            "end_date": moment().format('YYYY-MM-DD HH:m:s'),
-            "created_by": localStorage.getItem("empId"),
-            "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-            "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-            "updated_by": localStorage.getItem("empId"),
-            "ip_address": "ddf"
+            "internal_status":TradeMarkForm.internal_status.value,
+            "end_date" : moment().format('YYYY-MM-DD HH:m:s'),
+            "created_by" :localStorage.getItem("empId"),
+            "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+            "updated_by" :localStorage.getItem("empId"),
+            "ip_address" :"ddf"
         }
-        if (TradeMarkForm.class_id.value != "") {
-            params["class_id"] = TradeMarkForm.class_id.value;
+        if(TradeMarkForm.class_id.value != ""){
+            params["class_id"] =TradeMarkForm.class_id.value;
         }
         dispatch(insertTradeMark(params)).then(() => {
             //handleCancel()
         })
-        /* if (filtererr.length > 0) {
-             // setResumeFrom({ error: true });
-         } else {
-             
+       /* if (filtererr.length > 0) {
+            // setResumeFrom({ error: true });
+        } else {
             
-         }
- */
+           
+        }
+*/
         setTradeMarkForm(prevState => ({
             ...prevState
         }));
@@ -500,21 +498,21 @@ setcountryDetList({ countryListsData })
 
     const handleCancel = () => {
         let From_key = [
-            "project_id", "associateRefernce", "ourRefernce", "status_id", "class_id", "associate", "userclaim", "aplicant", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
-            "end_date", "upload_image", "ourReference", "opositionNumber", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
-            "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-            "ip_address"
+            "project_id","associateRefernce","ourRefernce", "status_id", "class_id","associate","userclaim","aplicant","applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date", 
+            "end_date","upload_image","ourReference","opositionNumber", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
+             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
+              "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
+               "ip_address"
         ]
 
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-                console.log("mapping", TradeMarkForm[data].value);
+              console.log("mapping", TradeMarkForm[data].value);
             } catch (error) {
-                throw error;
+              throw error;
             }
-        });
+          });
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
@@ -595,79 +593,6 @@ setcountryDetList({ countryListsData })
                             </Upload>,
                                      </div>
                     </div>
-                    <Grid>
-                        <div className="Fieldheadings">Class</div>
-                        <Labelbox type="select"
-                            placeholder={" Class"} dropdown={classDetList.classDetailsData}
-                            changeData={(data) => checkValidation(data, "class_id")}
-                            value={TradeMarkForm.class_id.value}
-                            error={TradeMarkForm.class_id.error}
-                            errmsg={TradeMarkForm.class_id.errmsg} /></Grid>
-
-                    <Grid><div className="Fieldheadings">Application Number</div>
-                        <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "application_no")}
-                            value={TradeMarkForm.application_no.value}
-                            error={TradeMarkForm.application_no.error}
-                            errmsg={TradeMarkForm.application_no.errmsg} />
-                    </Grid>
-                    <Grid>
-                        <div className="Fieldheadings">Application Date</div>
-                        <Labelbox type="datepicker"
-                            disableFuture={true}
-                            changeData={(data) => checkValidation(data, "application_date")}
-                            value={TradeMarkForm.application_date.value}
-                            error={TradeMarkForm.application_date.error}
-                            errmsg={TradeMarkForm.application_date.errmsg} />
-                    </Grid>
-                    <Grid>
-                        <div className="Fieldheadings">TMJ Number</div>
-                        <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "tmj_number")}
-                            value={TradeMarkForm.tmj_number.value}
-                            error={TradeMarkForm.tmj_number.error}
-                            errmsg={TradeMarkForm.tmj_number.errmsg} />
-                        </Grid>
-                    <Grid><div className="Fieldheadings">TMJ Date </div>
-                        <Labelbox type="datepicker"
-                            disableFuture={true}
-                            changeData={(data) => checkValidation(data, "tmj_date")}
-                            value={TradeMarkForm.tmj_date.value}
-                            error={TradeMarkForm.tmj_date.error}
-                            errmsg={TradeMarkForm.tmj_date.errmsg} />
-                    </Grid>
-                    <Grid>
-                        <div className="Fieldheadings">Oposition Number</div>
-                        <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "opositionNumber")}
-                            value={TradeMarkForm.opositionNumber.value}
-                            error={TradeMarkForm.opositionNumber.error}
-                            errmsg={TradeMarkForm.opositionNumber.errmsg} />
-                    </Grid>
-                    <Grid>
-                        <div className="Fieldheadings">Applicant</div>
-                        <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "opponent")}
-                            value={TradeMarkForm.opponent.value}
-                            error={TradeMarkForm.opponent.error}
-                            errmsg={TradeMarkForm.opponent.errmsg} />
-                    </Grid>
-                    <Grid>
-                        <div className="Fieldheadings">Applicant Agent</div>
-                        <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "agent")}
-                            value={TradeMarkForm.agent.value}
-                            error={TradeMarkForm.agent.error}
-                            errmsg={TradeMarkForm.agent.errmsg} />
-                    </Grid>
-                    <Grid>
-                        <div className="Fieldheadings">International status</div>
-                        <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "internal_status")}
-                            value={TradeMarkForm.internal_status.value}
-                            error={TradeMarkForm.internal_status.error}
-                            errmsg={TradeMarkForm.internal_status.errmsg}
-                        />
 
                     <Labelbox type="select"
                         placeholder={" Class"} dropdown={classDetList.classDetailsData}  
@@ -776,7 +701,56 @@ setcountryDetList({ countryListsData })
 
                 </Grid>
             </Grid>
-
+            {/* <Grid item xs={12} container direction="column" spacing={1} >
+                <Grid item xs={12} container direction="row" spacing={2}  >
+                    <Grid item xs={2} >
+                       
+                    </Grid>
+                    <Grid item xs={2} >
+                        
+                    </Grid>
+                    <Grid item xs={2} >
+                        
+                    </Grid>
+                    <Grid item xs={3} >
+                       
+                    </Grid>
+                    <Grid item xs={3} >
+                       
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} container direction="row" spacing={2}  >
+                    <Grid item xs={2} >
+                       
+                    </Grid>
+                    <Grid item xs={2} >
+                       
+                    </Grid>
+                    <Grid item xs={2} >
+                        
+                    </Grid>
+                    <Grid item xs={3} >
+                       
+                    </Grid>
+                    <Grid item xs={3} >
+                       
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} container direction="row" spacing={2}  >
+                    <Grid item xs={4} >
+                      
+                    </Grid>
+                    <Grid item xs={4} >
+                      
+                    </Grid>
+                    <Grid item xs={4} >
+                        
+                    </Grid>
+                </Grid>
+                <Grid container justify="left" direction="row"  >
+                  
+                </Grid>
+            </Grid> */}
             <div className="customButtonOposition">
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="TMOpositionButton" />
                 <CustomButton btnName={"CANCEL"} custombtnCSS="TMOpositionButton" />
@@ -788,14 +762,14 @@ setcountryDetList({ countryListsData })
 }
 const mapStateToProps = (state) =>
 ({
-
+    
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
+    classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
     POAList: state.tradeMarkReducer.getPOAList || [],
-    tmUsageDetailsList: state.tradeMarkReducer.gettradeMarkUsageList || [],
-    countriesList: state.tradeMarkReducer.getCountryList || [],
+    tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
+    countriesList : state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
-    tradeMark: state.tradeMarkReducer.getTrademark || {},
+    tradeMark : state.tradeMarkReducer.getTrademark || {},
 });
 
 export default connect(mapStateToProps)(TradeMarkOposition2);
