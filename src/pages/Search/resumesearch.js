@@ -99,7 +99,7 @@ function Resumesearch(props) {
         },
         exp_min: {
             value: "",
-            validation: [{ "name": "allowNumaricOnly" }],
+            validation: [{ "name": "numericanddot" }],
             error: null,
             errmsg: null,
         },
