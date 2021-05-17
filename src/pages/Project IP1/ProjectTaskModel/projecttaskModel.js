@@ -22,6 +22,7 @@ function ProjectTaskModel(props) {
   const [locationslList, setlocationslList] = useState({})
   const [projectDetails, setProjectDetails] = useState({})
   const [idDetails, setidDetails] = useState({})
+  const [mindate,setminDate]=useState(new Date())
   const [InsertTaskForm, setInsertTaskForm] = useState({
     activity: {
       value: "",
@@ -180,7 +181,8 @@ function ProjectTaskModel(props) {
 
 
   function checkValidation(data, key, multipleId) {
-
+    
+   
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       ProjectTask_Model[key].validation
@@ -297,6 +299,7 @@ function ProjectTaskModel(props) {
   }
 
   function onSubmit() {
+    alert("hai")
     var data = {
       "project_id": idDetails.project_id,
       "activiity_id": InsertTaskForm.activity.value,
@@ -317,6 +320,9 @@ function ProjectTaskModel(props) {
   }
 
   function checkValidation(data, key, multipleId) {
+    if(key==="fromDate"){
+      setminDate(data)
+    }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       InsertTaskForm[key].validation
@@ -423,6 +429,7 @@ function ProjectTaskModel(props) {
           <Grid item xs={4} >
             <Labelbox type="datepicker"
               placeholder={"Start Date"}
+              minDate={new Date()}
               changeData={(data) => checkValidation(data, "fromDate")}
               value={InsertTaskForm.fromDate.value}
               error={InsertTaskForm.fromDate.error}
@@ -432,6 +439,7 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="datepicker"
+              minDate={mindate}
               changeData={(data) => checkValidation(data, "toDate")}
               placeholder={" End Date"}
               value={InsertTaskForm.toDate.value}
