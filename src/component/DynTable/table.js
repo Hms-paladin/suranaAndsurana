@@ -251,7 +251,6 @@ export default function EnhancedTable(props) {
   };
 
   const handleChangePage = (event, newPage) => {
-    alert(newPage)
     setPage(newPage);
    
   };
