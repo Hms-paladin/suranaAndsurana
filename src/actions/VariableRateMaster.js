@@ -120,7 +120,7 @@ export const InsertProjectVariableRate = (RateMaster) => async dispatch => {
 }
 
 export const InsertVariableRate = (RateMaster) => async dispatch => {
-
+  console.log("ratemastercheck",RateMaster.range_project_cost.value)
   try {
 
     axios({
@@ -142,13 +142,14 @@ export const InsertVariableRate = (RateMaster) => async dispatch => {
         unit_id: RateMaster.unit_measurement.value || 0,
       },
     }).then((response) => {
-      dispatch(getVariableRateTableData())
+     
 
       if (response.data.status === 1) {
-        dispatch({ type: INSERT_VARIABLERATE, payload: true })
+        dispatch({ type: INSERT_VARIABLERATE, payload: response.status.msg })
         notification.success({
           message: "Variable Rate Added successfully",
         });
+        dispatch(getVariableRateTableData())
         return Promise.resolve();
       }
     });

@@ -22,11 +22,11 @@ export default function OutofPacket(){
         {id:"comment",label:"Comment"}
     ]
     const Rows=[
-        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Travel",amount:"500.00",mop:"Credit Card",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Food",amount:"120.00",mop:"Cash",bill:"No",comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Stationery",amount:"1200.00",mop:"Cash",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
+        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
+        {ope:"Expense",date:"02-May-2021",expensetype:"Travel",amount:"500.00",mop:"Credit Card",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
+        {ope:"Expense",date:"02-May-2021",expensetype:"Food",amount:"120.00",mop:"Cash",bill:"No",comment:<div className="comment_txt_pack"></div>},
+        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
+        {ope:"Expense",date:"02-May-2021",expensetype:"Stationery",amount:"1200.00",mop:"Cash",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
     ]
     return(
         <div className="parent_root_outpack">

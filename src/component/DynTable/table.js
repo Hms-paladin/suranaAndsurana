@@ -29,24 +29,25 @@ const useStyles1 = makeStyles((theme) => ({
 function TablePaginationActions(props) {
   const classes = useStyles1();
   const theme = useTheme();
-  const { count, page, rowsPerPage, onChangePage } = props;
+ 
 
   const handleFirstPageButtonClick = (event) => {
-    onChangePage(event, 0);
+     onChangePage(event, 0);
   };
 
   const handleBackButtonClick = (event) => {
-    onChangePage(event, page - 1);
+    onChangePage(event, props.page - 1);
   };
 
   const handleNextButtonClick = (event) => {
-    onChangePage(event, page + 1);
+    onChangePage(event, props.page + 1);
   };
 
   const handleLastPageButtonClick = (event) => {
-    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    onChangePage(event, Math.max(0, Math.ceil(props.count / props.rowsPerPage) - 1));
   };
-
+  const { count, page, rowsPerPage, onChangePage } = props;
+  
   return (
     <div className={classes.root}>
       <IconButton
@@ -161,7 +162,7 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  // onSelectAllClick: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -251,20 +252,20 @@ export default function EnhancedTable(props) {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+   
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(event.target.value);
     setPage(0);
+    
   };
 
   
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
+  const emptyRows =rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   return (
     <div className={classes.root}>
       {/* <Paper className={classes.paper}> */}
@@ -283,7 +284,7 @@ export default function EnhancedTable(props) {
             numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            //   onSelectAllClick={handleSelectAllClick}
+              onSelectAllClick={handleSelectAllClick}
             EnableSno={props.EnableSno}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
@@ -349,6 +350,10 @@ export default function EnhancedTable(props) {
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
+          SelectProps={{
+            inputProps: { 'aria-label': 'rows per page' },
+            native: true,
+          }}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}

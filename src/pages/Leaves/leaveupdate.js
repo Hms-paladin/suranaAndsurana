@@ -419,15 +419,15 @@ function LeaveUpdate(props) {
                     }
 
 
-
-                    <Grid item xs={3} container direction="row" spacing={2}>
+                    
+                    {Leave_Update.leavetype.value?<Grid item xs={3} container direction="row" spacing={2}>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>
                         </Grid>
-                    </Grid>
+                    </Grid>:null}
 
 
                 </Grid>

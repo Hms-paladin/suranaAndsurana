@@ -193,9 +193,7 @@ const StagesMaster = (props) => {
       ValidationHide()
        setEnabled(true)
       }
-     if( data&&key == "project_type"){
-       ValidationHide()
-     }
+   
      //________________________________________________________________
      if (key == "sub_project_type" && data) {
       //process type

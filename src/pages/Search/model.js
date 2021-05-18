@@ -101,10 +101,11 @@ function DynModel(props) {
   console.log(finalIntId, "GetInterviewers")
   function checkValidation(data, key, multipleId) {
 
-    if (data == 27 && key === "round") {
+    if (data === 27 && key === "round") {
       Interviewschedule.interviewer.value = finalIntId
       setFinalRound(true)
-    } else {
+    } 
+    if (data !== 27 && key === "round") {
       setFinalRound(false)
     }
 
@@ -124,13 +125,7 @@ function DynModel(props) {
       [key]: dynObj,
     }));
   }
-  useEffect(() => {
-    let check=[]
-    check.push(props.checkList)
-    // props.checkList.map((key, value) => {
-      console.log(props.checkList.length, "key")
-    // })
-  }, [props.checkList])
+
 
   React.useEffect(() => {
     setVisible(props.handleChangeModel)
@@ -164,12 +159,9 @@ function DynModel(props) {
     setInterviewschedule(prevState => ({
       ...prevState
     }));
-
-    setUncheck(!uncheck)
-
+    props.handleUnCheck();
   };
-
-
+ 
   useEffect(() => {
 
     // Axios({
@@ -282,6 +274,7 @@ function DynModel(props) {
             btnCustomColor="customPrimary"
             onBtnClick={onSubmit}
           />
+          
         </div>
       </div>
     </Modal>
