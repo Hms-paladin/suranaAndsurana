@@ -168,12 +168,14 @@ const RateMaster = (props) => {
         dispatch(SearchVariableRate(RateMaster)).then((response) => {
           setNotfoundmodel(false);
           // props&&props.setShowSearchTable()
+          // props.handleChangeCloseModel()
         })
         handleCancel();
 
       });
     }
     // console.log(props.lenghtData, "props.lenghtData")
+    console.log("ratemasterdddd",RateMaster)
 
 
     setRateMaster((prevState) => ({
@@ -299,17 +301,14 @@ const RateMaster = (props) => {
     }));
   };
 
-  // useEffect(() => {
-  //   if (props.lenghtData !== 0) {
-  //     setNotfoundmodel(false);
-  //   } else {
-  //     setNotfoundmodel(true)
-  //   }
+  useEffect(() => {
+    if (props.lenghtData !== 0) {
+      setNotfoundmodel(false);
+    } else {
+      setNotfoundmodel(true)
+    }
 
-  // }, [props.searchVariableRate, props.lenghtData]);
-
-
-
+  }, [props.searchVariableRate, props.lenghtData]);
   useEffect(() => {
     if (isLoaded) {
       // Axios({
@@ -616,6 +615,7 @@ const RateMaster = (props) => {
           <EnhancedTable
             headCells={header}
             rows={varRateList.length == 0 ? varRateList : varRateList.rateList}
+            // rows={varRateList.rateList}
           />
         </div>}
 
