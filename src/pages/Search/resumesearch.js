@@ -129,7 +129,7 @@ function Resumesearch(props) {
         dispatch(getSpecilization())
         dispatch(getCapability())
         dispatch(getTalents())
-        dispatch(getStatus())
+        // dispatch(getStatus())
         dispatch(getQualification())
 
         dispatch(searchRowdata({

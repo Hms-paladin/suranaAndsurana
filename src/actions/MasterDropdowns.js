@@ -112,10 +112,10 @@ export const getTalents = () => async (dispatch) => {
   return dispatch({ type: GET_TALENTS, payload: response.data.data });
 };
 
-export const getStatus = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "/get_s_tbl_m_status");
-  return dispatch({ type: GET_STATUS, payload: response.data.data });
-};
+// export const getStatus = () => async (dispatch) => {
+//   const response = await axios.get(apiurl + "/get_s_tbl_m_status");
+//   return dispatch({ type: GET_STATUS, payload: response.data.data });
+// };
 
 export const getQualification = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_qual");

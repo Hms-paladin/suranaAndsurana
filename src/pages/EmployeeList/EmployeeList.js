@@ -105,11 +105,11 @@ useEffect(() => {
       var listarray = {
         employee_code: employee_list[m].employee_code,
         name: <a className="link_tag" onClick={()=>onclickEmpName(employee_list[index])}>{employee_list[m].name}</a>,
-        gender: employee_list[m].gender,
+        gender: employee_list[m].gender==='F'?'FEMALE':'MALE',
         designation: employee_list[m].designation,
         department: employee_list[m].department,
-        dob: employee_list[m].dob?moment(employee_list[m].dob).format('DD-MM-YYYY'):0,
-        doj: employee_list[m].doj?moment(employee_list[m].doj).format('DD-MM-YYYY'):0,
+        dob: <span style={{whiteSpace:'nowrap'}}>{employee_list[m].dob?moment(employee_list[m].dob).format('DD-MMM-YYYY'):'--'}</span>,
+        doj: <span style={{whiteSpace:'nowrap'}}>{employee_list[m].doj?moment(employee_list[m].doj).format('DD-MMM-YYYY'):'--'}</span>,
         experience: employee_list[m].experience,
         supervisor_name: employee_list[m].supervisor_name,
    

@@ -7,8 +7,8 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-import { getInterviewApprover, getDesignationList } from "../../actions/MasterDropdowns";
-
+import {getDesignationList } from "../../actions/MasterDropdowns";
+import { GetInterviewers } from "../../actions/GetInterviewersActions";
 const HrInterviewModel = (props) => {
   const dispatch = useDispatch();
   const [roundDropdownValues, setroundDropdownValues] = useState({})
@@ -17,6 +17,7 @@ const HrInterviewModel = (props) => {
   const [finalRound, setFinalRound] = useState(false);
   const [rounds, setRounds] = useState();
   const [designationdata, setdesignationdata] = useState([]);
+  const [finalIntId, setFinalIntId] = useState(0);
   const [Interviewschedule, setInterviewschedule] = useState({
     desgination: {
       value: props.selectedDesignationID,
@@ -83,31 +84,43 @@ const HrInterviewModel = (props) => {
   // 
   useEffect(() => {
     dispatch(getDesignationList());
-    dispatch(getInterviewApprover());
+    dispatch(GetInterviewers());
   }
     , [])
 
 
   useEffect(() => {
     let InterviewApprover = []
-    props.getInterviewApprover.map((data, index) =>
+    props.GetInterviewers.map((data, index) =>
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
 
+    
+    if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+      let data_res_id = props.GetInterviewers.find((val) => {
+        return (
+          "Venkat" == val.name
+        )
+      })
+      setFinalIntId(data_res_id.emp_id)
+    }
+   
     let Designation = []
     props.getDesignationList.map((data, index) =>
       Designation.push({ id: data.designation_id, value: data.designation })
     )
     setdesignationdata({ Designation })
   }
-    , [props.getInterviewApprover, props.getDesignationList])
+    , [props.GetInterviewers, props.getDesignationList])
   // ____________________
 
   function checkValidation(data, key, multipleId) {
 
-    if (data == 27 && key === "round") {
+      if (data === 27 && key === "round") {
+      Interviewschedule.interviewer.value = finalIntId
       setFinalRound(true)
-    } else {
+    } 
+    if (data !== 27 && key === "round") {
       setFinalRound(false)
     }
     var errorcheck = ValidationLibrary.checkValidation(
@@ -234,7 +247,7 @@ const HrInterviewModel = (props) => {
         type="select"
         placeholder="Interviewer"
         changeData={(data) => checkValidation(data, "interviewer")}
-        //   dropdown={interviewerdata.Interviewer}
+        disabled={finalRound ? true : false}
         dropdown={finalRound ? interviewApprover.InterviewApprover : interviewerdata.Interviewer}
         value={Interviewschedule.interviewer.value}
         error={Interviewschedule.interviewer.error}
@@ -253,9 +266,9 @@ const HrInterviewModel = (props) => {
 }
 
 const mapStateToProps = (state) => (
-  // console.log(state.getOptions.getInterviewApprover, "getProcessType")
+  // console.log(state.getOptions.GetInterviewers, "getProcessType")
   {
-    getInterviewApprover: state.getOptions.getInterviewApprover || [],
+    GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
     getDesignationList: state.getOptions.getDesignationList || [],
 
   }
