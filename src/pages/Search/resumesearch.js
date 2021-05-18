@@ -8,7 +8,7 @@ import DynModel from './model';
 import { useDispatch, connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
-import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus,getQualification} from "../../actions/MasterDropdowns";
+import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus, getQualification } from "../../actions/MasterDropdowns";
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Eyes from "../../images/neweye.svg";
@@ -49,7 +49,7 @@ function Resumesearch(props) {
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
     const [viewId, setViewId] = useState("")
     const [candidateViewModel, setCandidateViewModel] = useState(false)
-    const[editModel,setEditModel]=useState(false)
+    const [editModel, setEditModel] = useState(false)
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -111,7 +111,7 @@ function Resumesearch(props) {
             error: null,
             errmsg: null,
         },
-        qualification:{
+        qualification: {
             value: "",
             validation: [],
             error: null,
@@ -141,10 +141,10 @@ function Resumesearch(props) {
             "capability_id": "",
             "talent_id": "",
             "status_id": "",
-            "qualification_id":"",
+            "qualification_id": "",
             "exp_min": "",
-            "exp_max":""
-         
+            "exp_max": ""
+
         }))
     }, [])
 
@@ -195,7 +195,7 @@ function Resumesearch(props) {
     };
 
     useEffect(() => {
-        const { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus,getQualification } = props.GetOptions
+        const { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus, getQualification } = props.GetOptions
 
         let skillList = []
         let traitsList = []
@@ -205,7 +205,7 @@ function Resumesearch(props) {
         let capabilityList = []
         let talentList = []
         let statusList = []
-        let qualification=[]
+        let qualification = []
         getQualification.map((data) => {
             qualification.push({ id: data.qualification_id, value: data.qual_name })
         })
@@ -241,10 +241,10 @@ function Resumesearch(props) {
             statusList.push({ id: data.status_id, value: data.status })
         })
 
-        setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList,qualification })
+        setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList, qualification })
     }, [props.GetOptions])
 
-
+    
     const handleCheck = (event, resume_id) => {
         if (selectedCandidateId.includes(resume_id)) {
             selectedCandidateId.map((data, index) => {
@@ -264,10 +264,22 @@ function Resumesearch(props) {
             })
         )
         setTest(!test)
-
-        console.log(checkList,"checkList")
     }
-    // console.log(checkList,"checkList")
+
+    const handleUnCheck = () => {
+        let obj = Object.keys(checkList);
+        setCheckedList({})
+        obj.map((data) => {
+            setCheckedList(
+                prevState => ({
+                    ...prevState,
+                    [data]: false,
+                })
+            )
+        })
+        obj=[];
+    }
+    console.log(checkList, "checkList")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
@@ -275,7 +287,7 @@ function Resumesearch(props) {
 
     useEffect(() => {
         let rowDataList = []
-        console.log(props.GetRowData,"GetRowData")
+        console.log(props.GetRowData, "GetRowData")
         props.GetRowData && props.GetRowData.map((data, index) => {
             rowDataList.push({
                 view: <> <img
@@ -285,12 +297,12 @@ function Resumesearch(props) {
                 />  <img
                         src={Edit}
                         className="viewCandidatesList"
-                        onClick={()=>setEditModel(true)}
+                        onClick={() => setEditModel(true)}
                     // onClick={() => viewCandidate(data.resume_id)}
                     />
                 </>, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
                 basic: data.basic_qual, language: data.language, certification: data.certifications,
-                specialization: data.specialization,talents: data.talent, experience: data.experience,
+                specialization: data.specialization, talents: data.talent, experience: data.experience,
                 box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id)} name={"checked" + index}
                     checked={checkList["checked" + index]} value={checkList["checked" + index]} />
             })
@@ -298,10 +310,10 @@ function Resumesearch(props) {
 
         setRowData(rowDataList)
         console.log()
-    }, [props.GetRowData, test])
+    }, [props.GetRowData, test, checkList])
 
-  
-    
+
+
     function onSearch() {
         dispatch(searchRowdata({
             "skill_id": ResumeSearch_Form.skills.valueById ? ResumeSearch_Form.skills.valueById : "",
@@ -313,8 +325,8 @@ function Resumesearch(props) {
             "talent_id": ResumeSearch_Form.talents.valueById ? ResumeSearch_Form.talents.valueById : "",
             "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : "",
             "qualification_id": ResumeSearch_Form.qualification.valueById ? ResumeSearch_Form.qualification.valueById : "",
-            "exp_min":ResumeSearch_Form.exp_min.value ? ResumeSearch_Form.exp_min.value: "",
-            "exp_max":ResumeSearch_Form.exp_max.value ? ResumeSearch_Form.exp_max.value: "",
+            "exp_min": ResumeSearch_Form.exp_min.value ? ResumeSearch_Form.exp_min.value : "",
+            "exp_max": ResumeSearch_Form.exp_max.value ? ResumeSearch_Form.exp_max.value : "",
             // "experience": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
 
         }))
@@ -431,7 +443,7 @@ function Resumesearch(props) {
                             </Grid>
                             <Grid item xs={8}>
                                 <Link to='resume'>
-                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}  />
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"} />
                                 </Link>
                             </Grid>
                         </Grid>
@@ -442,7 +454,7 @@ function Resumesearch(props) {
                 </div>
                 <div className="searchinterviewbtn">
                     <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div>
-                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} />
+                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} handleUnCheck={handleUnCheck} />
 
             </div>
             <DynModelView
@@ -455,7 +467,7 @@ function Resumesearch(props) {
                 modelTitle={"Edit Resume"}
                 handleChangeModel={editModel}
                 handleChangeCloseModel={(bln) => setEditModel(bln)}
-                // res_data_id={viewId}
+            // res_data_id={viewId}
             />
         </div>
 
