@@ -18,7 +18,6 @@ function LeaveApproval(props) {
     const [leaveModelTitle, setLeaveModelTitle] = useState()
     const [changebtn, setChangebtn] = useState(true)
     const [ApprovalData,setApprovalData]=useState(true)
-    const [Leave_status,setLeave_status]=useState(false)
 
     let dispatch=useDispatch()
     useEffect(() => {
@@ -61,12 +60,13 @@ function LeaveApproval(props) {
         setChangebtn(false)
     }
     const EmployeeApprove = (data) => {
-
+        // console.log(data,"leaveStatus")
+        let Leave_status=false;
         if (data === "approve") {
-            setLeave_status(true)
+            Leave_status=true
         }
         if (data === "reject") {
-            setLeave_status(false)
+            Leave_status=false
         }
 
         dispatch(EmployeeLeaveApprove(Leave_status,props.getLeaveApproval[0]&&props.getLeaveApproval[0].emp_leave_id,props.getLeaveApproval[0]&&props.getLeaveApproval[0].approve_status)).then((response) => {
@@ -249,9 +249,9 @@ function LeaveApproval(props) {
 
                 </div>}
             <div className="appraisalBtn">
-            {changebtn===false?<CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove(data,"reject")}/>:
+            {changebtn===false?<CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove("reject")}/>:
                 <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={rejectbtn} />}
-                {changebtn && <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove(data,"approve")}/>}
+                {changebtn && <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove("approve")}/>}
             </div>
         </div >
     )

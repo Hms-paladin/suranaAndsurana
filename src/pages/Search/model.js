@@ -101,10 +101,11 @@ function DynModel(props) {
   console.log(finalIntId, "GetInterviewers")
   function checkValidation(data, key, multipleId) {
 
-    if (data == 27 && key === "round") {
+    if (data === 27 && key === "round") {
       Interviewschedule.interviewer.value = finalIntId
       setFinalRound(true)
-    } else {
+    } 
+    if (data !== 27 && key === "round") {
       setFinalRound(false)
     }
 

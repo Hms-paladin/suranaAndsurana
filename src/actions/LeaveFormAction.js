@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from 'moment';
 import { GET_EMP_APPROVAL, UPDATE_EMP_APPROVAL } from '../utils/Constants'
 import { notification } from "antd";
-// Leave Type (CEP)
+import { getOtherTask } from "./TodoListAction";
 
 //Professional_course
 
@@ -328,17 +328,18 @@ export const getEmpApproval = (data) => async dispatch => {
 
 
 export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => {
+    // console.log(leaveStatus,"leaveStatus")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'update_leave_approval',
             data: {
                 "emp_leave_id": leaveId,
-                "approve_status": leaveStatus === true ?1:2
+                "approve_status": leaveStatus === true ?1:0
             },
         })
             .then((response) => {
-                dispatch(getEmpApproval(leaveId))
+                dispatch(getOtherTask())
                 return Promise.resolve();
             })
     }

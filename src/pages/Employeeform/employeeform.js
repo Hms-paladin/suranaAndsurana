@@ -366,7 +366,7 @@ function Employeeform(props) {
                                 <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id ? val.resume_id : ""}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === 1 || val.gender === "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row2flex2">
                                 <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skill_name ? val.skill_name : "-"}</div></div>
@@ -378,7 +378,7 @@ function Employeeform(props) {
                                 <div className="employeeform_r2"><div className="headcolor">Employee Code</div><div className="employeecont">{val.employee_code ? val.employee_code : "-"}</div></div>
                                 <div className="employeeform_r2"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r2"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                                <div className="employeeform_r2"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                                <div className="employeeform_r2"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === 1 || val.gender === "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row3">
                                 <div className="employeeform_r2 "><div className="headcolor">Date of Joining</div><div className="employeecont">{val.doj ? val.doj : "-"}</div></div>
