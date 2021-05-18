@@ -586,9 +586,9 @@ const ResumePage = (props) => {
 
   return (
     <div>
-      <Grid item xs={12} className="ContentTitle">
-        {props.EditResume?"":"Add Resume"}
-      </Grid>
+      {props.EditResume?null:<Grid item xs={12} className="ContentTitle">
+        Add Resume
+      </Grid>}
       <div className="Container">
         <div className="leftContainer">
           <Grid container spacing={3}>
@@ -637,10 +637,10 @@ const ResumePage = (props) => {
                 <div className="genderDobFlex">
                   <Labelbox
                     type="datepicker"
-                    // placeholder={"Date of Birth *"}
+                    placeholder={props.EditResume?"":"Date of Birth *"}
                     disableFuture={true}
                     changeData={(data) => checkValidation(data, "DOB")}
-                    value={Resume_Form.DOB.value}
+                    value={props.EditResume?"09-Mar-2021":Resume_Form.DOB.value}
                     error={Resume_Form.DOB.error}
                     errmsg={Resume_Form.DOB.errmsg}
                   />
