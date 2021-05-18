@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback} from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from "../../component/Butttons/button";
@@ -46,6 +46,7 @@ const RateMaster = (props) => {
   const [activity_id, setActivity_id] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [project_id,setproject_id]=useState(false)
+  // props.setShowSearchTable = props.setShowSearchTable.bind(this);
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -143,9 +144,15 @@ const RateMaster = (props) => {
     setvarRateList({ rateList });
     // permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
+  const SearchTable = useCallback( () => {
+    props.setShowSearchTable()
+    props.handleChangeCloseModel()
+  }, []);
+  
 
   const onSubmit = () => {
-
+    
+    setNotfoundmodel(false)
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
     for (var i in targetkeys) {
@@ -162,17 +169,34 @@ const RateMaster = (props) => {
     );
     if (filtererr.length > 0) {
       // setRateMaster({ error: true });
-
     } else {
-      dispatch(InsertVariableRate(RateMaster)).then((response) => {
+      if(variablebtnchange===false){
         dispatch(SearchVariableRate(RateMaster)).then((response) => {
-          setNotfoundmodel(false);
-          // props&&props.setShowSearchTable()
-          // props.handleChangeCloseModel()
-        })
-        handleCancel();
+          props.setShowSearchTable()
+          handleCancel();
+
+       })
+      }
+      else{
+      dispatch(InsertVariableRate(RateMaster)).then((response) => {
+        // dispatch(SearchVariableRate(RateMaster)).then((response) => {
+        //   // setNotfoundmodel(false);
+        //   SearchTable()
+        //    props.setShowSearchTable()
+        //   // props.handleChangeCloseModel()
+        // })
+        // if(variablebtnchange===true){
+          // handleCancel()
+        // }
+        setNotfoundmodel(false);
+      
 
       });
+    }
+     
+      
+
+      
     }
     // console.log(props.lenghtData, "props.lenghtData")
     console.log("ratemasterdddd",RateMaster)
@@ -302,6 +326,7 @@ const RateMaster = (props) => {
   };
 
   useEffect(() => {
+    console.log("propslength",props.lenghtData!==0)
     if (props.lenghtData !== 0) {
       setNotfoundmodel(false);
     } else {
@@ -463,6 +488,7 @@ const RateMaster = (props) => {
     dispatch(SearchVariableRate(RateMaster))
       .then(() => {
         props.setShowSearchTable()
+        setNotfoundmodel(false)
       })
 
     setRateMaster((prevState) => ({
