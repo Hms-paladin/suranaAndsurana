@@ -496,7 +496,7 @@ function ProjectFormCreate(props) {
     if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length === 0) {
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
-          // handleCancel();
+          handleCancel();
         }
       );
     }
@@ -505,7 +505,7 @@ function ProjectFormCreate(props) {
     else if (filtererr.length == 0) {
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
-          // handleCancel();
+          handleCancel();
         }
       );
     }

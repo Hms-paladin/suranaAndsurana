@@ -702,7 +702,7 @@ console.log(showVariableTable,"showVariableTable")
 
                             </Grid>
                             <Grid item xs={12}>
-                                <div className="Fields">
+                                <div className="projectIpFields">
                                     {props.ProjectDetails[0] && props.ProjectDetails[0].filing_type !== null && <div className="projectIpdata">
                                         <div className="projectTitle">Filing Type</div>
                                         <div>{data.filing_type}</div>
