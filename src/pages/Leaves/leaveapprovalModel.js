@@ -100,6 +100,7 @@ function LeaveApproval(props) {
       placement: "topRight",
     });
   }; 
+  console.log("ApprovalData",ApprovalData)
     return (
         <div className="leaveContainer">
             <div className="leaveModelFields">
@@ -114,7 +115,7 @@ function LeaveApproval(props) {
                 {ApprovalData[0]&&ApprovalData[0].leave_typeId === 40 &&
                     <> <div>
                         <div>Referred by</div>
-                        <div className="fielddataView">-</div>
+                        <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].assginedby}</div>
                     </div>
                         <div>
                             <div>Professional Course</div>
@@ -126,7 +127,7 @@ function LeaveApproval(props) {
                     <>
                         <div>
                             <div>Date</div>
-                            <div className="fielddataView">-</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].from!==null?ApprovalData[0].from:''} </div>
                         </div>
                         <div>
                             <div>From </div>
@@ -171,7 +172,7 @@ function LeaveApproval(props) {
                 </>}
             </div>
             <div className="leaveModelFields">
-                {(ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
+                {(!ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
                 ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId ===37) &&
                     <>
                         <div>
@@ -200,7 +201,7 @@ function LeaveApproval(props) {
                 {ApprovalData[0]&&ApprovalData[0].leave_typeId === 40 &&
                     <><div>
                         <div>Assignment Description</div>
-                        <div className="fielddataView">-</div><br />
+                        <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].leavereason}</div><br />
                         <div>Remarks</div>
                         <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].remarks}</div>
                     </div>
