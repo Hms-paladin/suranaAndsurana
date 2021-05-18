@@ -125,7 +125,7 @@ const UserMaster = (props) => {
   ];
   const header17 = [
     { id: "activity", label: "Activity" },
-    { id: "activityname", label: "Activity Name" },
+    { id: "activityname", label: "Sub Activity Name" },
     { id: "edit", label: "Edit" },
   ];
   const header18 = [

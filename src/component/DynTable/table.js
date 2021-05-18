@@ -251,12 +251,13 @@ export default function EnhancedTable(props) {
   };
 
   const handleChangePage = (event, newPage) => {
+    alert(newPage)
     setPage(newPage);
    
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
+    setRowsPerPage(+event.target.value,10);
     setPage(0);
     
   };
