@@ -184,8 +184,8 @@ const StagesMaster = (props) => {
    
      if (data === 1 && key == "project_type") {
       ValidationHide()
-      RateMaster.sub_project_type.validation.push({name:"required"})
-      RateMaster.process_type.validation.push({name:"required"})
+      // RateMaster.sub_project_type.validation.push({name:"required"})
+      // RateMaster.process_type.validation.push({name:"required"})
       dispatch(getProjectSubType(data))
       setEnabled(false)
     } else if (data !== 1 && key == "project_type")
