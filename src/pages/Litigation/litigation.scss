@@ -82,8 +82,29 @@
     border-radius: 10px;
     margin-bottom: 8px;
     .ourCounselFieldsHeading{
+      
         display: flex;
-        justify-content: space-around;
+        font-weight: 600;
+        font-size: 17px;
+        margin: 5px 0px;
+        // justify-content: space-around;
+    }
+    .ourCounselFieldsHeadings{
+       
+        display: flex;
+        // justify-content: space-around;
+    }
+    .nameFields{
+        width: 15%;
+    }
+    .phoneFields{
+        width: 15%;
+    }
+    .mailFields{
+        width: 25%;
+    }
+    .addressFields{
+        width: 35%;
     }
 
 }

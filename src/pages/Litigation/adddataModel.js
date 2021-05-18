@@ -26,19 +26,19 @@ const AddDataModel = (props) => {
     },
     name: {
       value: "",
-      validation: [],
+      validation: [{ name: "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     phoneno: {
       value: "",
-      validation: [],
+      validation: [{ name: "mobileSurana" }],
       error: null,
       errmsg: null,
     },
     emailid: {
       value: "",
-      validation: [],
+      validation: [{ name: "email" }],
       error: null,
       errmsg: null,
     },
