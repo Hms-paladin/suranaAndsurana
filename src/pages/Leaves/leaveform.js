@@ -42,7 +42,8 @@ function LeaveForm(props) {
     const [editBtn, setEditBtn] = useState(false)
     const [leaveFormTable, setLeaveFormTable] = useState({});
     const [emp_leave_id, setEmp_leave_id] = useState(0)
-    const [dateval,setDateVal]=useState(false)
+    const [dateval, setDateVal] = useState(false)
+    const [samedateval, setSameDateVal] = useState([])
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
@@ -244,12 +245,6 @@ function LeaveForm(props) {
         setFileData(val.hall_ticket)
         val.subject_details != "" ? setExamSchedule(val.subject_details) : setExamSchedule([])
 
-        // let errorcheck=ValidationLibrary.checkValidation(
-        //     val.from_date,
-        //     Leave_Form["fromdate"].validation)
-        // Leave_Form.fromdate.error = !errorcheck.state
-        //     console.log(Leave_Form.fromdate.error,"Leave_Form.fromdate.error")
-
         // setEmp_leave_cep_sub_id(val.emp_leave_cep_sub_id)
         setEmp_leave_id(val.emp_leave_id)
 
@@ -257,7 +252,7 @@ function LeaveForm(props) {
             ...prevState,
         }));
 
-        
+
         console.log(val.leave_type_id, "leave_type_id")
     }
     console.log(examSchedule, "Leave_Form")
@@ -301,11 +296,10 @@ function LeaveForm(props) {
     }, [props.LeaveType, props.SubjectList, props.stateDemo, props.EmployeeList, props.getClientlist])
 
     function checkValidation(data, key) {
+
         if (key === "fromtime") {
             console.log(moment(data).format('HH:mm:ss'), "check")
         }
-
-
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -435,7 +429,14 @@ function LeaveForm(props) {
         setLeaveFormTable(updatelist);
 
     }, [props.getLeaveForm])
-
+    const handletempbtn = () => {
+        let dates_arr = []
+        leaveFormTable.map((data) => {
+            dates_arr.push({ from: data.fromdate, to: data.todate })
+        })
+        setSameDateVal(dates_arr)
+    }
+    console.log(samedateval, "datatemp")
     const hideValidation = (From_key) => {
         From_key.map((data) => {
             try {
@@ -512,7 +513,17 @@ function LeaveForm(props) {
     }
 
     const onUpdate = (value) => {
-        console.log(Leave_Form.fromtime.value, "valuetype")
+
+        let curdate = moment(new Date()).format("DD-MM-YYYY")
+        let fromdateval = moment(Leave_Form["fromdate"].value).format("DD-MM-YYYY")
+        let todateval = moment(Leave_Form["todate"].value).format("DD-MM-YYYY")
+        let dateVal = false
+        if (fromdateval < curdate || todateval < curdate) {
+            dateVal = true
+        }
+
+
+
         if (Leave_Form.leavetype.value) {
             if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
                 const From_key = [
@@ -550,8 +561,9 @@ function LeaveForm(props) {
         }
         var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
         if (filtererr.length > 0) {
-            alert(filtererr.length)
+
         }
+        else if (dateVal) { }
         else {
             if (value === "othertype") {
                 dispatch(updateLeaveFrom(Leave_Form, emp_leave_id)).then((response) => {
@@ -570,7 +582,7 @@ function LeaveForm(props) {
             ...prevState,
         }));
     }
-    console.log(Leave_Form, "Leave_Form")
+
     const handleCancel = () => {
         setEditBtn(false)
         let From_key = [
@@ -595,9 +607,12 @@ function LeaveForm(props) {
         setEditBtn(false)
     }
     console.log(examSchedule, "examSchedule")
+    console.log(leaveFormTable, "Leaveformtable")
+
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
+            
             <div className="leaveFields">
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={3}>
@@ -619,7 +634,7 @@ function LeaveForm(props) {
                             minDate={new Date()}
                             error={Leave_Form.fromdate.error}
                             errmsg={Leave_Form.fromdate.errmsg}
-                             />
+                        />
                         </div>
                     </Grid>
                         <Grid item xs={3}>
@@ -627,7 +642,7 @@ function LeaveForm(props) {
                             <div> <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "todate")}
                                 value={Leave_Form.todate.value}
-                                minDate={minDate}
+                                minDate={new Date()}
                                 error={Leave_Form.todate.error}
                                 errmsg={Leave_Form.todate.errmsg} />
                             </div>
@@ -760,7 +775,29 @@ function LeaveForm(props) {
                     }
                     {Leave_Form.leavetype.value === 40 &&
                         <>
-                            <Grid item xs={9}></Grid>
+
+                            <Grid item xs={3}>
+                                <div className="leaveFieldheading">From Date</div>
+                                <div>  <Labelbox type="datepicker"
+                                    changeData={(data) => checkValidation(data, "fromdate")}
+                                    value={Leave_Form.fromdate.value}
+                                    minDate={new Date()}
+                                    error={Leave_Form.fromdate.error}
+                                    errmsg={Leave_Form.fromdate.errmsg}
+                                />
+                                </div>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <div className="leaveFieldheading">To Date</div>
+                                <div> <Labelbox type="datepicker"
+                                    changeData={(data) => checkValidation(data, "todate")}
+                                    value={Leave_Form.todate.value}
+                                    minDate={new Date()}
+                                    error={Leave_Form.todate.error}
+                                    errmsg={Leave_Form.todate.errmsg} />
+                                </div>
+                            </Grid>
+
                             <Grid item xs={12}><div className="leaveMainHeader">Managing Partner Permission Date </div></Grid>
                             <Grid item xs={3}><Labelbox type="select"
                                 placeholder="Referred By"
