@@ -144,6 +144,7 @@ const RateMaster = (props) => {
     setvarRateList({ rateList });
     // permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
+  
   const SearchTable = useCallback( () => {
     props.setShowSearchTable()
     props.handleChangeCloseModel()

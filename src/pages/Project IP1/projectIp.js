@@ -723,7 +723,7 @@ console.log(showVariableTable,"showVariableTable")
                                         <div className="projectTitle">Filing Type</div>
                                         <div>{data.filing_type}</div>
                                     </div>}
-                                    <div className="data">
+                                    <div className="projectIpdata">
                                         <div className="projectTitle">Billable Type</div>
                                         <div>{data.billable_type}</div>
                                     </div>
@@ -731,7 +731,7 @@ console.log(showVariableTable,"showVariableTable")
                                         <div className="projectTitle">HOD / Attorney</div>
                                         <div>{data.HR}</div>
                                     </div>
-                                    <div className="data">
+                                    <div className="projectIpdata">
                                         <div className="projectTitle">Counsel</div>
                                         <div>{data.councel}</div>
                                     </div>

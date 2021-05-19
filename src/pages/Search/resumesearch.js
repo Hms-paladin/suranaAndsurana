@@ -4,7 +4,8 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Radio, Select, Checkbox } from 'antd';
 import EnhancedTable from '../../component/DynTable/table';
 import DynModel from './model';
-
+import DynModelcom from "../../component/Model/model";
+import { GetResumeList } from '../../actions/ResumeAction';
 import { useDispatch, connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
@@ -16,7 +17,7 @@ import DynModelView from "../Interview/model";
 import './search.scss'
 import ResumeForm from '../Resume/resume';
 import Edit from "../../images/editable.svg";
-import DynModelEdit from './DynModelEdit'
+// import ResumePage from '../Resume/resume'
 
 
 
@@ -48,6 +49,7 @@ function Resumesearch(props) {
     const [test, setTest] = useState(true)
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
     const [viewId, setViewId] = useState("")
+    const [editResumeRow, setEditResumeRow] = useState({})
     const [candidateViewModel, setCandidateViewModel] = useState(false)
     const [editModel, setEditModel] = useState(false)
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
@@ -244,7 +246,7 @@ function Resumesearch(props) {
         setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList, qualification })
     }, [props.GetOptions])
 
-    
+
     const handleCheck = (event, resume_id) => {
         if (selectedCandidateId.includes(resume_id)) {
             selectedCandidateId.map((data, index) => {
@@ -277,13 +279,28 @@ function Resumesearch(props) {
                 })
             )
         })
-        obj=[];
+        obj = [];
     }
-    console.log(checkList, "checkList")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
     }
+    const editResume = (id) => {
+        // setEditId(id)
+        dispatch(GetResumeList(id))
+
+        setEditModel(true)
+    }
+
+
+
+    useEffect(() => {
+        setEditResumeRow(props.GetResumeList[0]?.result)
+    }, [props.GetResumeList])
+
+    console.log(editResumeRow, "GetResumeList")
+
+
 
     useEffect(() => {
         let rowDataList = []
@@ -297,7 +314,7 @@ function Resumesearch(props) {
                 />  <img
                         src={Edit}
                         className="viewCandidatesList"
-                        onClick={() => setEditModel(true)}
+                        onClick={() => editResume(data.resume_id)}
                     // onClick={() => viewCandidate(data.resume_id)}
                     />
                 </>, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
@@ -312,6 +329,12 @@ function Resumesearch(props) {
         console.log()
     }, [props.GetRowData, test, checkList])
 
+    // const resumeEditPage = () => {
+    //     return (
+    //         <ResumeForm resumeEditid={editId} />
+
+    //     )
+    // }
 
 
     function onSearch() {
@@ -463,11 +486,12 @@ function Resumesearch(props) {
                 handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
                 res_data_id={viewId}
             />
-            <DynModelEdit
+            <DynModelcom
                 modelTitle={"Edit Resume"}
                 handleChangeModel={editModel}
                 handleChangeCloseModel={(bln) => setEditModel(bln)}
-            // res_data_id={viewId}
+                content={<ResumeForm resumeEditrow={editResumeRow} />}
+                width={1000}
             />
         </div>
 
@@ -477,7 +501,9 @@ function Resumesearch(props) {
 const mapStateToProps = state => ({
     ResumeSearchStatus: state.ResumeSearchStatus,
     GetOptions: state.getOptions,
-    GetRowData: state.getResumeSearchRowdata
+    GetRowData: state.getResumeSearchRowdata,
+    GetResumeList: state.GetResumeList || []
+
 })
 
 export default connect(mapStateToProps)(Resumesearch);

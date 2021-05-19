@@ -71,6 +71,7 @@ function ExperienceModel(props) {
     })
 
     useEffect(() => {
+        console.log(props.editExperiences,"props.editExperiences")
         const industry = props.editExperiences?.type_of_industry;
         const compName = props.editExperiences?.company_name;
         const city = props.editExperiences?.city;

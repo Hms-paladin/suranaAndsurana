@@ -4,7 +4,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import CustomButton from "../../component/Butttons/button";
-import { InesertResume } from "../../actions/ResumeAction";
+import { InesertResume, UpdateResume } from "../../actions/ResumeAction";
 import EducationModel from "./educationModel";
 import ExperienceModel from "./experienceModel";
 import PlusIcon from "../../images/plusIcon.svg";
@@ -395,7 +395,37 @@ const ResumePage = (props) => {
   console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
 
 
-  function onSubmit() {
+  useEffect(() => {
+
+  }, [])
+
+  useEffect(() => {
+    // console.log(props.resumeEditrow, "props.resumeEditrow")
+
+    if (props.resumeEditrow && props.resumeEditrow.length > 0) {
+      Resume_Form.candidate.value = props.resumeEditrow[0].type_of_resource
+      Resume_Form.name.value = props.resumeEditrow[0].name
+      Resume_Form.gender.value = props.resumeEditrow[0].gender
+      Resume_Form.DOB.value = props.resumeEditrow[0].dob
+      Resume_Form.contactPhone.value = props.resumeEditrow[0].con_ph_no
+      Resume_Form.emailId.value = props.resumeEditrow[0].email_addr
+      Resume_Form.mailAddress.value = props.resumeEditrow[0].email_addr
+      Resume_Form.state.value = props.resumeEditrow[0].status_resource
+      Resume_Form.city.value = props.resumeEditrow[0].city
+      Resume_Form.language.value = props.resumeEditrow[0].language
+      Resume_Form.linkedin.value = props.resumeEditrow[0].status_resource
+      Resume_Form.twitter.value = props.resumeEditrow[0].status_resource
+
+    }
+    else {
+
+    }
+
+  }, [props.resumeEditrow])
+
+
+
+  function onSubmit(text) {
     var mainvalue = {};
     var targetkeys = Object.keys(Resume_Form);
     for (var i in targetkeys) {
@@ -416,13 +446,21 @@ const ResumePage = (props) => {
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
-    } else if (
-      educationList.length !== 0 &&
+    } else if (text === "SAVE" && educationList.length !== 0 &&
       (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0
     ) {
+      alert("test2")
       // setResumeFrom({ error: false });
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
+        () => {
+          handleCancel();
+        }
+      );
+    }
+    else if (text === "UPDATE") {
+      alert("test1")
+      dispatch(UpdateResume(Resume_Form, educationList, experienceList)).then(
         () => {
           handleCancel();
         }
@@ -586,7 +624,7 @@ const ResumePage = (props) => {
 
   return (
     <div>
-      {props.EditResume?null:<Grid item xs={12} className="ContentTitle">
+      {props.EditResume ? null : <Grid item xs={12} className="ContentTitle">
         Add Resume
       </Grid>}
       <div className="Container">
@@ -609,7 +647,7 @@ const ResumePage = (props) => {
                 type="text"
                 placeholder={"Name *"}
                 changeData={(data) => checkValidation(data, "name")}
-                value={props.EditResume?"Rajesh":Resume_Form.name.value}
+                value={Resume_Form.name.value}
                 error={Resume_Form.name.error}
                 errmsg={Resume_Form.name.errmsg}
                 maxLength={100}
@@ -637,10 +675,10 @@ const ResumePage = (props) => {
                 <div className="genderDobFlex">
                   <Labelbox
                     type="datepicker"
-                    placeholder={props.EditResume?"":"Date of Birth *"}
+                    placeholder={"Date of Birth *"}
                     disableFuture={true}
                     changeData={(data) => checkValidation(data, "DOB")}
-                    value={props.EditResume?"09-Mar-2021":Resume_Form.DOB.value}
+                    value={Resume_Form.DOB.value}
                     error={Resume_Form.DOB.error}
                     errmsg={Resume_Form.DOB.errmsg}
                   />
@@ -652,7 +690,7 @@ const ResumePage = (props) => {
                 type="text"
                 placeholder={"Contact Phone *"}
                 changeData={(data) => checkValidation(data, "contactPhone")}
-                value={props.EditResume?"9871290989":Resume_Form.contactPhone.value}
+                value={Resume_Form.contactPhone.value}
                 error={Resume_Form.contactPhone.error}
                 errmsg={Resume_Form.contactPhone.errmsg}
               />
@@ -662,7 +700,7 @@ const ResumePage = (props) => {
                 type="text"
                 placeholder={"Email ID *"}
                 changeData={(data) => checkValidation(data, "emailId")}
-                value={props.EditResume?"Rajesh@gmail.com":Resume_Form.emailId.value}
+                value={Resume_Form.emailId.value}
                 error={Resume_Form.emailId.error}
                 errmsg={Resume_Form.emailId.errmsg}
               />
@@ -672,7 +710,7 @@ const ResumePage = (props) => {
                 type="text"
                 placeholder={"Mail Address *"}
                 changeData={(data) => checkValidation(data, "mailAddress")}
-                value={props.EditResume?"UserRajesh":Resume_Form.mailAddress.value}
+                value={Resume_Form.mailAddress.value}
                 error={Resume_Form.mailAddress.error}
                 errmsg={Resume_Form.mailAddress.errmsg}
               />
@@ -683,7 +721,7 @@ const ResumePage = (props) => {
                 placeholder={"State of Domicile *"}
                 dropdown={resumeGetList.stateList}
                 changeData={(data) => checkValidation(data, "state")}
-                value={props.EditResume?"TamilNadu":Resume_Form.state.value}
+                value={Resume_Form.state.value}
                 error={Resume_Form.state.error}
                 errmsg={Resume_Form.state.errmsg}
               />
@@ -694,7 +732,7 @@ const ResumePage = (props) => {
                 placeholder={"City *"}
                 dropdown={resumeGetList.cityList}
                 changeData={(data) => checkValidation(data, "city")}
-                value={props.EditResume?"Chennai":Resume_Form.city.value}
+                value={Resume_Form.city.value}
                 error={Resume_Form.city.error}
                 errmsg={Resume_Form.city.errmsg}
               />
@@ -727,7 +765,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Linkedin"}
                   changeData={(data) => checkValidation(data, "linkedin")}
-                  value={props.EditResume?"RajeshLinkedIn":Resume_Form.linkedin.value}
+                  value={Resume_Form.linkedin.value}
                   error={Resume_Form.linkedin.error}
                   errmsg={Resume_Form.linkedin.errmsg}
                 />
@@ -737,7 +775,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Twitter"}
                   changeData={(data) => checkValidation(data, "twitter")}
-                  value={props.EditResume?"RajeshTwitter":Resume_Form.twitter.value}
+                  value={Resume_Form.twitter.value}
                   error={Resume_Form.twitter.error}
                   errmsg={Resume_Form.twitter.errmsg}
                 />
@@ -891,7 +929,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Achievements"}
                   changeData={(data) => checkValidation(data, "achivements")}
-                  value={props.EditResume?"Rank Holder":Resume_Form.achivements.value}
+                  value={Resume_Form.achivements.value}
                   error={Resume_Form.achivements.error}
                   errmsg={Resume_Form.achivements.errmsg}
                 />
@@ -955,7 +993,7 @@ const ResumePage = (props) => {
                 // dropdown={resumeGetList.interestList}
                 // changeData={(data) => checkValidation(data, "intrests", resumeGetList.interestList)}
                 changeData={(data) => checkValidation(data, "intrests")}
-                value={props.EditResume?"Digital Marketing":Resume_Form.intrests.value}
+                value={Resume_Form.intrests.value}
                 error={Resume_Form.intrests.error}
                 errmsg={Resume_Form.intrests.errmsg}
               />
@@ -973,7 +1011,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Name 1"}
                   changeData={(data) => checkValidation(data, "name1")}
-                  value={props.EditResume?"XXX":Resume_Form.name1.value}
+                  value={Resume_Form.name1.value}
                   error={Resume_Form.name1.error}
                   errmsg={Resume_Form.name1.errmsg}
                 />
@@ -983,7 +1021,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Organization 1"}
                   changeData={(data) => checkValidation(data, "organization1")}
-                  value={props.EditResume?"YYY":Resume_Form.organization1.value}
+                  value={Resume_Form.organization1.value}
                   error={Resume_Form.organization1.error}
                   errmsg={Resume_Form.organization1.errmsg}
                 />
@@ -1002,7 +1040,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Email 1"}
                   changeData={(data) => checkValidation(data, "email1")}
-                  value={props.EditResume?"XXX@gmail.com":Resume_Form.email1.value}
+                  value={Resume_Form.email1.value}
                   error={Resume_Form.email1.error}
                   errmsg={Resume_Form.email1.errmsg}
                 />
@@ -1012,7 +1050,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Phone Number 1"}
                   changeData={(data) => checkValidation(data, "phone1")}
-                  value={props.EditResume?"7098678908":Resume_Form.phone1.value}
+                  value={Resume_Form.phone1.value}
                   error={Resume_Form.phone1.error}
                   errmsg={Resume_Form.phone1.errmsg}
                 />
@@ -1031,7 +1069,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Name 2"}
                   changeData={(data) => checkValidation(data, "name2")}
-                  value={props.EditResume?"ZZZ":Resume_Form.name2.value}
+                  value={Resume_Form.name2.value}
                   error={Resume_Form.name2.error}
                   errmsg={Resume_Form.name2.errmsg}
                 />
@@ -1041,7 +1079,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Organization 2"}
                   changeData={(data) => checkValidation(data, "organization2")}
-                  value={props.EditResume?"ABC":Resume_Form.organization2.value}
+                  value={Resume_Form.organization2.value}
                   error={Resume_Form.organization2.error}
                   errmsg={Resume_Form.organization2.errmsg}
                 />
@@ -1060,7 +1098,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Email 2"}
                   changeData={(data) => checkValidation(data, "email2")}
-                  value={props.EditResume?"ZZZ@gmail.com":Resume_Form.email2.value}
+                  value={Resume_Form.email2.value}
                   error={Resume_Form.email2.error}
                   errmsg={Resume_Form.email2.errmsg}
                 />
@@ -1070,7 +1108,7 @@ const ResumePage = (props) => {
                   type="text"
                   placeholder={"Reference Phone 2"}
                   changeData={(data) => checkValidation(data, "phone2")}
-                  value={props.EditResume?"9877675096":Resume_Form.phone2.value}
+                  value={Resume_Form.phone2.value}
                   error={Resume_Form.phone2.error}
                   errmsg={Resume_Form.phone2.errmsg}
                 />
@@ -1159,9 +1197,9 @@ const ResumePage = (props) => {
               className="resumeBtnContainer"
             >
               <CustomButton
-                btnName={props.EditResume?"UPDATE":"SAVE"}
+                btnName={props.EditResume ? "UPDATE" : "SAVE"}
                 btnCustomColor="customPrimary"
-                onBtnClick={onSubmit}
+                onBtnClick={() => onSubmit(props.EditResume ? "UPDATE" : "SAVE")}
               />
               <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
             </Grid>
@@ -1206,23 +1244,27 @@ const ResumePage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  getResourcesType: state.getOptions.getResourcesType || [],
-  getInstitute: state.getOptions.getInstitute || [],
-  getSpecialInterest: state.getOptions.getSpecialInterest || [],
-  getState: state.getOptions.getState || [],
-  getCity: state.getOptions.getCity || [],
-  getLanguages: state.getOptions.getLanguages || [],
-  getSkills: state.getOptions.getSkills || [],
-  getTraits: state.getOptions.getTraits || [],
-  getCertification: state.getOptions.getCertification || [],
-  getAchievement: state.getOptions.getAchievement || [],
-  getSpecilization: state.getOptions.getSpecilization || [],
-  getCapability: state.getOptions.getCapability || [],
-  getTalents: state.getOptions.getTalents || [],
-  getStatus: state.getOptions.getStatus || [],
-  getQualification: state.getOptions.getQualification || [],
-  getIndustry: state.getOptions.getIndustry || [],
-});
+const mapStateToProps = (state) => (
+  console.log(state, "checkstate"),
+  {
+    getResourcesType: state.getOptions.getResourcesType || [],
+    getInstitute: state.getOptions.getInstitute || [],
+    getSpecialInterest: state.getOptions.getSpecialInterest || [],
+    getState: state.getOptions.getState || [],
+    getCity: state.getOptions.getCity || [],
+    getLanguages: state.getOptions.getLanguages || [],
+    getSkills: state.getOptions.getSkills || [],
+    getTraits: state.getOptions.getTraits || [],
+    getCertification: state.getOptions.getCertification || [],
+    getAchievement: state.getOptions.getAchievement || [],
+    getSpecilization: state.getOptions.getSpecilization || [],
+    getCapability: state.getOptions.getCapability || [],
+    getTalents: state.getOptions.getTalents || [],
+    getStatus: state.getOptions.getStatus || [],
+    getQualification: state.getOptions.getQualification || [],
+    getIndustry: state.getOptions.getIndustry || [],
+
+  }
+);
 
 export default connect(mapStateToProps)(ResumePage);
