@@ -327,11 +327,13 @@ const RateMaster = (props) => {
 
   useEffect(() => {
     console.log("propslength",props.lenghtData!==0)
+    if(variablebtnchange){
     if (props.lenghtData !== 0) {
       setNotfoundmodel(false);
     } else {
       setNotfoundmodel(true)
     }
+  }
 
   }, [props.searchVariableRate, props.lenghtData]);
   useEffect(() => {

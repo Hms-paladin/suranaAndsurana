@@ -73,8 +73,7 @@ import SuccessIcon from "../../images/successicon.svg";
 import AddVarData from "../../images/addvardata.svg";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";
-import {InsertProjectVariableRate,getProjectVariableRate } from "../../actions/VariableRateMaster"
-
+import {InsertProjectVariableRate,getProjectVariableRate,deleteVariableRate,UpdateVariableRate} from "../../actions/VariableRateMaster"
 
 const { TabPane } = Tabs;
 
@@ -103,7 +102,6 @@ function ProjectIp(props) {
    
     const [disableCondition, setDisableCondition] = useState(true);
     const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
-
     const [applicableamount, setApplicableamount] = useState({});
 
     function callback(key) {
@@ -416,14 +414,26 @@ console.log(projectSearchCreate,"projectSearchCreate")
             setVariableid(false);
           });
       }
-      const onDelete = (i) => {
-          console.log(i,"showVariableTable")
-        if (i > -1) {
-          showVariableTable.splice(i, 1);
-          sendVariableData.splice(i, 1);
-        }
-        setShowVariableTable([...showVariableTable]);
-        setSendVariableData([...sendVariableData]);
+      
+      function PlusInsertVariableRate() {
+        dispatch(InsertProjectVariableRate(sendVariableData)).then((response) => {
+            setVariableid(false);
+          });
+      }
+      const onDelete = (id) => {
+        dispatch(deleteVariableRate(id,props.getProjectVariableRate[0].project_id))
+        //   let storeshowVariableTable=showVariableTable.indexOf(i)
+        //   let storesendVariableData=showVariableTable.indexOf(i)
+        // if (id > -1) {
+        //   console.log(showVariableTable,"showid")
+        
+        //   showVariableTable.splice(id, 1);
+        //   sendVariableData.splice(id, 1);
+        // }
+        // setShowVariableTable([...showVariableTable]);
+        // setSendVariableData([...sendVariableData]);
+        // console.log(showVariableTable,"showid")
+
       };
 
       const onchangeAmount = (data, key) => {
@@ -447,9 +457,11 @@ console.log(projectSearchCreate,"projectSearchCreate")
         // setDisableCondition(false)
         // }
       };
-
+   const AddUpdateVariableRate=(id)=>{
+      dispatch(UpdateVariableRate(id))
+   }
   const addTempTable = (data, index) => {
-    applicableamount['amountapplicable' + parseInt(showVariableTable.length+1)] = data.Amount;
+    // applicableamount['amountapplicable' + parseInt(showVariableTable.length+1)] = data.Amount;
     console.log(showVariableTable.length,"applicableamount")
     const TabLen = showVariableTable.length;
     showVariableTable.push({
@@ -496,9 +508,14 @@ console.log(projectSearchCreate,"projectSearchCreate")
   useEffect(()=>{
     let searchVariableTableData = [];
     let sendprojVariableTableData = [];
-    
+    let tableData=[];
+    const TabLen = props.getProjectVariableRate.length;
+    console.log("ddddd",props.getProjectVariableRate)
     props.getProjectVariableRate.length>0 &&props.getProjectVariableRate.map((data, index) => {
+        tableData.push(data)
+        const Index=index
         applicableamount['amountapplicable' + index] = data.amount;
+
         searchVariableTableData.push({
       designation: data.designation,
       activity: data.activity,
@@ -519,11 +536,11 @@ console.log(projectSearchCreate,"projectSearchCreate")
           style={{ cursor: "pointer", width: 19 }}
           fontSize="small"
           
-          onClick={() => onDelete(index)}
+          onClick={() => onDelete(data.rate_master_id)}
         />
       ),
     });
-
+    setShowVariableTable([...showVariableTable]);
     sendprojVariableTableData.push({
         project_id:props.ProjectDetails[0].project_id,
         rate_master_id: data.rate_master_id,
@@ -542,6 +559,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
         if (props.lenghtData !== 0) {
           let searchVariableTableData = [];
           setNotfoundmodel(false);
+          console.log("sho")
           props.searchVariableRate.map((data, index) => {
             if (disableCondition) {
               projectSearchCreate['amountSearch' + index] = data.Amount;
@@ -567,7 +585,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
                 <img
                   src={PlusIcon}
                   style={{ cursor: "pointer", width: 19 }}
-                  onClick={() => addTempTable(data, index)}
+                  onClick={() => addTempTable(data,index)}
                 />
               ),
             });
@@ -618,15 +636,13 @@ console.log(showVariableTable,"showVariableTable")
                 </div>
                 </>
             )}
-                {showVariableTable.length !== 0 ? (
-                  
+{console.log(showVariableTable,"showid")}
+                {showVariableTable.length !==0&&
                   <div>
                         <div style={{fontSize:20,fontWeight:'bold'}}> Applicable Rates</div>
                             <EnhancedTable headCells={headers} rows={showVariableTable || []} />
-                  </div>
-                ) : (
-                  ""
-                )}
+                  </div>}
+               
 
                   <div className="VariableRateButton">
                     <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => onsubmitvariablerate()} />
@@ -931,6 +947,7 @@ const mapStateToProps = (state) => (
         ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
         searchVariableRate: state.variableRateMaster.searchVariableRate,
         getProjectVariableRate: state.variableRateMaster.getProjectVariableRate,
+        UpdateVariableRate:state.variableRateMaster.updateProjectVariableRate
     }
 );
 

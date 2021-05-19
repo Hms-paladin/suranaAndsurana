@@ -1,7 +1,8 @@
-import { GET_PROJECT_VARIABLE_RATE,GET_VARIABLERATE_TABLE_DATA,INSERT_VARIABLERATE ,SEARCH_VARIABLERATE} from '../utils/Constants.js'
+import { GET_PROJECT_VARIABLE_RATE,GET_VARIABLERATE_TABLE_DATA,INSERT_VARIABLERATE ,
+SEARCH_VARIABLERATE,UPDATE_VARIABLERATE} from '../utils/Constants.js'
 
 const intialState = {
-    getProjectVariableRate:[],getVariableRateTableData: [],insertVariableRateStatus:false,searchVariableRate:[],lengthData:""
+    getProjectVariableRate:[],getVariableRateTableData: [],insertVariableRateStatus:false,searchVariableRate:[],lengthData:"",updateProjectVariableRate:[]
 }
 
 export default function (state = intialState, action) {
@@ -15,6 +16,8 @@ export default function (state = intialState, action) {
                 return  { ...state, searchVariableRate: payload ,lengthData: payload.length}
         case GET_PROJECT_VARIABLE_RATE:
                 return  { ...state, getProjectVariableRate: payload ,lengthData: payload.length}
+        case UPDATE_VARIABLERATE:
+                return {...state, updateProjectVariableRate:payload,lengthData: payload.length}        
         default:
             return state;
     }
