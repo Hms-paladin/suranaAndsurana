@@ -400,8 +400,9 @@ const ResumePage = (props) => {
   }, [])
 
   useEffect(() => {
-    if (props.resumeEditrow > 0) {
-      console.log(props.resumeEditrow[0], "props.resumeEditrow")
+    // console.log(props.resumeEditrow, "props.resumeEditrow")
+
+    if (props.resumeEditrow && props.resumeEditrow.length > 0) {
       Resume_Form.candidate.value = props.resumeEditrow[0].type_of_resource
       Resume_Form.name.value = props.resumeEditrow[0].name
       Resume_Form.gender.value = props.resumeEditrow[0].gender
@@ -414,6 +415,9 @@ const ResumePage = (props) => {
       Resume_Form.language.value = props.resumeEditrow[0].language
       Resume_Form.linkedin.value = props.resumeEditrow[0].status_resource
       Resume_Form.twitter.value = props.resumeEditrow[0].status_resource
+
+    }
+    else {
 
     }
 
