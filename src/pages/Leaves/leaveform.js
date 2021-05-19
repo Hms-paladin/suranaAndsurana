@@ -13,6 +13,8 @@ import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
 import dateFormat from 'dateformat';
+
+import { notification } from "antd";
 import moment from 'moment';
 import './leaveupdate.scss';
 const headCells = [
@@ -42,8 +44,9 @@ function LeaveForm(props) {
     const [editBtn, setEditBtn] = useState(false)
     const [leaveFormTable, setLeaveFormTable] = useState({});
     const [emp_leave_id, setEmp_leave_id] = useState(0)
-    const [dateval, setDateVal] = useState(false)
     const [samedateval, setSameDateVal] = useState([])
+    const [starttime,setStartTime]=useState(new Date())
+    var duplicateDate = false
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
@@ -429,14 +432,17 @@ function LeaveForm(props) {
         setLeaveFormTable(updatelist);
 
     }, [props.getLeaveForm])
-    const handletempbtn = () => {
-        let dates_arr = []
-        leaveFormTable.map((data) => {
-            dates_arr.push({ from: data.fromdate, to: data.todate })
-        })
-        setSameDateVal(dates_arr)
-    }
+
+    // const handletempbtn = () => {
+    //     let dates_arr = []
+    //     leaveFormTable.map((data) => {
+    //         dates_arr.push({ from: data.fromdate, to: data.todate })
+    //     })
+    //     setSameDateVal(dates_arr)
+    // }
+   
     console.log(samedateval, "datatemp")
+
     const hideValidation = (From_key) => {
         From_key.map((data) => {
             try {
@@ -453,6 +459,15 @@ function LeaveForm(props) {
 
     function onSubmit(value) {
         console.log(Leave_Form.fromtime.value, "valuetype")
+
+        //Expired date validation
+        let starttime = moment(Leave_Form["fromtime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let endtime = moment(Leave_Form["totime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let timeVal = false
+        if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
+            timeVal = true
+        }
+
         if (Leave_Form.leavetype.value) {
             if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
                 const From_key = [
@@ -491,7 +506,10 @@ function LeaveForm(props) {
         var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
         if (filtererr.length > 0) {
 
-        } else {
+        }
+        else if (timeVal) { }
+        else if (duplicateDate) { }
+        else {
             if (Leave_Form.leavetype.value === 40) {
                 dispatch(insertLeaveCep(Leave_Form, examSchedule, filedata)).then(() => {
                     // dispatch(getLeaveForm(Leave_Form.leavetype.value));
@@ -514,6 +532,7 @@ function LeaveForm(props) {
 
     const onUpdate = (value) => {
 
+        //Expired date validation
         let curdate = moment(new Date()).format("DD-MM-YYYY")
         let fromdateval = moment(Leave_Form["fromdate"].value).format("DD-MM-YYYY")
         let todateval = moment(Leave_Form["todate"].value).format("DD-MM-YYYY")
@@ -522,6 +541,13 @@ function LeaveForm(props) {
             dateVal = true
         }
 
+        //Time compare validation
+        let starttime = moment(Leave_Form["fromtime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let endtime = moment(Leave_Form["totime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let timeVal = false
+        if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
+            timeVal = true
+        }
 
 
         if (Leave_Form.leavetype.value) {
@@ -564,6 +590,7 @@ function LeaveForm(props) {
 
         }
         else if (dateVal) { }
+        else if (timeVal) { }
         else {
             if (value === "othertype") {
                 dispatch(updateLeaveFrom(Leave_Form, emp_leave_id)).then((response) => {
@@ -607,12 +634,13 @@ function LeaveForm(props) {
         setEditBtn(false)
     }
     console.log(examSchedule, "examSchedule")
-    console.log(leaveFormTable, "Leaveformtable")
+    console.log(new Date().toLocaleTimeString(), "time")
+
 
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
-            
+           
             <div className="leaveFields">
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={3}>
@@ -704,7 +732,8 @@ function LeaveForm(props) {
                                     changeData={(data) => checkValidation(data, "fromtime")}
                                     value={Leave_Form.fromtime.value}
                                     error={Leave_Form.fromtime.error}
-                                    errmsg={Leave_Form.fromtime.errmsg} />
+                                    errmsg={Leave_Form.fromtime.errmsg} 
+                                   />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
