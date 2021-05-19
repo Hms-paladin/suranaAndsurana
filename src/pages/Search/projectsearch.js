@@ -399,12 +399,13 @@ function Projectsearch(props) {
           handleChangeCloseModel={(bln) => setModelOpen(bln)}
           content={<AdhocTaskModel />}
         />
-        <Link to="/">
+       
+        <Link to="/projectFormCreate">
           <CustomButton
             btnName={"Create Project "}
             btnCustomColor="customPrimary"
             custombtnCSS={"goSearchbtn"}
-            onBtnClick={() => setpathname("/projectFormCreate")}
+            // onBtnClick={() => setpathname("/projectFormCreate")}
           />
         </Link>
       </div>

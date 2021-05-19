@@ -2,18 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Modal } from 'antd';
 import ResumePage from '../Resume/resume'
 function DynModelEdit(props) {
-    const [editResume,setEditResume]=useState(true)
+    const [editResume, setEditResume] = useState(true)
     const [visible, setVisible] = useState(false)
     function handleCancel() {
         setVisible(false)
         props.handleChangeCloseModel(false)
     }
-    function edit_resume(){
+    function edit_resume() {
         setEditResume(!editResume)
     }
     useEffect(() => {
         setVisible(props.handleChangeModel)
     }, [props.handleChangeModel])
+
+    useEffect(() => {
+        console.log(props.resumeEditid, "resumeEditid")
+
+    }, [props.resumeEditid])
+
     return (
         < Modal
             className="modelContainer"
@@ -25,7 +31,7 @@ function DynModelEdit(props) {
             zIndex={1201}
             onCancel={handleCancel}>
             <div>
-               <ResumePage EditResume={editResume}/>
+                <ResumePage EditResume={editResume} Editid={props.resumeEditid} />
             </div>
         </Modal >
     )
