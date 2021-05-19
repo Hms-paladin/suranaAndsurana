@@ -180,6 +180,12 @@ function LeaveForm(props) {
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.todate.value) - Date.parse(Leave_Form.fromdate.value)) / 86400000)
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff + 1)
+
+        Leave_Form["tot_leave"].value =isNaN(diff) ? "" : (diff + 1)
+        Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
+        setLeaveForm(prevState => ({
+            ...prevState,
+        }));
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
     const onFileChange = (event) => {
@@ -312,12 +318,12 @@ function LeaveForm(props) {
             validation: Leave_Form[key].validation,
         };
 
-        if (data && key == "tot_leave") {
-            Leave_Form.exam_days.validation[1].params = data
-            setLeaveForm((prevState) => ({
-                ...prevState,
-            }));
-        }
+        // if (data && key == "tot_leave") {
+        //     Leave_Form.exam_days.validation[1].params = data
+        //     setLeaveForm((prevState) => ({
+        //         ...prevState,
+        //     }));
+        // }
 
         if (key === "leavetype" && data) {
             handleCancel()
@@ -472,7 +478,7 @@ function LeaveForm(props) {
             }
             else if (Leave_Form.leavetype.value === 40) {
                 const From_key = [
-                    "fromtime", "totime", "fromdate", "todate", "client", "assignedby", "address", "contactperson", "exam_date",
+                    "fromtime", "totime", "client", "assignedby", "address", "contactperson", "exam_date",
                 ];
                 hideValidation(From_key)
             }
@@ -543,7 +549,7 @@ function LeaveForm(props) {
             }
             else if (Leave_Form.leavetype.value === 40) {
                 const From_key = [
-                    "fromtime", "totime", "fromdate", "todate", "client", "assignedby", "address", "contactperson", "exam_date",
+                    "fromtime", "totime","client", "assignedby", "address", "contactperson", "exam_date",
                 ];
                 hideValidation(From_key)
             }
@@ -602,10 +608,7 @@ function LeaveForm(props) {
         }));
     };
 
-    const onCancel = () => {
-        handleCancel()
-        setEditBtn(false)
-    }
+
     console.log(examSchedule, "examSchedule")
     console.log(leaveFormTable, "Leaveformtable")
 
@@ -631,7 +634,7 @@ function LeaveForm(props) {
                         <div>  <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "fromdate")}
                             value={Leave_Form.fromdate.value}
-                            minDate={new Date()}
+                            minDate={Leave_Form.leavetype.value!==37&&new Date()}
                             error={Leave_Form.fromdate.error}
                             errmsg={Leave_Form.fromdate.errmsg}
                         />
@@ -642,7 +645,7 @@ function LeaveForm(props) {
                             <div> <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "todate")}
                                 value={Leave_Form.todate.value}
-                                minDate={new Date()}
+                                minDate={Leave_Form.leavetype.value!==37&&new Date()}
                                 error={Leave_Form.todate.error}
                                 errmsg={Leave_Form.todate.errmsg} />
                             </div>
@@ -704,7 +707,10 @@ function LeaveForm(props) {
                                     changeData={(data) => checkValidation(data, "fromtime")}
                                     value={Leave_Form.fromtime.value}
                                     error={Leave_Form.fromtime.error}
-                                    errmsg={Leave_Form.fromtime.errmsg} />
+                                    errmsg={Leave_Form.fromtime.errmsg} 
+                                    minTime={new Date(0, 0, 0, 8)}
+                                    maxTime={new Date(0, 0, 0, 18, 45)}
+                                    />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
@@ -717,7 +723,7 @@ function LeaveForm(props) {
 
                                 </div>
                             </Grid>
-                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>10 </div> </Grid>
+                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>{empLeaveBal} </div> </Grid>
                             {Leave_Form.leavetype.value === 39 ?
                                 <><Grid item xs={5}>
                                     <div className="leaveFieldheading">Client</div>
@@ -819,6 +825,7 @@ function LeaveForm(props) {
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading">Total Days of Leave</div>
                                 <div> <Labelbox type="text"
+                                disabled={true}
                                     changeData={(data) => checkValidation(data, "tot_leave")}
                                     value={Leave_Form.tot_leave.value}
                                     error={Leave_Form.tot_leave.error}
@@ -971,7 +978,7 @@ function LeaveForm(props) {
                         <Grid item xs={4}>
                             {editBtn ? <CustomButton btnName={"Update"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onUpdate(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} /> :
                                 Leave_Form.leavetype.value >= 35 && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
-                        {Leave_Form.leavetype.value >= 35 && <Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={onCancel} /></Grid>}
+                        {Leave_Form.leavetype.value >= 35 && <Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} /></Grid>}
                     </Grid></Grid>
             </div>
             {/* {Leave_Form.leavetype.value !== 40 &&  */}

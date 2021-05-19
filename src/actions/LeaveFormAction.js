@@ -201,9 +201,12 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
     DocumentData.set("employee_id", localStorage.getItem("empId"))
     DocumentData.set("leave_type_id", Leave_Form.leavetype.value)
     DocumentData.set("professional_course_id", Leave_Form.profess_course.value || 0)
-    DocumentData.set("total_days_leave", Leave_Form.tot_leave.value || 0)
-    DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
+    
+    DocumentData.set("from_date", Leave_Form.fromdate.value || 0)
+    DocumentData.set("to_date", Leave_Form.todate.value || 0)
 
+    DocumentData.set("total_days_leave", Leave_Form.tot_leave.value || 0)    
+    DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
     DocumentData.set("no_other_days", Leave_Form.other_days.value || 0)
 
     DocumentData.set("hall_ticket", filedata)
@@ -260,10 +263,14 @@ export const updateLeaveCep = (Leave_Form, examSchedule,filedata,emp_leave_id) =
     DocumentData.set("employee_id", localStorage.getItem("empId"))
     DocumentData.set("leave_type_id", Leave_Form.leavetype.value)
     DocumentData.set("professional_course_id", Leave_Form.profess_course.value || 0)
+  
+    DocumentData.set("from_date", Leave_Form.fromdate.value || 0)
+    DocumentData.set("to_date", Leave_Form.todate.value || 0)
+    
     DocumentData.set("total_days_leave", Leave_Form.tot_leave.value || 0)
     DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
-
     DocumentData.set("no_other_days", Leave_Form.other_days.value || 0)
+
     DocumentData.set("hall_ticket", filedata)
     DocumentData.set("description", Leave_Form.reasoncmt.value || 0)
     DocumentData.set("remarks", Leave_Form.remarks.value || 0)

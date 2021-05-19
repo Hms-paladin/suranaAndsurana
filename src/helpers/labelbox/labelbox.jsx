@@ -213,6 +213,8 @@ export default class Labelbox extends Component {
 								KeyboardButtonProps={{
 									'aria-label': 'change time',
 								}}
+								minTime={this.props.minTime && this.props.minTime}
+								maxTime={this.props.maxTime && this.props.maxTime}
 								InputProps={{ readOnly: true }}
 								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker" />}
 							/>

@@ -21,15 +21,18 @@ function LeaveApproval(props) {
 
     let dispatch=useDispatch()
     useEffect(() => {
+        console.log(props.LeaveData,"props.LeaveData")
         dispatch(getEmpApproval(props.LeaveData))
         // setLeaveModelTitle(props.modelTitles)
         setChangebtn(true)
     }, [props.LeaveData])
-   
+
     useEffect(() => {
+        console.log(props.getLeaveApproval,"props.getLeaveApproval")
         let Approvaldata=[]
         props.getLeaveApproval.map((data)=>
           {
+            console.log(data,"props.getLeaveApproval")
             Approvaldata.push({
                 empname:data.name===null?"-":data.name,
                 leavetype:data.leave_type,
@@ -53,9 +56,10 @@ function LeaveApproval(props) {
             })
           }
         )
+
         setApprovalData(Approvaldata)
     },[props.getLeaveApproval])
-
+    
     const rejectbtn = () => {
         setChangebtn(false)
     }
@@ -172,8 +176,8 @@ function LeaveApproval(props) {
                 </>}
             </div>
             <div className="leaveModelFields">
-                {(!ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
-                ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId ===37) &&
+                {(!ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId === 39 ||
+                ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId ===37) &&
                     <>
                         <div>
                             <div>Client</div>
