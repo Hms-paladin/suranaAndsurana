@@ -1141,7 +1141,7 @@ function ProjectFormCreate(props) {
         <CustomButton btnName={"SAVE "} btnCustomColor="customPrimary" custombtnCSS={"btnProjectForm"} onBtnClick={onsubmit} />
         <CustomButton btnName={"CANCEL "} custombtnCSS={"btnProjectForm"} onBtnClick={onCancel} />
       </div> <DynModel
-        modelTitle={"Variable Rate"}
+        modelTitle={""}
         handleChangeModel={variableid}
         handleChangeCloseModel={(bln) => setVariableid(bln)}
         content={variablerateModel()} width={1300} />

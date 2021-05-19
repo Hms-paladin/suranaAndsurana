@@ -1,4 +1,5 @@
-import { GET_PROJECT_VARIABLE_RATE, GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE, SEARCH_VARIABLERATE } from "../utils/Constants";
+import { GET_PROJECT_VARIABLE_RATE, GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE, SEARCH_VARIABLERATE,
+UPDATE_VARIABLERATE} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -192,3 +193,56 @@ export const SearchVariableRate = (RateMaster) => async dispatch => {
 
   }
 }
+
+
+export const deleteVariableRate = (id,project_id) => async dispatch => {
+  try {
+      axios({
+          method: 'DELETE',
+          url: apiurl + 'delete_project_variable_rate',
+          data:
+          {
+           "rate_master_id":id
+          }
+      }).then((response) => {
+          if (response.data.status === 1) {
+              notification.success({
+                  message: "Variable rate deleted sucessfully",
+              });
+              dispatch(getProjectVariableRate(project_id))
+              return Promise.resolve();
+          }
+      });
+
+  } catch (err) {
+
+  }
+}
+
+
+export const UpdateVariableRate = (id,project_id) => async dispatch => {
+  // alert(project_id)
+    try {
+        axios({
+            method: 'PUT',
+            url: apiurl +'update_project_vairable_rate',
+            data:
+            {
+              "rate_master_id":id,
+              "amount":"50.9"
+            }
+        }).then((response) => {
+            if (response.data.status === 1) {
+              dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.data })
+                notification.success({
+                    message: "Variable rate updated sucessfully",
+                });
+                dispatch(getProjectVariableRate(project_id))
+                return Promise.resolve();
+            }
+        });
+  
+    } catch (err) {
+  
+    }
+  }
