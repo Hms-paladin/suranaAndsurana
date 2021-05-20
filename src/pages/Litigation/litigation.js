@@ -6,13 +6,11 @@ import Tabcontent from "../../component/TradeMarkTabIcons/trademarktabIcons";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { InesertResume } from "../../actions/ResumeAction";
 import AddIcon from "../../images/addIcon.svg";
 import CustomButton from "../../component/Butttons/button";
 import { message } from "antd";
 import DynModel from "../../component/Model/model";
 import AddDataModel from "./adddataModel";
-import InterimModel from "./interimModel";
 import {
   getCaseType,
   getEmployeeList,
@@ -93,7 +91,7 @@ const Litigation = (props) => {
     },
     suitvalue: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" }, { name: "numericanddot" }],
       error: null,
       errmsg: null,
     },
@@ -134,20 +132,20 @@ const Litigation = (props) => {
         }
         let rowDataList = data?.liti_details?.map((val) => {
           return (
-            <div className="ourCounselFields">
+            <div className="ourCounselFieldsHeadings">
               {val.liti_councel_id === 5 ? (
                 <>
-                  <div>{val.interim_name}</div>
-                  <div>{val.interim_appln_no}</div>
-                  <div>{val.interim_application_date}</div>
-                  <div>{val.interim_details}</div>
+                  <div className="nameFields">{val.interim_name}</div>
+                  <div className="phoneFields">{val.interim_appln_no}</div>
+                  <div className="mailFields">{val.interim_application_date}</div>
+                  <div className="addressFields">{val.interim_details}</div>
                 </>
               ) : (
                 <>
-                  <div>{val.name}</div>
-                  <div>{val.phone_no}</div>
-                  <div>{val.email_id}</div>
-                  <div>{val.address}</div>
+                  <div className="nameFields">{val.name}</div>
+                  <div className="phoneFields">{val.phone_no}</div>
+                  <div className="mailFields">{val.email_id}</div>
+                  <div className="addressFields">{val.address}</div>
                 </>
               )}
             </div>
@@ -168,12 +166,12 @@ const Litigation = (props) => {
                 </div>
                 <div className="ourCounselFieldsHeading">
                   {" "}
-                  <div>Name</div>
-                  <div>Phone No</div>
-                  <div>Email</div>
-                  <div>Address</div>
+                  <div className="nameFields">Name</div>
+                  <div className="phoneFields">Phone No</div>
+                  <div className="mailFields">Email</div>
+                  <div className="addressFields">Address</div>
                 </div>
-                {rowDataList}
+                <div >{rowDataList}</div>
               </div>
             )}
           </>
@@ -331,6 +329,10 @@ const Litigation = (props) => {
       validation: Litigation_Form[key].validation,
     };
 
+    // if (data && key === "hearingdate") {
+
+    // }
+
     // only for multi select (start)
 
     let multipleIdList = [];
@@ -425,6 +427,7 @@ const Litigation = (props) => {
               <Labelbox
                 type="datepicker"
                 placeholder={"Next Hearing Date"}
+                disablePast={true}
                 changeData={(data) => checkValidation(data, "hearingdate")}
                 value={Litigation_Form.hearingdate.value}
                 error={Litigation_Form.hearingdate.error}
@@ -435,11 +438,12 @@ const Litigation = (props) => {
               {" "}
               <Labelbox
                 type="datepicker"
-                placeholder={"Due Date"}
+                placeholder={"Due Date"} disablePast={true}
                 changeData={(data) => checkValidation(data, "duedate")}
                 value={Litigation_Form.duedate.value}
                 error={Litigation_Form.duedate.error}
                 errmsg={Litigation_Form.duedate.errmsg}
+                minDate={Litigation_Form.hearingdate.value}
               />
             </div>
           </div>

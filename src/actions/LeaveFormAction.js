@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from 'moment';
 import { GET_EMP_APPROVAL, UPDATE_EMP_APPROVAL } from '../utils/Constants'
 import { notification } from "antd";
-// Leave Type (CEP)
+import { getOtherTask } from "./TodoListAction";
 
 //Professional_course
 
@@ -71,8 +71,8 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
                 "leave_type_id": Leave_Form.leavetype.value,
                 "from_date": Leave_Form.fromdate.value || 0,
                 "to_date": Leave_Form.todate.value || 0,
-                "from_time": (Leave_Form.fromtime.value!==null && Leave_Form.fromtime.value!=='')?moment(Leave_Form.fromtime.value).format('HH:MM:ss') : '00:00:00',
-                "to_time":  (Leave_Form.totime.value!==null && Leave_Form.totime.value!=='')?moment(Leave_Form.totime.value).format('HH:MM:ss') : '00:00:00',
+                "from_time": (Leave_Form.fromtime.value!==null && Leave_Form.fromtime.value!=='')?moment(Leave_Form.fromtime.value).format('HH:mm:ss') : '00:00:00',
+                "to_time":  (Leave_Form.totime.value!==null && Leave_Form.totime.value!=='')?moment(Leave_Form.totime.value).format('HH:mm:ss') : '00:00:00',
                 "reason": Leave_Form.reasoncmt.value || 0,
                 "address": Leave_Form.address.value || 0,
                 "contact_number": Leave_Form.contactperson.value || 0,
@@ -86,7 +86,7 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Form added sucessfully",
+                    message: "Leave Form Added Successfully",
                 });
                 dispatch({ type: INSERT_LEAVE_FORM, payload: response.data.status })
                 dispatch(getLeaveForm())
@@ -122,19 +122,19 @@ export const getLeaveForm = (id) => async dispatch => {
     }
 }
 
-export const updateLeaveFrom = (Leave_Form) => async dispatch => {
+export const updateLeaveFrom = (Leave_Form,emp_leave_id) => async dispatch => {
     console.log(Leave_Form.leavetype.value, "Leave_Form.reasoncmt.value")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'update_leave_form',
             data: {
-                "emp_leave_id": Leave_Form.leavetype.value,
+                "emp_leave_id": emp_leave_id,
                 "employee_id": localStorage.getItem("empId"),
                 "from_date": Leave_Form.fromdate.value || 0,
                 "to_date": Leave_Form.todate.value || 0,
-                "from_time": (Leave_Form.fromtime.value!==null && Leave_Form.fromtime.value!=='')?moment(Leave_Form.fromtime.value).format('HH:MM:ss') : '00:00:00',
-                "to_time":  (Leave_Form.totime.value!==null && Leave_Form.totime.value!=='')?moment(Leave_Form.totime.value).format('HH:MM:ss') : '00:00:00',
+                "from_time": (Leave_Form.fromtime.value!==null && Leave_Form.fromtime.value!=='')?moment(Leave_Form.fromtime.value).format('HH:mm:ss') : '00:00:00',
+                "to_time":  (Leave_Form.totime.value!==null && Leave_Form.totime.value!=='')?moment(Leave_Form.totime.value).format('HH:mm:ss') : '00:00:00',
                 "reason": Leave_Form.reasoncmt.value || 0,
                 "address": Leave_Form.address.value || 0,
                 "contact_number": Leave_Form.contactperson.value || 0,
@@ -171,7 +171,7 @@ export const deleteLeaveForm = (emp_leave_id) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Form deleted sucessfully",
+                    message: "Leave Form Deleted Successfully",
                 });
                 dispatch(getLeaveForm())
                 return Promise.resolve();
@@ -201,9 +201,12 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
     DocumentData.set("employee_id", localStorage.getItem("empId"))
     DocumentData.set("leave_type_id", Leave_Form.leavetype.value)
     DocumentData.set("professional_course_id", Leave_Form.profess_course.value || 0)
-    DocumentData.set("total_days_leave", Leave_Form.tot_leave.value || 0)
-    DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
+    
+    DocumentData.set("from_date", Leave_Form.fromdate.value || 0)
+    DocumentData.set("to_date", Leave_Form.todate.value || 0)
 
+    DocumentData.set("total_days_leave", Leave_Form.tot_leave.value || 0)    
+    DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
     DocumentData.set("no_other_days", Leave_Form.other_days.value || 0)
 
     DocumentData.set("hall_ticket", filedata)
@@ -226,7 +229,7 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Form added sucessfully",
+                    message: "Leave Form Added Successfully",
                 });
                 dispatch({ type: INSERT_LEAVE_FORM_CEP, payload: response.data.status })
                 dispatch(getLeaveForm())
@@ -240,7 +243,7 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
 }
 
 
-export const updateLeaveCep = (Leave_Form, examSchedule,filedata) => async dispatch => {
+export const updateLeaveCep = (Leave_Form, examSchedule,filedata,emp_leave_id) => async dispatch => {
     console.log(filedata, "examSchedule1")
     let subject_details = []
     examSchedule.length > 0 && examSchedule.map((data, index) =>
@@ -260,17 +263,21 @@ export const updateLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
     DocumentData.set("employee_id", localStorage.getItem("empId"))
     DocumentData.set("leave_type_id", Leave_Form.leavetype.value)
     DocumentData.set("professional_course_id", Leave_Form.profess_course.value || 0)
+  
+    DocumentData.set("from_date", Leave_Form.fromdate.value || 0)
+    DocumentData.set("to_date", Leave_Form.todate.value || 0)
+    
     DocumentData.set("total_days_leave", Leave_Form.tot_leave.value || 0)
     DocumentData.set("no_exam_days", Leave_Form.exam_days.value || 0)
-
     DocumentData.set("no_other_days", Leave_Form.other_days.value || 0)
+
     DocumentData.set("hall_ticket", filedata)
     DocumentData.set("description", Leave_Form.reasoncmt.value || 0)
     DocumentData.set("remarks", Leave_Form.remarks.value || 0)
     DocumentData.set("subject", JSON.stringify(subject_details) || 0)
 
-    DocumentData.set("emp_leave_id", examSchedule[0].emp_leave_id)
-    DocumentData.set("referred_by", examSchedule[0].emp_leave_id)
+    DocumentData.set("emp_leave_id",emp_leave_id)
+    DocumentData.set("referred_by", Leave_Form.referred_by.value||0)
 
     DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
     DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
@@ -328,17 +335,18 @@ export const getEmpApproval = (data) => async dispatch => {
 
 
 export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => {
+    // console.log(leaveStatus,"leaveStatus")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'update_leave_approval',
             data: {
                 "emp_leave_id": leaveId,
-                "approve_status": leaveStatus === true ?1:2
+                "approve_status": leaveStatus === true ?1:0
             },
         })
             .then((response) => {
-                dispatch(getEmpApproval(leaveId))
+                dispatch(getOtherTask())
                 return Promise.resolve();
             })
     }

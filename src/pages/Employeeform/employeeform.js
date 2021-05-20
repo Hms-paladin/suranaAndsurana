@@ -213,7 +213,6 @@ function Employeeform(props) {
 
         let formData = new FormData();
 
-
         formData.append("resume_id", props.getCandidatesDetails && props.getCandidatesDetails[0].resume_id);
         formData.append("designation", EmpForm.desgination.value);
         formData.append("doj", EmpForm.date_of_birth.value);
@@ -221,7 +220,7 @@ function Employeeform(props) {
         formData.append("official_email", EmpForm.EmpOfficialEmail.value);
         formData.append("official_contact", EmpForm.EmpOfficialContact.value);
         formData.append("department", EmpForm.department.value);
-        formData.append("employee__code", EmpForm.employee_code.value);
+        formData.append("employee_code", EmpForm.employee_code.value);
         formData.append("upload_document", file);
         formData.append("account_number", EmpForm.account_no.value);
         formData.append("ifsc_code", EmpForm.ifsc_code.value);
@@ -230,21 +229,7 @@ function Employeeform(props) {
         formData.append("created_by", localStorage.getItem("empId"));
         formData.append("task_id", props.emp_form_id && props.emp_form_id.task_id);
         formData.append("supervisor_email", EmpForm.supervisor_email.value);
-
-        // formData.append("name", getEmployeeFormDetails.name);
-        // formData.append("gender", getEmployeeFormDetails.gender);
-        // formData.append("lang_known", getEmployeeFormDetails.lang_known);
-        // formData.append("industry", getEmployeeFormDetails.industry);
-        // formData.append("email", EmpForm.EmpOfficialEmail.value);
-        // formData.append("supervisor_name",supervisor_name);
-        // formData.append("biometric_data", "notes");
-        // formData.append("approved_by", localStorage.getItem("empId"));
-        // formData.append("approved_date", moment().format("YYYY-MM-DD HH:m:s"));
-        // formData.append("is_interviewer", localStorage.getItem("user_id"));
-        // formData.append("updated_on", moment().format("YYYY-MM-DD HH:m:s"));
-        // formData.append("updated_by", localStorage.getItem("empId"));
-        // formData.append("ip_address", "Adress");
-        // console.log(props.getCandidatesDetails&&props.getCandidatesDetails[0].resume_id,"formData")
+        // console.log(formData,"formData")
         Axios({
             method: "post",
             url: apiurl + "insert_employee",
@@ -381,7 +366,7 @@ function Employeeform(props) {
                                 <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id ? val.resume_id : ""}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === 1 || val.gender === "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row2flex2">
                                 <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skill_name ? val.skill_name : "-"}</div></div>
@@ -393,7 +378,7 @@ function Employeeform(props) {
                                 <div className="employeeform_r2"><div className="headcolor">Employee Code</div><div className="employeecont">{val.employee_code ? val.employee_code : "-"}</div></div>
                                 <div className="employeeform_r2"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r2"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                                <div className="employeeform_r2"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                                <div className="employeeform_r2"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === 1 || val.gender === "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row3">
                                 <div className="employeeform_r2 "><div className="headcolor">Date of Joining</div><div className="employeecont">{val.doj ? val.doj : "-"}</div></div>

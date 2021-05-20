@@ -4,7 +4,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import CustomButton from "../../component/Butttons/button";
-import { InesertResume } from "../../actions/ResumeAction";
+import { InesertResume, UpdateResume } from "../../actions/ResumeAction";
 import EducationModel from "./educationModel";
 import ExperienceModel from "./experienceModel";
 import PlusIcon from "../../images/plusIcon.svg";
@@ -395,7 +395,37 @@ const ResumePage = (props) => {
   console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
 
 
-  function onSubmit() {
+  useEffect(() => {
+
+  }, [])
+
+  useEffect(() => {
+    // console.log(props.resumeEditrow, "props.resumeEditrow")
+
+    if (props.resumeEditrow && props.resumeEditrow.length > 0) {
+      Resume_Form.candidate.value = props.resumeEditrow[0].type_of_resource
+      Resume_Form.name.value = props.resumeEditrow[0].name
+      Resume_Form.gender.value = props.resumeEditrow[0].gender
+      Resume_Form.DOB.value = props.resumeEditrow[0].dob
+      Resume_Form.contactPhone.value = props.resumeEditrow[0].con_ph_no
+      Resume_Form.emailId.value = props.resumeEditrow[0].email_addr
+      Resume_Form.mailAddress.value = props.resumeEditrow[0].email_addr
+      Resume_Form.state.value = props.resumeEditrow[0].status_resource
+      Resume_Form.city.value = props.resumeEditrow[0].city
+      Resume_Form.language.value = props.resumeEditrow[0].language
+      Resume_Form.linkedin.value = props.resumeEditrow[0].status_resource
+      Resume_Form.twitter.value = props.resumeEditrow[0].status_resource
+
+    }
+    else {
+
+    }
+
+  }, [props.resumeEditrow])
+
+
+
+  function onSubmit(text) {
     var mainvalue = {};
     var targetkeys = Object.keys(Resume_Form);
     for (var i in targetkeys) {
@@ -416,15 +446,23 @@ const ResumePage = (props) => {
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
-    } else if (
-      educationList.length !== 0 &&
+    } else if (text === "SAVE" && educationList.length !== 0 &&
       (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0
     ) {
+      alert("test2")
       // setResumeFrom({ error: false });
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
-          // handleCancel();
+          handleCancel();
+        }
+      );
+    }
+    else if (text === "UPDATE") {
+      alert("test1")
+      dispatch(UpdateResume(Resume_Form, educationList, experienceList)).then(
+        () => {
+          handleCancel();
         }
       );
     }
@@ -586,9 +624,9 @@ const ResumePage = (props) => {
 
   return (
     <div>
-      <Grid item xs={12} className="ContentTitle">
+      {props.EditResume ? null : <Grid item xs={12} className="ContentTitle">
         Add Resume
-      </Grid>
+      </Grid>}
       <div className="Container">
         <div className="leftContainer">
           <Grid container spacing={3}>
@@ -759,7 +797,7 @@ const ResumePage = (props) => {
             )}
 
             <div className="educationList">
-              <div style={{fontWeight:600}}>Education*</div>
+              <div style={{ fontWeight: 600 }}>Education*</div>
               <div>
                 <img src={PlusIcon} onClick={showEducationModel} />
               </div>
@@ -889,7 +927,7 @@ const ResumePage = (props) => {
               <Grid item xs={6}>
                 <Labelbox
                   type="text"
-                  placeholder={"Achievements"} 
+                  placeholder={"Achievements"}
                   changeData={(data) => checkValidation(data, "achivements")}
                   value={Resume_Form.achivements.value}
                   error={Resume_Form.achivements.error}
@@ -1091,7 +1129,7 @@ const ResumePage = (props) => {
                 </span>
               )}
               <div className="experienceList">
-                <div  style={{fontWeight:600}}>Previous Employer Details{expReq && "*"}</div>
+                <div style={{ fontWeight: 600 }}>Previous Employer Details{expReq && "*"}</div>
                 <div>
                   <img src={PlusIcon} onClick={showExperienceModel} />
                 </div>
@@ -1159,9 +1197,9 @@ const ResumePage = (props) => {
               className="resumeBtnContainer"
             >
               <CustomButton
-                btnName={"SAVE"}
+                btnName={props.EditResume ? "UPDATE" : "SAVE"}
                 btnCustomColor="customPrimary"
-                onBtnClick={onSubmit}
+                onBtnClick={() => onSubmit(props.EditResume ? "UPDATE" : "SAVE")}
               />
               <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
             </Grid>
@@ -1206,23 +1244,27 @@ const ResumePage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  getResourcesType: state.getOptions.getResourcesType || [],
-  getInstitute: state.getOptions.getInstitute || [],
-  getSpecialInterest: state.getOptions.getSpecialInterest || [],
-  getState: state.getOptions.getState || [],
-  getCity: state.getOptions.getCity || [],
-  getLanguages: state.getOptions.getLanguages || [],
-  getSkills: state.getOptions.getSkills || [],
-  getTraits: state.getOptions.getTraits || [],
-  getCertification: state.getOptions.getCertification || [],
-  getAchievement: state.getOptions.getAchievement || [],
-  getSpecilization: state.getOptions.getSpecilization || [],
-  getCapability: state.getOptions.getCapability || [],
-  getTalents: state.getOptions.getTalents || [],
-  getStatus: state.getOptions.getStatus || [],
-  getQualification: state.getOptions.getQualification || [],
-  getIndustry: state.getOptions.getIndustry || [],
-});
+const mapStateToProps = (state) => (
+  console.log(state, "checkstate"),
+  {
+    getResourcesType: state.getOptions.getResourcesType || [],
+    getInstitute: state.getOptions.getInstitute || [],
+    getSpecialInterest: state.getOptions.getSpecialInterest || [],
+    getState: state.getOptions.getState || [],
+    getCity: state.getOptions.getCity || [],
+    getLanguages: state.getOptions.getLanguages || [],
+    getSkills: state.getOptions.getSkills || [],
+    getTraits: state.getOptions.getTraits || [],
+    getCertification: state.getOptions.getCertification || [],
+    getAchievement: state.getOptions.getAchievement || [],
+    getSpecilization: state.getOptions.getSpecilization || [],
+    getCapability: state.getOptions.getCapability || [],
+    getTalents: state.getOptions.getTalents || [],
+    getStatus: state.getOptions.getStatus || [],
+    getQualification: state.getOptions.getQualification || [],
+    getIndustry: state.getOptions.getIndustry || [],
+
+  }
+);
 
 export default connect(mapStateToProps)(ResumePage);

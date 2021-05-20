@@ -13,6 +13,8 @@ import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
 import dateFormat from 'dateformat';
+
+import { notification } from "antd";
 import moment from 'moment';
 import './leaveupdate.scss';
 const headCells = [
@@ -41,6 +43,10 @@ function LeaveForm(props) {
     const [employeeList, setEmployeeList] = useState({});
     const [editBtn, setEditBtn] = useState(false)
     const [leaveFormTable, setLeaveFormTable] = useState({});
+    const [emp_leave_id, setEmp_leave_id] = useState(0)
+    const [samedateval, setSameDateVal] = useState([])
+    const [starttime,setStartTime]=useState(new Date())
+    var duplicateDate = false
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
             value: "",
@@ -152,7 +158,7 @@ function LeaveForm(props) {
             error: null,
             errmsg: null,
         },
-      
+
 
     })
 
@@ -176,18 +182,24 @@ function LeaveForm(props) {
 
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.todate.value) - Date.parse(Leave_Form.fromdate.value)) / 86400000)
-        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff+1)
+        isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff + 1)
+
+        Leave_Form["tot_leave"].value =isNaN(diff) ? "" : (diff + 1)
+        Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
+        setLeaveForm(prevState => ({
+            ...prevState,
+        }));
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
     const onFileChange = (event) => {
         setFileData(event.target.files[0])
-        console.log(filedata,"filedata")
+        console.log(filedata, "filedata")
     }
-    const onFileDelete=()=>{
+    const onFileDelete = () => {
         setFileData({})
-        console.log(filedata,"filedata")
+        console.log(filedata, "filedata")
     }
-   
+
     useEffect(() => {
         if (Leave_Form.tot_leave.value === "" && Leave_Form.exam_days.value === "") {
             Leave_Form.other_days.value = "";
@@ -211,9 +223,9 @@ function LeaveForm(props) {
         // var array = time.split(":");
         // var seconds = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
         // console.log(seconds,"seconds")
-        var d = new Date("12-30-2017 "+time)
+        var d = new Date("12-30-2017 " + time)
         // d.setTime(seconds);
-        console.log(d,"Leave_Form")
+        console.log(d, "Leave_Form")
         return d
     }
 
@@ -224,8 +236,8 @@ function LeaveForm(props) {
         Leave_Form.leavetype.value = val.leave_type_id || ""
         Leave_Form.fromdate.value = val.from_date || ""
         Leave_Form.todate.value = val.to_date || ""
-        Leave_Form.fromtime.value = val.from_time!=null?timeToEpoch(val.from_time) : ""
-        Leave_Form.totime.value =  val.to_time!=null?timeToEpoch(val.to_time) : ""
+        Leave_Form.fromtime.value = val.from_time != null ? timeToEpoch(val.from_time) : ""
+        Leave_Form.totime.value = val.to_time != null ? timeToEpoch(val.to_time) : ""
         Leave_Form.reasoncmt.value = val.leave_reason || ""
         Leave_Form.address.value = val.address || ""
         Leave_Form.contactperson.value = val.contact_number || ""
@@ -243,11 +255,12 @@ function LeaveForm(props) {
         val.subject_details != "" ? setExamSchedule(val.subject_details) : setExamSchedule([])
 
         // setEmp_leave_cep_sub_id(val.emp_leave_cep_sub_id)
-        // setEmp_leave_id(val.emp_leave_id)
+        setEmp_leave_id(val.emp_leave_id)
 
         setLeaveForm(prevState => ({
             ...prevState,
         }));
+
 
         console.log(val.leave_type_id, "leave_type_id")
     }
@@ -292,11 +305,10 @@ function LeaveForm(props) {
     }, [props.LeaveType, props.SubjectList, props.stateDemo, props.EmployeeList, props.getClientlist])
 
     function checkValidation(data, key) {
+
         if (key === "fromtime") {
-            console.log(moment(data).format('HH:mm:ss'),"check")
+            console.log(moment(data).format('HH:mm:ss'), "check")
         }
-
-
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -309,12 +321,12 @@ function LeaveForm(props) {
             validation: Leave_Form[key].validation,
         };
 
-        if (data && key == "tot_leave") {
-            Leave_Form.exam_days.validation[1].params = data
-            setLeaveForm((prevState) => ({
-                ...prevState,
-            }));
-        }
+        // if (data && key == "tot_leave") {
+        //     Leave_Form.exam_days.validation[1].params = data
+        //     setLeaveForm((prevState) => ({
+        //         ...prevState,
+        //     }));
+        // }
 
         if (key === "leavetype" && data) {
             handleCancel()
@@ -409,11 +421,11 @@ function LeaveForm(props) {
             const index = m;
             var listarray = {
                 leavetype: TableData[m].status,
-                fromdate: TableData[m].from_date === 0 ? '0' : TableData[m].from_date,
-                todate: TableData[m].to_date === 0 ? '0' : TableData[m].to_date,
-                fromtime: TableData[m].from_time === 0 ? '0' : TableData[m].from_time,
-                totime: TableData[m].to_time === 0 ? '0' : TableData[m].to_time,
-                status: TableData[m].approve_status === (null) ||TableData[m].approve_status === 0 ? 'Pending' : TableData[m].approve_status === 1?"Approved":"Rejected",
+                fromdate: (TableData[m].from_date === "0000-00-00" || TableData[m].from_date === null) ? 0 : moment(TableData[m].from_date).format("DD-MM-YYYY"),
+                todate: (TableData[m].to_date === "0000-00-00" || TableData[m].to_date === null) ? 0 : moment(TableData[m].to_date).format("DD-MM-YYYY"),
+                fromtime: (TableData[m].from_time === "00:00:00" || TableData[m].from_time === null) ? 0 : moment(TableData[m].from_time, "HH:mm:ss").format("hh:mm:ss A"),
+                totime: (TableData[m].to_time === "00:00:00" || TableData[m].to_time === null) ? 0 : moment(TableData[m].to_time, "HH:mm:ss").format("hh:mm:ss A"),
+                status: TableData[m].approve_status === null ? 'Pending' : TableData[m].approve_status === 0 ? "Rejected" : 'Approved',
                 action: (
                     <>
                         <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onEditLeaveForm(TableData[index])} />{" "}
@@ -426,6 +438,16 @@ function LeaveForm(props) {
         setLeaveFormTable(updatelist);
 
     }, [props.getLeaveForm])
+
+    // const handletempbtn = () => {
+    //     let dates_arr = []
+    //     leaveFormTable.map((data) => {
+    //         dates_arr.push({ from: data.fromdate, to: data.todate })
+    //     })
+    //     setSameDateVal(dates_arr)
+    // }
+   
+    console.log(samedateval, "datatemp")
 
     const hideValidation = (From_key) => {
         From_key.map((data) => {
@@ -442,7 +464,16 @@ function LeaveForm(props) {
     }
 
     function onSubmit(value) {
-        console.log(value, "valuetype")
+        console.log(Leave_Form.fromtime.value, "valuetype")
+
+        //Expired date validation
+        let starttime = moment(Leave_Form["fromtime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let endtime = moment(Leave_Form["totime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let timeVal = false
+        if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
+            timeVal = true
+        }
+
         if (Leave_Form.leavetype.value) {
             if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
                 const From_key = [
@@ -462,7 +493,7 @@ function LeaveForm(props) {
             }
             else if (Leave_Form.leavetype.value === 40) {
                 const From_key = [
-                    "fromtime", "totime", "fromdate", "todate", "client", "assignedby", "address", "contactperson", "exam_date",
+                    "fromtime", "totime", "client", "assignedby", "address", "contactperson", "exam_date",
                 ];
                 hideValidation(From_key)
             }
@@ -481,14 +512,17 @@ function LeaveForm(props) {
         var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
         if (filtererr.length > 0) {
 
-        } else {
+        }
+        else if (timeVal) { }
+        else if (duplicateDate) { }
+        else {
             if (Leave_Form.leavetype.value === 40) {
-                dispatch(insertLeaveCep(Leave_Form, examSchedule,filedata)).then(() => {
+                dispatch(insertLeaveCep(Leave_Form, examSchedule, filedata)).then(() => {
                     // dispatch(getLeaveForm(Leave_Form.leavetype.value));
                     handleCancel()
                 })
             } else {
-                console.log(Leave_Form,"Leave_Form")
+                console.log(Leave_Form, "Leave_Form")
                 dispatch(insertLeaveForm(Leave_Form)).then(() => {
                     dispatch(getLeaveForm(Leave_Form.leavetype.value));
                     handleCancel()
@@ -502,18 +536,79 @@ function LeaveForm(props) {
         }));
     }
 
-    const onUpdate = (data) => {
-        console.log(Leave_Form,"Leave_Form")
-        if (data === "othertype") {
-            dispatch(updateLeaveFrom(Leave_Form)).then((response) => {
-                handleCancel();
-            });
+    const onUpdate = (value) => {
 
-        } else {
-            dispatch(updateLeaveCep(Leave_Form, examSchedule,filedata)).then(() => {
-                // dispatch(getLeaveForm(Leave_Form.leavetype.value));
-                handleCancel()
-            })
+        //Expired date validation
+        let curdate = moment(new Date()).format("DD-MM-YYYY")
+        let fromdateval = moment(Leave_Form["fromdate"].value).format("DD-MM-YYYY")
+        let todateval = moment(Leave_Form["todate"].value).format("DD-MM-YYYY")
+        let dateVal = false
+        if (fromdateval < curdate || todateval < curdate) {
+            dateVal = true
+        }
+
+        //Time compare validation
+        let starttime = moment(Leave_Form["fromtime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let endtime = moment(Leave_Form["totime"].value, "HH:mm:ss").format("hh:mm:ss A")
+        let timeVal = false
+        if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
+            timeVal = true
+        }
+
+
+        if (Leave_Form.leavetype.value) {
+            if (Leave_Form.leavetype.value === 35 || Leave_Form.leavetype.value === 36 || Leave_Form.leavetype.value === 37) {
+                const From_key = [
+                    "fromtime", "totime", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date", "remarks",
+                ];
+                hideValidation(From_key)
+            } else if (Leave_Form.leavetype.value === 38) {
+                const From_key = [
+                    "todate", "address", "client", "assignedby", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date", "remarks",
+                ];
+                hideValidation(From_key)
+            } else if (Leave_Form.leavetype.value === 39) {
+                const From_key = [
+                    "todate", "reasoncmt", "address", "contactperson", "referred_by", "profess_course", "tot_leave", "exam_days", "other_days", "subject", "exam_date", "remarks",
+                ];
+                hideValidation(From_key)
+            }
+            else if (Leave_Form.leavetype.value === 40) {
+                const From_key = [
+                    "fromtime", "totime","client", "assignedby", "address", "contactperson", "exam_date",
+                ];
+                hideValidation(From_key)
+            }
+        }
+        var mainvalue = {};
+        var targetkeys = Object.keys(Leave_Form);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                Leave_Form[targetkeys[i]].value,
+                Leave_Form[targetkeys[i]].validation
+            );
+            Leave_Form[targetkeys[i]].error = !errorcheck.state;
+            Leave_Form[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = Leave_Form[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
+        if (filtererr.length > 0) {
+
+        }
+        else if (dateVal) { }
+        else if (timeVal) { }
+        else {
+            if (value === "othertype") {
+                dispatch(updateLeaveFrom(Leave_Form, emp_leave_id)).then((response) => {
+                    handleCancel();
+                });
+
+            } else {
+                dispatch(updateLeaveCep(Leave_Form, examSchedule, filedata, emp_leave_id)).then(() => {
+                    // dispatch(getLeaveForm(Leave_Form.leavetype.value));
+                    handleCancel()
+                })
+            }
         }
 
         setLeaveForm((prevState) => ({
@@ -540,14 +635,15 @@ function LeaveForm(props) {
         }));
     };
 
-    const onCancel = () => {
-        handleCancel()
-        setEditBtn(false)
-    }
+
     console.log(examSchedule, "examSchedule")
+    console.log(new Date().toLocaleTimeString(), "time")
+
+
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
+           
             <div className="leaveFields">
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={3}>
@@ -566,9 +662,10 @@ function LeaveForm(props) {
                         <div>  <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "fromdate")}
                             value={Leave_Form.fromdate.value}
-                            minDate={new Date()}
+                            minDate={Leave_Form.leavetype.value!==37&&new Date()}
                             error={Leave_Form.fromdate.error}
-                            errmsg={Leave_Form.fromdate.errmsg} />
+                            errmsg={Leave_Form.fromdate.errmsg}
+                        />
                         </div>
                     </Grid>
                         <Grid item xs={3}>
@@ -576,7 +673,7 @@ function LeaveForm(props) {
                             <div> <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "todate")}
                                 value={Leave_Form.todate.value}
-                                minDate={minDate}
+                                minDate={Leave_Form.leavetype.value!==37&&new Date()}
                                 error={Leave_Form.todate.error}
                                 errmsg={Leave_Form.todate.errmsg} />
                             </div>
@@ -638,7 +735,8 @@ function LeaveForm(props) {
                                     changeData={(data) => checkValidation(data, "fromtime")}
                                     value={Leave_Form.fromtime.value}
                                     error={Leave_Form.fromtime.error}
-                                    errmsg={Leave_Form.fromtime.errmsg} />
+                                    errmsg={Leave_Form.fromtime.errmsg} 
+                                   />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
@@ -648,10 +746,10 @@ function LeaveForm(props) {
                                     value={Leave_Form.totime.value}
                                     error={Leave_Form.totime.error}
                                     errmsg={Leave_Form.totime.errmsg} />
-                                  
+
                                 </div>
                             </Grid>
-                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>10 </div> </Grid>
+                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>{empLeaveBal} </div> </Grid>
                             {Leave_Form.leavetype.value === 39 ?
                                 <><Grid item xs={5}>
                                     <div className="leaveFieldheading">Client</div>
@@ -709,7 +807,29 @@ function LeaveForm(props) {
                     }
                     {Leave_Form.leavetype.value === 40 &&
                         <>
-                            <Grid item xs={9}></Grid>
+
+                            <Grid item xs={3}>
+                                <div className="leaveFieldheading">From Date</div>
+                                <div>  <Labelbox type="datepicker"
+                                    changeData={(data) => checkValidation(data, "fromdate")}
+                                    value={Leave_Form.fromdate.value}
+                                    minDate={new Date()}
+                                    error={Leave_Form.fromdate.error}
+                                    errmsg={Leave_Form.fromdate.errmsg}
+                                />
+                                </div>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <div className="leaveFieldheading">To Date</div>
+                                <div> <Labelbox type="datepicker"
+                                    changeData={(data) => checkValidation(data, "todate")}
+                                    value={Leave_Form.todate.value}
+                                    minDate={new Date()}
+                                    error={Leave_Form.todate.error}
+                                    errmsg={Leave_Form.todate.errmsg} />
+                                </div>
+                            </Grid>
+
                             <Grid item xs={12}><div className="leaveMainHeader">Managing Partner Permission Date </div></Grid>
                             <Grid item xs={3}><Labelbox type="select"
                                 placeholder="Referred By"
@@ -731,12 +851,13 @@ function LeaveForm(props) {
                             <Grid item xs={2}>
                                 <div className="leaveFieldheading">Total Days of Leave</div>
                                 <div> <Labelbox type="text"
+                                disabled={true}
                                     changeData={(data) => checkValidation(data, "tot_leave")}
                                     value={Leave_Form.tot_leave.value}
                                     error={Leave_Form.tot_leave.error}
-                                    errmsg={Leave_Form.tot_leave.errmsg} 
+                                    errmsg={Leave_Form.tot_leave.errmsg}
                                     maxlength={3}
-                                    />
+                                />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
@@ -746,9 +867,9 @@ function LeaveForm(props) {
                                         changeData={(data) => checkValidation(data, "exam_days")}
                                         value={Leave_Form.exam_days.value}
                                         error={Leave_Form.exam_days.error}
-                                        errmsg={Leave_Form.exam_days.errmsg} 
+                                        errmsg={Leave_Form.exam_days.errmsg}
                                         maxlength={3}
-                                        />
+                                    />
                                 </div>
                             </Grid>
                             <Grid item xs={2}>
@@ -762,28 +883,28 @@ function LeaveForm(props) {
                                 </div>
                             </Grid>
                             <Grid item xs={4}>
-                                <div style={{display:'flex',alignItems: 'flex-end'}}>
-                                <div>
-                                <div className="leaveFieldheading">Upload Hall Ticket</div>
-                                <div className="uploadleave_form">
+                                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
                                     <div>
+                                        <div className="leaveFieldheading">Upload Hall Ticket</div>
+                                        <div className="uploadleave_form">
+                                            <div>
 
-                                        <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
-                                            onChange={(data)=>onFileChange(data)} id="pdfupload" /> <PublishIcon />
+                                                <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                                    onChange={(data) => onFileChange(data)} id="pdfupload" /> <PublishIcon />
 
-                                    </div>
-                                   
+                                            </div>
 
-                                </div>
-                                </div>
-                                {filedata&&filedata.length>0&&editBtn&&<div className="image_box">
-                                <div className="image_text">
-                                {filedata.length>0?filedata.substr(35):''}
-                                </div>
-                                <div><img src={Delete} onClick={onFileDelete} style={{ width: '20px',cursor:'pointer' }} /> </div>
-                                        </div> }
+
                                         </div>
-                               
+                                    </div>
+                                    {filedata && filedata.length > 0 && editBtn && <div className="image_box">
+                                        <div className="image_text">
+                                            {filedata.length > 0 ? filedata.substr(35) : ''}
+                                        </div>
+                                        <div><img src={Delete} onClick={onFileDelete} style={{ width: '20px', cursor: 'pointer' }} /> </div>
+                                    </div>}
+                                </div>
+
                             </Grid>
                             <Grid item xs={12}>
                                 <div className="leaveMainHeader">Examination Schedule </div>
@@ -882,8 +1003,8 @@ function LeaveForm(props) {
                     <Grid item xs={5} container direction="row" spacing={2}>
                         <Grid item xs={4}>
                             {editBtn ? <CustomButton btnName={"Update"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onUpdate(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} /> :
-                               Leave_Form.leavetype.value>=35&& <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
-                         {Leave_Form.leavetype.value>=35&&<Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={onCancel} /></Grid>}
+                                Leave_Form.leavetype.value >= 35 && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
+                        {Leave_Form.leavetype.value >= 35 && <Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} /></Grid>}
                     </Grid></Grid>
             </div>
             {/* {Leave_Form.leavetype.value !== 40 &&  */}

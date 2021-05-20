@@ -59,6 +59,7 @@ export const getSelectedCandidates = (data) =>async dispatch => {
 //EmployeeApproveAction
 
 export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch => {
+
     try{
         axios({
             method: 'POST',
@@ -67,20 +68,20 @@ export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch =>
                 "emp_id":EmpId,
                 "approved_by":localStorage.getItem("empId"),
                 "approved_date":moment().format('YYYY-MM-DD') ,
-                "emp_status":status === true?1 :2, 
+                "emp_status":status === true?1 :0, 
                 "task_id":taskId                               
             },
         })
         .then((response)=>{
             if(response.data.status==1){
                 notification.success({
-                    message: `Employee approved successfully`,
+                    message: `Employee Approved Successfully`,
                     placement: "topRight",
                   });
             }
             if(response.data.status==0){
                 notification.warning({
-                    message: `Employee rejected`,
+                    message: `Employee Rejected Successfully`,
                     placement: "topRight",
                   });
             }
@@ -98,7 +99,7 @@ export const getOtherTask = () =>async dispatch => {
             method: 'POST',
             url: apiurl +'get_other_tasks',
             data:{
-                "assignee_id":1
+                "assignee_id":localStorage.getItem("empId")
             }
         })
         .then((response) => {

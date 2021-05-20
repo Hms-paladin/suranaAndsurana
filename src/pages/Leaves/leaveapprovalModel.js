@@ -18,19 +18,21 @@ function LeaveApproval(props) {
     const [leaveModelTitle, setLeaveModelTitle] = useState()
     const [changebtn, setChangebtn] = useState(true)
     const [ApprovalData,setApprovalData]=useState(true)
-    const [Leave_status,setLeave_status]=useState(false)
 
     let dispatch=useDispatch()
     useEffect(() => {
+        console.log(props.LeaveData,"props.LeaveData")
         dispatch(getEmpApproval(props.LeaveData))
         // setLeaveModelTitle(props.modelTitles)
         setChangebtn(true)
     }, [props.LeaveData])
-   
+
     useEffect(() => {
+        console.log(props.getLeaveApproval,"props.getLeaveApproval")
         let Approvaldata=[]
         props.getLeaveApproval.map((data)=>
           {
+            console.log(data,"props.getLeaveApproval")
             Approvaldata.push({
                 empname:data.name===null?"-":data.name,
                 leavetype:data.leave_type,
@@ -54,19 +56,21 @@ function LeaveApproval(props) {
             })
           }
         )
+
         setApprovalData(Approvaldata)
     },[props.getLeaveApproval])
-
+    
     const rejectbtn = () => {
         setChangebtn(false)
     }
     const EmployeeApprove = (data) => {
-
+        // console.log(data,"leaveStatus")
+        let Leave_status=false;
         if (data === "approve") {
-            setLeave_status(true)
+            Leave_status=true
         }
         if (data === "reject") {
-            setLeave_status(false)
+            Leave_status=false
         }
 
         dispatch(EmployeeLeaveApprove(Leave_status,props.getLeaveApproval[0]&&props.getLeaveApproval[0].emp_leave_id,props.getLeaveApproval[0]&&props.getLeaveApproval[0].approve_status)).then((response) => {
@@ -100,6 +104,7 @@ function LeaveApproval(props) {
       placement: "topRight",
     });
   }; 
+  console.log("ApprovalData",ApprovalData)
     return (
         <div className="leaveContainer">
             <div className="leaveModelFields">
@@ -114,7 +119,7 @@ function LeaveApproval(props) {
                 {ApprovalData[0]&&ApprovalData[0].leave_typeId === 40 &&
                     <> <div>
                         <div>Referred by</div>
-                        <div className="fielddataView">-</div>
+                        <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].assginedby}</div>
                     </div>
                         <div>
                             <div>Professional Course</div>
@@ -126,15 +131,15 @@ function LeaveApproval(props) {
                     <>
                         <div>
                             <div>Date</div>
-                            <div className="fielddataView">-</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].from!==null?ApprovalData[0].from:''} </div>
                         </div>
                         <div>
                             <div>From </div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].fromtime}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].fromtime!==null?ApprovalData[0].fromtime:''}</div>
                         </div>
                         <div>
                             <div>To</div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].totime}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].totime!==null?ApprovalData[0].totime:''}</div>
                         </div>
 
                     </>}
@@ -143,11 +148,12 @@ function LeaveApproval(props) {
                     <>
                         <div>
                             <div>From</div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].from}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].from!==null?ApprovalData[0].from:''} </div>
                         </div>
                         <div>
                             <div>To </div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].to}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].to!="Invalid date"?ApprovalData[0].to:'00-00-0000'}</div>
+                            {/* {console.log(ApprovalData[0])} */}
                         </div>
                         <div>
                             <div>Balance</div>
@@ -170,8 +176,8 @@ function LeaveApproval(props) {
                 </>}
             </div>
             <div className="leaveModelFields">
-                {(ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
-                ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId ===37) &&
+                {(!ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId === 39 ||
+                ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData.length>0&&ApprovalData[0].leave_typeId ===37) &&
                     <>
                         <div>
                             <div>Client</div>
@@ -199,7 +205,7 @@ function LeaveApproval(props) {
                 {ApprovalData[0]&&ApprovalData[0].leave_typeId === 40 &&
                     <><div>
                         <div>Assignment Description</div>
-                        <div className="fielddataView">-</div><br />
+                        <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].leavereason}</div><br />
                         <div>Remarks</div>
                         <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].remarks}</div>
                     </div>
@@ -248,9 +254,9 @@ function LeaveApproval(props) {
 
                 </div>}
             <div className="appraisalBtn">
-            {changebtn===false?<CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove(data,"reject")}/>:
+            {changebtn===false?<CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove("reject")}/>:
                 <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={rejectbtn} />}
-                {changebtn && <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove(data,"approve")}/>}
+                {changebtn && <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={(data)=>EmployeeApprove("approve")}/>}
             </div>
         </div >
     )
