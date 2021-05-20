@@ -12,7 +12,7 @@ import Edit from "../../images/pencil.svg";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
 import {
-  getGroupControlList,editEmployeeGroup,editGroupControl,InsertGroupControlMaster,getGroupList,getControl,
+  getGroupControlList, editEmployeeGroup, editGroupControl, InsertGroupControlMaster, getGroupList, getControl,
 } from "../../actions/UserGroupAction";
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
@@ -38,10 +38,10 @@ const GroupControl = (props) => {
     dispatch(getControl());
 
   }, []);
-  const [userForm, setuserForm]= useState({
+  const [userForm, setuserForm] = useState({
     controls: {
       value: "",
-      //validation: [{ name: "required" }],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -53,27 +53,27 @@ const GroupControl = (props) => {
     }
   });
   useEffect(() => {
-    
-    
+
+
     var dets = props.getGroupControlLists;
     var groupList = [];
-    for(let i=0; i< dets.length; i++){
+    for (let i = 0; i < dets.length; i++) {
       let o = JSON.parse(JSON.stringify(dets[i]));
       var listarray = {
-        "group":dets[i].group_name,
+        "group": dets[i].group_name,
         "control": dets[i].control,
-       
-        "edit": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>onModealOpen(true,o)} />,
+
+        "edit": <img src={Edit} style={{ cursor: 'pointer', width: 19 }} onClick={() => onModealOpen(true, o)} />,
       }
       groupList.push(listarray);
-        
-        
+
+
     }
     setGroupControlList({ groupList })
 
     let groupsData = []
     props.groupLists.map((data) =>
-    groupsData.push({
+      groupsData.push({
         value: data.group_name,
         id: data.group_id
       })
@@ -82,7 +82,7 @@ const GroupControl = (props) => {
 
     let controlData = []
     props.controlList.map((data) =>
-    controlData.push({
+      controlData.push({
         value: data.control,
         id: data.screen_control_id
       })
@@ -90,156 +90,172 @@ const GroupControl = (props) => {
     setcontrols({ controlData })
 
 
-  }, [props.getGroupControlLists,props.groupLists,props.controlList,
+  }, [props.getGroupControlLists, props.groupLists, props.controlList,
   ]);
 
-  function onModealOpen(flg,obj){
-    
+  function onModealOpen(flg, obj) {
+
     try {
-    
+
       axios({
-          method: 'POST',
-          url: apiurl + 'get_group_control_details',
-          data: {
-              "group_id":obj.group_id
-          }
+        method: 'POST',
+        url: apiurl + 'get_group_control_details',
+        data: {
+          "group_id": obj.group_id
+        }
       })
-          .then((response) => {
-            var groups = response.data.data ;
-            for(let i=0; i< groups.length; i++ ){
-              groups[i]['group_id'] =obj.group_id;
-            }
-            setcheckedGroups(groups);
-              //dispatch({ type: GET_GROUP_EMP, payload: response.data.data })
-              
-          })
-    
+        .then((response) => {
+          var groups = response.data.data;
+          for (let i = 0; i < groups.length; i++) {
+            groups[i]['group_id'] = obj.group_id;
+          }
+          setcheckedGroups(groups);
+          //dispatch({ type: GET_GROUP_EMP, payload: response.data.data })
+
+        })
+
     } catch (err) {
       console.log("error", err);
     }
-    setUsergroupmodel(flg,obj);
-    
-     }
-     function handelCheck(event,data){
-      console.log("mapping", data);
-     let oo= checkedGroups;
-     let d=[];
-     for(var i=0;i < oo.length; i++){
-       if(oo[i] && oo[i].screen_control_id == data.screen_control_id ){
-         if(data.is_checked == 0){
-          oo[i].is_checked =1;
-          data.is_checked =1;
-         }else{
-          oo[i].is_checked =0;
-          data.is_checked =0;
+    setUsergroupmodel(flg, obj);
+
+  }
+  function handelCheck(event, data) {
+    console.log("mapping", data);
+    let oo = checkedGroups;
+    let d = [];
+    for (var i = 0; i < oo.length; i++) {
+      if (oo[i] && oo[i].screen_control_id == data.screen_control_id) {
+        if (data.is_checked == 0) {
+          oo[i].is_checked = 1;
+          data.is_checked = 1;
+        } else {
+          oo[i].is_checked = 0;
+          data.is_checked = 0;
         }
         d.push(data);
-      }else{
+      } else {
         d.push(oo[i]);
       }
     }
-  
+
     setcheckedGroups(
       prevState => ({
-          ...prevState,
+        ...prevState,
       })
-  );
-  
-  
-  setcheckedGroups(d);
-     }
-     function submitGroup(){
-      
-      let obj={"control":[]}; 
-      for(let i=0; i< checkedGroups.length; i++ ){
-       let oo=checkedGroups[i];
-       let pOb = {
-         "group_id": oo.group_id,
-         "screen_control_id": oo.screen_control_id,
-         "is_checked": oo.is_checked,
-          };
-          obj.control.push(pOb);
-      }
-     
+    );
 
-      dispatch(editGroupControl(obj));
-      setUsergroupmodel(false);
-     }
 
-     function onSubmit() {
-     var contr=[userForm.controls.value];
-      contr.push()
-      var data = {
-        "screen_control_id": contr,
-        "group_id": userForm.group.value,
-      }
-  
+    setcheckedGroups(d);
+  }
+  function submitGroup() {
+
+    let obj = { "control": [] };
+    for (let i = 0; i < checkedGroups.length; i++) {
+      let oo = checkedGroups[i];
+      let pOb = {
+        "group_id": oo.group_id,
+        "screen_control_id": oo.screen_control_id,
+        "is_checked": oo.is_checked,
+      };
+      obj.control.push(pOb);
+    }
+
+
+    dispatch(editGroupControl(obj));
+    setUsergroupmodel(false);
+  }
+
+  function onSubmit() {
+
+    var mainvalue = {}
+    var targetkeys = Object.keys(userForm)
+    for (var i in targetkeys) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        userForm[targetkeys[i]].value,
+        userForm[targetkeys[i]].validation
+      )
+      userForm[targetkeys[i]].error = !errorcheck.state
+      userForm[targetkeys[i]].errmsg = errorcheck.msg
+    }
+    var filtererr = targetkeys.filter((data) => userForm[data].error === true)
+    var contr = [userForm.controls.value];
+    contr.push()
+    var data = {
+      "screen_control_id": contr,
+      "group_id": userForm.group.value,
+    }
+    if (filtererr.length > 0){}
+    else {
       dispatch(InsertGroupControlMaster(data)).then((response) => {
         handleCancel();
       })
-  
+    }
+    setuserForm(prevState=>({
+      ...prevState,
+    }))
+  }
+
+  const handleCancel = () => {
+    let From_key = [
+      "controls",
+      "group",
+    ];
+
+    From_key.map((data) => {
+      try {
+        userForm[data].value = "";
+        console.log("mapping", userForm[data].value);
+      } catch (error) {
+        throw error;
+      }
+    });
+    setuserForm((prevState) => ({
+      ...prevState,
+    }));
+  };
+  function checkValidation(data, key, multipleId) {
+
+    var errorcheck = ValidationLibrary.checkValidation(
+      data,
+      userForm[key].validation
+    );
+    let dynObj = {
+      value: data,
+      error: !errorcheck.state,
+      errmsg: errorcheck.msg,
+      validation: userForm[key].validation
     }
 
-    const handleCancel = () => {
-      let From_key = [
-        "controls",
-        "group",
-      ];
-  
-      From_key.map((data) => {
-        try {
-          userForm[data].value = "";
-          console.log("mapping", userForm[data].value);
-        } catch (error) {
-          throw error;
-        }
-      });
-      setuserForm((prevState) => ({
-        ...prevState,
-      }));
-    };
-     function checkValidation(data, key, multipleId) {
+    // only for multi select (start)
 
-      var errorcheck = ValidationLibrary.checkValidation(
-        data,
-        userForm[key].validation
-      );
-      let dynObj = {
-        value: data,
-        error: !errorcheck.state,
-        errmsg: errorcheck.msg,
-        validation: userForm[key].validation
-      }
-  
-      // only for multi select (start)
-  
-      let multipleIdList = []
-  
-      if (multipleId) {
-        multipleId.map((item) => {
-          for (let i = 0; i < data.length; i++) {
-            if (data[i] === item.value) {
-              multipleIdList.push(item.id)
-            }
+    let multipleIdList = []
+
+    if (multipleId) {
+      multipleId.map((item) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i] === item.value) {
+            multipleIdList.push(item.id)
           }
-        })
-        dynObj.valueById = multipleIdList.toString()
-      }
-      // (end)
-  
-      setuserForm(prevState => ({
-        ...prevState,
-        [key]: dynObj,
-      }));
-  
-    };
+        }
+      })
+      dynObj.valueById = multipleIdList.toString()
+    }
+    // (end)
 
+    setuserForm(prevState => ({
+      ...prevState,
+      [key]: dynObj,
+    }));
+
+  };
+  
 
   return (
     <div>
       <div className="group_control">Group Control</div>
-     
-    <Grid container spacing={2} className="ratemaster_firstgrid">
+
+      <Grid container spacing={2} className="ratemaster_firstgrid">
         <Grid
           item
           xs={7}
@@ -249,74 +265,74 @@ const GroupControl = (props) => {
           alignItems="center"
         >
           <Grid item xs={6}>
-          <Labelbox type="select" placeholder={"Group"}
-            
-            dropdown={groups.groupsData}
-            changeData={(data) => checkValidation(data, "group")}
-            value={userForm.group.value}
-            error={userForm.group.error}
-            errmsg={userForm.group.errmsg}
-           
-            
-          />
-         
-           </Grid>
+            <Labelbox type="select" placeholder={"Group"}
+
+              dropdown={groups.groupsData}
+              changeData={(data) => checkValidation(data, "group")}
+              value={userForm.group.value}
+              error={userForm.group.error}
+              errmsg={userForm.group.errmsg}
+
+
+            />
+
+          </Grid>
           <Grid item xs={6}>
-          <Labelbox type="select" placeholder={"Controls"}
-           
-            dropdown={controls.controlData}
-            changeData={(data) => checkValidation(data, "controls")}
-            value={userForm.controls.value}
-            error={userForm.controls.error}
-            errmsg={userForm.controls.errmsg}
-            
-          />
+            <Labelbox type="select" placeholder={"Controls"}
+
+              dropdown={controls.controlData}
+              changeData={(data) => checkValidation(data, "controls")}
+              value={userForm.controls.value}
+              error={userForm.controls.error}
+              errmsg={userForm.controls.errmsg}
+
+            />
           </Grid>
         </Grid>
-        <div style={{display: 'flex',justifyContent: 'flex-end',marginLeft: 15}}>
-          <img src={PlusIcon} onClick={onSubmit} style={{cursor: 'pointer',width:19,marginTop: -23}}  />
-          </div>
-       
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }}>
+          <img src={PlusIcon} onClick={onSubmit} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} />
+        </div>
+
       </Grid>
       <div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
           rows={GroupControlList.length == 0 ? GroupControlList : GroupControlList.groupList} />
       </div>
       <DynModel
-          modelTitle={"Edit Group Membership"}
-          handleChangeModel={usergroupmodel}
-          handleChangeCloseModel={(bln) => setUsergroupmodel(bln)}
-          content={
-            <div className="successModel">
+        modelTitle={"Edit Group Membership"}
+        handleChangeModel={usergroupmodel}
+        handleChangeCloseModel={(bln) => setUsergroupmodel(bln)}
+        content={
+          <div className="successModel">
 
-              <div className="usergroupmodelDiv">
+            <div className="usergroupmodelDiv">
               {checkedGroups.length > 0 && checkedGroups.map((data) => {
                 return (
-             
-                <div className="usergroupcheckboxDiv"><Checkbox  checked={data.is_checked} onClick={(event) => handelCheck(event,data)} name={data.screen_control_id} /> &nbsp;&nbsp;<label style={{color:'black'}}>{data.control}</label> </div>
-            
 
-)
+                  <div className="usergroupcheckboxDiv"><Checkbox checked={data.is_checked} onClick={(event) => handelCheck(event, data)} name={data.screen_control_id} /> &nbsp;&nbsp;<label style={{ color: 'black' }}>{data.control}</label> </div>
 
-})}  </div>
-              <div className="customUsergroupbtn">
-                <CustomButton
-                  btnName={"Save"}
-                  btnCustomColor="customPrimary"
-                  custombtnCSS={"btnUsergroup"}
-                  onBtnClick={()=>submitGroup()} //setUsergroupmodel(false)}
-                />
-                <CustomButton
-                 btnName={"Cancel"} 
-                 custombtnCSS={"btnUsergroup"}
-                 onBtnClick={()=>setUsergroupmodel(false)}
-                  />
-              </div>
+
+                )
+
+              })}  </div>
+            <div className="customUsergroupbtn">
+              <CustomButton
+                btnName={"Save"}
+                btnCustomColor="customPrimary"
+                custombtnCSS={"btnUsergroup"}
+                onBtnClick={() => submitGroup()} //setUsergroupmodel(false)}
+              />
+              <CustomButton
+                btnName={"Cancel"}
+                custombtnCSS={"btnUsergroup"}
+                onBtnClick={() => setUsergroupmodel(false)}
+              />
             </div>
+          </div>
 
-          }
-          width={400}
-        />
+        }
+        width={400}
+      />
       {/* <DynModel
         modelTitle={"Edit Group Membership"}
         handleChangeModel={groupcontrol}

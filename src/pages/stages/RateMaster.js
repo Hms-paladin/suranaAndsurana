@@ -190,7 +190,7 @@ const RateMaster = (props) => {
           // handleCancel()
         // }
         setNotfoundmodel(false);
-      
+        handleCancel()
 
       });
     }
