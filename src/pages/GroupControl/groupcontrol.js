@@ -40,8 +40,9 @@ const GroupControl = (props) => {
   }, []);
   const [userForm, setuserForm]= useState({
     controls: {
+      valueById:"",
       value: "",
-      //validation: [{ name: "required" }],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -167,18 +168,36 @@ const GroupControl = (props) => {
      }
 
      function onSubmit() {
-     var contr=[userForm.controls.value];
-      contr.push()
-      var data = {
-        "screen_control_id": contr,
-        "group_id": userForm.group.value,
+       alert("hai")
+      var mainvalue = {};
+      var targetkeys = Object.keys(userForm);
+      for (var i in targetkeys) {
+        var errorcheck = ValidationLibrary.checkValidation(
+          userForm[targetkeys[i]].value,
+          userForm[targetkeys[i]].validation
+        );
+        userForm[targetkeys[i]].error = !errorcheck.state;
+        userForm[targetkeys[i]].errmsg = errorcheck.msg;
+        mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
       }
+      var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
+      console.log("checkuser",userForm)
   
-      dispatch(InsertGroupControlMaster(data)).then((response) => {
+      if (filtererr.length >0) {
+        
+      }else{
+    //  var contr=[userForm.controls.value];
+    //   contr.push()
+    //   var data = {
+        
+    //   }
+  
+      dispatch(InsertGroupControlMaster(userForm)).then((response) => {
         handleCancel();
       })
   
     }
+  }
 
     const handleCancel = () => {
       let From_key = [
@@ -263,9 +282,9 @@ const GroupControl = (props) => {
            </Grid>
           <Grid item xs={6}>
           <Labelbox type="select" placeholder={"Controls"}
-           
+            mode="multiple"
             dropdown={controls.controlData}
-            changeData={(data) => checkValidation(data, "controls")}
+            changeData={(data) => checkValidation(data, "controls",controls.controlData)}
             value={userForm.controls.value}
             error={userForm.controls.error}
             errmsg={userForm.controls.errmsg}

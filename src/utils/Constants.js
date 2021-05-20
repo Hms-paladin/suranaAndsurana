@@ -218,6 +218,7 @@ export const GET_USER = "GET_USER";
 export const EDIT_USER = "EDIT_USER";
 export const DELETE_USER = "DELETE_USER";
 export const GET_CANDIDATES_NAMES = "GET_CANDIDATES_NAMES";
+export const MASTER_EMPLOYEE_DETAILS="MASTER_EMPLOYEE_DETAILS";
 
 //user permission
 export const GET_USER_PERMISSION = "GET_USER_PERMISSION";

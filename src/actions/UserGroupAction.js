@@ -1,10 +1,11 @@
 import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, 
-    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,
+    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,MASTER_EMPLOYEE_DETAILS,
     GET_GROUP_EMP,GET_GROUP_CONTROL_LIST,EDIT_GROUP_NAME,EDIT_GROUP_CONTROL,GET_CONTROL_LIST,INSERT_GROUP_CONTROL} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
 import moment from 'moment'
+import { useFormControl } from "@material-ui/core";
 
 export const getGroupList = () => async dispatch => {
     try {
@@ -128,14 +129,19 @@ export const InsertUsergroupMaster = (data) => async dispatch => {
 
     }
 }
-export const InsertGroupControlMaster = (data) => async dispatch => {
+export const InsertGroupControlMaster = (userForm) => async dispatch => {
+    alert("hai")
     try {
         axios({
             method: "POST",
             url: apiurl + "insert_group_control",
-            data: data,
+            data:{
+                "screen_control_id": userForm.controls.valueById,
+                "group_id": userForm.group.value,
+            }
         }).then((response) => {
             if (response.data.status === 1) {
+                alert("hai")
                 dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 notification.success({
                     message: " inserted Successfully",
@@ -329,5 +335,28 @@ export const getGroupControlList = () => async dispatch => {
 
     } catch (err) {
 
+    }
+}
+
+
+export const GetEmployeeDetails = (data) => async dispatch => {
+    try {
+        axios({
+            method: "post",
+            header: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: apiurl + "get_employee_by_id",
+            data: {
+                "emp_id": data
+            }
+        })
+        .then((response) => {
+            dispatch({type:MASTER_EMPLOYEE_DETAILS,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
     }
 }

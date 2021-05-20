@@ -50,13 +50,14 @@ const UserGroups = (props) => {
   const [userForm, setuserForm]= useState({
     employee: {
       value: "",
-      //validation: [{ name: "required" }],
+      validation: [{"name":"required"}],
       error: null,
       errmsg: null,
     },
     group: {
+      valueById:"",
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{"name":"required"}],
       error: null,
       errmsg: null,
     }
@@ -136,16 +137,33 @@ setUsergroupmodel(flg,obj);
 
 
   function onSubmit() {
+    var mainvalue = {};
+    var targetkeys = Object.keys(userForm);
+    for (var i in targetkeys) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        userForm[targetkeys[i]].value,
+        userForm[targetkeys[i]].validation
+      );
+      userForm[targetkeys[i]].error = !errorcheck.state;
+      userForm[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
+    console.log("checkuser",userForm)
+
+    if (filtererr.length >0) {
+    } else {
     var groups=[userForm.group.value];
     groups.push()
     var data = {
       "emp_id": userForm.employee.value,
-      "group_id": groups,
+      "group_id":userForm.group.valueById,
     }
 
     dispatch(InsertUsergroupMaster(data)).then((response) => {
       handleCancel();
     })
+  }
 
   }
 
@@ -156,12 +174,7 @@ setUsergroupmodel(flg,obj);
     ];
 
     From_key.map((data) => {
-      try {
         userForm[data].value = "";
-        console.log("mapping", userForm[data].value);
-      } catch (error) {
-        throw error;
-      }
     });
     setuserForm((prevState) => ({
       ...prevState,
@@ -264,20 +277,18 @@ setcheckedGroups(d);
         >
           <Grid item xs={6}>
           <Labelbox type="select" placeholder={"Employee"}
-           
             dropdown={employees.empsData}
             changeData={(data) => checkValidation(data, "employee")}
             value={userForm.employee.value}
             error={userForm.employee.error}
-            errmsg={userForm.employee.errmsg}
-            
+            errmsg={userForm.employee.errmsg}   
           />
            </Grid>
           <Grid item xs={6}>
           <Labelbox type="select" placeholder={"Group"}
-            
+            mode="multiple"
             dropdown={groups.groupsData}
-            changeData={(data) => checkValidation(data, "group")}
+            changeData={(data) => checkValidation(data, "group",groups.groupsData)}
             value={userForm.group.value}
             error={userForm.group.error}
             errmsg={userForm.group.errmsg}

@@ -10,7 +10,7 @@ import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getVariableRateTableData, InsertVariableRate, SearchVariableRate } from "../../actions/VariableRateMaster"
+import { getVariableRateTableData, InsertVariableRate, SearchVariableRate,UpdateVariableRate} from "../../actions/VariableRateMaster"
 import DynModel from "../../component/Model/model";
 
 
@@ -39,6 +39,7 @@ const RateMaster = (props) => {
   const [projectDesignation, setprojectDesignation] = useState({});
   const [modelclose, setmodelclose] = useState();
   const [variablebtnchange, setVariablebtnchange] = useState(true)
+  const [AmountChange,setAmountChange]=useState(true)
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
@@ -111,9 +112,10 @@ const RateMaster = (props) => {
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
+    setAmountChange(props.AmountChange)
 
     // setAmountDis(false)
-  }, [props.variabletablechange, props.variablebtnchange]);
+  }, [props.variabletablechange, props.variablebtnchange,props.AmountChange]);
   // useEffect(() => {
   //   // setAmountDis(false)
   // }, [props.variableRateCall]);
@@ -192,11 +194,13 @@ const RateMaster = (props) => {
       
 
       });
-    }
-     
-      
-
-      
+      }
+      if(AmountChange){
+        alert("hai")
+        dispatch(UpdateVariableRate()).then((response)=>{
+              setAmountChange(false)
+        })
+      }
     }
     // console.log(props.lenghtData, "props.lenghtData")
     console.log("ratemasterdddd",RateMaster)
@@ -678,6 +682,7 @@ const mapStateToProps = (state) => (
     UserPermission: state.UserPermissionReducer.getUserPermission,
     searchVariableRate: state.variableRateMaster.searchVariableRate,
     lenghtData: state.variableRateMaster.lengthData,
+    UpdateVariableRate:state.variableRateMaster.updateProjectVariableRate
   }
 );
 
