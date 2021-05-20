@@ -67,13 +67,13 @@ export const InesertResume = (Resume_Form, educationList, experienceList) => asy
 }
 
 
-export const UpdateResume = (Resume_Form, educationList, experienceList) => async dispatch => {
+export const UpdateResume = (Resume_Form, educationList, experienceList, resume_id) => async dispatch => {
   try {
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: apiurl + 'update_resume',
       data: {
-        "resume_id": "200",
+        "resume_id": resume_id || 0,
         "user_id": localStorage.getItem("user_id"),
         "name": Resume_Form.name.value,
         "type_of_resource": Resume_Form.candidate.value,
