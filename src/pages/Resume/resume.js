@@ -450,7 +450,6 @@ const ResumePage = (props) => {
       (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0
     ) {
-      alert("test2")
       // setResumeFrom({ error: false });
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {

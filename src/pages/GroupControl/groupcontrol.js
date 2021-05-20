@@ -168,7 +168,6 @@ const GroupControl = (props) => {
      }
 
      function onSubmit() {
-       alert("hai")
       var mainvalue = {};
       var targetkeys = Object.keys(userForm);
       for (var i in targetkeys) {

@@ -430,7 +430,6 @@ console.log(projectSearchCreate,"projectSearchCreate")
       }
       
       function PlusInsertVariableRate(id) {
-          alert(id)
           let AddRow =props.searchVariableRate.find((data)=>{
               return data.stage_list_id==id
           })
@@ -482,7 +481,6 @@ console.log(projectSearchCreate,"projectSearchCreate")
           [key]: data,
         }));
         setDisableCondition(false)
-        alert(disableCondition)
         // }
 
       };

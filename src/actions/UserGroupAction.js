@@ -130,7 +130,6 @@ export const InsertUsergroupMaster = (data) => async dispatch => {
     }
 }
 export const InsertGroupControlMaster = (userForm) => async dispatch => {
-    alert("hai")
     try {
         axios({
             method: "POST",
@@ -141,7 +140,6 @@ export const InsertGroupControlMaster = (userForm) => async dispatch => {
             }
         }).then((response) => {
             if (response.data.status === 1) {
-                alert("hai")
                 dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 notification.success({
                     message: " inserted Successfully",
