@@ -145,7 +145,7 @@ const KRA = (props) => {
                     <Grid container >
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row kra_table_header" alignItems="center" style={{height: 45}}>
                             <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid>
+                            {/* <Grid item xs={4}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid> */}
                             <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Percentage</label></Grid>
 
                         </Grid>
@@ -153,26 +153,26 @@ const KRA = (props) => {
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={4}><label className="maintitle">In Effective</label></Grid>
+                            {/* <Grid item xs={4}><label className="maintitle">In Effective</label></Grid> */}
                             <Grid item xs={4}> <label className="maintitle">20</label></Grid>
 
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={4}><label className="maintitle"></label></Grid>
+                            {/* <Grid item xs={4}><label className="maintitle"></label></Grid> */}
                             <Grid item xs={4}><label className="maintitle">40</label> </Grid>
 
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={4}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle"></label></Grid>
+                            {/* <Grid item xs={4}> <label className="maintitle"></label></Grid> */}
                             <Grid item xs={4}><label className="maintitle">40</label> </Grid>
 
                         </Grid>
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
+                            {/* <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid> */}
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
                         </Grid>
                     </Grid>

@@ -1,4 +1,4 @@
-import {  INSERT_ACTIVITY,COMMON_INSERT_TEXT,GET_TABLE_NAME,INSERT_USER, GET_USER, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES ,INSERT_STATUS,INSERT_SUBSTAGE,INSERT_CLASS,INSERT_CHECKLIST} from "../utils/Constants";
+import {  INSERT_ACTIVITY,COMMON_INSERT_TEXT,GET_TABLE_NAME,INSERT_USER, GET_USER,MASTER_EMPLOYEE_DETAILS, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES ,INSERT_STATUS,INSERT_SUBSTAGE,INSERT_CLASS,INSERT_CHECKLIST} from "../utils/Constants";
 
 import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT,UPDATE_SUBSTAGE,UPDATE_SUBACTIVITY} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
@@ -605,6 +605,28 @@ export const getCandidateName = () => async dispatch => {
   }
 }
 
+
+export const GetEmployeeDetails = (data) => async dispatch => {
+  try {
+      axios({
+          method: "post",
+          header: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+          },
+          url: apiurl + "get_employee_by_id",
+          data: {
+              "emp_id": data
+          }
+      })
+      .then((response) => {
+          dispatch({type:MASTER_EMPLOYEE_DETAILS,payload:response.data.data})
+      })
+      
+  } catch (err) {
+      
+  }
+}
 // get class dropdown
 
 

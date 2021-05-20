@@ -105,7 +105,7 @@ const KPI = (props) => {
                     <Grid container >
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
                             <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid>
+                            {/* <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid> */}
                             <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Target</label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Achievement</label></Grid>
 
@@ -114,7 +114,7 @@ const KPI = (props) => {
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">In Effective</label></Grid>
+                            {/* <Grid item xs={3}><label className="maintitle">In Effective</label></Grid> */}
                             <Grid item xs={3}> <label className="maintitle">20</label></Grid>
                             <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
@@ -131,7 +131,7 @@ const KPI = (props) => {
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={3}><label className="maintitle"></label></Grid>
+                            {/* <Grid item xs={3}><label className="maintitle"></label></Grid> */}
                             <Grid item xs={3}><label className="maintitle">40</label> </Grid>
                             <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
@@ -148,7 +148,7 @@ const KPI = (props) => {
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle"></label></Grid>
+                            {/* <Grid item xs={3}> <label className="maintitle"></label></Grid> */}
                             <Grid item xs={3}><label className="maintitle">40</label> </Grid>
                             <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
