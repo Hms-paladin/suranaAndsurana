@@ -584,7 +584,7 @@ const ResumePage = (props) => {
         () => {
           handleCancel();
           setEditResume(false)
-          dispatch(GetResumeList(resume_id))
+          // dispatch(GetResumeList(resume_id))
           props.handleChangeCloseModel(false)
         }
       );
