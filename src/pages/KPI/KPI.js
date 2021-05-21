@@ -8,6 +8,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
+import KPIModal from './KPIViewModal'
 
 const KPI = (props) => {
     const header = [
@@ -21,6 +22,7 @@ const KPI = (props) => {
     const [kpimodel, setKpimodel] = useState(false);
 
     const [isLoaded, setIsLoaded] = useState(true);
+    const [kpiViewModal, setKpiViewModal] = useState(false)
 
     const [kpi_form, setKpi_form] = useState({
 
@@ -88,13 +90,22 @@ const KPI = (props) => {
                             className="spaceBtGrid"
                             alignItems="center"
                         >
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <div className="KRAhead"><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <div className="KRAhead"><label >Period</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
+                            </Grid>
+                            <Grid item xs={4}>
+                            <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
+                                    btnName={"View KPI"}
+                                    btnCustomColor="customPrimary"
+                                    custombtnCSS={"btnUsergroup"}
+                                    onBtnClick={()=>setKpiViewModal(!kpiViewModal)}
+
+                                /></div>
                             </Grid>
                         </Grid>
 
@@ -186,7 +197,7 @@ const KPI = (props) => {
                     />
                 </div>
             </div>
-
+            <DynModel modelTitle={"KPI View"} handleChangeModel={kpiViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKpiViewModal(bln)} width={900} content={<KPIModal />} />
         </div>
     )
 }

@@ -79,6 +79,7 @@ const GroupControl = (props) => {
       })
     )
     setgroups({ groupsData })
+    
 
     let controlData = []
     props.controlList.map((data) =>
@@ -88,7 +89,7 @@ const GroupControl = (props) => {
       })
     )
     setcontrols({ controlData })
-
+     
 
   }, [props.getGroupControlLists, props.groupLists, props.controlList,
   ]);
@@ -249,7 +250,7 @@ const GroupControl = (props) => {
     }));
 
   };
-  
+   console.log(groups,"groups")
 
   return (
     <div>

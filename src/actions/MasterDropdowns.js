@@ -8,8 +8,8 @@ import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
 import { GET_TALENTS } from "../utils/Constants.js";
-import {GET_QUALIFICATION} from '../utils/Constants.js'
-import {USER_GET_CLASS,USER_GET_STATUS} from '../utils/Constants'
+import { GET_QUALIFICATION } from '../utils/Constants.js'
+import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants'
 import {
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
@@ -50,7 +50,7 @@ import {
   GET_LEAVETYPE,
   GET_USERGROUP,
 } from "../utils/Constants.js";
-
+import { GET_CATEGORY, GET_SUBCATEGORY } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_resource_type");
@@ -270,7 +270,7 @@ export const getLocation = () => async (dispatch) => {
     }).then((response) => {
       dispatch({ type: GET_COURT_LOCATION, payload: response.data.data });
     });
-  } catch (err) {}
+  } catch (err) { }
 };
 
 export const getTradeMarkStatus = () => async (dispatch) => {
@@ -324,21 +324,21 @@ export const getLeaveType = () => async (dispatch) => {
 };
 
 // user master dropdown
-export const getClass  = () => async (dispatch) => {
+export const getClass = () => async (dispatch) => {
   const response = await axios({
-      method: "post",
-      url: apiurl + "get_class",
-      data: {
-          class_type: "1",
-      },
-    });
+    method: "post",
+    url: apiurl + "get_class",
+    data: {
+      class_type: "1",
+    },
+  });
   return dispatch({ type: USER_GET_CLASS, payload: response.data.data });
 };
-export const UsergetStatus  = () => async (dispatch) => {
+export const UsergetStatus = () => async (dispatch) => {
   const response = await axios({
-      method: "get",
-      url: apiurl + "get_status_type",
-    });
+    method: "get",
+    url: apiurl + "get_status_type",
+  });
   return dispatch({ type: USER_GET_STATUS, payload: response.data.data });
 };
 //GET_USERGROUP
@@ -347,5 +347,33 @@ export const getUserGroup = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/getGroupMaster");
   return dispatch({ type: GET_USERGROUP, payload: response.data.data });
 };
+
+//Test Template
+export const getCategory = () => async (dispatch) => {
+  try {
+    axios({
+      method: 'GET',
+      url: apiurl + "category",
+    })
+      .then((response) => {
+        dispatch({ type: GET_CATEGORY, payload: response.data.data })
+      });
+  }
+  catch (err) { }
+}
+export const getSubCategory = (id) => async (dispatch) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: apiurl + "subcategory",
+      data: {
+        categoryId: id
+      }
+    });
+    return dispatch({ type: GET_SUBCATEGORY, payload: response.data.data });
+  }
+  catch (err) { }
+}
+
 
 

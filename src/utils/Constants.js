@@ -270,3 +270,7 @@ export const INSERT_HEARING = "INSERT_HEARING";
 // Resume
 
 export const GET_RESUMELIST = "GET_RESUMELIST";
+
+//TestTemplate
+export const GET_CATEGORY="GET_CATEGORY"
+export const GET_SUBCATEGORY="GET_SUBCATEGORY"
