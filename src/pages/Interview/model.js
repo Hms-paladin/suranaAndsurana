@@ -127,8 +127,8 @@ function DynModelView(props) {
                       <div>{values.industry}</div>
                       <div>{values.company_name}</div>
                       <div>{values.city}</div>
-                      <div>{values.department_id}</div>
-                      <div>{values.designation_id}</div>
+                      <div>{values.department}</div>
+                      <div>{values.designation}</div>
                       <div>{values.period_from}</div>
                       <div>{values.period_to}</div>
                     </div>

@@ -298,9 +298,6 @@ function Resumesearch(props) {
         setEditResumeRow(props.GetResumeList[0]?.result)
     }, [props.GetResumeList])
 
-    console.log(editResumeRow, "GetResumeList")
-
-
 
     useEffect(() => {
         let rowDataList = []
