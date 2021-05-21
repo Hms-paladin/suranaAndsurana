@@ -341,7 +341,6 @@ const GroupControl = (props) => {
         handleChangeCloseModel={(bln) => setGroupcontrolmodel(bln)}
         content={
           <div className="successModel">
-
             <div> <label className="usergroup_label">Employee :&nbsp;Kaveri</label></div>
             <div className="groupcontrolDiv">
               <div className="usergroupcheckboxDiv"><Checkbox /> &nbsp;&nbsp;<label style={{ color: 'black' }}>Interview Approval</label> </div>
@@ -361,7 +360,6 @@ const GroupControl = (props) => {
               />
             </div>
           </div>
-
         }
         width={400}
       /> */}

@@ -46,7 +46,7 @@ function OpeModel(props) {
         },
         amount: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "10" }, { "name": "allowNumaricOnly" }],
+            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "10" }, { "name": "allowNumaricOnly" }],
             error: null,
             errmsg: null,
         },
@@ -227,28 +227,60 @@ function OpeModel(props) {
                             error={opeModel.amount.error}
                             errmsg={opeModel.amount.errmsg} />
                     </Grid>
-                    <Grid item xs={6}>
-                        <Labelbox type="select"
-                            placeholder={" Mode of Payment"}
-                            dropdown={paymentMode.paymentmode}
-                            changeData={(data) => checkValidation(data, "payment")}
-                            value={opeModel.payment.value}
-                            error={opeModel.payment.error}
-                            errmsg={opeModel.payment.errmsg} />
-                    </Grid>
-                    <Grid item xs={5} className="opeHeader">
-
-                        <div>BILL</div>
-                        <Checkbox />
-                        <div className="uploadbox_div" >
+                    <Grid item xs={12}>
+                        <div className="billupload">
                             <div>
-                                <Upload {...fileUpload} className="uploadbox_tag"
-                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+                                <Labelbox type="select"
+                                    placeholder={" Mode of Payment"}
+                                    dropdown={paymentMode.paymentmode}
+                                    changeData={(data) => checkValidation(data, "payment")}
+                                    value={opeModel.payment.value}
+                                    error={opeModel.payment.error}
+                                    errmsg={opeModel.payment.errmsg} />
+                            </div>
+                            <div className="rightitems">
+                                <div>
+                                    <div id="bill">BILL</div>
+                                    <Checkbox />
+                                </div>
+                                <div className="uploadbtn" >
+                                    <div>
+                                        <Upload {...fileUpload}
+                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
-                                    <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
-                                </Upload>
+                                            <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
+                                        </Upload>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        {/* <Grid item xs={6}>
+                            <Labelbox type="select"
+                                placeholder={" Mode of Payment"}
+                                dropdown={paymentMode.paymentmode}
+                                changeData={(data) => checkValidation(data, "payment")}
+                                value={opeModel.payment.value}
+                                error={opeModel.payment.error}
+                                errmsg={opeModel.payment.errmsg} />
+                        </Grid>
+                        <Grid item xs={6} className="opeHeader" direction="row">
+                            <div style={{ display: "flex" }}>
+                                <div>BILL</div>
+                                <Checkbox />
+                            </div>
+                            <div>
+                                <div className="uploadbox_div" >
+                                    <div>
+                                        <Upload {...fileUpload} className="uploadbox_tag"
+                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                            <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
+                                        </Upload>
+                                    </div>
+                                </div>
+                            </div>
+                        </Grid> */}
                     </Grid>
                 </Grid>
 
