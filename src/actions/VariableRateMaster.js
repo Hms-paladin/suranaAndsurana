@@ -1,4 +1,5 @@
 import { GET_PROJECT_VARIABLE_RATE, GET_VARIABLERATE_TABLE_DATA, INSERT_VARIABLERATE, SEARCH_VARIABLERATE,
+  UPDATE_VARIABLE_RATE_FIRST,
 UPDATE_VARIABLERATE} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -352,3 +353,32 @@ export const UpdateVariableRate = (data,amt) => async dispatch => {
   
     }
   }
+
+
+  export const Update_Variable_Rate = (data,amt,AddRow) => async dispatch => {
+    console.log(AddRow,amt,"projectSearchCreate")
+      try {
+          axios({
+              method: 'PUT',
+              url: apiurl +'update_variable_rate',
+              data:
+              {
+                "rate_map_id":AddRow[0].rate_map_id || 0,
+                "amount":amt|| 0
+             
+              }
+          }).then((response) => {
+              if (response.data.status === 1) {
+                  notification.success({
+                      message: "Variable rate amount updated sucessfully",
+                  });
+                 dispatch({ type: UPDATE_VARIABLE_RATE_FIRST, payload: response.data.status})
+                  dispatch(getVariableRateTableData())
+                  return Promise.resolve();
+              }
+          });
+    
+      } catch (err) {
+    
+      }
+    }

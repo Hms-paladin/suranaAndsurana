@@ -33,7 +33,7 @@ import AddClientReducer from './AddClientReducer';
 import getDesignDetails from "./insertDesign";
 import getTaskList from './TimeSheetReducer';
 import GetResumeList from './ResumeReducer';
-
+import ExitSeverance from './ExitSeveranceReducers'
 
 export default combineReducers({
   getInterviewquestions,
@@ -69,7 +69,8 @@ export default combineReducers({
   AddClientReducer,
   getDesignDetails,
   getTaskList,
-  GetResumeList
+  GetResumeList,
+  ExitSeverance
 });
 
 

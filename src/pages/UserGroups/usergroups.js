@@ -153,11 +153,11 @@ setUsergroupmodel(flg,obj);
 
     if (filtererr.length >0) {
     } else {
-    var groups=[userForm.group.value];
+    var groups=[userForm.group.valueById];
     groups.push()
     var data = {
       "emp_id": userForm.employee.value,
-      "group_id":userForm.group.valueById,
+      "group_id":groups,
     }
 
     dispatch(InsertUsergroupMaster(data)).then((response) => {

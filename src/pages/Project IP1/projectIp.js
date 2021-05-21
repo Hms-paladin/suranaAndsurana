@@ -73,8 +73,8 @@ import SuccessIcon from "../../images/successicon.svg";
 import AddVarData from "../../images/addvardata.svg";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";
-import {InsertProjectVariableRate,getProjectVariableRate,deleteVariableRate,UpdateVariableRate,
-    InsertVariableRate} from "../../actions/VariableRateMaster"
+import {InsertProjectVariableRate,getProjectVariableRate,deleteVariableRate,
+    UpdateVariableRate,Update_Variable_Rate, InsertVariableRate} from "../../actions/VariableRateMaster"
 
 const { TabPane } = Tabs;
 
@@ -101,7 +101,7 @@ function ProjectIp(props) {
     const [sendVariableData, setSendVariableData] = useState([]);
     const [notfoundmodel, setNotfoundmodel] = useState(false);
    
-    const [disableCondition, setDisableCondition] = useState(true);
+    const [disableCondition, setDisableCondition] = useState(false);
     const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
     const [applicableamount, setApplicableamount] = useState({});
     
@@ -412,22 +412,16 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
 console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       //----------
 
-     function onsubmitvariablerate(id){
-         alert(id)
-        // setVariableid(true)
-        // dispatch(InsertProjectVariableRate(sendVariableData)).then((response) => {
-        //     setVariableid(false);
-        //   });
-        let AddRow =props.searchVariableRate.find((data)=>{
-            return data.stage_list_id
-        })
-        // console.log(AddRow,"fghjj")
-        // applicableamount.amt="fghj"
-            // if(disableCondition){
-          dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate.amountSearch0)).then((response)=>{
-            setDisableCondition(false)
-          })
-        //   }
+     function onsubmitvariablerate(){
+        setVariableid(false)
+        // let AddRow =props.searchVariableRate.find((data)=>{
+        //     return data.stage_list_id
+        // })
+        //   dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate.amountSearch0)).then((response)=>{
+        //     setDisableCondition(false)
+        //   })
+          
+
       }
       
       function PlusInsertVariableRate(id) {
@@ -435,13 +429,21 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
               return data.stage_list_id==id
           })
           console.log(AddRow,"dddss")
-      
-          
-        dispatch(InsertProjectVariableRate(AddRow,sendVariableData)).then((response) => {
+        //  projectSearchCreate.amountSearch=AddRow.Amount
+          if(disableCondition){
+             dispatch(Update_Variable_Rate(sendVariableData,projectSearchCreate.amountSearch0,AddRow)).then((response)=>{
+              setDisableCondition(false)
+             })
+          }
+          else{
+            dispatch(InsertProjectVariableRate(AddRow,sendVariableData)).then((response) => {
             setVariableid(true);
             
           });
-        
+        }
+        setPrpjectSearchCreate((prevState) => ({
+            ...prevState,
+          }));
       }
       const onDelete = (id) => {
         dispatch(deleteVariableRate(id,props.getProjectVariableRate[0].project_id))
@@ -463,14 +465,14 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       const onchangeAmount = (data, key) => {
         // setAmountChange(true)
         console.log(parseInt(data), key, "onchangeAmount")
-        // if (key === "amountSearch" && data) {
+        // if (key && data) {
+        setDisableCondition(true)
         setPrpjectSearchCreate((prevState) => ({
           ...prevState,
           [key]: data,
         }));
         console.log(disableCondition,"console")
-        setDisableCondition(false)
-      
+        
         // }
       };
 
@@ -481,8 +483,9 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
           ...prevState,
           [key]: data,
         }));
-        setDisableCondition(false)
+        setDisableCondition(true)
         // }
+
 
       };
  
@@ -495,7 +498,7 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
     props.getProjectVariableRate.length>0 &&props.getProjectVariableRate.map((data, index) => {
         tableData.push(data)
         const Index=index
-        if(disableCondition){
+        if(!disableCondition){
         applicableamount["amt"+index] = data.amount;
         }
 
@@ -511,6 +514,7 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       type="text"
       placeholder={"Amount"}
       changeData={(data) => onchangeapplicableAmount(data, "amt"+index)}
+    //   SubmitData={()=>onsubmitvariablerate(data.rate_master_id)}
       value={applicableamount["amt"+index]}
       />,
       UOM: data.unit_of_measure,
@@ -518,7 +522,6 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
         <DeleteIcon
           style={{ cursor: "pointer", width: 19 }}
           fontSize="small"
-          
           onClick={() => onDelete(data.rate_master_id)}
         />
       ),
@@ -544,8 +547,10 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
           setNotfoundmodel(false);
           console.log("sho",props.searchVariableRate)
           props.searchVariableRate.map((data, index) => {
-            if (disableCondition) {
+            if (disableCondition===false) {
+                console.log(disableCondition,"disblecondit")
               projectSearchCreate['amountSearch' + index] = data.Amount;
+
             }
             searchVariableTableData.push({
               designation: data.designation,
@@ -560,7 +565,6 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
                   type="text"
                   placeholder={"Amount"}
                   changeData={(data) => onchangeAmount(data, "amountSearch"+index)}
-                  SubmitData={()=>onsubmitvariablerate(data.stage_list_id)}
                   value={projectSearchCreate["amountSearch"+index]}
                 />
               ),
@@ -580,7 +584,7 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
           setNotfoundmodel(true)
         }
     
-      }, [props.searchVariableRate, props.lenghtData, projectSearchCreate]);
+      }, [props.searchVariableRate, props.lenghtData, projectSearchCreate,disableCondition]);
 console.log(showVariableTable,"showVariableTable")
       
     const variablerateModel = () => {
@@ -932,7 +936,8 @@ const mapStateToProps = (state) => (
         ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
         searchVariableRate: state.variableRateMaster.searchVariableRate,
         getProjectVariableRate: state.variableRateMaster.getProjectVariableRate,
-        UpdateVariableRate:state.variableRateMaster.updateProjectVariableRate
+        UpdateProjectVariableRate:state.variableRateMaster.updateProjectVariableRate,
+        UpdateVariableRate:state.variableRateMaster.UpdateVariableRate||[]
     }
 );
 

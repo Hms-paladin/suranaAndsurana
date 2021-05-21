@@ -115,14 +115,20 @@ export const InsertUsergroupMaster = (data) => async dispatch => {
             url: apiurl + "insert_employee_group",
             data: data,
         }).then((response) => {
-            if (response.data.status === 1) {
-                dispatch({ type: INSERT_USERGROUP, payload: true })
+               if (response.data.status === 1) {
                 notification.success({
-                    message: " inserted Successfully",
+                    message: "Inserted successfully",
                 });
+            }
+                else if (response.data.status === 0) {
+                    notification.success({
+                        message:response.data.msg,
+                    });
+                }
+                dispatch({ type: INSERT_USERGROUP, payload:true})
                 dispatch(getEmployeeGroupDetails())
                 return Promise.resolve();
-            }
+            
         });
 
     } catch (err) {
@@ -140,15 +146,21 @@ export const InsertGroupControlMaster = (userForm) => async dispatch => {
             }
         }).then((response) => {
             if (response.data.status === 1) {
-                dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 notification.success({
                     message: " inserted Successfully",
                 });
+              }
+                else if(response.data.status===0){
+                    notification.info({
+                        message:response.data.msg,
+                    }); 
+                }
+                dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 dispatch(getGroupControlList())
                 
-                dispatch(getGroupName())
+                // dispatch(getGroupName())
                 return Promise.resolve();
-            }
+            
         });
 
     } catch (err) {
