@@ -49,6 +49,7 @@ const ResumePage = (props) => {
   const [nullFieldValueExp, SetNullFieldValueExp] = useState(false);
   const [editResume, setEditResume] = useState(false)
   const [resume_id, setResume_id] = useState()
+  const [editcity, setEditcity] = useState(false)
 
 
   const [Resume_Form, setResumeFrom] = useState({
@@ -395,9 +396,9 @@ const ResumePage = (props) => {
       [key]: dynObj,
     }));
   }
-  console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
 
   useEffect(() => {
+    console.log(props.resumeEditrow && props.resumeEditrow[0]?.experience, "Resume_Form")
 
 
     if (props.resumeEditrow && props.resumeEditrow[0]?.qualification.length > 0) {
@@ -409,7 +410,7 @@ const ResumePage = (props) => {
     }
 
     if (props.resumeEditrow && props.resumeEditrow.length > 0) {
-
+      setEditcity(true)
       setEditResume(true)
       setResume_id(props.resumeEditrow[0].resume_id)
 
@@ -545,7 +546,7 @@ const ResumePage = (props) => {
 
 
   function onSubmit(text) {
-    console.log(text,"testing")
+    console.log(text, "testing")
     var mainvalue = {};
     var targetkeys = Object.keys(Resume_Form);
     for (var i in targetkeys) {
@@ -571,6 +572,7 @@ const ResumePage = (props) => {
       filtererr.length === 0
     ) {
       // setResumeFrom({ error: false });
+
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
           handleCancel();
@@ -584,6 +586,7 @@ const ResumePage = (props) => {
         () => {
           handleCancel();
           setEditResume(false)
+          setEditcity(false)
           // dispatch(GetResumeList(resume_id))
           props.handleChangeCloseModel(false)
         }
@@ -594,6 +597,7 @@ const ResumePage = (props) => {
       ...prevState,
     }));
   }
+
 
   const handleCancel = () => {
     let ResumeFrom_key = [
@@ -832,7 +836,7 @@ const ResumePage = (props) => {
             <Grid item xs={12}>
               <Labelbox
                 type="text"
-                placeholder={"Mail Address *"}
+                placeholder={"Postel Address *"}
                 changeData={(data) => checkValidation(data, "mailAddress")}
                 value={Resume_Form.mailAddress.value}
                 error={Resume_Form.mailAddress.error}
@@ -936,7 +940,7 @@ const ResumePage = (props) => {
                         <div>Qualification</div>
                         <div>Insitution/University</div>
                         <div>Year of Passing</div>
-                        <div>Percentage/CGPA</div>?
+                        <div>Percentage/CGPA</div>
                       </div>
                       <div className="educationValue">
                         <div>
@@ -1290,12 +1294,16 @@ const ResumePage = (props) => {
                           </div>
                           <div>{data.company_name}</div>
                           <div>
+
                             {" "}
-                            {resumeGetList.cityList.map((getName) => {
-                              if (data.city === getName.id) {
-                                return getName.value;
-                              }
-                            })}
+                            {editcity ?
+                              <> {data.city}</> :
+                              <> {resumeGetList.cityList.map((getName) => {
+                                if (data.city === getName.id) {
+                                  return getName.value;
+                                }
+                              })}</>}
+
                           </div>
 
                           <div>{data.department}</div>

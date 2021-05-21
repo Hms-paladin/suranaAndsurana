@@ -8,8 +8,8 @@ import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
 import { GET_TALENTS } from "../utils/Constants.js";
-import {GET_QUALIFICATION} from '../utils/Constants.js'
-import {USER_GET_CLASS,USER_GET_STATUS} from '../utils/Constants'
+import { GET_QUALIFICATION } from '../utils/Constants.js'
+import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants'
 import {
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
@@ -48,7 +48,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP,
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,
 } from "../utils/Constants.js";
 
 //_________________________________
@@ -270,7 +270,7 @@ export const getLocation = () => async (dispatch) => {
     }).then((response) => {
       dispatch({ type: GET_COURT_LOCATION, payload: response.data.data });
     });
-  } catch (err) {}
+  } catch (err) { }
 };
 
 export const getTradeMarkStatus = () => async (dispatch) => {
@@ -324,21 +324,21 @@ export const getLeaveType = () => async (dispatch) => {
 };
 
 // user master dropdown
-export const getClass  = () => async (dispatch) => {
+export const getClass = () => async (dispatch) => {
   const response = await axios({
-      method: "post",
-      url: apiurl + "get_class",
-      data: {
-          class_type: "1",
-      },
-    });
+    method: "post",
+    url: apiurl + "get_class",
+    data: {
+      class_type: "1",
+    },
+  });
   return dispatch({ type: USER_GET_CLASS, payload: response.data.data });
 };
-export const UsergetStatus  = () => async (dispatch) => {
+export const UsergetStatus = () => async (dispatch) => {
   const response = await axios({
-      method: "get",
-      url: apiurl + "get_status_type",
-    });
+    method: "get",
+    url: apiurl + "get_status_type",
+  });
   return dispatch({ type: USER_GET_STATUS, payload: response.data.data });
 };
 //GET_USERGROUP
@@ -346,6 +346,31 @@ export const UsergetStatus  = () => async (dispatch) => {
 export const getUserGroup = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/getGroupMaster");
   return dispatch({ type: GET_USERGROUP, payload: response.data.data });
+};
+
+// Online test - Ad questions
+
+
+export const getCategory = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/category");
+  return dispatch({ type: GET_CATEGORY, payload: response.data.data });
+};
+
+export const getSubCategory = (categoryId) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "subcategory",
+    data: {
+      categoryId: "1",
+    },
+  });
+  return dispatch({ type: GET_SUBCATEGORY, payload: response.data.data });
+};
+
+
+export const getQuestionType = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/questiontype");
+  return dispatch({ type: GET_QUATIONTYPE, payload: response.data.data });
 };
 
 
