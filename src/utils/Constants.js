@@ -278,7 +278,9 @@ export const INSERT_SEVERANCE="INSERT_SEVERANCE"
 
 // Add Ouestions
 
-export const GET_CATEGORY = "GET_CATEGORY";
-export const GET_SUBCATEGORY = "GET_SUBCATEGORY";
 export const GET_QUATIONTYPE = "GET_QUATIONTYPE";
 export const GET_ADD_QUATIONS = "GET_ADD_QUATIONS";
+
+//TestTemplate
+export const GET_CATEGORY="GET_CATEGORY"
+export const GET_SUBCATEGORY="GET_SUBCATEGORY"

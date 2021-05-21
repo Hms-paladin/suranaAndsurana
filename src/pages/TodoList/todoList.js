@@ -192,6 +192,14 @@ function TodoList(props) {
             else if(data.user_id){
                showId=data.user_id
                showName="Unblock User"
+               projectTask.push({
+                   id:<div onClick={() => OtherTaskFunction( showName,showId,data)} className="ProjectTaskId">{data.task}</div>,
+                   activity:data.activity,
+                   subactivity:data.sub_activity,
+                   startdate:data.start_date,
+                   enddate:data.end_date,
+               })
+               setProjectTodoList(projectTask)
             }
             else{
                 showName="Timesheet Approval"
@@ -356,7 +364,7 @@ function TodoList(props) {
 
     }
     //appraisalSupervisor
-
+    console.log(props. getOtherTask,"getOtherTask")
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}

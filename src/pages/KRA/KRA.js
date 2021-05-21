@@ -8,6 +8,7 @@ import DynModel from "../../component/Model/model";
 import './KRA.scss'
 import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
+import KRAModal from "./KRAViewModal"
 
 const KRA = (props) => {
     const header = [
@@ -21,7 +22,7 @@ const KRA = (props) => {
     const [kramodel, setKramodel] = useState(false);
 
     const [isLoaded, setIsLoaded] = useState(true);
-
+    const [kraViewModal, setKraViewModal] = useState(false)
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -73,6 +74,13 @@ const KRA = (props) => {
             <div className="kra">KRA</div>
             <div className="kra_main">
                 <div >
+                    {/* <div style={{display:"flex",justifyContent:"right",width:"100%"}}>
+                    <CustomButton
+                        btnName={"View KRA"}
+                        btnCustomColor="customPrimary"
+                        custombtnCSS={"btnUsergroup"}
+
+                    /></div> */}
                     <Grid container className="kra_sub">
                         <Grid
                             item
@@ -81,28 +89,43 @@ const KRA = (props) => {
                             direction="row"
                             className="spaceBtGrid"
                             alignItems="center"
-                            style={{padding:10}}
+                            style={{ padding: 10 }}
+                            spacing={2}
                         >
                             <Grid item xs={2}>
-                                <div className="KRAhead"><label  onClick={() => setKramodel(true)}>Employee Name</label></div>
-                                <div ><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>Rajesh</label></div>
+                                <div className="KRAhead"><label onClick={() => setKramodel(true)}>Employee Name</label></div>
+                                <div ><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
+                            </Grid>
+                            <Grid item xs={4} container direction="row">
+                                <div className="KRAhead per_head"><label >From Period</label></div>
+                                <div className="KRAhead per_head"><label >To Period</label></div>
+                                <div className="period_div">
+                                    <Labelbox
+                                        type="datepicker"
+                                        placeholder={"From Period"}
+                                        // view={["year", "month"]}
+                                        // format={'mmm-yyyy'}
+                                    />
+                                    <Labelbox
+                                        type="datepicker"
+                                        placeholder={"to Period"}
+                                        // view={["year", "month"]}
+                                        // format={'mmm-yyyy'}
+                                    /></div>
+                                {/* <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div> */}
                             </Grid>
                             <Grid item xs={2}>
-                                <div className="KRAhead"><label >Period</label></div>
-                                <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div>
-                            </Grid>
-                            <Grid item xs={2}>
-                            <div className="KRAhead"><label style={{ fontSize: 15 }}>Activity</label></div>
-                            <div style={{ width: '100%', display: 'inline-block' }}>
-                                <Labelbox
-                                    type="select"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "activity")}
-                                    value={kpi_form.activity.value}
-                                    error={kpi_form.activity.error}
-                                    errmsg={kpi_form.activity.errmsg}
-                                /></div>
+                                <div className="KRAhead"><label style={{ fontSize: 15 }}>Activity</label></div>
+                                <div style={{ width: '100%', display: 'inline-block' }}>
+                                    <Labelbox
+                                        type="select"
+                                        placeholder={""}
+                                        value={35}
+                                        changeData={(data) => checkValidation(data, "activity")}
+                                        value={kpi_form.activity.value}
+                                        error={kpi_form.activity.error}
+                                        errmsg={kpi_form.activity.errmsg}
+                                    /></div>
                             </Grid>
                             {/* <Grid item xs={2}>
                             <div className="KRAhead"><label style={{ fontSize: 15 }}>Sub Activity</label></div>
@@ -118,24 +141,31 @@ const KRA = (props) => {
                                 /></div>
                             </Grid> */}
                             <Grid item xs={2}>
-                            <div className="KRAhead"><label style={{ fontSize: 15 }}>Percentage</label></div>
+                                <div className="KRAhead"><label style={{ fontSize: 15 }}>Percentage</label></div>
                                 <div style={{ width: '100%', display: 'inline-block' }}>
-                                <Labelbox
-                                    type="select"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "percentage")}
-                                    value={kpi_form.percentage.value}
-                                    error={kpi_form.percentage.error}
-                                    errmsg={kpi_form.percentage.errmsg}
-                                /></div>
+                                    <Labelbox
+                                        type="select"
+                                        placeholder={""}
+                                        value={35}
+                                        changeData={(data) => checkValidation(data, "percentage")}
+                                        value={kpi_form.percentage.value}
+                                        error={kpi_form.percentage.error}
+                                        errmsg={kpi_form.percentage.errmsg}
+                                    /></div>
                             </Grid>
-                            <Grid item xs={1}>
-                            <div style={{display: 'flex'}}>
-          <img src={PlusIcon} style={{cursor: 'pointer',width:19}}  />
-          </div>
-                          </Grid>
-                      </Grid>
+                            <Grid item xs={2}>
+                                <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
+                                    btnName={"View KRA"}
+                                    btnCustomColor="customPrimary"
+                                    custombtnCSS={"btnUsergroup"}
+                                    onBtnClick={()=>setKraViewModal(!kraViewModal)}
+
+                                /></div>
+                                <div style={{ display: 'flex', justifyContent: "center", padding: "15px" }}>
+                                    <img src={PlusIcon} style={{ cursor: 'pointer', width: 19 }} />
+                                </div>
+                            </Grid>
+                        </Grid>
 
 
                     </Grid>
@@ -147,6 +177,7 @@ const KRA = (props) => {
                             <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
                             {/* <Grid item xs={4}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid> */}
                             <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Percentage</label></Grid>
+         
 
                         </Grid>
 
@@ -177,7 +208,7 @@ const KRA = (props) => {
                         </Grid>
                     </Grid>
                 </div>
-                
+
                 <div className="kpi_btn">
                     <CustomButton
                         btnName={"Save"}
@@ -191,6 +222,7 @@ const KRA = (props) => {
 
                     />
                 </div>
+                <DynModel modelTitle={"KRA View"} handleChangeModel={kraViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKraViewModal(bln)} width={900} content={<KRAModal />} />
             </div>
         </div>
     )

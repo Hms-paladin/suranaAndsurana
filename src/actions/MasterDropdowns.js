@@ -50,7 +50,6 @@ import {
   GET_LEAVETYPE,
   GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,
 } from "../utils/Constants.js";
-
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_resource_type");
@@ -351,26 +350,39 @@ export const getUserGroup = () => async (dispatch) => {
 // Online test - Ad questions
 
 
-export const getCategory = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "/category");
-  return dispatch({ type: GET_CATEGORY, payload: response.data.data });
-};
 
-export const getSubCategory = (categoryId) => async (dispatch) => {
-  const response = await axios({
-    method: "post",
-    url: apiurl + "subcategory",
-    data: {
-      categoryId: "1",
-    },
-  });
-  return dispatch({ type: GET_SUBCATEGORY, payload: response.data.data });
-};
 
 
 export const getQuestionType = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/questiontype");
   return dispatch({ type: GET_QUATIONTYPE, payload: response.data.data });
 };
+//Test Template
+export const getCategory = () => async (dispatch) => {
+  try {
+    axios({
+      method: 'GET',
+      url: apiurl + "category",
+    })
+      .then((response) => {
+        dispatch({ type: GET_CATEGORY, payload: response.data.data })
+      });
+  }
+  catch (err) { }
+}
+export const getSubCategory = (id) => async (dispatch) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: apiurl + "subcategory",
+      data: {
+        categoryId: id
+      }
+    });
+    return dispatch({ type: GET_SUBCATEGORY, payload: response.data.data });
+  }
+  catch (err) { }
+}
+
 
 

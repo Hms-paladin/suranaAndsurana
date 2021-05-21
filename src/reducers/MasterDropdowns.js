@@ -5,6 +5,7 @@ import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
 import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants.js';
+import { GET_CATEGORY, GET_SUBCATEGORY } from "../utils/Constants.js";
 import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
@@ -33,7 +34,7 @@ import {
   GET_COURT_LOCATION,
   GET_TRADE_MARK_STATUS,
   GET_CASE_TYPE,
-  GET_SUB_CASE_TYPE, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,
+  GET_SUB_CASE_TYPE, GET_QUATIONTYPE,
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -47,6 +48,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
 } from "../utils/Constants.js";
+
 const initalState = {
   getResourcesType: [],
   getInstitute: [],
