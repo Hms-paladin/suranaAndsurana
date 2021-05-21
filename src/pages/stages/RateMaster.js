@@ -176,7 +176,7 @@ const RateMaster = (props) => {
       if(variablebtnchange===false){
         dispatch(SearchVariableRate(RateMaster)).then((response) => {
           props.setShowSearchTable()
-          handleCancel();
+          // handleCancel();
 
        })
       }
@@ -192,7 +192,7 @@ const RateMaster = (props) => {
           // handleCancel()
         // }
         setNotfoundmodel(false);
-        handleCancel()
+        // handleCancel()
 
       });
       }
