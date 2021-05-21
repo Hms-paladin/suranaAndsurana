@@ -325,7 +325,7 @@ export const deleteVariableRate = (id,project_id) => async dispatch => {
 }
 
 
-export const UpdateVariableRate = (data,applicableamount,disableCondition) => async dispatch => {
+export const UpdateVariableRate = (data,amt) => async dispatch => {
   // console.log(projectSearchCreate,"projectSearchCreate")
     try {
         axios({
@@ -334,7 +334,7 @@ export const UpdateVariableRate = (data,applicableamount,disableCondition) => as
             data:
             {
               "rate_master_id":data[0].rate_master_id || 0,
-              "amount":disableCondition?applicableamount.amt: 0
+              "amount":amt|| 0
            
             }
         }).then((response) => {

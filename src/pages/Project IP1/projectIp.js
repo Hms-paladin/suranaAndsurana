@@ -409,10 +409,11 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
     }
 
     // console.log(props.ProjectDetails[0].sub_project_type, "props.ProjectDetails[0].sub_project_type")
-console.log(projectSearchCreate,"projectSearchCreate")
+console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       //----------
 
-     function onsubmitvariablerate(){
+     function onsubmitvariablerate(id){
+         alert(id)
         // setVariableid(true)
         // dispatch(InsertProjectVariableRate(sendVariableData)).then((response) => {
         //     setVariableid(false);
@@ -423,7 +424,7 @@ console.log(projectSearchCreate,"projectSearchCreate")
         // console.log(AddRow,"fghjj")
         // applicableamount.amt="fghj"
             // if(disableCondition){
-          dispatch(UpdateVariableRate(sendVariableData,applicableamount,disableCondition)).then((response)=>{
+          dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate.amountSearch0)).then((response)=>{
             setDisableCondition(false)
           })
         //   }
@@ -558,7 +559,8 @@ console.log(projectSearchCreate,"projectSearchCreate")
                 <Labelbox
                   type="text"
                   placeholder={"Amount"}
-                  changeData={(data) => onchangeAmount(data, "amountSearch" + index)}
+                  changeData={(data) => onchangeAmount(data, "amountSearch"+index)}
+                  SubmitData={()=>onsubmitvariablerate(data.stage_list_id)}
                   value={projectSearchCreate["amountSearch"+index]}
                 />
               ),

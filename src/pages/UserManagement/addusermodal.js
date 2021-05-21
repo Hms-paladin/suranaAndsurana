@@ -21,6 +21,7 @@ function UserMasterModal(props) {
     const [errPassword, setErrPassword] = useState(false)
     const [user_Id, setUser_Id] = useState(0)
     const [groups, setgroups] = useState({})
+    const [disable,setdisable]=useState(false)
     const [UserMaster, setUserMaster] = useState({
         emp_name: {
             value: "",
@@ -101,7 +102,14 @@ function UserMasterModal(props) {
         // employee details
         let employee_details=[]
        
-      
+        props.GetEmployeeDetails.map((data)=>{
+            setdisable(true)
+            setUserMaster((prevState) => ({
+                ...prevState,
+                mobilenumber:{value:data.official_contact},
+                emailid:{value:data.official_email}
+            }));
+        })
     }, [props.EmployeeList, props.UserGroup,props.groupLists,props.GetEmployeeDetails])
 
       
@@ -137,13 +145,7 @@ function UserMasterModal(props) {
         }
         // variable popup==>
         if(UserMaster.emp_name.value){
-            props.GetEmployeeDetails.map((data)=>{
-                setUserMaster((prevState) => ({
-                    ...prevState,
-                    mobilenumber:{value:data.official_contact},
-                    emailid:{value:data.official_email}
-                }));
-            })
+           
         }
 
     }
@@ -279,7 +281,7 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">Mobile Number</div>
                         <Labelbox type="text"
-                            disabled={props.user_data?true:false}
+                            disabled={disable}
                             changeData={(data) => checkValidation(data, "mobilenumber")}
                             // dropdown={industryOptions}
                             value={UserMaster.mobilenumber.value}
@@ -289,7 +291,7 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">E-mail Id</div>
                         <Labelbox type="text"
-                            disabled={props.user_data?true:false}
+                            disabled={disable}
                             changeData={(data) => checkValidation(data, "emailid")}
                             // dropdown={industryOptions}
                             value={UserMaster.emailid.value}
