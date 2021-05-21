@@ -68,6 +68,7 @@ function Projectsearch(props) {
   const [projectName, setProjectName] = useState({});
   const [billableType, setBillableType] = useState({});
   const [multiplePanel, setMultiplePanel] = useState([]);
+  const [redirectToProject, setRedirectToProject] = useState(false)
   const dispatch = useDispatch();
 
   const [projectform, setprojectform] = useState({
@@ -316,15 +317,14 @@ function Projectsearch(props) {
   }, [props.TableData]);
 
 
-
   return (
     <div>
       <div className="searchflex1"></div>
       <div className="searchfilterflex">
         <div className="searchfilterflex1">
           <div className="projsearchfilterdrpdwn">
-            
-          <div className="Fieldheading">Client Type</div>
+
+            <div className="Fieldheading">Client Type</div>
             <Labelbox
               type="select"
               dropdown={clientType.ClientType}
@@ -335,7 +335,7 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Client</div>
+            <div className="Fieldheading">Client</div>
             <Labelbox
               type="select"
               dropdown={client.Client}
@@ -346,7 +346,7 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Project Type</div>
+            <div className="Fieldheading">Project Type</div>
             <Labelbox
               type="select"
               dropdown={projectType.ProjectType}
@@ -357,7 +357,7 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Project Name</div>
+            <div className="Fieldheading">Project Name</div>
             <Labelbox
               type="select"
               dropdown={projectName.ProjectName}
@@ -368,7 +368,7 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Billing Type</div>
+            <div className="Fieldheading">Billing Type</div>
             <Labelbox
               type="select"
               dropdown={billableType.BillableType}
@@ -379,7 +379,7 @@ function Projectsearch(props) {
             />
           </div>
           <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} onBtnClick={onSearch} />
-         
+
         </div>
       </div>
 
@@ -399,16 +399,18 @@ function Projectsearch(props) {
           handleChangeCloseModel={(bln) => setModelOpen(bln)}
           content={<AdhocTaskModel />}
         />
-       
-        <Link to="/projectFormCreate">
-          <CustomButton
-            btnName={"Create Project "}
-            btnCustomColor="customPrimary"
-            custombtnCSS={"goSearchbtn"}
-            // onBtnClick={() => setpathname("/projectFormCreate")}
-          />
-        </Link>
+
+        <CustomButton
+          btnName={"Create Project "}
+          btnCustomColor="customPrimary"
+          custombtnCSS={"goSearchbtn"}
+          onBtnClick={() => setRedirectToProject(true)}
+        />
       </div>
+      {redirectToProject &&
+        <Redirect push to="/projectFormCreate" />
+      }
+      {/* {console.log(pathname, "projectFormCreate")} */}
 
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>

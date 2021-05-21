@@ -47,6 +47,9 @@ const ResumePage = (props) => {
   const [onEdit, setOnEdit] = useState(false);
   const [nullFieldValue, SetNullFieldValue] = useState(false);
   const [nullFieldValueExp, SetNullFieldValueExp] = useState(false);
+  const [editResume, setEditResume] = useState(false)
+  const [resume_id, setResume_id] = useState()
+
 
   const [Resume_Form, setResumeFrom] = useState({
     name: {
@@ -394,27 +397,143 @@ const ResumePage = (props) => {
   }
   console.log(Resume_Form.candidate.value, "Resume_Form.candidate.value")
 
-
   useEffect(() => {
 
-  }, [])
 
-  useEffect(() => {
-    // console.log(props.resumeEditrow, "props.resumeEditrow")
+    if (props.resumeEditrow && props.resumeEditrow[0]?.qualification.length > 0) {
+      setEducationList(props.resumeEditrow[0]?.qualification)
+    }
+
+    if (props.resumeEditrow && props.resumeEditrow[0]?.experience.length > 0) {
+      setExperienceList(props.resumeEditrow[0]?.experience)
+    }
 
     if (props.resumeEditrow && props.resumeEditrow.length > 0) {
-      Resume_Form.candidate.value = props.resumeEditrow[0].type_of_resource
+
+      setEditResume(true)
+      setResume_id(props.resumeEditrow[0].resume_id)
+
+      let languageValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.language_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.languagesList?.map((list) => {
+          if (data === list.id) {
+            console.log(data, list.value, "testinglan")
+            languageValue.push(list.value)
+          }
+        })
+      })
+
+
+      // skills
+      let skillsValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.skill_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.skillsList?.map((list) => {
+          if (data === list.id) {
+            skillsValue.push(list.value)
+          }
+        })
+      })
+
+
+      // traits
+      let traitsValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.trait_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.traitsList?.map((list) => {
+          if (data === list.id) {
+            traitsValue.push(list.value)
+          }
+        })
+      })
+
+      // certificationsValue
+      let certificationsValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.certification_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.certificateList?.map((list) => {
+          if (data === list.id) {
+            certificationsValue.push(list.value)
+          }
+        })
+      })
+
+      // capablitiesValue
+      let capablitiesValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.capability_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.capabilityList?.map((list) => {
+          if (data === list.id) {
+            capablitiesValue.push(list.value)
+          }
+        })
+      })
+
+      // specialization
+      let specializationValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.specialization_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.specilalizaionsList?.map((list) => {
+          if (data === list.id) {
+            specializationValue.push(list.value)
+          }
+        })
+      })
+
+      // talentValue
+      let talentValue = [];
+      JSON.parse("[" + props.resumeEditrow[0]?.talent_id + "]").map((data) => {
+        resumeGetList && resumeGetList?.talentList?.map((list) => {
+          if (data === list.id) {
+            talentValue.push(list.value)
+          }
+        })
+      })
+
+      Resume_Form.candidate.value = props.resumeEditrow[0].type_of_resource_id
       Resume_Form.name.value = props.resumeEditrow[0].name
-      Resume_Form.gender.value = props.resumeEditrow[0].gender
+      Resume_Form.gender.value = props.resumeEditrow[0].gender === "M" ? 1 : 2
       Resume_Form.DOB.value = props.resumeEditrow[0].dob
       Resume_Form.contactPhone.value = props.resumeEditrow[0].con_ph_no
       Resume_Form.emailId.value = props.resumeEditrow[0].email_addr
       Resume_Form.mailAddress.value = props.resumeEditrow[0].email_addr
-      Resume_Form.state.value = props.resumeEditrow[0].status_resource
-      Resume_Form.city.value = props.resumeEditrow[0].city
-      Resume_Form.language.value = props.resumeEditrow[0].language
-      Resume_Form.linkedin.value = props.resumeEditrow[0].status_resource
-      Resume_Form.twitter.value = props.resumeEditrow[0].status_resource
+      Resume_Form.state.value = props.resumeEditrow[0].state_id
+      Resume_Form.city.value = props.resumeEditrow[0].city_id
+
+      Resume_Form.language.value = languageValue;
+      Resume_Form.language.valueById = props.resumeEditrow[0]?.language_id;
+
+      Resume_Form.linkedin.value = props.resumeEditrow[0].linkedin
+      Resume_Form.twitter.value = props.resumeEditrow[0].twitter
+
+      Resume_Form.skills.value = skillsValue;
+      Resume_Form.skills.valueById = props.resumeEditrow[0]?.skill_id;
+
+      Resume_Form.Traits.value = traitsValue;
+      Resume_Form.Traits.valueById = props.resumeEditrow[0]?.trait_id;
+
+      Resume_Form.certifications.value = certificationsValue;
+      Resume_Form.certifications.valueById = props.resumeEditrow[0]?.certification_id;
+
+      Resume_Form.specializations.value = specializationValue;
+      Resume_Form.specializations.valueById = props.resumeEditrow[0]?.specialization_id;
+
+      Resume_Form.capability.value = capablitiesValue;
+      Resume_Form.capability.valueById = props.resumeEditrow[0]?.capability_id;
+
+      Resume_Form.talents.value = talentValue;
+      Resume_Form.talents.valueById = props.resumeEditrow[0]?.talent_id;
+
+      Resume_Form.achivements.value = props.resumeEditrow[0].achievement
+      Resume_Form.intrests.value = props.resumeEditrow[0].special_interest
+      Resume_Form.name1.value = props.resumeEditrow[0].ref_name1
+      Resume_Form.organization1.value = props.resumeEditrow[0].organization1
+      Resume_Form.email1.value = props.resumeEditrow[0].ref_email_1
+      Resume_Form.phone1.value = props.resumeEditrow[0].ref_phone_1
+      Resume_Form.name2.value = props.resumeEditrow[0].ref_name2
+      Resume_Form.organization2.value = props.resumeEditrow[0].organization2
+      Resume_Form.email2.value = props.resumeEditrow[0].ref_email_2
+      Resume_Form.phone2.value = props.resumeEditrow[0].ref_phone_2
+
+      setResumeFrom((prevState) => ({
+        ...prevState,
+      }));
+
 
     }
     else {
@@ -426,6 +545,7 @@ const ResumePage = (props) => {
 
 
   function onSubmit(text) {
+    console.log(text,"testing")
     var mainvalue = {};
     var targetkeys = Object.keys(Resume_Form);
     for (var i in targetkeys) {
@@ -457,11 +577,15 @@ const ResumePage = (props) => {
         }
       );
     }
-    else if (text === "UPDATE") {
-      alert("test1")
-      dispatch(UpdateResume(Resume_Form, educationList, experienceList)).then(
+    else if (text === "UPDATE" && educationList.length !== 0 &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
+      filtererr.length === 0) {
+      dispatch(UpdateResume(Resume_Form, educationList, experienceList, resume_id)).then(
         () => {
           handleCancel();
+          setEditResume(false)
+          // dispatch(GetResumeList(resume_id))
+          props.handleChangeCloseModel(false)
         }
       );
     }
@@ -524,6 +648,7 @@ const ResumePage = (props) => {
     setOnEdit(true);
   };
   const showDeleteEducationModel = (x) => {
+    alert("test")
     console.log(educationList[x], "educationList");
     if (x > -1) {
       educationList.splice(x, 1);
@@ -801,43 +926,48 @@ const ResumePage = (props) => {
                 <img src={PlusIcon} onClick={showEducationModel} />
               </div>
             </div>
-            {educationList && educationList.length > 0 && (
+
+            {educationList && educationList.length > 0 ? (
               <div className="educationOuterBox">
-                {educationList &&
-                  educationList.map((data, index) => {
-                    return (
-                      <div className="educationKeyValue">
-                        <div className="educationKey">
-                          <div>Qualification</div>
-                          <div>Insitution/University</div>
-                          <div>Year of Passing</div>
-                          <div>Percentage/CGPA</div>
-                        </div>
-                        <div className="educationValue">
-                          <div>
-                            {resumeGetList.qualificationList.map((getName) => {
-                              if (data.qualification === getName.id) {
-                                return getName.value;
-                              }
-                            })}
-                          </div>
-                          <div>{data.institution}</div>
-                          <div>{data.year_of_passing}</div>
-                          <div>{data.cgpa}</div>
-                        </div>
-                        <EditIcon
-                          fontSize="small"
-                          onClick={() => showEditEducationModel(index)}
-                        />
-                        <DeleteIcon
-                          fontSize="small"
-                          onClick={() => showDeleteEducationModel(index)}
-                        />
+                { educationList && educationList.map((data, index) => {
+                  return (
+                    <div className="educationKeyValue">
+                      <div className="educationKey">
+                        <div>Qualification</div>
+                        <div>Insitution/University</div>
+                        <div>Year of Passing</div>
+                        <div>Percentage/CGPA</div>?
                       </div>
-                    );
-                  })}
+                      <div className="educationValue">
+                        <div>
+                          {resumeGetList.qualificationList.map((getName) => {
+                            if (data.qualification === getName.id) {
+                              return getName.value;
+                            }
+                          })}
+                        </div>
+                        <div>{data.institution}</div>
+                        <div>{data.year_of_passing}</div>
+                        <div>{data.cgpa}</div>
+                      </div>
+                      <EditIcon
+                        fontSize="small"
+                        onClick={() => showEditEducationModel(index)}
+                      />
+                      <DeleteIcon
+                        fontSize="small"
+                        onClick={() => showDeleteEducationModel(index)}
+                      />
+                    </div>
+                  );
+                })}
               </div>
-            )}
+            )
+              :
+              <>
+              </>
+            }
+
           </Grid>
         </div>
         <div className="rightContainer">
@@ -1133,6 +1263,7 @@ const ResumePage = (props) => {
                   <img src={PlusIcon} onClick={showExperienceModel} />
                 </div>
               </div>
+
               {experienceList.length > 0 && (
 
                 <div className="experienceOuterBox">
@@ -1186,6 +1317,7 @@ const ResumePage = (props) => {
                   })}
                 </div>
               )}
+
             </Grid>
             <Grid
               item
@@ -1196,9 +1328,9 @@ const ResumePage = (props) => {
               className="resumeBtnContainer"
             >
               <CustomButton
-                btnName={props.EditResume ? "UPDATE" : "SAVE"}
+                btnName={editResume ? "UPDATE" : "SAVE"}
                 btnCustomColor="customPrimary"
-                onBtnClick={() => onSubmit(props.EditResume ? "UPDATE" : "SAVE")}
+                onBtnClick={() => onSubmit(editResume ? "UPDATE" : "SAVE")}
               />
               <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} />
             </Grid>

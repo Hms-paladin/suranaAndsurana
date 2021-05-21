@@ -490,7 +490,7 @@ function Resumesearch(props) {
                 modelTitle={"Edit Resume"}
                 handleChangeModel={editModel}
                 handleChangeCloseModel={(bln) => setEditModel(bln)}
-                content={<ResumeForm resumeEditrow={editResumeRow} />}
+                content={<ResumeForm resumeEditrow={editResumeRow} handleChangeCloseModel={(bln) => setEditModel(bln)} />}
                 width={1000}
             />
         </div>
