@@ -350,17 +350,37 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
 }
 
 
-export const getTaskList = (stageId) => async dispatch => {
+export const getTaskList = () => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl + 'get_task_list',
             data: {
-                "assignee_id": 4,
+                "assignee_id": localStorage.getItem("empId"),
             }
         })
             .then((response) => {
+             
                 dispatch({ type: GET_TASK_LIST, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+
+export const getTaskTimeSheetbyTaskId = (taskId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_time_sheet',
+            data: {
+                "task_id": taskId,
+            }
+        })
+            .then((response) => {
+                return response.data.data;
             })
 
     } catch (err) {

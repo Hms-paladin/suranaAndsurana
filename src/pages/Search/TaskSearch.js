@@ -24,7 +24,8 @@ import Blue from "../../images/blue_round.png";
 import Light from "../../images/light_round.png";
 import Orange from "../../images/orange_round.png";
 import Red from "../../images/red_round.png";
-
+import { apiurl } from "../../utils/baseUrl.js";
+import axios from "axios";
 //TimeSheet Start && Stop  ==>
 import DynModel from '../../component/Model/model';
 import TimesheetStart from '../Search/TimeSheets/timesheetStart';
@@ -73,10 +74,39 @@ function Task(props) {
       useEffect(() => {
         
     //var tasks =props.getTaskLists;
-    
+/*
+    if(props.getTaskLists && props.getTaskLists.length>0){
+        var obj =props.getTaskLists;
+        var list=[];
+    for(var i =0;i<obj.length; i++){
+       var timesheet =  getTaskTimeSheetbyTaskIdsss(obj[i].task_id);
+       if(timesheet && timesheet.length >0){
+       obj[i].actual_end_date = timesheet.end_date
+       obj[i].actual_end_time = timesheet.end_time
+       list.push(obj)
+       }
+    }
+} */
       }, [props.getTaskLists
       ]);
 
+      function getTaskTimeSheetbyTaskIdsss(taskId) {
+        try {
+            axios({
+                method: 'POST',
+                url: apiurl + 'get_time_sheet',
+                data: {
+                    "task_id": taskId,
+                }
+            })
+                .then((response) => {
+                    return response.data.data;
+                })
+    
+        } catch (err) {
+    
+        }
+    }
     // Change start,stop Model
 
     const [changeModel, setChangeModel] = useState(true)
