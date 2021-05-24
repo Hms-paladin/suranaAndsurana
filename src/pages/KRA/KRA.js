@@ -10,6 +10,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
 import KRAModal from "./KRAViewModal"
 
+
 const KRA = (props) => {
     const header = [
         // { id: 'table_name', label: 'Table Name' },
@@ -23,6 +24,7 @@ const KRA = (props) => {
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [kraViewModal, setKraViewModal] = useState(false)
+    const [value, setValue] = useState(new Date().getMonth());
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -103,14 +105,14 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         placeholder={"From Period"}
-                                        // view={["year", "month"]}
-                                        // format={'mmm-yyyy'}
+                                        view={["year", "month"]}
+                                        format={"mm/yyyy"}
                                     />
                                     <Labelbox
                                         type="datepicker"
                                         placeholder={"to Period"}
-                                        // view={["year", "month"]}
-                                        // format={'mmm-yyyy'}
+                                        view={["year", "month"]}
+                                        format={'mm/yyyy'}
                                     /></div>
                                 {/* <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div> */}
                             </Grid>
@@ -158,7 +160,7 @@ const KRA = (props) => {
                                     btnName={"View KRA"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
-                                    onBtnClick={()=>setKraViewModal(!kraViewModal)}
+                                    onBtnClick={() => setKraViewModal(!kraViewModal)}
 
                                 /></div>
                                 <div style={{ display: 'flex', justifyContent: "center", padding: "15px" }}>

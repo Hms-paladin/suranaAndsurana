@@ -10,7 +10,7 @@ import EditIcon from "../../images/edit.svg";
 function KPIModal() {
     return (
         <div>
-            <div className="kra">KRA</div>
+            <div className="kra">KPI</div>
             <div className="kra_main">
                 <div >
                     <Grid container className="kra_sub">
@@ -33,8 +33,8 @@ function KPIModal() {
                                 <Labelbox
                                     type="datepicker"
                                     placeholder={"From Period"}
-                                    // view={["year", "month"]}
-                                    // format={'mmm-yyyy'}
+                                    view={["year", "month"]}
+                                    format={"mm/yyyy"}
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
@@ -42,8 +42,8 @@ function KPIModal() {
                                 <Labelbox
                                     type="datepicker"
                                     placeholder={"to Period"}
-                                    // view={["year", "month"]}
-                                    // format={'mmm-yyyy'}
+                                    view={["year", "month"]}
+                                    format={"mm/yyyy"}
                                 /></Grid>
 
                             <Grid item xs={3}>
@@ -98,9 +98,10 @@ function KPIModal() {
                         </Grid>
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
                         </Grid>
                     </Grid>
                 </div>

@@ -281,6 +281,7 @@ function Resumesearch(props) {
         })
         obj = [];
     }
+    console.log(checkList,"checkedlist")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
@@ -299,6 +300,7 @@ function Resumesearch(props) {
     }, [props.GetResumeList])
 
     console.log(editResumeRow, "GetResumeList")
+    console.log(checkList, "checkList")
 
 
 

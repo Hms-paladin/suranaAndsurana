@@ -184,5 +184,15 @@ textarea{height: 70px !important;}
         font-weight:600;
     }
 }
-
-
+.categorylist_table{
+    color:#0353A4;
+}
+.categorylist_table .MuiTableHead-root{
+    background-color: #0353A4 !important;
+}
+.categorylist_table .MuiButtonBase-root.MuiTableSortLabel-root, .tableHeadsno{
+    color:#fff !important;
+}
+.categorylist_table .MuiTable-root {
+    background-color: white !important;
+}
