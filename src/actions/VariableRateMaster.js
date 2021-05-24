@@ -356,14 +356,14 @@ export const UpdateVariableRate = (data,amt) => async dispatch => {
 
 
   export const Update_Variable_Rate = (data,amt,AddRow) => async dispatch => {
-    console.log(AddRow,amt,"projectSearchCreate")
+    console.log(AddRow.stage_list_id,amt,"projectSearchCreate")
       try {
           axios({
               method: 'PUT',
               url: apiurl +'update_variable_rate',
               data:
               {
-                "rate_map_id":AddRow[0].rate_map_id || 0,
+                "rate_map_id":AddRow.stage_list_id || 0,
                 "amount":amt|| 0
              
               }
@@ -372,7 +372,7 @@ export const UpdateVariableRate = (data,amt) => async dispatch => {
                   notification.success({
                       message: "Variable rate amount updated sucessfully",
                   });
-                 dispatch({ type: UPDATE_VARIABLE_RATE_FIRST, payload: response.data.status})
+                 dispatch({ type: UPDATE_VARIABLE_RATE_FIRST, payload:true})
                   dispatch(getVariableRateTableData())
                   return Promise.resolve();
               }

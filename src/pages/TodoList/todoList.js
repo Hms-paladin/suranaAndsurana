@@ -84,7 +84,7 @@ function TodoList(props) {
     const [res_id, setres_id] = useState([])
     const [viewer_id, setviewer_id] = useState([])
     const [modelTitle, setModeltitle] = useState()
-    const [leaveModelTitle, setleaveModelTitle] = useState()
+    const [TaskModelTitle, setTaskModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
     const [kraapprovemodel, setKraapprovemodel] = useState(false);
     // timesheet
@@ -96,6 +96,7 @@ function TodoList(props) {
     const [ticket_id, setTicket_id] = useState();
     // leave approval
     const [LeaveId,setLeaveId]=useState([])
+    const [severanceId,setseveranceId]=useState([])
 
 
 
@@ -168,14 +169,26 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        // projectTask.push({
-        //     id: <div className="ProjectTaskId" onClick={unblockUser}>Unblock User</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
+        projectTask.push({
+            id: <div className="ProjectTaskId" onClick={() => setKraapprovemodel(true)}
+            >KRA Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
+            >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        }, {
+            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        },
+        {
+            id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal View</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        },
+        // {
+        //     id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         // },
-        //     {
-        //         id: <div className="ProjectTaskId" onClick={() => setTimeSheet_Approval(true)}
-        //         >Time Sheet Approval</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
-        //     },
-        // )
+        {
+            id: <Link to={'MP_Appraisal'}><div className="ProjectTaskId">MP Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        })
+    
+    
 
         setProjectTodoList(projectTask)
 
@@ -201,8 +214,13 @@ function TodoList(props) {
                })
                setProjectTodoList(projectTask)
             }
-            else{
+            else if(data.ts_approver_id){
                 showName="Timesheet Approval"
+                showId=data.ts_approver_id
+            }
+            else if(data.severece_id){
+                showName="Severance"
+                showId=data.severece_id
             }
         
             otherTask.push({
@@ -216,41 +234,25 @@ function TodoList(props) {
 
             })
          })
-        otherTask.push({
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Resignation Approval")}
-            >Resignation Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("HR Noc")}
-            >HR Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("IT Noc")}
-            >IT Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Admin Noc")}
-            >Admin Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Final Relieving")}
-            >Final Relieving</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-         {
-            id: <div className="ProjectTaskId" onClick={() => setKraapprovemodel(true)}
-            >KRA Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
-            >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-        {
-            id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal View</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-        // {
-        //     id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        // otherTask.push({
+        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Resignation Approval")}
+        //     >Resignation Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        // }, {
+        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("HR Noc")}
+        //     >HR Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        // }, {
+        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("IT Noc")}
+        //     >IT Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        // }, {
+        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Admin Noc")}
+        //     >Admin Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        // }, {
+        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Final Relieving")}
+        //     >Final Relieving</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
         // },
-        {
-            id: <Link to={'MP_Appraisal'}><div className="ProjectTaskId">MP Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-        )
+         
+        
+        
 
         setOtherTodoList(otherTask)
 
@@ -315,7 +317,7 @@ function TodoList(props) {
     }
    
     function OtherTaskFunction(name,id,data){
-      setleaveModelTitle(data.task)
+      setTaskModelTitle(data.task)
       if(name === "Leave Approval"){  
         setLeaveApproval(true)
         let leavedata = props.getOtherTask.find((val) => {
@@ -334,6 +336,13 @@ function TodoList(props) {
           setTimeSheet_Approval(true)
         
       }
+      else if(name === "Severance"){  
+         setResignationApprove(true)
+         let Sevevarncedata = props.getOtherTask.find((val) => {
+            return id === val.severece_id
+        })
+        setseveranceId(Sevevarncedata)
+    }
 
     }
 
@@ -351,7 +360,7 @@ function TodoList(props) {
 
     const leaveApprovalModel = (val) => {
         setLeaveApproval(true)
-        setleaveModelTitle(val)
+        // setleaveModelTitle(val)
     }
 
 
@@ -399,13 +408,15 @@ function TodoList(props) {
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
 
                 <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
+                 {/* severance */}
+                <DynModel modelTitle={TaskModelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval  TaskModelTitle={TaskModelTitle} closemodal={(bln) => setResignationApprove(bln)} severanceId={severanceId}/>} />
+
             </div>
             <div>
                 <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other Task"} />
 
-                <DynModel modelTitle={modelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval modelTitles={modelTitle} closemodal={(bln) => setResignationApprove(bln)} />} />
 
-                <DynModel modelTitle={"Leave Approval"} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={800} content={<LeaveApproval modelTitles={leaveModelTitle} LeaveData={LeaveId} closemodal={(bln) => setLeaveApproval(bln)} />} />
+                <DynModel modelTitle={"Leave Approval"} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={800} content={<LeaveApproval  LeaveData={LeaveId} closemodal={(bln) => setLeaveApproval(bln)} />} />
 
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
 

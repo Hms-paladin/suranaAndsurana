@@ -275,6 +275,9 @@ export const GET_RESUMELIST = "GET_RESUMELIST";
 // exit severance
 export const GET_EXITSEVERANCE="GET_EXITSEVERANCE"
 export const INSERT_SEVERANCE="INSERT_SEVERANCE"
+// resignation approval
+export const GET_RESIGNATION_APPROVAL="GET_RESIGNATION_APPROVAL"
+export const INSERT_RESIGNATION="INSERT_RESIGNATION"
 
 // Add Ouestions
 

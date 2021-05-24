@@ -101,7 +101,7 @@ function ProjectIp(props) {
     const [sendVariableData, setSendVariableData] = useState([]);
     const [notfoundmodel, setNotfoundmodel] = useState(false);
    
-    const [disableCondition, setDisableCondition] = useState(false);
+    const [disableCondition, setDisableCondition] = useState(true);
     const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
     const [applicableamount, setApplicableamount] = useState({});
     
@@ -425,22 +425,25 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       }
       
       function PlusInsertVariableRate(id) {
+        // setDisableCondition(true)
+          alert(id)
           let AddRow =props.searchVariableRate.find((data)=>{
               return data.stage_list_id==id
           })
           var mainvalue={}
 
-          if(disableCondition){
-             dispatch(Update_Variable_Rate(sendVariableData,projectSearchCreate.amountSearch0,AddRow)).then((response)=>{
-              setDisableCondition(false)
-             })
-          }
-          else{
+        //   if(AmountChange){
+        //      dispatch(Update_Variable_Rate(sendVariableData,projectSearchCreate.amountSearch0,AddRow)).then((response)=>{
+        //       setDisableCondition(true)
+        //       setAmountChange(false)
+        //      })
+        //   }
+        //   else{
             dispatch(InsertProjectVariableRate(AddRow,sendVariableData)).then((response) => {
             setVariableid(true);
             
           });
-        }
+        // }
         setPrpjectSearchCreate((prevState) => ({
             ...prevState,
           }));
@@ -450,10 +453,10 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       };
 
       const onchangeAmount = (data, key) => {
-        // setAmountChange(true)
+        setAmountChange(true)
         console.log(parseInt(data), key, "onchangeAmount")
         // if (key && data) {
-        setDisableCondition(true)
+        setDisableCondition(false)
         setPrpjectSearchCreate((prevState) => ({
           ...prevState,
           [key]: data,
@@ -464,13 +467,14 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       };
 
       const onchangeapplicableAmount = (data, key,id) => {
+        setAmountChange(true)
         console.log(parseInt(data), key, "onchangeAmountappli")
         // if (key === "amt" && data) {
             setApplicableamount((prevState) => ({
           ...prevState,
           [key]: data,
         }));
-        setDisableCondition(true)
+        setDisableCondition(false)
         // }
 
 
@@ -485,7 +489,7 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
     props.getProjectVariableRate.length>0 &&props.getProjectVariableRate.map((data, index) => {
         tableData.push(data)
         const Index=index
-        if(!disableCondition){
+        if(disableCondition){
         applicableamount["amt"+index] = data.amount;
         }
 
@@ -534,7 +538,7 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
           setNotfoundmodel(false);
           console.log("sho",props.searchVariableRate)
           props.searchVariableRate.map((data, index) => {
-            if (disableCondition===false) {
+            if (disableCondition) {
                 console.log(disableCondition,"disblecondit")
               projectSearchCreate['amountSearch' + index] = data.Amount;
 
