@@ -428,8 +428,8 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
           let AddRow =props.searchVariableRate.find((data)=>{
               return data.stage_list_id==id
           })
-          console.log(AddRow,"dddss")
-        //  projectSearchCreate.amountSearch=AddRow.Amount
+          var mainvalue={}
+
           if(disableCondition){
              dispatch(Update_Variable_Rate(sendVariableData,projectSearchCreate.amountSearch0,AddRow)).then((response)=>{
               setDisableCondition(false)
@@ -447,19 +447,6 @@ console.log(projectSearchCreate.amountSearch0,"projectSearchCreate")
       }
       const onDelete = (id) => {
         dispatch(deleteVariableRate(id,props.getProjectVariableRate[0].project_id))
-         
-        //   let storeshowVariableTable=showVariableTable.indexOf(i)
-        //   let storesendVariableData=showVariableTable.indexOf(i)
-        // if (id > -1) {
-        //   console.log(showVariableTable,"showid")
-        
-        //   showVariableTable.splice(id, 1);
-        //   sendVariableData.splice(id, 1);
-        // }
-        // setShowVariableTable([...showVariableTable]);
-        // setSendVariableData([...sendVariableData]);
-        // console.log(showVariableTable,"showid")
-
       };
 
       const onchangeAmount = (data, key) => {

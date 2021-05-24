@@ -179,6 +179,7 @@ const GroupControl = (props) => {
         userForm[targetkeys[i]].error = !errorcheck.state;
         userForm[targetkeys[i]].errmsg = errorcheck.msg;
         mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
+        console.log("mainvalue",mainvalue)
       }
       var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
       console.log("checkuser",userForm)
