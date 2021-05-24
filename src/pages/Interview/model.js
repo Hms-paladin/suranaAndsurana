@@ -53,6 +53,8 @@ function DynModelView(props) {
     setVisible(props.handleChangeModel)
   }, [props.handleChangeModel])
 
+  console.log(getdata, "getdata")
+
 
   return (
     <Modal
@@ -129,8 +131,8 @@ function DynModelView(props) {
                       <div>{values.city}</div>
                       <div>{values.department}</div>
                       <div>{values.designation}</div>
-                      <div>{values.period_from}</div>
-                      <div>{values.period_to}</div>
+                      <div>{values.period_from ? moment(val.period_from).format("DD-MMM-YYYY") : "-"}</div>
+                      <div>{values.period_to ? moment(val.period_to).format("DD-MMM-YYYY") : "-"}</div>
                     </div>
 
                   )
