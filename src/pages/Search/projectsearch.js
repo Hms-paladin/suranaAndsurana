@@ -68,6 +68,11 @@ function Projectsearch(props) {
   const [projectName, setProjectName] = useState({});
   const [billableType, setBillableType] = useState({});
   const [multiplePanel, setMultiplePanel] = useState([]);
+
+  const [goRights, setGoRights] = useState([])
+  const [createProjectRights, setCreateProjectRights] = useState([])
+  const [createAdhocRights, setCreateAdhocRights] = useState([])
+
   const dispatch = useDispatch();
 
   const [projectform, setprojectform] = useState({
@@ -316,7 +321,43 @@ function Projectsearch(props) {
   }, [props.TableData]);
 
 
+///*****user permission**********/
 
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+      return (
+          "Go" == val.control && "Project" == val.screen
+      ) 
+    })
+    setGoRights(data_res_id)
+
+     data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Create Project" == val.control && "Project" == val.screen
+        ) 
+    })
+    setCreateProjectRights(data_res_id)
+
+     data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Create Adhoc Task" == val.control && "Project" == val.screen
+        ) 
+    })
+    setCreateAdhocRights(data_res_id)
+ }
+
+ }, [props.UserPermission]);
+
+
+   console.log(goRights,"rights")
+
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
   return (
     <div>
       <div className="searchflex1"></div>
@@ -378,7 +419,7 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} onBtnClick={onSearch} />
+          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} onBtnClick={goRights===undefined||(goRights.display_control&&goRights.display_control==='N')?rightsNotification:onSearch} />
          
         </div>
       </div>
@@ -391,7 +432,7 @@ function Projectsearch(props) {
           btnName={"Create Adhoc Task"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          onBtnClick={() => setModelOpen(true)}
+          onBtnClick={() =>(createAdhocRights===undefined||(createAdhocRights.display_control&&createAdhocRights.display_control==='N')?rightsNotification():setModelOpen(true)) }
         />
         <DynModel
           modelTitle={"Adhoc Task"}
@@ -400,12 +441,13 @@ function Projectsearch(props) {
           content={<AdhocTaskModel />}
         />
        
-        <Link to="/projectFormCreate">
+        <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
           <CustomButton
             btnName={"Create Project "}
             btnCustomColor="customPrimary"
             custombtnCSS={"goSearchbtn"}
-            // onBtnClick={() => setpathname("/projectFormCreate")}
+            // onBtnClick={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')&&rightsNotification}
+            onBtnClick={() => createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?rightsNotification():''}
           />
         </Link>
       </div>
@@ -423,6 +465,7 @@ const mapStateToProps = (state) =>
   ProjectType: state.getOptions.getProjectType,
   ProjectName: state.getOptions.getProjectName,
   BillableType: state.getOptions.getBillableType,
+  UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 
 export default connect(mapStateToProps)(Projectsearch);

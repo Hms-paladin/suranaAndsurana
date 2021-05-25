@@ -31,7 +31,7 @@ const StagesMaster = (props) => {
   const [processType, setprocessType] = useState({})
   const [disabled, setEnabled] = useState(true);
   const [stageDisable, setStageEnabled] = useState(true);
-  const [permission, setPermission] = useState([])
+  const [saveRights, setSaveRights] = useState([])
   const [RateMaster, setRateMaster] = useState({
     project_type: {
       value: "",
@@ -267,23 +267,28 @@ const StagesMaster = (props) => {
     }));
   }
 
-  useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-       let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-       return (
-           "Variable Rate Master" == val.screen_name
-       ) 
-   })
-   setPermission(data_res_id)
-   }
+///*****user permission**********/
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+     return (
+       "Save" == val.control && "Stage Template" == val.screen
+     ) 
+ })
+ setSaveRights(data_res_id)
+ }
 
-   }, [props.UserPermission]);
+ }, [props.UserPermission]);
 
-   function rights(){
-    notification.success({
-        message: "You Dont't Have Rights To Access This",
-    });
-  }
+  //  console.log(rights.display_control,"rigths")
+
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
+
   return (
     <div>
        <div className="var_rate_master">Stage Template</div>
@@ -354,7 +359,7 @@ const StagesMaster = (props) => {
         
           </Grid>   */}
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
-          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
+          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification:onSubmit}  />
           <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
         </Grid>
       </Grid>

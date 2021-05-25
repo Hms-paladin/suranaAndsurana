@@ -10,8 +10,8 @@ import { useDispatch, connect } from "react-redux";
 
 function GenerateInvoice(props) {
     const [invoicetable, setInvoivetable] = useState([])
-
-
+    const [searchRigths, setSearchRights] = useState([])
+    const [generateRights, setGenerateRights] = useState([])
     const headCells = [
         { id: 'projectType', label: 'Project Type' },
         { id: 'projectName', label: 'Project Name' },
@@ -48,26 +48,35 @@ function GenerateInvoice(props) {
 
     const [permission, setPermission] = useState([])
 
-    ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Search" == val.control && "Generate Invoice" == val.screen
+       ) 
+      })
+      setSearchRights(data_res_id)
+
+       data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Generate Invoice" == val.screen_name
+            "Generate Invoice" == val.control && "Generate Invoice" == val.screen
         ) 
-        })
-        setPermission(data_res_id)
-        if(data_res_id.allow_view==='N')
-            rights()
-        }
-    }, [props.UserPermission]);
-/////////////
-console.log(props.UserPermission,"props.UserPermission")
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+       })
+       setGenerateRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    // console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
     return (
         <div>
             {/* { permission.allow_view==='Y'&&<div> */}
@@ -89,7 +98,7 @@ console.log(props.UserPermission,"props.UserPermission")
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    <CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} />
+                    <CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={!searchRigths||searchRigths.display_control&&searchRigths.display_control==='N'?rightsNotification:''} />
                 </Grid>
             </Grid>
             <div className="generateTable">
@@ -101,7 +110,7 @@ console.log(props.UserPermission,"props.UserPermission")
                 <EnhancedTable headCells={BillableCells} rows={Billablerows} />
             </div>
             <div className="btngenerate">
-                <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" onBtnClick={permission.allow_add==="Y"?'':rights}/>
+                <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" onBtnClick={!generateRights||generateRights.display_control&&generateRights.display_control==='N'?rightsNotification:''}/>
             </div>
 
         {/* </div> } */}

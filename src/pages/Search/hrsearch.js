@@ -16,6 +16,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl";
 import moment from 'moment';
 import { roundToNearestMinutes } from 'date-fns/esm';
+import { notification } from "antd";
 
 const headCells = [
   { id: "view", label: "View" },
@@ -44,6 +45,9 @@ function Hrsearch(props) {
   const [candidateViewModel, setCandidateViewModel] = useState(false)
   const [test, setTest] = useState(true)
   const [roundValue, setRoundValue] = useState()
+  const [goRights, setGoRights] = useState([])
+  const [interviewScheduleRights, setInterviewScheduleRights] = useState([])
+
   const [HrSearch_Form, setHrSearchFrom] = useState({
     designation_id: {
       value: "0",
@@ -226,7 +230,36 @@ function Hrsearch(props) {
   };
   console.log(roundValue, "rowDataList")
 
+///*****user permission**********/
 
+ useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+      return (
+          "GO" == val.control && "HR" == val.screen
+            ) 
+        })
+      setGoRights(data_res_id)
+
+       data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Schedule Interview" == val.control && "HR" == val.screen
+        ) 
+      })
+      setInterviewScheduleRights(data_res_id)
+      }
+
+ }, [props.UserPermission]);
+
+
+//    console.log(rights,"rigths")
+
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
   return (
     <div className="hrContainer">
       <div className="hrHeader">
@@ -260,7 +293,7 @@ function Hrsearch(props) {
             />
           </Grid>
           <Grid item xs={3}>
-            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} />
+            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={!goRights||goRights.display_control&&goRights.display_control==='N'?rightsNotification:onSearch} />
           </Grid>
         </Grid>
       </div>
@@ -270,7 +303,7 @@ function Hrsearch(props) {
           btnName={"Schedule Interview"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          onBtnClick={() => scheduleInterview()}
+          onBtnClick={() => (!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?rightsNotification():scheduleInterview())}
           btnDisable={selectedCandidateId.length <= 0}
         />
         <DynModel
@@ -300,9 +333,8 @@ function Hrsearch(props) {
 
 const mapStateToProps = state => (
   {
-    // console.log("state",state)
-
-    GetRowData: state.HrSearchRowData
+    GetRowData: state.HrSearchRowData,
+    UserPermission: state.UserPermissionReducer.getUserPermission,
   }
 )
 

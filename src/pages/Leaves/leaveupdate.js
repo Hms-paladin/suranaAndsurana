@@ -39,7 +39,7 @@ function LeaveUpdate(props) {
    
     const [editBtn, setEditBtn] = useState(false)
 
-    const [permission, setPermission] = useState([])
+    const [saveRights, setSaveRights] = useState([])
 
     const [leaveupdateEdit, setLeaveupdateEdit] = useState(false)
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
@@ -247,21 +247,7 @@ function LeaveUpdate(props) {
     useEffect(() => {
         handleCancel();
       }, [location]);
-///*****user permission**********/
-      useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-           let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-           return (
-               "Leave Update" == val.screen_name
-           ) 
-       })
-       setPermission(data_res_id)
-       }
-   
-       }, [props.UserPermission]);
-/////////////
 
-      console.log(permission,"permission")
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Update);
@@ -298,11 +284,30 @@ function LeaveUpdate(props) {
             ...prevState,
         }));
     }
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+
+            ///***********user permission**********/
+    useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Save" == val.control && "Leave Master" == val.screen
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    // console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
+
     return (
         <div>
             <div className="leaveMainHeader">Leave Balance Update</div>
@@ -422,7 +427,7 @@ function LeaveUpdate(props) {
                     
                     {Leave_Update.leavetype.value?<Grid item xs={3} container direction="row" spacing={2}>
                         <Grid item xs={6}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification:onSubmit}  />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>

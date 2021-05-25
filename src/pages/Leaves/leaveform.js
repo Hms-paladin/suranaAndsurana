@@ -193,7 +193,7 @@ function LeaveForm(props) {
 
     const onFileChange = (event) => {
         setFileData(event.target.files[0])
-        console.log(filedata, "filedata")
+        console.log(event, "filedata")
     }
     const onFileDelete = () => {
         setFileData({})
@@ -749,7 +749,7 @@ function LeaveForm(props) {
 
                                 </div>
                             </Grid>
-                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>{empLeaveBal} </div> </Grid>
+                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>{empLeaveBal===""?0:empLeaveBal} </div> </Grid>
                             {Leave_Form.leavetype.value === 39 ?
                                 <><Grid item xs={5}>
                                     <div className="leaveFieldheading">Client</div>

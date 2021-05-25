@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
-
+import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KRA.scss'
 import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
-
+import { notification } from "antd";
 const KRA = (props) => {
     const header = [
         // { id: 'table_name', label: 'Table Name' },
@@ -22,8 +22,10 @@ const KRA = (props) => {
 
     const [isLoaded, setIsLoaded] = useState(true);
 
-    const [kpi_form, setKpi_form] = useState({
+    const [saveRights, setSaveRights] = useState([])
 
+    const [kpi_form, setKpi_form] = useState({
+            
         activity: {
             value: "",
             validation: [{ name: "required" }],
@@ -66,7 +68,28 @@ const KRA = (props) => {
         }));
     }
 
-
+///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Save" == val.control && "Dashboard - KRA" == val.screen
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
 
     return (
         <div>
@@ -183,7 +206,7 @@ const KRA = (props) => {
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-
+                        onBtnClick={() => (!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification():'')}    
                     />
                     <CustomButton
                         btnName={"Cancel"}
@@ -196,5 +219,8 @@ const KRA = (props) => {
     )
 }
 
-
-export default (KRA);
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+    });
+export default connect(mapStateToProps) (KRA);

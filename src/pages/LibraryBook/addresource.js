@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
 import './LibraryBook.scss'
 import EnhancedTable from '../../component/DynTable/table'
-function AddResource() {
+import { notification } from "antd";
+import { useDispatch, connect } from "react-redux";
+
+function AddResource(props) {
+    const [addRights, setAddRights] = useState([])
     const header = [
         { id: 'resource', label: 'Resource' },
         { id: 'subject', label: 'Subject' },
@@ -35,6 +39,29 @@ function AddResource() {
             resource: <a className="link_tag">Magazine</a>, subject: 'Law', author: 'Mr.Z', title: 'Title 5', year: '1985', dept: 'Department 5', copies: '5'
         },
     ];
+
+///***********user permission**********/
+    useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Add Resource" == val.control && "Dashboard - Library" == val.screen
+       ) 
+      })
+      setAddRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+  //    console.log(rights,"rigths")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
     return (
         <div>
             <div className="addresource">Add Resource</div>
@@ -72,7 +99,7 @@ function AddResource() {
 
                 <div className="okbtndiv">
                     <CustomButton btnName={"Add"} btnCustomColor="customPrimary"
-                        custombtnCSS={"add_btn_css"} onBtnClick={""} />
+                        custombtnCSS={"add_btn_css"} onBtnClick={!addRights||addRights.display_control&&addRights.display_control==='N'?rightsNotification:''} />
                 </div>
                 <div className="addresource_table" style={{marginTop:"10px"}}>
                     <EnhancedTable headCells={header} rows={rows} aligncss="addresource_table_align"></EnhancedTable>
@@ -81,4 +108,8 @@ function AddResource() {
         </div>
     )
 }
-export default AddResource;
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (AddResource);

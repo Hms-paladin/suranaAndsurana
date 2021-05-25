@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
-
+import { notification } from "antd";
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
+import { useDispatch, connect } from "react-redux";
 
 const KPI = (props) => {
     const header = [
@@ -19,6 +20,8 @@ const KPI = (props) => {
     ];
 
     const [kpimodel, setKpimodel] = useState(false);
+
+    const [saveRights, setSaveRights] = useState([])
 
     const [isLoaded, setIsLoaded] = useState(true);
 
@@ -72,7 +75,28 @@ const KPI = (props) => {
         }));
     }
 
-
+///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Save" == val.control && "Dashboard - KRA" == val.screen
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
 
     return (
         <div>
@@ -191,5 +215,8 @@ const KPI = (props) => {
     )
 }
 
-
-export default (KPI);
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+    });
+export default connect(mapStateToProps) (KPI);
