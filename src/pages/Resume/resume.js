@@ -695,6 +695,7 @@ const ResumePage = (props) => {
 
   function showExperienceModel() {
     setExperienceModelOpen(true);
+    setEditcity(false)
   }
 
   const showEditExperienceModel = (y) => {
@@ -836,7 +837,7 @@ const ResumePage = (props) => {
             <Grid item xs={12}>
               <Labelbox
                 type="text"
-                placeholder={"Postel Address *"}
+                placeholder={"Postal Address *"}
                 changeData={(data) => checkValidation(data, "mailAddress")}
                 value={Resume_Form.mailAddress.value}
                 error={Resume_Form.mailAddress.error}
@@ -936,33 +937,58 @@ const ResumePage = (props) => {
                 { educationList && educationList.map((data, index) => {
                   return (
                     <div className="educationKeyValue">
-                      <div className="educationKey">
-                        <div>Qualification</div>
-                        <div>Insitution/University</div>
-                        <div>Year of Passing</div>
-                        <div>Percentage/CGPA</div>
-                      </div>
-                      <div className="educationValue">
+                      <div>
+                        <div className="qualheading">Qualification</div>
                         <div>
                           {resumeGetList.qualificationList.map((getName) => {
                             if (data.qualification === getName.id) {
-                              return getName.value;
+                              return getName.value || "-";
                             }
                           })}
                         </div>
-                        <div>{data.institution}</div>
-                        <div>{data.year_of_passing}</div>
-                        <div>{data.cgpa}</div>
+
                       </div>
-                      <EditIcon
-                        fontSize="small"
-                        onClick={() => showEditEducationModel(index)}
-                      />
-                      <DeleteIcon
-                        fontSize="small"
-                        onClick={() => showDeleteEducationModel(index)}
-                      />
+                      <div>
+                        <div className="qualheading">Insitution/University</div>
+                        <div>{data.institution || "-"}</div>
+                      </div>
+                      <div>
+                        <div className="qualheading">Year of Passing</div>
+                        <div>{data.year_of_passing || "-"}</div>
+                      </div>
+                      <div>
+                        <div className="qualheading">Percentage</div>
+                        <div>{data.cgpa || "-"}</div>
+                      </div>
                     </div>
+                    // <div className="educationKeyValue">
+                    //   <div className="educationKey">
+                    //     <div>Qualification</div>
+                    //     <div>Insitution/University</div>
+                    //     <div>Year of Passing</div>
+                    //     <div>Percentage/CGPA</div>
+                    //   </div>
+                    //   <div className="educationValue">
+                    //     <div>
+                    //       {resumeGetList.qualificationList.map((getName) => {
+                    //         if (data.qualification === getName.id) {
+                    //           return getName.value || "-";
+                    //         }
+                    //       })}
+                    //     </div>
+                    //     <div>{data.institution || "-"}</div>
+                    //     <div>{data.year_of_passing || "-"}</div>
+                    //     <div>{data.cgpa || "-"}</div>
+                    //   </div>
+                    //   <EditIcon
+                    //     fontSize="small"
+                    //     onClick={() => showEditEducationModel(index)}
+                    //   />
+                    //   <DeleteIcon
+                    //     fontSize="small"
+                    //     onClick={() => showDeleteEducationModel(index)}
+                    //   />
+                    // </div>
                   );
                 })}
               </div>
@@ -1297,20 +1323,20 @@ const ResumePage = (props) => {
 
                             {" "}
                             {editcity ?
-                              <> {data.city}</> :
+                              <> {data.city || "-"}</> :
                               <> {resumeGetList.cityList.map((getName) => {
                                 if (data.city === getName.id) {
-                                  return getName.value;
+                                  return getName.value || "-";
                                 }
                               })}</>}
 
                           </div>
 
-                          <div>{data.department}</div>
-                          <div>{data.designation}</div>
-                          <div>{data.period_from}</div>
-                          <div>{data.period_to}</div>
-                          <div>{data.responsible}</div>
+                          <div>{data.department || "-"}</div>
+                          <div>{data.designation || "-"}</div>
+                          <div>{data.period_from || "-"}</div>
+                          <div>{data.period_to || "-"}</div>
+                          <div>{data.responsible || "-"}</div>
                         </div>
                         <EditIcon
                           fontSize="small"

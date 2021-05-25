@@ -281,6 +281,7 @@ function Resumesearch(props) {
         })
         obj = [];
     }
+    console.log(checkList,"checkedlist")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
@@ -412,12 +413,8 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={1} >
-
-                        </Grid>
                         <Grid item xs={1} ></Grid>
-
-
+                        <Grid item xs={1} ></Grid>
                         <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Talents"
@@ -436,6 +433,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
+                        
                         <Grid item xs={3} >
                             <div className="experienceSearch">
                                 <div>Experience</div>

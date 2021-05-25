@@ -34,8 +34,8 @@ function KRAModal() {
                                 <Labelbox
                                     type="datepicker"
                                     placeholder={"From Period"}
-                                    // view={["year", "month"]}
-                                    // format={'mmm-yyyy'}
+                                    view={["year", "month"]}
+                                    format={"mm/yyyy"}
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
@@ -43,8 +43,8 @@ function KRAModal() {
                                 <Labelbox
                                     type="datepicker"
                                     placeholder={"to Period"}
-                                    // view={["year", "month"]}
-                                    // format={'mmm-yyyy'}
+                                    view={["year", "month"]}
+                                    format={"mm/yyyy"}
                                 /></Grid>
 
                             <Grid item xs={3}>
