@@ -413,11 +413,8 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={1} >
-                        </Grid>
                         <Grid item xs={1} ></Grid>
-
-
+                        <Grid item xs={1} ></Grid>
                         <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Talents"
