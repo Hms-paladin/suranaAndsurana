@@ -9,7 +9,7 @@ import ViewQuestionsModal from '../OnlineTest/ViewQuestionsModal';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getCategory, getSubCategory, getQuestionType } from "../../actions/MasterDropdowns";
 import { connect, useDispatch } from "react-redux";
-import { InesertQuations, getAddQuations } from "../../actions/AddQuationsAction";
+import { InesertQuations, getAddQuations, viewAddedQuestions } from "../../actions/AddQuationsAction";
 import './onlinetest.scss'
 function AddQuestion(props) {
     const dispatch = useDispatch();
@@ -18,6 +18,9 @@ function AddQuestion(props) {
     const [category, setCategory] = useState({})
     const [subcategory, setSubcategory] = useState({})
     const [quationtype, setQuationtype] = useState({})
+    const [quescatId, setQuescatId] = useState()
+    const [quessubcatId, setQuessubId] = useState()
+    const [ques_type, setQues_type] = useState()
     const [Add_question, setAdd_question] = useState({
         category: {
             value: "",
@@ -67,11 +70,6 @@ function AddQuestion(props) {
         { id: "NOQ", label: "No.of Question" },
         { id: "action", label: "Action" }
     ];
-    const rows = [
-        { category: "Category 1", subcategory: "SubCategory 1", QType: "Question Type 1", NOQ: "02", action: <img src={Eyes} className="eyesview" onClick={() => setQuestionView(true)}></img> },
-        { category: "Category 2", subcategory: "SubCategory 2", QType: "Question Type 2", NOQ: "04", action: <img src={Eyes} className="eyesview" onClick={() => setQuestionView(true)}></img> },
-        { category: "Category 2", subcategory: "SubCategory 3", QType: "Question Type 3", NOQ: "06", action: <img src={Eyes} className="eyesview" onClick={() => setQuestionView(true)}></img> }
-    ];
 
     useEffect(() => {
         dispatch(getCategory());
@@ -114,6 +112,15 @@ function AddQuestion(props) {
 
     }, [props.Category, props.SubCategory, props.Quationtype])
 
+    const viewQuations = (QuesCatId, QuesubcatId, QuesType) => {
+        setQuescatId(QuesCatId)
+        setQuessubId(QuesubcatId)
+        setQues_type(QuesType)
+        setQuestionView(true)
+
+    }
+
+
     useEffect(() => {
         console.log(props.getAddQuations, "getAddQuations")
 
@@ -121,9 +128,11 @@ function AddQuestion(props) {
         console.log(props.GetRowData, "GetRowData")
         props.getAddQuations && props.getAddQuations.map((data, index) => {
             rowDataList.push({
-                category:data.QuescatName,
-                subcategory:data.QuesubcatName,
-                // QType:data,
+                category: data.QuescatName,
+                subcategory: data.QuesubcatName,
+                QType: data.QuesType === 1 ? "Checklist" : "Radiobutton",
+                NOQ: data.no_of_quest,
+                action: <img src={Eyes} className="eyesview" onClick={() => viewQuations(data.QuesCatId, data.QuesubcatId, data.QuesType)}></img>
             })
         })
 
@@ -267,23 +276,25 @@ function AddQuestion(props) {
                 </Grid>
                 <div className="egCss">(For Eg Option1,Option2,Option3...)</div>
                 <div>
-                    <EnhancedTable headCells={headCells} rows={rows} aligncss="usergroupcss"></EnhancedTable>
+                    <EnhancedTable headCells={headCells} rows={rowData} aligncss="usergroupcss"></EnhancedTable>
                 </div>
                 <DynModel modelTitle="Questions View" handleChangeModel={questionview} handleChangeCloseModel={(bln) => setQuestionView(bln)} width={1000}
-                    content={<ViewQuestionsModal />} closeModel={() => setQuestionView(false)} />
+                    content={<ViewQuestionsModal quescatId={quescatId} quessubcatId={quessubcatId} ques_type={ques_type} />} closeModel={() => setQuestionView(false)} />
             </div>
         </div>
     )
 }
 
 const mapStateToProps = (state) => (
-    console.log(state, "state.getOptions.getCategory"),
+    console.log(state.getAddQuations, "state.getOptions.getCategory"),
 
     {
         Category: state.getOptions.getCategory || [],
         SubCategory: state.getOptions.getSubCategory || [],
         Quationtype: state.getOptions.getQuestionType || [],
         getAddQuations: state.AddQuations.getAddQuations || [],
+        viewAddedQuestions: state.AddQuations.viewAddedQuestions || [],
+
 
     }
 );

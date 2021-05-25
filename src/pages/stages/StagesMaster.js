@@ -5,8 +5,8 @@ import CustomButton from '../../component/Butttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from 'react-redux';
-import {getStageMasterTableData,InsertStageMaster,getStageMaster} from '../../actions/StageMasterAction'
-import {getProjectType,getProjectSubType,getProcessType,getStageList, getSubStage } from '../../actions/MasterDropdowns';
+import { getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
+import { getProjectType, getProjectSubType, getProcessType, getStageList, getSubStage } from '../../actions/MasterDropdowns';
 import './StagesMaster.scss'
 import { notification } from "antd";
 import Usermaster from '../UserMaster/Usermaster';
@@ -88,38 +88,38 @@ const StagesMaster = (props) => {
     //stageTableData
     let stageMasterListData = []
     props.getTableData.map((data) =>
-    stageMasterListData.push(data)
-  )
-  var rateList = [];
+      stageMasterListData.push(data)
+    )
+    var rateList = [];
 
-  for (var m = 0; m < stageMasterListData.length; m++) {
-    var listarray = {
-      "project_type": stageMasterListData[m].project_type,
-      "sub_project_type": stageMasterListData[m].sub_project_type,
-      "process_type": stageMasterListData[m].process,
-      "stage": stageMasterListData[m].stage,
-      "sub_stage": stageMasterListData[m].sub_stage,
-      "noOfdays": stageMasterListData[m].no_of_compliance_days,
-      "reminderDays": stageMasterListData[m].remainder_days,
+    for (var m = 0; m < stageMasterListData.length; m++) {
+      var listarray = {
+        "project_type": stageMasterListData[m].project_type,
+        "sub_project_type": stageMasterListData[m].sub_project_type,
+        "process_type": stageMasterListData[m].process,
+        "stage": stageMasterListData[m].stage,
+        "sub_stage": stageMasterListData[m].sub_stage,
+        "noOfdays": stageMasterListData[m].no_of_compliance_days,
+        "reminderDays": stageMasterListData[m].remainder_days,
+      }
+      rateList.push(listarray);
     }
-    rateList.push(listarray);
-  }
-  setStageMasterList({ rateList })
-  // permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
+    setStageMasterList({ rateList })
+    // permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
 
-  //ProjectType
-  let projectTypedata = []
-  props.ProjectType.map((data) =>
-    projectTypedata.push({ value: data.project_type, id: data.project_type_id })
-  )
-  setprojectType({ projectTypedata })
-  //StageList
-  let projectStagedata = []
-  props.StageList.map((data) =>
-    projectStagedata.push({ value: data.stage, id: data.stage_id })
-  )
-  setStage({ projectStagedata })
-  },[props.getTableData,props. ProjectType,props.StageList])
+    //ProjectType
+    let projectTypedata = []
+    props.ProjectType.map((data) =>
+      projectTypedata.push({ value: data.project_type, id: data.project_type_id })
+    )
+    setprojectType({ projectTypedata })
+    //StageList
+    let projectStagedata = []
+    props.StageList.map((data) =>
+      projectStagedata.push({ value: data.stage, id: data.stage_id })
+    )
+    setStage({ projectStagedata })
+  }, [props.getTableData, props.ProjectType, props.StageList])
 
   useEffect(() => {
     //ProjectSubtype
@@ -141,12 +141,12 @@ const StagesMaster = (props) => {
     )
     setsubStage({ substagedata })
 
-  }, [props.ProcessType,props.ProcessType,props.getSubStage,props.ProjectSubtype])
+  }, [props.ProcessType, props.ProcessType, props.getSubStage, props.ProjectSubtype])
 
 
   const onSubmit = (data) => {
-    if(RateMaster.project_type.value!==1){
-       ValidationHide()
+    if (RateMaster.project_type.value !== 1) {
+      ValidationHide()
     }
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
@@ -167,7 +167,7 @@ const StagesMaster = (props) => {
       // setResumeFrom({ error: true });
 
     } else {
-      dispatch(InsertStageMaster(RateMaster)).then(()=>{
+      dispatch(InsertStageMaster(RateMaster)).then(() => {
         handleCancel()
       });
       // setResumeFrom({ error: false });
@@ -181,31 +181,30 @@ const StagesMaster = (props) => {
 
   function checkValidation(data, key, multipleId) {
     //_____________________
-   
-     if (data === 1 && key == "project_type") {
-      ValidationHide()
-      // RateMaster.sub_project_type.validation.push({name:"required"})
-      // RateMaster.process_type.validation.push({name:"required"})
+
+    if (data === 1 && key == "project_type") {
+      // ValidationHide()
+      RateMaster.sub_project_type.validation.push({ name: "required" })
+      RateMaster.process_type.validation.push({ name: "required" })
       dispatch(getProjectSubType(data))
       setEnabled(false)
-    } else if (data !== 1 && key == "project_type")
-     {  
+    } else if (data !== 1 && key == "project_type") {
       ValidationHide()
-       setEnabled(true)
-      }
-   
-     //________________________________________________________________
-     if (key == "sub_project_type" && data) {
+      setEnabled(true)
+    }
+
+    //________________________________________________________________
+    if (key == "sub_project_type" && data) {
       //process type
       dispatch(getProcessType({
-        ProjectType:RateMaster.project_type.value,ProjectSubtype:data
+        ProjectType: RateMaster.project_type.value, ProjectSubtype: data
       }))
     }
-     if(data===4 && key=="sub_project_type"){
-      RateMaster.process_type.validation=[{name:""}]
+    if (data === 4 && key == "sub_project_type") {
+      RateMaster.process_type.validation = [{ name: "" }]
     }
-    else if(data!==4 && key=="sub_project_type"){
-      RateMaster.process_type.validation=[{name:"required"}]
+    else if (data !== 4 && key == "sub_project_type") {
+      RateMaster.process_type.validation = [{ name: "required" }]
     }
     //________________________________________________________________
     if (key === "stages" && data) {
@@ -219,15 +218,15 @@ const StagesMaster = (props) => {
     if (data && key === "noOfDays") {
       RateMaster[key].validation[1].params = RateMaster.compliance.value
     }
-    if (key === "sub_stages"){
-      RateMaster.sub_stages.validation=[]
+    if (key === "sub_stages") {
+      RateMaster.sub_stages.validation = []
     }
-    if (key === "sub_project_type"){
-      RateMaster.sub_project_type.validation=[]
+    if (key === "sub_project_type") {
+      RateMaster.sub_project_type.validation = []
       // RateMaster.process_type.validation=[]
     }
-    if( key === "process_type"){
-      RateMaster.process_type.validation=[]
+    if (key === "process_type") {
+      RateMaster.process_type.validation = []
     }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -257,8 +256,8 @@ const StagesMaster = (props) => {
     }));
   }
   const ValidationHide = () => {
-    let From_key = ["sub_project_type", "process_type","sub_stages"]
-  
+    let From_key = ["sub_project_type", "process_type", "sub_stages"]
+
     From_key.map((data) => {
       RateMaster[data].validation = []
     })
@@ -291,7 +290,7 @@ useEffect(() => {
 
   return (
     <div>
-       <div className="var_rate_master">Stage Template</div>
+      <div className="var_rate_master">Stage Template</div>
       <Grid container spacing={3} className="stage_firstgrid">
         <Grid item xs={5} spacing={4} direction={"column"}>
         </Grid>
@@ -365,8 +364,8 @@ useEffect(() => {
       </Grid>
       <div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
-          rows={StageMasterList.length == 0 ? StageMasterList :StageMasterList.rateList}
-          />
+          rows={StageMasterList.length == 0 ? StageMasterList : StageMasterList.rateList}
+        />
       </div>
     </div>
   )
@@ -374,7 +373,7 @@ useEffect(() => {
 
 
 const mapStateToProps = (state) => ({
-  getTableData:state.StageMasterReducer.getStageMaster || [] ,
+  getTableData: state.StageMasterReducer.getStageMaster || [],
   ProjectType: state.getOptions.getProjectType || [],
   StageList: state.getOptions.getStageList || [],
   ProcessType: state.getOptions.getProcessType || [],

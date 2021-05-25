@@ -72,7 +72,8 @@ export default combineReducers({
   getDesignDetails,
   getTaskList,
   GetResumeList,
-  ExitSeverance
+  ExitSeverance,
+  AddQuations
 });
 
 

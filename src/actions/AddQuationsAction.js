@@ -1,4 +1,4 @@
-import { GET_ADD_QUATIONS} from "../utils/Constants";
+import { GET_ADD_QUATIONS, VIEW_ADDQUATIONS } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
@@ -28,8 +28,10 @@ export const InesertQuations = (Add_question) => async dispatch => {
                 console.log(response.data.status, "response.data.status")
                 if (response.data.status === 0) {
                     notification.success({
-                        message: 'Quations Added Successfully',
+                        message: 'Quetions Added Successfully',
                     });
+                    dispatch(getAddQuations());
+
                     return Promise.resolve();
                 }
             });
@@ -45,3 +47,28 @@ export const getAddQuations = () => async (dispatch) => {
     const response = await axios.get(apiurl + "/getaddquestions");
     return dispatch({ type: GET_ADD_QUATIONS, payload: response.data.data });
 };
+
+
+export const viewAddedQuestions = (QuesCatId, QuesubcatId, QuesType) => async dispatch => {
+
+    try {
+
+        axios({
+            method: "POST",
+            url: apiurl + "viewaddedquestions",
+            data: {
+                "quescatId": QuesCatId || 0,
+                "quesubcatId": QuesubcatId || 0,
+                "questiontype": QuesType || 0
+            },
+        }).then((response) => {
+            if (response.data.status === 0) {
+                dispatch({ type: VIEW_ADDQUATIONS, payload: response.data.data })
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
