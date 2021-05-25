@@ -31,7 +31,7 @@ function ResignationApproveval(props) {
     useEffect(() => {
         setModeltitles(props.modelTitles)
         dispatch(GetResignationApproval(props.severanceId))
-        dispatch(GetSeverance())
+        dispatch(GetSeverance(props.severanceId))
        
     }, [props.modelTitles,props.severanceId])
     useEffect(() => {

@@ -4,7 +4,8 @@ import axios from "axios";
 import {notification} from 'antd'
 import moment from "moment"
 
-export const GetSeverance = () => async dispatch => {
+export const GetSeverance = (emp_id) => async dispatch => {
+    console.log("emp_id",emp_id)
     try {
 
         axios({
@@ -23,6 +24,7 @@ export const GetSeverance = () => async dispatch => {
     }
 }
 export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
+    console.log(emp_id,"testttttt")
     try {
 
         axios({
@@ -55,7 +57,7 @@ export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
 }
 
 export const GetResignationApproval = (SeveranceId) => async dispatch => {
-    console.log(SeveranceId.severece_id,"check")
+    // console.log(SeveranceId.severece_id,"check")
     try {
 
         axios({
@@ -76,13 +78,14 @@ export const GetResignationApproval = (SeveranceId) => async dispatch => {
 
 
 export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch => {
+    console.log("sev_Id.severanceId",sev_Id)
     try {
 
         axios({
             method: 'POST',
             url: apiurl +'insert_resignation_approval',
             data:{
-                "employee_id":localStorage.getItem("empId"),
+                "employee_id":emp_id,
                 "resignation_accepted_on":data.accept_date.value,
                 "proposed_date_relieving":data.releive_date.value,
                 "approve_status":status===true?1:0,
@@ -100,8 +103,9 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
             //     notification.success({
             //         message: "Resignation Rejected",
             //     });
+            //     console.log("sss",status)
             // }
-            dispatch({type:INSERT_RESIGNATION,payload:response.data.data})
+            dispatch({type:INSERT_RESIGNATION,payload:true})
             dispatch(GetResignationApproval(sev_Id.severanceId))
             return Promise.resolve();
         })

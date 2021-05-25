@@ -102,7 +102,7 @@ function Severance(props) {
         if(filtererr.length>0){
           
         }else{
-               dispatch(InsertSeverance(ExitSeverance,props.GetSeverance[0].employee_id)).then((response)=>{
+               dispatch(InsertSeverance(ExitSeverance,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then((response)=>{
                  handleCancel()
                })     
         }
