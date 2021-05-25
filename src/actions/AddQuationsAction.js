@@ -25,7 +25,6 @@ export const InesertQuations = (Add_question) => async dispatch => {
 
         })
             .then((response) => {
-                console.log(response.data.status, "response.data.status")
                 if (response.data.status === 0) {
                     notification.success({
                         message: 'Quetions Added Successfully',

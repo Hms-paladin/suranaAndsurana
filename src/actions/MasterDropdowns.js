@@ -1,7 +1,7 @@
 import axios from "axios";
 import { apiurl } from "../utils/baseUrl.js";
 
-import { GET_SKILLS } from "../utils/Constants.js";
+import { GET_CANDIDATES_NAMES, GET_SKILLS } from "../utils/Constants.js";
 import { GET_TRAITS } from "../utils/Constants.js";
 import { GET_CERTIFICATION } from "../utils/Constants.js";
 import { GET_ACHIEVEMENT } from "../utils/Constants.js";
@@ -48,7 +48,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,GET_TEMPLATE_NAME
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -349,10 +349,6 @@ export const getUserGroup = () => async (dispatch) => {
 
 // Online test - Ad questions
 
-
-
-
-
 export const getQuestionType = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/questiontype");
   return dispatch({ type: GET_QUATIONTYPE, payload: response.data.data });
@@ -383,6 +379,18 @@ export const getSubCategory = (id) => async (dispatch) => {
   }
   catch (err) { }
 }
+
+//get_candidate_name
+
+export const getCandidateName = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_candidate_name");
+  return dispatch({ type: GET_CANDIDATES_NAMES, payload: response.data.data });
+};
+
+export const GetTemplateName = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/onlineTestTemplateList");
+  return dispatch({ type: GET_TEMPLATE_NAME, payload: response.data.data });
+};
 
 
 

@@ -11,7 +11,7 @@ import {
   GET_DESIGNATION_LIST,
   GET_DEPARTMENT,
   GET_INTERVIEWERS_LIST,
-  GET_INTERVIEW_STATUS,
+  GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES,GET_TEMPLATE_NAME
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -96,7 +96,7 @@ const initalState = {
   getUserStatus: [],
   getUserGroup: [],
   getCategory: [],
-  getSubCategory: [], getQuestionType: [],
+  getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
 };
 
 export default function (state = initalState, action) {
@@ -198,6 +198,10 @@ export default function (state = initalState, action) {
       return { ...state, getSubCategory: payload };
     case GET_QUATIONTYPE:
       return { ...state, getQuestionType: payload };
+    case GET_CANDIDATES_NAMES:
+      return { ...state, getCandidateName: payload };
+    case GET_TEMPLATE_NAME:
+      return { ...state, GetTemplateName: payload };
     default:
       return state;
   }
