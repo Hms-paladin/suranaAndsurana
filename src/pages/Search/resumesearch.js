@@ -281,6 +281,7 @@ function Resumesearch(props) {
         })
         obj = [];
     }
+    console.log(checkList,"checkedlist")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
