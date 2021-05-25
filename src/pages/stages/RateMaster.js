@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback} from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from "../../component/Butttons/button";
@@ -10,7 +10,7 @@ import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getVariableRateTableData, InsertVariableRate, SearchVariableRate,UpdateVariableRate} from "../../actions/VariableRateMaster"
+import { getVariableRateTableData, InsertVariableRate, SearchVariableRate, UpdateVariableRate } from "../../actions/VariableRateMaster"
 import DynModel from "../../component/Model/model";
 
 
@@ -39,14 +39,14 @@ const RateMaster = (props) => {
   const [projectDesignation, setprojectDesignation] = useState({});
   const [modelclose, setmodelclose] = useState();
   const [variablebtnchange, setVariablebtnchange] = useState(true)
-  const [AmountChange,setAmountChange]=useState(true)
+  const [AmountChange, setAmountChange] = useState(true)
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
   const [permission, setPermission] = useState([])
   const [activity_id, setActivity_id] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
-  const [project_id,setproject_id]=useState(false)
+  const [project_id, setproject_id] = useState(false)
   // props.setShowSearchTable = props.setShowSearchTable.bind(this);
   const [RateMaster, setRateMaster] = useState({
     activity: {
@@ -115,7 +115,7 @@ const RateMaster = (props) => {
     setAmountChange(props.AmountChange)
 
     // setAmountDis(false)
-  }, [props.variabletablechange, props.variablebtnchange,props.AmountChange]);
+  }, [props.variabletablechange, props.variablebtnchange, props.AmountChange]);
   // useEffect(() => {
   //   // setAmountDis(false)
   // }, [props.variableRateCall]);
@@ -146,15 +146,15 @@ const RateMaster = (props) => {
     setvarRateList({ rateList });
     // permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
-  
-  const SearchTable = useCallback( () => {
+
+  const SearchTable = useCallback(() => {
     props.setShowSearchTable()
     props.handleChangeCloseModel()
   }, []);
-  
+
 
   const onSubmit = () => {
-    
+
     setNotfoundmodel(false)
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
@@ -173,38 +173,38 @@ const RateMaster = (props) => {
     if (filtererr.length > 0) {
       // setRateMaster({ error: true });
     } else {
-      if(variablebtnchange===false){
+      if (variablebtnchange === false) {
         dispatch(SearchVariableRate(RateMaster)).then((response) => {
           props.setShowSearchTable()
           // handleCancel();
 
-       })
+        })
       }
-      else{
-      dispatch(InsertVariableRate(RateMaster)).then((response) => {
-        // dispatch(SearchVariableRate(RateMaster)).then((response) => {
-        //   // setNotfoundmodel(false);
-        //   SearchTable()
-        //    props.setShowSearchTable()
-        //   // props.handleChangeCloseModel()
-        // })
-        // if(variablebtnchange===true){
+      else {
+        dispatch(InsertVariableRate(RateMaster)).then((response) => {
+          // dispatch(SearchVariableRate(RateMaster)).then((response) => {
+          //   // setNotfoundmodel(false);
+          //   SearchTable()
+          //    props.setShowSearchTable()
+          //   // props.handleChangeCloseModel()
+          // })
+          // if(variablebtnchange===true){
           // handleCancel()
-        // }
-        setNotfoundmodel(false);
-        // handleCancel()
+          // }
+          setNotfoundmodel(false);
+          handleCancel()
 
-      });
+        });
       }
-      if(AmountChange){
+      if (AmountChange) {
         alert("hai")
-        dispatch(UpdateVariableRate()).then((response)=>{
-              setAmountChange(false)
+        dispatch(UpdateVariableRate()).then((response) => {
+          setAmountChange(false)
         })
       }
     }
     // console.log(props.lenghtData, "props.lenghtData")
-    console.log("ratemasterdddd",RateMaster)
+    console.log("ratemasterdddd", RateMaster)
 
 
     setRateMaster((prevState) => ({
@@ -331,14 +331,14 @@ const RateMaster = (props) => {
   };
 
   useEffect(() => {
-    console.log("propslength",props.lenghtData!==0)
-    if(variablebtnchange){
-    if (props.lenghtData !== 0) {
-      setNotfoundmodel(false);
-    } else {
-      setNotfoundmodel(true)
+    console.log("propslength", props.lenghtData !== 0)
+    if (variablebtnchange) {
+      if (props.lenghtData !== 0) {
+        setNotfoundmodel(false);
+      } else {
+        setNotfoundmodel(true)
+      }
     }
-  }
 
   }, [props.searchVariableRate, props.lenghtData]);
   useEffect(() => {
@@ -648,7 +648,7 @@ const RateMaster = (props) => {
           <EnhancedTable
             headCells={header}
             rows={varRateList.length == 0 ? varRateList : varRateList.rateList}
-            // rows={varRateList.rateList}
+          // rows={varRateList.rateList}
           />
         </div>}
 
@@ -683,7 +683,7 @@ const mapStateToProps = (state) => (
     UserPermission: state.UserPermissionReducer.getUserPermission,
     searchVariableRate: state.variableRateMaster.searchVariableRate,
     lenghtData: state.variableRateMaster.lengthData,
-    UpdateVariableRate:state.variableRateMaster.updateProjectVariableRate
+    UpdateVariableRate: state.variableRateMaster.updateProjectVariableRate
   }
 );
 
