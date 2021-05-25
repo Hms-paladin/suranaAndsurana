@@ -2,26 +2,32 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
-
+import EnhancedTable from "../../component/DynTable/table";
 import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KRA.scss'
 import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
 import KRAModal from "./KRAViewModal"
+import Edit from "../../images/editable.svg";
 
 
 const KRA = (props) => {
     const header = [
         // { id: 'table_name', label: 'Table Name' },
         { id: 'activity', label: 'Activity' },
-        { id: 'subactivity', label: 'Subactivity' },
-        { id: 'target', label: 'Target' },
-        { id: 'achievement', label: 'Achievement' },
+        { id: 'percent', label: 'Percentage' },
+        { id: 'action', label: 'Action' },
     ];
 
-    const [kramodel, setKramodel] = useState(false);
+    const rows = [
+        { activity: "Hearing", percent: "20",action:<img src={Edit} className="editicon"/> },
+        { activity: "Documentation", percent: "40",action:<img src={Edit} className="editicon"/> },
+        { activity: "Research", percent: "40",action:<img src={Edit} className="editicon"/> },
+        { activity: "Total", percent: "100" },
+    ]
 
+    const [kramodel, setKramodel] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
     const [kraViewModal, setKraViewModal] = useState(false)
     const [value, setValue] = useState(new Date().getMonth());
@@ -94,9 +100,9 @@ const KRA = (props) => {
                             style={{ padding: 10 }}
                             spacing={2}
                         >
-                            <Grid item xs={2}>
-                                <div className="KRAhead"><label onClick={() => setKramodel(true)}>Employee Name</label></div>
-                                <div ><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
+                            <Grid item xs={2} style={{ padding: 0 }}>
+                                <div className="KRAhead lblemp"><label onClick={() => setKramodel(true)}>Employee Name</label></div>
+                                <div className="lblname"><label style={{ fontWeight: 'bold', paddingTop: "6px", position: "relative", top: "-10px" }}>Rajesh</label></div>
                             </Grid>
                             <Grid item xs={4} container direction="row">
                                 <div className="KRAhead per_head"><label >From Period</label></div>
@@ -146,7 +152,7 @@ const KRA = (props) => {
                                 <div className="KRAhead"><label style={{ fontSize: 15 }}>Percentage</label></div>
                                 <div style={{ width: '100%', display: 'inline-block' }}>
                                     <Labelbox
-                                        type="select"
+                                        type="text"
                                         placeholder={""}
                                         value={35}
                                         changeData={(data) => checkValidation(data, "percentage")}
@@ -155,7 +161,10 @@ const KRA = (props) => {
                                         errmsg={kpi_form.percentage.errmsg}
                                     /></div>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={2} container direction="row">
+                                <div style={{ display: 'flex', justifyContent: "center", padding: "15px" }}>
+                                    <img src={PlusIcon} style={{ cursor: 'pointer', width: 19 }} />
+                                </div>
                                 <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
                                     btnName={"View KRA"}
                                     btnCustomColor="customPrimary"
@@ -163,9 +172,6 @@ const KRA = (props) => {
                                     onBtnClick={() => setKraViewModal(!kraViewModal)}
 
                                 /></div>
-                                <div style={{ display: 'flex', justifyContent: "center", padding: "15px" }}>
-                                    <img src={PlusIcon} style={{ cursor: 'pointer', width: 19 }} />
-                                </div>
                             </Grid>
                         </Grid>
 
@@ -173,40 +179,42 @@ const KRA = (props) => {
                     </Grid>
                 </div>
 
+                {/* <div style={{padding:"10px"}}>
+                    <EnhancedTable headCells={header} aligncss="kra_table"
+                        rows={rows} />
+                </div> */}
+
                 <div className="kpi_table">
                     <Grid container >
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row kra_table_header" alignItems="center" style={{height: 45}}>
-                            <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
-                            {/* <Grid item xs={4}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid> */}
-                            <Grid item xs={4}><label className="maintitle" style={{color:"#0f0fab"}}>Percentage</label></Grid>
-         
+                        <Grid item xs={12} container direction="row" className="kra_table_row kra_table_header" alignItems="center" style={{ height: 45 }}>
+                            <Grid item xs={4}><label className="maintitle" style={{ color: "#0f0fab" }}>Activity</label></Grid>
+                            <Grid item xs={4}><label className="maintitle" style={{ color: "#0f0fab" }}>Percentage</label></Grid>
+                            <Grid item xs={4}><label className="maintitle" style={{ color: "#0f0fab" }}>
+                                Action</label></Grid>
 
                         </Grid>
-
-
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Hearing</label></Grid>
-                            {/* <Grid item xs={4}><label className="maintitle">In Effective</label></Grid> */}
                             <Grid item xs={4}> <label className="maintitle">20</label></Grid>
+                            <Grid item xs={4}><img src={Edit} className="editicon"/></Grid>
 
                         </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
-                            {/* <Grid item xs={4}><label className="maintitle"></label></Grid> */}
                             <Grid item xs={4}><label className="maintitle">40</label> </Grid>
+                            <Grid item xs={4}><img src={Edit} className="editicon"/></Grid>
 
                         </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" >
                             <Grid item xs={4}> <label className="maintitle">Research</label></Grid>
-                            {/* <Grid item xs={4}> <label className="maintitle"></label></Grid> */}
                             <Grid item xs={4}><label className="maintitle">40</label> </Grid>
+                            <Grid item xs={4}><img src={Edit} className="editicon"/></Grid>
 
                         </Grid>
 
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
-                            {/* <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid> */}
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
+                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>100</label></Grid>
                         </Grid>
                     </Grid>
                 </div>
@@ -224,6 +232,7 @@ const KRA = (props) => {
 
                     />
                 </div>
+
                 <DynModel modelTitle={"KRA View"} handleChangeModel={kraViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKraViewModal(bln)} width={900} content={<KRAModal />} />
             </div>
         </div>
