@@ -10,7 +10,7 @@ function IPABRectificationDefended() {
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={2}>
-                        <div>Client - Applicant</div>
+                        <div>Client - Respondent</div>
                         <Labelbox type="text"></Labelbox>
                     </Grid>
                     <Grid item xs={2}>
