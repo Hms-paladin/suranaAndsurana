@@ -172,7 +172,8 @@ function Navbar(props) {
         active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
         subtree: [
           { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-          { path: "/testtemplate", title: "Test Template", img: MasterIcon }
+          { path: "/testtemplate", title: "Test Template", img: MasterIcon },
+          { path: "/onlinetest", title: "Online Test", img: MasterIcon }
         ]
       },
 

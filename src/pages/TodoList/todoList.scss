@@ -1,15 +1,17 @@
 .tempClass{
+    color:  #1D7DBD;
     cursor: pointer;
+    text-decoration: underline;
 
-    :hover{
-        text-decoration: underline;
-    }
+    // :hover{
+    //     text-decoration: underline;
+    // }
 }
 
-.tempClass:hover{
-        text-decoration: underline;
-        color: #1890ff;
-    }
+// .tempClass:hover{
+//         text-decoration: underline;
+//         color: #1890ff;
+//     }
 
 
 .ProjectTaskId{

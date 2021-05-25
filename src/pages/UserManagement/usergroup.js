@@ -107,7 +107,6 @@ function UserGroup(props) {
         });
     }
     const addGroupName = () => {
-        alert("test")
         setUsergroupModel(true)
     }
 

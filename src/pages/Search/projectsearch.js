@@ -73,6 +73,7 @@ function Projectsearch(props) {
   const [createProjectRights, setCreateProjectRights] = useState([])
   const [createAdhocRights, setCreateAdhocRights] = useState([])
 
+  const [redirectToProject, setRedirectToProject] = useState(false)
   const dispatch = useDispatch();
 
   const [projectform, setprojectform] = useState({
@@ -364,8 +365,8 @@ useEffect(() => {
       <div className="searchfilterflex">
         <div className="searchfilterflex1">
           <div className="projsearchfilterdrpdwn">
-            
-          <div className="Fieldheading">Client Type</div>
+
+            <div className="Fieldheading">Client Type</div>
             <Labelbox
               type="select"
               dropdown={clientType.ClientType}
@@ -376,7 +377,7 @@ useEffect(() => {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Client</div>
+            <div className="Fieldheading">Client</div>
             <Labelbox
               type="select"
               dropdown={client.Client}
@@ -387,7 +388,7 @@ useEffect(() => {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Project Type</div>
+            <div className="Fieldheading">Project Type</div>
             <Labelbox
               type="select"
               dropdown={projectType.ProjectType}
@@ -398,7 +399,7 @@ useEffect(() => {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Project Name</div>
+            <div className="Fieldheading">Project Name</div>
             <Labelbox
               type="select"
               dropdown={projectName.ProjectName}
@@ -409,7 +410,7 @@ useEffect(() => {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Billing Type</div>
+            <div className="Fieldheading">Billing Type</div>
             <Labelbox
               type="select"
               dropdown={billableType.BillableType}
@@ -440,8 +441,8 @@ useEffect(() => {
           handleChangeCloseModel={(bln) => setModelOpen(bln)}
           content={<AdhocTaskModel />}
         />
-       
-        <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
+
+    {/* <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
           <CustomButton
             btnName={"Create Project "}
             btnCustomColor="customPrimary"
@@ -449,8 +450,19 @@ useEffect(() => {
             // onBtnClick={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')&&rightsNotification}
             onBtnClick={() => createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?rightsNotification():''}
           />
-        </Link>
+        </Link> */}
+
+        <CustomButton
+          btnName={"Create Project "}
+          btnCustomColor="customPrimary"
+          custombtnCSS={"goSearchbtn"}
+          onBtnClick={() => !createProjectRights||(createProjectRights.display_control&&createProjectRights.display_control==='N')?rightsNotification():setRedirectToProject(true)}
+        />
       </div>
+      {redirectToProject && createProjectRights&&createProjectRights.display_control&&createProjectRights.display_control==='Y' &&
+        <Redirect push to="/projectFormCreate" />
+      }
+      {/* {console.log(pathname, "projectFormCreate")} */}
 
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>

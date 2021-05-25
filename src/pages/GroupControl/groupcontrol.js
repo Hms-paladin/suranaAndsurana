@@ -40,8 +40,9 @@ const GroupControl = (props) => {
   }, []);
   const [userForm, setuserForm]= useState({
     controls: {
+      valueById:"",
       value: "",
-      //validation: [{ name: "required" }],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -79,6 +80,7 @@ const GroupControl = (props) => {
       })
     )
     setgroups({ groupsData })
+    
 
     let controlData = []
     props.controlList.map((data) =>
@@ -88,7 +90,7 @@ const GroupControl = (props) => {
       })
     )
     setcontrols({ controlData })
-
+     
 
   }, [props.getGroupControlLists,props.groupLists,props.controlList,
   ]);
@@ -167,18 +169,36 @@ const GroupControl = (props) => {
      }
 
      function onSubmit() {
-     var contr=[userForm.controls.value];
-      contr.push()
-      var data = {
-        "screen_control_id": contr,
-        "group_id": userForm.group.value,
+      var mainvalue = {};
+      var targetkeys = Object.keys(userForm);
+      for (var i in targetkeys) {
+        var errorcheck = ValidationLibrary.checkValidation(
+          userForm[targetkeys[i]].value,
+          userForm[targetkeys[i]].validation
+        );
+        userForm[targetkeys[i]].error = !errorcheck.state;
+        userForm[targetkeys[i]].errmsg = errorcheck.msg;
+        mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
+        console.log("mainvalue",mainvalue)
       }
+      var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
+      console.log("checkuser",userForm)
   
-      dispatch(InsertGroupControlMaster(data)).then((response) => {
+      if (filtererr.length >0) {
+        
+      }else{
+    //  var contr=[userForm.controls.value];
+    //   contr.push()
+    //   var data = {
+        
+    //   }
+  
+      dispatch(InsertGroupControlMaster(userForm)).then((response) => {
         handleCancel();
       })
   
     }
+  }
 
     const handleCancel = () => {
       let From_key = [
@@ -235,6 +255,7 @@ const GroupControl = (props) => {
     };
 
 
+
   return (
     <div>
       <div className="group_control">Group Control</div>
@@ -263,9 +284,9 @@ const GroupControl = (props) => {
            </Grid>
           <Grid item xs={6}>
           <Labelbox type="select" placeholder={"Controls"}
-           
+            mode="multiple"
             dropdown={controls.controlData}
-            changeData={(data) => checkValidation(data, "controls")}
+            changeData={(data) => checkValidation(data, "controls",controls.controlData)}
             value={userForm.controls.value}
             error={userForm.controls.error}
             errmsg={userForm.controls.errmsg}
@@ -323,7 +344,6 @@ const GroupControl = (props) => {
         handleChangeCloseModel={(bln) => setGroupcontrolmodel(bln)}
         content={
           <div className="successModel">
-
             <div> <label className="usergroup_label">Employee :&nbsp;Kaveri</label></div>
             <div className="groupcontrolDiv">
               <div className="usergroupcheckboxDiv"><Checkbox /> &nbsp;&nbsp;<label style={{ color: 'black' }}>Interview Approval</label> </div>
@@ -343,7 +363,6 @@ const GroupControl = (props) => {
               />
             </div>
           </div>
-
         }
         width={400}
       /> */}

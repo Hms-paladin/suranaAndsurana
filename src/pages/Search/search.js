@@ -12,7 +12,7 @@ import HrSearch from './hrsearch';
 
 
 function Search(props) {
-  
+
     const [value, setValue] = React.useState();
 
     const onChange = e => {
@@ -21,7 +21,7 @@ function Search(props) {
     }
     return (
         <div>
-<div className="radioBoxContainer">
+            <div className="radioBoxContainer">
                 <Radio.Group onChange={onChange} value={value}>
                     <Radio value={1}>Resume</Radio>
                     <Radio value={2}>Project</Radio>
@@ -31,14 +31,14 @@ function Search(props) {
                     <Radio value={6}>Label 6</Radio> */}
                 </Radio.Group>
             </div>
-            {value ===1 && <Resumesearch/>}
-            {value ===2 && <Projectsearch/>}
-            {value ===3 && <HrSearch/>}
-            {value ===4 && <TaskSearch/>}
+            {value === 1 && <Resumesearch />}
+            {value === 2 && <Projectsearch />}
+            {value === 3 && <HrSearch />}
+            {value === 4 && <TaskSearch />}
 
-            {value ===5 && <TimeSheetModel/>}
+            {value === 5 && <TimeSheetModel />}
 
-            </div>
+        </div>
     )
 }
-            export default (Search);
+export default (Search);

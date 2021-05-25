@@ -4,7 +4,8 @@ import { GET_CERTIFICATION } from "../utils/Constants.js";
 import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
-import { USER_GET_CLASS,USER_GET_STATUS } from '../utils/Constants.js';
+import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants.js';
+import { GET_CATEGORY, GET_SUBCATEGORY } from "../utils/Constants.js";
 import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
@@ -33,7 +34,7 @@ import {
   GET_COURT_LOCATION,
   GET_TRADE_MARK_STATUS,
   GET_CASE_TYPE,
-  GET_SUB_CASE_TYPE,
+  GET_SUB_CASE_TYPE, GET_QUATIONTYPE,
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -47,6 +48,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
 } from "../utils/Constants.js";
+
 const initalState = {
   getResourcesType: [],
   getInstitute: [],
@@ -90,9 +92,11 @@ const initalState = {
   getSubactivity: [],
   getLitigationCounsel: [],
   getLeaveType: [],
-  getClass:[],
-  getUserStatus:[],
+  getClass: [],
+  getUserStatus: [],
   getUserGroup: [],
+  getCategory: [],
+  getSubCategory: [], getQuestionType: [],
 };
 
 export default function (state = initalState, action) {
@@ -183,11 +187,17 @@ export default function (state = initalState, action) {
     case GET_LEAVETYPE:
       return { ...state, getLeaveType: payload };
     case USER_GET_CLASS:
-      return {...state, getClass: payload };
+      return { ...state, getClass: payload };
     case USER_GET_STATUS:
-      return {...state, getUserStatus: payload };
+      return { ...state, getUserStatus: payload };
     case GET_USERGROUP:
       return { ...state, getUserGroup: payload };
+    case GET_CATEGORY:
+      return { ...state, getCategory: payload };
+    case GET_SUBCATEGORY:
+      return { ...state, getSubCategory: payload };
+    case GET_QUATIONTYPE:
+      return { ...state, getQuestionType: payload };
     default:
       return state;
   }

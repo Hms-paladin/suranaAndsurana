@@ -9,6 +9,7 @@ import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
 import { useDispatch, connect } from "react-redux";
+import KPIModal from './KPIViewModal'
 
 const KPI = (props) => {
     const header = [
@@ -24,6 +25,7 @@ const KPI = (props) => {
     const [saveRights, setSaveRights] = useState([])
 
     const [isLoaded, setIsLoaded] = useState(true);
+    const [kpiViewModal, setKpiViewModal] = useState(false)
 
     const [kpi_form, setKpi_form] = useState({
 
@@ -112,13 +114,22 @@ useEffect(() => {
                             className="spaceBtGrid"
                             alignItems="center"
                         >
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <div className="KRAhead"><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <div className="KRAhead"><label >Period</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
+                            </Grid>
+                            <Grid item xs={4}>
+                            <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
+                                    btnName={"View KPI"}
+                                    btnCustomColor="customPrimary"
+                                    custombtnCSS={"btnUsergroup"}
+                                    onBtnClick={()=>setKpiViewModal(!kpiViewModal)}
+
+                                /></div>
                             </Grid>
                         </Grid>
 
@@ -129,7 +140,7 @@ useEffect(() => {
                     <Grid container >
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
                             <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid>
+                            {/* <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Sub Activity</label> </Grid> */}
                             <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Target</label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Achievement</label></Grid>
 
@@ -138,7 +149,7 @@ useEffect(() => {
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">In Effective</label></Grid>
+                            {/* <Grid item xs={3}><label className="maintitle">In Effective</label></Grid> */}
                             <Grid item xs={3}> <label className="maintitle">20</label></Grid>
                             <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
@@ -155,7 +166,7 @@ useEffect(() => {
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={3}><label className="maintitle"></label></Grid>
+                            {/* <Grid item xs={3}><label className="maintitle"></label></Grid> */}
                             <Grid item xs={3}><label className="maintitle">40</label> </Grid>
                             <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
@@ -172,7 +183,7 @@ useEffect(() => {
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle"></label></Grid>
+                            {/* <Grid item xs={3}> <label className="maintitle"></label></Grid> */}
                             <Grid item xs={3}><label className="maintitle">40</label> </Grid>
                             <Grid item xs={3}><div style={{ width: '70%' }}>
                                 <Labelbox
@@ -210,7 +221,7 @@ useEffect(() => {
                     />
                 </div>
             </div>
-
+            <DynModel modelTitle={"KPI View"} handleChangeModel={kpiViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKpiViewModal(bln)} width={900} content={<KPIModal />} />
         </div>
     )
 }

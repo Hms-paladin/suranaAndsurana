@@ -33,6 +33,8 @@ import AddClientReducer from './AddClientReducer';
 import getDesignDetails from "./insertDesign";
 import getTaskList from './TimeSheetReducer';
 import GetResumeList from './ResumeReducer';
+import ExitSeverance from './ExitSeveranceReducers'
+import AddQuations from "./AddQuationsReducer";
 
 
 export default combineReducers({
@@ -69,7 +71,8 @@ export default combineReducers({
   AddClientReducer,
   getDesignDetails,
   getTaskList,
-  GetResumeList
+  GetResumeList,
+  ExitSeverance
 });
 
 

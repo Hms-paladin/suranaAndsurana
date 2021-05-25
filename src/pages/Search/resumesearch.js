@@ -301,9 +301,6 @@ function Resumesearch(props) {
         setEditResumeRow(props.GetResumeList[0]?.result)
     }, [props.GetResumeList])
 
-    console.log(editResumeRow, "GetResumeList")
-
-
 
     useEffect(() => {
         let rowDataList = []
@@ -531,7 +528,7 @@ function Resumesearch(props) {
                 modelTitle={"Edit Resume"}
                 handleChangeModel={editModel}
                 handleChangeCloseModel={(bln) => setEditModel(bln)}
-                content={<ResumeForm resumeEditrow={editResumeRow} />}
+                content={<ResumeForm resumeEditrow={editResumeRow} handleChangeCloseModel={(bln) => setEditModel(bln)} />}
                 width={1000}
             />
         </div>

@@ -30,10 +30,10 @@ function TaskStatus(props) {
 
       function handelSave(e,val ){
           var a =valToSave;
-        setSlideVal(val.status_id);
+        setSlideVal(a);
           var val ={
             "task_id":props.rowData.task_id,
-            "tag_id":val.status_id
+            "percentage_completion":a
         }
     try {
         axios({

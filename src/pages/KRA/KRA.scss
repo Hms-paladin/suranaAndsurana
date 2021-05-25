@@ -10,6 +10,7 @@
 
 .kpi_table {
     background-color: #F3F3F3;
+    margin-top: 10px;
 }
 .kra_sub{
     height: 85px;
@@ -50,3 +51,16 @@
     align-items: baseline;
 }
 .KRAhead{padding-bottom: 5px;}
+.period_div{
+    display:flex;
+    justify-content:space-between;
+    >.custom_labelbox{
+        margin-right: 20px;
+    }
+}
+.per_head{width:50%}
+.GO_btn{
+    >.custom_labelbox{
+        border-radius: 50px;
+    }
+}
