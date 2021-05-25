@@ -1,4 +1,6 @@
-import { GET_EXITSEVERANCE,INSERT_SEVERANCE,GET_RESIGNATION_APPROVAL,INSERT_RESIGNATION} from "../utils/Constants";
+import { GET_EXITSEVERANCE,INSERT_SEVERANCE,GET_RESIGNATION_APPROVAL,INSERT_RESIGNATION,GET_EMPLOYEE_DET} from "../utils/Constants";
+import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC} from '../utils/Constants'
+import {getOtherTask} from './TodoListAction'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import {notification} from 'antd'
@@ -12,7 +14,8 @@ export const GetSeverance = (emp_id) => async dispatch => {
             method: 'POST',
             url: apiurl +'get_severence',
             data:{
-                "emp_id":localStorage.getItem("empId")
+                // "emp_id":localStorage.getItem("empId")
+                emp_id:emp_id
             }
         })
         .then((response) => {
@@ -23,8 +26,27 @@ export const GetSeverance = (emp_id) => async dispatch => {
         
     }
 }
+
+export const GetEmployeeDetails = (emp_id) => async dispatch => {
+    console.log("emp_id",emp_id)
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'get_severence',
+            data:{
+                "emp_id":localStorage.getItem("empId")
+            }
+        })
+        .then((response) => {
+            dispatch({type:GET_EMPLOYEE_DET,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
+    }
+}
 export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
-    console.log(emp_id,"testttttt")
     try {
 
         axios({
@@ -103,11 +125,102 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
             //     notification.success({
             //         message: "Resignation Rejected",
             //     });
-            //     console.log("sss",status)
+                console.log("sss",sev_Id.severanceId)
             // }
             dispatch({type:INSERT_RESIGNATION,payload:true})
-            dispatch(GetResignationApproval(sev_Id.severanceId))
+            dispatch(GetResignationApproval({value:sev_Id}))
+            dispatch(getOtherTask())
             return Promise.resolve();
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const UpdateItNoc = (checked,emp_id,task) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'update_it_noc',
+            data:{
+                "employee_id":emp_id,
+                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "it_noc_by":checked===true?localStorage.getItem("empId"):""
+            }
+        })
+        .then((response) => {
+            if(response.data.status===1){
+                notification.success({
+                message: "IT NOC approved successfully",
+                });
+            dispatch({type:UPDATE_ITNOC,payload:true})
+            dispatch(GetSeverance(emp_id))
+            dispatch(getOtherTask())
+            return Promise.resolve();
+            }
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'update_admin_noc',
+            data:{
+                "employee_id":emp_id,
+                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "it_noc_by":checked===true?localStorage.getItem("empId"):""
+            }
+        })
+        .then((response) => {
+            if(response.data.status===1){
+                notification.success({
+                message: "ADMIN NOC approved successfully",
+                });
+            dispatch({type:UPDATE_ADMINNOC,payload:true})
+            dispatch(GetSeverance({emp_id}))
+            dispatch(getOtherTask())
+            return Promise.resolve();
+            }
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+
+export const UpdateHrNoc = (checked,emp_id,task) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'update_hr_noc',
+            data:{
+                "employee_id":emp_id,
+                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "it_noc_by":checked===true?localStorage.getItem("empId"):""
+            }
+        })
+        .then((response) => {
+            if(response.data.status===1){
+                notification.success({
+                message: "HR NOC approved successfully",
+                });
+            dispatch({type:UPDATE_HRNOC,payload:true})
+            dispatch(GetSeverance({emp_id}))
+            dispatch(getOtherTask())
+            }
+            return Promise.resolve();
+
+              
         })
         
     } catch (err) {

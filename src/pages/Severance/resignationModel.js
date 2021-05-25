@@ -5,7 +5,8 @@ import CustomButton from '../../component/Butttons/button';
 import { Checkbox } from 'antd'
 import {useDispatch,connect} from 'react-redux'
 import moment from 'moment'
-import {GetResignationApproval,InsertResignation,GetSeverance} from '../../actions/ExitSeveranceAction'
+import {GetResignationApproval,InsertResignation,GetSeverance,
+    UpdateItNoc,UpdateAdminNoc,UpdateHrNoc} from '../../actions/ExitSeveranceAction'
 import './severance.scss';
 import ValidationLibrary from "../../helpers/validationfunction";
 import severance from './severance';
@@ -13,6 +14,7 @@ import severance from './severance';
 function ResignationApproveval(props) {
     const [modeltitles, setModeltitles] = useState()
     const [severanceData,setseveranceData]=useState([])
+    const [checked, setChecked] = useState(false)
     const [Resignation,setResignation]=useState({
         accept_date: {
             value: "",
@@ -31,7 +33,7 @@ function ResignationApproveval(props) {
     useEffect(() => {
         setModeltitles(props.modelTitles)
         dispatch(GetResignationApproval(props.severanceId))
-        dispatch(GetSeverance(props.severanceId))
+        dispatch(GetSeverance(props.severanceId.employee_id))
        
     }, [props.modelTitles,props.severanceId])
     useEffect(() => {
@@ -83,7 +85,7 @@ function ResignationApproveval(props) {
        } if(name==="reject"){
         status=false
        }
-       dispatch(InsertResignation(status,Resignation,props.GetResignation[0]&&props.GetResignation[0].employee_id,severanceData)).then(()=>{
+       dispatch(InsertResignation(status,Resignation,props.GetResignation[0]&&props.GetResignation[0].employee_id,severanceData.severanceId)).then(()=>{
            props.closemodal()
            HandleCancel()
        })
@@ -95,6 +97,31 @@ function ResignationApproveval(props) {
            Resignation[data].value=""
        })
    }
+   function HandleChange(){
+       setChecked(!checked)
+   }
+   function Update_Noc(task){
+      
+       if(task==="IT NOC"){
+       dispatch(UpdateItNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id,task)).then(()=>{
+        props.closemodal()
+        setChecked(false)
+       })
+      }
+      else if(task==="ADMIN NOC"){
+        dispatch(UpdateAdminNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
+         props.closemodal()
+         setChecked(false)
+        })
+       }
+       else if(task==="HR NOC"){
+        dispatch(UpdateHrNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
+         props.closemodal()
+        })
+       }
+       
+   }
+   console.log("dfghj",props.GetSeverance[0]&&props.GetSeverance[0].employee_id)
     return (
         <div>
             <div className="severancemodelsContainer">
@@ -119,10 +146,10 @@ function ResignationApproveval(props) {
                 {(props.TaskModelTitle==="HR NOC" || props.TaskModelTitle === "IT NOC" || props.TaskModelTitle === "ADMIN NOC") &&
                     <div>
                         <div>Noc</div>
-                        <div><Checkbox /></div>
+                        <div><Checkbox onChange={HandleChange} checked={checked}/></div>
                     </div>}
             </div>
-
+              {console.log("checking",checked)}
 
 
             { props.TaskModelTitle === "Resignation Approval" && <div className="ResigContent">
@@ -162,7 +189,7 @@ function ResignationApproveval(props) {
 
             </div>}
             {(props.TaskModelTitle==="HR NOC" || props.TaskModelTitle === "IT NOC" || props.TaskModelTitle === "ADMIN NOC") && <div className="appraisalBtn">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={()=>Update_Noc(props.TaskModelTitle)}/>
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>}
 
@@ -220,7 +247,10 @@ function ResignationApproveval(props) {
 const mapStateToProps = state => (
     {
         GetResignation:state.ExitSeverance.getResignation,
-        GetSeverance:state.ExitSeverance.GetSeverance
+        GetSeverance:state.ExitSeverance.GetSeverance,
+        Update_ItNoc:state.ExitSeverance.Update_ItNoc,
+        Update_HrNoc:state.ExitSeverance.Update_HrNoc,
+        Update_AdminNoc:state.ExitSeverance.Update_AdminNoc
     }
 )
 

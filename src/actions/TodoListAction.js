@@ -23,6 +23,7 @@ export const getHrTaskList = () =>async dispatch => {
 
     }
 }
+
 //InterviewPage
 export const getInterviewQuestions = () =>async dispatch => {
     try{
