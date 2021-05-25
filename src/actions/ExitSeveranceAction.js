@@ -1,4 +1,4 @@
-import { GET_EXITSEVERANCE,INSERT_SEVERANCE } from "../utils/Constants";
+import { GET_EXITSEVERANCE,INSERT_SEVERANCE,GET_RESIGNATION_APPROVAL,INSERT_RESIGNATION} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import {notification} from 'antd'
@@ -47,6 +47,63 @@ export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
             dispatch(GetSeverance(emp_id))
             return Promise.resolve();
             }
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const GetResignationApproval = (SeveranceId) => async dispatch => {
+    console.log(SeveranceId.severece_id,"check")
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'get_resignation_approval',
+            data:{
+                "severece_id":SeveranceId.severece_id
+            }
+        })
+        .then((response) => {
+            dispatch({type:GET_RESIGNATION_APPROVAL,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+
+export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'insert_resignation_approval',
+            data:{
+                "employee_id":localStorage.getItem("empId"),
+                "resignation_accepted_on":data.accept_date.value,
+                "proposed_date_relieving":data.releive_date.value,
+                "approve_status":status===true?1:0,
+                "updated_by":localStorage.getItem("empId")
+            }
+        })
+        .then((response) => {
+            // if(response.data.status===1){
+            //     notification.success({
+            //         message: "Resignation approved successfully",
+            //     });
+           
+            // }
+            // else if(response.data.status===1){
+            //     notification.success({
+            //         message: "Resignation Rejected",
+            //     });
+            // }
+            dispatch({type:INSERT_RESIGNATION,payload:response.data.data})
+            dispatch(GetResignationApproval(sev_Id.severanceId))
+            return Promise.resolve();
         })
         
     } catch (err) {

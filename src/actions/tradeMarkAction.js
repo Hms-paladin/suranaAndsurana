@@ -1,5 +1,9 @@
 import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,
-    GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK } from "../utils/Constants";
+    GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK,
+    INSERT_APPEAL_FILING, INSERT_RECTIFICATION_DEFENDED, INSERT_PATENT_APPEAL_FILING,
+    INSERT_PATENT_RECTIFICATION_DEF, INSERT_PATENT_RECTIFICATION_FILED, INSERT_PATENT_REVOCATION_DEF, INSERT_PATENT_REVOCATION_FILED,
+    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED
+ } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -60,8 +64,6 @@ export const getTradeMark= (projectId) => async dispatch => {
         
     }
 }
-
-
 
 export const getPoaDetails= (clientId) => async dispatch => {
     try {
@@ -137,6 +139,205 @@ export const insertTradeMark = (params) => async dispatch => {
               return Promise.resolve();
             }
           });
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertAppealFiling = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type:INSERT_APPEAL_FILING,
+                payload:response.data.data
+            })
+            console.log("Insert Appeal Filing", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertRectificationDefended = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_RECTIFICATION_DEFENDED,
+                payload:response.data.data
+            })
+            console.log("insert Rectification Defended", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertPatentAppealFiling = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_PATENT_APPEAL_FILING,
+                payload:response.data.data
+            })
+            console.log("insert Patent Appeal Filing", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertPatentRectificationDef = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_PATENT_RECTIFICATION_DEF,
+                payload:response.data.data
+            })
+            console.log("insert Patent Rectification Def", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertPatentRectificationFiled = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_PATENT_RECTIFICATION_FILED,
+                payload:response.data.data
+            })
+            console.log("insert Patent Rectification FILED", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+
+export const insertPatentRevocationDef = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_PATENT_REVOCATION_DEF,
+                payload:response.data.data
+            })
+            console.log("insert Patent Revocation Def", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+export const insertPatentRevocationFiled = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_PATENT_REVOCATION_FILED,
+                payload:response.data.data
+            })
+            console.log("insert Patent Revocation filed", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertRectificationFiled = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_RECTIFICATION_FILED,
+                payload:response.data.data
+            })
+            console.log("insert Rectification filed", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const insertRevocationDefended = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_REVOCATION_DEFENDED,
+                payload:response.data.data
+            })
+            console.log("insert Revocation Defended", data)
+        })
+        
+    } catch (err) {
+        
+    }
+}
+export const insertRevocationFiled = (data) => async dispatch =>{
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl +'get_poa',
+            data : data
+        })
+        .then((response) => {
+            dispatch({
+                type: INSERT_REVOCATION_FILED,
+                payload:response.data.data
+            })
+            console.log("insert Revocation Filed", data)
+        })
         
     } catch (err) {
         

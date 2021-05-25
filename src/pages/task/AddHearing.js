@@ -128,11 +128,11 @@ function onSubmit() {
       <div>
            <div className="var_rate_master">Hearing</div>
            <div className="hearing_sh_table">
-            <div><div>Project Name</div><div>Client Name</div></div>
-            <div><div>Client Name</div><div> Name1</div></div>
-            <div><div>Project Type</div><div>IP Project</div></div>
-            <div><div>Project Sub Type</div><div>Trade Mark</div></div>
-            <div><div>Process Type</div><div>Opposition</div></div>
+            <div><div>Project Name</div><div>{props.rowData.project_name}</div></div>
+            <div><div>Client Name</div><div> {props.rowData.client}</div></div>
+            <div><div>Project Type</div><div></div>{props.rowData.project_type}</div>
+            <div><div>Project Sub Type</div><div>{props.rowData.project_type}</div></div>
+            <div><div>Process Type</div><div>{props.rowData.project_type}</div></div>
         </div>
             <div className="ad_journment"><Labelbox type="datepicker" placeholder={"Next Hearing Date"}
              changeData={(data) => checkValidation(data, "nexthearing")}
