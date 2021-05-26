@@ -37,14 +37,14 @@ function CheckListCreation(props) {
         if(props.UserPermission.length>0&&props.UserPermission){
         let data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Save" == val.control && "Checklist Creation" == val.screen
+            "CheckList Creation - Save" == val.control 
         ) 
         })
         setSaveRights(data_res_id)
 
         data_res_id = props.UserPermission.find((val) => { 
             return (
-                "Add" == val.control && "Checklist Creation" == val.screen
+                "CheckList Creation - Add" == val.control 
             ) 
             })
         setAddRights(data_res_id)
@@ -85,7 +85,7 @@ function CheckListCreation(props) {
                         <Labelbox type="select" /></div>
                     <div className="taskfield">  <div className="TThead">Task</div>
                         <Labelbox type="text" /></div>
-                    <div> <div className="TThead"></div><CustomButton btnName={"Add"} custombtnCSS="customaddbtn" btnCustomColor="customPrimary"  onBtnClick={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification:''}/></div>
+                    <div> <div className="TThead"></div><CustomButton btnName={"Add"} custombtnCSS="customaddbtn" btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''}/></div>
                 </div>
 
             </div>
@@ -95,7 +95,7 @@ function CheckListCreation(props) {
                 aligncss="aligncss"
             />
             <div className="checklistBtn">
-                <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary" onBtnClick={!addRights||addRights.display_control&&addRights.display_control==='N'?rightsNotification:''}/>
+                <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  btnDisable={!addRights||addRights.display_control&&addRights.display_control==='N'?true:false} onBtnClick={''}/>
                 <CustomButton btnName={"Cancel"} custombtnCSS="custombtn" />
             </div>
         </div>

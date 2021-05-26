@@ -98,7 +98,7 @@ useEffect(() => {
 if(props.UserPermission.length>0&&props.UserPermission){
    let data_res_id = props.UserPermission.find((val) => { 
    return (
-       "Save" == val.control && "Exit Interview Form" == val.screen
+       "Exit Interview Form - Save" == val.control 
    ) 
   })
   setSaveRights(data_res_id)
@@ -171,7 +171,7 @@ notification.success({
                         </Grid>
                         <Grid item xs={9}>
                             <div className="appraisalBtn">
-                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification:onsubmit}/>
+                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onsubmit}/>
                                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={handleCancel}/>
                             </div>
                             

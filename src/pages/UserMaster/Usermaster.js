@@ -1400,6 +1400,21 @@ const UserMaster = (props) => {
       ...prevState,
     }));
   };
+   ///*****user permission**********/
+   const [saveRights, setSaveRights] = useState([])
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+     return (
+         "User Group - Add" == val.control
+     ) 
+ })
+ setSaveRights(data_res_id)
+ }
+
+ }, [props.UserPermission]);
+
+/////////////
   return (
     <div className="user_master_parent">
       <div className="user_master_h">User Master</div>
@@ -1800,7 +1815,8 @@ const UserMaster = (props) => {
             {UserMaster.tablename.value >= 3 && (
               <img
                 src={PlusIcon}
-                onClick={() => Submit(UserMaster.tablename.value)}
+                onClick={() => saveRights&&saveRights.display_control&&saveRights.display_control==='Y'&&Submit(UserMaster.tablename.value)}
+                style={{cursor:  saveRights&&saveRights.display_control&&saveRights.display_control==="Y"?'pointer':'not-allowed'}}
                 className="plus_icon_user"
               />
             )}
@@ -2029,7 +2045,8 @@ const mapStateToProps = (state) => ({
   Update_text: state.UserMasterReducer.Common_Update_text,
   UpdateSubstage:state.UserMasterReducer.Update_Substage,
   UpdateSubActivity:state.UserMasterReducer.Update_subactivity,
-  getTableControl:state.UserMasterReducer.getControls
+  getTableControl:state.UserMasterReducer.getControls,
+  UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 
 export default connect(mapStateToProps)(UserMaster);

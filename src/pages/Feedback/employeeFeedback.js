@@ -16,7 +16,7 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Save" == val.control && "Employee Feedback" == val.screen
+           "Employee Feedback - Save" == val.control
        ) 
       })
       setSaveRights(data_res_id)
@@ -101,7 +101,7 @@ useEffect(() => {
                     </Grid>
                 </Grid>
                 <div className="feedbacbtn">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification:''} />
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
                 </div>
 

@@ -512,7 +512,7 @@ useEffect(() => {
   if(props.UserPermission.length>0&&props.UserPermission){
      let data_res_id = props.UserPermission.find((val) => { 
      return (
-       "Save" == val.control && "Variable Rate Master" == val.screen
+       "Variable Rate Master - Save" == val.control 
      ) 
  })
  setSaveRights(data_res_id)
@@ -633,8 +633,8 @@ useEffect(() => {
               btnName={"Save"}
               btnCustomColor="customPrimary"
               custombtnCSS="custom_save"
-              // onBtnClick={onSubmit}
-              onBtnClick={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification:onSubmit}
+              onBtnClick={onSubmit}
+              btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>

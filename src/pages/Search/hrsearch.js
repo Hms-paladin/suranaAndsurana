@@ -236,14 +236,14 @@ function Hrsearch(props) {
   if(props.UserPermission.length>0&&props.UserPermission){
      let data_res_id = props.UserPermission.find((val) => { 
       return (
-          "GO" == val.control && "HR" == val.screen
+          "HR - Go" == val.control 
             ) 
         })
       setGoRights(data_res_id)
 
        data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Schedule Interview" == val.control && "HR" == val.screen
+            "HR - Schedule Interview" == val.control 
         ) 
       })
       setInterviewScheduleRights(data_res_id)
@@ -293,7 +293,7 @@ function Hrsearch(props) {
             />
           </Grid>
           <Grid item xs={3}>
-            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={!goRights||goRights.display_control&&goRights.display_control==='N'?rightsNotification:onSearch} />
+            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} />
           </Grid>
         </Grid>
       </div>
@@ -303,8 +303,9 @@ function Hrsearch(props) {
           btnName={"Schedule Interview"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          onBtnClick={() => (!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?rightsNotification():scheduleInterview())}
-          btnDisable={selectedCandidateId.length <= 0}
+          btnDisable={selectedCandidateId.length <= 0||!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?true:false}
+          onBtnClick={() => scheduleInterview()}
+      
         />
         <DynModel
           modelTitle={"Interview Details"}

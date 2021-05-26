@@ -53,14 +53,14 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Search" == val.control && "Generate Invoice" == val.screen
+           "Generate Invoice - Search" == val.control
        ) 
       })
       setSearchRights(data_res_id)
 
        data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Generate Invoice" == val.control && "Generate Invoice" == val.screen
+            "Generate Invoice - Generate" == val.control
         ) 
        })
        setGenerateRights(data_res_id)
@@ -98,7 +98,7 @@ useEffect(() => {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    <CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={!searchRigths||searchRigths.display_control&&searchRigths.display_control==='N'?rightsNotification:''} />
+                    <CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={!searchRigths||searchRigths.display_control&&searchRigths.display_control==='N'?true:false} onBtnClick={''} />
                 </Grid>
             </Grid>
             <div className="generateTable">
@@ -110,7 +110,7 @@ useEffect(() => {
                 <EnhancedTable headCells={BillableCells} rows={Billablerows} />
             </div>
             <div className="btngenerate">
-                <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" onBtnClick={!generateRights||generateRights.display_control&&generateRights.display_control==='N'?rightsNotification:''}/>
+                <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" btnDisable={!generateRights||generateRights.display_control&&generateRights.display_control==='N'?true:false} onBtnClick={''}/>
             </div>
 
         {/* </div> } */}

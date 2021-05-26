@@ -328,21 +328,21 @@ useEffect(() => {
   if(props.UserPermission.length>0&&props.UserPermission){
      let data_res_id = props.UserPermission.find((val) => { 
       return (
-          "Go" == val.control && "Project" == val.screen
+          "Project - Go" == val.control 
       ) 
     })
     setGoRights(data_res_id)
 
      data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Create Project" == val.control && "Project" == val.screen
+            "Project - Create Project" == val.control 
         ) 
     })
     setCreateProjectRights(data_res_id)
 
      data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Create Adhoc Task" == val.control && "Project" == val.screen
+            "Project - Create Adhoc Task" == val.control 
         ) 
     })
     setCreateAdhocRights(data_res_id)
@@ -420,7 +420,7 @@ useEffect(() => {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} onBtnClick={goRights===undefined||(goRights.display_control&&goRights.display_control==='N')?rightsNotification:onSearch} />
+          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"}  btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} />
          
         </div>
       </div>
@@ -433,7 +433,8 @@ useEffect(() => {
           btnName={"Create Adhoc Task"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          onBtnClick={() =>(createAdhocRights===undefined||(createAdhocRights.display_control&&createAdhocRights.display_control==='N')?rightsNotification():setModelOpen(true)) }
+          btnDisable={!createAdhocRights||createAdhocRights.display_control&&createAdhocRights.display_control==='N'?true:false}
+          onBtnClick={() =>setModelOpen(true)}
         />
         <DynModel
           modelTitle={"Adhoc Task"}
@@ -456,7 +457,8 @@ useEffect(() => {
           btnName={"Create Project "}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          onBtnClick={() => !createProjectRights||(createProjectRights.display_control&&createProjectRights.display_control==='N')?rightsNotification():setRedirectToProject(true)}
+          btnDisable={!createProjectRights||createProjectRights.display_control&&createProjectRights.display_control==='N'?true:false}
+          onBtnClick={() => setRedirectToProject(true)}
         />
       </div>
       {redirectToProject && createProjectRights&&createProjectRights.display_control&&createProjectRights.display_control==='Y' &&

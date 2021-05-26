@@ -62,8 +62,8 @@ function NewUserMaster(props){
             //   ),
               action: (
                 <>
-                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>(  rights.display_control==='Y'?(onEditUser(userlist[index])):rightsNotification())}  />{" "}
-                  <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>(  rights.display_control==='Y'?(onDeleteUser(userlist[index].user_id)):rightsNotification())} />
+                  <img src={Edit} className="editImage" style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed'}} onClick={()=>(  rights&&rights.display_control&&rights.display_control==='Y'&&onEditUser(userlist[index]))}  />{" "}
+                  <img src={Delete} className="editImage" style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed'}} onClick={()=>(  rights&&rights.display_control&&rights.display_control==='Y'&&onDeleteUser(userlist[index]))} />
                 </>
               ),
           };
@@ -99,7 +99,7 @@ function NewUserMaster(props){
   
    }, [props.UserPermission]);
   
-     console.log(rights.display_control,"rigths")
+    //  console.log(rights.display_control,"rigths")
   
    function rightsNotification(){
     notification.success({
@@ -112,7 +112,7 @@ function NewUserMaster(props){
             <div className="UserGroup">
                 <div>User Master</div>
                 {/* <img src={PlusIcon} className="plusicon"  onClick={() => (setUserAddEdit(false),setUsergroupModel(true))} /> */}
-                <img src={PlusIcon} className="plusicon"  onClick={() => ( rights.display_control==='Y'? (setUserAddEdit(false),setUsergroupModel(true)):rightsNotification())} />
+                <img src={PlusIcon} className="plusicon" style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed'}}  onClick={() => ( rights&&rights.display_control&&rights.display_control==='Y'&&(setUserAddEdit(false),setUsergroupModel(true)))} />
                 <DynModel modelTitle={UserAddEdit?"EDIT USER":"ADD USER"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} width={1000} 
                  content={UserAddEdit?<UserMasterModal user_data={UserData} closeModel={()=>(setUsergroupModel(false),setUserData({}))}/>:<UserMasterModal user_add={""} closeModel={()=>setUsergroupModel(false)}/>} />
 

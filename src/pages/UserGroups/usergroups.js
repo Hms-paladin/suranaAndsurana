@@ -90,7 +90,7 @@ const UserGroups = (props) => {
      // var o = dets[i];
       let o = JSON.parse(JSON.stringify(dets[i]));
      
-      let a = <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={ ()=>(rights.display_control==="Y"?onModealOpen(true,o):rightsNotification())} />
+      let a = <img src={Edit} style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed',width:19}} onClick={ ()=>(rights&&rights.display_control&&rights.display_control==="Y"&&onModealOpen(true,o))} />
       let listarray = {
         "employee": dets[i].name,
         "group":dets[i].group_name,
@@ -268,7 +268,7 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "User Control" == val.control
+           "User Group - Add" == val.control
        ) 
    })
    setRights(data_res_id)
@@ -276,7 +276,6 @@ useEffect(() => {
   
    }, [props.UserPermission]);
   
-     console.log(rights.display_control,"rigths")
   
    function rightsNotification(){
     notification.success({
@@ -319,7 +318,7 @@ useEffect(() => {
           </Grid>
         </Grid>
         <div style={{display: 'flex',justifyContent: 'flex-end',marginLeft: 15}}>
-          <img src={PlusIcon} onClick={rights.display_control==="Y"?onSubmit:rightsNotification } style={{cursor: 'pointer',width:19,marginTop: -23}}  />
+          <img src={PlusIcon} onClick={()=>rights&&rights.display_control&&rights.display_control==="Y"&&onSubmit()} style={{cursor: rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed',width:19,marginTop: -23}}  />
           </div>
        
       </Grid>
@@ -351,6 +350,7 @@ useEffect(() => {
                   btnName={"Save"}
                   btnCustomColor="customPrimary"
                   custombtnCSS={"btnUsergroup"}
+                  // btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
                   onBtnClick={()=>submitGroup()}
                 />
                 <CustomButton

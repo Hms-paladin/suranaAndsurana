@@ -64,7 +64,7 @@ const GroupControl = (props) => {
         "group":dets[i].group_name,
         "control": dets[i].control,
        
-        "edit": <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>onModealOpen(true,o)} />,
+        "edit": <img src={Edit} style={{cursor:  saveRights&&saveRights.display_control&&saveRights.display_control==="Y"?'pointer':'not-allowed',width:19}} onClick={()=>saveRights&&saveRights.display_control&&saveRights.display_control==='Y'&&onModealOpen(true,o)} />,
       }
       groupList.push(listarray);
         
@@ -254,7 +254,23 @@ const GroupControl = (props) => {
   
     };
 
+    const [saveRights, setSaveRights] = useState([])
+    
+    ///***********user permission**********/
+useEffect(() => {
+if(props.UserPermission.length>0&&props.UserPermission){
+   let  data_res_id = props.UserPermission.find((val) => { 
+    return (
+        "OPA/ Expenses- OPA - Save" == val.control 
+    ) 
+   })
+   setSaveRights(data_res_id)
 
+   
+}
+
+}, [props.UserPermission]);
+////////
 
   return (
     <div>
@@ -295,7 +311,11 @@ const GroupControl = (props) => {
           </Grid>
         </Grid>
         <div style={{display: 'flex',justifyContent: 'flex-end',marginLeft: 15}}>
-          <img src={PlusIcon} onClick={onSubmit} style={{cursor: 'pointer',width:19,marginTop: -23}}  />
+          <img src={PlusIcon} 
+          onClick={()=>saveRights&&saveRights.display_control&&saveRights.display_control==='Y'&&onSubmit()} 
+           style={{cursor:  saveRights&&saveRights.display_control&&saveRights.display_control==="Y"?'pointer':'not-allowed',width:19,marginTop: -23}} 
+          //  style={{cursor: 'pointer',width:19,marginTop: -23}} 
+            />
           </div>
        
       </Grid>
@@ -377,6 +397,7 @@ const mapStateToProps = (state) =>
   getGroupControlLists: state.UserGroupReducer.getGroupControlLists || [],
   groupLists: state.UserGroupReducer.groupLists || [],
   controlList: state.UserGroupReducer.getControl || [],
+  UserPermission: state.UserPermissionReducer.getUserPermission
 });
 
 export default connect(mapStateToProps)(GroupControl);

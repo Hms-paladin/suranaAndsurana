@@ -360,21 +360,21 @@ function Resumesearch(props) {
         if(props.UserPermission.length>0&&props.UserPermission){
            let data_res_id = props.UserPermission.find((val) => { 
                 return (
-                    "Create Resume" == val.control && "Resume" == val.screen
+                    "Resume - Create Resume" == val.control 
                 ) 
             })
          setCreatRights(data_res_id)
 
              data_res_id = props.UserPermission.find((val) => { 
                 return (
-                    "Go" == val.control && "Resume" == val.screen
+                    "Resume - Go" == val.control 
                 ) 
             })
         setGoRights(data_res_id)
 
              data_res_id = props.UserPermission.find((val) => { 
                 return (
-                    "Interview Schedule" == val.control && "Resume" == val.screen
+                    "Resume - Interview Details" == val.control 
                 ) 
         })
         setInterviewScheduleRights(data_res_id)
@@ -496,13 +496,14 @@ function Resumesearch(props) {
                         <Grid container item xs={3} >
 
                             <Grid item xs={4}>
-                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={!goRights||goRights.display_control&&goRights.display_control==='N'?rightsNotification:onSearch} custombtnCSS={"goSearchbtn"} />
+                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
 
                             </Grid>
                             <Grid item xs={8}>
                                 <Link to={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?'search':'resume'}>
                                     <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}
-                                     onBtnClick={() => !creatRights||(creatRights.display_control&&creatRights.display_control==='N')?rightsNotification():''} />
+                                    btnDisable={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?true:false}
+                                      />
                                 </Link>
                             </Grid>
                         </Grid>
@@ -512,7 +513,7 @@ function Resumesearch(props) {
                     <EnhancedTable headCells={headCells} rows={rows && rows} />
                 </div>
                 <div className="searchinterviewbtn">
-                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => (!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?rightsNotification():setModelOpen(true))} btnDisable={selectedCandidateId.length <= 0} /></div>
+                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0||!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?true:false} onBtnClick={() =>setModelOpen(true)}  /></div>
                 <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} handleUnCheck={handleUnCheck} />
 
             </div>
