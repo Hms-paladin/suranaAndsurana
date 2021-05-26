@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import CustomButton from "../../component/Butttons/button";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -12,24 +12,31 @@ import moment from 'moment';
 import { useParams } from "react-router-dom";
 import { GettemplateQuetions } from '../../actions/OnlineTestAction';
 import { useDispatch, connect } from "react-redux";
-
+const rounded = Math.round(moment().minute() / 15) * 15;
 
 function OnlineQA(props) {
     const dispatch = useDispatch();
     const [value, setValue] = React.useState('');
     const no_of_questions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     // const [pathname, setPathName] = useState(window.location.pathname)
-    const [countdown, setCountdown] = useState()
+    const [text, setText] = useState()
     const [Hours, setHours] = useState()
+    const [count, setCount] = useState(900)
+    // const [runMin, setRunMin] = useState(0)
+    // const [runSec, setRunSec] = useState(0)
+
+    const runTime = useRef({
+        runSec: 0, runMin: 0
+    });
+
+
+
     const [templateRowdata, setTemplateRowdata] = useState([])
 
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-    // const [timestart, setTimestart] = useState({
-    //     isActive: false,
-    //     secondsElapsed: 1800000 / 1000
-    // })
+
     let { starttime } = useParams()
 
     useEffect(() => {
@@ -44,7 +51,7 @@ function OnlineQA(props) {
         if (starttime) {
             const interval = setInterval(() => {
                 console.log('This will run every second!');
-                startTimer()
+                test1()
             }, 1000);
             // return () => clearInterval(interval);
 
@@ -52,59 +59,32 @@ function OnlineQA(props) {
     }, []);
 
 
+
+    console.log(text, "texttext")
+
     function startTimer() {
-        var h = moment().add(0, 0, 'hours', 'minutes').format('hh:mm A');
+        var h = moment().add(rounded, 0, 'minutes', 'seconds').format('mm:ss');
         setHours(h);
     }
 
 
-    // useEffect(() => {
-    //     let test = setInterval(startTimer, 1000)
+    const test1 = useCallback(() => {
+        const timer = runTime.current.runMin + ":" + runTime.current.runSec
 
-    // }, [])
-    console.log(Hours, "Hours")
+        if (runTime.current.runSec < 9) {
+            runTime.current.runSec += 1
+        } else {
+            runTime.current.runSec = 0
+        }
 
+        if (runTime.current.runSec === 0) {
+            runTime.current.runMin += 1
+        }
 
+        setText(timer)
 
-    // function getHours() {
-    //     return ("0" + Math.floor(timestart.secondsElapsed / 3600)).slice(-2);
-    // }
+    }, [])
 
-    // function getMinutes() {
-    //     return ("0" + Math.floor((timestart.secondsElapsed % 3600) / 60)).slice(
-    //         -2
-    //     );
-    // }
-
-    // function getSeconds() {
-    //     return ("0" + (timestart.secondsElapsed % 60)).slice(-2);
-    // }
-
-    // function startTime() {
-    //     setTimestart({ isActive: true });
-
-    //     let countdowns = setInterval(() => {
-    //         setTimestart({ secondsElapsed: timestart.secondsElapsed - 1 });
-    //     }, 1000)
-
-    //     setCountdown(countdowns)
-    // }
-    // console.log(countdown, "timestart")
-    // console.log(timestart, "timestart")
-
-
-    // function resetTime() {
-    //     clearInterval(countdown);
-    //     setTimestart({
-    //         secondsElapsed: 1800000 / 1000,
-    //         isActive: false
-    //     });
-    // };
-
-    // function pauseTime() {
-    //     clearInterval(countdown);
-    //     setTimestart({ isActive: false });
-    // };
 
 
     return (
@@ -115,10 +95,7 @@ function OnlineQA(props) {
                     <div className="QAContainer">
                         <div id="QAcount">Q.2 | Question 2 of 8</div>
                         <div id="QAduration">
-                            {Hours}
-                            {/* <div>{getHours}</div>
-                            <div>{getMinutes}</div>
-                            <div>{getSeconds}</div> */}
+                            {text + " Mins"}
                         </div>
                     </div>
                     <div id="Question">What is Felonies ?</div>
@@ -134,7 +111,7 @@ function OnlineQA(props) {
                     </div>
 
                     <div id="TTbtns">
-                        <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick="" />
+                        <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test1} />
                         <CustomButton btnName={"Save & Exit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick="" />
                     </div>
                     <div className="QAStatusPane"></div>
