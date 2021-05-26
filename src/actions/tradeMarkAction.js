@@ -163,7 +163,7 @@ export const insertIPAB = (params) => async dispatch => {
                 notification.success({
                     message: message,
                   });
-                dispatch({type:INSERT_TRADE_MARK,payload:response.data.status})
+                dispatch({type:INSERT_IPAB,payload:response.data.status})
               return Promise.resolve();
             }
           });
