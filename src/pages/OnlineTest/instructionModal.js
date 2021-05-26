@@ -11,9 +11,11 @@ function InstructionModal(props) {
     const dispatch = useDispatch();
     const [pathnameQA, setpathnameQA] = useState(window.location.pathname)
     const [templateRowdata, setTemplateRowdata] = useState([])
+    const [starttime, setStarttime] = useState()
 
     useEffect(() => {
         dispatch(GettemplateQuetions(props.resumeId))
+        setStarttime(props.resumeId)
     }, [props.resumeId])
 
     useEffect(() => {
@@ -45,16 +47,16 @@ function InstructionModal(props) {
                             </div>
                             <div className="showcontainer spl">
                                 <div>Online Test</div>
-                                <div>{val.Duration+ "  minutes"}</div>
-                                <div>{val.MaximumQuestions }</div>
+                                <div>{val.Duration + "  minutes"}</div>
+                                <div>{val.MaximumQuestions}</div>
                             </div>
                         </div>
                     )
                 })}
 
                 <div>
-                    <Link to="/onlineQA">
-                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setpathnameQA("/onlineQA")} />
+                    <Link to={`/onlineQA/${starttime}`}>
+                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setpathnameQA(`/onlineQA/${starttime}`)} />
                     </Link>
                 </div>
             </div>
