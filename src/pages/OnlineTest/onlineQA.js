@@ -71,7 +71,7 @@ function OnlineQA(props) {
     const test1 = useCallback(() => {
         const timer = runTime.current.runMin + ":" + runTime.current.runSec
 
-        if (runTime.current.runSec < 9) {
+        if (runTime.current.runSec < 59) {
             runTime.current.runSec += 1
         } else {
             runTime.current.runSec = 0
