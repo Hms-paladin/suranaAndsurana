@@ -18,7 +18,9 @@ function TestTemplate(props) {
     const [count, setCount] = useState(0)
     const [list, setList] = useState([])
     const [Itemkeys, setItemKeys] = useState([])
-   
+    const [dynarr,setdynarr]=useState([])
+    const arr=[]
+
     const [template, setTemplate] = useState({
         tempname: {
             value: "",
@@ -77,16 +79,79 @@ function TestTemplate(props) {
             error: null,
             errmsg: null,
         },
+        sublist:[],
     })
+
     // useEffect(() => {
     //     if (count > 0) {
     //         setMultipleQuestion([...MultipleQuestion, { index: count }])
     //     }
     // }, [count])
 
+    /*Use Effects */
+    useEffect(() => {
+        dispatch(getCategory());
+    }, [])
 
+    //Called first
+    useEffect(() => {
+        setList(
+            prevState => ({
+                ...prevState,
+                ["obj" + count]: dynObjs,
+            })
+        )
+    }, [dynObjs])
+
+    //Called Second
+    useEffect(() => {
+        let obj = Object.keys(list);
+        setItemKeys(obj)
+    }, [list])
+
+    useEffect(() => {
+        setList(
+            prevState => ({
+                ...prevState,
+                ["obj" + count]: dynObjs,
+            })
+        )
+    }, [count])
+
+    useEffect(() => {
+        let categorylist = []
+        props.categoryList.map((data) =>
+            categorylist.push({
+                value: data.QuescatName,
+                id: data.QuescatId,
+            })
+        )
+        setCategoryddl({ categorylist })
+    }, [props.categoryList])
+
+    useEffect(() => {
+        let subcategorylist = []
+        props.subCategoryList.map((data) =>
+            subcategorylist.push({
+                value: data.QuesubcatName,
+                id: data.QuesubcatId,
+            })
+        )
+        setSubCategoryddl({ subcategorylist })
+    }, [props.subCategoryList])
+
+    useEffect(()=>{
+        setdynarr([...dynarr,subcategoryddl.subcategorylist])
+    },[categoryddl.categorylist])
+
+     useEffect(() => {
+        dispatch((getSubCategory(template.category.value)))
+    }, [template.category.value])
+
+
+    /*Functions */
     const handleCancel = () => {
-        let keys = ["tempname","maxques","duration","category", "subcategory", "no_of_ques"];
+        let keys = ["tempname", "maxques", "duration", "category", "subcategory", "no_of_ques"];
         keys.map((data) => {
             try {
                 template[data].value = ""
@@ -106,49 +171,40 @@ function TestTemplate(props) {
         console.log("Itemkeys", Itemkeys)
     }
 
-    useEffect(() => {
-        dispatch(getCategory());
-    }, [])
-
-
-    useEffect(() => {
-        let categorylist = []
-        props.categoryList.map((data) =>
-            categorylist.push({
-                value: data.QuescatName,
-                id: data.QuescatId,
-            })
-        )
-        setCategoryddl({ categorylist })
-    }, [props.categoryList])
-
-
-    useEffect(() => {
-        setList(
-            prevState => ({
-                ...prevState,
-                ["obj" + count]: dynObjs,
-            })
-        )
+    //Category function
+    function categoryfunc(data,key,item){
+        checkValidation(data,key)
        
-    }, [dynObjs])
+        
+        // console.log(item,"item")
+        // list[data]["category"].value=item
+        // await dispatch((getSubCategory(item)))
+        // console.log(subcategoryddl.subcategorylist,"test")
+    //    await list[data]["sublist"].push(subcategoryddl.subcategorylist)
+    //     checkValidation(item,key);
+    //     console.log(list[data]["sublist"],"sublist")
+    }
 
-    useEffect(()=>{
-        let obj = Object.keys(list);
-        setItemKeys(obj)
-    },[list])
+    //SubCategory function
+    function subcategoryfunc(data,key,item){
+        console.log(item,"item")
+        list[data]["subcategory"].value=item;
+        list[data]["sublist"].push(subcategoryddl.subcategorylist)
+        checkValidation(item,key);
+    }
 
-    useEffect(() => {
-        setList(
-            prevState => ({
-                ...prevState,
-                ["obj" + count]: dynObjs,
-            })
-        )
-    }, [count])
+    //No of Questions function
+    function noq_func(data,key,item){
+        console.log(item,"item")
+        list[data]["no_of_ques"].value=item;
+        list[data]["sublist"].push(subcategoryddl.subcategorylist)
+        checkValidation(item,key);
+    }
 
-    function plusfunc(data){
-        let tempObj= {
+    //Update dynobj
+    function plusfunc(data) {
+              
+        let tempObj = {
             category: {
                 value: template.category.value,
                 validation: template.category.validation,
@@ -167,35 +223,21 @@ function TestTemplate(props) {
                 error: template.no_of_ques.error,
                 errmsg: template.no_of_ques.errmsg,
             },
+            sublist:subcategoryddl.subcategorylist
+            
         }
+        setCount(count + 1)
         setList(
             prevState => ({
                 ...prevState,
                 [data]: tempObj,
             })
         )
-        setCount(count+1)
         handleCancel()
     }
 
-    useEffect(() => {
-        dispatch((getSubCategory(template.category.value)))
-    }, [template.category.value])
-
-
-    useEffect(() => {
-        let subcategorylist = []
-        props.subCategoryList.map((data) =>
-            subcategorylist.push({
-                value: data.QuesubcatName,
-                id: data.QuesubcatId,
-            })
-        )
-        setSubCategoryddl({ subcategorylist })
-    }, [props.subCategoryList])
-
     function checkValidation(data, key) {
-        
+
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             template[key].validation
@@ -210,7 +252,7 @@ function TestTemplate(props) {
             ...prevState,
             [key]: dynObj,
         }));
-
+        
     }
     function onSubmit() {
         var targetkeys = Object.keys(template)
@@ -248,6 +290,9 @@ useEffect(() => {
    }, [props.UserPermission]);
   
   /////////////
+    console.log(dynarr,"arr")
+   
+
     return (
         <div>
             <div className="AQTitle">Test Template</div>
@@ -287,30 +332,30 @@ useEffect(() => {
                                     <div className="TThead">Category</div>
                                     <Labelbox type="select"
                                         dropdown={categoryddl.categorylist}
-                                        changeData={(data) => checkValidation(data, "category")}
-                                        value={list[data]["category"].value==""?template.category.value:list[data]["category"].value}
+                                        changeData={(data) =>checkValidation(data, "category")}
+                                        value={list[data]["category"].value == "" ? template.category.value : list[data]["category"].value}
                                         error={template.category.error}
                                         errmsg={template.category.errmsg}></Labelbox>
                                 </Grid>
                                 <Grid item xs={4} container direction="column">
                                     <div className="TThead">Sub Category</div>
                                     <Labelbox type="select"
-                                        dropdown={subcategoryddl.subcategorylist}
-                                        value={list[data]["subcategory"].value==""?template.subcategory.value:list[data]["subcategory"].value}
-                                        changeData={(data) => checkValidation(data, "subcategory")}
+                                        dropdown={dynarr[index]&&dynarr[index]}
+                                        value={list[data]["subcategory"].value == "" ? template.subcategory.value : list[data]["subcategory"].value}
+                                        changeData={(data) =>checkValidation(data, "subcategory")}
                                         error={template.subcategory.error}
                                         errmsg={template.subcategory.errmsg}></Labelbox>
                                 </Grid>
                                 <Grid item xs={3} container direction="column">
                                     <div className="TThead">No .of Questions</div>
                                     <Labelbox type="text"
-                                        value={list[data]["no_of_ques"].value==""?template.no_of_ques.value:list[data]["no_of_ques"].value}
+                                        value={list[data]["no_of_ques"].value == "" ? template.no_of_ques.value : list[data]["no_of_ques"].value}
                                         changeData={(data) => checkValidation(data, "no_of_ques")}
                                         error={template.no_of_ques.error}
                                         errmsg={template.no_of_ques.errmsg}></Labelbox>
                                 </Grid>
                                 <Grid item xs={1} container direction="row" justify="center" alignItems="center">
-                                    {index == 0 ? <img src={PlusIcon} className="plusicon" onClick={()=>plusfunc("obj"+count)} /> :
+                                    {index == 0 ? <img src={PlusIcon} className="plusicon" onClick={() => plusfunc("obj" + count)} /> :
                                         <img src={Delete} className="plusicon" onClick={() => deletecomp(index)} />}
                                 </Grid>
                             </Grid>

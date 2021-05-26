@@ -96,7 +96,6 @@ const KPI = (props) => {
                 <Grid container >
                     <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header title_label" alignItems="center">
                         <Grid item xs={3}><label >Activity</label></Grid>
-                        <Grid item xs={3}> <label >Sub Activity</label> </Grid>
                         <Grid item xs={3}> <label >Target</label></Grid>
                         <Grid item xs={3}><label >Achievement</label></Grid>
 
@@ -105,7 +104,6 @@ const KPI = (props) => {
 
                     <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                         <Grid item xs={3} ><label >Hearing</label></Grid>
-                        <Grid item xs={3} ><label >In Effective</label></Grid>
                         <Grid item xs={3} > <label >20</label></Grid>
                         <Grid item xs={3} ><div style={{ width: '70%' }}>
                             <Labelbox
@@ -122,7 +120,6 @@ const KPI = (props) => {
                     </Grid>
                     <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                         <Grid item xs={3} ><label >Documentation</label></Grid>
-                        <Grid item xs={3} ><label ></label></Grid>
                         <Grid item xs={3} ><label >40</label> </Grid>
                         <Grid item xs={3} ><div style={{ width: '70%' }}>
                             <Labelbox
@@ -139,7 +136,6 @@ const KPI = (props) => {
                     </Grid>
                     <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                         <Grid item xs={3}> <label >Research</label></Grid>
-                        <Grid item xs={3}> <label ></label></Grid>
                         <Grid item xs={3}><label >40</label> </Grid>
                         <Grid item xs={3}><div style={{ width: '70%' }}>
                             <Labelbox
@@ -156,8 +152,7 @@ const KPI = (props) => {
                     </Grid>
 
                     <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
-                        <Grid item xs={3}><label style={{ color: 'black' }}>Total </label></Grid>
-                        <Grid item xs={3}><label style={{ color: 'black' }}></label></Grid>
+                        <Grid item xs={3}><label style={{ color: 'black' }}>Total </label></Grid>                        
                         <Grid item xs={3}><label style={{ color: 'black' }}></label> </Grid>
                         <Grid item xs={3}><label style={{ color: 'black' }}>92</label></Grid>
                     </Grid>

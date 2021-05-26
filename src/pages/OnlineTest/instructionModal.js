@@ -1,9 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomButton from "../../component/Butttons/button";
 import { Redirect, Link } from "react-router-dom";
-import './onlinetest.scss'
-function InstructionModal() {
-    const [pathnameQA,setpathnameQA]=useState(window.location.pathname)
+import { useDispatch, connect } from "react-redux";
+import './onlinetest.scss';
+import { GettemplateQuetions } from '../../actions/OnlineTestAction';
+
+
+
+function InstructionModal(props) {
+    const dispatch = useDispatch();
+    const [pathnameQA, setpathnameQA] = useState(window.location.pathname)
+    const [templateRowdata, setTemplateRowdata] = useState([])
+
+    useEffect(() => {
+        dispatch(GettemplateQuetions(props.resumeId))
+    }, [props.resumeId])
+
+    useEffect(() => {
+        setTemplateRowdata(props.GettemplateQuetions)
+    }, [props.GettemplateQuetions])
+
     return (
         <div>
             <div className="Instruction_Modal_Container">
@@ -18,25 +34,41 @@ function InstructionModal() {
                     <li>Please verify that the student's last name appears correctly within the User ID box.</li>
                 </ul>
                 <div id="testinfo">Test Information</div>
-                <div>
-                    <div className="showcontainer">
-                        <div>Name Of The Test</div>
-                        <div>Duration Of Test</div>
-                        <div>No. Of Questions</div>
-                    </div>
-                    <div className="showcontainer spl">
-                        <div>Online Test</div>
-                        <div>15 Mins</div>
-                        <div>8</div>
-                    </div>
-                </div>
+
+                {templateRowdata && templateRowdata.map((val) => {
+                    return (
+                        <div>
+                            <div className="showcontainer">
+                                <div>Name Of The Test</div>
+                                <div>Duration Of Test</div>
+                                <div>No. Of Questions</div>
+                            </div>
+                            <div className="showcontainer spl">
+                                <div>Online Test</div>
+                                <div>{val.Duration+ "  minutes"}</div>
+                                <div>{val.MaximumQuestions }</div>
+                            </div>
+                        </div>
+                    )
+                })}
+
                 <div>
                     <Link to="/onlineQA">
-                    <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary"  onBtnClick={()=>setpathnameQA("/onlineQA")} />
+                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setpathnameQA("/onlineQA")} />
                     </Link>
                 </div>
             </div>
         </div>
     )
 }
-export default InstructionModal;
+
+const mapStateToProps = (state) => (
+    console.log(state, "checkscheckstatetates"),
+    {
+        GettemplateQuetions: state.OnlineTest.GettemplateQuetions || []
+
+
+    }
+);
+
+export default connect(mapStateToProps)(InstructionModal);

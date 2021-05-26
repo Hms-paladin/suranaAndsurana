@@ -1,6 +1,6 @@
-import {GET_EXITSEVERANCE,GET_RESIGNATION_APPROVAL} from '../utils/Constants.js'
+import {GET_EXITSEVERANCE,GET_RESIGNATION_APPROVAL,UPDATE_ITNOC,GET_EMPLOYEE_DET,UPDATE_ADMINNOC,UPDATE_HRNOC} from '../utils/Constants.js'
 const intialState = {
-    GetSeverance:[],getResignation:[]
+    GetSeverance:[],getResignation:[],Update_ItNoc:[],EmployeeDetails:[],Update_AdminNoc:[]
 }
 
 export default function (state = intialState, action) {
@@ -10,6 +10,14 @@ export default function (state = intialState, action) {
             return { ...state, GetSeverance: payload }
         case GET_RESIGNATION_APPROVAL:
             return {...state,getResignation:payload}
+        case UPDATE_ITNOC:
+            return {...state,Update_ItNoc:payload} 
+        case GET_EMPLOYEE_DET:
+            return {...state,EmployeeDetails:payload}    
+        case UPDATE_HRNOC:
+            return {...state,Update_HrNoc:payload}
+        case UPDATE_ADMINNOC:
+            return {...state,Update_AdminNoc:payload}           
         default:
             return state;
     }

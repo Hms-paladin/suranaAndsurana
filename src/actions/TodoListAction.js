@@ -23,6 +23,7 @@ export const getHrTaskList = () =>async dispatch => {
 
     }
 }
+
 //InterviewPage
 export const getInterviewQuestions = () =>async dispatch => {
     try{
@@ -99,8 +100,8 @@ export const getOtherTask = () =>async dispatch => {
             method: 'POST',
             url: apiurl +'get_other_tasks',
             data:{
-                // "assignee_id":localStorage.getItem("empId")
-                assignee_id:1
+                "assignee_id":localStorage.getItem("empId")
+                // assignee_id:1
             }
         })
         .then((response) => {

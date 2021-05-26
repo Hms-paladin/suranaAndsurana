@@ -5,7 +5,7 @@ import CustomButton from '../../component/Butttons/button';
 import './severance.scss';
 import { notification } from "antd";
 import { useDispatch, connect } from "react-redux";
-import {GetSeverance,InsertSeverance}  from '../../actions/ExitSeveranceAction'
+import {GetEmployeeDetails,InsertSeverance}  from '../../actions/ExitSeveranceAction'
 import ValidationLibrary from "../../helpers/validationfunction";
 function Severance(props) {
 
@@ -27,18 +27,18 @@ function Severance(props) {
     })
     let dispatch=useDispatch()
     useEffect(() => {
-        dispatch(GetSeverance())
+        dispatch(GetEmployeeDetails())
     },[])
    
     useEffect(() => {
-        props.GetSeverance.map((data)=>{
+        props.EmployeeDetails.map((data)=>{
             setSeveranceDetails({
                 emp_name:data.name===null?"-":data.name,
                 designation:data.designation===null?"-":data.designation,
                 department:data.department===null?"-":data.department
             })
         })
-    },[props.GetSeverance])    
+    },[props.EmployeeDetails])    
 
     function checkValidation(data, key) {
         var errorcheck = ValidationLibrary.checkValidation(
@@ -84,7 +84,7 @@ function Severance(props) {
         if(filtererr.length>0){
           
         }else{
-               dispatch(InsertSeverance(ExitSeverance,props.GetSeverance[0].employee_id)).then((response)=>{
+               dispatch(InsertSeverance(ExitSeverance,props.EmployeeDetails[0]&&props.EmployeeDetails[0].employee_id)).then((response)=>{
                  handleCancel()
                })     
         }
@@ -188,6 +188,6 @@ notification.success({
     const mapStateToProps = (state) =>
     ({
         UserPermission: state.UserPermissionReducer.getUserPermission,
-        GetSeverance:state.ExitSeverance.GetSeverance
+        EmployeeDetails:state.ExitSeverance.EmployeeDetails
     });
 export default connect(mapStateToProps) (Severance);
