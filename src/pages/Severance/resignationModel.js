@@ -89,13 +89,19 @@ function ResignationApproveval(props) {
            props.closemodal()
            HandleCancel()
        })
-    }   
+    }  
+    setResignation((prevState) => ({
+        ...prevState,
+    })); 
    }
    function HandleCancel(){
        let key=["accept_date","releive_date"]
        key.map((data)=>{
            Resignation[data].value=""
        })
+       setResignation((prevState) => ({
+        ...prevState,
+       }));
    }
    function HandleChange(){
        setChecked(!checked)
