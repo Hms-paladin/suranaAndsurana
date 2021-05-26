@@ -13,7 +13,7 @@ function Severance(props) {
     const [SeveranceDetails,setSeveranceDetails]=useState([])
     const [ExitSeverance,setExitSeverance]=useState({
         date: {
-            value: "",
+            value:"",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -48,10 +48,11 @@ function Severance(props) {
         props.EmployeeDetails.map((data)=>{
             setSeveranceDetails({
                 emp_name:data.name===null?"-":data.name,
-                designation:data.designation===null?"-":data.designation,
+                designation:data.senior_associate===null?"-":data.senior_associate,
                 department:data.department===null?"-":data.department
             })
         })
+        console.log( props.EmployeeDetails,"dfghj")
     },[props.EmployeeDetails])    
     function rights(){
         notification.success({
@@ -144,6 +145,7 @@ function Severance(props) {
                                 value={ExitSeverance.date.value}
                                 error={ExitSeverance.date.error}
                                 errmsg={ExitSeverance.date.errmsg}
+                                minDate={new Date()}
                                 />
                             </div>
                         </Grid>

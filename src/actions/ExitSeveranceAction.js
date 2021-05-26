@@ -1,5 +1,5 @@
 import { GET_EXITSEVERANCE,INSERT_SEVERANCE,GET_RESIGNATION_APPROVAL,INSERT_RESIGNATION,GET_EMPLOYEE_DET} from "../utils/Constants";
-import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC} from '../utils/Constants'
+import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC,VIEW_SEVERANCE} from '../utils/Constants'
 import {getOtherTask} from './TodoListAction'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -14,7 +14,6 @@ export const GetSeverance = (emp_id) => async dispatch => {
             method: 'POST',
             url: apiurl +'get_severence',
             data:{
-                // "emp_id":localStorage.getItem("empId")
                 emp_id:emp_id
             }
         })
@@ -33,7 +32,7 @@ export const GetEmployeeDetails = (emp_id) => async dispatch => {
 
         axios({
             method: 'POST',
-            url: apiurl +'get_severence',
+            url: apiurl +'get_employee_by_id',
             data:{
                 "emp_id":localStorage.getItem("empId")
             }
@@ -68,7 +67,7 @@ export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
                     message: "Inserted successfully",
                 });
             dispatch({type:INSERT_SEVERANCE,payload:response.data.data})
-            dispatch(GetSeverance(emp_id))
+            dispatch(GetEmployeeDetails(emp_id))
             return Promise.resolve();
             }
         })
@@ -129,6 +128,7 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
             // }
             dispatch({type:INSERT_RESIGNATION,payload:true})
             dispatch(GetResignationApproval({value:sev_Id}))
+            dispatch(GetSeverance())
             dispatch(getOtherTask())
             return Promise.resolve();
         })
@@ -146,7 +146,7 @@ export const UpdateItNoc = (checked,emp_id,task) => async dispatch => {
             url: apiurl +'update_it_noc',
             data:{
                 "employee_id":emp_id,
-                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "it_noc_date":checked===true?moment().format('DD-MMM-YYYY HH:m:s'):"",
                 "it_noc_by":checked===true?localStorage.getItem("empId"):""
             }
         })
@@ -175,7 +175,7 @@ export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
             url: apiurl +'update_admin_noc',
             data:{
                 "employee_id":emp_id,
-                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "it_noc_date":checked===true?moment().format('DD-MMM-YYYY HH:m:s'):"",
                 "it_noc_by":checked===true?localStorage.getItem("empId"):""
             }
         })
@@ -197,7 +197,7 @@ export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
 }
 
 
-export const UpdateHrNoc = (checked,emp_id,task) => async dispatch => {
+export const UpdateHrNoc = (checked,emp_id) => async dispatch => {
     try {
 
         axios({
@@ -205,7 +205,7 @@ export const UpdateHrNoc = (checked,emp_id,task) => async dispatch => {
             url: apiurl +'update_hr_noc',
             data:{
                 "employee_id":emp_id,
-                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "it_noc_date":checked===true?moment().format('DD-MMM-YYYY HH:m:s'):"",
                 "it_noc_by":checked===true?localStorage.getItem("empId"):""
             }
         })
@@ -221,6 +221,26 @@ export const UpdateHrNoc = (checked,emp_id,task) => async dispatch => {
             return Promise.resolve();
 
               
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const ViewSeverance = (emp_id) => async dispatch => {
+    console.log("emp_id",emp_id)
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'get_severence',
+            data:{
+                "emp_id":localStorage.getItem("empId")
+            }
+        })
+        .then((response) => {
+            dispatch({type:VIEW_SEVERANCE,payload:response.data.data})
         })
         
     } catch (err) {

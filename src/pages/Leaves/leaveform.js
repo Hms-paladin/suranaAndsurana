@@ -185,10 +185,11 @@ function LeaveForm(props) {
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff + 1)
 
         Leave_Form["tot_leave"].value =isNaN(diff) ? "" : (diff + 1)
-        Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
+        // Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
         setLeaveForm(prevState => ({
             ...prevState,
         }));
+       
     }, [Leave_Form.fromdate.value, Leave_Form.todate.value])
 
     const onFileChange = (event) => {
