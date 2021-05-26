@@ -11,7 +11,6 @@ import EditIcon from "../../images/edit.svg";
 function KRAModal() {
     return (
         <div>
-            <div className="kra">KRA</div>
             <div className="kra_main">
                 <div >
                     <Grid container className="kra_sub">
@@ -23,14 +22,16 @@ function KRAModal() {
                             className="spaceBtGrid"
                             alignItems="center"
                             style={{ padding: 10 }}
-                            spacing={1}
+                            spacing={2}
                         >
-                            <Grid item xs={2}>
+                            <Grid item xs={3}>
                                 <div className="KRAhead"><label onClick="">Employee Name</label></div>
-                                <div ><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
+                                <Labelbox
+                                    type="select"
+                                />
                             </Grid>
                             <Grid item xs={3} container direction="column">
-                                <div className=""><label >From Period</label></div>
+                                <div className="period"><label >From Period</label></div>
                                 <Labelbox
                                     type="datepicker"
                                     placeholder={"From Period"}
@@ -39,7 +40,7 @@ function KRAModal() {
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
-                                <div className=""><label >To Period</label></div>
+                                <div className="period"><label >To Period</label></div>
                                 <Labelbox
                                     type="datepicker"
                                     placeholder={"to Period"}
@@ -67,8 +68,8 @@ function KRAModal() {
                 <div className="kpi_table">
                     <Grid container >
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row kra_table_header" alignItems="center" style={{ height: 45 }}>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: "#0f0fab" }}>Activity</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle" style={{ color: "#0f0fab" }}>Sub Activity</label> </Grid>
+                            <Grid item xs={4}><label className="maintitle" style={{ color: "#0f0fab" }}>Employee Name</label></Grid>
+                            <Grid item xs={4}> <label className="maintitle" style={{ color: "#0f0fab" }}>Activity</label> </Grid>
                             <Grid item xs={4}><label className="maintitle" style={{ color: "#0f0fab" }}>Target</label></Grid>
 
 
@@ -76,20 +77,20 @@ function KRAModal() {
 
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={4}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={4}><label className="maintitle">In Effective</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle">20</label></Grid>
+                            <Grid item xs={4}><label className="maintitle">Rajesh</label></Grid>
+                            <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
+                            <Grid item xs={4}> <label className="maintitle">12</label></Grid>
 
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
                             <Grid item xs={4}><label className="maintitle"></label></Grid>
+                            <Grid item xs={4}><label className="maintitle">Research</label></Grid>
                             <Grid item xs={4}><label className="maintitle">40</label> </Grid>
 
                         </Grid>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={4}> <label className="maintitle">Research</label></Grid>
                             <Grid item xs={4}> <label className="maintitle"></label></Grid>
+                            <Grid item xs={4}> <label className="maintitle">Hearing</label></Grid>
                             <Grid item xs={4}><label className="maintitle">40</label> </Grid>
 
                         </Grid>
@@ -102,7 +103,7 @@ function KRAModal() {
                     </Grid>
                 </div>
 
-                <div className="kpi_btn">
+                {/* <div className="kpi_btn">
                     <CustomButton
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
@@ -114,7 +115,7 @@ function KRAModal() {
                         custombtnCSS={"btnUsergroup"}
 
                     />
-                </div>
+                </div> */}
 
             </div>
         </div>

@@ -6,7 +6,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 import { Redirect, Link } from "react-router-dom";
 import DynModel from "../../component/Model/model";
 import InstructionModal from '../OnlineTest/instructionModal'
-import { getDesignationList } from "../../actions/MasterDropdowns";
+import { getDesignationList, getCandidateName, GetTemplateName } from "../../actions/MasterDropdowns";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import './onlinetest.scss';
@@ -16,6 +16,9 @@ function OnlineTest(props) {
     const [pathname, setPathName] = useState(window.location.pathname)
     const [instModal, setInstModal] = useState(false)
     const [designation, setDesignation] = useState({})
+    const [candidate, setCandidate] = useState({})
+    const [templateName, setTemplateName] = useState({})
+    const [resumeId, setResumeId] = useState()
     const [onlinetest, setOnlinetest] = useState({
         candidate: {
             value: "",
@@ -40,15 +43,29 @@ function OnlineTest(props) {
 
     useEffect(() => {
         dispatch(getDesignationList())
+        dispatch(getCandidateName())
+        dispatch(GetTemplateName())
     }, [])
 
     useEffect(() => {
+        let Candidate = [];
+        props.getCandidateName.map((data, index) => {
+            Candidate.push({ value: data.name, id: data.resume_id });
+        });
+        setCandidate({ Candidate })
+
         let Designation = [];
         props.getDesignationList.map((data, index) => {
             Designation.push({ value: data.designation, id: data.designation_id });
         });
-        setDesignation({Designation})
-    }, [props.getDesignationList])
+        setDesignation({ Designation })
+
+        let TemplateName = [];
+        props.GetTemplateName.map((data, index) => {
+            TemplateName.push({ value: data.TestTempName, id: data.TestTempId });
+        });
+        setTemplateName({ TemplateName })
+    }, [props.getDesignationList, props.getCandidateName, props.GetTemplateName])
 
     function checkValidation(data, key,) {
 
@@ -63,7 +80,9 @@ function OnlineTest(props) {
             validation: onlinetest[key].validation,
         };
 
-
+        if (data && key === "temp_name") {
+            setResumeId(data)
+        }
 
         setOnlinetest((prevState) => ({
             ...prevState,
@@ -71,9 +90,11 @@ function OnlineTest(props) {
         }));
     }
 
+    // useEffect(() => {
+    //     console.log(props.GettemplateQuetions, "props.GettemplateQuetions")
+    // }, [props.GettemplateQuetions])
 
-    function onSubmit(text) {
-        console.log(text, "testing")
+    function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(onlinetest);
         for (var i in targetkeys) {
@@ -91,12 +112,13 @@ function OnlineTest(props) {
             // setOnlinetest({ error: true });
         } else {
             // setOnlinetest({ error: false });
+            setInstModal(true)
 
-            //   dispatch(InesertResume(onlinetest, educationList, experienceList)).then(
+            // dispatch(GettemplateQuetions(resumeId)).then(
             //     () => {
-            //       handleCancel();
+            handleCancel();
             //     }
-            //   );
+            // );
         }
 
 
@@ -130,6 +152,7 @@ function OnlineTest(props) {
                 <Grid item xs={12} container direction="row" spacing={2}>
                     <Grid item xs={4}>
                         <Labelbox type="select" placeholder="Candidate Name"
+                            dropdown={candidate.Candidate}
                             changeData={(data) => checkValidation(data, "candidate")}
                             value={onlinetest.candidate.value}
                             error={onlinetest.candidate.error}
@@ -145,6 +168,7 @@ function OnlineTest(props) {
                     </Grid>
                     <Grid item xs={4}>
                         <Labelbox type="select" placeholder="Template Name"
+                            dropdown={templateName.TemplateName}
                             changeData={(data) => checkValidation(data, "temp_name")}
                             value={onlinetest.temp_name.value}
                             error={onlinetest.temp_name.error}
@@ -152,10 +176,10 @@ function OnlineTest(props) {
                     </Grid>
                 </Grid>
                 <div id="TTbtns">
-                    <CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setInstModal(true)} />
+                    <CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
                     <DynModel modelTitle="Online Test Instructions" handleChangeModel={instModal} handleChangeCloseModel={(bln) => setInstModal(bln)} width={700}
-                        content={<InstructionModal />} closeModel={() => setInstModal(false)} />
+                        content={<InstructionModal resumeId={resumeId} />} closeModel={() => setInstModal(false)} />
                 </div>
             </div>
         </div>
@@ -163,9 +187,11 @@ function OnlineTest(props) {
 }
 
 const mapStateToProps = (state) => (
-    console.log(state, "checkstate"),
+    console.log(state, "checkscheckstatetate"),
     {
         getDesignationList: state.getOptions.getDesignationList || [],
+        getCandidateName: state.getOptions.getCandidateName || [],
+        GetTemplateName: state.getOptions.GetTemplateName || []
 
 
     }
