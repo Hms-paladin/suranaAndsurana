@@ -23,6 +23,7 @@ const KPI = (props) => {
     const [kpimodel, setKpimodel] = useState(false);
 
     const [saveRights, setSaveRights] = useState([])
+    const [viewRights, setViewRights] = useState([])
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [kpiViewModal, setKpiViewModal] = useState(false)
@@ -82,10 +83,17 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Save" == val.control && "Dashboard - KRA" == val.screen
+           "KPI - Save" == val.control 
        ) 
       })
       setSaveRights(data_res_id)
+
+      data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "KPI - View KPI" == val.control 
+        ) 
+       })
+       setViewRights(data_res_id)
    }
   
    }, [props.UserPermission]);
@@ -123,10 +131,12 @@ useEffect(() => {
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
                             </Grid>
                             <Grid item xs={4}>
-                            <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <CustomButton
                                     btnName={"View KPI"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
+                                    btnDisable={!viewRights||viewRights.display_control&&viewRights.display_control==='N'?true:false}
                                     onBtnClick={()=>setKpiViewModal(!kpiViewModal)}
 
                                 /></div>
@@ -212,7 +222,7 @@ useEffect(() => {
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-
+                        btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
                     />
                     <CustomButton
                         btnName={"Cancel"}

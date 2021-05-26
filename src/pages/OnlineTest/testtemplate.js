@@ -18,7 +18,7 @@ function TestTemplate(props) {
     const [count, setCount] = useState(0)
     const [list, setList] = useState([])
     const [Itemkeys, setItemKeys] = useState([])
-
+   
     const [template, setTemplate] = useState({
         tempname: {
             value: "",
@@ -232,7 +232,22 @@ function TestTemplate(props) {
         handleCancel()
     }
     console.log("list", list)
+
+   ///***********user permission**********/
+   const [saveRights, setSaveRights] = useState([])
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Test Template - Submit" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
   
+   }, [props.UserPermission]);
+  
+  /////////////
     return (
         <div>
             <div className="AQTitle">Test Template</div>
@@ -304,7 +319,7 @@ function TestTemplate(props) {
                 })
                 }
                 <div id="TTbtns">
-                    <CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"Submit"} btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
                 </div>
             </div>
@@ -314,6 +329,7 @@ function TestTemplate(props) {
 const mapStatetoProps = (state) => ({
     categoryList: state.getOptions.getCategory || [],
     subCategoryList: state.getOptions.getSubCategory || [],
+    UserPermission: state.UserPermissionReducer.getUserPermission,
 })
 export default connect(mapStatetoProps)(TestTemplate);
 

@@ -1,11 +1,29 @@
-import React from 'react'
+import React,{useState,useEffect}from 'react'
 import { Input, Icon } from 'antd';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { Checkbox, Collapse } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import './OpeAdvance.scss'
-export default function OPE_Expense() {
+
+import { useDispatch, connect } from "react-redux";
+
+function OPE_Expense(props) {
+    const [saveRights, setSaveRights] = useState([])
+    
+        ///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let  data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "OPA/ Expenses- OPE - Save" == val.control 
+        ) 
+       })
+       setSaveRights(data_res_id)
+
+    }
+    
+    }, [props.UserPermission]);
     return (
         <div>
             <div style={{ fontSize: "20px", fontWeight: "600" }}>OPE</div>
@@ -38,7 +56,7 @@ export default function OPE_Expense() {
                 </Grid>
                 <div className="bill_contianer">
                     <div>BILL <Checkbox /></div>
-                    <CustomButton btnName={"Upload"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                    <CustomButton btnName={"Upload"}  btnCustomColor="customPrimary" custombtnCSS="custom_save" />
                 </div>
                 <div className="des_grid">
                     <Grid item xs={6} spacing={2}>
@@ -47,9 +65,14 @@ export default function OPE_Expense() {
                     </Grid>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                    <CustomButton btnName={"Save"}  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
                 </div>
             </div>
         </div>
     )
 }
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (OPE_Expense);

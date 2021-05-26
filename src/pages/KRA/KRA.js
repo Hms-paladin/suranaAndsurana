@@ -26,6 +26,8 @@ const KRA = (props) => {
     const [isLoaded, setIsLoaded] = useState(true);
 
     const [saveRights, setSaveRights] = useState([])
+    const [viewRights, setViewRights] = useState([])
+
     const [kraViewModal, setKraViewModal] = useState(false)
     const [value, setValue] = useState(new Date().getMonth());
     const [kpi_form, setKpi_form] = useState({
@@ -77,22 +79,23 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Save" == val.control && "Dashboard - KRA" == val.screen
+           "KRA - Save" == val.control 
        ) 
       })
       setSaveRights(data_res_id)
+
+      data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "KRA - View KRA" == val.control 
+        ) 
+       })
+       setViewRights(data_res_id)
    }
   
    }, [props.UserPermission]);
   
   
     console.log(saveRights,"rights")
-  
-   function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
   /////////////
 
     return (
@@ -180,10 +183,12 @@ useEffect(() => {
                                     /></div>
                             </Grid>
                             <Grid item xs={2}>
-                                <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <CustomButton
                                     btnName={"View KRA"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
+                                    btnDisable={!viewRights||viewRights.display_control&&viewRights.display_control==='N'?true:false}
                                     onBtnClick={() => setKraViewModal(!kraViewModal)}
 
                                 /></div>
@@ -240,7 +245,8 @@ useEffect(() => {
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-                        onBtnClick={() => (!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification():'')}    
+                        btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
+                        onBtnClick={''}    
                     />
                     <CustomButton
                         btnName={"Cancel"}

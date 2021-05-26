@@ -112,7 +112,7 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Save" == val.control && "Dashboard - Appraisal" == val.screen
+           "Appraisal - Save" == val.control 
        ) 
       })
       setSaveRights(data_res_id)
@@ -426,7 +426,7 @@ useEffect(() => {
 
             <div className="appraisalBtn">
                 {rowID == 1 && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => (!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification():'')} />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={() => ('')} />
                 <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>

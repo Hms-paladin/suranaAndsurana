@@ -13,6 +13,7 @@ import DynModel from "../../component/Model/model";
 import Employeeform from '../Employeeform/employeeform';
 import Axios from 'axios';
 import { apiurl } from '../../utils/baseUrl'
+import { notification } from "antd";
 
 function EmployeeList(props){
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ function EmployeeList(props){
     const [Employee_Data, setEmployee_Data] = useState([])
     const [stateClear, setStateClear] = useState(false)
     const [resume_id, setResume_id] = useState("")
-
+    const [goRights, setGoRights] = useState([])
    
     const [EmpList, setEmpList] = useState({
         empcode: {
@@ -203,6 +204,29 @@ dispatch(getEmployeeListSearch(empCodeName,EmpList)).then(() => {
 })
    
 }
+
+    ///***********user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission){
+           let data_res_id = props.UserPermission.find((val) => { 
+           return (
+               "List of Employees - Go" == val.control 
+           ) 
+          })
+          setGoRights(data_res_id)
+        }
+        
+        }, [props.UserPermission]);
+        
+        
+        // console.log(goRights,"rights")
+        
+        function rightsNotification(){
+        notification.success({
+            message: "You are not Authorized. Please Contact Administrator",
+        });
+        }
+        /////////////
     return(
         <div>
                 <div className="emp_master_h">Employee List</div>
@@ -238,7 +262,7 @@ dispatch(getEmployeeListSearch(empCodeName,EmpList)).then(() => {
                     />
                     </Grid>
                     <Grid item xs={2}>
-                    <CustomButton btnName={"Go"} onBtnClick={onSubmit} btnCustomColor="customPrimary" 
+                    <CustomButton btnName={"Go"} btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSubmit} btnCustomColor="customPrimary" 
                     custombtnCSS={"emp_btn_css"} 
                    />
                     </Grid>
@@ -262,6 +286,7 @@ const mapStateToProps = (state) => (
         getDepartment: state.getOptions.getDepartment || [],
         getEmployeeCode: state.EmployeeListReducer.getEmployeeCode || [],
         getEmployee_List_Data: state.EmployeeListReducer.getEmployeeListSearch || [],
+        UserPermission: state.UserPermissionReducer.getUserPermission,
         // getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
     }
 );

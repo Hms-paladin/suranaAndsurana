@@ -45,7 +45,7 @@ function AddResource(props) {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Add Resource" == val.control && "Dashboard - Library" == val.screen
+           "Library - Add Resource" == val.control 
        ) 
       })
       setAddRights(data_res_id)
@@ -99,7 +99,7 @@ function AddResource(props) {
 
                 <div className="okbtndiv">
                     <CustomButton btnName={"Add"} btnCustomColor="customPrimary"
-                        custombtnCSS={"add_btn_css"} onBtnClick={!addRights||addRights.display_control&&addRights.display_control==='N'?rightsNotification:''} />
+                        custombtnCSS={"add_btn_css"} btnDisable={!addRights||addRights.display_control&&addRights.display_control==='N'?true:false} onBtnClick={''} />
                 </div>
                 <div className="addresource_table" style={{marginTop:"10px"}}>
                     <EnhancedTable headCells={header} rows={rows} aligncss="addresource_table_align"></EnhancedTable>

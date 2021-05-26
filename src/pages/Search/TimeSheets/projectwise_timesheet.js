@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import react, { useState,useEffect } from 'react';
 import CustomButton from "../../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
@@ -7,8 +7,11 @@ import { useParams, Link } from 'react-router-dom';
 import { Collapse } from 'antd';
 import { Select } from 'antd';
 import './timesheets.scss'
+import { useDispatch, connect } from "react-redux";
+import { notification } from "antd";
 
-function ProjectwiseTS() {
+function ProjectwiseTS(props) {
+    const [searchRights, setSearchRights] = useState([])
     const { Panel } = Collapse;
     const { Option } = Select;
     // const ddl_empname = [
@@ -43,6 +46,22 @@ function ProjectwiseTS() {
     const getDesignRows = [
         { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "23hr" },
     ];
+
+    ///***********user permission**********/
+   useEffect(() => {
+   if(props.UserPermission.length>0&&props.UserPermission){
+      let  data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Timesheet - Search" == val.control 
+       ) 
+      })
+      setSearchRights(data_res_id)
+ 
+   }
+   
+   }, [props.UserPermission]);
+   ////////
+
     return (
         <div>
 
@@ -70,7 +89,7 @@ function ProjectwiseTS() {
                         <Labelbox type="datepicker"></Labelbox>
                     </Grid>
                     <Grid item xs={2} container direction="row" justify="center" alignItems="center">
-                        <CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick="" />
+                        <CustomButton btnName={"Search"}  btnDisable={!searchRights||searchRights.display_control&&searchRights.display_control==='N'?true:false} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick={''} />
                     </Grid>
                 </Grid>
             </div>
@@ -93,4 +112,9 @@ function ProjectwiseTS() {
         </div>
     )
 }
-export default ProjectwiseTS;
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+    GetSeverance:state.ExitSeverance.GetSeverance
+});
+export default connect(mapStateToProps) (ProjectwiseTS);

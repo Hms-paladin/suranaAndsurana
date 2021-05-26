@@ -14,7 +14,7 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Save" == val.control && "Checklist Assigning" == val.screen
+           "Check List Assigning" == val.control 
        ) 
       })
       setSaveRights(data_res_id)
@@ -64,7 +64,7 @@ useEffect(() => {
                 </Grid>
 
                 <div className="checklistAssignBtn">
-                    <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary" onBtnClick={() => (!saveRights||saveRights.display_control&&saveRights.display_control==='N'?rightsNotification():'')}/>
+                    <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''}/>
                     <CustomButton btnName={"Cancel"} custombtnCSS="custombtn" />
                 </div>
 

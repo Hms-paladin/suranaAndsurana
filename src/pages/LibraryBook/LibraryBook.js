@@ -32,8 +32,8 @@ function LibraryBook(props) {
 
     const rows = [
         {
-            resource: <a className="link_tag">Book</a>, subject: 'Law', author: 'Mr.X', title: 'Title 1', year: '1985', dept: 'Department 1', copies: '5', action: <div className="RIbtncss"><CustomButton btnName={"Receive"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" onBtnClick={ () => !receiveRights||(receiveRights.display_control&&receiveRights.display_control==='N')?rightsNotification():setreceivingbooksmodal(true) } />
-                <CustomButton btnName={"Issue"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" onBtnClick={() => !issueRights||(issueRights.display_control&&issueRights.display_control==='N')?rightsNotification():setissuebooksmodal(true)} /></div>
+            resource: <a className="link_tag">Book</a>, subject: 'Law', author: 'Mr.X', title: 'Title 1', year: '1985', dept: 'Department 1', copies: '5', action: <div className="RIbtncss"><CustomButton btnName={"Receive"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" btnDisable={!receiveRights||receiveRights.display_control&&receiveRights.display_control==='N'?true:false} onBtnClick={ () => setreceivingbooksmodal(true) } />
+                <CustomButton btnName={"Issue"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" btnDisable={!issueRights||issueRights.display_control&&issueRights.display_control==='N'?true:false} onBtnClick={() => setissuebooksmodal(true)} /></div>
         },
 
         {
@@ -65,21 +65,21 @@ useEffect(() => {
 
     let data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Receive" == val.control && "Dashboard - Library" == val.screen
+            "Library - Receive" == val.control 
         ) 
     })
     setReceiveRights(data_res_id)
 
     data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Issue" == val.control && "Dashboard - Library" == val.screen
+            "Library - Issue" == val.control 
         ) 
     })
     setIssueRights(data_res_id)
 
     data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Search" == val.control && "Dashboard-Library" == val.screen
+            "Library - Search" == val.control 
         ) 
     })
     setSearchRights(data_res_id)
@@ -128,7 +128,7 @@ useEffect(() => {
 
                 <div className="lib_btn_div">
                     <CustomButton btnName={"Search"}
-                        custombtnCSS={"lib_btn_css"} onBtnClick={!searchRights||searchRights.display_control&&searchRights.display_control==='N'?rightsNotification:''}
+                        custombtnCSS={"lib_btn_css"} btnDisable={!searchRights||searchRights.display_control&&searchRights.display_control==='N'?true:false} onBtnClick={''}
                     /></div>
 
                 <div className="table_container_align">
