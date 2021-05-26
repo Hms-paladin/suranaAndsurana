@@ -368,6 +368,18 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
         )
     }
 
+    function projectTaskModelClick(boxName){
+        if (boxName === "APPLICATION") {
+            // setProjecttypes(false)
+             setStage(false)
+             
+             setStageMonitor(false)
+ 
+             setProjecttypes(true)
+ 
+         }
+    }
+
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
             setModelOpen(true)
@@ -384,9 +396,13 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
 
         }
         else if (boxName === "APPLICATION") {
+           // setProjecttypes(false)
             setStage(false)
-            setProjecttypes(true)
+            
             setStageMonitor(false)
+
+            setProjecttypes(true)
+           
 
         }
         else if (boxName === "VARIABLE RATE") {
@@ -752,7 +768,7 @@ console.log(showVariableTable,"showVariableTable")
                         {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
                             props.ProjectDetails[0].project_type} */}
                     </div>
-                    <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)}  /></div>
                     {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
                      */}
 
@@ -790,17 +806,17 @@ console.log(showVariableTable,"showVariableTable")
                     {stage && <Stages projectDetails={props.ProjectDetails} />}
 
                     {projecttypes && <div>{
-                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "India Filing" && <Trade1 />
+                        props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "India Filing" && <Trade1 disStatus={false}/>
                     }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "International Filing" && <Trade2 />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Application" && props.ProjectDetails[0].filing_type === "International Filing" && <Trade2  disStatus={false}/>
 
                         }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Filed" && <Trade3 />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Filed" && <Trade3  disStatus={false} />
                         }
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Defended" && <Trade4 />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "Trademark" && props.ProjectDetails[0].process === "Opposition" && props.ProjectDetails[0].filing_type === "Defended" && <Trade4   disStatus={false}/>
                         }
                         {/* Patent */}
                         {

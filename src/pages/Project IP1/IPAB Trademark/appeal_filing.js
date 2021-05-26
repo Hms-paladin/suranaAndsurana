@@ -5,7 +5,7 @@ import CustomButton from "../../../component/Butttons/button";
 import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus, getClassDetails, insertAppealFiling} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus, getClassDetails, insertAppealFiling,insertIPAB} from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 
 function AppealFiling(props){
@@ -134,7 +134,7 @@ function onSubmit() {
     } else {
         // setTradeMarkForm({ error: false });
 
-        dispatch(insertAppealFiling(params)).then(() => {
+        dispatch(insertIPAB(params)).then(() => {
             handleCancel()
         })
     }

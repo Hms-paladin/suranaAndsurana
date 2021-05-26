@@ -23,7 +23,8 @@ import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmode
 function TradeMarkTabIcons(props) {
     const [variableRateIcon, setVariableRateIcon] = useState("")
     const tabBox = (boxName) => {
-        props.onChangeTabBox && props.onChangeTabBox(boxName)
+        props.onChangeTabBox && props.onChangeTabBox(boxName);
+        props.onClick && props.onClick(boxName);
     }
     const [open, setOpen] = useState(false);
 
