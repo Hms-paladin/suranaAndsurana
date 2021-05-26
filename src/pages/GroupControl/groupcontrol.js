@@ -261,7 +261,7 @@ useEffect(() => {
 if(props.UserPermission.length>0&&props.UserPermission){
    let  data_res_id = props.UserPermission.find((val) => { 
     return (
-        "OPA/ Expenses- OPA - Save" == val.control 
+        "Group Control - Add" == val.control 
     ) 
    })
    setSaveRights(data_res_id)
