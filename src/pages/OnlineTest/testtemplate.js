@@ -7,20 +7,23 @@ import Edit from "../../images/editable.svg";
 import Delete from '../../images/dashboard/delete.svg';
 import './onlinetest.scss'
 import { getCategory, getSubCategory } from '../../actions/MasterDropdowns'
+import {InsertTestTemplate} from '../../actions/TestTemplateAction'
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 
 function TestTemplate(props) {
     const dispatch = useDispatch();
-    const [MultipleQuestion, setMultipleQuestion] = useState([])
     const [categoryddl, setCategoryddl] = useState([])
     const [subcategoryddl, setSubCategoryddl] = useState([])
     const [count, setCount] = useState(0)
+    const [minusCount, setMinusCount] = useState(0)
     const [list, setList] = useState([])
     const [Itemkeys, setItemKeys] = useState([])
-    const [dynarr,setdynarr]=useState([])
-    const arr=[]
-
+    const [dynarr, setdynarr] = useState([])
+    const [dynkey, setdynkey] = useState([])
+    const [ind, setInd] = useState(0)
+    const [maxques, setmaxques] = useState(0)
+    const [postTemplate, setPostTemplate] = useState([])
     const [template, setTemplate] = useState({
         tempname: {
             value: "",
@@ -36,7 +39,7 @@ function TestTemplate(props) {
         },
         duration: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
@@ -60,7 +63,7 @@ function TestTemplate(props) {
         },
     })
 
-    const [dynObjs, setDynObjs] = useState({
+    const dynObjs = {
         category: {
             value: "",
             validation: [{ name: "required" }],
@@ -75,33 +78,17 @@ function TestTemplate(props) {
         },
         no_of_ques: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ name: "required" }, { name: "custommaxLength", params: "2" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
-        sublist:[],
-    })
-
-    // useEffect(() => {
-    //     if (count > 0) {
-    //         setMultipleQuestion([...MultipleQuestion, { index: count }])
-    //     }
-    // }, [count])
+        // sublist: [],
+    }
 
     /*Use Effects */
     useEffect(() => {
         dispatch(getCategory());
     }, [])
-
-    //Called first
-    useEffect(() => {
-        setList(
-            prevState => ({
-                ...prevState,
-                ["obj" + count]: dynObjs,
-            })
-        )
-    }, [dynObjs])
 
     //Called Second
     useEffect(() => {
@@ -116,6 +103,7 @@ function TestTemplate(props) {
                 ["obj" + count]: dynObjs,
             })
         )
+        setdynarr([...dynarr, []])
     }, [count])
 
     useEffect(() => {
@@ -138,13 +126,15 @@ function TestTemplate(props) {
             })
         )
         setSubCategoryddl({ subcategorylist })
+        if (subcategorylist.length > 0) {
+            console.log(subcategorylist, "subcat")
+            dynarr[ind] = subcategorylist;
+        }
+
     }, [props.subCategoryList])
 
-    useEffect(()=>{
-        setdynarr([...dynarr,subcategoryddl.subcategorylist])
-    },[categoryddl.categorylist])
 
-     useEffect(() => {
+    useEffect(() => {
         dispatch((getSubCategory(template.category.value)))
     }, [template.category.value])
 
@@ -164,80 +154,132 @@ function TestTemplate(props) {
             ...prevState,
         }));
     }
-    const deletecomp = (index) => {
-        const temp = [...Itemkeys]
+    const CancelDynObjs = () => {
+        let keys = ["category", "subcategory", "no_of_ques"];
+        keys.map((data) => {
+            try {
+                dynObjs[data].value = "";
+                dynObjs[data].validation = [{ name: "required" }];
+                dynObjs[data].error = null;
+                dynObjs[data].errmsg = null;
+                template["category"].value = "";
+                template["subcategory"].value = "";
+                template["no_of_ques"].value = "";
+            }
+            catch (err) {
+                throw err;
+            }
+        })
+    }
+
+    const Cancelfunc=()=>{
+        handleCancel()
+        setCount(0)
+        setItemKeys(["obj0"])
+        setdynarr([])
+        setList({["obj0"]:dynObjs})
+        setmaxques(0)
+    }
+
+    const deletecomp = (data, index) => {
+        delete list[data];
+        let temp = [...dynarr]
         temp.splice(index, 1)
-        setItemKeys(temp)
-        console.log("Itemkeys", Itemkeys)
+        setdynarr(temp)
+        let tempkey = Itemkeys
+        var x = tempkey.filter(item => item !== data)
+        setItemKeys(x)
+        maxquesval()
+        // setMinusCount(minusCount+1)
     }
 
     //Category function
-    function categoryfunc(data,key,item){
-        checkValidation(data,key)
-       
-        
-        // console.log(item,"item")
-        // list[data]["category"].value=item
-        // await dispatch((getSubCategory(item)))
-        // console.log(subcategoryddl.subcategorylist,"test")
-    //    await list[data]["sublist"].push(subcategoryddl.subcategorylist)
-    //     checkValidation(item,key);
-    //     console.log(list[data]["sublist"],"sublist")
+    function categoryfunc(item, key, data, i) {
+        setInd(i)
+        dispatch((getSubCategory(item)))
+        checkValidation(item, key);
+        list[data]["category"].value = item
+        var errorcheck = ValidationLibrary.checkValidation(
+            item,
+            list[data]["category"].validation
+        );
+        list[data]["category"].error = !errorcheck.state;
+        list[data]["category"].errmsg = errorcheck.msg;
+        list[data]["category"].validation = list[data]["category"].validation;
     }
 
     //SubCategory function
-    function subcategoryfunc(data,key,item){
-        console.log(item,"item")
-        list[data]["subcategory"].value=item;
-        list[data]["sublist"].push(subcategoryddl.subcategorylist)
-        checkValidation(item,key);
+    function subcategoryfunc(item, key, data, i) {
+        checkValidation(item, key);
+        console.log(item, "item")
+        list[data]["subcategory"].value = item;
+        var errorcheck = ValidationLibrary.checkValidation(
+            item,
+            list[data]["subcategory"].validation
+        );
+        list[data]["subcategory"].error = !errorcheck.state;
+        list[data]["subcategory"].errmsg = errorcheck.msg;
+        list[data]["subcategory"].validation = list[data]["subcategory"].validation;
+    }
+
+    function maxquesval() {
+
+        console.log(template.maxques.value, "template.maxques.value")
+        let total = 0;
+        var m = Object.keys(list)
+        m.forEach(element => {
+            total += parseInt(list[element]["no_of_ques"].value)
+        });
+        if (total > template.maxques.value) { setmaxques(1) }
+        else if(total == template.maxques.value){setmaxques(2)}
+        else if(total < template.maxques.value){setmaxques(3)}
+        else { setmaxques(0) }
+
     }
 
     //No of Questions function
-    function noq_func(data,key,item){
-        console.log(item,"item")
-        list[data]["no_of_ques"].value=item;
-        list[data]["sublist"].push(subcategoryddl.subcategorylist)
-        checkValidation(item,key);
+    function noq_func(item, key, data, i) {
+
+        checkValidation(item, key);
+        list[data]["no_of_ques"].value = item;
+        var errorcheck = ValidationLibrary.checkValidation(
+            item,
+            list[data]["no_of_ques"].validation
+        );
+        list[data]["no_of_ques"].error = !errorcheck.state;
+        list[data]["no_of_ques"].errmsg = errorcheck.msg;
+        list[data]["no_of_ques"].validation = list[data]["no_of_ques"].validation;
+        maxquesval()
     }
 
-    //Update dynobj
-    function plusfunc(data) {
-              
-        let tempObj = {
-            category: {
-                value: template.category.value,
-                validation: template.category.validation,
-                error: template.category.error,
-                errmsg: template.category.errmsg,
-            },
-            subcategory: {
-                value: template.subcategory.value,
-                validation: template.subcategory.validation,
-                error: template.subcategory.error,
-                errmsg: template.subcategory.errmsg,
-            },
-            no_of_ques: {
-                value: template.no_of_ques.value,
-                validation: template.no_of_ques.validation,
-                error: template.no_of_ques.error,
-                errmsg: template.no_of_ques.errmsg,
-            },
-            sublist:subcategoryddl.subcategorylist
-            
+
+    function plusfunc() {
+        // console.log(count, minusCount, list, "listData")
+        // let data = "obj" + (count - minusCount);
+        let o = Object.keys(list)[Object.keys(list).length - 1]      
+        var m = Object.keys(list[o])
+        m.forEach(element => {
+            var errorcheck = ValidationLibrary.checkValidation(
+                list[o][element].value,
+                list[o][element].validation
+            )
+            list[o][element].error = !errorcheck.state
+            list[o][element].errmsg = errorcheck.msg
+        });
+        var filtererr = m.filter((ele) => list[o][ele].error === true)
+        console.log(filtererr.length, "fill")
+        setList(prevState => ({
+            ...prevState,
+        }))
+        if (filtererr.length > 0) { }
+        else if (maxques == 1 || maxques==2) { }
+        else {
+            CancelDynObjs()
+            setCount(count + 1)
         }
-        setCount(count + 1)
-        setList(
-            prevState => ({
-                ...prevState,
-                [data]: tempObj,
-            })
-        )
-        handleCancel()
     }
 
     function checkValidation(data, key) {
-
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             template[key].validation
@@ -252,8 +294,18 @@ function TestTemplate(props) {
             ...prevState,
             [key]: dynObj,
         }));
-        
+        if (key == "maxques") {
+            let total = 0;
+            var m = Object.keys(list)
+            m.forEach(element => {
+                total += parseInt(list[element]["no_of_ques"].value)
+            });
+            if (total >= data) { setmaxques(true) }
+            else { setmaxques(false) }
+        }
+
     }
+
     function onSubmit() {
         var targetkeys = Object.keys(template)
         for (var i in targetkeys) {
@@ -265,24 +317,41 @@ function TestTemplate(props) {
             template[targetkeys[i]].errmsg = errorcheck.msg
         }
         var filtererr = targetkeys.filter((data) => template[data].error === true)
-        if (filtererr.length > 0) { }
+        if (filtererr.length > 0) {}
+        else if(maxques==1 || maxques==3){}
         else {
+            let postarr = []
+            let tempname=template["tempname"].value
+            let maxques=template["maxques"].value
+            let duration=template["duration"].value
+            Itemkeys.map((data) => {
+                postarr.push(
+                    {
+                        quescatId: list[data]["category"].value,
+                        quesubcatId: list[data]["subcategory"].value,
+                        NoOfquestions: list[data]["no_of_ques"].value,
+                    })
+            });
+            dispatch(InsertTestTemplate(tempname,postarr,maxques,duration))
+            Cancelfunc()
         }
         setTemplate(prevState => ({
             ...prevState,
-        }))
-        handleCancel()
+        }));
+       
     }
     console.log("list", list)
-    console.log(dynarr,"arr")
-   
+    console.log("dynarr", dynarr)
+    console.log("itemkeys", Itemkeys)
+    console.log("template", template)
+    console.log("count", count)
 
     return (
         <div>
             <div className="AQTitle">Test Template</div>
             <div className="TTContainer">
                 <Grid item xs={12} container direction="row" spacing={2}>
-                    <Grid item xs={4} container direction="column">
+                    <Grid item xs={3} container direction="column">
                         <div className="TThead">Template Name</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "tempname")}
@@ -300,7 +369,7 @@ function TestTemplate(props) {
                     </Grid>
                     <Grid item xs={3} container direction="column">
                         <div className="TThead">Duration (In Mins)</div>
-                        <Labelbox type="select"
+                        <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "duration")}
                             value={template.duration.value}
                             error={template.duration.error}
@@ -312,35 +381,35 @@ function TestTemplate(props) {
                     return (
                         <div className="TTcategory">
                             <Grid item xs={12} container direction="row" spacing={2}>
-                                <Grid item xs={4} container direction="column">
+                                <Grid item xs={3} container direction="column">
                                     <div className="TThead">Category</div>
                                     <Labelbox type="select"
                                         dropdown={categoryddl.categorylist}
-                                        changeData={(data) =>checkValidation(data, "category")}
+                                        changeData={(item) => categoryfunc(item, "category", data, index)}
                                         value={list[data]["category"].value == "" ? template.category.value : list[data]["category"].value}
-                                        error={template.category.error}
-                                        errmsg={template.category.errmsg}></Labelbox>
+                                        error={list[data]["category"].error == null ? template.category.error : list[data]["category"].error}
+                                        errmsg={list[data]["category"].errmsg == null ? template.category.errmsg : list[data]["category"].errmsg}></Labelbox>
                                 </Grid>
                                 <Grid item xs={4} container direction="column">
                                     <div className="TThead">Sub Category</div>
                                     <Labelbox type="select"
-                                        dropdown={dynarr[index]&&dynarr[index]}
+                                        dropdown={dynarr[index]}
                                         value={list[data]["subcategory"].value == "" ? template.subcategory.value : list[data]["subcategory"].value}
-                                        changeData={(data) =>checkValidation(data, "subcategory")}
-                                        error={template.subcategory.error}
-                                        errmsg={template.subcategory.errmsg}></Labelbox>
+                                        changeData={(item) => subcategoryfunc(item, "subcategory", data, index)}
+                                        error={list[data]["subcategory"].error == null ? template.subcategory.error : list[data]["subcategory"].error}
+                                        errmsg={list[data]["subcategory"].errmsg == null ? template.subcategory.errmsg : list[data]["subcategory"].errmsg}></Labelbox>
                                 </Grid>
                                 <Grid item xs={3} container direction="column">
                                     <div className="TThead">No .of Questions</div>
                                     <Labelbox type="text"
                                         value={list[data]["no_of_ques"].value == "" ? template.no_of_ques.value : list[data]["no_of_ques"].value}
-                                        changeData={(data) => checkValidation(data, "no_of_ques")}
-                                        error={template.no_of_ques.error}
-                                        errmsg={template.no_of_ques.errmsg}></Labelbox>
+                                        changeData={(item) => noq_func(item, "no_of_ques", data, index)}
+                                        error={list[data]["no_of_ques"].error == null ? template.no_of_ques.error : list[data]["no_of_ques"].error}
+                                        errmsg={list[data]["no_of_ques"].errmsg == null ? template.no_of_ques.errmsg : list[data]["no_of_ques"].errmsg}></Labelbox>
                                 </Grid>
-                                <Grid item xs={1} container direction="row" justify="center" alignItems="center">
-                                    {index == 0 ? <img src={PlusIcon} className="plusicon" onClick={() => plusfunc("obj" + count)} /> :
-                                        <img src={Delete} className="plusicon" onClick={() => deletecomp(index)} />}
+                                <Grid item xs={2} container direction="row" justify="center" alignItems="center">
+                                    {index == 0 ? <><img src={PlusIcon} className="plusicon" onClick={() => plusfunc()} />{<div style={{ fontSize: "10px", color: "red",textAlign:"center" }}>{maxques==1&&"Maximum questions exceeds"||maxques==2&&"Maximum questions reached"||maxques==3&&"Maximum questions not reached yet"}</div>}</> :
+                                        <img src={Delete} className="plusicon" onClick={() => deletecomp(data, index)} />}
                                 </Grid>
                             </Grid>
                         </div>
@@ -349,7 +418,7 @@ function TestTemplate(props) {
                 }
                 <div id="TTbtns">
                     <CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
+                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={Cancelfunc} />
                 </div>
             </div>
         </div>
@@ -360,4 +429,3 @@ const mapStatetoProps = (state) => ({
     subCategoryList: state.getOptions.getSubCategory || [],
 })
 export default connect(mapStatetoProps)(TestTemplate);
-
