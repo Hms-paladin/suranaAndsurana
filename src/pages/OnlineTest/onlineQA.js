@@ -22,11 +22,13 @@ function OnlineQA(props) {
     // const [pathname, setPathName] = useState(window.location.pathname)
     const [text, setText] = useState()
     const [Hours, setHours] = useState()
-    const [count, setCount] = useState(0)
 
     const runTime = useRef({
         runSec: 0, runMin: 0
     });
+    const setCount = useRef({
+        count:0
+    })
 
 
 
@@ -43,23 +45,24 @@ function OnlineQA(props) {
     }, [])
 
     useEffect(() => {
-        setCount(props.GettemplateQuetions[0]?.Duration)
+        setCount.current.count = props.GettemplateQuetions[0]?.Duration
         setTemplateRowdata(props.GettemplateQuetions)
     }, [props.GettemplateQuetions])
 
 
     // templateRowdata
     useEffect(() => {
-        console.log(templateRowdata[0]?.testQuestionDetails.length, "testQuestionDetails")
 
         let myInterval = setInterval(() => {
-            if (runTime.current.runMin > props.GettemplateQuetions[0]?.Duration - 1) {
+        console.log(props.GettemplateQuetions[0]?.Duration,setCount.current.count,runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
+
+            if (runTime.current.runMin > setCount.current.count - 1 ) {
                 clearInterval(myInterval);
-                runTime.current.runMin += 1
-                runTime.current.runSec = 0
-                // let digitmin = runTime.current.runMin < 10 ? "0" : ""
-                // let digitsec = runTime.current.runSec < 10 ? "0" : ""
-                const timer = runTime.current.runMin + ":" + runTime.current.runSec
+                // runTime.current.runMin += 1
+                // runTime.current.runSec = 0
+                let digitmin = runTime.current.runMin < 10 ? "0" : ""
+                let digitsec = runTime.current.runSec < 10 ? "0" : ""
+                const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
 
                 setText(timer)
             }
@@ -68,7 +71,7 @@ function OnlineQA(props) {
             }
         }, 1000)
 
-    }, [props.GettemplateQuetions]);
+    }, []);
 
     // let myInterval = setInterval(() => {
     //     if (this.state.tempo >= 5) {
