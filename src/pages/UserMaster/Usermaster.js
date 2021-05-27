@@ -1406,7 +1406,7 @@ useEffect(() => {
   if(props.UserPermission.length>0&&props.UserPermission){
      let data_res_id = props.UserPermission.find((val) => { 
      return (
-         "User Group - Add" == val.control
+         "User Masters - Save" == val.control
      ) 
  })
  setSaveRights(data_res_id)
