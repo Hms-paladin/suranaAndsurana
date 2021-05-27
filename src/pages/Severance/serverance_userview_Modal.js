@@ -1,8 +1,34 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import CustomButton from '../../component/Butttons/button';
 import './severance.scss'
-function ServeranceModal(){
+import {connect,useDispatch} from 'react-redux'
+import {ViewSeverance} from '../../actions/ExitSeveranceAction'
+import moment from 'moment'
+function ServeranceModal(props){
+    const [severanceData,setseveranceData]=useState([])
+    let dispatch=useDispatch()
+    useEffect(()=>{
+        dispatch(ViewSeverance())
+    },[])
+    useEffect(() => {
+          props.ViewSeverance.map((data)=>{
+            setseveranceData({
+                empname:data.name===null?"-":data.name,
+                designation:data.designation===null?"-":data.designation,
+                department:data.department==null?"-":data.department,
+                severanceId:data.severece_id,
+                resignationDate:moment(data.date_of_resignation).format("DD-MMM-YYYY"),
+                res_accepted_on:data.resignation_accepted_on===null?"-":data.resignation_accepted_on,
+                releive_date:data.proposed_date_relieving===null?"-":data.proposed_date_relieving,
+                it_noc_date:data.it_noc_date===null?"-":data.it_noc_date,
+                hr_noc_date:data.hr_noc_date===null?"-":data.hr_noc_date,
+                admin_noc_date:data.admin_noc_date===null?"-":data.admin_noc_date
+
+            })
+        })
+        console.log(props.ViewSeverance,"dfghjk")
+    },[props.ViewSeverance])
     return(
         <div style={{backgroundColor:'white'}}>
             <div className="serverance_container">
@@ -62,4 +88,11 @@ function ServeranceModal(){
         </div>
     )
 }
-export default ServeranceModal;
+const mapStateToProps = state => (
+    {
+        ViewSeverance:state.ExitSeverance.ViewSeverance,
+      
+    }
+)
+
+    export default connect(mapStateToProps)(ServeranceModal);

@@ -363,6 +363,7 @@ useEffect(() => {
                     )
                 })
                 }
+                
                 <div id="TTbtns">
                     <CustomButton btnName={"Submit"} btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
