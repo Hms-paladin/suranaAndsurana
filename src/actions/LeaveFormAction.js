@@ -94,7 +94,7 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
             }
             else if(response.data.status===0){
                 notification.warning({
-                    message:"Already leave/permission applied for this day",
+                    message:response.data.msg,
                 }); 
             }
         });

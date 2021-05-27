@@ -91,7 +91,7 @@ function ResignationApproveval(props) {
        } if(name==="reject"){
         status=false
        }
-       dispatch(InsertResignation(status,Resignation,props.GetSeverance[0]&&props.GetSeverance[0].employee_id,severanceData.severanceId)).then(()=>{
+       dispatch(InsertResignation(status,Resignation,props.GetSeverance[0]&&props.GetSeverance[0].employee_id,props.severanceId.severece_id)).then(()=>{
            props.closemodal()
            HandleCancel()
        })
@@ -129,6 +129,7 @@ function ResignationApproveval(props) {
        else if(task==="HR NOC"){
         dispatch(UpdateHrNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
          props.closemodal()
+         setChecked(false)
         })
        }
        
@@ -202,7 +203,7 @@ function ResignationApproveval(props) {
             </div>}
             {(props.TaskModelTitle==="HR NOC" || props.TaskModelTitle === "IT NOC" || props.TaskModelTitle === "ADMIN NOC") && <div className="appraisalBtn">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={()=>Update_Noc(props.TaskModelTitle)}/>
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={()=>props.closemodal()}/>
             </div>}
 
 

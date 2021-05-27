@@ -103,7 +103,7 @@ function Severance(props) {
         if(filtererr.length>0){
           
         }else{
-               dispatch(InsertSeverance(ExitSeverance,props.EmployeeDetails[0]&&props.EmployeeDetails[0].employee_id)).then((response)=>{
+               dispatch(InsertSeverance(ExitSeverance,props.EmployeeDetails[0]&&props.EmployeeDetails[0].emp_id)).then((response)=>{
                  handleCancel()
                })     
         }
@@ -111,6 +111,7 @@ function Severance(props) {
             ...prevState,
         }));
     }
+    console.log(props.EmployeeDetails[0]&&props.EmployeeDetails[0].emp_id,"dfghjk")
     return (
         <div>
        {/* { permission.allow_view==='Y'&&<div> */}
