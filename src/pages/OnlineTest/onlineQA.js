@@ -12,6 +12,7 @@ import moment from 'moment';
 import { useParams } from "react-router-dom";
 import { GettemplateQuetions } from '../../actions/OnlineTestAction';
 import { useDispatch, connect } from "react-redux";
+import { SettingsBackupRestore } from '@material-ui/icons';
 const rounded = Math.round(moment().minute() / 15) * 15;
 
 function OnlineQA(props) {
@@ -21,9 +22,7 @@ function OnlineQA(props) {
     // const [pathname, setPathName] = useState(window.location.pathname)
     const [text, setText] = useState()
     const [Hours, setHours] = useState()
-    const [count, setCount] = useState(900)
-    // const [runMin, setRunMin] = useState(0)
-    // const [runSec, setRunSec] = useState(0)
+    const [count, setCount] = useState(0)
 
     const runTime = useRef({
         runSec: 0, runMin: 0
@@ -44,19 +43,53 @@ function OnlineQA(props) {
     }, [])
 
     useEffect(() => {
+        setCount(props.GettemplateQuetions[0]?.Duration)
         setTemplateRowdata(props.GettemplateQuetions)
     }, [props.GettemplateQuetions])
 
-    useEffect(() => {
-        if (starttime) {
-            const interval = setInterval(() => {
-                console.log('This will run every second!');
-                test1()
-            }, 1000);
-            // return () => clearInterval(interval);
 
-        }
-    }, []);
+    // templateRowdata
+    useEffect(() => {
+        console.log(templateRowdata[0]?.testQuestionDetails.length, "testQuestionDetails")
+
+        let myInterval = setInterval(() => {
+            if (runTime.current.runMin > props.GettemplateQuetions[0]?.Duration - 1) {
+                clearInterval(myInterval);
+                runTime.current.runMin += 1
+                runTime.current.runSec = 0
+                // let digitmin = runTime.current.runMin < 10 ? "0" : ""
+                // let digitsec = runTime.current.runSec < 10 ? "0" : ""
+                const timer = runTime.current.runMin + ":" + runTime.current.runSec
+
+                setText(timer)
+            }
+            else {
+                test1()
+            }
+        }, 1000)
+
+    }, [props.GettemplateQuetions]);
+
+    // let myInterval = setInterval(() => {
+    //     if (this.state.tempo >= 5) {
+    //       clearInterval(myInterval);
+    //       this.props.navigation.navigate('Sobre')
+    //     } else {
+    //       this.setState({tempo: this.state.tempo+1});
+    //     }
+    //   }, 1000)
+
+    // useEffect(() => {
+
+    //     if (runTime.current.runSec === 9) {
+    //         alert("test")
+    //         clearInterval(() => {
+    //             test1()
+
+    //         })
+
+    //     }
+    // }, [])
 
 
 
@@ -69,7 +102,9 @@ function OnlineQA(props) {
 
 
     const test1 = useCallback(() => {
-        const timer = runTime.current.runMin + ":" + runTime.current.runSec
+        let digitmin = runTime.current.runMin < 10 ? "0" : ""
+        let digitsec = runTime.current.runSec < 10 ? "0" : ""
+        const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
 
         if (runTime.current.runSec < 59) {
             runTime.current.runSec += 1
@@ -85,6 +120,10 @@ function OnlineQA(props) {
 
     }, [])
 
+    const test2 = () => {
+
+    }
+
 
 
     return (
@@ -93,7 +132,7 @@ function OnlineQA(props) {
             <div className="online_qa">
                 <div className="QAPanel">
                     <div className="QAContainer">
-                        <div id="QAcount">Q.2 | Question 2 of 8</div>
+                        <div id="QAcount">Q.2 | Question 2 of {templateRowdata[0]?.testQuestionDetails.length}</div>
                         <div id="QAduration">
                             {text + " Mins"}
                         </div>
@@ -112,7 +151,7 @@ function OnlineQA(props) {
 
                     <div id="TTbtns">
                         <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test1} />
-                        <CustomButton btnName={"Save & Exit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick="" />
+                        <CustomButton btnName={"Save & Exit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test2} />
                     </div>
                     <div className="QAStatusPane"></div>
                 </div>
