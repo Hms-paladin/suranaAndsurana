@@ -242,20 +242,20 @@ function TestTemplate(props) {
     //     list[data]["subcategory"].validation = list[data]["subcategory"].validation;
     // }
 
-    // function maxquesval() {
+    function maxquesval() {
 
-    //     console.log(template.maxques.value, "template.maxques.value")
-    //     let total = 0;
-    //     var m = Object.keys(list)
-    //     m.forEach(element => {
-    //         total += parseInt(list[element]["no_of_ques"].value)
-    //     });
-    //     if (total > template.maxques.value) { setmaxques(1) }
-    //     else if (total == template.maxques.value) { setmaxques(2) }
-    //     else if (total < template.maxques.value) { setmaxques(3) }
-    //     else { setmaxques(0) }
+        console.log(template.maxques.value, "template.maxques.value")
+        let total = 0;
+        var m = Object.keys(list)
+        m.forEach(element => {
+            total += parseInt(list[element]["no_of_ques"].value)
+        });
+        if (total > template.maxques.value) { setmaxques(1) }
+        else if (total == template.maxques.value) { setmaxques(2) }
+        else if (total < template.maxques.value) { setmaxques(3) }
+        else { setmaxques(0) }
 
-    // }
+    }
 
     // //No of Questions function
     // function noq_func(item, key, data, i) {
