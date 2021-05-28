@@ -7,6 +7,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
+import { useDispatch, connect } from "react-redux";
 import KPIModal from './KPIViewModal'
 import Edit from "../../images/editable.svg";
 
@@ -19,6 +20,10 @@ const KPI = (props) => {
         { id: 'action', label: 'Action' },
     ];
     const [kpimodel, setKpimodel] = useState(false);
+
+    const [saveRights, setSaveRights] = useState([])
+    const [viewRights, setViewRights] = useState([])
+
     const [isLoaded, setIsLoaded] = useState(true);
     const [kpiViewModal, setKpiViewModal] = useState(false)
 
@@ -103,7 +108,28 @@ const KPI = (props) => {
         }));
     }
 
+///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "KPI - Save" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
 
+      data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "KPI - View KPI" == val.control 
+        ) 
+       })
+       setViewRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+
+  /////////////
 
     return (
         <div>
@@ -128,10 +154,12 @@ const KPI = (props) => {
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
                             </Grid>
                             <Grid item xs={4}>
-                            <div style={{ display: "flex", justifyContent: "center" }}><CustomButton
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <CustomButton
                                     btnName={"View KPI"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
+                                    btnDisable={!viewRights||viewRights.display_control&&viewRights.display_control==='N'?true:false}
                                     onBtnClick={()=>setKpiViewModal(!kpiViewModal)}
 
                                 /></div>
@@ -222,7 +250,7 @@ const KPI = (props) => {
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-
+                        btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
                     />
                     <CustomButton
                         btnName={"Cancel"}
@@ -236,5 +264,8 @@ const KPI = (props) => {
     )
 }
 
-
-export default (KPI);
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+    });
+export default connect(mapStateToProps) (KPI);

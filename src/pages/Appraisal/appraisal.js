@@ -31,6 +31,8 @@ function Appraisal(props) {
     const [ratingModelOpen, setRatingModelOpen] = useState(false)
     const [modelTitle, setModelTitle] = useState()
     const [rowID, setRowID] = useState(rowId)
+    const [saveRights, setSaveRights] = useState([])
+
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
             value: "",
@@ -104,29 +106,29 @@ function Appraisal(props) {
     }
     // console.log(rowID, "rowID")
 
-    const [permission, setPermission] = useState([])
-
-    ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-        return (
-            "Appraisal Apply & view" == val.screen_name
-        ) 
-        })
-        setPermission(data_res_id)
-        if(data_res_id.allow_view==='N')
-        rights()
-
-        }
-    }, [props.UserPermission]);
-    /////////////
-    console.log(permission,"props.UserPermission")
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+  
+///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Appraisal - Save" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    // console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
     return (
         <div>
        {/* { permission.allow_view==='Y'&& <div> */}
@@ -424,7 +426,7 @@ function Appraisal(props) {
 
             <div className="appraisalBtn">
                 {rowID == 1 && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={() => ('')} />
                 <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
+import { useDispatch, connect } from "react-redux";
 import EnhancedTable from "../../component/DynTable/table";
 import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KRA.scss'
 import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
+import { notification } from "antd";
 import KRAModal from "./KRAViewModal"
 import Edit from "../../images/editable.svg";
 
@@ -29,10 +31,14 @@ const KRA = (props) => {
 
     const [kramodel, setKramodel] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
+
+    const [saveRights, setSaveRights] = useState([])
+    const [viewRights, setViewRights] = useState([])
+
     const [kraViewModal, setKraViewModal] = useState(false)
     const [value, setValue] = useState(new Date().getMonth());
     const [kpi_form, setKpi_form] = useState({
-
+            
         activity: {
             value: "",
             validation: [{ name: "required" }],
@@ -75,7 +81,29 @@ const KRA = (props) => {
         }));
     }
 
+///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "KRA - Save" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
 
+      data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "KRA - View KRA" == val.control 
+        ) 
+       })
+       setViewRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    console.log(saveRights,"rights")
+  /////////////
 
     return (
         <div>
@@ -169,6 +197,7 @@ const KRA = (props) => {
                                     btnName={"View KRA"}
                                     btnCustomColor="customPrimary"
                                     custombtnCSS={"btnUsergroup"}
+                                    btnDisable={!viewRights||viewRights.display_control&&viewRights.display_control==='N'?true:false}
                                     onBtnClick={() => setKraViewModal(!kraViewModal)}
 
                                 /></div>
@@ -224,7 +253,8 @@ const KRA = (props) => {
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-
+                        btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
+                        onBtnClick={''}    
                     />
                     <CustomButton
                         btnName={"Cancel"}
@@ -239,5 +269,8 @@ const KRA = (props) => {
     )
 }
 
-
-export default (KRA);
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+    });
+export default connect(mapStateToProps) (KRA);

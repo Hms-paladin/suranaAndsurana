@@ -6,72 +6,134 @@ import { Checkbox } from 'antd'
 import { notification } from "antd";
 import { useDispatch, connect } from "react-redux";
 import react, { useState,useEffect } from 'react';
-
+import {InsertFeedback} from '../../actions/ExitSeveranceAction'
+import ValidationLibrary from "../../helpers/validationfunction";
 function EmployeeFeedback(props) {
 
-    const [permission, setPermission] = useState([])
 
-        ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-        return (
-            "Employee Form" == val.screen_name
-        ) 
+    let dispatch=useDispatch()
+
+    const [feedback,setfeedback]=useState([
+        {id:1,value:false,name:"Compensation"}, {id:2,value:false,name:"New job"},{id:3,value:false,name:"Personal Reasons"},
+        {id:4,value:false,name:"Relocation"},{id:5,value:false,name:"Conflict with works"},{id:6,value:false,name:"Retirement"},
+        {id:7,value:false,name:"Benefits"},{id:8,value:false,name:"Others"},
+    ])
+    const [checked,setchecked]=useState({})
+    const [feedbackInput,setfeedbackInput]=useState({
+        feedback:{
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
+        compansation:{
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        }
     })
-    setPermission(data_res_id)
-    if(data_res_id.allow_view==='N')
-    rights()
+    console.log(feedback,"dfghjkl") 
+
+    const handlecheck=(e)=>{
+      setchecked({...checked,[e.target.name]:e.target.value})
+      setchecked(prevState =>({
+      ...prevState,
+    }))
     }
-    }, [props.UserPermission]);
-    /////////////
-    console.log(props.UserPermission,"props.UserPermission")
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
+    function checkValidation(data, key) {
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            feedbackInput[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: feedbackInput[key].validation,
+        };
+        setfeedbackInput((prevState) => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    }
+    const submit=()=>{
+        let feedbackId=Object.values(checked)
+        const feedbackDataId=feedbackId.toString()
+        var mainvalue = {};
+    var targetkeys = Object.keys(feedbackInput);
+    for (var i in targetkeys) {
+        var errorcheck = ValidationLibrary.checkValidation(
+            feedbackInput[targetkeys[i]].value,
+            feedbackInput[targetkeys[i]].validation
+        );
+        feedbackInput[targetkeys[i]].error = !errorcheck.state;
+        feedbackInput[targetkeys[i]].errmsg = errorcheck.msg;
+        mainvalue[targetkeys[i]] = feedbackInput[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter((obj) => feedbackInput[obj].error == true);
+    if(filtererr.length>0){
+    }else{
+          dispatch(InsertFeedback(feedbackInput,feedbackDataId)).then(()=>{
+            HandleCancel()
+          })
+    }
+    setchecked({})
+    setfeedbackInput(prevState =>({
+        ...prevState,
+      }))
+    }
+    function HandleCancel(){
+        let key=["feedback","compansation"]
+        key.map((data)=>{
+            feedbackInput[data].value=""
+        })
+        setfeedbackInput((prevState) => ({
+         ...prevState,
+        }));
+        setchecked({})
     }
 
+    const [saveRights, setSaveRights] = useState([])
+
+    ///***********user permission**********/
+useEffect(() => {
+   if(props.UserPermission.length>0&&props.UserPermission){
+      let data_res_id = props.UserPermission.find((val) => { 
+      return (
+          "Employee Feedback - Save" == val.control
+      ) 
+     })
+     setSaveRights(data_res_id)
+  }
+ 
+  }, [props.UserPermission]);
+ 
+ 
+   // console.log(saveRights,"rights")
+ 
+  function rightsNotification(){
+   notification.success({
+       message: "You are not Authorized. Please Contact Administrator",
+   });
+ }
+ /////////////
     return (
         <div>
-             {/* { permission.allow_view==='Y'&&<div> */}
+           
             <div className="headerpage">Employee Feedback</div>
             <div className="fbContainer">
                 <div className="feedbackSubheading">Which of the following influenced your decision to leave the company?  </div>
                 <div className="checkboxChooser">
-                    <div>
-                        <Checkbox />
-                        <div>Compensation</div>
+                    {feedback.map((data,index)=>
+                
+                    <div key={index}>
+                        <Checkbox checked={checked[data.name]} onChange={handlecheck} name={data.name} value={data.id}/>
+                        <div>{data.name}</div>
                     </div>
-                    <div>
-                        <Checkbox />
-                        <div>New Job</div>
-                    </div>
-                    <div>
-                        <Checkbox />
-                        <div>Personal reasons</div>
-                    </div>
-                    <div>
-                        <Checkbox />
-                        <div>Relocation</div>
-                    </div>
-                    <div>
-                        <Checkbox />
-                        <div>Conflict with works</div>
-                    </div>
-                    <div>
-                        <Checkbox />
-                        <div>Benefits</div>
-                    </div>
-                    <div>
-                        <Checkbox />
-                        <div>Retirement</div>
-                    </div>
-                    <div>
-                        <Checkbox />
-                        <div>Other</div>
-                    </div>
-
+                    
+                    )}
+                    
 
                 </div>
                 <div className="feedbackSubheading">How do you feel about the following?</div>
@@ -81,8 +143,14 @@ function EmployeeFeedback(props) {
                         <div className="reasonBoxseverance">
                             <div className="reasonsSeverance">
                                 <Labelbox type="textarea"
-
+                                  changeData={(data) =>
+                                    checkValidation(data, "feedback")
+                                }
+                                value={feedbackInput.feedback.value}
+                                error={feedbackInput.feedback.error}
+                                errmsg={feedbackInput.feedback.errmsg}
                                 />
+                            
                             </div>
                         </div>
                     </Grid>
@@ -92,20 +160,26 @@ function EmployeeFeedback(props) {
                         <div className="reasonBoxseverance">
                             <div className="reasonsSeverance">
                                 <Labelbox type="textarea"
-
+                                   changeData={(data) =>
+                                    checkValidation(data, "compansation")
+                                }
+                                value={feedbackInput.compansation.value}
+                                error={feedbackInput.compansation.error}
+                                errmsg={feedbackInput.compansation.errmsg}
+                            
                                 />
                             </div>
                         </div>
                     </Grid>
                 </Grid>
                 <div className="feedbacbtn">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?'':rights}/>
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
                 </div>
 
 
             </div>
-            {/* </div> } */}
+          
 
     </div>
     )

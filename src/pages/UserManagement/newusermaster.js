@@ -16,7 +16,7 @@ function NewUserMaster(props){
     const [change, setchange] = useState(false)
     const [UserAddEdit, setUserAddEdit] = useState(false)
     const [UserData, setUserData] = useState({})
-    const [permission, setPermission] = useState([])
+    const [rights, setRights] = useState([])
     const [UserList, setUserList] = useState([])
     function onChange() {
         setchange(!change)
@@ -54,18 +54,18 @@ function NewUserMaster(props){
             emailid: userlist[m].email===0?'0':userlist[m].email,
             usergroup: userlist[m].group_name===0?'0':userlist[m].group_name,
             state: userlist[m].active_flag===1?<div><button className="btnActive">Active</button></div>:<div><button className="btnInActive">InActive</button></div>,
-            action: (
-                <>
-                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditUser(userlist[index])}  />{" "}
-                  <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>onDeleteUser(userlist[index].user_id)} />
-                </>
-              ),
-            //   action: (
+            // action: (
             //     <>
-            //       <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit==='Y'?(onEditUser(userlist[index])):rights())}  />{" "}
-            //       <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_delete==='Y'?(onDeleteUser(userlist[index].user_id)):rights())} />
+            //       <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditUser(userlist[index])}  />{" "}
+            //       <img src={Delete} className="editImage" style={{cursor:'pointer'}} onClick={()=>onDeleteUser(userlist[index].user_id)} />
             //     </>
             //   ),
+              action: (
+                <>
+                  <img src={Edit} className="editImage" style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed'}} onClick={()=>(  rights&&rights.display_control&&rights.display_control==='Y'&&onEditUser(userlist[index]))}  />{" "}
+                  <img src={Delete} className="editImage" style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed'}} onClick={()=>(  rights&&rights.display_control&&rights.display_control==='Y'&&onDeleteUser(userlist[index]))} />
+                </>
+              ),
           };
           Userlist.push(listarray);
         }
@@ -75,18 +75,7 @@ function NewUserMaster(props){
     
       }, [props.getUserList])
 
-    useEffect(() => {
-     if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-        return (
-            "User Master" == val.screen_name
-        ) 
-    })
-    setPermission(data_res_id)
-    }
 
-    }, [props.UserPermission]);
-    console.log(permission,"permission");
     const headCells = [
         { id: 'sno', label: 'S. No' },
         { id: 'username', label: 'User Name' },
@@ -97,18 +86,33 @@ function NewUserMaster(props){
         { id: 'action', label: 'Action' }
     ];
 
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
-
+  ///*****user permission**********/
+  useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Add User - Create" == val.control
+       ) 
+   })
+   setRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+    //  console.log(rights.display_control,"rigths")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
     return(
         <div>
             <div className="UserGroup">
                 <div>User Master</div>
-                <img src={PlusIcon} className="plusicon"  onClick={() => (setUserAddEdit(false),setUsergroupModel(true))} />
-                {/* <img src={PlusIcon} className="plusicon"  onClick={() => ( permission.allow_add==='Y'? (setUserAddEdit(false),setUsergroupModel(true)):rights())} /> */}
+                {/* <img src={PlusIcon} className="plusicon"  onClick={() => (setUserAddEdit(false),setUsergroupModel(true))} /> */}
+                <img src={PlusIcon} className="plusicon" style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed'}}  onClick={() => ( rights&&rights.display_control&&rights.display_control==='Y'&&(setUserAddEdit(false),setUsergroupModel(true)))} />
                 <DynModel modelTitle={UserAddEdit?"EDIT USER":"ADD USER"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} width={1000} 
                  content={UserAddEdit?<UserMasterModal user_data={UserData} closeModel={()=>(setUsergroupModel(false),setUserData({}))}/>:<UserMasterModal user_add={""} closeModel={()=>setUsergroupModel(false)}/>} />
 

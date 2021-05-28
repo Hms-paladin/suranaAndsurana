@@ -1,10 +1,11 @@
 import { GET_EXITSEVERANCE,INSERT_SEVERANCE,GET_RESIGNATION_APPROVAL,INSERT_RESIGNATION,GET_EMPLOYEE_DET} from "../utils/Constants";
-import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC} from '../utils/Constants'
+import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC,VIEW_SEVERANCE,INSERT_FEEDBACK} from '../utils/Constants'
 import {getOtherTask} from './TodoListAction'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import {notification} from 'antd'
 import moment from "moment"
+import { FeedbackOutlined } from "@material-ui/icons";
 
 export const GetSeverance = (emp_id) => async dispatch => {
     console.log("emp_id",emp_id)
@@ -14,7 +15,6 @@ export const GetSeverance = (emp_id) => async dispatch => {
             method: 'POST',
             url: apiurl +'get_severence',
             data:{
-                // "emp_id":localStorage.getItem("empId")
                 emp_id:emp_id
             }
         })
@@ -33,7 +33,7 @@ export const GetEmployeeDetails = (emp_id) => async dispatch => {
 
         axios({
             method: 'POST',
-            url: apiurl +'get_severence',
+            url: apiurl +'get_employee_by_id',
             data:{
                 "emp_id":localStorage.getItem("empId")
             }
@@ -65,10 +65,11 @@ export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
         .then((response) => {
             if(response.data.status===1){
                 notification.success({
-                    message: "Inserted successfully",
+                    message: "Resignation applied successfully",
                 });
             dispatch({type:INSERT_SEVERANCE,payload:response.data.data})
-            dispatch(GetSeverance(emp_id))
+            dispatch(GetEmployeeDetails(emp_id))
+            dispatch(getOtherTask())
             return Promise.resolve();
             }
         })
@@ -100,7 +101,7 @@ export const GetResignationApproval = (SeveranceId) => async dispatch => {
 
 
 export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch => {
-    console.log("sev_Id.severanceId",sev_Id)
+    alert(sev_Id)
     try {
 
         axios({
@@ -128,7 +129,8 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
                 console.log("sss",sev_Id.severanceId)
             // }
             dispatch({type:INSERT_RESIGNATION,payload:true})
-            dispatch(GetResignationApproval({value:sev_Id}))
+            // dispatch(GetResignationApproval(sev_Id))
+            dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
             return Promise.resolve();
         })
@@ -139,6 +141,7 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
 }
 
 export const UpdateItNoc = (checked,emp_id,task) => async dispatch => {
+    
     try {
 
         axios({
@@ -197,7 +200,7 @@ export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
 }
 
 
-export const UpdateHrNoc = (checked,emp_id,task) => async dispatch => {
+export const UpdateHrNoc = (checked,emp_id) => async dispatch => {
     try {
 
         axios({
@@ -221,6 +224,55 @@ export const UpdateHrNoc = (checked,emp_id,task) => async dispatch => {
             return Promise.resolve();
 
               
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const ViewSeverance = (emp_id) => async dispatch => {
+    console.log("emp_id",emp_id)
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'get_severence',
+            data:{
+                "emp_id":localStorage.getItem("empId")
+            }
+        })
+        .then((response) => {
+            dispatch({type:VIEW_SEVERANCE,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+
+export const InsertFeedback = (data,feedbackId) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'insert_feed_back',
+            data:{
+                "employee_id":localStorage.getItem("empId"),
+                "decision_to_leave":feedbackId,
+                "work_environment":data.feedback.value,
+                "compensation":data.compansation.value,
+            }
+        })
+        .then((response) => {
+            if(response.data.status===1){
+                notification.success({
+                message: "Employee feedback inserted successfully",
+                });
+            dispatch({type:INSERT_FEEDBACK,payload:true})
+            return Promise.resolve();
+            }
         })
         
     } catch (err) {

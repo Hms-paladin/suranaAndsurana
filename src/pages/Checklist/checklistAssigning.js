@@ -1,11 +1,37 @@
-import react from "react";
+import react, { useEffect, useState } from 'react';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
 import Grid from "@material-ui/core/Grid";
-
 import './checklists.scss'
+import { notification } from "antd";
+import { useDispatch, connect } from "react-redux";
 
-function checkListAssign() {
+function CheckListAssign(props) {
+    const [saveRights, setSaveRights] = useState([])
+
+    ///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Check List Assigning" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    // console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
+
     return (
         <div>
             <div className="mainHeading">Check List Assigning</div>
@@ -38,7 +64,7 @@ function checkListAssign() {
                 </Grid>
 
                 <div className="checklistAssignBtn">
-                    <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary" />
+                    <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''}/>
                     <CustomButton btnName={"Cancel"} custombtnCSS="custombtn" />
                 </div>
 
@@ -46,5 +72,8 @@ function checkListAssign() {
         </div>
     )
 }
-
-export default checkListAssign;
+const mapStateToProps = (state) =>
+    ({
+        UserPermission: state.UserPermissionReducer.getUserPermission,
+    });
+export default connect(mapStateToProps) (CheckListAssign);

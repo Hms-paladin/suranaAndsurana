@@ -92,6 +92,11 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
                 dispatch(getLeaveForm())
                 return Promise.resolve();
             }
+            else if(response.data.status===0){
+                notification.warning({
+                    message:response.data.msg,
+                }); 
+            }
         });
 
     } catch (err) {

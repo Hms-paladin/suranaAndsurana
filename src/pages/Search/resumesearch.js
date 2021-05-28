@@ -18,7 +18,7 @@ import './search.scss'
 import ResumeForm from '../Resume/resume';
 import Edit from "../../images/editable.svg";
 // import ResumePage from '../Resume/resume'
-
+import { notification } from "antd";
 
 
 const headCells = [
@@ -52,6 +52,9 @@ function Resumesearch(props) {
     const [editResumeRow, setEditResumeRow] = useState({})
     const [candidateViewModel, setCandidateViewModel] = useState(false)
     const [editModel, setEditModel] = useState(false)
+    const [goRights, setGoRights] = useState([])
+    const [creatRights, setCreatRights] = useState([])
+    const [interviewScheduleRights, setInterviewScheduleRights] = useState([])
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -352,7 +355,44 @@ function Resumesearch(props) {
 
         }))
     }
+    ///*****user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission){
+           let data_res_id = props.UserPermission.find((val) => { 
+                return (
+                    "Resume - Create Resume" == val.control 
+                ) 
+            })
+         setCreatRights(data_res_id)
 
+             data_res_id = props.UserPermission.find((val) => { 
+                return (
+                    "Resume - Go" == val.control 
+                ) 
+            })
+        setGoRights(data_res_id)
+
+             data_res_id = props.UserPermission.find((val) => { 
+                return (
+                    "Resume - Interview Details" == val.control 
+                ) 
+        })
+        setInterviewScheduleRights(data_res_id)
+
+       }
+   
+       }, [props.UserPermission]);
+
+
+
+ console.log(creatRights,"rigths")
+
+    function rightsNotification(){
+        notification.success({
+            message: "You are not Authorized. Please Contact Administrator",
+        });
+    }
+/////////////
     return (
         <div>
             <div>
@@ -456,12 +496,14 @@ function Resumesearch(props) {
                         <Grid container item xs={3} >
 
                             <Grid item xs={4}>
-                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
+                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
 
                             </Grid>
                             <Grid item xs={8}>
-                                <Link to='resume'>
-                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"} />
+                                <Link to={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?'search':'resume'}>
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}
+                                    btnDisable={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?true:false}
+                                      />
                                 </Link>
                             </Grid>
                         </Grid>
@@ -471,7 +513,7 @@ function Resumesearch(props) {
                     <EnhancedTable headCells={headCells} rows={rows && rows} />
                 </div>
                 <div className="searchinterviewbtn">
-                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div>
+                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0||!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?true:false} onBtnClick={() =>setModelOpen(true)}  /></div>
                 <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} handleUnCheck={handleUnCheck} />
 
             </div>
@@ -497,7 +539,8 @@ const mapStateToProps = state => ({
     ResumeSearchStatus: state.ResumeSearchStatus,
     GetOptions: state.getOptions,
     GetRowData: state.getResumeSearchRowdata,
-    GetResumeList: state.GetResumeList || []
+    GetResumeList: state.GetResumeList || [],
+    UserPermission: state.UserPermissionReducer.getUserPermission,
 
 })
 

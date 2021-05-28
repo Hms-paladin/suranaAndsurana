@@ -37,16 +37,22 @@ function ResignationApproveval(props) {
        
     }, [props.modelTitles,props.severanceId])
     useEffect(() => {
-        props.GetResignation.map((data)=>{
+        props.GetSeverance.length>0&&props.GetSeverance.map((data)=>{
             setseveranceData({
                 empname:data.name===null?"-":data.name,
                 designation:data.designation===null?"-":data.designation,
                 department:data.department==null?"-":data.department,
                 severanceId:data.severece_id,
-                resignationDate:moment(data.date_of_resignation).format("DD-MMM-YYYY")
+                resignationDate:moment(data.date_of_resignation).format("DD-MMM-YYYY"),
+                res_accepted_on:data.resignation_accepted_on===null?"-":data.resignation_accepted_on,
+                releive_date:data.proposed_date_relieving===null?"-":data.proposed_date_relieving,
+                it_noc_date:data.it_noc_date===null?"-":data.it_noc_date,
+                hr_noc_date:data.hr_noc_date===null?"-":data.hr_noc_date,
+                admin_noc_date:data.admin_noc_date===null?"-":data.admin_noc_date
+
             })
         })
-    },[props.GetResignation])
+    },[props.GetSeverance])
    console.log("props",props)
    function checkValidation(data, key) {
     var errorcheck = ValidationLibrary.checkValidation(
@@ -85,17 +91,23 @@ function ResignationApproveval(props) {
        } if(name==="reject"){
         status=false
        }
-       dispatch(InsertResignation(status,Resignation,props.GetResignation[0]&&props.GetResignation[0].employee_id,severanceData.severanceId)).then(()=>{
+       dispatch(InsertResignation(status,Resignation,props.GetSeverance[0]&&props.GetSeverance[0].employee_id,props.severanceId.severece_id)).then(()=>{
            props.closemodal()
            HandleCancel()
        })
-    }   
+    }  
+    setResignation((prevState) => ({
+        ...prevState,
+    })); 
    }
    function HandleCancel(){
        let key=["accept_date","releive_date"]
        key.map((data)=>{
            Resignation[data].value=""
        })
+       setResignation((prevState) => ({
+        ...prevState,
+       }));
    }
    function HandleChange(){
        setChecked(!checked)
@@ -117,6 +129,7 @@ function ResignationApproveval(props) {
        else if(task==="HR NOC"){
         dispatch(UpdateHrNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
          props.closemodal()
+         setChecked(false)
         })
        }
        
@@ -190,7 +203,7 @@ function ResignationApproveval(props) {
             </div>}
             {(props.TaskModelTitle==="HR NOC" || props.TaskModelTitle === "IT NOC" || props.TaskModelTitle === "ADMIN NOC") && <div className="appraisalBtn">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={()=>Update_Noc(props.TaskModelTitle)}/>
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={()=>props.closemodal()}/>
             </div>}
 
 
@@ -199,29 +212,29 @@ function ResignationApproveval(props) {
                     <div className="severancemodelsContainer">
                         <div>
                             <div>Date of resignation</div>
-                            <div className="severanceData">12-May-2021</div>
+                            <div className="severanceData">{severanceData.resignationDate}</div>
                         </div>
                         <div>
                             <div>Resignation accepted on</div>
-                            <div className="severanceData">12-May-2021</div>
+                            <div className="severanceData">{severanceData.res_accepted_on}</div>
                         </div>
                         <div>
                             <div>Proposed date for relieving</div>
-                            <div className="severanceData">12-May-2021</div>
+                            <div className="severanceData">{severanceData.releive_date}</div>
                         </div>
                     </div>
                     <div className="severancemodelsContainer">
                         <div>
                             <div>IT Date of NOC</div>
-                            <div className="severanceData">12-May-2021</div>
+                            <div className="severanceData">{severanceData.it_noc_date}</div>
                         </div>
                         <div>
                             <div>HR Date of NOC</div>
-                            <div className="severanceData">12-May-2021</div>
+                            <div className="severanceData">{severanceData.hr_noc_date}</div>
                         </div>
                         <div>
                             <div>Admin Date of NOC</div>
-                            <div className="severanceData">12-May-2021</div>
+                            <div className="severanceData">{severanceData.admin_noc_date}</div>
                         </div>
                     </div>
 
