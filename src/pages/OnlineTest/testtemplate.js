@@ -7,7 +7,7 @@ import Edit from "../../images/editable.svg";
 import Delete from '../../images/dashboard/delete.svg';
 import './onlinetest.scss'
 import { getCategory, getSubCategory } from '../../actions/MasterDropdowns'
-import {InsertTestTemplate} from '../../actions/TestTemplateAction'
+import { InsertTestTemplate } from '../../actions/TestTemplateAction'
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 
@@ -172,12 +172,12 @@ function TestTemplate(props) {
         })
     }
 
-    const Cancelfunc=()=>{
+    const Cancelfunc = () => {
         handleCancel()
         setCount(0)
         setItemKeys(["obj0"])
         setdynarr([])
-        setList({["obj0"]:dynObjs})
+        setList({ ["obj0"]: dynObjs })
         setmaxques(0)
     }
 
@@ -193,70 +193,90 @@ function TestTemplate(props) {
         // setMinusCount(minusCount+1)
     }
 
-    //Category function
-    function categoryfunc(item, key, data, i) {
-        setInd(i)
-        dispatch((getSubCategory(item)))
+    function DynValidation(item, key, data, i) {
         checkValidation(item, key);
-        list[data]["category"].value = item
+        list[data][key].value = item
         var errorcheck = ValidationLibrary.checkValidation(
             item,
-            list[data]["category"].validation
+            list[data][key].validation
         );
-        list[data]["category"].error = !errorcheck.state;
-        list[data]["category"].errmsg = errorcheck.msg;
-        list[data]["category"].validation = list[data]["category"].validation;
-    }
-
-    //SubCategory function
-    function subcategoryfunc(item, key, data, i) {
-        checkValidation(item, key);
-        console.log(item, "item")
-        list[data]["subcategory"].value = item;
-        var errorcheck = ValidationLibrary.checkValidation(
-            item,
-            list[data]["subcategory"].validation
-        );
-        list[data]["subcategory"].error = !errorcheck.state;
-        list[data]["subcategory"].errmsg = errorcheck.msg;
-        list[data]["subcategory"].validation = list[data]["subcategory"].validation;
-    }
-
-    function maxquesval() {
-
-        console.log(template.maxques.value, "template.maxques.value")
-        let total = 0;
-        var m = Object.keys(list)
-        m.forEach(element => {
-            total += parseInt(list[element]["no_of_ques"].value)
-        });
-        if (total > template.maxques.value) { setmaxques(1) }
-        else if(total == template.maxques.value){setmaxques(2)}
-        else if(total < template.maxques.value){setmaxques(3)}
-        else { setmaxques(0) }
+        list[data][key].error = !errorcheck.state;
+        list[data][key].errmsg = errorcheck.msg;
+        list[data][key].validation = list[data][key].validation;
+        if (key == "category") {
+            setInd(i)
+            dispatch((getSubCategory(item)))
+        }
+        if (key == "no_of_ques") {
+            maxquesval()
+        }
 
     }
 
-    //No of Questions function
-    function noq_func(item, key, data, i) {
+    // //Category function
+    // function categoryfunc(item, key, data, i) {
+    //     setInd(i)
+    //     dispatch((getSubCategory(item)))
+    //     checkValidation(item, key);
+    //     list[data]["category"].value = item
+    //     var errorcheck = ValidationLibrary.checkValidation(
+    //         item,
+    //         list[data]["category"].validation
+    //     );
+    //     list[data]["category"].error = !errorcheck.state;
+    //     list[data]["category"].errmsg = errorcheck.msg;
+    //     list[data]["category"].validation = list[data]["category"].validation;
+    // }
 
-        checkValidation(item, key);
-        list[data]["no_of_ques"].value = item;
-        var errorcheck = ValidationLibrary.checkValidation(
-            item,
-            list[data]["no_of_ques"].validation
-        );
-        list[data]["no_of_ques"].error = !errorcheck.state;
-        list[data]["no_of_ques"].errmsg = errorcheck.msg;
-        list[data]["no_of_ques"].validation = list[data]["no_of_ques"].validation;
-        maxquesval()
-    }
+    // //SubCategory function
+    // function subcategoryfunc(item, key, data, i) {
+    //     checkValidation(item, key);
+    //     console.log(item, "item")
+    //     list[data]["subcategory"].value = item;
+    //     var errorcheck = ValidationLibrary.checkValidation(
+    //         item,
+    //         list[data]["subcategory"].validation
+    //     );
+    //     list[data]["subcategory"].error = !errorcheck.state;
+    //     list[data]["subcategory"].errmsg = errorcheck.msg;
+    //     list[data]["subcategory"].validation = list[data]["subcategory"].validation;
+    // }
+
+    // function maxquesval() {
+
+    //     console.log(template.maxques.value, "template.maxques.value")
+    //     let total = 0;
+    //     var m = Object.keys(list)
+    //     m.forEach(element => {
+    //         total += parseInt(list[element]["no_of_ques"].value)
+    //     });
+    //     if (total > template.maxques.value) { setmaxques(1) }
+    //     else if (total == template.maxques.value) { setmaxques(2) }
+    //     else if (total < template.maxques.value) { setmaxques(3) }
+    //     else { setmaxques(0) }
+
+    // }
+
+    // //No of Questions function
+    // function noq_func(item, key, data, i) {
+
+    //     checkValidation(item, key);
+    //     list[data]["no_of_ques"].value = item;
+    //     var errorcheck = ValidationLibrary.checkValidation(
+    //         item,
+    //         list[data]["no_of_ques"].validation
+    //     );
+    //     list[data]["no_of_ques"].error = !errorcheck.state;
+    //     list[data]["no_of_ques"].errmsg = errorcheck.msg;
+    //     list[data]["no_of_ques"].validation = list[data]["no_of_ques"].validation;
+    //     maxquesval()
+    // }
 
 
     function plusfunc() {
         // console.log(count, minusCount, list, "listData")
         // let data = "obj" + (count - minusCount);
-        let o = Object.keys(list)[Object.keys(list).length - 1]      
+        let o = Object.keys(list)[Object.keys(list).length - 1]
         var m = Object.keys(list[o])
         m.forEach(element => {
             var errorcheck = ValidationLibrary.checkValidation(
@@ -272,7 +292,7 @@ function TestTemplate(props) {
             ...prevState,
         }))
         if (filtererr.length > 0) { }
-        else if (maxques == 1 || maxques==2) { }
+        else if (maxques == 1 || maxques == 2) { }
         else {
             CancelDynObjs()
             setCount(count + 1)
@@ -317,13 +337,13 @@ function TestTemplate(props) {
             template[targetkeys[i]].errmsg = errorcheck.msg
         }
         var filtererr = targetkeys.filter((data) => template[data].error === true)
-        if (filtererr.length > 0) {}
-        else if(maxques==1 || maxques==3){}
+        if (filtererr.length > 0) { }
+        else if (maxques == 1 || maxques == 3) { }
         else {
             let postarr = []
-            let tempname=template["tempname"].value
-            let maxques=template["maxques"].value
-            let duration=template["duration"].value
+            let tempname = template["tempname"].value
+            let maxques = template["maxques"].value
+            let duration = template["duration"].value
             Itemkeys.map((data) => {
                 postarr.push(
                     {
@@ -332,13 +352,13 @@ function TestTemplate(props) {
                         NoOfquestions: list[data]["no_of_ques"].value,
                     })
             });
-            dispatch(InsertTestTemplate(tempname,postarr,maxques,duration))
+            dispatch(InsertTestTemplate(tempname, postarr, maxques, duration))
             Cancelfunc()
         }
         setTemplate(prevState => ({
             ...prevState,
         }));
-       
+
     }
     console.log("list", list)
     console.log("dynarr", dynarr)
@@ -385,7 +405,7 @@ function TestTemplate(props) {
                                     <div className="TThead">Category</div>
                                     <Labelbox type="select"
                                         dropdown={categoryddl.categorylist}
-                                        changeData={(item) => categoryfunc(item, "category", data, index)}
+                                        changeData={(item) => DynValidation(item, "category", data, index)}
                                         value={list[data]["category"].value == "" ? template.category.value : list[data]["category"].value}
                                         error={list[data]["category"].error == null ? template.category.error : list[data]["category"].error}
                                         errmsg={list[data]["category"].errmsg == null ? template.category.errmsg : list[data]["category"].errmsg}></Labelbox>
@@ -395,7 +415,7 @@ function TestTemplate(props) {
                                     <Labelbox type="select"
                                         dropdown={dynarr[index]}
                                         value={list[data]["subcategory"].value == "" ? template.subcategory.value : list[data]["subcategory"].value}
-                                        changeData={(item) => subcategoryfunc(item, "subcategory", data, index)}
+                                        changeData={(item) => DynValidation(item, "subcategory", data, index)}
                                         error={list[data]["subcategory"].error == null ? template.subcategory.error : list[data]["subcategory"].error}
                                         errmsg={list[data]["subcategory"].errmsg == null ? template.subcategory.errmsg : list[data]["subcategory"].errmsg}></Labelbox>
                                 </Grid>
@@ -403,12 +423,12 @@ function TestTemplate(props) {
                                     <div className="TThead">No .of Questions</div>
                                     <Labelbox type="text"
                                         value={list[data]["no_of_ques"].value == "" ? template.no_of_ques.value : list[data]["no_of_ques"].value}
-                                        changeData={(item) => noq_func(item, "no_of_ques", data, index)}
+                                        changeData={(item) => DynValidation(item, "no_of_ques", data, index)}
                                         error={list[data]["no_of_ques"].error == null ? template.no_of_ques.error : list[data]["no_of_ques"].error}
                                         errmsg={list[data]["no_of_ques"].errmsg == null ? template.no_of_ques.errmsg : list[data]["no_of_ques"].errmsg}></Labelbox>
                                 </Grid>
                                 <Grid item xs={2} container direction="row" justify="center" alignItems="center">
-                                    {index == 0 ? <><img src={PlusIcon} className="plusicon" onClick={() => plusfunc()} />{<div style={{ fontSize: "10px", color: "red",textAlign:"center" }}>{maxques==1&&"Maximum questions exceeds"||maxques==2&&"Maximum questions reached"||maxques==3&&"Maximum questions not reached yet"}</div>}</> :
+                                    {index == 0 ? <><img src={PlusIcon} className="plusicon" onClick={() => plusfunc()} />{<div style={{ fontSize: "10px", color: "red", textAlign: "center" }}>{maxques == 1 && "Maximum questions exceeds" || maxques == 2 && "Maximum questions reached" || maxques == 3 && "Maximum questions not reached yet"}</div>}</> :
                                         <img src={Delete} className="plusicon" onClick={() => deletecomp(data, index)} />}
                                 </Grid>
                             </Grid>
