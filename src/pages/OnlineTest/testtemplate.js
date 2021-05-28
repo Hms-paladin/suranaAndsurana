@@ -348,16 +348,16 @@ useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Test Template - Submit" == val.control 
+           "Test - Submit" == val.control 
        ) 
       })
       setSaveRights(data_res_id)
    }
-  
+   console.log(props.UserPermission[24],"arr")
    }, [props.UserPermission]);
   
   /////////////
-    console.log(dynarr,"arr")
+   
    
 
     return (
