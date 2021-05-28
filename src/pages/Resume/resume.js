@@ -961,34 +961,7 @@ const ResumePage = (props) => {
                         <div>{data.cgpa || "-"}</div>
                       </div>
                     </div>
-                    // <div className="educationKeyValue">
-                    //   <div className="educationKey">
-                    //     <div>Qualification</div>
-                    //     <div>Insitution/University</div>
-                    //     <div>Year of Passing</div>
-                    //     <div>Percentage/CGPA</div>
-                    //   </div>
-                    //   <div className="educationValue">
-                    //     <div>
-                    //       {resumeGetList.qualificationList.map((getName) => {
-                    //         if (data.qualification === getName.id) {
-                    //           return getName.value || "-";
-                    //         }
-                    //       })}
-                    //     </div>
-                    //     <div>{data.institution || "-"}</div>
-                    //     <div>{data.year_of_passing || "-"}</div>
-                    //     <div>{data.cgpa || "-"}</div>
-                    //   </div>
-                    //   <EditIcon
-                    //     fontSize="small"
-                    //     onClick={() => showEditEducationModel(index)}
-                    //   />
-                    //   <DeleteIcon
-                    //     fontSize="small"
-                    //     onClick={() => showDeleteEducationModel(index)}
-                    //   />
-                    // </div>
+                 
                   );
                 })}
               </div>
@@ -1318,7 +1291,7 @@ const ResumePage = (props) => {
                               }
                             })}
                           </div>
-                          <div>{data.company_name}</div>
+                          <div title={data.company_name} className="companyname">{data.company_name}</div>
                           <div>
 
                             {" "}
