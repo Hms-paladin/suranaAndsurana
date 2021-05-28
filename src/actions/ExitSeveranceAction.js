@@ -101,7 +101,6 @@ export const GetResignationApproval = (SeveranceId) => async dispatch => {
 
 
 export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch => {
-    alert(sev_Id)
     try {
 
         axios({
@@ -188,7 +187,7 @@ export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
                 message: "ADMIN NOC approved successfully",
                 });
             dispatch({type:UPDATE_ADMINNOC,payload:true})
-            dispatch(GetSeverance({emp_id}))
+            dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
             return Promise.resolve();
             }
@@ -218,7 +217,7 @@ export const UpdateHrNoc = (checked,emp_id) => async dispatch => {
                 message: "HR NOC approved successfully",
                 });
             dispatch({type:UPDATE_HRNOC,payload:true})
-            dispatch(GetSeverance({emp_id}))
+            dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
             }
             return Promise.resolve();
