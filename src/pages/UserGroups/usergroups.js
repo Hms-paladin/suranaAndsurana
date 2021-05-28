@@ -154,7 +154,7 @@ setUsergroupmodel(flg,obj);
 
     if (filtererr.length >0) {
     } else {
-    var groups=[userForm.group.valueById];
+    var groups=userForm.group.valueById;
     groups.push()
     var data = {
       "emp_id": userForm.employee.value,
@@ -165,6 +165,11 @@ setUsergroupmodel(flg,obj);
       handleCancel();
     })
   }
+  setuserForm((prevState) => ({
+    ...prevState,
+    }));
+
+
 
   }
 
@@ -252,7 +257,7 @@ setcheckedGroups(d);
           }
         }
       })
-      dynObj.valueById = multipleIdList.toString()
+      dynObj.valueById = multipleIdList
     }
     // (end)
 

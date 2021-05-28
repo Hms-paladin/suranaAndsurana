@@ -1,7 +1,7 @@
 import {GET_EXITSEVERANCE,GET_RESIGNATION_APPROVAL,UPDATE_ITNOC,GET_EMPLOYEE_DET,
     UPDATE_ADMINNOC,UPDATE_HRNOC,VIEW_SEVERANCE} from '../utils/Constants.js'
 const intialState = {
-    GetSeverance:[],getResignation:[],Update_ItNoc:[],EmployeeDetails:[],Update_AdminNoc:[],ViewSeverance:[]
+    GetSeverance:[],getResignation:[],Update_ItNoc:[],EmployeeDetails:[],Update_AdminNoc:[],ViewSeverance:[],Update_HrNoc:[]
 }
 
 export default function (state = intialState, action) {

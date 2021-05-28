@@ -29,7 +29,7 @@ function ServeranceModal(props){
                 hr_noc_date:moment(data.hr_noc_date===null?"-":data.hr_noc_date).format("DD-MMM-YYYY"),
                 admin_noc_date:moment(data.admin_noc_date===null?"-":data.admin_noc_date).format("DD-MMM-YYYY"),
                 it_noc_by:data.it_noc_by===null?"-":data.it_noc,
-                hr_noc_by:data.hr_noc_by===null?"-":data.hr_noc_,
+                hr_noc_by:data.hr_noc_by===null?"-":data.hr_noc,
                 admin_noc_by:data.admin_noc_by===null?"-":data.admin_noc,
                 actual_date_relieving:moment(data.actual_date_relieving==="Invalid date"?"-":data.actual_date_relieving).format("DD-MMM-YYYY")
 
@@ -74,11 +74,11 @@ function ServeranceModal(props){
                     <div>HR NOC By</div>
                 </div>
                 <div className="NOC_values">
-                    <div>{severanceData.it_noc_date}</div>
+                    <div>{severanceData.it_noc_date==="Invalid date"?"-":severanceData.it_noc_date}</div>
                     <div >{severanceData.it_noc_by}</div>
-                    <div className="adminnoc">{severanceData.admin_noc_date}</div>
+                    <div className="adminnoc">{severanceData.admin_noc_date==="Invalid date"?"-":severanceData.admin_noc_date}</div>
                     <div>{severanceData.admin_noc_by}</div>
-                    <div>{severanceData.hr_noc_date}</div>
+                    <div>{severanceData.hr_noc_date==="Invalid date"?"-":severanceData.hr_noc_date}</div>
                     <div>{severanceData.hr_noc_by}</div>
                 </div>
             </div>
@@ -87,7 +87,7 @@ function ServeranceModal(props){
                     <div>Actual Date Of Relieving</div>
                 </div>
                 <div className="container_values">
-                    <div>{severanceData.actual_date_relieving}</div>
+                    <div>{severanceData.actual_date_relieving==="Invalid date"?"-":severanceData.actual_date_relieving}</div>
                 </div>
             </div>
             <div style={{display:"flex",justifyContent:"center",alignItems:"center",paddingBottom: 10}}>
