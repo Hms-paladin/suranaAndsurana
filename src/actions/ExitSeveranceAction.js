@@ -1,5 +1,5 @@
 import { GET_EXITSEVERANCE,INSERT_SEVERANCE,GET_RESIGNATION_APPROVAL,INSERT_RESIGNATION,GET_EMPLOYEE_DET} from "../utils/Constants";
-import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC,VIEW_SEVERANCE,INSERT_FEEDBACK} from '../utils/Constants'
+import {UPDATE_ITNOC,UPDATE_HRNOC,UPDATE_ADMINNOC,VIEW_SEVERANCE,INSERT_FEEDBACK,UPDATE_RELIEVING} from '../utils/Constants'
 import {getOtherTask} from './TodoListAction'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -157,7 +157,7 @@ export const UpdateItNoc = (checked,emp_id,task) => async dispatch => {
                 notification.success({
                 message: "IT NOC approved successfully",
                 });
-            dispatch({type:UPDATE_ITNOC,payload:true})
+            dispatch({type:UPDATE_ITNOC,payload:response.data.status})
             dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
             return Promise.resolve();
@@ -176,9 +176,10 @@ export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
             method: 'POST',
             url: apiurl +'update_admin_noc',
             data:{
+
                 "employee_id":emp_id,
-                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
-                "it_noc_by":checked===true?localStorage.getItem("empId"):""
+                "admin_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "admin_noc_by":checked===true?localStorage.getItem("empId"):""
             }
         })
         .then((response) => {
@@ -186,7 +187,7 @@ export const UpdateAdminNoc = (checked,emp_id,task) => async dispatch => {
                 notification.success({
                 message: "ADMIN NOC approved successfully",
                 });
-            dispatch({type:UPDATE_ADMINNOC,payload:true})
+            dispatch({type:UPDATE_ADMINNOC,payload:response.data.status})
             dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
             return Promise.resolve();
@@ -206,9 +207,10 @@ export const UpdateHrNoc = (checked,emp_id) => async dispatch => {
             method: 'POST',
             url: apiurl +'update_hr_noc',
             data:{
+
                 "employee_id":emp_id,
-                "it_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
-                "it_noc_by":checked===true?localStorage.getItem("empId"):""
+                "hr_noc_date":checked===true?moment().format('YYYY-MM-DD HH:m:s'):"",
+                "hr_noc_by":checked===true?localStorage.getItem("empId"):""
             }
         })
         .then((response) => {
@@ -216,7 +218,7 @@ export const UpdateHrNoc = (checked,emp_id) => async dispatch => {
                 notification.success({
                 message: "HR NOC approved successfully",
                 });
-            dispatch({type:UPDATE_HRNOC,payload:true})
+            dispatch({type:UPDATE_HRNOC,payload:response.data.status})
             dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
             }
@@ -272,6 +274,38 @@ export const InsertFeedback = (data,feedbackId) => async dispatch => {
             dispatch({type:INSERT_FEEDBACK,payload:true})
             return Promise.resolve();
             }
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+
+
+export const UpdateReleiving = (data,emp_id) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'insert_final_relieving',
+            data:{
+                "employee_id":emp_id,
+                "actual_date_relieving":data.actualdate_relieving.value
+            }
+        })
+        .then((response) => {
+            if(response.data.status===1){
+                notification.success({
+                message: "Final Relieving Accepted",
+                });
+            dispatch({type:UPDATE_RELIEVING,payload:response.data.status})
+            dispatch(GetSeverance(emp_id))
+            dispatch(getOtherTask())
+            }
+            return Promise.resolve();
+
+              
         })
         
     } catch (err) {

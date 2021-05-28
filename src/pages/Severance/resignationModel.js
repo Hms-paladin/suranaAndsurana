@@ -6,7 +6,7 @@ import { Checkbox } from 'antd'
 import {useDispatch,connect} from 'react-redux'
 import moment from 'moment'
 import {GetResignationApproval,InsertResignation,GetSeverance,
-    UpdateItNoc,UpdateAdminNoc,UpdateHrNoc} from '../../actions/ExitSeveranceAction'
+    UpdateItNoc,UpdateAdminNoc,UpdateHrNoc,UpdateReleiving} from '../../actions/ExitSeveranceAction'
 import './severance.scss';
 import ValidationLibrary from "../../helpers/validationfunction";
 import severance from './severance';
@@ -14,6 +14,7 @@ import severance from './severance';
 function ResignationApproveval(props) {
     const [modeltitles, setModeltitles] = useState()
     const [severanceData,setseveranceData]=useState([])
+    const [Datehide,setDatehide]=useState(new Date())
     const [checked, setChecked] = useState(false)
     const [Resignation,setResignation]=useState({
         accept_date: {
@@ -28,6 +29,12 @@ function ResignationApproveval(props) {
             error: null,
             errmsg: null,
         },
+        actualdate_relieving:{
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        }
     })
     let dispatch=useDispatch()
     useEffect(() => {
@@ -44,17 +51,19 @@ function ResignationApproveval(props) {
                 department:data.department==null?"-":data.department,
                 severanceId:data.severece_id,
                 resignationDate:moment(data.date_of_resignation).format("DD-MMM-YYYY"),
-                res_accepted_on:data.resignation_accepted_on===null?"-":data.resignation_accepted_on,
-                releive_date:data.proposed_date_relieving===null?"-":data.proposed_date_relieving,
-                it_noc_date:data.it_noc_date===null?"-":data.it_noc_date,
-                hr_noc_date:data.hr_noc_date===null?"-":data.hr_noc_date,
-                admin_noc_date:data.admin_noc_date===null?"-":data.admin_noc_date
-
+                res_accepted_on:moment(data.resignation_accepted_on===null?"-":data.resignation_accepted_on).format("DD-MMM-YYYY"),
+                releive_date:moment(data.proposed_date_relieving===null?"-":data.proposed_date_relieving).format("DD-MMM-YYYY"),
+                it_noc_date:moment(data.it_noc_date===null?"-":data.it_noc_date).format("DD-MMM-YYYY"),
+                hr_noc_date:moment(data.hr_noc_date===null?"-":data.hr_noc_date).format("DD-MMM-YYYY"),
+                admin_noc_date:moment(data.admin_noc_date===null?"-":data.admin_noc_date).format("DD-MMM-YYYY")
             })
         })
     },[props.GetSeverance])
    console.log("props",props)
    function checkValidation(data, key) {
+       if(key==="accept_date"){
+        setDatehide(data)
+       }
     var errorcheck = ValidationLibrary.checkValidation(
         data,
         Resignation[key].validation
@@ -101,7 +110,7 @@ function ResignationApproveval(props) {
     })); 
    }
    function HandleCancel(){
-       let key=["accept_date","releive_date"]
+       let key=["accept_date","releive_date","actualdate_relieving"]
        key.map((data)=>{
            Resignation[data].value=""
        })
@@ -120,14 +129,20 @@ function ResignationApproveval(props) {
         setChecked(false)
        })
       }
-      else if(task==="ADMIN NOC"){
+       if(task==="ADMIN NOC"){
         dispatch(UpdateAdminNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
          props.closemodal()
          setChecked(false)
         })
        }
-       else if(task==="HR NOC"){
+        if(task==="HR NOC"){
         dispatch(UpdateHrNoc(checked,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
+         props.closemodal()
+         setChecked(false)
+        })
+       }
+       if(task==="Final Relieving"){
+        dispatch(UpdateReleiving(Resignation,props.GetSeverance[0]&&props.GetSeverance[0].employee_id)).then(()=>{
          props.closemodal()
          setChecked(false)
         })
@@ -175,6 +190,7 @@ function ResignationApproveval(props) {
                             changeData={(data) =>
                                 checkValidation(data, "accept_date")
                             }
+                            minDate={new Date()}
                             value={Resignation.accept_date.value}
                             error={Resignation.accept_date.error}
                             errmsg={Resignation.accept_date.errmsg}
@@ -188,6 +204,7 @@ function ResignationApproveval(props) {
                             changeData={(data) =>
                                 checkValidation(data, "releive_date")
                             }
+                            minDate={Datehide}
                             value={Resignation.releive_date.value}
                             error={Resignation.releive_date.error}
                             errmsg={Resignation.releive_date.errmsg}
@@ -207,7 +224,7 @@ function ResignationApproveval(props) {
             </div>}
 
 
-            { modeltitles === "Final Relieving" &&
+            { props.TaskModelTitle === "Final Relieving" &&
                 <>
                     <div className="severancemodelsContainer">
                         <div>
@@ -241,13 +258,21 @@ function ResignationApproveval(props) {
                     <div className="finalmodeldate">
                         <div className="appraisalFieldheading"> Actual Date of relieving</div>
                         <div>
-                            <Labelbox type="datepicker" />
+                            <Labelbox type="datepicker"
+                                 changeData={(data) =>
+                                    checkValidation(data, "actualdate_relieving")
+                                }
+                                minDate={new Date()}
+                                value={Resignation.actualdate_relieving.value}
+                                error={Resignation.actualdate_relieving.error}
+                                errmsg={Resignation.actualdate_relieving.errmsg}
+                            />
                         </div>
                     </div>
 
                     <div className="appraisalBtn">
-                        <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
-                        <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                        <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={()=>Update_Noc(props.TaskModelTitle)}/>
+                        <CustomButton btnName={"Cancel"} custombtnCSS="custom_save"  onBtnClick={()=>props.closemodal()}/>
                     </div>
 
                 </>

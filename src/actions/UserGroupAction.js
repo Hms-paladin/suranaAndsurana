@@ -147,7 +147,7 @@ export const InsertGroupControlMaster = (userForm) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: " inserted Successfully",
+                    message: " Inserted successfully",
                 });
               }
                 else if(response.data.status===0){

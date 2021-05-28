@@ -198,6 +198,9 @@ const GroupControl = (props) => {
       })
   
     }
+    setuserForm(prevState => ({
+      ...prevState,
+    }));
   }
 
     const handleCancel = () => {
@@ -243,7 +246,7 @@ const GroupControl = (props) => {
             }
           }
         })
-        dynObj.valueById = multipleIdList.toString()
+        dynObj.valueById = multipleIdList
       }
       // (end)
   
