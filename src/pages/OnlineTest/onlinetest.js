@@ -144,21 +144,21 @@ function OnlineTest(props) {
         }));
     };
 
- ///***********user permission**********/
- const [saveRights, setSaveRights] = useState([])
- useEffect(() => {
-     if(props.UserPermission.length>0&&props.UserPermission){
-        let data_res_id = props.UserPermission.find((val) => { 
-        return (
-            "Online Test - Submit" == val.control 
-        ) 
-       })
-       setSaveRights(data_res_id)
-    }
-   
+    ///***********user permission**********/
+    const [saveRights, setSaveRights] = useState([])
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Online Test - Submit" == val.control
+                )
+            })
+            setSaveRights(data_res_id)
+        }
+
     }, [props.UserPermission]);
-   
-   /////////////
+
+    /////////////
     return (
         <div>
             <div className="AQTitle">Online Test</div>
@@ -190,8 +190,8 @@ function OnlineTest(props) {
                     </Grid>
                 </Grid>
                 <div id="TTbtns">
-                    <CustomButton btnName={"Submit"} btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
+                    <CustomButton btnName={"Submit"} btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
                     <DynModel modelTitle="Online Test Instructions" handleChangeModel={instModal} handleChangeCloseModel={(bln) => setInstModal(bln)} width={700}
                         content={<InstructionModal resumeId={resumeId} />} closeModel={() => setInstModal(false)} />
                 </div>

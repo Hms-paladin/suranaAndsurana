@@ -13,21 +13,21 @@ import { useParams } from "react-router-dom";
 import { GettemplateQuetions } from '../../actions/OnlineTestAction';
 import { useDispatch, connect } from "react-redux";
 import { SettingsBackupRestore } from '@material-ui/icons';
-const rounded = Math.round(moment().minute() / 15) * 15;
 
 function OnlineQA(props) {
     const dispatch = useDispatch();
     const [value, setValue] = React.useState('');
-    const no_of_questions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const no_of_questions = ["apple", "orange", "mango"];
     // const [pathname, setPathName] = useState(window.location.pathname)
     const [text, setText] = useState()
-    const [Hours, setHours] = useState()
-
+    const [ques_no, setQues_no] = useState()
+    const [btnchange, setBtnchange] = useState(false)
+    const [increament, setIncreament] = useState(1)
     const runTime = useRef({
         runSec: 0, runMin: 0
     });
     const setCount = useRef({
-        count:0
+        count: 0
     })
 
 
@@ -54,9 +54,9 @@ function OnlineQA(props) {
     useEffect(() => {
 
         let myInterval = setInterval(() => {
-        console.log(props.GettemplateQuetions[0]?.Duration,setCount.current.count,runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
+            console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
 
-            if (runTime.current.runMin > setCount.current.count - 1 ) {
+            if (runTime.current.runMin > setCount.current.count - 1) {
                 clearInterval(myInterval);
                 // runTime.current.runMin += 1
                 // runTime.current.runSec = 0
@@ -72,36 +72,6 @@ function OnlineQA(props) {
         }, 1000)
 
     }, []);
-
-    // let myInterval = setInterval(() => {
-    //     if (this.state.tempo >= 5) {
-    //       clearInterval(myInterval);
-    //       this.props.navigation.navigate('Sobre')
-    //     } else {
-    //       this.setState({tempo: this.state.tempo+1});
-    //     }
-    //   }, 1000)
-
-    // useEffect(() => {
-
-    //     if (runTime.current.runSec === 9) {
-    //         alert("test")
-    //         clearInterval(() => {
-    //             test1()
-
-    //         })
-
-    //     }
-    // }, [])
-
-
-
-    console.log(text, "texttext")
-
-    function startTimer() {
-        var h = moment().add(rounded, 0, 'minutes', 'seconds').format('mm:ss');
-        setHours(h);
-    }
 
 
     const test1 = useCallback(() => {
@@ -123,11 +93,35 @@ function OnlineQA(props) {
 
     }, [])
 
-    const test2 = () => {
 
+    // useEffect(() => {
+
+    // }, [])
+
+    const submitAnswer = () => {
+        setBtnchange(true)
+        let testvalue = no_of_questions[increament]
+        setQues_no(testvalue)
+        setIncreament(increament + 1)
     }
 
 
+    // const mapingdata = () => {
+
+
+    //     no_of_questions.map((data, index) => {
+    //         // let testvalue = no_of_questions.find((val) => {
+    //         console.log(data, "no_of_questions")
+
+    //         // return (
+    //         //     val == val.id
+    //         // )
+    //         // })
+    //     })
+
+    // }
+
+    console.log(ques_no, "setQues_no")
 
     return (
         <div>
@@ -135,7 +129,7 @@ function OnlineQA(props) {
             <div className="online_qa">
                 <div className="QAPanel">
                     <div className="QAContainer">
-                        <div id="QAcount">Q.2 | Question 2 of {templateRowdata[0]?.testQuestionDetails.length}</div>
+                        <div id="QAcount">Q.2| Question 2 of {templateRowdata[0]?.testQuestionDetails.length}</div>
                         <div id="QAduration">
                             {text + " Mins"}
                         </div>
@@ -153,14 +147,17 @@ function OnlineQA(props) {
                     </div>
 
                     <div id="TTbtns">
-                        <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test1} />
-                        <CustomButton btnName={"Save & Exit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test2} />
+                        {btnchange &&
+                            <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test1} />
+
+                        }
+                        <CustomButton btnName={"Save "} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => submitAnswer()} />
                     </div>
                     <div className="QAStatusPane"></div>
                 </div>
                 <div className="question_traverse">
                     <div className="question_flows">
-                        {no_of_questions.map(noq => <div>{noq}</div>)}
+                        {no_of_questions.map(noq => <div>{noq.name}</div>)}
                     </div>
                     <div className="color_initmation">
                         <div className="color_circles">

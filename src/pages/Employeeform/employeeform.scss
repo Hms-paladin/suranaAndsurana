@@ -81,6 +81,19 @@
 .employeeform_row7 div{
     // margin: 0px 5px;
     width: 18%;
+    .formdiv .MuiFormControl-marginNormal button, .formdiv .MuiFormControl-marginNormal path {
+        color: #023e7d;
+        z-index: 1;
+        /* padding: 0px; */
+        /* margin: 7px; */
+        position: absolute;
+        right: 6px;
+    }
+
+    .formdiv .MuiInputBase-inputAdornedEnd {
+        width: 158%;
+       
+    }
 }
 .employeeform_row7 div div{
     width: 100%;
@@ -283,4 +296,39 @@
 
 .lab_mediauploads .clinicmedia_upload {
     margin-bottom: 4px !important;
+}
+
+// employee list
+
+.employeerows{
+    display: flex;
+    justify-content: flex-start;
+    padding: 6px;
+    font-size: 13px;
+    color: #969090;
+     >div{
+        width: 12%;
+        margin-right: 5px;
+    }
+    >div:nth-child(1){
+        width:58px;
+    }
+    >div:nth-child(2){
+        width:148px;
+    }
+    >div:nth-child(3){
+        width:144px;
+    }
+    >div:nth-child(4){
+        width:109px;
+    }
+    >div:nth-child(5){
+        width:110px;
+    }
+    >div:nth-child(6){
+        width:109px;
+    }
+    >div:nth-child(7){
+        width:108px;
+    }
 }

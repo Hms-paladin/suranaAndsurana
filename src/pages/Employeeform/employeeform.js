@@ -434,15 +434,15 @@ function Employeeform(props) {
                                 </div>
                                 {val.experience.map((values, index) => {
                                     return (
-                                        <div className="EmployeeRow">
+                                        <div className="employeerows">
                                             <div>{index + 1}</div>
-                                            <div>{values.industry}</div>
-                                            <div>{values.company_name}</div>
-                                            <div>{values.city}</div>
-                                            <div>{values.department_id}</div>
-                                            <div>{values.designation_id}</div>
-                                            <div>{values.period_from}</div>
-                                            <div>{values.period_to}</div>
+                                            <div>{values.industry || "-"}</div>
+                                            <div>{values.company_name || "-"}</div>
+                                            <div>{values.city || "-"}</div>
+                                            <div>{values.department_id || "-"}</div>
+                                            <div>{values.designation_id || "-"}</div>
+                                            <div>{values.period_from ? moment(val.period_from).format("DD-MMM-YYYY") : "-"}</div>
+                                            <div>{values.period_to ? moment(val.period_to).format("DD-MMM-YYYY") : "-"}</div>
                                         </div>
 
                                     )

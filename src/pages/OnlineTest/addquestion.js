@@ -24,7 +24,7 @@ function AddQuestion(props) {
     const [Add_question, setAdd_question] = useState({
         category: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" }, { name: "100Char" }],
             error: null,
             errmsg: null,
         },
@@ -158,7 +158,8 @@ function AddQuestion(props) {
 
         if (key === "category" && data) {
             dispatch(getSubCategory(data));
-
+            Add_question.subcategory.value = ""
+            Add_question.ques_type.value = ""
         }
 
 
@@ -218,21 +219,21 @@ function AddQuestion(props) {
     const [addRights, setAddRights] = useState([])
 
     ///***********user permission**********/
-useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission){
-       let data_res_id = props.UserPermission.find((val) => { 
-       return (
-           "Add Questions - Add" == val.control 
-       ) 
-      })
-      setAddRights(data_res_id)
-   }
-  
-   }, [props.UserPermission]);
-  
-  
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Add Questions - Add" == val.control
+                )
+            })
+            setAddRights(data_res_id)
+        }
 
-  /////////////
+    }, [props.UserPermission]);
+
+
+
+    /////////////
     return (
         <div>
             <div className="AQTitle">Add Question</div>
@@ -288,7 +289,7 @@ useEffect(() => {
                             errmsg={Add_question.answer.errmsg}></Labelbox>
                     </Grid>
                     <Grid item xs={2} spacing={1}>
-                        <CustomButton btnName={"Add"} btnDisable={!addRights||addRights.display_control&&addRights.display_control==='N'?true:false} btnCustomColor="customPrimary" custombtnCSS="AQAddbtn" onBtnClick={onSubmit} />
+                        <CustomButton btnName={"Add"} btnDisable={!addRights || addRights.display_control && addRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="AQAddbtn" onBtnClick={onSubmit} />
                     </Grid>
                 </Grid>
                 <div className="egCss">(For Eg Option1,Option2,Option3...)</div>

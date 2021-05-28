@@ -99,7 +99,14 @@
 .experienceValue {
   color: #333232;
   width: 50%;
+  white-space: nowrap;
 
+}
+
+.companyname{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // Resume Educational Model scss ==>
