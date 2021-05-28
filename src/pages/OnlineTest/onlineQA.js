@@ -22,6 +22,8 @@ function OnlineQA(props) {
     const [text, setText] = useState()
     const [ques_no, setQues_no] = useState()
     const [btnchange, setBtnchange] = useState(false)
+    const [ques_length, setQues_length] = useState()
+    const [questions, setQuestions] = useState([])
     const [increament, setIncreament] = useState(1)
     const runTime = useRef({
         runSec: 0, runMin: 0
@@ -47,31 +49,34 @@ function OnlineQA(props) {
     useEffect(() => {
         setCount.current.count = props.GettemplateQuetions[0]?.Duration
         setTemplateRowdata(props.GettemplateQuetions)
+        setQuestions(props.GettemplateQuetions[0]?.testQuestionDetails)
+        setQues_length(props.GettemplateQuetions[0]?.testQuestionDetails.length)
     }, [props.GettemplateQuetions])
 
+    console.log(ques_length, "templateRowdata")
 
     // templateRowdata
-    useEffect(() => {
+    // useEffect(() => {
 
-        let myInterval = setInterval(() => {
-            console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
+    //     let myInterval = setInterval(() => {
+    //         console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
 
-            if (runTime.current.runMin > setCount.current.count - 1) {
-                clearInterval(myInterval);
-                // runTime.current.runMin += 1
-                // runTime.current.runSec = 0
-                let digitmin = runTime.current.runMin < 10 ? "0" : ""
-                let digitsec = runTime.current.runSec < 10 ? "0" : ""
-                const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
+    //         if (runTime.current.runMin > setCount.current.count - 1) {
+    //             clearInterval(myInterval);
+    //             // runTime.current.runMin += 1
+    //             // runTime.current.runSec = 0
+    //             let digitmin = runTime.current.runMin < 10 ? "0" : ""
+    //             let digitsec = runTime.current.runSec < 10 ? "0" : ""
+    //             const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
 
-                setText(timer)
-            }
-            else {
-                test1()
-            }
-        }, 1000)
+    //             setText(timer)
+    //         }
+    //         else {
+    //             test1()
+    //         }
+    //     }, 1000)
 
-    }, []);
+    // }, []);
 
 
     const test1 = useCallback(() => {
@@ -95,15 +100,22 @@ function OnlineQA(props) {
 
 
     // useEffect(() => {
+    //     if (increament === ques_length) {
 
+    //     }
     // }, [])
 
     const submitAnswer = () => {
-        setBtnchange(true)
-        let testvalue = no_of_questions[increament]
-        setQues_no(testvalue)
-        setIncreament(increament + 1)
+
+        if (increament < ques_length) {
+            setBtnchange(true)
+            let testvalue = questions[increament]
+            // setQues_no(testvalue)
+            setIncreament(increament + 1)
+        }
+
     }
+    // console.log(ques_no, "testvalue")
 
 
     // const mapingdata = () => {
@@ -121,7 +133,6 @@ function OnlineQA(props) {
 
     // }
 
-    console.log(ques_no, "setQues_no")
 
     return (
         <div>
@@ -129,12 +140,13 @@ function OnlineQA(props) {
             <div className="online_qa">
                 <div className="QAPanel">
                     <div className="QAContainer">
-                        <div id="QAcount">Q.2| Question 2 of {templateRowdata[0]?.testQuestionDetails.length}</div>
+                        <div id="QAcount">Q.{increament} | Question {increament} of {ques_length}</div>
                         <div id="QAduration">
                             {text + " Mins"}
                         </div>
                     </div>
-                    <div id="Question">What is Felonies ?</div>
+
+                    <div id="Question">{ques_no && ques_no}</div>
                     <div className="options">
                         <FormControl component="fieldset">
                             <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
