@@ -194,7 +194,7 @@ function LeaveForm(props) {
 
     const onFileChange = (event) => {
         setFileData(event.target.files[0])
-        console.log(filedata, "filedata")
+        console.log(event, "filedata")
     }
     const onFileDelete = () => {
         setFileData({})
@@ -640,7 +640,22 @@ function LeaveForm(props) {
     console.log(examSchedule, "examSchedule")
     console.log(new Date().toLocaleTimeString(), "time")
 
+    const [saveRights, setSaveRights] = useState([])
 
+    ///***********user permission**********/
+   useEffect(() => {
+   if(props.UserPermission.length>0&&props.UserPermission){
+      let  data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Apply Leave - Save" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
+   
+      
+   }
+   
+   }, [props.UserPermission]);
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
@@ -750,7 +765,7 @@ function LeaveForm(props) {
 
                                 </div>
                             </Grid>
-                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>{empLeaveBal} </div> </Grid>
+                            <Grid item xs={2} ><div className="leaveFieldheading">Available Balance</div><div>{empLeaveBal===""?0:empLeaveBal} </div> </Grid>
                             {Leave_Form.leavetype.value === 39 ?
                                 <><Grid item xs={5}>
                                     <div className="leaveFieldheading">Client</div>
@@ -1003,8 +1018,8 @@ function LeaveForm(props) {
                     }
                     <Grid item xs={5} container direction="row" spacing={2}>
                         <Grid item xs={4}>
-                            {editBtn ? <CustomButton btnName={"Update"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onUpdate(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} /> :
-                                Leave_Form.leavetype.value >= 35 && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
+                            {editBtn ? <CustomButton btnName={"Update"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="custom_save" onBtnClick={() => onUpdate(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} /> :
+                                Leave_Form.leavetype.value >= 35 && <CustomButton btnName={"Save"}  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => onSubmit(Leave_Form.leavetype.value === 40 ? "ceptype" : "othertype")} />}</Grid>
                         {Leave_Form.leavetype.value >= 35 && <Grid item xs={4}><CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} /></Grid>}
                     </Grid></Grid>
             </div>
@@ -1026,5 +1041,6 @@ const mapStateToProps = (state) =>
     getLeaveForm: state.LeaveFormReducer.getLeaveForm || [],
     getClientlist: state.getOptions.getClientlist || [],
     updateLeaveFrom: state.LeaveFormReducer.updateLeaveFrom || [],
+    UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 export default connect(mapStateToProps)(LeaveForm);

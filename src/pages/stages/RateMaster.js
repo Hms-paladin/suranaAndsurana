@@ -43,7 +43,7 @@ const RateMaster = (props) => {
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
-  const [permission, setPermission] = useState([])
+  const [saveRights, setSaveRights] = useState([])
   const [activity_id, setActivity_id] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [project_id, setproject_id] = useState(false)
@@ -507,25 +507,27 @@ const RateMaster = (props) => {
 
   console.log(RateMaster, "RateMasterRateMaster")
 
-  useEffect(() => {
-    if (props.UserPermission.length > 0 && props.UserPermission[0].item[0].item) {
-      let data_res_id = props.UserPermission[0].item[0].item.find((val) => {
-        return (
-          "Variable Rate Master" == val.screen_name
-        )
-      })
-      setPermission(data_res_id)
-    }
+///*****user permission**********/
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+     return (
+       "Variable Rate Master - Save" == val.control 
+     ) 
+ })
+ setSaveRights(data_res_id)
+ }
 
-  }, [props.UserPermission]);
+ }, [props.UserPermission]);
 
-  function rights() {
-    notification.success({
-      message: "You Dont't Have Rights To Access This Page",
-    });
-  }
+   console.log(saveRights,"rights")
 
-  console.log(permission, "permission");
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
   return (
     <div>
       <div className="var_rate_master">Variable Rate Master</div>
@@ -631,8 +633,8 @@ const RateMaster = (props) => {
               btnName={"Save"}
               btnCustomColor="customPrimary"
               custombtnCSS="custom_save"
-              // onBtnClick={onSubmit}
               onBtnClick={onSubmit}
+              btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>
@@ -665,7 +667,7 @@ const RateMaster = (props) => {
                 </label>
             </div>
             <div className="customNotFoundbtn">
-              <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit} />
+              <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit}  />
               <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
             </div>
           </div>

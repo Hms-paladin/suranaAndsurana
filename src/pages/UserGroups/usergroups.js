@@ -16,6 +16,7 @@ import {
 } from "../../actions/UserGroupAction";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
+import { notification } from "antd";
 const UserGroups = (props) => {
   const dispatch = useDispatch();
   const header = [
@@ -38,7 +39,7 @@ const UserGroups = (props) => {
   const [checkedGroups, setcheckedGroups] = useState([])
 
   const [isLoaded, setIsLoaded] = useState(true);
-
+  const [rights, setRights] = useState([])
   useEffect(() => {
     dispatch(getGroupList());
     dispatch(getEmployeeList());
@@ -89,7 +90,7 @@ const UserGroups = (props) => {
      // var o = dets[i];
       let o = JSON.parse(JSON.stringify(dets[i]));
      
-      let a = <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>onModealOpen(true,o)} />
+      let a = <img src={Edit} style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed',width:19}} onClick={ ()=>(rights&&rights.display_control&&rights.display_control==="Y"&&onModealOpen(true,o))} />
       let listarray = {
         "employee": dets[i].name,
         "group":dets[i].group_name,
@@ -97,7 +98,7 @@ const UserGroups = (props) => {
       }
       groupList.push(listarray);
         
-        
+         
     }
     setUserGroupsList({ groupList })
 
@@ -262,7 +263,26 @@ setcheckedGroups(d);
 
   };
 
- 
+   ///*****user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "User Group - Add" == val.control
+       ) 
+   })
+   setRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
   return (
     <div>
       <div className="user_groups">User Groups</div>
@@ -298,7 +318,7 @@ setcheckedGroups(d);
           </Grid>
         </Grid>
         <div style={{display: 'flex',justifyContent: 'flex-end',marginLeft: 15}}>
-          <img src={PlusIcon} onClick={onSubmit} style={{cursor: 'pointer',width:19,marginTop: -23}}  />
+          <img src={PlusIcon} onClick={()=>rights&&rights.display_control&&rights.display_control==="Y"&&onSubmit()} style={{cursor: rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed',width:19,marginTop: -23}}  />
           </div>
        
       </Grid>
@@ -330,6 +350,7 @@ setcheckedGroups(d);
                   btnName={"Save"}
                   btnCustomColor="customPrimary"
                   custombtnCSS={"btnUsergroup"}
+                  // btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
                   onBtnClick={()=>submitGroup()}
                 />
                 <CustomButton
@@ -355,6 +376,7 @@ const mapStateToProps = (state) =>
   employeeLists: state.UserGroupReducer.employeeLists || [],
   employeeGroupDetLists : state.UserGroupReducer.employeeGroupDetLists || [],
   getGroupsForEmp : state.UserGroupReducer.getGroupsForEmp || [],
+  UserPermission: state.UserPermissionReducer.getUserPermission || [],
 });
 
 export default connect(mapStateToProps)(UserGroups);

@@ -1,4 +1,4 @@
-import React,{useState}from 'react'
+import React,{useState,useEffect}from 'react'
 import './OutofPacket.scss'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -10,8 +10,14 @@ import OPAdv from "../../images/dashboard/opadv.svg";
 import DynModel from '../../component/Model/model'
 import AttachView from './AttachView'
 import {NavLink} from 'react-router-dom'
-export default function OutofPacket(){
+import { notification } from "antd";
+import { useDispatch, connect } from "react-redux";
+
+function OutofPacket(props){
     const [attchOpen,setattchOpen]=useState(false)
+    const [searchRights, setSearchRights] = useState([])
+
+
     const Header=[
         {id:"ope",label:"OPE/OPA"},
         {id:"date",label:"Date"},
@@ -28,6 +34,31 @@ export default function OutofPacket(){
         {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
         {ope:"Expense",date:"02-May-2021",expensetype:"Stationery",amount:"1200.00",mop:"Cash",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
     ]
+
+        ///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "OPA/ Expenses - Search" == val.control 
+       ) 
+      })
+      setSearchRights(data_res_id)
+
+    }
+    
+    }, [props.UserPermission]);
+    
+    
+    // console.log(searchRights,"rights")
+    
+    function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+    }
+    /////////////
+
     return(
         <div className="parent_root_outpack">
              <div className="pack_master_h">Out of Pocket Advances / Expenses</div>
@@ -45,7 +76,10 @@ export default function OutofPacket(){
                         </Grid>
                         <Grid item xs={2} className="btn_grid_cont_pack">
                             <CustomButton btnName={"Search"}
-                             custombtnCSS={"pack_btn_css"} onBtnClick={""} btnCustomColor="customPrimary"/>
+                             custombtnCSS={"pack_btn_css"}
+                             btnDisable={!searchRights||searchRights.display_control&&searchRights.display_control==='N'?true:false}
+                              onBtnClick={''}
+                               btnCustomColor="customPrimary"/>
                         </Grid>
                   </Grid> 
                   </Grid> 
@@ -72,3 +106,8 @@ export default function OutofPacket(){
        </div>
     )
 }
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (OutofPacket);

@@ -9,8 +9,8 @@ import {GetEmployeeDetails,InsertSeverance}  from '../../actions/ExitSeveranceAc
 import ValidationLibrary from "../../helpers/validationfunction";
 function Severance(props) {
 
-    const [permission, setPermission] = useState([])
     const [SeveranceDetails,setSeveranceDetails]=useState([])
+    const [saveRights, setSaveRights] = useState([])
     const [ExitSeverance,setExitSeverance]=useState({
         date: {
             value:"",
@@ -29,21 +29,7 @@ function Severance(props) {
     useEffect(() => {
         dispatch(GetEmployeeDetails())
     },[])
-    ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-        return (
-            "Exit Interview form" == val.screen_name
-        ) 
-    })
-    setPermission(data_res_id)
-    if(data_res_id.allow_view==='N')
-    rights()
-    }
-
-    }, [props.UserPermission]);
-    /////////////
+   
     useEffect(() => {
         props.EmployeeDetails.map((data)=>{
             setSeveranceDetails({
@@ -54,11 +40,7 @@ function Severance(props) {
         })
         console.log( props.EmployeeDetails,"dfghj")
     },[props.EmployeeDetails])    
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+
     function checkValidation(data, key) {
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -111,10 +93,32 @@ function Severance(props) {
             ...prevState,
         }));
     }
+
+    ///***********user permission**********/
+useEffect(() => {
+if(props.UserPermission.length>0&&props.UserPermission){
+   let data_res_id = props.UserPermission.find((val) => { 
+   return (
+       "Exit Interview Form - Save" == val.control 
+   ) 
+  })
+  setSaveRights(data_res_id)
+}
+
+}, [props.UserPermission]);
+
+
+// console.log(saveRights,"rights")
+
+function rightsNotification(){
+notification.success({
+    message: "You are not Authorized. Please Contact Administrator",
+});
+}
+/////////////
     console.log(props.EmployeeDetails[0]&&props.EmployeeDetails[0].emp_id,"dfghjk")
     return (
         <div>
-       {/* { permission.allow_view==='Y'&&<div> */}
             <div className="heading">Severance</div>
             <div className="severanceContainer">
                 <div className="severanceHeader">
@@ -170,19 +174,16 @@ function Severance(props) {
                         </Grid>
                         <Grid item xs={9}>
                             <div className="appraisalBtn">
-                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" 
-                                // onBtnClick={permission.allow_add==="Y"?'':rights}
-                                onBtnClick={onsubmit}
-                                />
+                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onsubmit}/>
                                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={handleCancel}/>
                             </div>
-
+                            
                         </Grid>
                     </Grid>
 
                 </div>
             </div>
-        {/* </div> } */}
+
 
     </div>
     )

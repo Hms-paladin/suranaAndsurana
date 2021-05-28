@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React,{useState,useEffect}from 'react'
+import { useDispatch, connect } from "react-redux";
 import CustomButton from "../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -6,8 +7,27 @@ import EnhancedTable from '../../component/DynTable/table';
 import { useParams, Link } from 'react-router-dom';
 import { Collapse } from 'antd';
 import './dayreport.scss'
-function DayReport() {
+
+function DayReport(props) {
     const { Panel } = Collapse;
+     const [saveRights, setSaveRights] = useState([])
+
+     ///***********user permission**********/
+    useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let  data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Day Report - Save" == val.control 
+        ) 
+       })
+       setSaveRights(data_res_id)
+    
+       
+    }
+    
+    }, [props.UserPermission]);
+    ////////
+
     const headCells = [
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub-Activity" },
@@ -40,7 +60,7 @@ function DayReport() {
                         <Labelbox type="select"></Labelbox>
                     </Grid>
                     <Grid item xs={2} container direction="row" justify="center" alignItems="center">
-                        <CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick="" />
+                        <CustomButton btnName={"Search"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="Reportbtnsearch" onBtnClick="" />
                     </Grid>
                 </Grid>
             </div>
@@ -63,4 +83,8 @@ function DayReport() {
         </div>
     )
 }
-export default DayReport;
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (DayReport);

@@ -5,7 +5,7 @@ import PrivateRoute from './Router/PrivateRoute';
 import Login from "./pages/Login/login.js";
 import Routes from "./Router/route";
 import { useDispatch} from "react-redux";
-import {getUserPermission} from "./actions/UserAccessRightsAction";
+import {get_user_rights} from "./actions/UserAccessRightsAction";
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("token"));
   const [authTokens, setAuthTokens] = useState(existingTokens);
@@ -18,7 +18,7 @@ function App() {
     localStorage.setItem("designation", JSON.stringify(data.data[0].designation));
     setAuthTokens(data);
   }
-  dispatch(getUserPermission());
+  dispatch(get_user_rights());
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Router basename="suranaAndsurana/?/">

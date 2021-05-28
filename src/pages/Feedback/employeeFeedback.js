@@ -9,8 +9,10 @@ import react, { useState,useEffect } from 'react';
 import {InsertFeedback} from '../../actions/ExitSeveranceAction'
 import ValidationLibrary from "../../helpers/validationfunction";
 function EmployeeFeedback(props) {
+
+
     let dispatch=useDispatch()
-    const [permission, setPermission] = useState([])
+
     const [feedback,setfeedback]=useState([
         {id:1,value:false,name:"Compensation"}, {id:2,value:false,name:"New job"},{id:3,value:false,name:"Personal Reasons"},
         {id:4,value:false,name:"Relocation"},{id:5,value:false,name:"Conflict with works"},{id:6,value:false,name:"Retirement"},
@@ -32,25 +34,7 @@ function EmployeeFeedback(props) {
         }
     })
     console.log(feedback,"dfghjkl") 
-        ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-        return (
-            "Employee Form" == val.screen_name
-        ) 
-    })
-    setPermission(data_res_id)
-    if(data_res_id.allow_view==='N')
-    rights()
-    }
-    }, [props.UserPermission]);
 
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
     const handlecheck=(e)=>{
       setchecked({...checked,[e.target.name]:e.target.value})
       setchecked(prevState =>({
@@ -110,9 +94,33 @@ function EmployeeFeedback(props) {
         setchecked({})
     }
 
+    const [saveRights, setSaveRights] = useState([])
+
+    ///***********user permission**********/
+useEffect(() => {
+   if(props.UserPermission.length>0&&props.UserPermission){
+      let data_res_id = props.UserPermission.find((val) => { 
+      return (
+          "Employee Feedback - Save" == val.control
+      ) 
+     })
+     setSaveRights(data_res_id)
+  }
+ 
+  }, [props.UserPermission]);
+ 
+ 
+   // console.log(saveRights,"rights")
+ 
+  function rightsNotification(){
+   notification.success({
+       message: "You are not Authorized. Please Contact Administrator",
+   });
+ }
+ /////////////
     return (
         <div>
-             {/* { permission.allow_view==='Y'&&<div> */}
+           
             <div className="headerpage">Employee Feedback</div>
             <div className="fbContainer">
                 <div className="feedbackSubheading">Which of the following influenced your decision to leave the company?  </div>
@@ -165,16 +173,13 @@ function EmployeeFeedback(props) {
                     </Grid>
                 </Grid>
                 <div className="feedbacbtn">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" 
-                    // onBtnClick={permission.allow_add==="Y"?'':rights}
-                    onBtnClick={submit}
-                    />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={HandleCancel}/>
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''} />
+                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
                 </div>
 
 
             </div>
-            {/* </div> } */}
+          
 
     </div>
     )
