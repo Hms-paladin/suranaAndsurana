@@ -76,7 +76,7 @@ function ProjectTaskModel(props) {
     description: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     }
@@ -147,9 +147,13 @@ function ProjectTaskModel(props) {
 
   })
 
-  function onSubmit() {
+  /*function onSubmit() {
     var mainvalue = {};
-    var targetkeys = Object.keys(ProjectTask_Model);
+    var targetkeys = Object.keys(InsertTaskForm);
+    
+    
+    InsertTaskForm["startdate"].value=InsertTaskForm['fromDate'].value; 
+    InsertTaskForm["enddate"].value = InsertTaskForm['toDate'].value ; 
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
         ProjectTask_Model[targetkeys[i]].value,
@@ -176,7 +180,7 @@ function ProjectTaskModel(props) {
     setResumeFrom(prevState => ({
       ...prevState
     }));
-  };
+  };*/
 
 
   function checkValidation(data, key, multipleId) {
@@ -296,13 +300,13 @@ function ProjectTaskModel(props) {
     }
   }
 
-  function onSubmit() {
-    var data = {
-      "project_id": idDetails.project_id,
+   function onSubmit() {
+     var data = {
+       "project_id": idDetails.project_id,
       "activiity_id": InsertTaskForm.activity.value,
-      "sub_activity_id": InsertTaskForm.subActivity.value,
+       "sub_activity_id": InsertTaskForm.subActivity.value,
       "assignee_id": InsertTaskForm.assignTo.value,
-      "start_date": InsertTaskForm.fromDate.value,
+       "start_date": InsertTaskForm.fromDate.value,
       "end_date": InsertTaskForm.toDate.value,
       "assigned_by": localStorage.getItem("empId"),
       "priority": InsertTaskForm.priority.value,
@@ -311,10 +315,10 @@ function ProjectTaskModel(props) {
     }
 
     dispatch(inserTask(data)).then((response) => {
-      handleCancel();
+       handleCancel();
     })
 
-  }
+   }
 
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(

@@ -5,13 +5,15 @@ import CustomButton from "../../../component/Butttons/button";
 import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertRevocationFiled} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 
 function RevocationFiled(props) {
-    
     const [tradeStatusList, settradeStatusList] = useState({})
     const [classDetList, setclassDetList] = useState({})
+    const [filingTypeList, setFilingTypeList] = useState({})
+    const [projectDetails, setProjectDetails] = useState({})
+    const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     
     useEffect(() => {
@@ -22,6 +24,13 @@ function RevocationFiled(props) {
       }, []);
 
       useEffect(() => {
+
+        setProjectDetails(props.ProjectDetails);
+        props.ProjectDetails.length > 0 && setidDetails({
+          project_id:props.ProjectDetails[0].project_id,
+          client_id:props.ProjectDetails[0].client_id,
+      })
+
         let tradeStatusData = []
         props.tradeStatusList.map((data) =>
     tradeStatusData.push({ value: data.Status,
@@ -35,7 +44,13 @@ function RevocationFiled(props) {
       id: data.class_id })
   )
   setclassDetList({ classDetailsData })
-}, [props.tradeStatusList,props.classDetailsList]);
+  let filingTypeData = []
+  props.filingTypeList.map((data) =>
+  filingTypeData.push({ value: data.filing_type,
+  id: data.filing_type_id })
+  )
+  setFilingTypeList({ filingTypeData })
+}, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
 function onSubmit() {
@@ -46,25 +61,36 @@ function onSubmit() {
     ); 
     console.log(filtererr.length);
     let params  = {
-        "client_applicant" :TradeMarkForm.client_applicant.value,
-        "mark" :TradeMarkForm.mark.value,
-        "trade_mark_no" :TradeMarkForm.trade_mark_no.value,
+        "ip_type":"ddf",
+        "client_status_type": null,
+        "trademark_ipab_id": 0,
+        "project_id": projectDetails.project_id,
+        "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
-        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value,
+        "rectification_filing" :"",
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
-        "date_of_hearing" :TradeMarkForm.date_of_hearing.value,
-        "respondent" :TradeMarkForm.respondent.value,
-        "respondent_rep" :TradeMarkForm.respondent_rep.value,
+        "hearing_date":TradeMarkForm.date_of_hearing.value || "",
+        "opp_applicant" :"",
+        "opp_applicant_rep" :"",
         "filing_type_id" :TradeMarkForm.filing_type_id.value,
         "status_id" :TradeMarkForm.status_id.value,
-        "comments"  :TradeMarkForm.comments.value,    
-         "created_by" :localStorage.getItem("empId"),
-         "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-         "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-         "updated_by" :localStorage.getItem("empId"),
-         "ip_address" :"ddf"
+        "comments":TradeMarkForm.comments.value,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || "" ,
+        "created_by" :localStorage.getItem("empId"),
+        "updated_by" :localStorage.getItem("empId"),
+        "client_application" :"",
+        "mark" :TradeMarkForm.mark.value,
+        "respondent" :TradeMarkForm.respondent.value,
+        "respondent_rep" :TradeMarkForm.respondent_rep.value,
+        "client_responent" :TradeMarkForm.client_responent.value,
+        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || "",
+        "applicant_no":"",
+        "patent_title":"",
+        "appeal_filing_date":""
     }
+    console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){
         params["class_id"] =TradeMarkForm.class_id.value;
     }
@@ -73,7 +99,7 @@ function onSubmit() {
     } else {
         // setTradeMarkForm({ error: false });
 
-        dispatch(insertRevocationFiled(params)).then(() => {
+        dispatch(insertIPAB(params)).then(() => {
             handleCancel()
         })
     }
@@ -408,7 +434,9 @@ const mapStateToProps = (state) =>
 ({
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList : state.tradeMarkReducer.getClassDetailsList || []
+    classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
+    filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 export default connect(mapStateToProps)(RevocationFiled);
