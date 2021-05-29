@@ -10,7 +10,7 @@ import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, get
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
-
+import { useParams } from "react-router-dom";
 
 function TimeSheetStartModel(props) {
     const [changeStop, setChangeStop] = useState(true)
@@ -80,6 +80,7 @@ function TimeSheetStartModel(props) {
         }
 
     })
+    let { rowId } = useParams()
     useEffect(() => {
         setProjectDetails(props.projectrow)
     }, [props.projectrow])
@@ -164,13 +165,15 @@ function TimeSheetStartModel(props) {
 
 
     const submitstop = () => {
+        let tim= dateFormat(timeSheetForm.startTime.value != undefined &&  timeSheetForm.startTime.value !=''? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
+       
         var data = {
-            "project_id": "71",
+            "project_id": rowId,
             "activiity_id": timeSheetForm.activity.value,
             "sub_activity_id": timeSheetForm.subActivity.value,
             "assignee_id": timeSheetForm.assignTo.value,
             "start_date": timeSheetForm.fromDate.value,
-            "end_date": timeSheetForm.toDate.value,
+            "end_date": timeSheetForm.toDate.value && timeSheetForm.toDate.value !=''?timeSheetForm.toDate.value:timeSheetForm.fromDate.value,
             "assigned_by": localStorage.getItem("empId"),
             "priority": timeSheetForm.priority.value,
             "description": timeSheetForm.description.value,
@@ -180,7 +183,7 @@ function TimeSheetStartModel(props) {
             "emp_id": localStorage.getItem("empId"),
             "task_id": "111",
             "start_date": timeSheetForm.fromDate.value,
-            "start_time": dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+            "start_time": tim,//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }

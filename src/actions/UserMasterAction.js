@@ -1,6 +1,10 @@
 import {  INSERT_ACTIVITY,COMMON_INSERT_TEXT,GET_TABLE_NAME,INSERT_USER, GET_USER, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES ,INSERT_STATUS,INSERT_SUBSTAGE,INSERT_CLASS,INSERT_CHECKLIST} from "../utils/Constants";
 
+<<<<<<< Updated upstream
 import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT} from '../utils/Constants'
+=======
+import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT,UPDATE_SUBSTAGE,UPDATE_SUBACTIVITY,GET_SUBORDINATES} from '../utils/Constants'
+>>>>>>> Stashed changes
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
@@ -640,4 +644,32 @@ export const getCheckList = (id) => async (dispatch) => {
     url: apiurl + "get_checklist_collection",
   });
   return dispatch({ type: GET_CHECKLIST, payload: response.data.data });
+};
+
+
+export const getProjectCostRange = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_range");
+  return dispatch({
+    type: GET_COST_RANGE,
+    payload: response.data.data,
+  });
+};
+
+export const getControls = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "get",
+    url: apiurl + "get_controls",
+  });
+  return dispatch({ type: GET_CONTROLS, payload: response.data.data });
+};
+
+export const getSubordinate = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_subordinate",
+    data: {
+      "emp_id":"1"
+    },
+  });
+  return dispatch({ type: GET_SUBORDINATES, payload: response.data.data });
 };

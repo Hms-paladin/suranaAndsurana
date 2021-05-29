@@ -21,14 +21,18 @@ import {
     GET_TABLE_SUBACTIVITY,
     GET_CHECKLIST,
     GET_USER_CLASS,
-    COMMON_UPDATE_TEXT
-
+    GET_COST_RANGE,
+    GET_USER_STAGELIST,
+    COMMON_UPDATE_TEXT,
+    GET_CONTROLS,
+    MASTER_EMPLOYEE_DETAILS,GET_SUBORDINATES,
 } from  "../utils/Constants";
 const intialState = {
     getCandidateName:[],getUser:[],TableNamedropdownData: [],getTableStatus:[],getTableGroup:[],getTableSkills:[],getTableTraits:[],
     getTableCertification:[],getTableSpecification:[],getTableQualification:[],getTableLanguage:[],getTableIndustry:[],getTableInsitute:[],
     getTableCapability:[],getTableTalents:[],getTableResource:[],getTableDesgination:[],getTableQuestion:[],getTableDepartment:[],
-    getTableActivity:[],getTableCourt:[],getSubStage:[],getClass:[],getSubActivity:[],getChecklist:[],get_user_class:[],Common_Update_text:[]
+    getTableActivity:[],getTableCourt:[],getSubStage:[],getClass:[],getSubActivity:[],getChecklist:[],get_user_class:[],Common_Update_text:[],
+    getRange:[],getStage:[],Update_Substage:[],Update_subactivity:[],getControls:[],getEmployeeDetails:[],getSubordinates:[],
 }
 
 export default function (state = intialState, action) {
@@ -87,7 +91,17 @@ export default function (state = intialState, action) {
         case GET_USER_CLASS:
             return {...state, get_user_class: payload} 
         case COMMON_UPDATE_TEXT:
-            return {...state, Common_Update_text:payload}                                                 
+            return {...state, Common_Update_text:payload} 
+        case UPDATE_SUBSTAGE:
+            return {...state, Update_Substage:payload}
+        case UPDATE_SUBACTIVITY:
+            return {...state, Update_subactivity:payload} 
+        case GET_CONTROLS:
+            return {...state, getControls:payload}  
+        case MASTER_EMPLOYEE_DETAILS:
+            return {...state,getEmployeeDetails:payload} 
+        case GET_SUBORDINATES:
+            return {...state,getSubordinates:payload}  
         default:
             return state;
     }

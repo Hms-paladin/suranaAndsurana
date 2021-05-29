@@ -68,8 +68,15 @@ export const inserTask = (params, timeSheetParams) => async dispatch => {
                 notification.success({
                     message: "Task added Successfully",
                 });
+
+               
                 dispatch({ type: INSERT_TASK, payload: response.data.status })
-                dispatch(insertTimeSheet(timeSheetParams, 'id'))
+                if(timeSheetParams && response.data.data && response.data.data[response.data.data.length-1][0]){
+                    let tid= response.data.data[response.data.data.length-1][0]['@tid'];
+                    timeSheetParams.task_id =tid;
+                    dispatch(insertTimeSheet(timeSheetParams, 'id'))
+                    }
+              
                 return Promise.resolve();
             }
         });
@@ -136,7 +143,7 @@ export const insertTimeSheetbyTime = (params, time) => async dispatch => {
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
-                dispatch(getTaskList());
+                dispatch(getTaskList(localStorage.getItem("empId")));
                 var msg = response.data.msg;
                 notification.success({
                     message: "Time sheet updated",
@@ -350,13 +357,14 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
 }
 
 
-export const getTaskList = () => async dispatch => {
+export const getTaskList = (empId) => async dispatch => {
     try {
+        var a = localStorage.getItem("empId");
         axios({
             method: 'POST',
             url: apiurl + 'get_task_list',
             data: {
-                "assignee_id": localStorage.getItem("empId"),
+                "assignee_id": empId,//localStorage.getItem("empId"),
             }
         })
             .then((response) => {

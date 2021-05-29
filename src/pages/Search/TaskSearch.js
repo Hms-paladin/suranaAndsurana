@@ -34,13 +34,14 @@ import TaskPriority from '../Search/task_priority'
 import TaskTag from '../Search/tasktag'
 import TaskStatus from '../Search/taskstatus'
 import { getTaskList } from "../../actions/projectTaskAction";
-
+import ValidationLibrary from "../../helpers/validationfunction";
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles} from '@material-ui/core/styles';
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
 
 import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
+import {getSubordinate} from "../../actions/UserMasterAction";
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -65,10 +66,57 @@ function Task(props) {
     const[task_pri_modal,setTaskPrioriyModal]=useState(false)
     const[task_tag,setTaskTag]=useState(false)
     const[task_status,setTaskStatus]=useState(false)
+    const[subordinates,setSubordinates]=useState(false)
+    const[subId,setSubId]=useState(false)
+    const [fieldVal, setfieldVal] = useState({
+        subOrdinateVal: {
+          value: "",
+          validation: [{ name: "required" }],
+          error: null,
+          errmsg: null,
+        }
+       
+      });
+    function checkValidation(data, key, multipleId) {
+        
+        var errorcheck = ValidationLibrary.checkValidation(
+          data,
+          fieldVal[key].validation
+        );
+        let dynObj = {
+          value: data,
+          error: !errorcheck.state,
+          errmsg: errorcheck.msg,
+          validation: fieldVal[key].validation,
+        };
     
-
+        // only for multi select (start)
+    
+        let multipleIdList = [];
+    
+        if (multipleId) {
+          multipleId.map((item) => {
+            for (let i = 0; i < data.length; i++) {
+              if (data[i] === item.value) {
+                multipleIdList.push(item.id);
+              }
+            }
+          });
+          dynObj.valueById = multipleIdList.toString();
+        }
+        if (key == "subOrdinateVal") {
+            dispatch(getTaskList(data));
+          }
+        
+        setfieldVal((prevState) => ({
+          ...prevState,
+          [key]: dynObj,
+        }));
+      }
+    let empid= localStorage.getItem("empId");
     useEffect(() => {
-        dispatch(getTaskList());
+        dispatch(getTaskList(empid));
+        dispatch(getSubordinate(empid)); 
     
       }, []);
       useEffect(() => {
@@ -87,7 +135,13 @@ function Task(props) {
        }
     }
 } */
-      }, [props.getTaskLists
+let subOrinateList = []
+    props.subordinateslis.map((data) =>
+    subOrinateList.push({ value: data.name,
+    id: data.emp_id  })
+)
+setSubordinates({ subOrinateList })
+      }, [props.getTaskLists,props.subordinateslis
       ]);
 
       function getTaskTimeSheetbyTaskIdsss(taskId) {
@@ -154,8 +208,19 @@ setStartModelOpen(flg);
                         <p className="task_head">Tasks</p>
                         <div style={{ width: '200px', }}>
                             <Grid item xs={8}>
-                                <Labelbox type="select"
-                                    placeholder="Subordinate" /></Grid>
+                                
+                        <Labelbox type="select"
+                        placeholder={" Subordinate"} 
+                        dropdown={subordinates.subOrinateList}  
+                        
+            changeData={(data) => checkValidation(data, "subOrdinateVal")}
+            value={fieldVal.subOrdinateVal.value}
+            error={fieldVal.subOrdinateVal.error}
+            errmsg={fieldVal.subOrdinateVal.errmsg}
+
+                        />
+                                
+                                    </Grid>
                         </div>
                     </div>
 
@@ -384,5 +449,6 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     getTaskLists: state.projectTasksReducer.getTaskLists,
+    subordinateslis: state.UserMasterReducer.getSubordinates,
 });
 export default connect(mapStateToProps)(Task);
