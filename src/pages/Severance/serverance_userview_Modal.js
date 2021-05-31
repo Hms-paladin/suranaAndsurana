@@ -1,21 +1,27 @@
 import React,{useState,useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import CustomButton from '../../component/Butttons/button';
-import { Skeleton } from 'antd';
+import { Skeleton,List, Avatar} from 'antd';
 import './severance.scss'
 import {connect,useDispatch} from 'react-redux'
 import {ViewSeverance} from '../../actions/ExitSeveranceAction'
 import moment, { invalid } from 'moment'
 function ServeranceModal(props){
     const [severanceData,setseveranceData]=useState([])
-    const [activeState,setactiveState]=useState(false)
+    const [activeState,setactiveState]=useState(true)
     let dispatch=useDispatch()
     useEffect(()=>{
-        dispatch(ViewSeverance())
-            // setactiveState(false)
-        
-    },[activeState])
+        let ddd=true
+        dispatch(ViewSeverance()).then((response)=>{
+        console.log("activeState",response) 
+            
+        })
+
+    },[])
     useEffect(() => {
+        if(props.ViewSeverance.length>0){
+            setactiveState(false)     
+        }
           props.ViewSeverance.map((data)=>{
             setseveranceData({
                 empname:data.name===null?"-":data.name,
@@ -35,11 +41,15 @@ function ServeranceModal(props){
 
             })
         })
-        console.log(props.ViewSeverance,"dfghjk")
-    },[props.ViewSeverance])
+    },[props.ViewSeverance,activeState])
     return(
         <div style={{backgroundColor:'white'}}>
-            <Skeleton loading={activeState} active={activeState}>
+            {activeState?<div style={{padding:"15px"}}>{[...Array(3)].map(()=>
+            <Skeleton loading={activeState} active  paragraph={{ rows: 3 }}/>
+            )}
+            </div>:
+            <>
+
             <div className="serverance_container">
                 <div className="container_head">
                     <div>Employee Name</div>
@@ -94,7 +104,8 @@ function ServeranceModal(props){
                 {/* <CustomButton btnName={"OK"} btnCustomColor="customPrimary"
                 custombtnCSS={"ok_btn_css"} onBtnClick={""}/> */}
             </div>
-            </Skeleton>
+            </>
+}
         </div>
     )
 }
