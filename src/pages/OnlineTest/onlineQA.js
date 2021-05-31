@@ -56,27 +56,27 @@ function OnlineQA(props) {
     console.log(ques_length, "templateRowdata")
 
     // templateRowdata
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     let myInterval = setInterval(() => {
-    //         console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
+        let myInterval = setInterval(() => {
+            console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
 
-    //         if (runTime.current.runMin > setCount.current.count - 1) {
-    //             clearInterval(myInterval);
-    //             // runTime.current.runMin += 1
-    //             // runTime.current.runSec = 0
-    //             let digitmin = runTime.current.runMin < 10 ? "0" : ""
-    //             let digitsec = runTime.current.runSec < 10 ? "0" : ""
-    //             const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
+            if (runTime.current.runMin > setCount.current.count - 1) {
+                clearInterval(myInterval);
+                // runTime.current.runMin += 1
+                // runTime.current.runSec = 0
+                let digitmin = runTime.current.runMin < 10 ? "0" : ""
+                let digitsec = runTime.current.runSec < 10 ? "0" : ""
+                const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
 
-    //             setText(timer)
-    //         }
-    //         else {
-    //             test1()
-    //         }
-    //     }, 1000)
+                setText(timer)
+            }
+            else {
+                test1()
+            }
+        }, 1000)
 
-    // }, []);
+    }, []);
 
 
     const test1 = useCallback(() => {
