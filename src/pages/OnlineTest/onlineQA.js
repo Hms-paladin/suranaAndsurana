@@ -17,10 +17,10 @@ import { SettingsBackupRestore } from '@material-ui/icons';
 function OnlineQA(props) {
     const dispatch = useDispatch();
     const [value, setValue] = React.useState('');
-    const no_of_questions = ["apple", "orange", "mango"];
+    const no_of_questions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     // const [pathname, setPathName] = useState(window.location.pathname)
     const [text, setText] = useState()
-    const [ques_no, setQues_no] = useState()
+    const [ques_no, setQues_no] = useState([])
     const [btnchange, setBtnchange] = useState(false)
     const [ques_length, setQues_length] = useState()
     const [questions, setQuestions] = useState([])
@@ -105,18 +105,32 @@ function OnlineQA(props) {
     //     }
     // }, [])
 
-    const submitAnswer = () => {
-
+    const submitAnswer = useCallback(() => {
         if (increament < ques_length) {
             setBtnchange(true)
             let testvalue = questions[increament]
-            // setQues_no(testvalue)
+            setQues_no(testvalue)
             setIncreament(increament + 1)
+            // no_of_questions.map((data) => {
+            //     alert("tset")
+            //     console.log(data, "datadatagdjsfjdk")
+            // })
         }
 
-    }
-    // console.log(ques_no, "testvalue")
+    })
 
+    const previousQuestion = useCallback(() => {
+
+        setIncreament(increament - 1)
+        let testvalue = questions[increament - 1]
+        setQues_no(testvalue)
+        console.log(testvalue, "increament")
+
+
+    })
+
+
+    console.log(ques_no.Choice?.split(','), increament, "increamentincreament")
 
     // const mapingdata = () => {
 
@@ -142,25 +156,39 @@ function OnlineQA(props) {
                     <div className="QAContainer">
                         <div id="QAcount">Q.{increament} | Question {increament} of {ques_length}</div>
                         <div id="QAduration">
-                            {text + " Mins"}
+                            {text === undefined ? "00:00 " : text} Mins
                         </div>
                     </div>
 
-                    <div id="Question">{ques_no && ques_no}</div>
+                    <div id="Question">{increament === 1 ? props.GettemplateQuetions[0]?.testQuestionDetails[0].Question : ques_no.Question}</div>
                     <div className="options">
-                        <FormControl component="fieldset">
-                            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-                                <FormControlLabel value="female" control={<Radio />} label="A crime regarded in the US and many other judicial systems as more serious than a misdemeanour." />
-                                <FormControlLabel value="male" control={<Radio />} label="Not a Crime" />
-                                <FormControlLabel value="other" control={<Radio />} label="Not an illegal Act" />
-                                {/* <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" /> */}
-                            </RadioGroup>
-                        </FormControl>
+
+                        {/* {ques_no.Choice?.split(',').map((val) => {
+                            return (
+                                <> */}
+                                    <FormControl component="fieldset">
+                                        <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+
+                                            <FormControlLabel value="male" control={<Radio />} label={ques_no.Choice?.split(',')[0]} />
+                                            <FormControlLabel value="f" control={<Radio />} label={ques_no.Choice?.split(',')[1]} />
+                                            <FormControlLabel value="o" control={<Radio />} label={ques_no.Choice?.split(',')[2]} />
+
+
+
+
+                                        </RadioGroup>
+                                    </FormControl>
+                                {/* </>
+                            )
+                        })} */}
+
+
+
                     </div>
 
                     <div id="TTbtns">
                         {btnchange &&
-                            <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={test1} />
+                            <CustomButton btnName={"Previous"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={previousQuestion} />
 
                         }
                         <CustomButton btnName={"Save "} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => submitAnswer()} />
@@ -169,7 +197,7 @@ function OnlineQA(props) {
                 </div>
                 <div className="question_traverse">
                     <div className="question_flows">
-                        {no_of_questions.map(noq => <div>{noq.name}</div>)}
+                        {no_of_questions.map(noq => <div>{noq}</div>)}
                     </div>
                     <div className="color_initmation">
                         <div className="color_circles">
