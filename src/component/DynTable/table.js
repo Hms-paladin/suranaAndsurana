@@ -210,7 +210,6 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(() => {
-    console.log("rowss",page)
     setRows(props.rows);
   }, [props,page]);
 
