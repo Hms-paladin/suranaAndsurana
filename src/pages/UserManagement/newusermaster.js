@@ -91,7 +91,7 @@ function NewUserMaster(props){
     if(props.UserPermission.length>0&&props.UserPermission){
        let data_res_id = props.UserPermission.find((val) => { 
        return (
-           "Add User - Create" == val.control
+        "UserMaster - Create User" == val.control
        ) 
    })
    setRights(data_res_id)

@@ -37,9 +37,19 @@ function EmployeeFeedback(props) {
 
     const handlecheck=(e)=>{
       setchecked({...checked,[e.target.name]:e.target.value})
+       
       setchecked(prevState =>({
       ...prevState,
     }))
+    // var da=feedback.find((data)=>{
+    //     if(data.value==e.target.checked){
+    //         return(
+    //             data.id=e.target.value
+    //         )
+    //     }
+    // })
+    // console.log("check",da)
+    
     }
     function checkValidation(data, key) {
         var errorcheck = ValidationLibrary.checkValidation(
@@ -173,7 +183,7 @@ useEffect(() => {
                     </Grid>
                 </Grid>
                 <div className="feedbacbtn">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''} />
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={submit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
                 </div>
 
