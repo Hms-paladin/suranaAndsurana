@@ -33,22 +33,13 @@ function EmployeeFeedback(props) {
             errmsg: null,
         }
     })
-    console.log(feedback,"dfghjkl") 
 
     const handlecheck=(e)=>{
-      setchecked({...checked,[e.target.name]:e.target.value})
+      setchecked({...checked,[e.target.name]:e.target.checked})
        
       setchecked(prevState =>({
       ...prevState,
     }))
-    // var da=feedback.find((data)=>{
-    //     if(data.value==e.target.checked){
-    //         return(
-    //             data.id=e.target.value
-    //         )
-    //     }
-    // })
-    // console.log("check",da)
     
     }
     function checkValidation(data, key) {
@@ -68,8 +59,9 @@ function EmployeeFeedback(props) {
         }));
     }
     const submit=()=>{
-        let feedbackId=Object.values(checked)
+        let feedbackId=Object.keys(checked)
         const feedbackDataId=feedbackId.toString()
+        console.log(feedbackId,"feedbackId")
         var mainvalue = {};
     var targetkeys = Object.keys(feedbackInput);
     for (var i in targetkeys) {
@@ -83,15 +75,19 @@ function EmployeeFeedback(props) {
     }
     var filtererr = targetkeys.filter((obj) => feedbackInput[obj].error == true);
     if(filtererr.length>0){
+        
     }else{
           dispatch(InsertFeedback(feedbackInput,feedbackDataId)).then(()=>{
             HandleCancel()
+            
           })
     }
-    setchecked({})
+   
     setfeedbackInput(prevState =>({
         ...prevState,
       }))
+      setchecked({})
+         
     }
     function HandleCancel(){
         let key=["feedback","compansation"]
