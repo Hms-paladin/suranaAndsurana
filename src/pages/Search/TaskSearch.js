@@ -68,6 +68,7 @@ function Task(props) {
     const[task_tag,setTaskTag]=useState(false)
     const[task_status,setTaskStatus]=useState(false)
     const[subordinates,setSubordinates]=useState(false)
+    const[taskData,setTaskData]=useState({})
     const[subId,setSubId]=useState(false)
     const [fieldVal, setfieldVal] = useState({
         subOrdinateVal: {
@@ -78,6 +79,10 @@ function Task(props) {
         }
        
       });
+      function fnPeriority(data){
+        setTaskData(data);
+        setTaskPrioriyModal(true);
+      }
     function checkValidation(data, key, multipleId) {
         
         var errorcheck = ValidationLibrary.checkValidation(
@@ -368,8 +373,8 @@ setStartModelOpen(flg);
                                     <p style={{ display: "flex", justifyContent: 'center' }}>{data.total_hours}</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={H_icon} style={{ marginRight: '10px',cursor:"pointer" }} onClick={()=>setTaskPrioriyModal(true)}/>
-                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={data}/>} width={300}/>
+                                    <img src={H_icon} style={{ marginRight: '10px',cursor:"pointer" }} onClick={()=>fnPeriority({data})}/>
+                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
                                     <img src={File} style={{ marginRight: '10px' }} onClick={()=>setTaskTag(true)}/>
                                     <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={data}/>} width={300}/>
                                     <img src={Percentage} style={{ marginRight: '10px' }} onClick={()=>setTaskStatus(true)}/>
