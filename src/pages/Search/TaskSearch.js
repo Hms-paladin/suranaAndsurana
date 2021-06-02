@@ -294,10 +294,10 @@ setStartModelOpen(flg);
                             <div style={{ marginTop: '20px' }}>
                                 <div className="total_12_div">
                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.total_hours}</p>
+                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.total_hours}{data.Priority}</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={Arrow} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskPrioriyModal(true)}/>
+                                    <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskPrioriyModal(true)}/>
                                     <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={data}/>} width={300}/>
                                     <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskTag(true)}/>
                                     <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={data}/>} width={300}/>
