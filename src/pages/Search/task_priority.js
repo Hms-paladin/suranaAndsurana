@@ -38,7 +38,7 @@ function TaskPriority(props) {
   function handelCheck(e,val ){
     setValue(val.status_id);
     var val ={
-      "task_id":props.rowData.task_id,
+      "task_id":props.rowData.data.task_id,
       "priority_id":val.status_id
   }
 try {
