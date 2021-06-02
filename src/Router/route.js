@@ -95,6 +95,9 @@ import ProjectwiseTS from '../pages/Search/TimeSheets/projectwise_timesheet'
 import checkListCreation from '../pages/Checklist/checklistCreation';
 import checkListAssign from '../pages/Checklist/checklistAssigning';
 
+//OPEAdvance
+// import OPE from '../pages/OPE/OpeAdvance'
+import OPE_Expense from '../pages/OPE/OpeExpense'
 
 function Routes(props) {
 
@@ -181,7 +184,7 @@ function Routes(props) {
         <PrivateRoute path="/testtemplate" component={TestTemplate} exact />
         <PrivateRoute path="/onlinetest" component={OnlineTest} exact />
         <PrivateRoute path="/instructionModal" component={InstructionModal} exact />
-        <PrivateRoute path="/onlineQA" component={OnlineQA} exact />
+        <PrivateRoute path="/onlineQA/:starttime" component={OnlineQA} exact />
 
         {/* out of packet */}
         <PrivateRoute path="/outofpacket" component={OutofPacket} exact />
@@ -192,7 +195,9 @@ function Routes(props) {
         <PrivateRoute path="/checklistCreation" component={checkListCreation} exact />
         <PrivateRoute path="/checklistAssigning" component={checkListAssign} exact />
 
-
+        {/* OPEAdvance */}
+        {/* <PrivateRoute path="/OpeAdvance" component={OPE} exact /> */}
+        <PrivateRoute path="/OpeExpense" component={OPE_Expense} exact />
       </Switch>
     </Navbar>
   );

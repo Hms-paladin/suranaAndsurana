@@ -84,7 +84,7 @@ function TimeSheetStartModel(props) {
     useEffect(() => {
         setProjectDetails(props.projectrow)
     }, [props.projectrow])
-    
+
     const handleCancel = () => {
         let From_key = [
             "activity",
@@ -119,8 +119,8 @@ function TimeSheetStartModel(props) {
 
     }, []);
 
- 
-   
+
+
     useEffect(() => {
         let activityTypeData = []
         props.activitysList.map((data) =>
@@ -279,7 +279,7 @@ function TimeSheetStartModel(props) {
             {changeStop ?
                 <div>
                     <Grid item xs={12} container direction="row" spacing={3}>
-                        {projectDetails&&projectDetails.length > 0 && projectDetails.map((data) => {
+                        {projectDetails && projectDetails.length > 0 && projectDetails.map((data) => {
                             return (
                                 <>
                                     <Grid item xs={4}>{data.project_type}</Grid>
@@ -290,7 +290,7 @@ function TimeSheetStartModel(props) {
 
                             )
                         })}
-                       
+
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Activity"}
@@ -347,7 +347,7 @@ function TimeSheetStartModel(props) {
                         <Grid item xs={4}></Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
-
+                                disableFuture={true}
                                 changeData={(data) => checkValidation(data, "fromDate")}
                                 value={timeSheetForm.fromDate.value}
                                 error={timeSheetForm.fromDate.error}
@@ -368,6 +368,7 @@ function TimeSheetStartModel(props) {
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
+                                disablePast={true}
                                 changeData={(data) => checkValidation(data, "toDate")}
                                 placeholder={" End Date"}
                                 value={timeSheetForm.toDate.value}
@@ -511,7 +512,7 @@ const mapStateToProps = (state) =>
     tagsList: state.projectTasksReducer.tagsList || [],
     assignToList: state.projectTasksReducer.assignToLists || [],
     locationList: state.projectTasksReducer.locationLists || [],
-   
+
 });
 
 export default connect(mapStateToProps)(TimeSheetStartModel);

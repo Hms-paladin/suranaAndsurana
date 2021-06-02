@@ -8,11 +8,12 @@ import { useDispatch, connect } from "react-redux";
 import { getDesignationList, getDepartment} from '../../actions/MasterDropdowns'
 import { getEmployeeListSearch,getEmployeeCode} from '../../actions/EmployeeListAction'
 import ValidationLibrary from "../../helpers/validationfunction";
-
+import moment from 'moment'
 import DynModel from "../../component/Model/model";
 import Employeeform from '../Employeeform/employeeform';
 import Axios from 'axios';
 import { apiurl } from '../../utils/baseUrl'
+import { notification } from "antd";
 
 function EmployeeList(props){
     const dispatch = useDispatch();
@@ -26,6 +27,8 @@ function EmployeeList(props){
     const [Employee_Data, setEmployee_Data] = useState([])
     const [stateClear, setStateClear] = useState(false)
     const [resume_id, setResume_id] = useState("")
+    const [goRights, setGoRights] = useState([])
+   
     const [EmpList, setEmpList] = useState({
         empcode: {
             value:"",
@@ -103,11 +106,11 @@ useEffect(() => {
       var listarray = {
         employee_code: employee_list[m].employee_code,
         name: <a className="link_tag" onClick={()=>onclickEmpName(employee_list[index])}>{employee_list[m].name}</a>,
-        gender: employee_list[m].gender,
+        gender: employee_list[m].gender==='F'?'FEMALE':'MALE',
         designation: employee_list[m].designation,
         department: employee_list[m].department,
-        dob: employee_list[m].dob,
-        doj: employee_list[m].doj,
+        dob: <span style={{whiteSpace:'nowrap'}}>{employee_list[m].dob?moment(employee_list[m].dob).format('DD-MMM-YYYY'):'--'}</span>,
+        doj: <span style={{whiteSpace:'nowrap'}}>{employee_list[m].doj?moment(employee_list[m].doj).format('DD-MMM-YYYY'):'--'}</span>,
         experience: employee_list[m].experience,
         supervisor_name: employee_list[m].supervisor_name,
    
@@ -201,6 +204,29 @@ dispatch(getEmployeeListSearch(empCodeName,EmpList)).then(() => {
 })
    
 }
+
+    ///***********user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission){
+           let data_res_id = props.UserPermission.find((val) => { 
+           return (
+               "List of Employees - Go" == val.control 
+           ) 
+          })
+          setGoRights(data_res_id)
+        }
+        
+        }, [props.UserPermission]);
+        
+        
+        // console.log(goRights,"rights")
+        
+        function rightsNotification(){
+        notification.success({
+            message: "You are not Authorized. Please Contact Administrator",
+        });
+        }
+        /////////////
     return(
         <div>
                 <div className="emp_master_h">Employee List</div>
@@ -236,7 +262,7 @@ dispatch(getEmployeeListSearch(empCodeName,EmpList)).then(() => {
                     />
                     </Grid>
                     <Grid item xs={2}>
-                    <CustomButton btnName={"Go"} onBtnClick={onSubmit} btnCustomColor="customPrimary" 
+                    <CustomButton btnName={"Go"} btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSubmit} btnCustomColor="customPrimary" 
                     custombtnCSS={"emp_btn_css"} 
                    />
                     </Grid>
@@ -260,6 +286,7 @@ const mapStateToProps = (state) => (
         getDepartment: state.getOptions.getDepartment || [],
         getEmployeeCode: state.EmployeeListReducer.getEmployeeCode || [],
         getEmployee_List_Data: state.EmployeeListReducer.getEmployeeListSearch || [],
+        UserPermission: state.UserPermissionReducer.getUserPermission,
         // getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
     }
 );

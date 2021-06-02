@@ -21,3 +21,8 @@
     padding: 6px !important;
 
 }
+
+.MuiButtonBase-root.Mui-disabled {
+    cursor: not-allowed !important;
+    pointer-events: all !important;
+}

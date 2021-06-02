@@ -17,12 +17,10 @@ import DateFnsUtils from '@date-io/date-fns';
 //   KeyboardTimePicker,
 //   KeyboardDatePicker,
 // } from '@material-ui/pickers';
-import { DatePicker, Select, TimePicker } from 'antd';
+import { DatePicker, Select} from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
-
-
-
+import {TimePicker} from  '@material-ui/pickers'
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
@@ -48,7 +46,7 @@ export default class Labelbox extends Component {
 		var timeformat = dateFormat(time, "hh:MM:ss");
 		console.log("timeformat", timeformat)
 		this.setState({ selectedtime: time });
-		this.props.changeData && this.props.changeData(timeformat,time);
+		this.props.changeData && this.props.changeData(time);
 	};
 
 	componentWillReceiveProps(props) {
@@ -84,7 +82,10 @@ export default class Labelbox extends Component {
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} placeholder={this.props.placeholder} disabled={this.props.disabled} />
+						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text"
+						 onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} 
+						 onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
+						placeholder={this.props.placeholder} disabled={this.props.disabled} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -193,7 +194,7 @@ export default class Labelbox extends Component {
 
 			}
 
-			console.log(this.props.value,"this.props.value")
+			console.log(this.props.value, "this.props.value")
 
 			const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -213,8 +214,13 @@ export default class Labelbox extends Component {
 								KeyboardButtonProps={{
 									'aria-label': 'change time',
 								}}
+								minTime={this.props.minTime && this.props.minTime}
+								maxTime={this.props.maxTime && this.props.maxTime}
 								InputProps={{ readOnly: true }}
-								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker" />}
+								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker"
+								minTime={this.props.minTime && this.props.minTime}
+								maxTime={this.props.maxTime && this.props.maxTime} />
+								}
 							/>
 						</MuiPickersUtilsProvider>
 						{
@@ -226,7 +232,8 @@ export default class Labelbox extends Component {
 
 				</div>
 			)
-		} else if (data.type == 'select') {
+		}
+		   else if (data.type == 'select') {
 			function onChange(value) {
 				console.log(`selected ${value}`);
 			}
@@ -284,10 +291,10 @@ export default class Labelbox extends Component {
 								if (this.props.mode === "multiple") {
 									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
 								}
-								else if(this.props.stringvalue){
+								else if (this.props.stringvalue) {
 									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
 								}
-								 else {
+								else {
 									return (<Option key={index} disabled={item.disable} value={item.id}>{item.value}</Option>)
 								}
 							}

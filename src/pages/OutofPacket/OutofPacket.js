@@ -1,4 +1,4 @@
-import React,{useState}from 'react'
+import React,{useState,useEffect}from 'react'
 import './OutofPacket.scss'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
@@ -10,8 +10,14 @@ import OPAdv from "../../images/dashboard/opadv.svg";
 import DynModel from '../../component/Model/model'
 import AttachView from './AttachView'
 import {NavLink} from 'react-router-dom'
-export default function OutofPacket(){
+import { notification } from "antd";
+import { useDispatch, connect } from "react-redux";
+
+function OutofPacket(props){
     const [attchOpen,setattchOpen]=useState(false)
+    const [searchRights, setSearchRights] = useState([])
+
+
     const Header=[
         {id:"ope",label:"OPE/OPA"},
         {id:"date",label:"Date"},
@@ -22,15 +28,40 @@ export default function OutofPacket(){
         {id:"comment",label:"Comment"}
     ]
     const Rows=[
-        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Travel",amount:"500.00",mop:"Credit Card",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Food",amount:"120.00",mop:"Cash",bill:"No",comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Stationery",amount:"1200.00",mop:"Cash",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"><Labelbox type="text" placeholder="Type your comment ..."/></div>},
+        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
+        {ope:"Expense",date:"02-May-2021",expensetype:"Travel",amount:"500.00",mop:"Credit Card",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
+        {ope:"Expense",date:"02-May-2021",expensetype:"Food",amount:"120.00",mop:"Cash",bill:"No",comment:<div className="comment_txt_pack"></div>},
+        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
+        {ope:"Expense",date:"02-May-2021",expensetype:"Stationery",amount:"1200.00",mop:"Cash",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
     ]
+
+        ///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "OPA/ Expenses - Search" == val.control 
+       ) 
+      })
+      setSearchRights(data_res_id)
+
+    }
+    
+    }, [props.UserPermission]);
+    
+    
+    // console.log(searchRights,"rights")
+    
+    function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+    }
+    /////////////
+
     return(
         <div className="parent_root_outpack">
-             <div className="pack_master_h">Out of Packet Advances / Expenses</div>
+             <div className="pack_master_h">Out of Pocket Advances / Expenses</div>
                 <div className="parent_div_pack">
                 <Grid container spacing={2} className="cont_parent_lib_grid">
                     <Grid item xs={12} container direction="row" alignItems="center" spacing={2} className="cont_lib_item_grid">
@@ -45,7 +76,10 @@ export default function OutofPacket(){
                         </Grid>
                         <Grid item xs={2} className="btn_grid_cont_pack">
                             <CustomButton btnName={"Search"}
-                             custombtnCSS={"pack_btn_css"} onBtnClick={""} btnCustomColor="customPrimary"/>
+                             custombtnCSS={"pack_btn_css"}
+                             btnDisable={!searchRights||searchRights.display_control&&searchRights.display_control==='N'?true:false}
+                              onBtnClick={''}
+                               btnCustomColor="customPrimary"/>
                         </Grid>
                   </Grid> 
                   </Grid> 
@@ -59,7 +93,7 @@ export default function OutofPacket(){
                            <div><div>Total Expense</div><div>1,820</div></div>
                     
                            <div><div>Balance</div><div>18,180</div></div>
-                           <div className="div_ope"><img src={OPExp}/><div className="ope_text">OPE Expenses</div></div>
+                           <NavLink to="/OpeExpense"><div className="div_ope"><img src={OPExp}/><div className="ope_text">OPE Expenses</div></div></NavLink> 
                            <NavLink to="/ope_advance"><div  className="div_ope"><img src={OPAdv}/><div className="ope_text">OPE Advances</div></div></NavLink> 
                            </div>
                        
@@ -72,3 +106,8 @@ export default function OutofPacket(){
        </div>
     )
 }
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps) (OutofPacket);

@@ -24,7 +24,7 @@ export const insertLeaveUpdate = (params,employee_id,eligible_leave,employee_cod
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Balance added sucessfully",
+                    message: "Leave Balance Added Successfully",
                   });
                 dispatch({type:INSERT_LEAVE_UPDATE,payload:response.data.status})
                 dispatch(getLeaveBalance(params,employee_code))
@@ -111,7 +111,7 @@ export const getLeaveBalance = (params,employee_code) => async dispatch => {
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Leave Balance updated sucessfully",
+                    message: "Leave Balance Updated Successfully",
                   });
                 dispatch({type:UPDATE_LEAVE_BALANCE,payload:response.data.status})
                 dispatch(getLeaveBalance(params,employee_code))

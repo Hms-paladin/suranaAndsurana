@@ -68,14 +68,23 @@
   padding-bottom: 0px;
 }
 
-.educationKeyValue,
+.educationKeyValue{
+  >div{
+    display: flex;
+    margin: 2px;
+  }
+  .qualheading{
+    width: 45%;
+  }
+}
+
 .experienceKeyValue {
   display: flex;
   width: 100%;
   margin-top: 20px;
 }
 
-.educationKeyValue:first-child,
+
 .experienceKeyValue:first-child {
   margin-top: 5px !important;
 }
@@ -90,6 +99,14 @@
 .experienceValue {
   color: #333232;
   width: 50%;
+  white-space: nowrap;
+
+}
+
+.companyname{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // Resume Educational Model scss ==>

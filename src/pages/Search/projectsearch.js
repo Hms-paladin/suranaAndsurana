@@ -68,6 +68,12 @@ function Projectsearch(props) {
   const [projectName, setProjectName] = useState({});
   const [billableType, setBillableType] = useState({});
   const [multiplePanel, setMultiplePanel] = useState([]);
+
+  const [goRights, setGoRights] = useState([])
+  const [createProjectRights, setCreateProjectRights] = useState([])
+  const [createAdhocRights, setCreateAdhocRights] = useState([])
+
+  const [redirectToProject, setRedirectToProject] = useState(false)
   const dispatch = useDispatch();
 
   const [projectform, setprojectform] = useState({
@@ -221,7 +227,7 @@ function Projectsearch(props) {
     // }
 
 
-    dispatch(getProjectSearchTableData(projectform)).then((response) => {
+    dispatch(getProjectSearchTableData(projectform)).then((project_details) => {
 
       stateClear();
     });
@@ -291,12 +297,6 @@ function Projectsearch(props) {
         ipProjectDataList.push(rowdataListobj);
       });
 
-      if (data.project_details.length === 0&&index===0) {
-        notification.success({
-          message: " No Data found",
-        })
-      }
-
       multipleTab.push(
         <Panel
           header={`${data.project_type} (${data.project_details.length})`}
@@ -322,16 +322,53 @@ function Projectsearch(props) {
   }, [props.TableData]);
 
 
+///*****user permission**********/
 
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+      return (
+          "Project - Go" == val.control 
+      ) 
+    })
+    setGoRights(data_res_id)
+
+     data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Project - Create Project" == val.control 
+        ) 
+    })
+    setCreateProjectRights(data_res_id)
+
+     data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Project - Create Adhoc Task" == val.control 
+        ) 
+    })
+    setCreateAdhocRights(data_res_id)
+ }
+
+ }, [props.UserPermission]);
+
+
+   console.log(goRights,"rights")
+
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
   return (
     <div>
       <div className="searchflex1"></div>
       <div className="searchfilterflex">
         <div className="searchfilterflex1">
           <div className="projsearchfilterdrpdwn">
+
+            <div className="Fieldheading">Client Type</div>
             <Labelbox
               type="select"
-              placeholder="Client Type"
               dropdown={clientType.ClientType}
               changeData={(data) => checkValidation(data, "clienttype")}
               value={projectform.clienttype.value}
@@ -340,9 +377,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Client</div>
             <Labelbox
               type="select"
-              placeholder="Client"
               dropdown={client.Client}
               changeData={(data) => checkValidation(data, "client")}
               value={projectform.client.value}
@@ -351,9 +388,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Project Type</div>
             <Labelbox
               type="select"
-              placeholder="Project Type"
               dropdown={projectType.ProjectType}
               changeData={(data) => checkValidation(data, "projecttype")}
               value={projectform.projecttype.value}
@@ -362,9 +399,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Project Name</div>
             <Labelbox
               type="select"
-              placeholder="Project Name"
               dropdown={projectName.ProjectName}
               changeData={(data) => checkValidation(data, "projectname")}
               value={projectform.projectname.value}
@@ -373,9 +410,9 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Billing Type</div>
             <Labelbox
               type="select"
-              placeholder="Billing Type"
               dropdown={billableType.BillableType}
               changeData={(data) => checkValidation(data, "billabletype")}
               value={projectform.billabletype.value}
@@ -383,9 +420,8 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <Button className="projectsearchgo" onClick={onSearch}>
-            Go
-          </Button>
+          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"}  btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} />
+         
         </div>
       </div>
 
@@ -397,7 +433,8 @@ function Projectsearch(props) {
           btnName={"Create Adhoc Task"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          onBtnClick={() => setModelOpen(true)}
+          btnDisable={!createAdhocRights||createAdhocRights.display_control&&createAdhocRights.display_control==='N'?true:false}
+          onBtnClick={() =>setModelOpen(true)}
         />
         <DynModel
           modelTitle={"Adhoc Task"}
@@ -405,15 +442,29 @@ function Projectsearch(props) {
           handleChangeCloseModel={(bln) => setModelOpen(bln)}
           content={<AdhocTaskModel />}
         />
-        <Link to="/projectFormCreate">
+
+    {/* <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
           <CustomButton
             btnName={"Create Project "}
             btnCustomColor="customPrimary"
             custombtnCSS={"goSearchbtn"}
-            onBtnClick={() => setpathname("/projectFormCreate")}
+            // onBtnClick={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')&&rightsNotification}
+            onBtnClick={() => createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?rightsNotification():''}
           />
-        </Link>
+        </Link> */}
+
+        <CustomButton
+          btnName={"Create Project "}
+          btnCustomColor="customPrimary"
+          custombtnCSS={"goSearchbtn"}
+          btnDisable={!createProjectRights||createProjectRights.display_control&&createProjectRights.display_control==='N'?true:false}
+          onBtnClick={() => setRedirectToProject(true)}
+        />
       </div>
+      {redirectToProject && createProjectRights&&createProjectRights.display_control&&createProjectRights.display_control==='Y' &&
+        <Redirect push to="/projectFormCreate" />
+      }
+      {/* {console.log(pathname, "projectFormCreate")} */}
 
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>
@@ -428,6 +479,7 @@ const mapStateToProps = (state) =>
   ProjectType: state.getOptions.getProjectType,
   ProjectName: state.getOptions.getProjectName,
   BillableType: state.getOptions.getBillableType,
+  UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 
 export default connect(mapStateToProps)(Projectsearch);

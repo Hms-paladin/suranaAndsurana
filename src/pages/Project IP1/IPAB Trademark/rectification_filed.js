@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React,{useState, useEffect} from 'react'
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 
-function IPABRectificationFiled(props) {
-    
+function IPABRectificationDefended(props){
     const [tradeStatusList, settradeStatusList] = useState({})
     const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
@@ -24,7 +23,6 @@ function IPABRectificationFiled(props) {
         
       }, []);
 
-  
       useEffect(() => {
 
         setProjectDetails(props.ProjectDetails);
@@ -55,7 +53,6 @@ function IPABRectificationFiled(props) {
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
-
 function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(TradeMarkForm);
@@ -63,7 +60,7 @@ function onSubmit() {
         (obj) => TradeMarkForm[obj].error == true
     ); 
     console.log(filtererr.length);
-    let params  = {
+    let params  = {        
         "ip_type":"ddf",
         "client_status_type": null,
         "trademark_ipab_id": 0,
@@ -74,19 +71,19 @@ function onSubmit() {
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
         "hearing_date":TradeMarkForm.date_of_hearing.value || "",
-        "opp_applicant" :"",
-        "opp_applicant_rep" :"",
+        "opp_applicant" :TradeMarkForm.applicant.value,
+        "opp_applicant_rep" :TradeMarkForm.applicant_rep.value,
         "filing_type_id" :TradeMarkForm.filing_type_id.value,
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || "" ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :TradeMarkForm.client_applicant.value,
+        "client_application" :"",
         "mark" :TradeMarkForm.mark.value,
-        "respondent" :TradeMarkForm.respondent.value,
-        "respondent_rep" :TradeMarkForm.respondent_rep.value,
+        "respondent" :"",
+        "respondent_rep" :"",
         "client_responent" :"",
         "revocation_filing_date" :"",
         "applicant_no":"",
@@ -115,8 +112,8 @@ function onSubmit() {
 
 const handleCancel = () => {
     let From_key = [
-        "client_applicant", "mark", "trade_mark_no", "class_id", "rectification_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "respondent", 
-        "respondent_rep", "filing_type_id", "status_id", "comments"
+        "client_application", "mark", "trade_mark_no", "class_id", "rectification_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "applicant",
+        "applicant_rep", "filing_type_id", "status_id", "comments"
     ]
 
     From_key.map((data) => {
@@ -134,7 +131,7 @@ const handleCancel = () => {
 
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
-    client_applicant: {
+    client_application: {
         value: 0,
         validation: [{ "name": "required" },],
         error: null,
@@ -143,15 +140,15 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     mark: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
-
+        
     },
     trade_mark_no: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -159,7 +156,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     class_id: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -167,15 +164,15 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     rectification_filing_date: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
-
+        
     },
     serial_no: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -183,39 +180,39 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     org_appeal_no: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
-
+        
     },
     date_of_hearing: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
 
     },
-    respondent: {
-        value: 0,
+    applicant: {
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
 
     },
-    respondent_rep: {
-        value: 0,
+    applicant_rep: {
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
-
+        
     },
     filing_type_id: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -223,7 +220,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     status_id: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -231,13 +228,13 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     comments: {
-        value: 0,
+        value: "",
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
         disabled: false,
 
-    },
+    }
 })
 function checkValidation(data, key, multipleId) {
 
@@ -274,46 +271,44 @@ function checkValidation(data, key, multipleId) {
     }));
 
 };
-    return (
+    return(
         <div>
             <Grid item xs={12} container direction="row" spacing={2}>
             <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
                         placeholder={" Client - Applicant"}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "client_applicant")}
-                              value={TradeMarkForm.client_applicant.value}
-                               error={TradeMarkForm.client_applicant.error}
-                               errmsg={TradeMarkForm.client_applicant.errmsg}
-                               disabled={TradeMarkForm.client_applicant.disabled}
-                               />
+                        changeData={(data) => checkValidation(data, "client_application")}
+                        value={TradeMarkForm.client_application.value}
+                        error={TradeMarkForm.client_application.error}
+                        errmsg={TradeMarkForm.client_application.errmsg} 
+                        disabled={TradeMarkForm.client_application.disabled}
+                        />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
-                        placeholder={" Mark "}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "mark")}
-                              value={TradeMarkForm.mark.value}
-                               error={TradeMarkForm.mark.error}
-                               errmsg={TradeMarkForm.mark.errmsg}
-                               disabled={TradeMarkForm.mark.disabled}
-                               />
+                        placeholder={" Mark"}
+                        changeData={(data) => checkValidation(data, "mark")}
+                        value={TradeMarkForm.mark.value}
+                        error={TradeMarkForm.mark.error}
+                        errmsg={TradeMarkForm.mark.errmsg} 
+                        disabled={TradeMarkForm.mark.disabled}
+                        />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
                         placeholder={" Trade Mark No"}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "trade_mark_no")}
-                              value={TradeMarkForm.trade_mark_no.value}
-                               error={TradeMarkForm.trade_mark_no.error}
-                               errmsg={TradeMarkForm.trade_mark_no.errmsg}
-                               disabled={TradeMarkForm.trade_mark_no.disabled}
-                               />
+                        changeData={(data) => checkValidation(data, "trade_mark_no")}
+                        value={TradeMarkForm.trade_mark_no.value}
+                        error={TradeMarkForm.trade_mark_no.error}
+                        errmsg={TradeMarkForm.trade_mark_no.errmsg} 
+                        disabled={TradeMarkForm.trade_mark_no.disabled}
+                        />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="select"
-                        placeholder={" Class"}                        
+                        placeholder={" Class"}
+                        
                               dropdown={classDetList.classDetailsData}  
                               changeData={(data) => checkValidation(data, "class_id")}
                               value={TradeMarkForm.class_id.value}
@@ -337,25 +332,23 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
-                        placeholder={" Serial No"}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "serial_no")}
-                              value={TradeMarkForm.serial_no.value}
-                               error={TradeMarkForm.serial_no.error}
-                               errmsg={TradeMarkForm.serial_no.errmsg}
-                               disabled={TradeMarkForm.serial_no.disabled}
-                               />
+                        placeholder={" Serial No "}
+                        changeData={(data) => checkValidation(data, "serial_no")}
+                        value={TradeMarkForm.serial_no.value}
+                        error={TradeMarkForm.serial_no.error}
+                        errmsg={TradeMarkForm.serial_no.errmsg} 
+                        disabled={TradeMarkForm.serial_no.disabled}
+                        />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
-                        placeholder={" Org Appeal No."}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "org_appeal_no")}
-                              value={TradeMarkForm.org_appeal_no.value}
-                               error={TradeMarkForm.org_appeal_no.error}
-                               errmsg={TradeMarkForm.org_appeal_no.errmsg}
-                               disabled={TradeMarkForm.org_appeal_no.disabled}
-                               />
+                        placeholder={" Org Appeal No "}
+                        changeData={(data) => checkValidation(data, "org_appeal_no")}
+                        value={TradeMarkForm.org_appeal_no.value}
+                        error={TradeMarkForm.org_appeal_no.error}
+                        errmsg={TradeMarkForm.org_appeal_no.errmsg} 
+                        disabled={TradeMarkForm.org_appeal_no.disabled}
+                        />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
@@ -370,37 +363,35 @@ function checkValidation(data, key, multipleId) {
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
-                        placeholder={" Respondent "}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "respondent")}
-                              value={TradeMarkForm.respondent.value}
-                               error={TradeMarkForm.respondent.error}
-                               errmsg={TradeMarkForm.respondent.errmsg}
-                               disabled={TradeMarkForm.respondent.disabled}
-                               />
+                        placeholder={" Applicant "}
+                        changeData={(data) => checkValidation(data, "applicant")}
+                        value={TradeMarkForm.applicant.value}
+                        error={TradeMarkForm.applicant.error}
+                        errmsg={TradeMarkForm.applicant.errmsg} 
+                        disabled={TradeMarkForm.applicant.disabled}
+                        />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="text"
-                        placeholder={" Respondent - Rep "}
-                        disableFuture={false}
-                              changeData={(data) => checkValidation(data, "respondent_rep")}
-                              value={TradeMarkForm.respondent_rep.value}
-                               error={TradeMarkForm.respondent_rep.error}
-                               errmsg={TradeMarkForm.respondent_rep.errmsg}
-                               disabled={TradeMarkForm.respondent_rep.disabled}
-                               />
+                        placeholder={" Applicant - Rep "}
+                        changeData={(data) => checkValidation(data, "applicant_rep")}
+                        value={TradeMarkForm.applicant_rep.value}
+                        error={TradeMarkForm.applicant_rep.error}
+                        errmsg={TradeMarkForm.applicant_rep.errmsg} 
+                        disabled={TradeMarkForm.applicant_rep.disabled}
+                        />
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <Labelbox type="select"
-                        placeholder={" Filing Type"} changeData={(data) => checkValidation(data, "filing_type_id")}
-                        dropdown={tradeStatusList.filingTypeData} 
-                        value={TradeMarkForm.filing_type_id.value}
-                        error={TradeMarkForm.filing_type_id.error}
-                        errmsg={TradeMarkForm.filing_type_id.errmsg}
-                        disabled={TradeMarkForm.filing_type_id.disabled}
-                        />
+                        placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id")}
+                dropdown={tradeStatusList.filingTypeData} 
+                value={TradeMarkForm.filing_type_id.value}
+                error={TradeMarkForm.filing_type_id.error}
+                errmsg={TradeMarkForm.filing_type_id.errmsg}
+                disabled={TradeMarkForm.filing_type_id.disabled}
+                />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="select"
@@ -441,4 +432,4 @@ const mapStateToProps = (state) =>
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
-export default connect(mapStateToProps)(IPABRectificationFiled);
+export default connect(mapStateToProps)(IPABRectificationDefended);

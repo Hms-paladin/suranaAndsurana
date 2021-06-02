@@ -234,115 +234,143 @@ function ApplicationDomestic(props) {
     <div>
       <Grid container>
         <Grid item xs={12} md={12} className="app_cont_domestic">
-          <Labelbox
-            type="text"
-            placeholder={"File Cover"}
-            changeData={(data) => checkValidation(data, "file_cover")}
-            value={patentForm.file_cover.value}
-            error={patentForm.file_cover.error}
-            errmsg={patentForm.file_cover.errmsg}
-          />
 
-          <Labelbox
-            type="text"
-            placeholder={"Our Reference"}
-            changeData={(data) => checkValidation(data, "our_ref")}
-            value={patentForm.our_ref.value}
-            error={patentForm.our_ref.error}
-            errmsg={patentForm.our_ref.errmsg}
-          />
-
-          <Labelbox
-            type="text"
-            placeholder={"Client Reference"}
-            changeData={(data) => checkValidation(data, "client_ref")}
-            value={patentForm.client_ref.value}
-            error={patentForm.client_ref.error}
-            errmsg={patentForm.client_ref.errmsg}
-          />
-
-          <Labelbox
-            type="text"
-            placeholder={"Application number"}
-            changeData={(data) => checkValidation(data, "app_num")}
-            value={patentForm.app_num.value}
-            error={patentForm.app_num.error}
-            errmsg={patentForm.app_num.errmsg}
-          />
-
-          <Labelbox
-            type="datepicker"
-            placeholder={"Application Date"}
-            changeData={(data) => checkValidation(data, "app_date")}
-            value={patentForm.app_date.value}
-            error={patentForm.app_date.error}
-            errmsg={patentForm.app_date.errmsg}
-          />
-
-          <Labelbox
-            type="text"
-            placeholder={"Priority No"}
-            changeData={(data) => checkValidation(data, "priority_num")}
-            value={patentForm.priority_num.value}
-            error={patentForm.priority_num.error}
-            errmsg={patentForm.priority_num.errmsg}
-          />
-          <Labelbox
-            type="datepicker"
-            placeholder={"Priority Date"}
-            changeData={(data) => checkValidation(data, "priority_date")}
-            value={patentForm.priority_date.value}
-            error={patentForm.priority_date.error}
-            errmsg={patentForm.priority_date.errmsg}
-          />
-
-          <Labelbox
-            type="text"
-            placeholder={"Title"}
-            changeData={(data) => checkValidation(data, "title")}
-            value={patentForm.title.value}
-            error={patentForm.title.error}
-            errmsg={patentForm.title.errmsg}
-          />
-
-          <Labelbox
-            type="select"
-            placeholder={"Country"}
-            dropdown={countryDetList.countryListsData}
-            changeData={(data) => checkValidation(data, "country")}
-            value={patentForm.country.value}
-            error={patentForm.country.error}
-            errmsg={patentForm.country.errmsg}
-          />
-
-          <Labelbox
-            type="text"
-            placeholder={"Associate"}
-            changeData={(data) => checkValidation(data, "associate")}
-            value={patentForm.associate.value}
-            error={patentForm.associate.error}
-            errmsg={patentForm.associate.errmsg}
-          />
-
-          <Labelbox
-            type="select"
-            placeholder={"Status"}
-            changeData={(data) => checkValidation(data, "status")}
-            dropdown={tradeStatusList.tradeStatusData}
-            value={patentForm.status.value}
-            error={patentForm.status.error}
-            errmsg={patentForm.status.errmsg}
-          />
-          <div className="coments_div">
+          <Grid>
+            <div className="Fieldheadings">File Cover</div>
             <Labelbox
               type="text"
-              placeholder={"Comments"}
-              changeData={(data) => checkValidation(data, "comments")}
-              value={patentForm.comments.value}
-              error={patentForm.comments.error}
-              errmsg={patentForm.comments.errmsg}
+              changeData={(data) => checkValidation(data, "file_cover")}
+              value={patentForm.file_cover.value}
+              error={patentForm.file_cover.error}
+              errmsg={patentForm.file_cover.errmsg}
             />
-          </div>
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Our Reference</div>
+            <Labelbox
+              type="text"
+              changeData={(data) => checkValidation(data, "our_ref")}
+              value={patentForm.our_ref.value}
+              error={patentForm.our_ref.error}
+              errmsg={patentForm.our_ref.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Client Reference</div>
+            <Labelbox
+              type="text"
+              changeData={(data) => checkValidation(data, "client_ref")}
+              value={patentForm.client_ref.value}
+              error={patentForm.client_ref.error}
+              errmsg={patentForm.client_ref.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Application number</div>
+            <Labelbox
+              type="text"
+              changeData={(data) => checkValidation(data, "app_num")}
+              value={patentForm.app_num.value}
+              error={patentForm.app_num.error}
+              errmsg={patentForm.app_num.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Application Date</div>
+            <Labelbox
+              type="datepicker"
+              changeData={(data) => checkValidation(data, "app_date")}
+              value={patentForm.app_date.value}
+              error={patentForm.app_date.error}
+              errmsg={patentForm.app_date.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Priority No</div>
+            <Labelbox
+              type="text"
+              changeData={(data) => checkValidation(data, "priority_num")}
+              value={patentForm.priority_num.value}
+              error={patentForm.priority_num.error}
+              errmsg={patentForm.priority_num.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Priority Date</div>
+            <Labelbox
+              type="datepicker"
+              changeData={(data) => checkValidation(data, "priority_date")}
+              value={patentForm.priority_date.value}
+              error={patentForm.priority_date.error}
+              errmsg={patentForm.priority_date.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Title</div>
+            <Labelbox
+              type="text"
+              changeData={(data) => checkValidation(data, "title")}
+              value={patentForm.title.value}
+              error={patentForm.title.error}
+              errmsg={patentForm.title.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Country</div>
+            <Labelbox
+              type="select"
+              dropdown={countryDetList.countryListsData}
+              changeData={(data) => checkValidation(data, "country")}
+              value={patentForm.country.value}
+              error={patentForm.country.error}
+              errmsg={patentForm.country.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Associate</div>
+            <Labelbox
+              type="text"
+              changeData={(data) => checkValidation(data, "associate")}
+              value={patentForm.associate.value}
+              error={patentForm.associate.error}
+              errmsg={patentForm.associate.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Status</div>
+            <Labelbox
+              type="select"
+              changeData={(data) => checkValidation(data, "status")}
+              dropdown={tradeStatusList.tradeStatusData}
+              value={patentForm.status.value}
+              error={patentForm.status.error}
+              errmsg={patentForm.status.errmsg}
+            />
+          </Grid>
+
+          <Grid>
+            <div className="Fieldheadings">Comments</div>
+            <div className="coments_div">
+              <Labelbox
+                type="text"
+                changeData={(data) => checkValidation(data, "comments")}
+                value={patentForm.comments.value}
+                error={patentForm.comments.error}
+                errmsg={patentForm.comments.errmsg}
+              />
+            </div>
+          </Grid>
+
         </Grid>
       </Grid>
       <div className="custombtnOposition">

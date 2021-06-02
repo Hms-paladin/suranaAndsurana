@@ -91,36 +91,31 @@ const KRA = (props) => {
 
                 <div className="kpi_table">
                     <Grid container >
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ height: 45 }}>
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" style={{ height: 45 }}>
                             <Grid item xs={4}><label className="maintitle">Activity</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle">Sub Activity</label> </Grid>
                             <Grid item xs={4}><label className="maintitle">Percentage</label></Grid>
 
                         </Grid>
 
 
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={4}><label className="maintitle">In Effective</label></Grid>
                             <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
 
                         </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" >
                             <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={4}><label className="maintitle"></label></Grid>
                             <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
 
                         </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" >
                             <Grid item xs={4}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle"></label></Grid>
                             <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
 
                         </Grid>
 
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
+                        <Grid item xs={12} container direction="row" className="kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
                             <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>60</label></Grid>
                         </Grid>
                     </Grid>

@@ -1,15 +1,15 @@
 import axios from "axios";
 import { apiurl } from "../utils/baseUrl.js";
 
-import { GET_SKILLS } from "../utils/Constants.js";
+import { GET_CANDIDATES_NAMES, GET_SKILLS } from "../utils/Constants.js";
 import { GET_TRAITS } from "../utils/Constants.js";
 import { GET_CERTIFICATION } from "../utils/Constants.js";
 import { GET_ACHIEVEMENT } from "../utils/Constants.js";
 import { GET_SPECILIZATION } from "../utils/Constants.js";
 import { GET_CAPABILITY } from "../utils/Constants.js";
 import { GET_TALENTS } from "../utils/Constants.js";
-import {GET_QUALIFICATION} from '../utils/Constants.js'
-import {USER_GET_CLASS,USER_GET_STATUS} from '../utils/Constants'
+import { GET_QUALIFICATION } from '../utils/Constants.js'
+import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants'
 import {
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
@@ -48,9 +48,8 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP,
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,GET_TEMPLATE_NAME
 } from "../utils/Constants.js";
-
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_resource_type");
@@ -112,10 +111,10 @@ export const getTalents = () => async (dispatch) => {
   return dispatch({ type: GET_TALENTS, payload: response.data.data });
 };
 
-export const getStatus = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "/get_s_tbl_m_status");
-  return dispatch({ type: GET_STATUS, payload: response.data.data });
-};
+// export const getStatus = () => async (dispatch) => {
+//   const response = await axios.get(apiurl + "/get_s_tbl_m_status");
+//   return dispatch({ type: GET_STATUS, payload: response.data.data });
+// };
 
 export const getQualification = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_qual");
@@ -270,7 +269,7 @@ export const getLocation = () => async (dispatch) => {
     }).then((response) => {
       dispatch({ type: GET_COURT_LOCATION, payload: response.data.data });
     });
-  } catch (err) {}
+  } catch (err) { }
 };
 
 export const getTradeMarkStatus = () => async (dispatch) => {
@@ -324,21 +323,21 @@ export const getLeaveType = () => async (dispatch) => {
 };
 
 // user master dropdown
-export const getClass  = () => async (dispatch) => {
+export const getClass = () => async (dispatch) => {
   const response = await axios({
-      method: "post",
-      url: apiurl + "get_class",
-      data: {
-          class_type: "1",
-      },
-    });
+    method: "post",
+    url: apiurl + "get_class",
+    data: {
+      class_type: "1",
+    },
+  });
   return dispatch({ type: USER_GET_CLASS, payload: response.data.data });
 };
-export const UsergetStatus  = () => async (dispatch) => {
+export const UsergetStatus = () => async (dispatch) => {
   const response = await axios({
-      method: "get",
-      url: apiurl + "get_status_type",
-    });
+    method: "get",
+    url: apiurl + "get_status_type",
+  });
   return dispatch({ type: USER_GET_STATUS, payload: response.data.data });
 };
 //GET_USERGROUP
@@ -347,5 +346,51 @@ export const getUserGroup = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/getGroupMaster");
   return dispatch({ type: GET_USERGROUP, payload: response.data.data });
 };
+
+// Online test - Ad questions
+
+export const getQuestionType = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/questiontype");
+  return dispatch({ type: GET_QUATIONTYPE, payload: response.data.data });
+};
+//Test Template
+export const getCategory = () => async (dispatch) => {
+  try {
+    axios({
+      method: 'GET',
+      url: apiurl + "category",
+    })
+      .then((response) => {
+        dispatch({ type: GET_CATEGORY, payload: response.data.data })
+      });
+  }
+  catch (err) { }
+}
+export const getSubCategory = (id) => async (dispatch) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: apiurl + "subcategory",
+      data: {
+        categoryId: id
+      }
+    });
+    return dispatch({ type: GET_SUBCATEGORY, payload: response.data.data });
+  }
+  catch (err) { }
+}
+
+//get_candidate_name
+
+export const getCandidateName = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_candidate_name");
+  return dispatch({ type: GET_CANDIDATES_NAMES, payload: response.data.data });
+};
+
+export const GetTemplateName = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/onlineTestTemplateList");
+  return dispatch({ type: GET_TEMPLATE_NAME, payload: response.data.data });
+};
+
 
 

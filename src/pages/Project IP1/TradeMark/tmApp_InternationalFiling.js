@@ -8,10 +8,12 @@ import CustomButton from '../../../component/Butttons/button';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Upload, message, Button, Icon } from 'antd';
 import moment from 'moment'
-import { getTradeMarkStatus,getClassDetails,getPoaDetails,getCountryDetails,getTradeMark,
-    getUsageDetails,insertTradeMark} from "../../../actions/tradeMarkAction";
-    import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
-    import { useParams } from "react-router-dom";
+import {
+    getTradeMarkStatus, getClassDetails, getPoaDetails, getCountryDetails, getTradeMark,
+    getUsageDetails, insertTradeMark
+} from "../../../actions/tradeMarkAction";
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
+import { useParams } from "react-router-dom";
 
 import TabsTcons from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 
@@ -48,12 +50,12 @@ function TradeMarkInternational(properties) {
         dispatch(getPoaDetails());
         dispatch(getUsageDetails());
         dispatch(getCountryDetails());
-        
-      }, []);
+
+    }, []);
 
     useEffect(() => {
 
-        if(properties.tradeMark && properties.tradeMark[0]){
+        if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
             
@@ -403,24 +405,24 @@ setcountryDetList({ countryListsData })
   })
 
     function onSubmit() {
-      /*  var mainvalue = {};
-        var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
-        var filtererr = targetkeys.filter(
-            (obj) => TradeMarkForm[obj].error == true
-        ); */
+        /*  var mainvalue = {};
+          var targetkeys = Object.keys(TradeMarkForm);
+          for (var i in targetkeys) {
+              var errorcheck = ValidationLibrary.checkValidation(
+                  TradeMarkForm[targetkeys[i]].value,
+                  TradeMarkForm[targetkeys[i]].validation
+              );
+              TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
+              TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
+              mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
+          }
+          var filtererr = targetkeys.filter(
+              (obj) => TradeMarkForm[obj].error == true
+          ); */
         //console.log(filtererr.length);
-        let params  = {
-            "project_id" :idDetails.project_id,//radeMarkForm.project_id.value,
-            "status_id" :TradeMarkForm.status_id.value,
+        let params = {
+            "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
+            "status_id": TradeMarkForm.status_id.value,
             "associate_reference": TradeMarkForm.associateRefernce.value,
             "our_reference": TradeMarkForm.ourRefernce.value,
             "mark_id":TradeMarkForm.mark_id.value,
@@ -439,19 +441,19 @@ setcountryDetList({ countryListsData })
             "updated_by" :localStorage.getItem("empId"),
             "ip_address" :"ddf"
         }
-        if(TradeMarkForm.class_id.value != ""){
-            params["class_id"] =TradeMarkForm.class_id.value;
+        if (TradeMarkForm.class_id.value != "") {
+            params["class_id"] = TradeMarkForm.class_id.value;
         }
         dispatch(insertTradeMark(params)).then(() => {
             handleCancel()
         })
-       /* if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
-        } else {
+        /* if (filtererr.length > 0) {
+             // setResumeFrom({ error: true });
+         } else {
+             
             
-           
-        }
-*/
+         }
+ */
         setTradeMarkForm(prevState => ({
             ...prevState
         }));
@@ -459,21 +461,21 @@ setcountryDetList({ countryListsData })
 
     const handleCancel = () => {
         let From_key = [
-            "project_id","associateRefernce","ourRefernce", "status_id", "class_id","associate","userclaim", "usage_details_id", "mark_id", "application_no", "application_date", 
+            "project_id", "associateRefernce", "ourRefernce", "status_id", "class_id", "associate", "userclaim", "usage_details_id", "mark_id", "application_no", "application_date",
             "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
-             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-              "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-               "ip_address"
+            "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
+            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
+            "ip_address"
         ]
 
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-              console.log("mapping", TradeMarkForm[data].value);
+                console.log("mapping", TradeMarkForm[data].value);
             } catch (error) {
-              throw error;
+                throw error;
             }
-          });
+        });
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
@@ -517,19 +519,6 @@ setcountryDetList({ countryListsData })
 
     return (
 
-        // <Grid container direction={"column"}>
-        //        <Grid item xs={12} md={12} className="app_cont_domestic">
-        //          <Labelbox type="text" placeholder={"Name of Opponent"}/>
-        //          <Labelbox type="datepicker" placeholder={"Opposition Filled Date"}/>
-        //          <Labelbox type="text" placeholder={"Types of Grant"}/>
-        //          <Labelbox type="text" placeholder={"Patent Application Number"}/>
-        //          <Labelbox type="text" placeholder={"Patent Title"}/>
-        //          <Labelbox type="datepicker" placeholder={"Publication Date"}/>
-        //          <Labelbox type="text" placeholder={"Patent Applicant"}/>
-        //          <Labelbox type="text" placeholder={"Application Agent"}/>
-        //        </Grid>
-
-        //     </Grid>
 
         <div className="tradeMarkContainer">
             <Grid container direction={"column"}>
@@ -673,7 +662,7 @@ setcountryDetList({ countryListsData })
 
             <Grid item xs={12} container justify="flex-end" >
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="timeSheetButtons" />
-                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}   custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} custombtnCSS="timeSheetButtons" />
 
             </Grid>
         </div >
@@ -683,14 +672,14 @@ setcountryDetList({ countryListsData })
 }
 const mapStateToProps = (state) =>
 ({
-    
+
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
+    classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
     POAList: state.tradeMarkReducer.getPOAList || [],
-    tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
-    countriesList : state.tradeMarkReducer.getCountryList || [],
+    tmUsageDetailsList: state.tradeMarkReducer.gettradeMarkUsageList || [],
+    countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
-    tradeMark : state.tradeMarkReducer.getTrademark || {},
+    tradeMark: state.tradeMarkReducer.getTrademark || {},
 });
 
 export default connect(mapStateToProps)(TradeMarkInternational);

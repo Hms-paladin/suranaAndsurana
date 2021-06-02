@@ -6,8 +6,8 @@ import PlusIcon from "../../images/plusIcon.svg";
 import { Redirect, Link } from "react-router-dom";
 import Delete from '../../images/dashboard/delete.svg';
 import TestTemplate from '../../pages/OnlineTest/testtemplate'
-function AddQuestions(){
-    
+function AddQuestions(props){
+ 
     return(
         <div className="TTcategory">
         <Grid item xs={12} container direction="row" spacing={2}>

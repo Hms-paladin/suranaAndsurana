@@ -39,7 +39,7 @@ function LeaveUpdate(props) {
    
     const [editBtn, setEditBtn] = useState(false)
 
-    const [permission, setPermission] = useState([])
+    const [saveRights, setSaveRights] = useState([])
 
     const [leaveupdateEdit, setLeaveupdateEdit] = useState(false)
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
@@ -78,7 +78,7 @@ function LeaveUpdate(props) {
         console.log("test,",val)
        Leave_Update.leavetype.value = val.leave_type_id
        setEligible_leave(val.eligible_leave)
-       setLeaveupdateEdit(true)
+    //    setLeaveupdateEdit(true)
        setLeaveEditMasId(val.emp_leave_mas_id)
        setEditBtn(true)
         setleaveUpdate((prevState) => ({
@@ -187,15 +187,16 @@ function LeaveUpdate(props) {
             current_balance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
             action: (
                 <>
-                  <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit&&permission.allow_edit==='N'?(onEditLeaveForm(leaveUpdateList[index])):rights())}    />{" "}
+                    <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])}    />{" "}
+                  {/* <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit&&permission.allow_edit==='N'?(onEditLeaveForm(leaveUpdateList[index])):rights())}    />{" "} */}
                   {/* <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} /> */}
                 </>
               ),
           };
           updatelist.push(listarray);
         }
-        // setUpdatelist({ updatelist });
-        permission.allow_view==='Y'?setUpdatelist({ updatelist }):setUpdatelist([]);
+        setUpdatelist({ updatelist });
+        // permission.allow_view==='Y'?setUpdatelist({ updatelist }):setUpdatelist([]);
       }, [props.getUpdateTableData])
 
     function checkValidation(data, key) {
@@ -216,7 +217,7 @@ function LeaveUpdate(props) {
         }
         if(key==='leavetype'){
             setEligible_leave("")
-            setLeaveupdateEdit(false)
+            // setLeaveupdateEdit(false)
             setEditBtn(false)
         }
         
@@ -246,21 +247,7 @@ function LeaveUpdate(props) {
     useEffect(() => {
         handleCancel();
       }, [location]);
-///*****user permission**********/
-      useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-           let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-           return (
-               "Leave Update" == val.screen_name
-           ) 
-       })
-       setPermission(data_res_id)
-       }
-   
-       }, [props.UserPermission]);
-/////////////
 
-      console.log(permission,"permission")
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Leave_Update);
@@ -275,9 +262,13 @@ function LeaveUpdate(props) {
         }
         var filtererr = targetkeys.filter((obj) => Leave_Update[obj].error == true);
 
-        if (filtererr.length > 0 || employeeCode==="") {
+        if (filtererr.length > 0 || employeeCode==="" || employeeName==="") {
            if(employeeCode===""){setErrEmployee(true)}
-
+           if(employeeName===""){
+            notification.success({
+                message: "Employee Details Not Found With This Selected Dates",
+              });
+            }
         } 
         else{
             if(editBtn){
@@ -293,11 +284,30 @@ function LeaveUpdate(props) {
             ...prevState,
         }));
     }
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+
+            ///***********user permission**********/
+    useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Leave Master - Save" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+    // console.log(saveRights,"rights")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
+
     return (
         <div>
             <div className="leaveMainHeader">Leave Balance Update</div>
@@ -414,15 +424,15 @@ function LeaveUpdate(props) {
                     }
 
 
-
-                    <Grid item xs={3} container direction="row" spacing={2}>
+                    
+                    {Leave_Update.leavetype.value?<Grid item xs={3} container direction="row" spacing={2}>
                         <Grid item xs={6}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?onSubmit:rights} />
+                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onSubmit}  />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>
                         </Grid>
-                    </Grid>
+                    </Grid>:null}
 
 
                 </Grid>

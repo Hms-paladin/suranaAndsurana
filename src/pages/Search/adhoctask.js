@@ -102,7 +102,7 @@ function AdhocTaskModal(props) {
             })
             dynObj.valueById = multipleIdList.toString()
         }
-        // (end)
+        // (end)    
 
         setadhoc_Form(prevState => ({
             ...prevState,
@@ -173,10 +173,26 @@ function AdhocTaskModal(props) {
         }));
       };
 
+      const [saveRights, setSaveRights] = useState([])
 
+      ///***********user permission**********/
+     useEffect(() => {
+     if(props.UserPermission.length>0&&props.UserPermission){
+        let  data_res_id = props.UserPermission.find((val) => { 
+         return (
+             "Adhoc Task - Save" == val.control 
+         ) 
+        })
+        setSaveRights(data_res_id)
+     
+        
+     }
+     
+     }, [props.UserPermission]);
+     ////////
     return (
-        <div >
-
+        <div className="adhoc_container" style={{backgroundColor:"white",borderRadius:"5px",padding:"15px"}}>
+            <div style={{fontWeight:"600",fontSize:"20px",paddingBottom:"10px"}}>Adhoc Task</div>
             <div className="AdhocTask">
                 <Grid item xs={10} >
                     <LabelBox type="text"
@@ -238,7 +254,7 @@ function AdhocTaskModal(props) {
             </Grid>
             <div className="adhocModelButtons">
                 <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={handleCancel}  />
-                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} onBtnClick={adhocSubmit} />
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS={"projectTaskGo"} onBtnClick={adhocSubmit} />
 
             </div>
 
@@ -253,7 +269,8 @@ const mapStateToProps = (state) =>
 ({
     
     tagsList: state.projectTasksReducer.tagsList || [],
-    assignToList: state.projectTasksReducer.assignToLists || []
+    assignToList: state.projectTasksReducer.assignToLists || [],
+    UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 
 export default connect(mapStateToProps)(AdhocTaskModal);

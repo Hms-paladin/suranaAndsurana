@@ -1,8 +1,7 @@
 import { combineReducers } from "redux";
 import getInterviewquestions from "./interviewReducer";
 import ResumeSearchStatus from "./ResumeSearch";
-import GetInterviewers from "./InterviewSchedule";
-import GetDesignation from "./InterviewSchedule";
+import InterviewSchedule from "./InterviewSchedule";
 import GetEmployeeApprove from "./EmployeeApproveReducer";
 import insertInterviewquestions from "./interviewReducer";
 import getemplyoeeformid from "./employeeformReducer";
@@ -31,14 +30,18 @@ import EmployeeListReducer from "./EmployeeListReducer";
 import TicketCreationReducer from './TicketCreationReducer';
 import StageMonotorReducer from './StageMonotorReducer';
 import AddClientReducer from './AddClientReducer';
-import getDesignDetails from "./insertDesign"
+import getDesignDetails from "./insertDesign";
+import getTaskList from './TimeSheetReducer';
+import GetResumeList from './ResumeReducer';
+import ExitSeverance from './ExitSeveranceReducers'
+import AddQuations from "./AddQuationsReducer";
+import OnlineTest from './OnlineTestREducer';
 
 
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
-  GetInterviewers,
-  GetDesignation,
+  InterviewSchedule,
   GetEmployeeApprove,
   insertInterviewquestions,
   interviewApproverTableData,
@@ -67,7 +70,12 @@ export default combineReducers({
   StageMonotorReducer,
   TicketCreationReducer,
   AddClientReducer,
-  getDesignDetails
+  getDesignDetails,
+  getTaskList,
+  GetResumeList,
+  ExitSeverance,
+  AddQuations,
+  OnlineTest
 });
 
 

@@ -5,10 +5,11 @@ import CustomButton from '../../component/Butttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from 'react-redux';
-import {getStageMasterTableData,InsertStageMaster,getStageMaster} from '../../actions/StageMasterAction'
-import {getProjectType,getProjectSubType,getProcessType,getStageList, getSubStage } from '../../actions/MasterDropdowns';
+import { getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
+import { getProjectType, getProjectSubType, getProcessType, getStageList, getSubStage } from '../../actions/MasterDropdowns';
 import './StagesMaster.scss'
 import { notification } from "antd";
+import Usermaster from '../UserMaster/Usermaster';
 
 
 const StagesMaster = (props) => {
@@ -30,7 +31,7 @@ const StagesMaster = (props) => {
   const [processType, setprocessType] = useState({})
   const [disabled, setEnabled] = useState(true);
   const [stageDisable, setStageEnabled] = useState(true);
-  const [permission, setPermission] = useState([])
+  const [saveRights, setSaveRights] = useState([])
   const [RateMaster, setRateMaster] = useState({
     project_type: {
       value: "",
@@ -40,13 +41,13 @@ const StagesMaster = (props) => {
     },
     sub_project_type: {
       value: "",
-      validation: [{ "name": "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
     process_type: {
       value: "",
-      validation: [{ "name": "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -87,38 +88,38 @@ const StagesMaster = (props) => {
     //stageTableData
     let stageMasterListData = []
     props.getTableData.map((data) =>
-    stageMasterListData.push(data)
-  )
-  var rateList = [];
+      stageMasterListData.push(data)
+    )
+    var rateList = [];
 
-  for (var m = 0; m < stageMasterListData.length; m++) {
-    var listarray = {
-      "project_type": stageMasterListData[m].project_type,
-      "sub_project_type": stageMasterListData[m].sub_project_type,
-      "process_type": stageMasterListData[m].process,
-      "stage": stageMasterListData[m].stage,
-      "sub_stage": stageMasterListData[m].sub_stage,
-      "noOfdays": stageMasterListData[m].no_of_compliance_days,
-      "reminderDays": stageMasterListData[m].remainder_days,
+    for (var m = 0; m < stageMasterListData.length; m++) {
+      var listarray = {
+        "project_type": stageMasterListData[m].project_type,
+        "sub_project_type": stageMasterListData[m].sub_project_type,
+        "process_type": stageMasterListData[m].process,
+        "stage": stageMasterListData[m].stage,
+        "sub_stage": stageMasterListData[m].sub_stage,
+        "noOfdays": stageMasterListData[m].no_of_compliance_days,
+        "reminderDays": stageMasterListData[m].remainder_days,
+      }
+      rateList.push(listarray);
     }
-    rateList.push(listarray);
-  }
-  // setStageMasterList({ rateList })
-  permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
+    setStageMasterList({ rateList })
+    // permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
 
-  //ProjectType
-  let projectTypedata = []
-  props.ProjectType.map((data) =>
-    projectTypedata.push({ value: data.project_type, id: data.project_type_id })
-  )
-  setprojectType({ projectTypedata })
-  //StageList
-  let projectStagedata = []
-  props.StageList.map((data) =>
-    projectStagedata.push({ value: data.stage, id: data.stage_id })
-  )
-  setStage({ projectStagedata })
-  },[props.getTableData,props. ProjectType,props.StageList])
+    //ProjectType
+    let projectTypedata = []
+    props.ProjectType.map((data) =>
+      projectTypedata.push({ value: data.project_type, id: data.project_type_id })
+    )
+    setprojectType({ projectTypedata })
+    //StageList
+    let projectStagedata = []
+    props.StageList.map((data) =>
+      projectStagedata.push({ value: data.stage, id: data.stage_id })
+    )
+    setStage({ projectStagedata })
+  }, [props.getTableData, props.ProjectType, props.StageList])
 
   useEffect(() => {
     //ProjectSubtype
@@ -140,10 +141,13 @@ const StagesMaster = (props) => {
     )
     setsubStage({ substagedata })
 
-  }, [props.ProcessType,props.ProcessType,props.getSubStage,props.ProjectSubtype])
+  }, [props.ProcessType, props.ProcessType, props.getSubStage, props.ProjectSubtype])
 
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
+    if (RateMaster.project_type.value !== 1) {
+      ValidationHide()
+    }
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
     for (var i in targetkeys) {
@@ -163,7 +167,9 @@ const StagesMaster = (props) => {
       // setResumeFrom({ error: true });
 
     } else {
-      dispatch(InsertStageMaster(RateMaster));
+      dispatch(InsertStageMaster(RateMaster)).then(() => {
+        handleCancel()
+      });
       // setResumeFrom({ error: false });
     }
     setRateMaster(prevState => ({
@@ -175,28 +181,52 @@ const StagesMaster = (props) => {
 
   function checkValidation(data, key, multipleId) {
     //_____________________
-    if(data && key == "project_type"){
-      dispatch(getProjectSubType(data))
+
     if (data === 1 && key == "project_type") {
+      // ValidationHide()
+      RateMaster.sub_project_type.validation.push({ name: "required" })
+      RateMaster.process_type.validation.push({ name: "required" })
+      dispatch(getProjectSubType(data))
       setEnabled(false)
-    } else if (data !== 1 && key == "project_type")
-     { setEnabled(true) }
-  }
-     //________________________________________________________________
-     if (key == "sub_project_type" && data) {
+    } else if (data !== 1 && key == "project_type") {
+      ValidationHide()
+      setEnabled(true)
+    }
+
+    //________________________________________________________________
+    if (key == "sub_project_type" && data) {
       //process type
       dispatch(getProcessType({
-        ProjectType:RateMaster.project_type.value,ProjectSubtype:data
+        ProjectType: RateMaster.project_type.value, ProjectSubtype: data
       }))
+    }
+    if (data === 4 && key == "sub_project_type") {
+      RateMaster.process_type.validation = [{ name: "" }]
+    }
+    else if (data !== 4 && key == "sub_project_type") {
+      RateMaster.process_type.validation = [{ name: "required" }]
     }
     //________________________________________________________________
     if (key === "stages" && data) {
+      // RateMaster.sub_stages.validation.push(({name:"required"}))
       dispatch(getSubStage(data))
-      setStageEnabled(false)
-    } else if (data !== 1 && key == "project_type") { setStageEnabled(true) }
+      // setStageEnabled(false)
+    } else if (data !== 1 && key == "project_type") {
+      // setStageEnabled(true) 
+    }
 
-    if (data && key == "noOfDays") {
+    if (data && key === "noOfDays") {
       RateMaster[key].validation[1].params = RateMaster.compliance.value
+    }
+    if (key === "sub_stages") {
+      RateMaster.sub_stages.validation = []
+    }
+    if (key === "sub_project_type") {
+      RateMaster.sub_project_type.validation = []
+      // RateMaster.process_type.validation=[]
+    }
+    if (key === "process_type") {
+      RateMaster.process_type.validation = []
     }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -216,7 +246,7 @@ const StagesMaster = (props) => {
   }
   const handleCancel = () => {
     let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance"]
-    setStageEnabled(true)
+    // setStageEnabled(true)
     setEnabled(true)
     From_key.map((data) => {
       RateMaster[data].value = ""
@@ -225,27 +255,42 @@ const StagesMaster = (props) => {
       ...prevState,
     }));
   }
+  const ValidationHide = () => {
+    let From_key = ["sub_project_type", "process_type", "sub_stages"]
 
-  useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-       let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-       return (
-           "Variable Rate Master" == val.screen_name
-       ) 
-   })
-   setPermission(data_res_id)
-   }
-
-   }, [props.UserPermission]);
-
-   function rights(){
-    notification.success({
-        message: "You Dont't Have Rights To Access This",
-    });
+    From_key.map((data) => {
+      RateMaster[data].validation = []
+    })
+    setRateMaster(prevState => ({
+      ...prevState,
+    }));
   }
+
+///*****user permission**********/
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+     return (
+       "Stage Template - Save" == val.control 
+     ) 
+ })
+ setSaveRights(data_res_id)
+ }
+
+ }, [props.UserPermission]);
+
+  //  console.log(rights.display_control,"rigths")
+
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
+
   return (
     <div>
-       <div className="var_rate_master">Stage Master</div>
+      <div className="var_rate_master">Stage Template</div>
       <Grid container spacing={3} className="stage_firstgrid">
         <Grid item xs={5} spacing={4} direction={"column"}>
         </Grid>
@@ -284,7 +329,7 @@ const StagesMaster = (props) => {
             errmsg={RateMaster.sub_project_type.errmsg}
           />
           <Labelbox type="select" placeholder={"Sub Stage"}
-            disabled={stageDisable}
+            // disabled={stageDisable}
             changeData={(data) => checkValidation(data, "sub_stages")}
             dropdown={subStage.substagedata}
             value={RateMaster.sub_stages.value}
@@ -313,14 +358,14 @@ const StagesMaster = (props) => {
         
           </Grid>   */}
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
-          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={permission.allow_add==="Y"?onSubmit:rights} />
+          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}  onBtnClick={onSubmit}  />
           <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
         </Grid>
       </Grid>
       <div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
-          rows={StageMasterList.length == 0 ? StageMasterList :StageMasterList.rateList}
-          />
+          rows={StageMasterList.length == 0 ? StageMasterList : StageMasterList.rateList}
+        />
       </div>
     </div>
   )
@@ -328,7 +373,7 @@ const StagesMaster = (props) => {
 
 
 const mapStateToProps = (state) => ({
-  getTableData:state.StageMasterReducer.getStageMaster || [] ,
+  getTableData: state.StageMasterReducer.getStageMaster || [],
   ProjectType: state.getOptions.getProjectType || [],
   StageList: state.getOptions.getStageList || [],
   ProcessType: state.getOptions.getProcessType || [],

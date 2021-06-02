@@ -16,6 +16,7 @@ import {
 } from "../../actions/UserGroupAction";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
+import { notification } from "antd";
 const UserGroups = (props) => {
   const dispatch = useDispatch();
   const header = [
@@ -38,7 +39,7 @@ const UserGroups = (props) => {
   const [checkedGroups, setcheckedGroups] = useState([])
 
   const [isLoaded, setIsLoaded] = useState(true);
-
+  const [rights, setRights] = useState([])
   useEffect(() => {
     dispatch(getGroupList());
     dispatch(getEmployeeList());
@@ -50,13 +51,14 @@ const UserGroups = (props) => {
   const [userForm, setuserForm]= useState({
     employee: {
       value: "",
-      //validation: [{ name: "required" }],
+      validation: [{"name":"required"}],
       error: null,
       errmsg: null,
     },
     group: {
+      valueById:"",
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{"name":"required"}],
       error: null,
       errmsg: null,
     }
@@ -88,7 +90,7 @@ const UserGroups = (props) => {
      // var o = dets[i];
       let o = JSON.parse(JSON.stringify(dets[i]));
      
-      let a = <img src={Edit} style={{cursor: 'pointer',width:19}} onClick={()=>onModealOpen(true,o)} />
+      let a = <img src={Edit} style={{cursor:  rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed',width:19}} onClick={ ()=>(rights&&rights.display_control&&rights.display_control==="Y"&&onModealOpen(true,o))} />
       let listarray = {
         "employee": dets[i].name,
         "group":dets[i].group_name,
@@ -96,7 +98,7 @@ const UserGroups = (props) => {
       }
       groupList.push(listarray);
         
-        
+         
     }
     setUserGroupsList({ groupList })
 
@@ -136,16 +138,38 @@ setUsergroupmodel(flg,obj);
 
 
   function onSubmit() {
-    var groups=[userForm.group.value];
+    var mainvalue = {};
+    var targetkeys = Object.keys(userForm);
+    for (var i in targetkeys) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        userForm[targetkeys[i]].value,
+        userForm[targetkeys[i]].validation
+      );
+      userForm[targetkeys[i]].error = !errorcheck.state;
+      userForm[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
+    console.log("checkuser",userForm)
+
+    if (filtererr.length >0) {
+    } else {
+    var groups=userForm.group.valueById;
     groups.push()
     var data = {
       "emp_id": userForm.employee.value,
-      "group_id": groups,
+      "group_id":groups,
     }
 
     dispatch(InsertUsergroupMaster(data)).then((response) => {
       handleCancel();
     })
+  }
+  setuserForm((prevState) => ({
+    ...prevState,
+    }));
+
+
 
   }
 
@@ -156,12 +180,7 @@ setUsergroupmodel(flg,obj);
     ];
 
     From_key.map((data) => {
-      try {
         userForm[data].value = "";
-        console.log("mapping", userForm[data].value);
-      } catch (error) {
-        throw error;
-      }
     });
     setuserForm((prevState) => ({
       ...prevState,
@@ -238,7 +257,7 @@ setcheckedGroups(d);
           }
         }
       })
-      dynObj.valueById = multipleIdList.toString()
+      dynObj.valueById = multipleIdList
     }
     // (end)
 
@@ -249,7 +268,26 @@ setcheckedGroups(d);
 
   };
 
- 
+   ///*****user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "User Group - Add" == val.control
+       ) 
+   })
+   setRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
   return (
     <div>
       <div className="user_groups">User Groups</div>
@@ -264,20 +302,18 @@ setcheckedGroups(d);
         >
           <Grid item xs={6}>
           <Labelbox type="select" placeholder={"Employee"}
-           
             dropdown={employees.empsData}
             changeData={(data) => checkValidation(data, "employee")}
             value={userForm.employee.value}
             error={userForm.employee.error}
-            errmsg={userForm.employee.errmsg}
-            
+            errmsg={userForm.employee.errmsg}   
           />
            </Grid>
           <Grid item xs={6}>
           <Labelbox type="select" placeholder={"Group"}
-            
+            mode="multiple"
             dropdown={groups.groupsData}
-            changeData={(data) => checkValidation(data, "group")}
+            changeData={(data) => checkValidation(data, "group",groups.groupsData)}
             value={userForm.group.value}
             error={userForm.group.error}
             errmsg={userForm.group.errmsg}
@@ -287,7 +323,7 @@ setcheckedGroups(d);
           </Grid>
         </Grid>
         <div style={{display: 'flex',justifyContent: 'flex-end',marginLeft: 15}}>
-          <img src={PlusIcon} onClick={onSubmit} style={{cursor: 'pointer',width:19,marginTop: -23}}  />
+          <img src={PlusIcon} onClick={()=>rights&&rights.display_control&&rights.display_control==="Y"&&onSubmit()} style={{cursor: rights&&rights.display_control&&rights.display_control==="Y"?'pointer':'not-allowed',width:19,marginTop: -23}}  />
           </div>
        
       </Grid>
@@ -319,6 +355,7 @@ setcheckedGroups(d);
                   btnName={"Save"}
                   btnCustomColor="customPrimary"
                   custombtnCSS={"btnUsergroup"}
+                  // btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
                   onBtnClick={()=>submitGroup()}
                 />
                 <CustomButton
@@ -344,6 +381,7 @@ const mapStateToProps = (state) =>
   employeeLists: state.UserGroupReducer.employeeLists || [],
   employeeGroupDetLists : state.UserGroupReducer.employeeGroupDetLists || [],
   getGroupsForEmp : state.UserGroupReducer.getGroupsForEmp || [],
+  UserPermission: state.UserPermissionReducer.getUserPermission || [],
 });
 
 export default connect(mapStateToProps)(UserGroups);

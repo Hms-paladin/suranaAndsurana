@@ -7,7 +7,7 @@ import { connect, useDispatch } from "react-redux";
 import { Switch } from 'antd';
 import './usermanagement.scss';
 import { getUserGroup } from "../../actions/MasterDropdowns";
-import {insertUser,editUser,getCandidateName} from "../../actions/UserMasterAction";
+import {insertUser,editUser,getCandidateName,GetEmployeeDetails} from "../../actions/UserMasterAction";
 import {
     getGroupList
   } from "../../actions/UserGroupAction";
@@ -21,6 +21,7 @@ function UserMasterModal(props) {
     const [errPassword, setErrPassword] = useState(false)
     const [user_Id, setUser_Id] = useState(0)
     const [groups, setgroups] = useState({})
+    const [disable,setdisable]=useState(false)
     const [UserMaster, setUserMaster] = useState({
         emp_name: {
             value: "",
@@ -60,6 +61,7 @@ function UserMasterModal(props) {
         dispatch(getGroupList())
         dispatch(getCandidateName())
         dispatch(getUserGroup())
+        dispatch(GetEmployeeDetails())
     }, [])
     //////
  
@@ -97,8 +99,18 @@ function UserMasterModal(props) {
             UserGroup.push({ value: data.group_name, id: data.id })
         })
         setUserGroup({ UserGroup })
-
-    }, [props.EmployeeList, props.UserGroup,props.groupLists])
+        // employee details
+        let employee_details=[]
+       
+        props.GetEmployeeDetails.map((data)=>{
+            setdisable(true)
+            setUserMaster((prevState) => ({
+                ...prevState,
+                mobilenumber:{value:data.official_contact},
+                emailid:{value:data.official_email}
+            }));
+        })
+    }, [props.EmployeeList, props.UserGroup,props.groupLists,props.GetEmployeeDetails])
 
       
     // function SwitchChange() {
@@ -126,8 +138,15 @@ function UserMasterModal(props) {
             ...prevState,
             [key]: dynObj,
         }));
-
+        if(key==="emp_name" && data){
+           
+            dispatch(GetEmployeeDetails(data))
+          
+        }
         // variable popup==>
+        if(UserMaster.emp_name.value){
+           
+        }
 
     }
 
@@ -138,7 +157,6 @@ function UserMasterModal(props) {
             "mobilenumber",
             "emailid",
             "usergroup"
-
         ];
 
         From_key.map((data) => {
@@ -263,6 +281,7 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">Mobile Number</div>
                         <Labelbox type="text"
+                            disabled={disable}
                             changeData={(data) => checkValidation(data, "mobilenumber")}
                             // dropdown={industryOptions}
                             value={UserMaster.mobilenumber.value}
@@ -272,6 +291,7 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">E-mail Id</div>
                         <Labelbox type="text"
+                            disabled={disable}
                             changeData={(data) => checkValidation(data, "emailid")}
                             // dropdown={industryOptions}
                             value={UserMaster.emailid.value}
@@ -317,7 +337,7 @@ const mapStateToProps = (state) =>
         getUserList: state.UserMasterReducer.getUser || [],
         EmployeeList: state.UserMasterReducer.getCandidateName || [],
         UserGroup: state.getOptions.getUserGroup || [],
-
+        GetEmployeeDetails:state.UserMasterReducer.getEmployeeDetails||[]
     }
 );
 

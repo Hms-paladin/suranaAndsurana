@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from "../../component/Butttons/button";
@@ -10,14 +10,13 @@ import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getVariableRateTableData, InsertVariableRate, SearchVariableRate } from "../../actions/VariableRateMaster"
+import { getVariableRateTableData, InsertVariableRate, SearchVariableRate, UpdateVariableRate } from "../../actions/VariableRateMaster"
+import DynModel from "../../component/Model/model";
+
 
 
 const RateMaster = (props) => {
   const header = [
-    // { id: 'table_names', label: 'Table Name' },
-
-
     { id: "designation", label: "Designation" },
     { id: "activity", label: "Activity" },
     { id: "sub_activity", label: "Sub Activity" },
@@ -38,13 +37,17 @@ const RateMaster = (props) => {
   const [projectUnit, setprojectUnit] = useState({});
   const [projectTableName, setprojectTableName] = useState({});
   const [projectDesignation, setprojectDesignation] = useState({});
-  const [amountError, setamountError] = useState("");
+  const [modelclose, setmodelclose] = useState();
   const [variablebtnchange, setVariablebtnchange] = useState(true)
+  const [AmountChange, setAmountChange] = useState(true)
   const [variabletablechange, setVariabletablechange] = useState(true)
   const [isLoaded, setIsLoaded] = useState(true);
   const [disabled, setEnabled] = useState(true);
-  const [permission, setPermission] = useState([])
-  // const [amountDis,setAmountDis] =useState(true);
+  const [saveRights, setSaveRights] = useState([])
+  const [activity_id, setActivity_id] = useState();
+  const [notfoundmodel, setNotfoundmodel] = useState(false);
+  const [project_id, setproject_id] = useState(false)
+  // props.setShowSearchTable = props.setShowSearchTable.bind(this);
   const [RateMaster, setRateMaster] = useState({
     activity: {
       value: "",
@@ -54,7 +57,7 @@ const RateMaster = (props) => {
     },
     lower_limit: {
       value: "",
-      validation: [{ name: "allowNumaricOnly" }],
+      validation: [{ name: "numericanddot" }],
       error: null,
       errmsg: null,
     },
@@ -78,7 +81,7 @@ const RateMaster = (props) => {
     },
     upper_limit: {
       value: "",
-      validation: [{ "name": "allowNumaricOnly" }, { "name": "customminValue", "params": "0" }],
+      validation: [{ "name": "numericanddot" }, { "name": "customminValue", "params": "0" }],
       error: null,
       errmsg: null,
     },
@@ -109,8 +112,10 @@ const RateMaster = (props) => {
   useEffect(() => {
     setVariablebtnchange(props.variablebtnchange)
     setVariabletablechange(props.variabletablechange)
+    setAmountChange(props.AmountChange)
+
     // setAmountDis(false)
-  }, [props.variabletablechange, props.variablebtnchange]);
+  }, [props.variabletablechange, props.variablebtnchange, props.AmountChange]);
   // useEffect(() => {
   //   // setAmountDis(false)
   // }, [props.variableRateCall]);
@@ -118,6 +123,7 @@ const RateMaster = (props) => {
   useEffect(() => {
     dispatch(getVariableRateTableData());
   }, []);
+
   useEffect(() => {
 
     let variableRateList = [];
@@ -137,13 +143,19 @@ const RateMaster = (props) => {
       };
       rateList.push(listarray);
     }
-    // setvarRateList({ rateList });
-    permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
+    setvarRateList({ rateList });
+    // permission.allow_view==='Y'?setvarRateList({ rateList }):setvarRateList([]);
   }, [props.getTableData])
 
-  const onSubmit = () => {
-    console.log(RateMaster, "RateMaster")
+  const SearchTable = useCallback(() => {
+    props.setShowSearchTable()
+    props.handleChangeCloseModel()
+  }, []);
 
+
+  const onSubmit = () => {
+
+    setNotfoundmodel(false)
     var mainvalue = {};
     var targetkeys = Object.keys(RateMaster);
     for (var i in targetkeys) {
@@ -160,19 +172,51 @@ const RateMaster = (props) => {
     );
     if (filtererr.length > 0) {
       // setRateMaster({ error: true });
-
     } else {
-      dispatch(InsertVariableRate(RateMaster)).then((response) => {
-        handleCancel();
-      });
+      if (variablebtnchange === false) {
+        dispatch(SearchVariableRate(RateMaster)).then((response) => {
+          props.setShowSearchTable()
+          // handleCancel();
+
+        })
+      }
+      else {
+        dispatch(InsertVariableRate(RateMaster)).then((response) => {
+          // dispatch(SearchVariableRate(RateMaster)).then((response) => {
+          //   // setNotfoundmodel(false);
+          //   SearchTable()
+          //    props.setShowSearchTable()
+          //   // props.handleChangeCloseModel()
+          // })
+          // if(variablebtnchange===true){
+          // handleCancel()
+          // }
+          setNotfoundmodel(false);
+          handleCancel()
+
+        });
+      }
+      if (AmountChange) {
+        alert("hai")
+        dispatch(UpdateVariableRate()).then((response) => {
+          setAmountChange(false)
+        })
+      }
     }
+    // console.log(props.lenghtData, "props.lenghtData")
+    console.log("ratemasterdddd", RateMaster)
+
 
     setRateMaster((prevState) => ({
       ...prevState,
     }));
   };
+  // console.log("checkval",props.)
   function checkValidation(data, key, multipleId) {
 
+    if (key === "activity") {
+      setActivity_id(data)
+    }
 
     if (data && key == "range_project_cost") {
       setEnabled(false)
@@ -254,7 +298,10 @@ const RateMaster = (props) => {
       ...prevState,
       [key]: dynObj,
     }));
+
   }
+
+
   const handleCancel = () => {
     setEnabled(true)
     let From_key = [
@@ -283,7 +330,17 @@ const RateMaster = (props) => {
     }));
   };
 
+  useEffect(() => {
+    console.log("propslength", props.lenghtData !== 0)
+    if (variablebtnchange) {
+      if (props.lenghtData !== 0) {
+        setNotfoundmodel(false);
+      } else {
+        setNotfoundmodel(true)
+      }
+    }
 
+  }, [props.searchVariableRate, props.lenghtData]);
   useEffect(() => {
     if (isLoaded) {
       // Axios({
@@ -433,12 +490,12 @@ const RateMaster = (props) => {
     // setRateMaster({ error: true });
 
     // } else {
+
+
     dispatch(SearchVariableRate(RateMaster))
-      .then((response) => {
-        handleCancel();
+      .then(() => {
         props.setShowSearchTable()
-
-
+        setNotfoundmodel(false)
       })
 
     setRateMaster((prevState) => ({
@@ -447,25 +504,30 @@ const RateMaster = (props) => {
 
   }
 
-  useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-       let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-       return (
-           "Variable Rate Master" == val.screen_name
-       ) 
-   })
-   setPermission(data_res_id)
-   }
 
-   }, [props.UserPermission]);
+  console.log(RateMaster, "RateMasterRateMaster")
 
-   function rights(){
-    notification.success({
-        message: "You Dont't Have Rights To Access This Page",
-    });
-  }
+///*****user permission**********/
+useEffect(() => {
+  if(props.UserPermission.length>0&&props.UserPermission){
+     let data_res_id = props.UserPermission.find((val) => { 
+     return (
+       "Variable Rate Master - Save" == val.control 
+     ) 
+ })
+ setSaveRights(data_res_id)
+ }
 
-   console.log(permission,"permission");
+ }, [props.UserPermission]);
+
+   console.log(saveRights,"rights")
+
+ function rightsNotification(){
+  notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+  });
+}
+/////////////
   return (
     <div>
       <div className="var_rate_master">Variable Rate Master</div>
@@ -556,6 +618,8 @@ const RateMaster = (props) => {
             errmsg={RateMaster.unit_measurement.errmsg}
           />
         </Grid>
+
+
         {variablebtnchange ?
           <div className="rate_cus_btns"><CustomButton
             btnName={"Search"}
@@ -569,8 +633,8 @@ const RateMaster = (props) => {
               btnName={"Save"}
               btnCustomColor="customPrimary"
               custombtnCSS="custom_save"
-              // onBtnClick={onSubmit}
-              onBtnClick={permission.allow_add==="Y"?onSubmit:rights}
+              onBtnClick={onSubmit}
+              btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>
@@ -586,8 +650,30 @@ const RateMaster = (props) => {
           <EnhancedTable
             headCells={header}
             rows={varRateList.length == 0 ? varRateList : varRateList.rateList}
+          // rows={varRateList.rateList}
           />
         </div>}
+
+      <DynModel
+        modelTitle={"Billing Criteria Not Found"}
+        handleChangeModel={notfoundmodel}
+        handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
+        content={
+          <div className="successModel">
+            <div>
+              {" "}
+              <label className="notfound_label">
+                Do You Want To Continue ?
+                </label>
+            </div>
+            <div className="customNotFoundbtn">
+              <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit}  />
+              <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+            </div>
+          </div>
+        }
+        width={400}
+      />
     </div>
   );
 }
@@ -597,6 +683,9 @@ const mapStateToProps = (state) => (
     getTableData: state.variableRateMaster.getVariableRateTableData || [],
     getInsertStatus: state.variableRateMaster.insertVariableRateStatus,
     UserPermission: state.UserPermissionReducer.getUserPermission,
+    searchVariableRate: state.variableRateMaster.searchVariableRate,
+    lenghtData: state.variableRateMaster.lengthData,
+    UpdateVariableRate: state.variableRateMaster.updateProjectVariableRate
   }
 );
 

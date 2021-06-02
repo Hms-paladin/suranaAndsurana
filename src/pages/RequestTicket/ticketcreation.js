@@ -26,8 +26,8 @@ function TicketCreation(props) {
     const [requestGetList, setGetList] = useState({});
     const [employeeList, setEmployeeList] = useState({});
     const [changemsg, setChangesmsg] = useState(false)
-    const [permission, setPermission] = useState([])
-
+    const [generateRights, setGenerateRights] = useState([])
+    const [saveRights, setSaveRights] = useState([])
     const [TicketCreation, setTicketCreation] = useState({
         department: {
             value: "",
@@ -495,30 +495,38 @@ function TicketCreation(props) {
         }));
     };
 
-    ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
-        return (
-            "Exit Interview form" == val.screen_name
-        ) 
-        })
-        setPermission(data_res_id)
-        if(data_res_id.allow_view==='N')
-            rights()
-        }
-        
-    }, [props.UserPermission]);
-    /////////////
+  ///***********user permission**********/
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+       let data_res_id = props.UserPermission.find((val) => { 
+       return (
+           "Ticket Creation - Save as Template" == val.control 
+       ) 
+      })
+      setSaveRights(data_res_id)
 
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
+      data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Ticket Creation - Generate Ticket" == val.control 
+        ) 
+       })
+       setGenerateRights(data_res_id)
     }
+    
+    }, [props.UserPermission]);
+    
+    
+    // console.log(saveRights,"rights")
+    
+    function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+    }
+    /////////////
     return (
         <div> 
-         { permission.allow_view==='Y'&&<div >
+         {/* { permission.allow_view==='Y'&&<div > */}
             <div className="Titlediv">Recruitment Request Tickets</div>
              <div className="ticketContainer">
                 <div className="ticketGrid">
@@ -667,15 +675,16 @@ function TicketCreation(props) {
                     </Grid>
                 </div>
                 <div className="ticketbtn">
-                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(1):rights())}  />
-                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>(permission.allow_add==="Y"?onSubmit(""):rights())}  />
+                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={()=>onSubmit(1)}  />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" btnDisable={!generateRights||generateRights.display_control&&generateRights.display_control==='N'?true:false} onBtnClick={()=>onSubmit("")}  />
+
+                    {/* <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>onSubmit(1)}  />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>onSubmit("")}  /> */}
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
                 </div>
 
             </div >
-            </div >
-        
-      }
+            {/* </div > } */}
      
     </div>
     )

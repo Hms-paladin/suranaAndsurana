@@ -120,11 +120,11 @@ export const insertTradeMark = (params) => async dispatch => {
     try {
         var url ='insert_trade_mark';
         var method = 'POST';
-        var message="Trade Mark added sucessfully";
+        var message="Trade Mark Added Successfully";
         if(params.trademark_id !=0){
             url = 'update_trade_mark';
             method ='PUT';
-            message="Trade Mark updated sucessfully";
+            message="Trade Mark Updated Successfully";
         }
         axios({
             method: method,

@@ -1,4 +1,5 @@
 import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES } from "../utils/Constants";
+import {GET_OTHER_TASK} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from "moment";
@@ -14,6 +15,7 @@ export const getHrTaskList = () =>async dispatch => {
             }
         })
         .then((response) => {
+           
             dispatch({type:GET_HRTODOLIST,payload:response.data.data})
         })
     }
@@ -21,6 +23,7 @@ export const getHrTaskList = () =>async dispatch => {
 
     }
 }
+
 //InterviewPage
 export const getInterviewQuestions = () =>async dispatch => {
     try{
@@ -57,6 +60,7 @@ export const getSelectedCandidates = (data) =>async dispatch => {
 //EmployeeApproveAction
 
 export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch => {
+
     try{
         axios({
             method: 'POST',
@@ -65,20 +69,20 @@ export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch =>
                 "emp_id":EmpId,
                 "approved_by":localStorage.getItem("empId"),
                 "approved_date":moment().format('YYYY-MM-DD') ,
-                "emp_status":status === true?1 :2, 
+                "emp_status":status === true?1 :0, 
                 "task_id":taskId                               
             },
         })
         .then((response)=>{
             if(response.data.status==1){
                 notification.success({
-                    message: `Employee approved successfully`,
+                    message: `Employee Approved Successfully`,
                     placement: "topRight",
                   });
             }
             if(response.data.status==0){
                 notification.warning({
-                    message: `Employee rejected`,
+                    message: `Employee Rejected Successfully`,
                     placement: "topRight",
                   });
             }
@@ -86,5 +90,25 @@ export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch =>
         })
     }
     catch(err){
+    }
+}
+
+// other task
+export const getOtherTask = () =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'get_other_tasks',
+            data:{
+                "assignee_id":localStorage.getItem("empId")
+                // assignee_id:1
+            }
+        })
+        .then((response) => {
+            dispatch({type:GET_OTHER_TASK,payload:response.data.data})
+        })
+    }
+    catch(err){
+
     }
 }

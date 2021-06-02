@@ -10,6 +10,8 @@
 
 .kpi_table {
     background-color: #F3F3F3;
+    margin-top: 10px;
+    padding-bottom: 10px;
 }
 .kra_sub{
     height: 85px;
@@ -50,3 +52,30 @@
     align-items: baseline;
 }
 .KRAhead{padding-bottom: 5px;}
+.lblemp{position:relative;top:-10px}
+.lblname{position:relative;top:0px}
+.period{padding-bottom: 5px;}
+.period_div{
+    display:flex;
+    justify-content:space-between;
+    >.custom_labelbox{
+        margin-right: 20px;
+    }
+}
+.per_head{width:50%}
+.GO_btn{
+    >.custom_labelbox{
+        border-radius: 50px;
+    }
+}
+.kra_table{
+    .MuiTableHead-root {
+        background-color: #F3F3F3 !important;
+    }
+}
+.editicon{width:20px;cursor:pointer;margin-left: 35px;}
+.kra_table{
+    >.MuiTableBody-root >tr:nth-child(4){
+        background-color: #F3F3F3 !important;
+    }
+}

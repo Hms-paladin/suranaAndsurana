@@ -1,10 +1,11 @@
 import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, 
-    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,
+    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,MASTER_EMPLOYEE_DETAILS,
     GET_GROUP_EMP,GET_GROUP_CONTROL_LIST,EDIT_GROUP_NAME,EDIT_GROUP_CONTROL,GET_CONTROL_LIST,INSERT_GROUP_CONTROL} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
 import moment from 'moment'
+import { useFormControl } from "@material-ui/core";
 
 export const getGroupList = () => async dispatch => {
     try {
@@ -114,37 +115,52 @@ export const InsertUsergroupMaster = (data) => async dispatch => {
             url: apiurl + "insert_employee_group",
             data: data,
         }).then((response) => {
-            if (response.data.status === 1) {
-                dispatch({ type: INSERT_USERGROUP, payload: true })
+               if (response.data.status === 1) {
                 notification.success({
-                    message: " inserted Successfully",
+                    message: "Inserted successfully",
                 });
+            }
+                else if (response.data.status === 0) {
+                    notification.success({
+                        message:response.data.msg,
+                    });
+                }
+                dispatch({ type: INSERT_USERGROUP, payload:true})
                 dispatch(getEmployeeGroupDetails())
                 return Promise.resolve();
-            }
+            
         });
 
     } catch (err) {
 
     }
 }
-export const InsertGroupControlMaster = (data) => async dispatch => {
+export const InsertGroupControlMaster = (userForm) => async dispatch => {
     try {
         axios({
             method: "POST",
             url: apiurl + "insert_group_control",
-            data: data,
+            data:{
+                "screen_control_id": userForm.controls.valueById,
+                "group_id": userForm.group.value,
+            }
         }).then((response) => {
             if (response.data.status === 1) {
-                dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 notification.success({
-                    message: " inserted Successfully",
+                    message: " Inserted successfully",
                 });
+              }
+                else if(response.data.status===0){
+                    notification.info({
+                        message:response.data.msg,
+                    }); 
+                }
+                dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 dispatch(getGroupControlList())
                 
-                dispatch(getGroupName())
+                // dispatch(getGroupName())
                 return Promise.resolve();
-            }
+            
         });
 
     } catch (err) {
@@ -169,7 +185,7 @@ export const InsertUsergroup = (UserGroup, groupName) => async dispatch => {
             if (response.data.status === 1) {
                 dispatch({ type: INSERT_USERGROUP, payload: true })
                 notification.success({
-                    message: " inserted Successfully",
+                    message: " Inserted Successfully",
                 });
                 dispatch(getGroupName())
                 return Promise.resolve();
@@ -195,7 +211,7 @@ export const updateGroupName = (UserGroup) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: UPDATE_GROUP_NAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
@@ -230,7 +246,7 @@ export const editEmployeeGroup = (UserGroup) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: EDIT_GROUP_NAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
@@ -266,7 +282,7 @@ export const editGroupControl = (UserGroup) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "updated sucessfully",
+                    message: "Updated Successfully",
                 });
                 dispatch({ type: EDIT_GROUP_CONTROL, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
@@ -297,7 +313,7 @@ export const deleteGroupName = (deleteID) => async dispatch => {
         }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Deleted sucessfully",
+                    message: "Deleted Successfully",
                 });
                 dispatch({ type: DELETE_GROUPNAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
@@ -331,3 +347,5 @@ export const getGroupControlList = () => async dispatch => {
 
     }
 }
+
+

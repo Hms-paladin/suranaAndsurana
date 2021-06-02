@@ -4,10 +4,12 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Radio, Select, Checkbox } from 'antd';
 import EnhancedTable from '../../component/DynTable/table';
 import DynModel from './model';
+import DynModelcom from "../../component/Model/model";
+import { GetResumeList } from '../../actions/ResumeAction';
 import { useDispatch, connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
-import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus,getQualification} from "../../actions/MasterDropdowns";
+import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus, getQualification } from "../../actions/MasterDropdowns";
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Eyes from "../../images/neweye.svg";
@@ -15,8 +17,8 @@ import DynModelView from "../Interview/model";
 import './search.scss'
 import ResumeForm from '../Resume/resume';
 import Edit from "../../images/editable.svg";
-
-
+// import ResumePage from '../Resume/resume'
+import { notification } from "antd";
 
 
 const headCells = [
@@ -47,7 +49,12 @@ function Resumesearch(props) {
     const [test, setTest] = useState(true)
     const [selectedCandidateId, setSelectedCandidateId] = useState([]);
     const [viewId, setViewId] = useState("")
+    const [editResumeRow, setEditResumeRow] = useState({})
     const [candidateViewModel, setCandidateViewModel] = useState(false)
+    const [editModel, setEditModel] = useState(false)
+    const [goRights, setGoRights] = useState([])
+    const [creatRights, setCreatRights] = useState([])
+    const [interviewScheduleRights, setInterviewScheduleRights] = useState([])
     const [ResumeSearch_Form, setResumeSearchFrom] = useState({
         skills: {
             value: "",
@@ -99,7 +106,7 @@ function Resumesearch(props) {
         },
         exp_min: {
             value: "",
-            validation: [{ "name": "allowNumaricOnly" }],
+            validation: [{ "name": "numericanddot" }],
             error: null,
             errmsg: null,
         },
@@ -109,7 +116,7 @@ function Resumesearch(props) {
             error: null,
             errmsg: null,
         },
-        qualification:{
+        qualification: {
             value: "",
             validation: [],
             error: null,
@@ -127,7 +134,7 @@ function Resumesearch(props) {
         dispatch(getSpecilization())
         dispatch(getCapability())
         dispatch(getTalents())
-        dispatch(getStatus())
+        // dispatch(getStatus())
         dispatch(getQualification())
 
         dispatch(searchRowdata({
@@ -139,10 +146,10 @@ function Resumesearch(props) {
             "capability_id": "",
             "talent_id": "",
             "status_id": "",
-            "qualification_id":"",
+            "qualification_id": "",
             "exp_min": "",
-            "exp_max":""
-         
+            "exp_max": ""
+
         }))
     }, [])
 
@@ -193,7 +200,7 @@ function Resumesearch(props) {
     };
 
     useEffect(() => {
-        const { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus,getQualification } = props.GetOptions
+        const { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus, getQualification } = props.GetOptions
 
         let skillList = []
         let traitsList = []
@@ -203,7 +210,7 @@ function Resumesearch(props) {
         let capabilityList = []
         let talentList = []
         let statusList = []
-        let qualification=[]
+        let qualification = []
         getQualification.map((data) => {
             qualification.push({ id: data.qualification_id, value: data.qual_name })
         })
@@ -239,7 +246,7 @@ function Resumesearch(props) {
             statusList.push({ id: data.status_id, value: data.status })
         })
 
-        setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList,qualification })
+        setGetList({ skillList, traitsList, certificationList, achievementList, specilizationList, capabilityList, talentList, talentList, statusList, qualification })
     }, [props.GetOptions])
 
 
@@ -263,14 +270,42 @@ function Resumesearch(props) {
         )
         setTest(!test)
     }
+
+    const handleUnCheck = () => {
+        let obj = Object.keys(checkList);
+        setCheckedList({})
+        obj.map((data) => {
+            setCheckedList(
+                prevState => ({
+                    ...prevState,
+                    [data]: false,
+                })
+            )
+        })
+        obj = [];
+    }
+    console.log(checkList,"checkedlist")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
     }
+    const editResume = (id) => {
+        // setEditId(id)
+        dispatch(GetResumeList(id))
+
+        setEditModel(true)
+    }
+
+
+
+    useEffect(() => {
+        setEditResumeRow(props.GetResumeList[0]?.result)
+    }, [props.GetResumeList])
+
 
     useEffect(() => {
         let rowDataList = []
-        console.log(props.GetRowData,"GetRowData")
+        console.log(props.GetRowData, "GetRowData")
         props.GetRowData && props.GetRowData.map((data, index) => {
             rowDataList.push({
                 view: <> <img
@@ -280,11 +315,12 @@ function Resumesearch(props) {
                 />  <img
                         src={Edit}
                         className="viewCandidatesList"
+                        onClick={() => editResume(data.resume_id)}
                     // onClick={() => viewCandidate(data.resume_id)}
                     />
                 </>, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
                 basic: data.basic_qual, language: data.language, certification: data.certifications,
-                specialization: data.specialization,talents: data.talent, experience: data.experience,
+                specialization: data.specialization, talents: data.talent, experience: data.experience,
                 box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id)} name={"checked" + index}
                     checked={checkList["checked" + index]} value={checkList["checked" + index]} />
             })
@@ -292,7 +328,15 @@ function Resumesearch(props) {
 
         setRowData(rowDataList)
         console.log()
-    }, [props.GetRowData, test])
+    }, [props.GetRowData, test, checkList])
+
+    // const resumeEditPage = () => {
+    //     return (
+    //         <ResumeForm resumeEditid={editId} />
+
+    //     )
+    // }
+
 
     function onSearch() {
         dispatch(searchRowdata({
@@ -305,13 +349,50 @@ function Resumesearch(props) {
             "talent_id": ResumeSearch_Form.talents.valueById ? ResumeSearch_Form.talents.valueById : "",
             "status_id": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : "",
             "qualification_id": ResumeSearch_Form.qualification.valueById ? ResumeSearch_Form.qualification.valueById : "",
-            "exp_min":ResumeSearch_Form.exp_min.value ? ResumeSearch_Form.exp_min.value: "",
-            "exp_max":ResumeSearch_Form.exp_max.value ? ResumeSearch_Form.exp_max.value: "",
+            "exp_min": ResumeSearch_Form.exp_min.value ? ResumeSearch_Form.exp_min.value : "",
+            "exp_max": ResumeSearch_Form.exp_max.value ? ResumeSearch_Form.exp_max.value : "",
             // "experience": ResumeSearch_Form.status.valueById ? ResumeSearch_Form.status.valueById : ""
 
         }))
     }
+    ///*****user permission**********/
+    useEffect(() => {
+        if(props.UserPermission.length>0&&props.UserPermission){
+           let data_res_id = props.UserPermission.find((val) => { 
+                return (
+                    "Resume - Create Resume" == val.control 
+                ) 
+            })
+         setCreatRights(data_res_id)
 
+             data_res_id = props.UserPermission.find((val) => { 
+                return (
+                    "Resume - Go" == val.control 
+                ) 
+            })
+        setGoRights(data_res_id)
+
+             data_res_id = props.UserPermission.find((val) => { 
+                return (
+                    "Resume - Interview Details" == val.control 
+                ) 
+        })
+        setInterviewScheduleRights(data_res_id)
+
+       }
+   
+       }, [props.UserPermission]);
+
+
+
+ console.log(creatRights,"rigths")
+
+    function rightsNotification(){
+        notification.success({
+            message: "You are not Authorized. Please Contact Administrator",
+        });
+    }
+/////////////
     return (
         <div>
             <div>
@@ -372,12 +453,8 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        <Grid item xs={1} >
-
-                        </Grid>
                         <Grid item xs={1} ></Grid>
-
-
+                        <Grid item xs={1} ></Grid>
                         <Grid item xs={2} >
                             <Labelbox type="select"
                                 placeholder="Talents"
@@ -396,6 +473,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
+                        
                         <Grid item xs={3} >
                             <div className="experienceSearch">
                                 <div>Experience</div>
@@ -418,12 +496,14 @@ function Resumesearch(props) {
                         <Grid container item xs={3} >
 
                             <Grid item xs={4}>
-                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
+                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
 
                             </Grid>
                             <Grid item xs={8}>
-                                <Link to='resume'>
-                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}  />
+                                <Link to={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?'search':'resume'}>
+                                    <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}
+                                    btnDisable={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?true:false}
+                                      />
                                 </Link>
                             </Grid>
                         </Grid>
@@ -433,8 +513,8 @@ function Resumesearch(props) {
                     <EnhancedTable headCells={headCells} rows={rows && rows} />
                 </div>
                 <div className="searchinterviewbtn">
-                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} onBtnClick={() => setModelOpen(true)} btnDisable={selectedCandidateId.length <= 0} /></div>
-                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} />
+                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0||!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?true:false} onBtnClick={() =>setModelOpen(true)}  /></div>
+                <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} handleUnCheck={handleUnCheck} />
 
             </div>
             <DynModelView
@@ -442,6 +522,13 @@ function Resumesearch(props) {
                 handleChangeModel={candidateViewModel}
                 handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
                 res_data_id={viewId}
+            />
+            <DynModelcom
+                modelTitle={"Edit Resume"}
+                handleChangeModel={editModel}
+                handleChangeCloseModel={(bln) => setEditModel(bln)}
+                content={<ResumeForm resumeEditrow={editResumeRow} handleChangeCloseModel={(bln) => setEditModel(bln)} />}
+                width={1000}
             />
         </div>
 
@@ -451,7 +538,10 @@ function Resumesearch(props) {
 const mapStateToProps = state => ({
     ResumeSearchStatus: state.ResumeSearchStatus,
     GetOptions: state.getOptions,
-    GetRowData: state.getResumeSearchRowdata
+    GetRowData: state.getResumeSearchRowdata,
+    GetResumeList: state.GetResumeList || [],
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+
 })
 
 export default connect(mapStateToProps)(Resumesearch);

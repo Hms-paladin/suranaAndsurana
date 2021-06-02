@@ -711,11 +711,9 @@ setcountryDetList({ countryListsData })
                     </Grid>
                     <Grid item xs={2} >
                         
-
                     </Grid>
                     <Grid item xs={3} >
                        
-
                     </Grid>
                     <Grid item xs={3} >
                        
@@ -741,17 +739,14 @@ setcountryDetList({ countryListsData })
                 <Grid item xs={12} container direction="row" spacing={2}  >
                     <Grid item xs={4} >
                       
-
                     </Grid>
                     <Grid item xs={4} >
                       
                     </Grid>
                     <Grid item xs={4} >
-
                         
                     </Grid>
                 </Grid>
-
                 <Grid container justify="left" direction="row"  >
                   
                 </Grid>

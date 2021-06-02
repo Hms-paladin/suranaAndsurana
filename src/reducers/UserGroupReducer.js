@@ -1,7 +1,7 @@
 
 import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, DELETE_GROUPNAME,
     GET_GROUP_EMP, GET_GROUP_LIST,GET_EMP_LIST,GET_GROUP_CONTROL_LIST,EDIT_GROUP_NAME,
-    GET_EMP_GROUP_LIST,EDIT_GROUP_CONTROL,GET_CONTROL_LIST,INSERT_GROUP_CONTROL } from '../utils/Constants.js';
+    GET_EMP_GROUP_LIST,EDIT_GROUP_CONTROL,GET_CONTROL_LIST,INSERT_GROUP_CONTROL,MASTER_EMPLOYEE_DETAILS } from '../utils/Constants.js';
 // const initalState = {
 //     getProject_type:[],
 
@@ -15,7 +15,7 @@ const intialState = {
     updateGroupName: [],
     deleteGroupMaster: [],
     groupLists :[], employeeLists :[], employeeGroupDetLists :[] , getGroupControlLists :[],getGroupsForEmp:[],
-    getTaskLists :[],
+    getTaskLists :[],EmployeeDetails:[]
 
 }
 
@@ -23,7 +23,6 @@ const intialState = {
 export default function (state = [], action) {
     const { type, payload } = action;
     switch (type) {
-
         case INSERT_USERGROUP:
             return { ...state, InsertUsergroup: payload }
         case GET_GROUPNAME:
@@ -50,6 +49,8 @@ export default function (state = [], action) {
                         return { ...state, editGroupControl: payload }  
                 case INSERT_GROUP_CONTROL:
                 return { ...state, InsertGroupControlMaster: payload }
+               case MASTER_EMPLOYEE_DETAILS:
+                   return {...state, EmployeeDetails: payload} 
                 
         default:
             return state;

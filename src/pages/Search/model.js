@@ -11,6 +11,8 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
 import { getInterviewApprover } from "../../actions/MasterDropdowns";
+
+
 import './search.scss'
 
 
@@ -22,7 +24,8 @@ function DynModel(props) {
   const [designationdata, setdesignationdata] = useState([]);
   const [finalRound, setFinalRound] = useState(false);
   const [interviewApprover, setInterviewApprover] = useState([]);
-  // const [selectedCandidateId, setSelectedCandidateId] = useState();
+  const [finalIntId, setFinalIntId] = useState(0);
+  const [uncheck, setUncheck] = useState(false)
 
   const [Interviewschedule, setInterviewschedule] = useState({
     desgination: {
@@ -51,7 +54,9 @@ function DynModel(props) {
     }
   })
   useEffect(() => {
-    dispatch(getInterviewApprover());
+    // dispatch(getInterviewApprover());
+    dispatch(GetInterviewers());
+
   }
     , [])
   const stateClear = () => {
@@ -79,17 +84,28 @@ function DynModel(props) {
   };
   useEffect(() => {
     let InterviewApprover = []
-    props.getInterviewApprover.map((data, index) =>
+    props.GetInterviewers.length > 0 && props.GetInterviewers.map((data, index) =>
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
-  }
-    , [props.getInterviewApprover])
 
+    if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+      let data_res_id = props.GetInterviewers.find((val) => {
+        return (
+          "Venkat" == val.name
+        )
+      })
+      setFinalIntId(data_res_id.emp_id)
+    }
+  }, [props.GetInterviewers])
+
+  console.log(finalIntId, "GetInterviewers")
   function checkValidation(data, key, multipleId) {
 
-    if (data == 27 && key === "round") {
+    if (data === 27 && key === "round") {
+      Interviewschedule.interviewer.value = finalIntId
       setFinalRound(true)
-    } else {
+    } 
+    if (data !== 27 && key === "round") {
       setFinalRound(false)
     }
 
@@ -134,29 +150,31 @@ function DynModel(props) {
     if (filtererr.length > 0) {
     } else {
       dispatch(InesertInterviewDetails(Interviewschedule, props.selectedId)).then((response) => {
+        // console.log(props.checkList, "checkList")
         stateClear()
+
       })
     }
 
     setInterviewschedule(prevState => ({
       ...prevState
     }));
+    props.handleUnCheck();
   };
-
-
+ 
   useEffect(() => {
 
-    Axios({
-      method: "get",
-      url: apiurl + "get_interviewers",
-    }).then((response) => {
-      let Interviewer = []
-      response.data.data.map((data, index) =>
-        Interviewer.push({ id: data.emp_id, value: data.name }))
+    // Axios({
+    //   method: "get",
+    //   url: apiurl + "get_interviewers",
+    // }).then((response) => {
+    //   let Interviewer = []
+    //   response.data.data.map((data, index) =>
+    //     Interviewer.push({ id: data.emp_id, value: data.name }))
 
-      setinterviewerdata({ Interviewer })
+    //   setinterviewerdata({ Interviewer })
 
-    })
+    // })
 
     Axios({
       method: "get",
@@ -241,7 +259,8 @@ function DynModel(props) {
             type="select"
             placeholder={"Interviewer"}
             // dropdown={interviewerdata.Interviewer}
-            dropdown={finalRound ? interviewApprover.InterviewApprover : interviewerdata.Interviewer}
+            disabled={finalRound ? true : false}
+            dropdown={interviewApprover.InterviewApprover}
             changeData={(data) => checkValidation(data, "interviewer")}
             value={Interviewschedule.interviewer.value}
             error={Interviewschedule.interviewer.error}
@@ -255,6 +274,7 @@ function DynModel(props) {
             btnCustomColor="customPrimary"
             onBtnClick={onSubmit}
           />
+          
         </div>
       </div>
     </Modal>
@@ -264,7 +284,7 @@ function DynModel(props) {
 const mapStateToProps = (state) => (
   // console.log(state.getOptions.getInterviewApprover, "getProcessType")
   {
-    getInterviewApprover: state.getOptions.getInterviewApprover || [],
+    GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
 
   }
 );

@@ -11,11 +11,13 @@ import CustomButton from '../../../component/Butttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Upload, message, Button, Icon } from 'antd';
-import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";  
+import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import moment from 'moment'
-import { getTradeMarkStatus,getClassDetails,getPoaDetails,
-    getUsageDetails,insertTradeMark,getTradeMark} from "../../../actions/tradeMarkAction";
-      
+import {
+    getTradeMarkStatus, getClassDetails, getPoaDetails,
+    getUsageDetails, insertTradeMark, getTradeMark
+} from "../../../actions/tradeMarkAction";
+
 
 
 
@@ -40,12 +42,12 @@ function TradeMark(properties) {
         dispatch(getClassDetails());
         dispatch(getPoaDetails(properties.ProjectDetails[0].client_id));
         dispatch(getUsageDetails());
-        
-        
-      }, []);
+
+
+    }, []);
 
     useEffect(() => {
-        if(properties.tradeMark && properties.tradeMark[0]){
+        if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
         TradeMarkForm.comments.value =obj.comments;
         TradeMarkForm.trademark_id.value = obj.trademark_id;
@@ -137,61 +139,69 @@ function TradeMark(properties) {
         }
         setProjectDetails(properties.ProjectDetails);
         properties.ProjectDetails.length > 0 && setidDetails({
-            project_id:properties.ProjectDetails[0].project_id,
-            client_id:properties.ProjectDetails[0].client_id,
+            project_id: properties.ProjectDetails[0].project_id,
+            client_id: properties.ProjectDetails[0].client_id,
         })
 
         let tradeStatusData = []
         properties.tradeStatusList.map((data) =>
-    tradeStatusData.push({ value: data.Status,
-        id: data.status_id })
-    )
-    settradeStatusList({ tradeStatusData })
-    
-    let classDetailsData = []
-    properties.classDetailsList.map((data) =>
-    classDetailsData.push({ value: data.class,
-    id: data.class_id })
-)
-setclassDetList({ classDetailsData })
+            tradeStatusData.push({
+                value: data.Status,
+                id: data.status_id
+            })
+        )
+        settradeStatusList({ tradeStatusData })
 
-let POADetailsData = []
-    properties.POAList.map((data) =>
-    POADetailsData.push({ value: data.POA,
-    id: data.client_id })
-)
-setpoaList({ POADetailsData })
+        let classDetailsData = []
+        properties.classDetailsList.map((data) =>
+            classDetailsData.push({
+                value: data.class,
+                id: data.class_id
+            })
+        )
+        setclassDetList({ classDetailsData })
 
-let tmUsageDetailsData = []
-    properties.tmUsageDetailsList.map((data) =>
-    tmUsageDetailsData.push({ value: data.status,
-    id: data.status_id })
-)
-setusageDetList({ tmUsageDetailsData })
+        let POADetailsData = []
+        properties.POAList.map((data) =>
+            POADetailsData.push({
+                value: data.POA,
+                id: data.client_id
+            })
+        )
+        setpoaList({ POADetailsData })
 
-}, [properties.ProjectDetails,properties.tradeMark,
-    properties.tradeStatusList,properties.classDetailsList,properties.POAList,properties.tmUsageDetailsList
-  ]);
+        let tmUsageDetailsData = []
+        properties.tmUsageDetailsList.map((data) =>
+            tmUsageDetailsData.push({
+                value: data.status,
+                id: data.status_id
+            })
+        )
+        setusageDetList({ tmUsageDetailsData })
 
+    }, [properties.ProjectDetails, properties.tradeMark,
+    properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList
+    ]);
+
+
+    /*useEffect(() => {
+        dispatch(getProjectDetails(rowId))
+    }, [])
+    useEffect(() => {
+        setProjectDetails(properties.ProjectDetails);
+        properties.ProjectDetails.length > 0 && setidDetails({
+            project_id:properties.ProjectDetails[0].project_id,
+            client_id:properties.ProjectDetails[0].client_id,
+        })
+    }, [properties.ProjectDetails])
   
-  /*useEffect(() => {
-      dispatch(getProjectDetails(rowId))
-  }, [])
-  useEffect(() => {
-      setProjectDetails(properties.ProjectDetails);
-      properties.ProjectDetails.length > 0 && setidDetails({
-          project_id:properties.ProjectDetails[0].project_id,
-          client_id:properties.ProjectDetails[0].client_id,
-      })
-  }, [properties.ProjectDetails])
-
-  */
+    */
     const props = {
         name: 'file',
-       // action: '//jsonplaceholder.typicode.com/posts/',
-      //  headers: {
-       //     authorization: 'authorization-text',
-       // },
+        // action: '//jsonplaceholder.typicode.com/posts/',
+        //  headers: {
+        //     authorization: 'authorization-text',
+        // },
         onChange(info) {
             if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
@@ -205,7 +215,7 @@ setusageDetList({ tmUsageDetailsData })
         },
     };
     const dispatch = useDispatch()
-    
+
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
@@ -449,55 +459,55 @@ setusageDetList({ tmUsageDetailsData })
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-      /*  for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        } */
+        /*  for (var i in targetkeys) {
+              var errorcheck = ValidationLibrary.checkValidation(
+                  TradeMarkForm[targetkeys[i]].value,
+                  TradeMarkForm[targetkeys[i]].validation
+              );
+              TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
+              TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
+              mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
+          } */
         var filtererr = targetkeys.filter(
             (obj) => TradeMarkForm[obj].error == true
-        ); 
+        );
         console.log(filtererr.length);
-        let params  = {
-            
-            "trademark_id" :TradeMarkForm.trademark_id.value,
-             "project_id" :idDetails.project_id,//"71",//radeMarkForm.project_id.value,
-             "status_id" :TradeMarkForm.status_id.value,
-             "mark_id":TradeMarkForm.mark_id.value,
-             "upload_image" :selectedFile,
-             "application_no" :TradeMarkForm.application_no.value,
-             "application_date":TradeMarkForm.application_date.value, 
-             "usage_details_id":TradeMarkForm.usage_details_id.value,
-             "goods_description":TradeMarkForm.goods_description.value,
-             "usage_from_date":TradeMarkForm.usage_from_date.value,
-             "ip_india_status":TradeMarkForm.ip_india_status.value,
-             "comments":TradeMarkForm.comments.value,
-             "internal_status":TradeMarkForm.internal_status.value,
-             "allotment":TradeMarkForm.allotment.value,
-             "amendment":TradeMarkForm.amendment.value,
-              // "orders":TradeMarkForm.orders.value,
-             "priority_details":TradeMarkForm.priority_details.value,
-             "tmj_number":TradeMarkForm.tmj_number.value,
-             "tmj_date":TradeMarkForm.tmj_date.value,
-             "journel_extract":TradeMarkForm.journel_extract.value,
-             "certificate_date":TradeMarkForm.certificate_date.value,
-             "renewal_certificate_date":TradeMarkForm.renewal_certificate_date.value,
-             "next_renewal":TradeMarkForm.nextRenewal.value, 
-             "created_by" :localStorage.getItem("empId"),
-             "created_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-             "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   ,
-             "updated_by" :localStorage.getItem("empId"),
-             "ip_address" :"ddf"
+        let params = {
+
+            "trademark_id": TradeMarkForm.trademark_id.value,
+            "project_id": idDetails.project_id,//"71",//radeMarkForm.project_id.value,
+            "status_id": TradeMarkForm.status_id.value,
+            "mark_id": TradeMarkForm.mark_id.value,
+            "upload_image": selectedFile,
+            "application_no": TradeMarkForm.application_no.value,
+            "application_date": TradeMarkForm.application_date.value,
+            "usage_details_id": TradeMarkForm.usage_details_id.value,
+            "goods_description": TradeMarkForm.goods_description.value,
+            "usage_from_date": TradeMarkForm.usage_from_date.value,
+            "ip_india_status": TradeMarkForm.ip_india_status.value,
+            "comments": TradeMarkForm.comments.value,
+            "internal_status": TradeMarkForm.internal_status.value,
+            "allotment": TradeMarkForm.allotment.value,
+            "amendment": TradeMarkForm.amendment.value,
+            // "orders":TradeMarkForm.orders.value,
+            "priority_details": TradeMarkForm.priority_details.value,
+            "tmj_number": TradeMarkForm.tmj_number.value,
+            "tmj_date": TradeMarkForm.tmj_date.value,
+            "journel_extract": TradeMarkForm.journel_extract.value,
+            "certificate_date": TradeMarkForm.certificate_date.value,
+            "renewal_certificate_date": TradeMarkForm.renewal_certificate_date.value,
+            "next_renewal": TradeMarkForm.nextRenewal.value,
+            "created_by": localStorage.getItem("empId"),
+            "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+            "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+            "updated_by": localStorage.getItem("empId"),
+            "ip_address": "ddf"
         }
-        if(TradeMarkForm.poa.value != ""){
-            params["poa"] =TradeMarkForm.poa.value;
+        if (TradeMarkForm.poa.value != "") {
+            params["poa"] = TradeMarkForm.poa.value;
         }
-        if(TradeMarkForm.class_id.value != ""){
-            params["class_id"] =TradeMarkForm.class_id.value;
+        if (TradeMarkForm.class_id.value != "") {
+            params["class_id"] = TradeMarkForm.class_id.value;
         }
         if (filtererr.length > 0) {
             // setTradeMarkForm({ error: true });
@@ -516,21 +526,21 @@ setusageDetList({ tmUsageDetailsData })
 
     const handleCancel = () => {
         let From_key = [
-            "project_id", "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date", 
+            "project_id", "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date",
             "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
-             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-              "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-               "ip_address"
+            "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
+            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
+            "ip_address"
         ]
 
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-              console.log("mapping", TradeMarkForm[data].value);
+                console.log("mapping", TradeMarkForm[data].value);
             } catch (error) {
-              throw error;
+                throw error;
             }
-          });
+        });
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
@@ -768,7 +778,6 @@ setusageDetList({ tmUsageDetailsData })
                         />
 
                     <Labelbox type="select"
-                        placeholder={" POA"} 
                         changeData={(data) => checkValidation(data, "poa")}
                         value={TradeMarkForm.poa.value}
                         error={TradeMarkForm.poa.error}
@@ -802,7 +811,7 @@ setusageDetList({ tmUsageDetailsData })
             </Grid>
             <Grid item xs={12} container justify="flex-end" >
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="timeSheetButtons" />
-                <CustomButton btnName={"CANCEL"}  onBtnClick={handleCancel}  custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} custombtnCSS="timeSheetButtons" />
 
             </Grid>
 
@@ -816,14 +825,14 @@ setusageDetList({ tmUsageDetailsData })
 const mapStateToProps = (state) =>
 // console.log(state.getOptions.getProcessType, "getProcessType")
 ({
-    
+
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
+    classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
     POAList: state.tradeMarkReducer.getPOAList || [],
-    tmUsageDetailsList : state.tradeMarkReducer.gettradeMarkUsageList || [],
-    countriesList : state.tradeMarkReducer.getCountryList || [],
+    tmUsageDetailsList: state.tradeMarkReducer.gettradeMarkUsageList || [],
+    countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
-    tradeMark : state.tradeMarkReducer.getTrademark || {},
+    tradeMark: state.tradeMarkReducer.getTrademark || {},
 });
 
 //export default connect(mapStateToProps)(ProjectTaskModel);

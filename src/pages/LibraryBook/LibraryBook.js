@@ -15,6 +15,10 @@ function LibraryBook(props) {
     const [pathname, setpathname] = useState(window.location.pathname);
     const [receivingbooksmodal, setreceivingbooksmodal] = useState(false)
     const [issuebooksmodal, setissuebooksmodal] = useState(false)
+   
+    const [receiveRights, setReceiveRights] = useState([])
+    const [issueRights, setIssueRights] = useState([])
+    const [searchRights, setSearchRights] = useState([])
     const header = [
         { id: 'resource', label: 'Resource' },
         { id: 'subject', label: 'Subject' },
@@ -28,8 +32,8 @@ function LibraryBook(props) {
 
     const rows = [
         {
-            resource: <a className="link_tag">Book</a>, subject: 'Law', author: 'Mr.X', title: 'Title 1', year: '1985', dept: 'Department 1', copies: '5', action: <div className="RIbtncss"><CustomButton btnName={"Receive"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" onBtnClick={() => setreceivingbooksmodal(true)} />
-                <CustomButton btnName={"Issue"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" onBtnClick={() => setissuebooksmodal(true)} /></div>
+            resource: <a className="link_tag">Book</a>, subject: 'Law', author: 'Mr.X', title: 'Title 1', year: '1985', dept: 'Department 1', copies: '5', action: <div className="RIbtncss"><CustomButton btnName={"Receive"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" btnDisable={!receiveRights||receiveRights.display_control&&receiveRights.display_control==='N'?true:false} onBtnClick={ () => setreceivingbooksmodal(true) } />
+                <CustomButton btnName={"Issue"} custombtnCSS={"custom_RIbtn"} btnCustomColor="customPrimary" btnDisable={!issueRights||issueRights.display_control&&issueRights.display_control==='N'?true:false} onBtnClick={() => setissuebooksmodal(true)} /></div>
         },
 
         {
@@ -54,32 +58,48 @@ function LibraryBook(props) {
 
     ];
 
-    const [permission, setPermission] = useState([])
+///*****user permission**********/
 
-    ///*****user permission**********/
-    useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission[0].item[0].item){
-        let data_res_id = props.UserPermission[0].item[0].item.find((val) => { 
+useEffect(() => {
+    if(props.UserPermission.length>0&&props.UserPermission){
+
+    let data_res_id = props.UserPermission.find((val) => { 
         return (
-            "Exit Interview form" == val.screen_name
+            "Library - Receive" == val.control 
         ) 
     })
-    setPermission(data_res_id)
-    if(data_res_id.allow_view==='N')
-    rights()
-    }
+    setReceiveRights(data_res_id)
 
-    }, [props.UserPermission]);
-    /////////////
-    console.log(props.UserPermission,"props.UserPermission")
-    function rights(){
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+    data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Library - Issue" == val.control 
+        ) 
+    })
+    setIssueRights(data_res_id)
+
+    data_res_id = props.UserPermission.find((val) => { 
+        return (
+            "Library - Search" == val.control 
+        ) 
+    })
+    setSearchRights(data_res_id)
+   }
+  
+   }, [props.UserPermission]);
+  
+  
+  //    console.log(rights,"rigths")
+  
+   function rightsNotification(){
+    notification.success({
+        message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
+
     return (
         <div>
-        { permission.allow_view==='Y'&&<div>
+        {/* { permission.allow_view==='Y'&&<div> */}
             <div className="lib_master_h">Library Book Maintenance</div>
             <div className="parent_div_lib">
                 <Grid container spacing={2} className="cont_parent_lib_grid">
@@ -108,7 +128,7 @@ function LibraryBook(props) {
 
                 <div className="lib_btn_div">
                     <CustomButton btnName={"Search"}
-                        custombtnCSS={"lib_btn_css"} onBtnClick={""}
+                        custombtnCSS={"lib_btn_css"} btnDisable={!searchRights||searchRights.display_control&&searchRights.display_control==='N'?true:false} onBtnClick={''}
                     /></div>
 
                 <div className="table_container_align">
@@ -119,14 +139,14 @@ function LibraryBook(props) {
                 <div className="add_btn_div">
                     <Link to='addresource'>
                         <CustomButton btnName={"Add Resource"} btnCustomColor="customPrimary"
-                            custombtnCSS={"addre_btn_css"} onBtnClick={""}
+                            custombtnCSS={"addre_btn_css"} 
                         />
                     </Link>
                 </div>
                 <DynModel modelTitle={"Receiving of Books"} handleChangeModel={receivingbooksmodal} handleChangeCloseModel={(bln) => setreceivingbooksmodal(bln)} width={850} content={<ReceiveBooksModal />} />
                 <DynModel modelTitle={"Issue of Books"} handleChangeModel={issuebooksmodal} handleChangeCloseModel={(bln) => setissuebooksmodal(bln)} width={850} content={<IssueBooksModal />} />
             </div>
-        </div> }
+        {/* </div> } */}
 
         </div>
     )

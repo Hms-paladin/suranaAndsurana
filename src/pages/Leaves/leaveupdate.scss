@@ -8,6 +8,9 @@
     background-color: white;
     padding: 10px;
     border-radius: 8px;
+    >.MuiGrid-container>.MuiGrid-item {
+        z-index: 0;
+    }
 }
 
 .leavebuttons{
@@ -245,3 +248,24 @@ color:red
     border: 1px solid red;
     border-radius: 4px;
 }
+.image_box{
+    display: flex;
+    height: 44px;
+    align-items: center;
+    margin-left: -140px;
+    box-shadow: lavenderblush;
+    box-shadow: 0px 0px 4px 2px #b8b6b6;
+    border-radius: 5px !important;
+    width: 100%;
+    justify-content: space-evenly;
+    border: 2px solid #023E7D;
+    // background-color: #5a8dff;
+}
+.image_text {
+    display: flex;
+    align-items: center;
+    /* height: 21px; */
+    // width: 100%;
+    // justify-content: space-evenly;
+}
+
