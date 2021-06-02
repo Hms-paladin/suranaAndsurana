@@ -38,7 +38,7 @@ function TaskStatus(props) {
     try {
         axios({
             method: 'PUT',
-            url: apiurl + 'update_task_tag',
+            url: apiurl + 'update_task_perecent_completion',
             data: val
         })
             .then(function (response) {
