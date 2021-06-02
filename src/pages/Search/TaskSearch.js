@@ -302,7 +302,7 @@ setStartModelOpen(flg);
                                     <p style={{ display: "flex", justifyContent: 'center' }}>{data.total_hours}{data.Priority}</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskPrioriyModal(true)}/>
+                                    <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
                                     <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={data}/>} width={300}/>
                                     <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskTag(true)}/>
                                     <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={data}/>} width={300}/>
