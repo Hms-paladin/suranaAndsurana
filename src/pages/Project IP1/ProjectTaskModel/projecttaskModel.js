@@ -22,11 +22,10 @@ function ProjectTaskModel(props) {
   const [locationslList, setlocationslList] = useState({})
   const [projectDetails, setProjectDetails] = useState({})
   const [idDetails, setidDetails] = useState({})
-  const [mindate,setminDate]=useState(new Date())
   const [InsertTaskForm, setInsertTaskForm] = useState({
     activity: {
       value: "",
-      validation: [{ name: "required" }],
+      //validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -38,7 +37,7 @@ function ProjectTaskModel(props) {
     },
     location: {
       value: "",
-      validation: [],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -63,37 +62,24 @@ function ProjectTaskModel(props) {
     tag: {
       value: "",
       valueById: "",
-      validation: [],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     priority: {
       value: "",
       valueById: "",
-      validation: [],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     description: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
-    },
-    startdate: {
-      value: "",
-      validation: [{ "name": "required" },],
-      error: null,
-      errmsg: null,
-    },
-    enddate: {
-      value: "",
-      validation: [{ "name": "required" },],
-      error: null,
-      errmsg: null,
-    },
-   
+    }
   });
 
   const handleCancel = () => {
@@ -135,54 +121,79 @@ function ProjectTaskModel(props) {
   }, []);
 
 
+  const [ProjectTask_Model, setResumeFrom] = useState({
 
-  function onSubmit() {
+    startdate: {
+      value: "",
+      validation: [{ "name": "required" },],
+      error: null,
+      errmsg: null,
+    },
+    enddate: {
+      value: "",
+      validation: [{ "name": "required" },],
+      error: null,
+      errmsg: null,
+    },
+    description: {
+      value: "",
+      validation: [{ "name": "required" },],
+      error: null,
+      errmsg: null,
+    },
+
+
+
+
+  })
+
+  /*function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(InsertTaskForm);
+    
+    
+    InsertTaskForm["startdate"].value=InsertTaskForm['fromDate'].value; 
+    InsertTaskForm["enddate"].value = InsertTaskForm['toDate'].value ; 
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
-        InsertTaskForm[targetkeys[i]].value,
-        InsertTaskForm[targetkeys[i]].validation
+        ProjectTask_Model[targetkeys[i]].value,
+        ProjectTask_Model[targetkeys[i]].validation
       );
-      InsertTaskForm[targetkeys[i]].error = !errorcheck.state;
-      InsertTaskForm[targetkeys[i]].errmsg = errorcheck.msg;
-      mainvalue[targetkeys[i]] = InsertTaskForm[targetkeys[i]].value;
+      ProjectTask_Model[targetkeys[i]].error = !errorcheck.state;
+      ProjectTask_Model[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = ProjectTask_Model[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter(
-      (obj) => InsertTaskForm[obj].error == true
+      (obj) => ProjectTask_Model[obj].error == true
     );
     console.log(filtererr.length);
     if (filtererr.length > 0) {
-      // setInsertTaskForm({ error: true });
+      // setResumeFrom({ error: true });
     } else {
-      // setInsertTaskForm({ error: false });
-      dispatch(inserTask(InsertTaskForm)).then((response) => {
-        handleCancel();
-      })
+      // setResumeFrom({ error: false });
 
-      // dispatch(InesertResume(InsertTaskForm)).then(() => {
-      //   handleCancel()
-      // })
+      dispatch(InesertResume(ProjectTask_Model)).then(() => {
+        handleCancel()
+      })
     }
 
-    setInsertTaskForm(prevState => ({
+    setResumeFrom(prevState => ({
       ...prevState
     }));
-  };
+  };*/
 
 
   function checkValidation(data, key, multipleId) {
-    
-   
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
-      InsertTaskForm[key].validation
+      ProjectTask_Model[key].validation
     );
     let dynObj = {
       value: data,
       error: !errorcheck.state,
       errmsg: errorcheck.msg,
-      validation: InsertTaskForm[key].validation
+      validation: ProjectTask_Model[key].validation
     }
 
     // only for multi select (start)
@@ -201,7 +212,7 @@ function ProjectTaskModel(props) {
     }
     // (end)
 
-    setInsertTaskForm(prevState => ({
+    setResumeFrom(prevState => ({
       ...prevState,
       [key]: dynObj,
     }));
@@ -289,30 +300,27 @@ function ProjectTaskModel(props) {
     }
   }
 
-  // function onSubmit() {
-  //   var data = {
-  //     "project_id": idDetails.project_id,
-  //     "activiity_id": InsertTaskForm.activity.value,
-  //     "sub_activity_id": InsertTaskForm.subActivity.value,
-  //     "assignee_id": InsertTaskForm.assignTo.value,
-  //     "start_date": InsertTaskForm.fromDate.value,
-  //     "end_date": InsertTaskForm.toDate.value,
-  //     "assigned_by": localStorage.getItem("empId"),
-  //     "priority": InsertTaskForm.priority.value,
-  //     "description": InsertTaskForm.description.value,
-  //     "tag": InsertTaskForm.tag.value
-  //   }
+   function onSubmit() {
+     var data = {
+       "project_id": idDetails.project_id,
+      "activiity_id": InsertTaskForm.activity.value,
+       "sub_activity_id": InsertTaskForm.subActivity.value,
+      "assignee_id": InsertTaskForm.assignTo.value,
+       "start_date": InsertTaskForm.fromDate.value,
+      "end_date": InsertTaskForm.toDate.value,
+      "assigned_by": localStorage.getItem("empId"),
+      "priority": InsertTaskForm.priority.value,
+      "description": InsertTaskForm.description.value,
+      "tag": InsertTaskForm.tag.value
+    }
 
-  //   dispatch(inserTask(data)).then((response) => {
-  //     handleCancel();
-  //   })
+    dispatch(inserTask(data)).then((response) => {
+       handleCancel();
+    })
 
-  // }
+   }
 
   function checkValidation(data, key, multipleId) {
-    if(key==="fromDate"){
-      setminDate(data)
-    }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       InsertTaskForm[key].validation
@@ -419,7 +427,6 @@ function ProjectTaskModel(props) {
           <Grid item xs={4} >
             <Labelbox type="datepicker"
               placeholder={"Start Date"}
-              minDate={new Date()}
               changeData={(data) => checkValidation(data, "fromDate")}
               value={InsertTaskForm.fromDate.value}
               error={InsertTaskForm.fromDate.error}
@@ -429,7 +436,6 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="datepicker"
-              minDate={mindate}
               changeData={(data) => checkValidation(data, "toDate")}
               placeholder={" End Date"}
               value={InsertTaskForm.toDate.value}

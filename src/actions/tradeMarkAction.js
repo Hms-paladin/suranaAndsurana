@@ -2,7 +2,7 @@ import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,
     GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK,
     INSERT_APPEAL_FILING, INSERT_RECTIFICATION_DEFENDED, INSERT_PATENT_APPEAL_FILING,
     INSERT_PATENT_RECTIFICATION_DEF, INSERT_PATENT_RECTIFICATION_FILED, INSERT_PATENT_REVOCATION_DEF, INSERT_PATENT_REVOCATION_FILED,
-    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED
+    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED,INSERT_IPAB,
  } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -136,6 +136,34 @@ export const insertTradeMark = (params) => async dispatch => {
                     message: message,
                   });
                 dispatch({type:INSERT_TRADE_MARK,payload:response.data.status})
+              return Promise.resolve();
+            }
+          });
+        
+    } catch (err) {
+        
+    }
+}
+export const insertIPAB = (params) => async dispatch => {
+    try {
+        var url ='insert_ipab';
+        var method = 'POST';
+        var message="TIPAB added sucessfully";
+        if(params.trademark_ipab_id !=0){
+            url = 'update_tipab';
+            method ='PUT';
+            message="Trade Mark updated sucessfully";
+        }
+        axios({
+            method: method,
+            url: apiurl + url,
+            data: params
+          }).then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: message,
+                  });
+                dispatch({type:INSERT_IPAB,payload:response.data.status})
               return Promise.resolve();
             }
           });

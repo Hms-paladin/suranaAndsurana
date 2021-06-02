@@ -1,4 +1,4 @@
-import { GET_TABLE_NAME,GET_USER,EDIT_USER,DELETE_USER,GET_CANDIDATES_NAMES, GET_TABLE_GROUP, UPDATE_SUBSTAGE, UPDATE_SUBACTIVITY} from "../utils/Constants";
+import { GET_TABLE_NAME,GET_USER,EDIT_USER,DELETE_USER,GET_CANDIDATES_NAMES, GET_TABLE_GROUP} from "../utils/Constants";
 import {
     GET_TABLE_STATUS,
     GET_TABLE_TRATITS,
@@ -25,14 +25,14 @@ import {
     GET_USER_STAGELIST,
     COMMON_UPDATE_TEXT,
     GET_CONTROLS,
-    MASTER_EMPLOYEE_DETAILS
+    MASTER_EMPLOYEE_DETAILS,GET_SUBORDINATES,
 } from  "../utils/Constants";
 const intialState = {
     getCandidateName:[],getUser:[],TableNamedropdownData: [],getTableStatus:[],getTableGroup:[],getTableSkills:[],getTableTraits:[],
     getTableCertification:[],getTableSpecification:[],getTableQualification:[],getTableLanguage:[],getTableIndustry:[],getTableInsitute:[],
     getTableCapability:[],getTableTalents:[],getTableResource:[],getTableDesgination:[],getTableQuestion:[],getTableDepartment:[],
     getTableActivity:[],getTableCourt:[],getSubStage:[],getClass:[],getSubActivity:[],getChecklist:[],get_user_class:[],Common_Update_text:[],
-    getRange:[],getStage:[],Update_Substage:[],Update_subactivity:[],getControls:[],getEmployeeDetails:[]
+    getRange:[],getStage:[],Update_Substage:[],Update_subactivity:[],getControls:[],getEmployeeDetails:[],getSubordinates:[],
 }
 
 export default function (state = intialState, action) {
@@ -90,10 +90,6 @@ export default function (state = intialState, action) {
             return {...state, getChecklist: payload}   
         case GET_USER_CLASS:
             return {...state, get_user_class: payload} 
-        case GET_COST_RANGE:
-            return {...state, getRange:payload} 
-        case GET_USER_STAGELIST:
-            return {...state, getStage:payload}       
         case COMMON_UPDATE_TEXT:
             return {...state, Common_Update_text:payload} 
         case UPDATE_SUBSTAGE:
@@ -103,7 +99,9 @@ export default function (state = intialState, action) {
         case GET_CONTROLS:
             return {...state, getControls:payload}  
         case MASTER_EMPLOYEE_DETAILS:
-            return {...state,getEmployeeDetails:payload}                                                             
+            return {...state,getEmployeeDetails:payload} 
+        case GET_SUBORDINATES:
+            return {...state,getSubordinates:payload}  
         default:
             return state;
     }
