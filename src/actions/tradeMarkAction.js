@@ -146,13 +146,24 @@ export const insertTradeMark = (params) => async dispatch => {
 }
 export const insertIPAB = (params) => async dispatch => {
     try {
+
+        for (var x in params){
+            if(x && x !='trademark_ipab_id'){
+                let da = params[x];
+                if(da && da=='' && da.length &&  da.length <1){
+                    params[x]=null;
+                }
+
+            }
+
+        }
         var url ='insert_ipab';
         var method = 'POST';
-        var message="TIPAB added sucessfully";
+        var message="IPAB added sucessfully";
         if(params.trademark_ipab_id !=0){
             url = 'update_tipab';
             method ='PUT';
-            message="Trade Mark updated sucessfully";
+            message="IPAB updated sucessfully";
         }
         axios({
             method: method,
