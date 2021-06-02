@@ -2,7 +2,7 @@ import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,
     GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK,
     INSERT_APPEAL_FILING, INSERT_RECTIFICATION_DEFENDED, INSERT_PATENT_APPEAL_FILING,
     INSERT_PATENT_RECTIFICATION_DEF, INSERT_PATENT_RECTIFICATION_FILED, INSERT_PATENT_REVOCATION_DEF, INSERT_PATENT_REVOCATION_FILED,
-    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED,INSERT_IPAB,
+    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED,INSERT_IPAB,GET_IPAP,
  } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -58,6 +58,29 @@ export const getTradeMark= (projectId) => async dispatch => {
         })
         .then((response) => {
             dispatch({type:GET_TRADE_MARK,payload:response.data.data})
+        })
+        
+    } catch (err) {
+        
+    }
+}
+
+export const getIPAP= (projectId) => async dispatch => {
+    try {
+
+        axios({
+            method: 'POST',
+            url: apiurl +'get_trade_ipab',
+            data :{
+                "project_id" :projectId
+
+            }
+        })
+        .then((response) => {
+             let repData= response.data.data;
+
+
+            dispatch({type:GET_IPAP,payload:response.data.data})
         })
         
     } catch (err) {

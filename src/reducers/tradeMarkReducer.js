@@ -1,11 +1,11 @@
 import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK,
     INSERT_APPEAL_FILING, INSERT_RECTIFICATION_DEFENDED, INSERT_PATENT_APPEAL_FILING,INSERT_PATENT_RECTIFICATION_DEF, 
     INSERT_PATENT_RECTIFICATION_FILED, INSERT_PATENT_REVOCATION_DEF, INSERT_PATENT_REVOCATION_FILED, INSERT_RECTIFICATION_FILED,
-    INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED}  from '../utils/Constants.js'
+    INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED,GET_IPAP}  from '../utils/Constants.js'
 
 const intialState = {
     getTradeMarkStatusList: [],getClassDetailsList :[],getPOAList :[],
-    gettradeMarkUsageList :[],getCountryList :[],insertTrademark:[],getTrademark:{}, insertAppealFiling: [],
+    gettradeMarkUsageList :[],getCountryList :[],insertTrademark:[],getTrademark:{},getIPAP:{}, insertAppealFiling: [],
     insertRectificationDefended: [], insertPatentAppealFiling: [], insertPatentRectificationDef:[], insertPatentRectificationFiled: [], insertPatentRevocationDef: [], 
     insertPatentRevocationFiled: [], insertRectificationFiled: [], insertRevocationFiled: [], insertRevocationDefended: [] }
 
@@ -46,6 +46,8 @@ export default function (state = intialState, action) {
             return  { ...state, insertRevocationDefended: payload } 
         case INSERT_REVOCATION_FILED:
             return  { ...state, insertRevocationFiled: payload } 
+        case GET_IPAP:
+                return  { ...state, getIPAP: payload } 
         default:
             return state;
     }
