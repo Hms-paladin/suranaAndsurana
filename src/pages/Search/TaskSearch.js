@@ -259,7 +259,7 @@ setStartModelOpen(flg);
                 {/* first card */}
                 <div className="card_div">
                 {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
-                    let datass = data;
+                   // let datass = data;
                     if(data.project_name != null && data.project_type != null)
                 return (
                     <Card >
@@ -319,7 +319,7 @@ setStartModelOpen(flg);
                                 </div>
                                 <div className="images_div">
                                     <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
-                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={datass}/>} width={300}/>
+                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
                                     <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
                                     <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
                                     <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>fntaskcompletionstatus({data})}/>

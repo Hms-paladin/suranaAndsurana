@@ -81,7 +81,7 @@ function TimeSheetView(props) {
             "updated_by":localStorage.getItem("empId"),
             "timesheet_id":timeSheetID
         }
-        dispatch(insertTimeSheetbyTime(timesheetData,false)).then((response) => {
+        dispatch(insertTimeSheetbyTime(timesheetData,false,props.rowData)).then((response) => {
            // handleCancel();
           })
     }
@@ -97,7 +97,7 @@ function TimeSheetView(props) {
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
-        dispatch(insertTimeSheetbyTime(timesheetData,true)).then((response) => {
+        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData)).then((response) => {
            // handleCancel();
           })
     }

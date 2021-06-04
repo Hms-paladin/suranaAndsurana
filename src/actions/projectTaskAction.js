@@ -131,7 +131,45 @@ export const insertTimeSheet = (params, id) => async dispatch => {
     }
 }
 
-export const insertTimeSheetbyTime = (params, time) => async dispatch => {
+
+export const updateTaskDates = (params) => async dispatch => {
+    try {
+
+        let par={
+            project_id:params.project_id,
+            task_id:params.task_id,
+            activiity_id:params.activiity_id,
+            sub_activity_id:params.sub_activity_id,
+            assignee_id:params.assignee_id,
+            start_date:params.actual_start_date, 
+            end_date:params.actual_end_date, 
+            assigned_by:1,
+            priority:params.Priority,
+            description:'',
+            tag:params.tag,
+        };
+        axios({
+            method: 'PUT',
+            url: apiurl + 'update_task',
+            data: par
+        }).then((response) => {
+            if (response.data.status === 1) {
+                var msg = response.data.msg;
+                //notification.success({
+                   // message: msg != "" ? msg : "Adhoc Task added Successfully",
+                //});
+               // dispatch({ type: INSERT_ADHOC_TASK, payload: response.data.status })
+               dispatch(getTaskList(localStorage.getItem("empId")));
+                return Promise.resolve();
+            }
+        });
+
+    } catch (err) {
+
+    }
+}
+
+export const insertTimeSheetbyTime = (params, time,task) => async dispatch => {
     var url = 'insert_stop_time';
     if(time == true){
         url =  'insert_start_time'
@@ -143,6 +181,15 @@ export const insertTimeSheetbyTime = (params, time) => async dispatch => {
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
+              
+                if(time == true && task && task.actual_start_date && task.actual_start_date.length < 2 ){
+                    task.actual_start_date=params.start_date;
+                    dispatch(updateTaskDates(task));
+                }else{
+                    task.actual_end_date=params.end_date;
+                    dispatch(updateTaskDates(task));
+                }
+
                 dispatch(getTaskList(localStorage.getItem("empId")));
                 var msg = response.data.msg;
                 notification.success({
