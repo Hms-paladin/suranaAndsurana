@@ -83,6 +83,21 @@ function Task(props) {
         setTaskData(data);
         setTaskPrioriyModal(true);
       }
+
+      function taskTagclick(data){
+        setTaskData(data);
+        setTaskTag(true)
+      }
+      
+      function fntaskcompletionstatus(data){
+        setTaskData(data);
+        setTaskStatus(true) 
+      }
+
+      function fntaskHearingDetails(data){
+        setTaskData(data);
+        setHearing(true)
+      }
     function checkValidation(data, key, multipleId) {
         
         var errorcheck = ValidationLibrary.checkValidation(
@@ -193,6 +208,7 @@ setSubordinates({ subOrinateList })
 
     function openTimeSheet(flg,obj){
 var a= obj;
+setTaskData(obj);
 //props['objs'] =a;
 setStartModelOpen(flg);
     }
@@ -243,7 +259,7 @@ setStartModelOpen(flg);
                 {/* first card */}
                 <div className="card_div">
                 {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
-                    
+                    let datass = data;
                     if(data.project_name != null && data.project_type != null)
                 return (
                     <Card >
@@ -258,7 +274,7 @@ setStartModelOpen(flg);
                                 > */}
                                      <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 {/* </HtmlTooltip> */}
-                                <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView rowData={data}/>} width={1000} />
+                                <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView rowData={taskData}/>} width={1000} />
                                {/*  <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> 
                                 {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} /> */}
                             </div>
@@ -303,16 +319,16 @@ setStartModelOpen(flg);
                                 </div>
                                 <div className="images_div">
                                     <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
-                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
-                                    <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>setTaskTag(true)}/>
-                                    <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={data}/>} width={300}/>
-                                    <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>setTaskStatus(true)}/>
-                                    <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  content={<TaskStatus rowData={data}/>} width={300}/>
-                                    <img src={Order} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={()=>setHearing(true)}/>
-                                    <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={data} onhearingclose={()=>setHearing(false)} />} width={1000}/>
+                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={datass}/>} width={300}/>
+                                    <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
+                                    <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
+                                    <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>fntaskcompletionstatus({data})}/>
+                                    <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  content={<TaskStatus rowData={taskData}/>} width={300}/>
+                                    <img src={Order} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={()=>fntaskHearingDetails({data})}/>
+                                    <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
                                 </div>
                             </div>
-                            <div style={{ backgroundColor: '#707070', width: '55px' }}>
+                            <div style={{ backgroundColor: '#707070', width: '55px' }}>   
                                 <img src={Star} style={{ margin: '12px' }} />
                                 <Divider />
                                 <img src={Tick} style={{ margin: '12px' }} />

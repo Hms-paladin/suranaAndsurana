@@ -132,10 +132,17 @@ function TimeSheetView(props) {
 
     useEffect(() => {
         if(props.getTaskTimeSheet.length >0 && props.getTaskTimeSheet[0].timesheet.length >0 ){
+            if(props.getTaskTimeSheet[0].timesheet[0].start_date && props.getTaskTimeSheet[0].timesheet[0].start_time){
+                setTimesheetStart(true) 
+                settimeSheetID(props.getTaskTimeSheet[0].timesheet[0].timesheet_id);
+            }else{
             setTimesheetStart(false)
             setstartDateDisplay(props.getTaskTimeSheet[0].timesheet[0].start_date);
             setstartTimeDisplay(props.getTaskTimeSheet[0].timesheet[0].start_time);
             settimeSheetID(props.getTaskTimeSheet[0].timesheet[0].timesheet_id);
+            }
+        }else{
+            setTimesheetStart(true)
         }
         var a =props.rowData
     }, [props.rowData,props.getTaskTimeSheet])
