@@ -5,8 +5,9 @@ import CustomButton from "../../../component/Butttons/button";
 import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP} from "../../../actions/tradeMarkAction";
 import moment from 'moment'
+import { useParams } from "react-router-dom";
 
 function RevocationFiled(props) {
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -15,8 +16,11 @@ function RevocationFiled(props) {
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
+    let { rowId } = useParams()
+    var params = {};
     
     useEffect(() => {
+        dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
         
@@ -24,6 +28,63 @@ function RevocationFiled(props) {
       }, []);
 
       useEffect(() => {
+          
+        if(props.tradeMark && props.tradeMark[0]){
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id =obj.project_id;
+            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.status_id.value = obj.status_id;
+            if(obj.status_id && obj.status_id.length)
+            TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.class_id.value = obj.class_id;
+            if(obj.class_id && obj.class_id.length)
+            TradeMarkForm.class_id.disabled = true;
+
+            TradeMarkForm.comments.value =obj.comments
+            if(obj.comments && obj.comments.length)
+            TradeMarkForm.comments.disabled = true;
+            
+            TradeMarkForm.trademark_no.value =obj.trademark_no;
+            if(obj.trademark_no && obj.trademark_no.length)
+            TradeMarkForm.trademark_no.disabled = true;
+
+            TradeMarkForm.serial_no.value =obj.serial_no;
+            if(obj.serial_no && obj.serial_no.length)
+            TradeMarkForm.serial_no.disabled = true;
+
+            TradeMarkForm.org_appeal_no.value=obj.org_appeal_no;
+            if(obj.org_appeal_no && obj.org_appeal_no.length)
+            TradeMarkForm.org_appeal_no.disabled = true;
+
+            TradeMarkForm.hearing_date.value =obj.hearing_date;
+            if(obj.hearing_date && obj.hearing_date.length)
+            TradeMarkForm.hearing_date.disabled = true;
+
+            TradeMarkForm.filing_type_id.value =obj.filing_type_id;
+            if(obj.filing_type_id && obj.filing_type_id.length)
+            TradeMarkForm.filing_type_id.disabled = true;
+            
+            TradeMarkForm.mark.value =obj.mark;
+            if(obj.mark && obj.mark.length)
+            TradeMarkForm.mark.disabled = true;
+            
+            TradeMarkForm.respondent.value =obj.respondent;
+            if(obj.respondent && obj.respondent.length)
+            TradeMarkForm.respondent.disabled = true;
+            
+            TradeMarkForm.respondent_rep.value =obj.respondent_rep;
+            if(obj.respondent_rep && obj.respondent_rep.length)
+            TradeMarkForm.respondent_rep.disabled = true;
+            
+            TradeMarkForm.client_responent.value =obj.client_responent;
+            if(obj.client_responent && obj.client_responent.length)
+            TradeMarkForm.client_responent.disabled = true;
+            
+            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date;
+            if(obj.revocation_filing_date && obj.revocation_filing_date.length)
+            TradeMarkForm.revocation_filing_date.disabled = true;
+        }
 
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -63,7 +124,7 @@ function onSubmit() {
     let params  = {
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
+        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
@@ -111,9 +172,10 @@ function onSubmit() {
 
 
 const handleCancel = () => {
-    let From_key = [
-        "client_applicant", "mark", "trade_mark_no", "class_id", "revocation_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "respondent", 
-        "respondent_rep", "filing_type_id", "status_id", "comments"
+    let From_key = [        
+        "ip_type",  "client_status_type", "trademark_ipab_id", "project_id", "trademark_no",  "class_id", "rectification_filing", "serial_no", "org_appeal_no", "hearing_date", 
+        "opp_applicant", "opp_applicant_rep", "filing_type_id", "status_id", "comments", "created_on", "updated_on", "created_by",  "updated_by", "client_application", 
+        "mark", "respondent", "respondent_rep", "client_responent", "revocation_filing_date", "applicant_no", "patent_title", "appeal_filing_date"
     ]
 
     From_key.map((data) => {
@@ -139,6 +201,13 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         errmsg: null,
         disabled: false,
 
+    },
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
     },
     mark: {
         value: 0,
@@ -437,6 +506,7 @@ const mapStateToProps = (state) =>
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
     filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 
 export default connect(mapStateToProps)(RevocationFiled);

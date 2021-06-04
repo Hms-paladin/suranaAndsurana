@@ -184,7 +184,7 @@ export const insertIPAB = (params) => async dispatch => {
         var method = 'POST';
         var message="IPAB added sucessfully";
         if(params.trademark_ipab_id !=0){
-            url = 'update_tipab';
+            url = 'update_ipab';
             method ='PUT';
             message="IPAB updated sucessfully";
         }

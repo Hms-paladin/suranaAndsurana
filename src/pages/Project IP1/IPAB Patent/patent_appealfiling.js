@@ -5,8 +5,9 @@ import CustomButton from "../../../component/Butttons/button";
 import './IPABpatent.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP} from "../../../actions/tradeMarkAction";
 import moment from 'moment'
+import { useParams } from "react-router-dom";
 
 function PatentAppealFiling(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -15,8 +16,10 @@ function PatentAppealFiling(props){
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
+    let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
         
@@ -24,6 +27,46 @@ function PatentAppealFiling(props){
       }, []);
 
       useEffect(() => {
+        if(props.tradeMark && props.tradeMark[0]){
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id =obj.project_id;
+            TradeMarkForm.trademark_ipab_id =obj.trademark_ipab_id;
+            TradeMarkForm.status_id.value = obj.status_id;
+            if(obj.status_id && obj.status_id.length)
+            TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.comments.value =obj.comments
+            if(obj.comments && obj.comments.length)
+            TradeMarkForm.comments.disabled = true;
+
+            TradeMarkForm.serial_no.value =obj.serial_no;
+            if(obj.serial_no && obj.serial_no.length)
+            TradeMarkForm.serial_no.disabled = true;
+
+            TradeMarkForm.org_appeal_no.value =obj.org_appeal_no;
+            if(obj.org_appeal_no && obj.org_appeal_no.length)
+            TradeMarkForm.org_appeal_no.disabled = true;
+
+            TradeMarkForm.hearing_date.value=obj.hearing_date;
+            if(obj.hearing_date && obj.hearing_date.length)
+            TradeMarkForm.hearing_date.disabled = true;
+
+            TradeMarkForm.client_application.value =obj.client_application;
+            if(obj.client_application && obj.client_application.length)
+            TradeMarkForm.client_application.disabled = true;
+
+            TradeMarkForm.applicant_no.value =obj.applicant_no;
+            if(obj.applicant_no && obj.applicant_no.length)
+            TradeMarkForm.applicant_no.disabled = true;
+            
+            TradeMarkForm.patent_title.value =obj.patent_title;
+            if(obj.patent_title && obj.patent_title.length)
+            TradeMarkForm.patent_title.disabled = true;
+            
+            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date;
+            if(obj.appeal_filing_date && obj.appeal_filing_date.length)
+            TradeMarkForm.appeal_filing_date.disabled = true;
+        }
 
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -63,7 +106,7 @@ function onSubmit() {
     let params  = {
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
+        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
         "trademark_no" :"",
         "class_id" :0,
@@ -137,6 +180,13 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         errmsg: null,
         disabled: false,
 
+    },
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
     },
     applicant_no: {
         value: "",
@@ -354,6 +404,7 @@ const mapStateToProps = (state) =>
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
     filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 
 export default connect(mapStateToProps)(PatentAppealFiling);

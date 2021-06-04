@@ -4,8 +4,9 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
+import { useParams } from "react-router-dom";
 
 function PatentRevocationDef(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -14,8 +15,10 @@ function PatentRevocationDef(props){
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
+    let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
         
@@ -24,6 +27,55 @@ function PatentRevocationDef(props){
 
  
       useEffect(() => {
+          
+        if(props.tradeMark && props.tradeMark[0]){
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id =obj.project_id;
+            TradeMarkForm.trademark_ipab_id =obj.trademark_ipab_id;
+            TradeMarkForm.status_id.value = obj.status_id;
+            if(obj.status_id && obj.status_id.length)
+            TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.comments.value =obj.comments
+            if(obj.comments && obj.comments.length)
+            TradeMarkForm.comments.disabled = true;
+            
+            TradeMarkForm.serial_no.value =obj.serial_no;
+            if(obj.serial_no && obj.serial_no.length)
+            TradeMarkForm.serial_no.disabled = true;
+
+            TradeMarkForm.org_appeal_no.value =obj.org_appeal_no;
+            if(obj.org_appeal_no && obj.org_appeal_no.length)
+            TradeMarkForm.org_appeal_no.disabled = true;
+
+            TradeMarkForm.hearing_date.value=obj.hearing_date;
+            if(obj.hearing_date && obj.hearing_date.length)
+            TradeMarkForm.hearing_date.disabled = true;
+
+            TradeMarkForm.opp_applicant.value =obj.opp_applicant;
+            if(obj.opp_applicant && obj.opp_applicant.length)
+            TradeMarkForm.opp_applicant.disabled = true;
+
+            TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
+            if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
+            TradeMarkForm.opp_applicant_rep.disabled = true;
+            
+            TradeMarkForm.client_responent.value =obj.client_responent;
+            if(obj.client_responent && obj.client_responent.length)
+            TradeMarkForm.client_responent.disabled = true;
+            
+            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date;
+            if(obj.revocation_filing_date && obj.revocation_filing_date.length)
+            TradeMarkForm.revocation_filing_date.disabled = true;
+            
+            TradeMarkForm.applicant_no.value =obj.applicant_no;
+            if(obj.applicant_no && obj.applicant_no.length)
+            TradeMarkForm.applicant_no.disabled = true;
+            
+            TradeMarkForm.patent_title.value =obj.patent_title;
+            if(obj.patent_title && obj.patent_title.length)
+            TradeMarkForm.patent_title.disabled = true;
+        }
 
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -63,7 +115,7 @@ function onSubmit() {
     let params  = {
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
+        "trademark_ipab_id": TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
         "trademark_no" :"",
         "class_id" :0,
@@ -130,6 +182,13 @@ const handleCancel = () => {
 }
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
+    },
     client_respondent: {
         value: 0,
         validation: [{ "name": "required" },],
@@ -414,6 +473,7 @@ const mapStateToProps = (state) =>
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
     filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 
 export default connect(mapStateToProps)(PatentRevocationDef);

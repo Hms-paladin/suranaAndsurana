@@ -5,8 +5,9 @@ import CustomButton from "../../../component/Butttons/button";
 import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB } from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
+import { useParams } from "react-router-dom";
 
 function IPABRectificationDefended(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -15,8 +16,10 @@ function IPABRectificationDefended(props){
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
+    let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
         
@@ -24,7 +27,60 @@ function IPABRectificationDefended(props){
       }, []);
 
       useEffect(() => {
+          
+        if(props.tradeMark && props.tradeMark[0]){
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id =obj.project_id;
+            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.status_id.value = obj.status_id;
+            if(obj.status_id && obj.status_id.length)
+            TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.class_id.value = obj.class_id;
+            if(obj.class_id && obj.class_id.length)
+            TradeMarkForm.class_id.disabled = true;
 
+            TradeMarkForm.comments.value =obj.comments
+            if(obj.comments && obj.comments.length)
+            TradeMarkForm.comments.disabled = true;
+            
+            TradeMarkForm.trademark_no.value =obj.trademark_no;
+            if(obj.trademark_no && obj.trademark_no.length)
+            TradeMarkForm.trademark_no.disabled = true;
+
+            TradeMarkForm.rectification_filing.value =obj.rectification_filing;
+            if(obj.rectification_filing && obj.rectification_filing.length)
+            TradeMarkForm.rectification_filing.disabled = true;
+
+            TradeMarkForm.serial_no.value=obj.serial_no;
+            if(obj.serial_no && obj.serial_no.length)
+            TradeMarkForm.serial_no.disabled = true;
+
+            TradeMarkForm.org_appeal_no.value =obj.org_appeal_no;
+            if(obj.org_appeal_no && obj.org_appeal_no.length)
+            TradeMarkForm.org_appeal_no.disabled = true;
+
+            TradeMarkForm.hearing_date.value =obj.hearing_date;
+            if(obj.hearing_date && obj.hearing_date.length)
+            TradeMarkForm.hearing_date.disabled = true;
+            
+            TradeMarkForm.opp_applicant.value =obj.opp_applicant;
+            if(obj.opp_applicant && obj.opp_applicant.length)
+            TradeMarkForm.opp_applicant.disabled = true;
+            
+            TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
+            if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
+            TradeMarkForm.opp_applicant_rep.disabled = true;
+            
+            TradeMarkForm.filing_type_id.value =obj.filing_type_id;
+            if(obj.filing_type_id && obj.filing_type_id.length)
+            TradeMarkForm.filing_type_id.disabled = true;
+            
+            TradeMarkForm.mark.value =obj.mark;
+            if(obj.mark && obj.mark.length)
+            TradeMarkForm.mark.disabled = true;
+        }
+        
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
           project_id:props.ProjectDetails[0].project_id,
@@ -63,7 +119,7 @@ function onSubmit() {
     let params  = {        
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
+        "trademark_ipab_id":TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
@@ -138,6 +194,13 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         errmsg: null,
         disabled: false,
 
+    },
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
     },
     mark: {
         value: "",
