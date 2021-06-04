@@ -31,7 +31,7 @@ function IPABRectificationDefended(props){
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-
+            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             if(obj.status_id && obj.status_id.length)
             TradeMarkForm.status_id.disabled = true;
@@ -119,7 +119,7 @@ function onSubmit() {
     let params  = {        
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
+        "trademark_ipab_id":TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
@@ -194,6 +194,13 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         errmsg: null,
         disabled: false,
 
+    },
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
     },
     mark: {
         value: "",
