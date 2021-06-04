@@ -4,8 +4,9 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
+import { useParams } from "react-router-dom";
 
 function PatentRectificationDef(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -14,8 +15,10 @@ function PatentRectificationDef(props){
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
+    let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
         
@@ -23,7 +26,59 @@ function PatentRectificationDef(props){
       }, []);
 
       useEffect(() => {
+           
+        if(props.tradeMark && props.tradeMark[0]){
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id =obj.project_id;
 
+            TradeMarkForm.status_id.value = obj.status_id;
+            if(obj.status_id && obj.status_id.length)
+            TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.comments.value =obj.comments
+            if(obj.comments && obj.comments.length)
+            TradeMarkForm.comments.disabled = true;
+            
+            TradeMarkForm.rectification_filing.value =obj.rectification_filing;
+            if(obj.rectification_filing && obj.rectification_filing.length)
+            TradeMarkForm.rectification_filing.disabled = true;
+
+            TradeMarkForm.serial_no.value =obj.serial_no;
+            if(obj.serial_no && obj.serial_no.length)
+            TradeMarkForm.serial_no.disabled = true;
+
+            TradeMarkForm.org_appeal_no.value=obj.org_appeal_no;
+            if(obj.org_appeal_no && obj.org_appeal_no.length)
+            TradeMarkForm.org_appeal_no.disabled = true;
+
+            TradeMarkForm.hearing_date.value =obj.hearing_date;
+            if(obj.hearing_date && obj.hearing_date.length)
+            TradeMarkForm.hearing_date.disabled = true;
+
+            TradeMarkForm.opp_applicant.value =obj.opp_applicant;
+            if(obj.opp_applicant && obj.opp_applicant.length)
+            TradeMarkForm.opp_applicant.disabled = true;
+            
+            TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
+            if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
+            TradeMarkForm.opp_applicant_rep.disabled = true;
+            
+            TradeMarkForm.filing_type_id.value =obj.filing_type_id;
+            if(obj.filing_type_id && obj.filing_type_id.length)
+            TradeMarkForm.filing_type_id.disabled = true;
+            
+            TradeMarkForm.client_responent.value =obj.client_responent;
+            if(obj.client_responent && obj.client_responent.length)
+            TradeMarkForm.client_responent.disabled = true;
+            
+            TradeMarkForm.applicant_no.value =obj.applicant_no;
+            if(obj.applicant_no && obj.applicant_no.length)
+            TradeMarkForm.applicant_no.disabled = true;
+            
+            TradeMarkForm.patent_title.value =obj.patent_title;
+            if(obj.patent_title && obj.patent_title.length)
+            TradeMarkForm.patent_title.disabled = true;
+        }
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
           project_id:props.ProjectDetails[0].project_id,
@@ -419,6 +474,7 @@ const mapStateToProps = (state) =>
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
     filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 
 export default connect(mapStateToProps)(PatentRectificationDef);

@@ -5,8 +5,9 @@ import CustomButton from "../../../component/Butttons/button";
 import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus, getClassDetails, insertIPAB} from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus, getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
+import { useParams } from "react-router-dom";
 
 function AppealFiling(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -15,103 +16,84 @@ function AppealFiling(props){
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     console.log("appeal Filing", props);
+    let { rowId } = useParams()
+    var params = {};
     const dispatch = useDispatch()
     
     useEffect(() => {
+        dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());        
         
       }, []);
 
       useEffect(() => {
-//         if(props.tradeMark && props.tradeMark[0]){
-//             let obj = props.tradeMark[0];
-//         TradeMarkForm.comments.value =obj.comments;
-//         // TradeMarkForm.trademark_id.value = obj.trademark_id;
+          
+        if(props.tradeMark && props.tradeMark[0]){
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id =obj.project_id;
 
-//         TradeMarkForm.status_id.value = obj.status_id;
-//         if(obj.status_id && obj.status_id.length)
-//         TradeMarkForm.status_id.disabled = true;
+            TradeMarkForm.status_id.value = obj.status_id;
+            if(obj.status_id && obj.status_id.length)
+            TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.class_id.value = obj.class_id;
+            if(obj.class_id && obj.class_id.length)
+            TradeMarkForm.class_id.disabled = true;
 
+            TradeMarkForm.comments.value =obj.comments
+            if(obj.comments && obj.comments.length)
+            TradeMarkForm.comments.disabled = true;
 
-//         TradeMarkForm.date_of_hearing.value =obj.date_of_hearing
-//         if(obj.date_of_hearing && obj.date_of_hearing.length)
-//          TradeMarkForm.date_of_hearing.disabled = true;
+            TradeMarkForm.client_applicant.value =obj.client_applicant;
+            if(obj.client_applicant && obj.client_applicant.length)
+            TradeMarkForm.client_applicant.disabled = true;
 
-//         //"upload_image" :selectedFile,
-//         TradeMarkForm.serial_no.value =obj.serial_no;
-//         if(obj.serial_no && obj.serial_no.length)
-//         TradeMarkForm.serial_no.disabled = true;
+            TradeMarkForm.client_mark.value =obj.client_mark;
+            if(obj.client_mark && obj.client_mark.length)
+            TradeMarkForm.client_mark.disabled = true;
 
-//         "status_id", "class_id", "comments", "client_applicant", "client_mark", "trade_mark_no", "appeal_filing_date", "", ""
-//         TradeMarkForm.application_date.value =obj.application_date;
-//         if(obj.application_date && obj.application_date.length)
-//         TradeMarkForm.application_date.disabled = true;
+            TradeMarkForm.trade_mark_no.value=obj.trade_mark_no;
+            if(obj.trade_mark_no && obj.trade_mark_no.length)
+            TradeMarkForm.trade_mark_no.disabled = true;
 
-//         TradeMarkForm.usage_from_date.value=obj.usage_from_date;
-//         if(obj.usage_from_date && obj.usage_from_date.length)
-//         TradeMarkForm.usage_from_date.disabled = true;
+            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date;
+            if(obj.appeal_filing_date && obj.appeal_filing_date.length)
+            TradeMarkForm.appeal_filing_date.disabled = true;
 
-//         TradeMarkForm.ip_india_status.value =obj.ip_india_status;
-//         if(obj.ip_india_status && obj.ip_india_status.length)
-//         TradeMarkForm.ip_india_status.disabled = true;
+            TradeMarkForm.serial_no.value =obj.serial_no;
+            if(obj.serial_no && obj.serial_no.length)
+            TradeMarkForm.serial_no.disabled = true;
+            
+            TradeMarkForm.date_of_hearing.value =obj.date_of_hearing;
+            if(obj.date_of_hearing && obj.date_of_hearing.length)
+            TradeMarkForm.date_of_hearing.disabled = true;
+        }
+            setProjectDetails(props.ProjectDetails);
+        props.ProjectDetails.length > 0 && setidDetails({
+            project_id:props.ProjectDetails[0].project_id,
+            client_id:props.ProjectDetails[0].client_id,
+        })
 
-//         TradeMarkForm.internal_status.value =obj.internal_status;
-//         if(obj.internal_status && obj.internal_status.length)
-//         TradeMarkForm.internal_status.disabled = true;
+            let tradeStatusData = []
+            props.tradeStatusList.map((data) =>
+        tradeStatusData.push({ value: data.Status,
+            id: data.status_id })
+        )
+        settradeStatusList({ tradeStatusData })
 
-
-//         TradeMarkForm.allotment.value=obj.allotment;
-//         if(obj.allotment && obj.allotment.length)
-//         TradeMarkForm.allotment.disabled = true;
-
-
-//         TradeMarkForm.amendment.value =obj.amendment;
-//         if(obj.amendment && obj.amendment.length)
-//         TradeMarkForm.amendment.disabled = true;
-
-
-//          // "orders":TradeMarkForm.orders.value,
-//         TradeMarkForm.priority_details.value =obj.priority_details;
-//         if(obj.priority_details && obj.priority_details.length)
-//         TradeMarkForm.priority_details.disabled = true;
-
-
-//         TradeMarkForm.tmj_number.value =obj.tmj_number;
-//         if(obj.tmj_number && obj.tmj_number.length)
-//         TradeMarkForm.tmj_number.disabled = true;
-
-
-//        TradeMarkForm.tmj_date.value = obj.tmj_date;
-//        if(obj.tmj_date && obj.tmj_date.length)
-//         TradeMarkForm.status_id.disabled = true;
-
-//         }
-    setProjectDetails(props.ProjectDetails);
-  props.ProjectDetails.length > 0 && setidDetails({
-      project_id:props.ProjectDetails[0].project_id,
-      client_id:props.ProjectDetails[0].client_id,
-  })
-
-    let tradeStatusData = []
-    props.tradeStatusList.map((data) =>
-tradeStatusData.push({ value: data.Status,
-    id: data.status_id })
-)
-  settradeStatusList({ tradeStatusData })
-
-  let classDetailsData = []
-  props.classDetailsList.map((data) =>
-  classDetailsData.push({ value: data.class,
-  id: data.class_id })
-)
-setclassDetList({ classDetailsData })
-let filingTypeData = []
-props.filingTypeList.map((data) =>
-filingTypeData.push({ value: data.filing_type,
-id: data.filing_type_id })
-)
-setFilingTypeList({ filingTypeData })
+        let classDetailsData = []
+        props.classDetailsList.map((data) =>
+        classDetailsData.push({ value: data.class,
+        id: data.class_id })
+        )
+        setclassDetList({ classDetailsData })
+        let filingTypeData = []
+        props.filingTypeList.map((data) =>
+        filingTypeData.push({ value: data.filing_type,
+        id: data.filing_type_id })
+        )
+        setFilingTypeList({ filingTypeData })
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -123,11 +105,11 @@ function onSubmit() {
         (obj) => TradeMarkForm[obj].error == true
     ); 
     console.log(filtererr.length);
-    let params  = {
+    params  = {
          "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id": 0,
-        "project_id": projectDetails.project_id,
+        "project_id": rowId,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
         "rectification_filing" :null,
@@ -173,6 +155,7 @@ function onSubmit() {
 };
 
 
+console.log("paramscheck", params);
 const handleCancel = () => {
     let From_key = [
         "status_id", "class_id", "comments", "client_applicant", "client_mark", "trade_mark_no", "appeal_filing_date", "serial_no", "date_of_hearing"
@@ -445,6 +428,7 @@ const mapStateToProps = (state) =>
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
     filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 
 export default connect(mapStateToProps)(AppealFiling);
