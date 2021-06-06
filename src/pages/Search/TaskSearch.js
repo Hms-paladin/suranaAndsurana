@@ -150,7 +150,7 @@ function Task(props) {
     for(var i =0;i<obj.length; i++){
        var timesheet =  getTaskTimeSheetbyTaskIdsss(obj[i].task_id);
        if(timesheet && timesheet.length >0){
-       obj[i].actual_end_date = timesheet.end_date
+       obj[i].ended_date = timesheet.end_date
        obj[i].actual_end_time = timesheet.end_time
        list.push(obj)
        }
@@ -305,7 +305,7 @@ setStartModelOpen(flg);
                                 </div>
                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                     <span>Actual Start Date :<span>{data.started_date}</span></span>
-                                    <span>End Date :<span>{data.actual_end_date}</span></span>
+                                    <span>End Date :<span>{data.ended_date}</span></span>
                                 </div>
                                 <div>
                                     <p>Assigned By <a>{data.name}</a>On <a>{data.start_date}</a></p>
@@ -318,7 +318,7 @@ setStartModelOpen(flg);
                                     <p style={{ display: "flex", justifyContent: 'center' }}>{data.total_hours}{data.Priority}</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
+                                    <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({taskData})}/>
                                     <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
                                     <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
                                     <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
@@ -376,7 +376,7 @@ setStartModelOpen(flg);
                                 </div>
                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                     <span>Actual Start Date :<span>{data.started_date}</span></span>
-                                    <span>End Date :<span>{data.actual_end_date}</span></span>
+                                    <span>End Date :<span>{data.ended_date}</span></span>
                                 </div>
                                 <div>
                                     <p>Assigned By <a>{data.name}</a>On <a>{data.start_date}</a></p>

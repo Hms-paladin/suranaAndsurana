@@ -21,3 +21,7 @@ export const getTaskList = () => async dispatch => {
 
     }
 }
+
+
+//select SEC_TO_TIME(sum(time_to_sec(TIMEDIFF(CONCAT(end_date,' ',end_time),CONCAT(start_date,' ',start_time))))) 
+//FROM `s_tbl_pm_timesheet` where task_id=1092
