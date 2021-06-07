@@ -6,6 +6,7 @@ import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
+import { getFilingType } from "../../../actions/MasterDropdowns";
 import moment from 'moment'
 import { useParams } from "react-router-dom";
 
@@ -17,12 +18,12 @@ function IPABRectificationDefended(props){
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     let { rowId } = useParams()
-    
+    console.log("ipadrd", props);
     useEffect(() => {
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        
+
         
       }, []);
 
@@ -31,7 +32,7 @@ function IPABRectificationDefended(props){
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-
+            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             if(obj.status_id && obj.status_id.length)
             TradeMarkForm.status_id.disabled = true;
@@ -89,23 +90,31 @@ function IPABRectificationDefended(props){
 
         let tradeStatusData = []
         props.tradeStatusList.map((data) =>
-    tradeStatusData.push({ value: data.Status,
+        tradeStatusData.push({ value: data.Status,
         id: data.status_id })
-    )
-      settradeStatusList({ tradeStatusData })
-    
-      let classDetailsData = []
-      props.classDetailsList.map((data) =>
-      classDetailsData.push({ value: data.class,
-      id: data.class_id })
-  )
-  setclassDetList({ classDetailsData })
-  let filingTypeData = []
-  props.filingTypeList.map((data) =>
-  filingTypeData.push({ value: data.filing_type,
-  id: data.filing_type_id })
-  )
-  setFilingTypeList({ filingTypeData })
+        )
+        settradeStatusList({ tradeStatusData })
+        
+        let classDetailsData = []
+        props.classDetailsList.map((data) =>
+        classDetailsData.push({ value: data.class,
+        id: data.class_id })
+        )
+        setclassDetList({ classDetailsData })
+        let filingTypeData = []
+        props.filingTypeList.map((data) =>
+        filingTypeData.push({ value: data.filing_type,
+        id: data.filing_type_id })
+        )
+        setFilingTypeList({ filingTypeData })
+
+        
+        const id  ={
+            ProjectType: props.ProjectDetails[0].project_type_id,
+            ProjectSubtype: props.ProjectDetails[0].sub_project_id,
+            ProcessType:  props.ProjectDetails[0].process_id
+        }
+        dispatch(getFilingType(id));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -119,8 +128,8 @@ function onSubmit() {
     let params  = {        
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
-        "project_id": projectDetails.project_id,
+        "trademark_ipab_id":TradeMarkForm.trademark_ipab_id,
+        "project_id": rowId,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
         "rectification_filing" :TradeMarkForm.rectification_filing_date.value || "",
@@ -146,7 +155,7 @@ function onSubmit() {
         "patent_title":"",
         "appeal_filing_date":""
     }
-    console.log("paramscheck", params);
+
     if(TradeMarkForm.class_id.value != ""){
         params["class_id"] =TradeMarkForm.class_id.value;
     }
@@ -194,6 +203,13 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         errmsg: null,
         disabled: false,
 
+    },
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
     },
     mark: {
         value: "",
@@ -442,7 +458,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="select"
                         placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id")}
-                dropdown={tradeStatusList.filingTypeData} 
+                dropdown={filingTypeList.filingTypeData} 
                 value={TradeMarkForm.filing_type_id.value}
                 error={TradeMarkForm.filing_type_id.error}
                 errmsg={TradeMarkForm.filing_type_id.errmsg}
@@ -484,8 +500,9 @@ const mapStateToProps = (state) =>
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
+    filingTypeList : state.tradeMarkReducer.getFilingType || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 
 export default connect(mapStateToProps)(IPABRectificationDefended);
