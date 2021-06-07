@@ -15,7 +15,7 @@ function TaskPriority(props) {
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-    var params = props.rowData;
+    //var params = props.rowData;
     useEffect(() => {
         dispatch(getPriorityList());
     
@@ -31,15 +31,15 @@ function TaskPriority(props) {
           })
         )
         setpriorityList({ priorityTypeData })
-        setValue(params.priority_id)
+        setValue(props.rowData.data.priority_id)
     
     
-      }, [props.prioritysList
+      }, [props.prioritysList,props.rowData
       ]);
   function handelCheck(e,val ){
     setValue(val.status_id);
     var val ={
-      "task_id":params.task_id,
+      "task_id":props.rowData.data.task_id,
       "priority_id":val.status_id
   }
 try {

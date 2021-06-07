@@ -31,7 +31,7 @@ function TaskTag(props) {
           })
         )
         settaggList({ tagTypeData })
-        setValue(props.rowData.tag_id)
+        setValue(props.rowData.data.tag_id)
       }, [props.tagsList,props.rowData
       ]);
       function handelCheck(e,val ){

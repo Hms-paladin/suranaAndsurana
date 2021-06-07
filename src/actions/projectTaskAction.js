@@ -411,7 +411,7 @@ export const getTaskList = (empId) => async dispatch => {
             method: 'POST',
             url: apiurl + 'get_task_list',
             data: {
-                "assignee_id": empId,//localStorage.getItem("empId"),
+                "assignee_id":  empId,//localStorage.getItem("empId"),
             }
         })
             .then((response) => {

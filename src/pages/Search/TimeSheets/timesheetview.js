@@ -9,7 +9,7 @@ import { getTaskTimeSheet,insertTimeSheetbyTime } from "../../../actions/project
 import dateFormat from 'dateformat';
 function TimeSheetView(props) {
     const [timesheetStart, setTimesheetStart] = useState(true)
-
+    const [isLoaded, setisLoaded] = useState(true)
     const [startDateDisplay, setstartDateDisplay] = useState("")
     const [startTimeDisplay, setstartTimeDisplay] = useState("")
     const [timeSheetID, settimeSheetID] = useState("")
@@ -49,6 +49,35 @@ function TimeSheetView(props) {
 
     })
     
+   console.log('1')
+        var paramVal =props.rowData;
+        console.log('2')
+        useEffect(() => {
+            dispatch(getTaskTimeSheet(paramVal.task_id));
+        
+          }, []);
+    
+        useEffect(() => {
+            if(props.getTaskTimeSheet.length >0 ){
+                
+                if(props.getTaskTimeSheet[0].timesheet.length >0 ){
+                    var tsSize =props.getTaskTimeSheet.length -1;
+                if(props.getTaskTimeSheet[0].timesheet[tsSize].start_date && props.getTaskTimeSheet[0].timesheet[tsSize].start_time){
+                    setTimesheetStart(true) 
+                    settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+                }else{
+                setTimesheetStart(false)
+                setstartDateDisplay(props.getTaskTimeSheet[0].timesheet[tsSize].start_date);
+                setstartTimeDisplay(props.getTaskTimeSheet[0].timesheet[tsSize].start_time);
+                settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+                }
+            }
+            }else{
+                setTimesheetStart(true)
+            }
+            //var a =props.rowData
+        }, [props.getTaskTimeSheet])
+
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
 
@@ -125,27 +154,7 @@ function TimeSheetView(props) {
             ...prevState,
         }));
     };
-    useEffect(() => {
-        dispatch(getTaskTimeSheet(props.rowData.task_id));
     
-      }, []);
-
-    useEffect(() => {
-        if(props.getTaskTimeSheet.length >0 && props.getTaskTimeSheet[0].timesheet.length >0 ){
-            if(props.getTaskTimeSheet[0].timesheet[0].start_date && props.getTaskTimeSheet[0].timesheet[0].start_time){
-                setTimesheetStart(true) 
-                settimeSheetID(props.getTaskTimeSheet[0].timesheet[0].timesheet_id);
-            }else{
-            setTimesheetStart(false)
-            setstartDateDisplay(props.getTaskTimeSheet[0].timesheet[0].start_date);
-            setstartTimeDisplay(props.getTaskTimeSheet[0].timesheet[0].start_time);
-            settimeSheetID(props.getTaskTimeSheet[0].timesheet[0].timesheet_id);
-            }
-        }else{
-            setTimesheetStart(true)
-        }
-        var a =props.rowData
-    }, [props.rowData,props.getTaskTimeSheet])
     return (
         <div className="timeSheetStartContainer">
             {timesheetStart ?
