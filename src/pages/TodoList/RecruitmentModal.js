@@ -4,7 +4,7 @@ import CustomButton from '../../component/Butttons/button';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, connect } from "react-redux";
 import { getRecruitmentTicket, updateTicketStatus } from '../../actions/TicketCreationAction';
-
+import Moment from 'moment';
 
 function RecruitmentModal(props) {
     const dispatch = useDispatch();
@@ -49,7 +49,7 @@ function RecruitmentModal(props) {
                                 <div >No.of Positions</div>
                                 <div>{data.number_of_position}</div>
                             </div>
-                            <div><div>Required by</div><div>{data.required_by}</div></div>
+                            <div><div>Required by</div><div>{Moment(data.required_by).format('DD-MMM-yyyy')}</div></div>
                         </Grid>
                         <Grid item xs={12} container direction="row" alignItems="center" spacing={2} className="snd_item_grid_rec">
                             <div><div>Department</div><div>{data.department}</div></div>

@@ -31,7 +31,8 @@ const headCells = [
     { id: 'id', label: 'Task' },
     { id: 'interviewDate', label: 'Interview date' },
     { id: 'designation', label: 'Designation' },
-    { id: 'candidates', label: 'No. of Candidates' }
+    { id: 'candidates', label: 'No. of Candidates' },
+    { id: 'candidates', label: 'Department' }
 ];
 
 //Project Task:

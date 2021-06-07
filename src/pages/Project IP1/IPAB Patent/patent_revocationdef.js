@@ -7,6 +7,7 @@ import { useDispatch, connect } from "react-redux";
 import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 import { useParams } from "react-router-dom";
+import { getFilingType } from "../../../actions/MasterDropdowns";
 
 function PatentRevocationDef(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -31,7 +32,7 @@ function PatentRevocationDef(props){
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-
+            TradeMarkForm.trademark_ipab_id =obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             if(obj.status_id && obj.status_id.length)
             TradeMarkForm.status_id.disabled = true;
@@ -102,6 +103,13 @@ function PatentRevocationDef(props){
   id: data.filing_type_id })
   )
   setFilingTypeList({ filingTypeData })
+        
+  const id  ={
+    ProjectType: props.ProjectDetails[0].project_type_id,
+    ProjectSubtype: props.ProjectDetails[0].sub_project_id,
+    ProcessType:  props.ProjectDetails[0].process_id
+}
+dispatch(getFilingType(id));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -115,7 +123,7 @@ function onSubmit() {
     let params  = {
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id": 0,
+        "trademark_ipab_id": TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
         "trademark_no" :"",
         "class_id" :0,
@@ -182,6 +190,13 @@ const handleCancel = () => {
 }
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
+    },
     client_respondent: {
         value: 0,
         validation: [{ "name": "required" },],

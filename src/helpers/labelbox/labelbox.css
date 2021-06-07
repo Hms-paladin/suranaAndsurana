@@ -1,3 +1,7 @@
+div.formdiv > div.selectbrdred > div.ant-select-selection{
+  border: 1px solid red !important;
+}
+
 .formdiv {
   /* display: inline-block; */
   width: 100%;

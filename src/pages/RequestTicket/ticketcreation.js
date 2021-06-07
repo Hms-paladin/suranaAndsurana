@@ -28,6 +28,11 @@ function TicketCreation(props) {
     const [changemsg, setChangesmsg] = useState(false)
     const [generateRights, setGenerateRights] = useState([])
     const [saveRights, setSaveRights] = useState([])
+
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
     const [TicketCreation, setTicketCreation] = useState({
         department: {
             value: "",
@@ -129,7 +134,7 @@ function TicketCreation(props) {
         },
         assignedto: {
             value: "",
-            validation: [],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
@@ -559,7 +564,7 @@ useEffect(() => {
                                 errmsg={TicketCreation.position.errmsg} />
                         </Grid>
                         <Grid item xs={3} >
-                            <Labelbox type="datepicker" placeholder="Required by" disablePast={true}
+                            <Labelbox type="datepicker" placeholder="Required by" disablePast={true} minDate={tomorrow}
                                 changeData={(data) => checkValidation(data, "req_by")}
                                 value={TicketCreation.req_by.value}
                                 error={TicketCreation.req_by.error}
