@@ -48,7 +48,7 @@ function TaskTag(props) {
         })
             .then(function (response) {
                 if (response.data.status === 1) {
-                    dispatch(getTaskList());
+                    dispatch(getTaskList(localStorage.getItem("empId")));
                     notification.success({
                         message: ' Updated Successfully',
                     });

@@ -62,7 +62,7 @@ function TimeSheetView(props) {
                 
                 if(props.getTaskTimeSheet[0].timesheet.length >0 ){
                     var tsSize =props.getTaskTimeSheet.length -1;
-                if(props.getTaskTimeSheet[0].timesheet[tsSize].start_date && props.getTaskTimeSheet[0].timesheet[tsSize].start_time){
+                if(props.getTaskTimeSheet[0].timesheet[tsSize].start_date == null && props.getTaskTimeSheet[0].timesheet[tsSize].start_time == null){
                     setTimesheetStart(true) 
                     settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
                 }else{
@@ -105,7 +105,7 @@ function TimeSheetView(props) {
         var a = props;
         var timesheetData =  {
             "end_date":timeSheetForm.toDate.value,
-            "end_time":"04:54:30",//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
+            "end_time":dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
             "comment":timeSheetForm.description.value,
             "updated_by":localStorage.getItem("empId"),
             "timesheet_id":timeSheetID
@@ -122,7 +122,7 @@ function TimeSheetView(props) {
             "emp_id": localStorage.getItem("empId"),
             "task_id": props.rowData.task_id,
             "start_date": timeSheetForm.fromDate.value,
-            "start_time": "04:54:30",//"dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+            "start_time": dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }

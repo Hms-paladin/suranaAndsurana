@@ -132,6 +132,21 @@ export const insertTimeSheet = (params, id) => async dispatch => {
 }
 
 
+/*
+BEGIN
+IF (project_id= 0) THEN
+UPDATE s_tbl_pm_task SET s_tbl_pm_task.actual_start_date=actual_start_date, s_tbl_pm_task.end_date=end_date, 
+s_tbl_pm_task.tag=tag, s_tbl_pm_task.assignee_id=assignee_id, s_tbl_pm_task.description=description 
+where  s_tbl_pm_task.task_id = task_id ;
+ELSE
+UPDATE `s_tbl_pm_task` SET s_tbl_pm_task.activiity_id = activiity_id,s_tbl_pm_task.sub_activity_id= sub_activity_id ,
+ s_tbl_pm_task.assignee_id=assignee_id,s_tbl_pm_task.actual_start_date=actual_start_date , 
+ s_tbl_pm_task.actual_end_date= actual_end_date ,s_tbl_pm_task.priority=priority,s_tbl_pm_task.description=description,s_tbl_pm_task.tag=tag where  s_tbl_pm_task.task_id = task_id ;
+END IF;
+END
+
+*/
+
 export const updateTaskDates = (params) => async dispatch => {
     try {
 
@@ -143,10 +158,10 @@ export const updateTaskDates = (params) => async dispatch => {
             assignee_id:params.assignee_id,
             start_date:params.actual_start_date, 
             end_date:params.actual_end_date, 
-            assigned_by:1,
+            assigned_by:params.assigned_by,
             priority:params.Priority,
-            description:'',
-            tag:params.tag,
+            description:params.description,
+            tag:params.tag_id,
         };
         axios({
             method: 'PUT',

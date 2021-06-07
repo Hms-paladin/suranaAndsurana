@@ -8,6 +8,7 @@ import { connect, useDispatch } from "react-redux";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from "antd";
+import { getTaskList } from "../../actions/projectTaskAction";
 function TaskPriority(props) {
     const [priorityList, setpriorityList] = useState({})
     const [value, setValue] = useState('')
@@ -50,6 +51,7 @@ try {
   })
       .then(function (response) {
           if (response.data.status === 1) {
+            dispatch(getTaskList(localStorage.getItem("empId")));
               notification.success({
                   message: ' Updated Successfully',
               });

@@ -205,13 +205,10 @@ setSubordinates({ subOrinateList })
         alert("test")
         setChangeModel(false)
     }
-let startModelOpennnnn = false;
     function openTimeSheet(flg,obj){
 var a= obj;
 setTaskData(obj);
-//props['objs'] =a;
-startModelOpennnnn = true;
-//setStartModelOpen(flg);
+setStartModelOpen(flg);
     }
 
     const [open, setOpen] = useState(false);
@@ -277,7 +274,7 @@ startModelOpennnnn = true;
                                 > */}
                                      <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 {/* </HtmlTooltip> */}
-                                <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpennnnn} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
+                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
                 content={<TimeSheetView rowData={taskData}/>} width={1000} />
                                {/*  <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> 
                                 {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} /> */}
