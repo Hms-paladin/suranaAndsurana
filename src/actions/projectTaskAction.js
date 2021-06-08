@@ -135,13 +135,13 @@ export const insertTimeSheet = (params, id) => async dispatch => {
 /*
 BEGIN
 IF (project_id= 0) THEN
-UPDATE s_tbl_pm_task SET s_tbl_pm_task.actual_start_date=actual_start_date, s_tbl_pm_task.end_date=end_date, 
+UPDATE s_tbl_pm_task SET s_tbl_pm_task.actual_start_date=start_date, s_tbl_pm_task.actual_end_date=end_date, 
 s_tbl_pm_task.tag=tag, s_tbl_pm_task.assignee_id=assignee_id, s_tbl_pm_task.description=description 
 where  s_tbl_pm_task.task_id = task_id ;
 ELSE
 UPDATE `s_tbl_pm_task` SET s_tbl_pm_task.activiity_id = activiity_id,s_tbl_pm_task.sub_activity_id= sub_activity_id ,
- s_tbl_pm_task.assignee_id=assignee_id,s_tbl_pm_task.actual_start_date=actual_start_date , 
- s_tbl_pm_task.actual_end_date= actual_end_date ,s_tbl_pm_task.priority=priority,s_tbl_pm_task.description=description,s_tbl_pm_task.tag=tag where  s_tbl_pm_task.task_id = task_id ;
+ s_tbl_pm_task.assignee_id=assignee_id,s_tbl_pm_task.actual_start_date=start_date , 
+ s_tbl_pm_task.actual_end_date= end_date ,s_tbl_pm_task.priority=priority,s_tbl_pm_task.description=description,s_tbl_pm_task.tag=tag where  s_tbl_pm_task.task_id = task_id ;
 END IF;
 END
 
@@ -149,20 +149,30 @@ END
 
 export const updateTaskDates = (params) => async dispatch => {
     try {
-
-        let par={
-            project_id:params.project_id,
-            task_id:params.task_id,
-            activiity_id:params.activiity_id,
-            sub_activity_id:params.sub_activity_id,
-            assignee_id:params.assignee_id,
-            start_date:params.actual_start_date, 
-            end_date:params.actual_end_date, 
-            assigned_by:params.assigned_by,
-            priority:params.Priority,
-            description:params.description,
-            tag:params.tag_id,
-        };
+        let par={};
+if(params.project_id != null){
+     par={
+        activiity_id:params.activiity_id,
+        task_id:params.task_id,
+        sub_activity_id:params.sub_activity_id,
+        assignee_id:params.assignee_id,
+        start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
+        end_date:params.actual_end_date != null ? params.actual_end_date : null, 
+        priority:params.Priority,
+        description:params.description,
+        tag:params.tag_id,
+    };
+}else{
+    par={
+        task_id:params.task_id,
+        assignee_id:params.assignee_id,
+        start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
+        end_date:params.actual_end_date != null ? params.actual_end_date : null, 
+        description:params.description,
+        tag:params.tag_id,
+    };
+}
+        
         axios({
             method: 'PUT',
             url: apiurl + 'update_task',
@@ -184,7 +194,7 @@ export const updateTaskDates = (params) => async dispatch => {
     }
 }
 
-export const insertTimeSheetbyTime = (params, time,task) => async dispatch => {
+export const insertTimeSheetbyTime = (params, time,task,timeSheetStartDate) => async dispatch => {
     var url = 'insert_stop_time';
     if(time == true){
         url =  'insert_start_time'
@@ -201,6 +211,7 @@ export const insertTimeSheetbyTime = (params, time,task) => async dispatch => {
                     task.actual_start_date=params.start_date;
                     dispatch(updateTaskDates(task));
                 }else{
+                    task.actual_start_date=params.timeSheetStartDate;
                     task.actual_end_date=params.end_date;
                     dispatch(updateTaskDates(task));
                 }

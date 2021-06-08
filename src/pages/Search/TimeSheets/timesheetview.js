@@ -126,7 +126,7 @@ function TimeSheetView(props) {
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
-        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData)).then((response) => {
+        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData,startDateDisplay)).then((response) => {
            // handleCancel();
           })
     }
