@@ -4,10 +4,11 @@ import Labelbox from "../../../helpers/labelbox/labelbox";
 import CustomButton from "../../../component/Butttons/button";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
+import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP, getFilingType } from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 import { useParams } from "react-router-dom";
-import { getFilingType } from "../../../actions/MasterDropdowns";
+import { getFilingTypeIpab } from "../../../actions/MasterDropdowns";
+// import { getFilingType } from "../../../actions/MasterDropdowns";
 
 function PatentRectificationFiled(props){
     
@@ -23,7 +24,7 @@ function PatentRectificationFiled(props){
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        
+        dispatch(getFilingTypeIpab());
         
       }, []);
 
@@ -115,8 +116,8 @@ function PatentRectificationFiled(props){
     ProjectSubtype: props.ProjectDetails[0].sub_project_id,
     ProcessType:  props.ProjectDetails[0].process_id
 }
-dispatch(getFilingType(id));
-}, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
+//dispatch(getFilingType(id));
+}, [props.tradeStatusList,props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
 
 
 function onSubmit() {
@@ -129,7 +130,7 @@ function onSubmit() {
     let params  = {
         "ip_type":"ddf",
         "client_status_type": null,
-        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
+        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
         "project_id": projectDetails.project_id,
         "trademark_no" :"",
         "class_id" :0,
@@ -139,7 +140,7 @@ function onSubmit() {
         "hearing_date":TradeMarkForm.date_of_hearing.value || "",
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
-        "filing_type_id" : TradeMarkForm.clientfiling_type_id_applicant.value,
+        "filing_type_id" : TradeMarkForm.filing_type_id.valueById || "",
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
         "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
@@ -442,8 +443,9 @@ function checkValidation(data, key, multipleId) {
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="select"
-                        placeholder={" Filing Type"} changeData={(data) => checkValidation(data, "filing_type_id")}
-                        dropdown={tradeStatusList.filingTypeData} 
+                       mode={"multiple"}
+                       placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
+                       dropdown={tradeStatusList.filingTypeData} 
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
                         errmsg={TradeMarkForm.filing_type_id.errmsg}
@@ -486,7 +488,7 @@ const mapStateToProps = (state) =>
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
+    filingTypeList : state.tradeMarkReducer.getFilingTypeIpab || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });

@@ -2,7 +2,7 @@ import { GET_TRADEMARKSTATUS,GET_CLASS_DETS,GET_POA,
     GET_TRADEMARK_USAGE_DETS,GET_COUNTRY,INSERT_TRADE_MARK,GET_TRADE_MARK,
     INSERT_APPEAL_FILING, INSERT_RECTIFICATION_DEFENDED, INSERT_PATENT_APPEAL_FILING,
     INSERT_PATENT_RECTIFICATION_DEF, INSERT_PATENT_RECTIFICATION_FILED, INSERT_PATENT_REVOCATION_DEF, INSERT_PATENT_REVOCATION_FILED,
-    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED,INSERT_IPAB,GET_IPAP,
+    INSERT_RECTIFICATION_FILED, INSERT_REVOCATION_DEFENDED, INSERT_REVOCATION_FILED,INSERT_IPAB,GET_IPAP,GET_FILING_TYPE
  } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -405,3 +405,15 @@ export const insertRevocationFiled = (data) => async dispatch =>{
         
     }
 }
+export const getFilingType = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_filing_type",
+    data: {
+      project_type_id: id.ProjectType,
+      sub_project_type_id: id.ProjectSubtype,
+      process_id: id.ProcessType,
+    },
+  });
+  return dispatch({ type: GET_FILING_TYPE, payload: response.data.data });
+};

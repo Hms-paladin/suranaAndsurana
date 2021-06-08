@@ -206,12 +206,14 @@ export const insertTimeSheetbyTime = (params, time,task,timeSheetStartDate) => a
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
-              
+                task.Priority=task.priority_id;
+                task.tag =task.tag_id;
                 if(time == true && task && task.actual_start_date && task.actual_start_date.length < 2 ){
                     task.actual_start_date=params.start_date;
+                    
+                    
                     dispatch(updateTaskDates(task));
                 }else{
-                    task.actual_start_date=params.timeSheetStartDate;
                     task.actual_end_date=params.end_date;
                     dispatch(updateTaskDates(task));
                 }

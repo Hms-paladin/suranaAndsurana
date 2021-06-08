@@ -48,7 +48,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,GET_TEMPLATE_NAME
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -214,6 +214,17 @@ export const getFilingType = (id) => async (dispatch) => {
     },
   });
   return dispatch({ type: GET_FILING_TYPE, payload: response.data.data });
+};
+
+export const getFilingTypeIpab = () => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_filing_type_ipab",
+    data: {
+      filling_gp: 'IPAB',
+    },
+  });
+  return dispatch({ type: GET_FILING_TYPE_IPAB, payload: response.data.data });
 };
 
 // get_employee_list (API) ==> Hod/Attony,Counsel,DRA and DDRA using with one api

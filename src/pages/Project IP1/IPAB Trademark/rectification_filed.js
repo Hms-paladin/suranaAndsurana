@@ -6,7 +6,7 @@ import './IPABTrademark.scss'
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../../actions/tradeMarkAction";
-import { getFilingType } from "../../../actions/MasterDropdowns";
+import { getFilingType ,getFilingTypeIpab} from "../../../actions/MasterDropdowns";
 import moment from 'moment'
 import { useParams } from "react-router-dom";
 
@@ -23,7 +23,7 @@ function IPABRectificationDefended(props){
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-
+        dispatch(getFilingTypeIpab());
         
       }, []);
 
@@ -32,7 +32,7 @@ function IPABRectificationDefended(props){
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             if(obj.status_id && obj.status_id.length)
             TradeMarkForm.status_id.disabled = true;
@@ -114,8 +114,8 @@ function IPABRectificationDefended(props){
             ProjectSubtype: props.ProjectDetails[0].sub_project_id,
             ProcessType:  props.ProjectDetails[0].process_id
         }
-        dispatch(getFilingType(id));
-}, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
+       // dispatch(getFilingType(id));
+}, [props.tradeStatusList,props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
 
 
 function onSubmit() {
@@ -126,19 +126,19 @@ function onSubmit() {
     ); 
     console.log(filtererr.length);
     let params  = {        
-        "ip_type":"ddf",
+        "ip_type":0,
         "client_status_type": null,
-        "trademark_ipab_id":TradeMarkForm.trademark_ipab_id,
+        "trademark_ipab_id":TradeMarkForm.trademark_ipab_id.value,
         "project_id": rowId,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
-        "rectification_filing" :TradeMarkForm.rectification_filing_date.value || "",
+        "rectification_filing" :TradeMarkForm.rectification_filing_date.value || null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
-        "hearing_date":TradeMarkForm.date_of_hearing.value || "",
+        "hearing_date":TradeMarkForm.date_of_hearing.value || null,
         "opp_applicant" :TradeMarkForm.applicant.value,
         "opp_applicant_rep" :TradeMarkForm.applicant_rep.value,
-        "filing_type_id" :TradeMarkForm.filing_type_id.value,
+        "filing_type_id" :TradeMarkForm.filing_type_id.valueById || "",
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
         "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
@@ -456,14 +456,16 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select"
-                        placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id")}
-                dropdown={filingTypeList.filingTypeData} 
-                value={TradeMarkForm.filing_type_id.value}
-                error={TradeMarkForm.filing_type_id.error}
-                errmsg={TradeMarkForm.filing_type_id.errmsg}
-                disabled={TradeMarkForm.filing_type_id.disabled}
+                    <Labelbox type="select"                    
+                    mode={"multiple"}
+                    placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
+                    dropdown={filingTypeList.filingTypeData} 
+                    value={TradeMarkForm.filing_type_id.value}
+                    error={TradeMarkForm.filing_type_id.error}
+                    errmsg={TradeMarkForm.filing_type_id.errmsg}
+                    disabled={TradeMarkForm.filing_type_id.disabled}
                 />
+                
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="select"
@@ -500,7 +502,7 @@ const mapStateToProps = (state) =>
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList : state.tradeMarkReducer.getFilingType || [],
+    filingTypeList : state.tradeMarkReducer.getFilingTypeIpab || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });

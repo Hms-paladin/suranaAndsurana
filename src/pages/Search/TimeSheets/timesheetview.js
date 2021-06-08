@@ -7,6 +7,7 @@ import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { getTaskTimeSheet,insertTimeSheetbyTime } from "../../../actions/projectTaskAction";
 import dateFormat from 'dateformat';
+import moment from 'moment';
 function TimeSheetView(props) {
     const [timesheetStart, setTimesheetStart] = useState(true)
     const [isLoaded, setisLoaded] = useState(true)
@@ -101,11 +102,11 @@ function TimeSheetView(props) {
     }
 
     function changestart () {
-        setTimesheetStart(true)
+        setTimesheetStart(false)
         var a = props;
         var timesheetData =  {
             "end_date":timeSheetForm.toDate.value,
-            "end_time":dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
+            "end_time":(timeSheetForm.endTime.value!==null && timeSheetForm.endTime.value!=='')?moment(timeSheetForm.endTime.value).format('HH:mm:ss') : '00:00:00',//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
             "comment":timeSheetForm.description.value,
             "updated_by":localStorage.getItem("empId"),
             "timesheet_id":timeSheetID
@@ -116,13 +117,13 @@ function TimeSheetView(props) {
     }
 
     function changeStop() {
-        setTimesheetStart(false)
+        setTimesheetStart(true)
         
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "task_id": props.rowData.task_id,
             "start_date": timeSheetForm.fromDate.value,
-            "start_time": dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+            "start_time": (timeSheetForm.startTime.value!==null && timeSheetForm.startTime.value!=='')?moment(timeSheetForm.startTime.value).format('HH:mm:ss') : '00:00:00',//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
