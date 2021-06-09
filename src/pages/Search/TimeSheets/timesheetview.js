@@ -51,10 +51,10 @@ function TimeSheetView(props) {
     })
     
    console.log('1')
-        var paramVal =props.rowData;
+        //var paramVal =props.rowData;
         console.log('2')
         useEffect(() => {
-            dispatch(getTaskTimeSheet(paramVal.task_id));
+            dispatch(getTaskTimeSheet(props.rowData.task_id));
         
           }, []);
     
@@ -77,7 +77,7 @@ function TimeSheetView(props) {
                 setTimesheetStart(true)
             }
             //var a =props.rowData
-        }, [props.getTaskTimeSheet])
+        }, [props.getTaskTimeSheet,props.rowData])
 
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
@@ -127,9 +127,9 @@ function TimeSheetView(props) {
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
-        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData,startDateDisplay)).then((response) => {
+      //  dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData,startDateDisplay)).then((response) => {
            // handleCancel();
-          })
+       //   })
     }
     const handleCancel = () => {
         let From_key = [
@@ -162,8 +162,8 @@ function TimeSheetView(props) {
                 <>
                     <Grid item xs={12} container direction="row" spacing={3}>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>IP Project</Grid>
-                            <Grid item xs={12}>Operational</Grid>
+                            <Grid item xs={12}>{props.rowData.project_type}</Grid>
+                            <Grid item xs={12}>{props.rowData.project_type}</Grid>
                             <Grid item xs={12}>Priority</Grid>
                             {/* <Grid item xs={9}>
                         <Labelbox type="datepicker"
@@ -173,15 +173,15 @@ function TimeSheetView(props) {
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>Project Name </Grid>
+                            <Grid item xs={12}>{props.rowData.project_name}</Grid>
                             <Grid item xs={12}>First Cut Draft</Grid>
-                            <Grid item xs={12}>Tag</Grid>
+                            <Grid item xs={12}>{props.rowData.tag}</Grid>
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>Johnson & Johnson</Grid>
-                            <Grid item xs={12}>Assign To</Grid>
-                            <Grid item xs={12}>Description</Grid>
+                            <Grid item xs={12}>{props.rowData.client}</Grid>
+                            <Grid item xs={12}>{props.rowData.assignee_name}</Grid>
+                            <Grid item xs={12}>{props.rowData.description}</Grid>
 
                         </Grid>
 
