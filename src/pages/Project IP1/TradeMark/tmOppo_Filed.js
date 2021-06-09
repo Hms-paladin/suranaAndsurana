@@ -604,7 +604,7 @@ setcountryDetList({ countryListsData })
                                 value={TradeMarkForm.ourReference.value}
                                 error={TradeMarkForm.ourReference.error}
                                 errmsg={TradeMarkForm.ourReference.errmsg} 
-                                disabled={TradeMarkForm.ourRefernce.disabled}
+                                disabled={TradeMarkForm.ourReference.disabled}
                                 />
                         </Grid>
                     </Grid>

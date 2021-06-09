@@ -1,6 +1,6 @@
 
 import react, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import './trademark.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
@@ -18,14 +18,9 @@ import {
     getUsageDetails, insertTradeMark, getTradeMark
 } from "../../../actions/tradeMarkAction";
 
-
-
-
-
-
 function TradeMark(properties) {
 
-
+    const history = useHistory();
     const [tradeStatusList, settradeStatusList] = useState({})
     const [classDetList, setclassDetList] = useState({})
     const [poaList, setpoaList] = useState({})
@@ -544,6 +539,7 @@ function TradeMark(properties) {
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
+        history.goBack();
     }
 
     function checkValidation(data, key, multipleId) {
@@ -581,6 +577,7 @@ function TradeMark(properties) {
         }));
 
     };
+    
     return (
 
 
@@ -595,7 +592,7 @@ function TradeMark(properties) {
                 errmsg={TradeMarkForm.status_id.errmsg}
                 disabled={TradeMarkForm.status_id.disabled}
                 />
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Mark"}
                         changeData={(data) => checkValidation(data, "mark_id")}
                         value={TradeMarkForm.mark_id.value}
@@ -676,7 +673,7 @@ function TradeMark(properties) {
                         disabled={TradeMarkForm.usage_from_date.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" IP India Status"}
                         changeData={(data) => checkValidation(data, "ip_india_status")}
                         value={TradeMarkForm.ip_india_status.value}
@@ -703,7 +700,7 @@ function TradeMark(properties) {
                         disabled={TradeMarkForm.comments.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Internal Status"}
                         changeData={(data) => checkValidation(data, "internal_status")}
                         value={TradeMarkForm.internal_status.value}
@@ -712,7 +709,7 @@ function TradeMark(properties) {
                         disabled={TradeMarkForm.internal_status.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Allotment"}
                         changeData={(data) => checkValidation(data, "allotment")}
                         value={TradeMarkForm.allotment.value}
@@ -731,7 +728,7 @@ function TradeMark(properties) {
                                      </div>
                     </div>
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Amendment"}
                         changeData={(data) => checkValidation(data, "amendment")}
                         value={TradeMarkForm.amendment.value}
@@ -740,7 +737,7 @@ function TradeMark(properties) {
                         disabled={TradeMarkForm.amendment.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Priority Details"}
                         changeData={(data) => checkValidation(data, "priority_details")}
                         value={TradeMarkForm.priority_details.value}
@@ -749,7 +746,7 @@ function TradeMark(properties) {
                         disabled={TradeMarkForm.priority_details.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" TMJ Number "}
                         changeData={(data) => checkValidation(data, "tmj_number")}
                         value={TradeMarkForm.tmj_number.value}
@@ -768,7 +765,7 @@ function TradeMark(properties) {
                         disabled={TradeMarkForm.tmj_date.disabled}
                     />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Journal Extract"}
                         changeData={(data) => checkValidation(data, "journel_extract")}
                         value={TradeMarkForm.journel_extract.value}
@@ -797,7 +794,7 @@ function TradeMark(properties) {
 
                     <Labelbox type="datepicker"
                         placeholder={" Renewal Certificate Date"}
-                        disableFuture={true}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "renewal_certificate_date")}
                         value={TradeMarkForm.renewal_certificate_date.value}
                         error={TradeMarkForm.renewal_certificate_date.error}
@@ -811,7 +808,7 @@ function TradeMark(properties) {
             </Grid>
             <Grid item xs={12} container justify="flex-end" >
                 <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="timeSheetButtons" />
-                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel} custombtnCSS="timeSheetButtons" />
+                <CustomButton btnName={"CANCEL"} onBtnClick={handleCancel}  custombtnCSS="timeSheetButtons" /> 
 
             </Grid>
 

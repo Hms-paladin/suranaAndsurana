@@ -13,13 +13,14 @@ import {
     getUsageDetails, insertTradeMark
 } from "../../../actions/tradeMarkAction";
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import TabsTcons from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 
 
 function TradeMarkInternational(properties) {
 
+    const history = useHistory();
     const props = {
         name: 'file',
         onChange(info) {
@@ -479,6 +480,7 @@ setcountryDetList({ countryListsData })
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
+        history.goBack();
     }
 
     function checkValidation(data, key, multipleId) {
@@ -532,7 +534,7 @@ setcountryDetList({ countryListsData })
                         disabled={TradeMarkForm.status_id.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Associate Reference"}
                         changeData={(data) => checkValidation(data, "associateRefernce")}
                         value={TradeMarkForm.associateRefernce.value}
@@ -542,7 +544,7 @@ setcountryDetList({ countryListsData })
                         
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Our Reference"}
                         changeData={(data) => checkValidation(data, "ourRefernce")}
                         value={TradeMarkForm.ourRefernce.value}
@@ -561,7 +563,7 @@ setcountryDetList({ countryListsData })
                         disabled={TradeMarkForm.class_id.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Mark"}
                         changeData={(data) => checkValidation(data, "mark_id")}
                         value={TradeMarkForm.mark_id.value}
@@ -581,7 +583,7 @@ setcountryDetList({ countryListsData })
                     </div>
                     {/* </Labelbox> */}
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Associate"} 
                         changeData={(data) => checkValidation(data, "associate")}
                         value={TradeMarkForm.associate.value}
@@ -619,7 +621,7 @@ setcountryDetList({ countryListsData })
                                         disabled={TradeMarkForm.country_id.disabled}
                                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Priority Details"}
                         changeData={(data) => checkValidation(data, "priority_details")}
                         value={TradeMarkForm.priority_details.value}
@@ -628,7 +630,7 @@ setcountryDetList({ countryListsData })
                         disabled={TradeMarkForm.priority_details.disabled}
                         />
 
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" User Claim"}
                         changeData={(data) => checkValidation(data, "userclaim")}
                         value={TradeMarkForm.userclaim.value}
