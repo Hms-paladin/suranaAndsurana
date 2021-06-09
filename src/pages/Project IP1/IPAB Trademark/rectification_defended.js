@@ -45,9 +45,9 @@ function IPABRectificationDefended(props){
             if(obj.comments && obj.comments.length)
             TradeMarkForm.comments.disabled = true;
 
-            TradeMarkForm.trademark_no.value =obj.trademark_no;
+            TradeMarkForm.trade_mark_no.value =obj.trademark_no;
             if(obj.trademark_no && obj.trademark_no.length)
-            TradeMarkForm.trademark_no.disabled = true;
+            TradeMarkForm.trade_mark_no.disabled = true;
 
             TradeMarkForm.serial_no.value =obj.serial_no;
             if(obj.serial_no && obj.serial_no.length)
