@@ -8,7 +8,7 @@ import { useDispatch, connect } from "react-redux";
 import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP} from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 import { useParams } from "react-router-dom";
-import { getFilingType } from "../../../actions/MasterDropdowns";
+import { getFilingType,getFilingTypeIpab } from "../../../actions/MasterDropdowns";
 
 function RevocationFiled(props) {
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -24,7 +24,7 @@ function RevocationFiled(props) {
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        
+        dispatch(getFilingTypeIpab());
         
       }, []);
 
@@ -118,7 +118,7 @@ function RevocationFiled(props) {
     ProjectSubtype: props.ProjectDetails[0].sub_project_id,
     ProcessType:  props.ProjectDetails[0].process_id
 }
-dispatch(getFilingType(id));
+//dispatch(getFilingType(id));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -471,7 +471,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="select"
                         placeholder={" Filing Type"} changeData={(data) => checkValidation(data, "filing_type_id")}
-                        dropdown={tradeStatusList.filingTypeData} 
+                        dropdown={filingTypeList.filingTypeData} 
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
                         errmsg={TradeMarkForm.filing_type_id.errmsg}
@@ -512,7 +512,7 @@ const mapStateToProps = (state) =>
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
+    filingTypeList : state.tradeMarkReducer.getFilingTypeIpab || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });

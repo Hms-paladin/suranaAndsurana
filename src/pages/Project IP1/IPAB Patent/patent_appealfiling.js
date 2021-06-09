@@ -8,7 +8,7 @@ import { useDispatch, connect } from "react-redux";
 import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP} from "../../../actions/tradeMarkAction";
 import moment from 'moment'
 import { useParams } from "react-router-dom";
-import { getFilingType } from "../../../actions/MasterDropdowns";
+import { getFilingType,getFilingTypeIpab} from "../../../actions/MasterDropdowns";
 
 function PatentAppealFiling(props){
     const [tradeStatusList, settradeStatusList] = useState({})
@@ -23,7 +23,7 @@ function PatentAppealFiling(props){
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        
+        dispatch(getFilingTypeIpab());
         
       }, []);
 
@@ -100,7 +100,7 @@ function PatentAppealFiling(props){
     ProjectSubtype: props.ProjectDetails[0].sub_project_id,
     ProcessType:  props.ProjectDetails[0].process_id
 }
-dispatch(getFilingType(id));
+//dispatch(getFilingType(id));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -410,7 +410,7 @@ const mapStateToProps = (state) =>
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
+    filingTypeList : state.tradeMarkReducer.getFilingTypeIpab || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });

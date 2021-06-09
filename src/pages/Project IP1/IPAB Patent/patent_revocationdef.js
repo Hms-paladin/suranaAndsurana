@@ -436,7 +436,7 @@ function checkValidation(data, key, multipleId) {
                     <Labelbox type="select"
                          mode={"multiple"}
                          placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
-                          dropdown={tradeStatusList.filingTypeData} 
+                          dropdown={filingTypeList.filingTypeData} 
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
                         errmsg={TradeMarkForm.filing_type_id.errmsg}
@@ -480,7 +480,7 @@ const mapStateToProps = (state) =>
     
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList : state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList : state.tradeMarkReducer.getFilingTypeList || [],
+    filingTypeList : state.tradeMarkReducer.getFilingTypeIpab || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
