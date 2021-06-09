@@ -21,6 +21,7 @@ function PatentRectificationFiled(props){
     let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
@@ -30,6 +31,12 @@ function PatentRectificationFiled(props){
 
       useEffect(() => {
 
+        let filingTypeData = []
+        props.filingTypeList.map((data) =>
+        filingTypeData.push({ value: data.filing_type,
+        id: data.filing_type_id })
+        )
+        setFilingTypeList({ filingTypeData })
 
           
         if(props.tradeMark && props.tradeMark[0]){
@@ -37,52 +44,60 @@ function PatentRectificationFiled(props){
             TradeMarkForm.project_id =obj.project_id;
             TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
-            if(obj.status_id && obj.status_id.length)
-            TradeMarkForm.status_id.disabled = true;
+            // if(obj.status_id && obj.status_id.length)
+            // TradeMarkForm.status_id.disabled = true;
             
             TradeMarkForm.comments.value =obj.comments
-            if(obj.comments && obj.comments.length)
-            TradeMarkForm.comments.disabled = true;
+            // if(obj.comments && obj.comments.length)
+            // TradeMarkForm.comments.disabled = true;
 
             TradeMarkForm.rectification_filing.value =obj.rectification_filing;
-            if(obj.rectification_filing && obj.rectification_filing.length)
-            TradeMarkForm.rectification_filing.disabled = true;
+            // if(obj.rectification_filing && obj.rectification_filing.length)
+            // TradeMarkForm.rectification_filing.disabled = true;
 
             TradeMarkForm.serial_no.value =obj.serial_no;
-            if(obj.serial_no && obj.serial_no.length)
-            TradeMarkForm.serial_no.disabled = true;
+            // if(obj.serial_no && obj.serial_no.length)
+            // TradeMarkForm.serial_no.disabled = true;
 
             TradeMarkForm.org_appeal_no.value=obj.org_appeal_no;
-            if(obj.org_appeal_no && obj.org_appeal_no.length)
-            TradeMarkForm.org_appeal_no.disabled = true;
+            // if(obj.org_appeal_no && obj.org_appeal_no.length)
+            // TradeMarkForm.org_appeal_no.disabled = true;
 
             TradeMarkForm.hearing_date.value =obj.hearing_date;
-            if(obj.hearing_date && obj.hearing_date.length)
-            TradeMarkForm.hearing_date.disabled = true;
+            // if(obj.hearing_date && obj.hearing_date.length)
+            // TradeMarkForm.hearing_date.disabled = true;
 
-            TradeMarkForm.filing_type_id.value =obj.filing_type_id;
-            if(obj.filing_type_id && obj.filing_type_id.length)
-            TradeMarkForm.filing_type_id.disabled = true;
+            TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
+            let arr=[];
+            for(var val of TradeMarkForm.filing_type_id.valueById ){
+                for(var t of filingTypeList.filingTypeData){
+                    if(t.id == val){
+                        arr.push(t.value);
+                    }
+                   
+               }
+            }
+           TradeMarkForm.filing_type_id.value=arr;
             
             TradeMarkForm.client_application.value =obj.client_application;
-            if(obj.client_application && obj.client_application.length)
-            TradeMarkForm.client_application.disabled = true;
+            // if(obj.client_application && obj.client_application.length)
+            // TradeMarkForm.client_application.disabled = true;
             
             TradeMarkForm.respondent.value =obj.respondent;
-            if(obj.respondent && obj.respondent.length)
-            TradeMarkForm.respondent.disabled = true;
+            // if(obj.respondent && obj.respondent.length)
+            // TradeMarkForm.respondent.disabled = true;
             
             TradeMarkForm.respondent_rep.value =obj.respondent_rep;
-            if(obj.respondent_rep && obj.respondent_rep.length)
-            TradeMarkForm.respondent_rep.disabled = true;
+            // if(obj.respondent_rep && obj.respondent_rep.length)
+            // TradeMarkForm.respondent_rep.disabled = true;
             
             TradeMarkForm.applicant_no.value =obj.applicant_no;
-            if(obj.applicant_no && obj.applicant_no.length)
-            TradeMarkForm.applicant_no.disabled = true;
+            // if(obj.applicant_no && obj.applicant_no.length)
+            // TradeMarkForm.applicant_no.disabled = true;
             
             TradeMarkForm.patent_title.value =obj.patent_title;
-            if(obj.patent_title && obj.patent_title.length)
-            TradeMarkForm.patent_title.disabled = true;
+            // if(obj.patent_title && obj.patent_title.length)
+            // TradeMarkForm.patent_title.disabled = true;
         }
 
         setProjectDetails(props.ProjectDetails);
@@ -104,12 +119,6 @@ function PatentRectificationFiled(props){
       id: data.class_id })
   )
   setclassDetList({ classDetailsData })
-  let filingTypeData = []
-  props.filingTypeList.map((data) =>
-  filingTypeData.push({ value: data.filing_type,
-  id: data.filing_type_id })
-  )
-  setFilingTypeList({ filingTypeData })
         
   const id  ={
     ProjectType: props.ProjectDetails[0].project_type_id,

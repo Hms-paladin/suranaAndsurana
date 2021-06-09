@@ -35,40 +35,40 @@ function AppealFiling(props){
             TradeMarkForm.project_id =obj.project_id;
             TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
-            if(obj.status_id && obj.status_id.length)
-            TradeMarkForm.status_id.disabled = true;
+            // if(obj.status_id && obj.status_id.length)
+            // TradeMarkForm.status_id.disabled = true;
             
             TradeMarkForm.class_id.value = obj.class_id;
-            if(obj.class_id && obj.class_id.length)
-            TradeMarkForm.class_id.disabled = true;
+            // if(obj.class_id && obj.class_id.length)
+            // TradeMarkForm.class_id.disabled = true;
 
             TradeMarkForm.comments.value =obj.comments
-            if(obj.comments && obj.comments.length)
-            TradeMarkForm.comments.disabled = true;
+            // if(obj.comments && obj.comments.length)
+            // TradeMarkForm.comments.disabled = true;
 
             TradeMarkForm.client_applicant.value =obj.client_applicant;
-            if(obj.client_applicant && obj.client_applicant.length)
-            TradeMarkForm.client_applicant.disabled = true;
+            // if(obj.client_applicant && obj.client_applicant.length)
+            // TradeMarkForm.client_applicant.disabled = true;
 
             TradeMarkForm.client_mark.value =obj.client_mark;
-            if(obj.client_mark && obj.client_mark.length)
-            TradeMarkForm.client_mark.disabled = true;
+            // if(obj.client_mark && obj.client_mark.length)
+            // TradeMarkForm.client_mark.disabled = true;
 
             TradeMarkForm.trade_mark_no.value=obj.trade_mark_no;
-            if(obj.trade_mark_no && obj.trade_mark_no.length)
-            TradeMarkForm.trade_mark_no.disabled = true;
+            // if(obj.trade_mark_no && obj.trade_mark_no.length)
+            // TradeMarkForm.trade_mark_no.disabled = true;
 
             TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date;
-            if(obj.appeal_filing_date && obj.appeal_filing_date.length)
-            TradeMarkForm.appeal_filing_date.disabled = true;
+            // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
+            // TradeMarkForm.appeal_filing_date.disabled = true;
 
             TradeMarkForm.serial_no.value =obj.serial_no;
-            if(obj.serial_no && obj.serial_no.length)
-            TradeMarkForm.serial_no.disabled = true;
+            // if(obj.serial_no && obj.serial_no.length)
+            // TradeMarkForm.serial_no.disabled = true;
             
             TradeMarkForm.date_of_hearing.value =obj.date_of_hearing;
-            if(obj.date_of_hearing && obj.date_of_hearing.length)
-            TradeMarkForm.date_of_hearing.disabled = true;
+            // if(obj.date_of_hearing && obj.date_of_hearing.length)
+            // TradeMarkForm.date_of_hearing.disabled = true;
         }
             setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
@@ -89,13 +89,7 @@ function AppealFiling(props){
         id: data.class_id })
         )
         setclassDetList({ classDetailsData })
-        let filingTypeData = []
-        props.filingTypeList.map((data) =>
-        filingTypeData.push({ value: data.filing_type,
-        id: data.filing_type_id })
-        )
-        setFilingTypeList({ filingTypeData })
-        
+                
         const id  ={
           ProjectType: props.ProjectDetails[0].project_type_id,
           ProjectSubtype: props.ProjectDetails[0].sub_project_id,

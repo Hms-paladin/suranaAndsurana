@@ -19,6 +19,7 @@ function PatentRevocationDef(props){
     let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
@@ -29,53 +30,59 @@ function PatentRevocationDef(props){
  
       useEffect(() => {
           
+        let filingTypeData = []
+        props.filingTypeList.map((data) =>
+        filingTypeData.push({ value: data.filing_type,
+        id: data.filing_type_id })
+        )
+        setFilingTypeList({ filingTypeData })
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
             TradeMarkForm.trademark_ipab_id =obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
-            if(obj.status_id && obj.status_id.length)
-            TradeMarkForm.status_id.disabled = true;
+            // if(obj.status_id && obj.status_id.length)
+            // TradeMarkForm.status_id.disabled = true;
             
             TradeMarkForm.comments.value =obj.comments
-            if(obj.comments && obj.comments.length)
-            TradeMarkForm.comments.disabled = true;
+            // if(obj.comments && obj.comments.length)
+            // TradeMarkForm.comments.disabled = true;
             
             TradeMarkForm.serial_no.value =obj.serial_no;
-            if(obj.serial_no && obj.serial_no.length)
-            TradeMarkForm.serial_no.disabled = true;
+            // if(obj.serial_no && obj.serial_no.length)
+            // TradeMarkForm.serial_no.disabled = true;
 
             TradeMarkForm.org_appeal_no.value =obj.org_appeal_no;
-            if(obj.org_appeal_no && obj.org_appeal_no.length)
-            TradeMarkForm.org_appeal_no.disabled = true;
+            // if(obj.org_appeal_no && obj.org_appeal_no.length)
+            // TradeMarkForm.org_appeal_no.disabled = true;
 
             TradeMarkForm.hearing_date.value=obj.hearing_date;
-            if(obj.hearing_date && obj.hearing_date.length)
-            TradeMarkForm.hearing_date.disabled = true;
+            // if(obj.hearing_date && obj.hearing_date.length)
+            // TradeMarkForm.hearing_date.disabled = true;
 
             TradeMarkForm.opp_applicant.value =obj.opp_applicant;
-            if(obj.opp_applicant && obj.opp_applicant.length)
-            TradeMarkForm.opp_applicant.disabled = true;
+            // if(obj.opp_applicant && obj.opp_applicant.length)
+            // TradeMarkForm.opp_applicant.disabled = true;
 
             TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
-            if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
-            TradeMarkForm.opp_applicant_rep.disabled = true;
+            // if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
+            // TradeMarkForm.opp_applicant_rep.disabled = true;
             
             TradeMarkForm.client_responent.value =obj.client_responent;
-            if(obj.client_responent && obj.client_responent.length)
-            TradeMarkForm.client_responent.disabled = true;
+            // if(obj.client_responent && obj.client_responent.length)
+            // TradeMarkForm.client_responent.disabled = true;
             
             TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date;
-            if(obj.revocation_filing_date && obj.revocation_filing_date.length)
-            TradeMarkForm.revocation_filing_date.disabled = true;
+            // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
+            // TradeMarkForm.revocation_filing_date.disabled = true;
             
             TradeMarkForm.applicant_no.value =obj.applicant_no;
-            if(obj.applicant_no && obj.applicant_no.length)
-            TradeMarkForm.applicant_no.disabled = true;
+            // if(obj.applicant_no && obj.applicant_no.length)
+            // TradeMarkForm.applicant_no.disabled = true;
             
             TradeMarkForm.patent_title.value =obj.patent_title;
-            if(obj.patent_title && obj.patent_title.length)
-            TradeMarkForm.patent_title.disabled = true;
+            // if(obj.patent_title && obj.patent_title.length)
+            // TradeMarkForm.patent_title.disabled = true;
         }
 
         setProjectDetails(props.ProjectDetails);
@@ -97,12 +104,6 @@ function PatentRevocationDef(props){
       id: data.class_id })
   )
   setclassDetList({ classDetailsData })
-  let filingTypeData = []
-  props.filingTypeList.map((data) =>
-  filingTypeData.push({ value: data.filing_type,
-  id: data.filing_type_id })
-  )
-  setFilingTypeList({ filingTypeData })
         
   const id  ={
     ProjectType: props.ProjectDetails[0].project_type_id,
