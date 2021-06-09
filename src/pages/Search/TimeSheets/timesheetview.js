@@ -116,6 +116,7 @@ function TimeSheetView(props) {
         }
         dispatch(insertTimeSheetbyTime(timesheetData,false,props.rowData)).then((response) => {
            // handleCancel();
+           props.handleChangeCloseModel(false);  
           })
     }
 
@@ -132,6 +133,7 @@ function TimeSheetView(props) {
         }
        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData,startDateDisplay)).then((response) => {
            // handleCancel();
+           props.handleChangeCloseModel(false);  
          })
     }
   
