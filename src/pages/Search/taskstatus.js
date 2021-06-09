@@ -24,7 +24,7 @@ function TaskStatus(props) {
       useEffect(() => {
         
         
-        setSlideVal(props.rowData.data.perecent_completion)
+        setSlideVal(props.rowData.data.perecent_completion == null ? 0 : props.rowData.data.perecent_completion)
       }, [props.rowData
       ]);
 
