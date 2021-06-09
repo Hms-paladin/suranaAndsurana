@@ -101,6 +101,9 @@ function TimeSheetView(props) {
         }));
     }
 
+    function closeModel(){
+        props.handleChangeCloseModel(false);  
+      }
     function changestart () {
         setTimesheetStart(false)
         var a = props;
@@ -131,6 +134,8 @@ function TimeSheetView(props) {
            // handleCancel();
          })
     }
+  
+    
     const handleCancel = () => {
         let From_key = [
             "activity",
@@ -228,7 +233,7 @@ function TimeSheetView(props) {
                          errmsg={timeSheetForm.description.errmsg}/>
                     </div>
                     <div className="customiseButton">
-                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
+                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel}/>
                         <CustomButton btnName={"START"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={changeStop}/>
 
 
@@ -304,7 +309,7 @@ function TimeSheetView(props) {
                          errmsg={timeSheetForm.description.errmsg}/>
                     </div>
                     <div className="customiseButton">
-                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
+                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel}/>
                         <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={changestart}/>
 
 

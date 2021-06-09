@@ -257,6 +257,8 @@ setStartModelOpen(flg);
                 {/* first card */}
                
                 <div className="card_div">
+                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
+                content={<TimeSheetView rowData={taskData}  handleChangeCloseModel={(bln) => setStartModelOpen(bln)}/>} width={1000} />
                 {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
                    let datass = data;
                     var val =data.project_name != null && data.project_type != null;
@@ -274,8 +276,7 @@ setStartModelOpen(flg);
                                 > */}
                                      <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 {/* </HtmlTooltip> */}
-                                <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
-                content={<TimeSheetView rowData={taskData}/>} width={1000} />
+                                
                                {/*  <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> 
                                 {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} /> */}
                             </div>
