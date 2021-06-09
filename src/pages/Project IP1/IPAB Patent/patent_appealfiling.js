@@ -20,10 +20,11 @@ function PatentAppealFiling(props){
     let { rowId } = useParams()
     
     useEffect(() => {
+        dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        dispatch(getFilingTypeIpab());
+       
         
       }, []);
 

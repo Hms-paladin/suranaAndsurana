@@ -23,7 +23,7 @@ function PatentRectificationDef(props){
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        dispatch(getFilingTypeIpab());
+        //dispatch(getFilingTypeIpab());
         
       }, []);
 
