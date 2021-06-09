@@ -43,6 +43,7 @@ import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmode
 import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
 import {getSubordinate} from "../../actions/UserMasterAction";
+import moment from "moment";
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -292,8 +293,8 @@ setStartModelOpen(flg);
                                     <p>{data.sub_activity}</p>
                                 </div>
                                 <div style={{ display: 'flex', fontWeight: 'bold' }}>
-                                    <p style={{ marginRight: '10px' }}>Start Date : {data.start_date}</p>
-                                    <p>End Date : {data.end_date}</p>
+                                    <p style={{ marginRight: '10px' }}>Start Date :  {data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</p>
+                                    <p>End Date : {data.end_date && data.end_date!="" ? moment(data.end_date).format("DD MMM YYYY"):""}</p>
                                 </div>
                                 <div className="task_bar_align">
                                     <Progress percent={data.perecent_completion} status="active" />
@@ -302,15 +303,15 @@ setStartModelOpen(flg);
                             <div className="divider"></div>
                             <div style={{ width: '37%' }}>
                                 <div className="start_date_yellow">
-                                    <p>Started Date : {data.started_date}</p>
+                                    <p>Started Date : {data.started_date && data.started_date!="" ? moment(data.started_date).format("DD MMM YYYY"):""}</p>
                                     <p>Time : {data.started_time}</p>
                                 </div>
                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
-                                    <span>Actual Start Date :<span>{data.actual_start_date}</span></span>
-                                    <span>End Date :<span>{data.actual_end_date}</span></span>
+                                    <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date!="" ? moment(data.actual_start_date).format("DD MMM YYYY"):""}</span></span>
+                                    <span>End Date :<span>{data.actual_end_date && data.actual_end_date!="" ? moment(data.actual_end_date).format("DD MMM YYYY"):""}</span></span>
                                 </div>
                                 <div>
-                                    <p>Assigned By <a>{data.name}</a>On <a>{data.start_date}</a></p>
+                                    <p>Assigned By <a>{data.name}</a>On <a>{data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</a></p>
                                 </div>
                             </div>
                             <div className="divider"></div>
