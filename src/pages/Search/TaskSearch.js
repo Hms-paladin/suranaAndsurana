@@ -318,7 +318,7 @@ setStartModelOpen(flg);
                             <div style={{ marginTop: '20px' }}>
                                 <div className="total_12_div">
                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}{data.Priority}</p>
+                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}{data.totalHours}</p>
                                 </div>
                                 <div className="images_div">
                                     <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
