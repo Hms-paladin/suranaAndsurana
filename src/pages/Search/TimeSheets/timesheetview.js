@@ -205,12 +205,12 @@ function TimeSheetView(props) {
                                        value={timeSheetForm.fromDate.value}
                                        error={timeSheetForm.fromDate.error}
                                        errmsg={timeSheetForm.fromDate.errmsg}
-                                       placeholder={" Deadline "}
+                                       placeholder={" Start Date "}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Labelbox type="timepicker"
-                                       placeholder={"Deadline"}
+                                       placeholder={"Start Time"}
                                        changeData={(data) =>
                                            checkValidation(data, "startTime")
                                        }
@@ -286,12 +286,12 @@ function TimeSheetView(props) {
                                         value={timeSheetForm.toDate.value}
                                         error={timeSheetForm.toDate.error}
                                         errmsg={timeSheetForm.toDate.errmsg}
-                                        placeholder={" Deadline "}
+                                        placeholder={" End date "}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Labelbox type="timepicker"
-                                       placeholder={"Deadline"}
+                                       placeholder={"End Time"}
                                        changeData={(data) =>
                                            checkValidation(data, "endTime")
                                        }

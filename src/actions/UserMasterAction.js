@@ -793,7 +793,7 @@ export const getSubordinate = (id) => async (dispatch) => {
     method: "post",
     url: apiurl + "get_subordinate",
     data: {
-      "emp_id":"1"
+      "emp_id":localStorage.getItem("empId")
     },
   });
   return dispatch({ type: GET_SUBORDINATES, payload: response.data.data });
