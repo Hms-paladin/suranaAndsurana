@@ -66,7 +66,7 @@ function AppealFiling(props){
             // if(obj.serial_no && obj.serial_no.length)
             // TradeMarkForm.serial_no.disabled = true;
             
-            TradeMarkForm.date_of_hearing.value =obj.date_of_hearing;
+            TradeMarkForm.date_of_hearing.value =obj.date_of_hearing || moment().format('YYYY-MM-DD');
 
             TradeMarkForm.client_mark.value=obj.mark;
             TradeMarkForm.appeal_no.value =obj.org_appeal_no;
@@ -120,23 +120,23 @@ function onSubmit() {
         "rectification_filing" :null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.appeal_no.value,
-        "hearing_date":TradeMarkForm.date_of_hearing.value  || "",
+        "hearing_date":TradeMarkForm.date_of_hearing.value =='' || null,
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
         "filing_type_id" :0,
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s') || ""  ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s') || null  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :"",
-        "revocation_filing_date" :"",
+        "revocation_filing_date" :null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":TradeMarkForm.appeal_filing_date.value,
+        "appeal_filing_date":TradeMarkForm.appeal_filing_date.value=='' || null,
         "client_applicant":TradeMarkForm.client_applicant.value,
         "mark":TradeMarkForm.client_mark.value
             // if(obj.client_applicant && obj.client_applicant.length)
