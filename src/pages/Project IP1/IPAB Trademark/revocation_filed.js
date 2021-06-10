@@ -40,7 +40,7 @@ function RevocationFiled(props) {
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             // if(obj.status_id && obj.status_id.length)
             // TradeMarkForm.status_id.disabled = true;
