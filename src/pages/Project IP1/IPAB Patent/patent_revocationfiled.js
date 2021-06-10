@@ -160,7 +160,7 @@ function onSubmit() {
         "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || "",
         "applicant_no":TradeMarkForm.applicant_no.value,
         "patent_title":TradeMarkForm.patent_title.value,
-        "appeal_filing_date":""
+        "appeal_filing_date":null,
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){
