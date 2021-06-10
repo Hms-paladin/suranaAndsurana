@@ -33,7 +33,7 @@ function AppealFiling(props){
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             // if(obj.status_id && obj.status_id.length)
             // TradeMarkForm.status_id.disabled = true;
@@ -54,7 +54,7 @@ function AppealFiling(props){
             // if(obj.client_mark && obj.client_mark.length)
             // TradeMarkForm.client_mark.disabled = true;
 
-            TradeMarkForm.trade_mark_no.value=obj.trade_mark_no;
+            TradeMarkForm.trade_mark_no.value=obj.trademark_no;
             // if(obj.trade_mark_no && obj.trade_mark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
 
@@ -67,6 +67,9 @@ function AppealFiling(props){
             // TradeMarkForm.serial_no.disabled = true;
             
             TradeMarkForm.date_of_hearing.value =obj.date_of_hearing;
+
+            TradeMarkForm.client_mark.value=obj.mark;
+            TradeMarkForm.appeal_no.value =obj.org_appeal_no;
             // if(obj.date_of_hearing && obj.date_of_hearing.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
         }
@@ -110,13 +113,13 @@ function onSubmit() {
     params  = {
          "ip_type":0,
         "client_status_type": null,
-        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
+        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
         "project_id": rowId,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
         "rectification_filing" :null,
         "serial_no" :TradeMarkForm.serial_no.value,
-        "org_appeal_no" :0,
+        "org_appeal_no" :TradeMarkForm.appeal_no.value,
         "hearing_date":TradeMarkForm.date_of_hearing.value  || "",
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
@@ -127,15 +130,19 @@ function onSubmit() {
         "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
-        "mark" :TradeMarkForm.client_mark.value,
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :"",
         "revocation_filing_date" :"",
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":""
+        "appeal_filing_date":TradeMarkForm.appeal_filing_date.value,
+        "client_applicant":TradeMarkForm.client_applicant.value,
+        "mark":TradeMarkForm.client_mark.value
+            // if(obj.client_applicant && obj.client_applicant.length)
+            // TradeMarkForm.client_applicant.disabled = true;
+
+             
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){
@@ -356,7 +363,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Appeal Filing Date "}
-                        disableFuture={false}
+                        disableFuture={true}
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
                         error={TradeMarkForm.appeal_filing_date.error}
@@ -391,7 +398,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disableFuture={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

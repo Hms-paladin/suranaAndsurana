@@ -24,7 +24,7 @@ function AdhocTaskModal(props) {
             errmsg: null,
         },
         start_date: {
-            value: "",
+            value: new Date(),
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
@@ -209,6 +209,7 @@ function AdhocTaskModal(props) {
                     <Labelbox type="datepicker"
                         placeholder={"Start Date"}
                         changeData={(data) => checkValidation(data, "start_date")}
+                        minDate={new Date()}
                         value={adhoc_Form.start_date.value}
                         error={adhoc_Form.start_date.error}
                         errmsg={adhoc_Form.start_date.errmsg}
@@ -219,6 +220,7 @@ function AdhocTaskModal(props) {
                     <Labelbox type="datepicker"
                         placeholder={" End Date"}
                         changeData={(data) => checkValidation(data, "end_date")}
+                        minDate={adhoc_Form.start_date.value}
                         value={adhoc_Form.end_date.value}
                         error={adhoc_Form.end_date.error}
                         errmsg={adhoc_Form.end_date.errmsg}

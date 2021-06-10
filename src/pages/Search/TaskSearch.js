@@ -217,7 +217,7 @@ setStartModelOpen(flg);
     const handleClose = () => {
         setOpen(false);
     };
-
+    var i= 0;
     const handleOpen = () => {
         setOpen(true);
     };
@@ -261,14 +261,17 @@ setStartModelOpen(flg);
                 <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
                 content={<TimeSheetView rowData={taskData}  handleChangeCloseModel={(bln) => setStartModelOpen(bln)}/>} width={1000} />
                 {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
+                    if(data.perecent_completion == 100 && data.actual_end_date != null){
+
+                    }else{
                    let datass = data;
-                    var val =data.project_name != null && data.project_type != null;
-                    var vald ="";
+                   
+                    i++;
                 return (
                     <Card >
                         <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
-                                <p className="num_align_side" onClick={stopModel}>1</p>
+                                <p className="num_align_side" onClick={stopModel}>{i}</p>
                                 <Divider />
                                 {/* <HtmlTooltip open={open}  onOpen={handleOpen} arrow
                                     title={<Timesheetmodel />}
@@ -284,7 +287,7 @@ setStartModelOpen(flg);
 
                             <div style={{ width: '36%', padding: '15px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
-                                    <p>{data.project_name}</p>
+                                    <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
                                     <p>{data.project_type}</p>
                                     <p>{data.client}</p>
                                 </div>
@@ -318,7 +321,7 @@ setStartModelOpen(flg);
                             <div style={{ marginTop: '20px' }}>
                                 <div className="total_12_div">
                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}{data.totalHours}</p>
+                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}</p>
                                 </div>
                                 <div className="images_div">
                                     <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
@@ -329,7 +332,7 @@ setStartModelOpen(flg);
                                     <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  content={<TaskStatus rowData={taskData}/>} width={300}/>
                                     
                                    
-                                    <img src={Order} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={()=>fntaskHearingDetails({data})}/>
+                                    {<img src={data.project_id != null ? Order : ""} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={data.project_id != null ? ()=>fntaskHearingDetails({data}) : ""}/>}
                                     <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
                                     
                                 </div>
@@ -342,7 +345,7 @@ setStartModelOpen(flg);
                         </div>
                     </Card>
                             )
-
+                            }
                         })} 
                 </div>
                 {/* first card end */}

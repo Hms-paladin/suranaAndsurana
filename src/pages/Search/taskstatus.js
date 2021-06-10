@@ -70,6 +70,7 @@ function TaskStatus(props) {
                     step={10}
                     valueLabelDisplay="auto"
                     onChange={range}
+                    value={sildeval?sildeval:0}
                 />
                 <div className="status_btn"><CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={handelSave} /></div>
             </div>
