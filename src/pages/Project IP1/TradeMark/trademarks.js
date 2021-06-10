@@ -49,86 +49,86 @@ function TradeMark(properties) {
 
         TradeMarkForm.status_id.value = obj.status_id;
         if(obj.status_id && obj.status_id.length)
-        TradeMarkForm.status_id.disabled = true;
+        TradeMarkForm.status_id.disabled = false;
 
 
         TradeMarkForm.mark_id.value =obj.mark_id
         if(obj.mark_id && obj.mark_id.length)
-         TradeMarkForm.mark_id.disabled = true;
+         TradeMarkForm.mark_id.disabled = false;
 
         //"upload_image" :selectedFile,
         TradeMarkForm.application_no.value =obj.application_no;
         if(obj.application_no && obj.application_no.length)
-        TradeMarkForm.application_no.disabled = true;
+        TradeMarkForm.application_no.disabled = false;
 
 
         TradeMarkForm.application_date.value =obj.application_date;
         if(obj.application_date && obj.application_date.length)
-        TradeMarkForm.application_date.disabled = true;
+        TradeMarkForm.application_date.disabled = false;
 
 
         TradeMarkForm.usage_details_id.value = obj.usage_details_id;
         if(obj.usage_details_id && obj.usage_details_id.length)
-        TradeMarkForm.usage_details_id.disabled = true;
+        TradeMarkForm.usage_details_id.disabled = false;
 
 
         TradeMarkForm.goods_description.value= obj.goods_description;
         if(obj.goods_description && obj.goods_description.length)
-        TradeMarkForm.goods_description.disabled = true;
+        TradeMarkForm.goods_description.disabled = false;
 
 
         TradeMarkForm.usage_from_date.value=obj.usage_from_date;
         if(obj.usage_from_date && obj.usage_from_date.length)
-        TradeMarkForm.usage_from_date.disabled = true;
+        TradeMarkForm.usage_from_date.disabled = false;
 
         TradeMarkForm.ip_india_status.value =obj.ip_india_status;
         if(obj.ip_india_status && obj.ip_india_status.length)
-        TradeMarkForm.ip_india_status.disabled = true;
+        TradeMarkForm.ip_india_status.disabled = false;
 
         TradeMarkForm.internal_status.value =obj.internal_status;
         if(obj.internal_status && obj.internal_status.length)
-        TradeMarkForm.internal_status.disabled = true;
+        TradeMarkForm.internal_status.disabled = false;
 
 
         TradeMarkForm.allotment.value=obj.allotment;
         if(obj.allotment && obj.allotment.length)
-        TradeMarkForm.allotment.disabled = true;
+        TradeMarkForm.allotment.disabled = false;
 
 
         TradeMarkForm.amendment.value =obj.amendment;
         if(obj.amendment && obj.amendment.length)
-        TradeMarkForm.amendment.disabled = true;
+        TradeMarkForm.amendment.disabled = false;
 
 
          // "orders":TradeMarkForm.orders.value,
         TradeMarkForm.priority_details.value =obj.priority_details;
         if(obj.priority_details && obj.priority_details.length)
-        TradeMarkForm.priority_details.disabled = true;
+        TradeMarkForm.priority_details.disabled = false;
 
 
         TradeMarkForm.tmj_number.value =obj.tmj_number;
         if(obj.tmj_number && obj.tmj_number.length)
-        TradeMarkForm.tmj_number.disabled = true;
+        TradeMarkForm.tmj_number.disabled = false;
 
 
        TradeMarkForm.tmj_date.value = obj.tmj_date;
        if(obj.tmj_date && obj.tmj_date.length)
-        TradeMarkForm.status_id.disabled = true;
+        TradeMarkForm.status_id.disabled = false;
 
 
         TradeMarkForm.journel_extract.value =obj.journel_extract;
         if(obj.journel_extract && obj.journel_extract.length)
-        TradeMarkForm.journel_extract.disabled = true;
+        TradeMarkForm.journel_extract.disabled = false;
 
 
         TradeMarkForm.certificate_date.value =obj.certificate_date;
         if(obj.certificate_date && obj.certificate_date.length)
-        TradeMarkForm.certificate_date.disabled = true;
+        TradeMarkForm.certificate_date.disabled = false;
 
 
         TradeMarkForm.renewal_certificate_date.value = obj.renewal_certificate_date;
         if(obj.renewal_certificate_date && obj.renewal_certificate_date.length)
-        TradeMarkForm.renewal_certificate_date.disabled = true;
+        TradeMarkForm.renewal_certificate_date.disabled = false;
 
 
         }
