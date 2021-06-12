@@ -150,22 +150,22 @@ function onSubmit() {
         "hearing_date":TradeMarkForm.date_of_hearing.value || null,
         "opp_applicant" :TradeMarkForm.applicant.value,
         "opp_applicant_rep" :TradeMarkForm.applicant_rep.value,
-        "filing_type_id" :TradeMarkForm.filing_type_id.valueById || "",
+        "filing_type_id" :TradeMarkForm.filing_type_id.valueById || null,
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || "" ,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || null ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
-        "mark" :TradeMarkForm.mark.value,
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :"",
         "revocation_filing_date" :null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":null
+        "appeal_filing_date":null,
+        "client_application" :"",
+        "mark" :TradeMarkForm.mark.value
     }
 
     if(TradeMarkForm.class_id.value != ""){

@@ -153,19 +153,19 @@ function onSubmit() {
         "filing_type_id" :TradeMarkForm.filing_type_id.valueById,
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
-        "mark" :TradeMarkForm.mark.value,
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :TradeMarkForm.client_responent.value,
-        "revocation_filing_date" :"",
+        "revocation_filing_date" : null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":""
+        "appeal_filing_date" : null,
+        "client_application" :"",
+        "mark" :TradeMarkForm.mark.value
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){
