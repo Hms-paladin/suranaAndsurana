@@ -363,7 +363,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Appeal Filing Date "}
-                        disableFuture={true}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
                         error={TradeMarkForm.appeal_filing_date.error}
@@ -398,7 +398,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={true}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
