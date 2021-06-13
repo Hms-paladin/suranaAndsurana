@@ -42,7 +42,7 @@ function PatentRectificationFiled(props){
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             // if(obj.status_id && obj.status_id.length)
             // TradeMarkForm.status_id.disabled = true;
@@ -143,28 +143,28 @@ function onSubmit() {
         "project_id": projectDetails.project_id,
         "trademark_no" :"",
         "class_id" :0,
-        "rectification_filing" :TradeMarkForm.recitification_filing_date.value || null,
+        "rectification_filing" :TradeMarkForm.recitification_filing_date.value || "",
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
-        "hearing_date":TradeMarkForm.date_of_hearing.value || null,
+        "hearing_date":TradeMarkForm.date_of_hearing.value || "",
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
-        "filing_type_id" : TradeMarkForm.filing_type_id.valueById || null,
+        "filing_type_id" : TradeMarkForm.filing_type_id.valueById || "",
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
+        "client_application" :TradeMarkForm.client_applicant.value,
+        "mark" :"",
         "respondent" :TradeMarkForm.respondent.value,
         "respondent_rep" :TradeMarkForm.respondent_rep.value,
         "client_responent" :"",
-        "revocation_filing_date" : null,
+        "revocation_filing_date" :"",
         "applicant_no":TradeMarkForm.applicant_no.value,
         "patent_title":TradeMarkForm.patent_title.value,
-        "appeal_filing_date": null,
-        "client_application" :TradeMarkForm.client_applicant.value,
-        "mark" :""
+        "appeal_filing_date":null
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){

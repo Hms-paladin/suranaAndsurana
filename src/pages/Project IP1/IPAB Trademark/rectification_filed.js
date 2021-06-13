@@ -78,15 +78,17 @@ function IPABRectificationDefended(props){
             TradeMarkForm.applicant_rep.value =obj.opp_applicant_rep;
             // if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
             // TradeMarkForm.opp_applicant_rep.disabled = true;
+            TradeMarkForm.client_application.value =obj.client_application;
             
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
             let arr=[];
             for(var val of TradeMarkForm.filing_type_id.valueById ){
+                if(filingTypeList.filingTypeData){
                 for(var t of filingTypeList.filingTypeData){
                     if(t.id == val){
                         arr.push(t.value);
                     }
-                   
+                } 
                }
             //checkValidation( filingTypeList.filingTypeData[val], "filing_type_id", filingTypeList.filingTypeData)
             }
@@ -164,7 +166,7 @@ function onSubmit() {
         "applicant_no":"",
         "patent_title":"",
         "appeal_filing_date":null,
-        "client_application" :"",
+        "client_application" :TradeMarkForm.client_application.value,
         "mark" :TradeMarkForm.mark.value
     }
 
@@ -209,7 +211,7 @@ const handleCancel = () => {
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
     client_application: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
