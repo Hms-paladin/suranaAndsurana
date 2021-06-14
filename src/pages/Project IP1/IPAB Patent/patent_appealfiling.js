@@ -49,13 +49,13 @@ function PatentAppealFiling(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value=obj.hearing_date;
+            TradeMarkForm.date_of_hearing.value=obj.hearing_date  || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
 
-            TradeMarkForm.client_application.value =obj.client_applicant;
-            // if(obj.client_application && obj.client_application.length)
-            // TradeMarkForm.client_application.disabled = true;
+            TradeMarkForm.client_applicant.value =obj.client_applicant;
+            // if(obj.client_applicant && obj.client_applicant.length)
+            // TradeMarkForm.client_applicant.disabled = true;
 
             TradeMarkForm.applicant_no.value =obj.applicant_no;
             // if(obj.applicant_no && obj.applicant_no.length)
@@ -65,7 +65,7 @@ function PatentAppealFiling(props){
             // if(obj.patent_title && obj.patent_title.length)
             // TradeMarkForm.patent_title.disabled = true;
             
-            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date;
+            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date  || moment().format('YYYY-MM-DD');
             // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
             // TradeMarkForm.appeal_filing_date.disabled = true;
         }
@@ -110,13 +110,13 @@ function onSubmit() {
         "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
-        "project_id": projectDetails[0].project_id,
+        "project_id": rowId,
         "trademark_no" :"",
         "class_id" :0,
         "rectification_filing" :"",
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
-        "hearing_date":TradeMarkForm.hearing_date.value || null,
+        "hearing_date":TradeMarkForm.date_of_hearing.value || null,
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
         "filing_type_id" :0,
@@ -133,7 +133,7 @@ function onSubmit() {
         "applicant_no":TradeMarkForm.applicant_no.value,
         "patent_title":TradeMarkForm.patent_title.value,
         "appeal_filing_date":TradeMarkForm.appeal_filing_date.value || null,
-        "client_applicant" :TradeMarkForm.client_application.value,
+        "client_applicant" :TradeMarkForm.client_applicant.value,
         "mark" :""
     }
     console.log("paramscheck", params);
@@ -158,7 +158,7 @@ function onSubmit() {
 
 const handleCancel = () => {
     let From_key = [
-        "client_application","client_applicant", "applicant_no", "patent_title", "appeal_filing_date", "serial_no", "org_appeal_no", "hearing_date", "status_id", "comments"
+       "client_applicant", "applicant_no", "patent_title", "appeal_filing_date", "serial_no", "org_appeal_no", "hearing_date", "status_id", "comments"
     ]
 
     From_key.map((data) => {
@@ -176,14 +176,7 @@ const handleCancel = () => {
 
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
-    client_application: {
-        value: '',
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
+    
     trademark_ipab_id: {
         value: 0,
         validation: [],
@@ -255,7 +248,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         disabled: false,
 
     },
-    hearing_date: {
+    date_of_hearing: {
         value: "",
         validation: [{ "name": "required" },],
         error: null,
@@ -306,11 +299,11 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="text"
                         placeholder={" Client - Applicant"}
-                        changeData={(data) => checkValidation(data, "client_application")}
-                        value={TradeMarkForm.client_application.value}
-                        error={TradeMarkForm.client_application.error}
-                        errmsg={TradeMarkForm.client_application.errmsg} 
-                        disabled={TradeMarkForm.client_application.disabled}
+                        changeData={(data) => checkValidation(data, "client_applicant")}
+                        value={TradeMarkForm.client_applicant.value}
+                        error={TradeMarkForm.client_applicant.error}
+                        errmsg={TradeMarkForm.client_applicant.errmsg} 
+                        disabled={TradeMarkForm.client_applicant.disabled}
                         />
                 </Grid>
                 <Grid item xs={2}>
@@ -370,11 +363,11 @@ function checkValidation(data, key, multipleId) {
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
                         disableFuture={false}
-                        changeData={(data) => checkValidation(data, "hearing_date")}
-                        value={TradeMarkForm.hearing_date.value}
-                        error={TradeMarkForm.hearing_date.error}
-                        errmsg={TradeMarkForm.hearing_date.errmsg} 
-                        disabled={TradeMarkForm.hearing_date.disabled}
+                        changeData={(data) => checkValidation(data, "date_of_hearing")}
+                        value={TradeMarkForm.date_of_hearing.value}
+                        error={TradeMarkForm.date_of_hearing.error}
+                        errmsg={TradeMarkForm.date_of_hearing.errmsg} 
+                        disabled={TradeMarkForm.date_of_hearing.disabled}
                         />
                 </Grid>
                 <Grid item xs={2}>

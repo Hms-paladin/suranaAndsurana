@@ -67,9 +67,9 @@ function IPABRectificationDefended(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.date_of_hearing.value =obj.hearing_date;
+            TradeMarkForm.date_of_hearing.value =obj.hearing_date || moment().format('YYYY-MM-DD HH:m:s');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
             
             TradeMarkForm.applicant.value =obj.opp_applicant;
             // if(obj.opp_applicant && obj.opp_applicant.length)
@@ -78,13 +78,13 @@ function IPABRectificationDefended(props){
             TradeMarkForm.applicant_rep.value =obj.opp_applicant_rep;
             // if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
             // TradeMarkForm.opp_applicant_rep.disabled = true;
-            TradeMarkForm.client_application.value =obj.client_application;
+            TradeMarkForm.client_applicant.value =obj.client_applicant;
             
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
             let arr=[];
             for(var val of TradeMarkForm.filing_type_id.valueById ){
-                if(filingTypeList.filingTypeData){
-                for(var t of filingTypeList.filingTypeData){
+                if(filingTypeData){
+                for(var t of filingTypeData){
                     if(t.id == val){
                         arr.push(t.value);
                     }
@@ -166,7 +166,7 @@ function onSubmit() {
         "applicant_no":"",
         "patent_title":"",
         "appeal_filing_date":null,
-        "client_application" :TradeMarkForm.client_application.value,
+        "client_applicant" :TradeMarkForm.client_applicant.value,
         "mark" :TradeMarkForm.mark.value
     }
 
@@ -191,7 +191,7 @@ function onSubmit() {
 
 const handleCancel = () => {
     let From_key = [
-        "client_application", "mark", "trade_mark_no", "class_id", "rectification_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "applicant",
+        "client_applicant", "mark", "trade_mark_no", "class_id", "rectification_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "applicant",
         "applicant_rep", "filing_type_id", "status_id", "comments"
     ]
 
@@ -210,7 +210,7 @@ const handleCancel = () => {
 
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
-    client_application: {
+    client_applicant: {
         value: '',
         validation: [{ "name": "required" },],
         error: null,
@@ -365,11 +365,11 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="text"
                         placeholder={" Client - Applicant"}
-                        changeData={(data) => checkValidation(data, "client_application")}
-                        value={TradeMarkForm.client_application.value}
-                        error={TradeMarkForm.client_application.error}
-                        errmsg={TradeMarkForm.client_application.errmsg} 
-                        disabled={TradeMarkForm.client_application.disabled}
+                        changeData={(data) => checkValidation(data, "client_applicant")}
+                        value={TradeMarkForm.client_applicant.value}
+                        error={TradeMarkForm.client_applicant.error}
+                        errmsg={TradeMarkForm.client_applicant.errmsg} 
+                        disabled={TradeMarkForm.client_applicant.disabled}
                         />
                 </Grid>
                 <Grid item xs={2}>

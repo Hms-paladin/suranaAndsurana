@@ -22,7 +22,7 @@ function PatentRevocationDef(props){
         dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
-        dispatch(getClassDetails());
+        // dispatch(getClassDetails());
        // dispatch(getFilingTypeIpab());
         
       }, []);
@@ -56,23 +56,23 @@ function PatentRevocationDef(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value=obj.hearing_date;
+            TradeMarkForm.date_of_hearing.value=obj.hearing_date  || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
 
-            TradeMarkForm.opp_applicant.value =obj.opp_applicant;
+            TradeMarkForm.applicant.value =obj.opp_applicant;
             // if(obj.opp_applicant && obj.opp_applicant.length)
             // TradeMarkForm.opp_applicant.disabled = true;
 
-            TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
+            TradeMarkForm.applicant_rep.value =obj.opp_applicant_rep;
             // if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
             // TradeMarkForm.opp_applicant_rep.disabled = true;
             
-            TradeMarkForm.client_responent.value =obj.client_responent;
+            TradeMarkForm.client_respondent.value =obj.respondent;
             // if(obj.client_responent && obj.client_responent.length)
             // TradeMarkForm.client_responent.disabled = true;
             
-            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date;
+            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date  || moment().format('YYYY-MM-DD');
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
             
@@ -98,12 +98,12 @@ function PatentRevocationDef(props){
     )
       settradeStatusList({ tradeStatusData })
     
-      let classDetailsData = []
-      props.classDetailsList.map((data) =>
-      classDetailsData.push({ value: data.class,
-      id: data.class_id })
-  )
-  setclassDetList({ classDetailsData })
+//       let classDetailsData = []
+//       props.classDetailsList.map((data) =>
+//       classDetailsData.push({ value: data.class,
+//       id: data.class_id })
+//   )
+//   setclassDetList({ classDetailsData })
         
   const id  ={
     ProjectType: props.ProjectDetails[0].project_type_id,
@@ -125,10 +125,10 @@ function onSubmit() {
         "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
-        "project_id": projectDetails.project_id,
+        "project_id": rowId,
         "trademark_no" :"",
-        "class_id" :0,
-        "rectification_filing" :"",
+        "class_id" : "",
+        "rectification_filing" :null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
         "hearing_date":TradeMarkForm.date_of_hearing.value || null,
@@ -141,20 +141,20 @@ function onSubmit() {
         "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || "" ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
+        "client_applicant" :"",
         "mark" :"",
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :TradeMarkForm.client_respondent.value,
-        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || "",
+        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || null,
         "applicant_no":TradeMarkForm.applicant_no.value,
         "patent_title":TradeMarkForm.patent_title.value,
         "appeal_filing_date":null
     }
     console.log("paramscheck", params);
-    if(TradeMarkForm.class_id.value != ""){
-        params["class_id"] =TradeMarkForm.class_id.value;
-    }
+    // if(TradeMarkForm.class_id.value != "" || TradeMarkForm.class_id.value != 0 ){
+    //     params["class_id"] =TradeMarkForm.class_id.value;
+    // }
     if (filtererr.length > 0) {
         // setTradeMarkForm({ error: true });
     } else {

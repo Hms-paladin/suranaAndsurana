@@ -56,14 +56,14 @@ function PatentRevocationFiled(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value=obj.hearing_date;
+            TradeMarkForm.date_of_hearing.value=obj.hearing_date  || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
 
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
             let arr=[];
             for(var val of TradeMarkForm.filing_type_id.valueById ){
-                for(var t of filingTypeList.filingTypeData){
+                for(var t of filingTypeData){
                     if(t.id == val){
                         arr.push(t.value);
                     }
@@ -72,9 +72,9 @@ function PatentRevocationFiled(props){
             }
            TradeMarkForm.filing_type_id.value=arr;
 
-            TradeMarkForm.client_application.value =obj.client_application;
-            // if(obj.client_application && obj.client_application.length)
-            // TradeMarkForm.client_application.disabled = true;
+            TradeMarkForm.client_applicant.value =obj.client_applicant;
+            // if(obj.client_applicant && obj.client_applicant.length)
+            // TradeMarkForm.client_applicant.disabled = true;
             
             TradeMarkForm.respondent.value =obj.respondent;
             // if(obj.respondent && obj.respondent.length)
@@ -84,7 +84,7 @@ function PatentRevocationFiled(props){
             // if(obj.respondent_rep && obj.respondent_rep.length)
             // TradeMarkForm.respondent_rep.disabled = true;
             
-            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date;
+            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date  || moment().format('YYYY-MM-DD HH:m:s');
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
             
@@ -159,7 +159,7 @@ function onSubmit() {
         "applicant_no":TradeMarkForm.applicant_no.value,
         "patent_title":TradeMarkForm.patent_title.value,
         "appeal_filing_date": null,
-        "client_application" :TradeMarkForm.client_applicant.value,
+        "client_applicant" :TradeMarkForm.client_applicant.value,
         "mark" :""
     }
     console.log("paramscheck", params);

@@ -18,14 +18,13 @@ function RevocationFiled(props) {
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     let { rowId } = useParams()
-    var params = {};
-    
+    console.log("props revocation filed", props);
     useEffect(() => {
         dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
         dispatch(getClassDetails());
-        dispatch(getFilingTypeIpab());
+        //dispatch(getFilingTypeIpab());
         
       }, []);
 
@@ -40,10 +39,11 @@ function RevocationFiled(props) {
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             // if(obj.status_id && obj.status_id.length)
             // TradeMarkForm.status_id.disabled = true;
+            TradeMarkForm.client_applicant.value = obj.client_applicant;
             
             TradeMarkForm.class_id.value = obj.class_id;
             // if(obj.class_id && obj.class_id.length)
@@ -65,14 +65,14 @@ function RevocationFiled(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.date_of_hearing.value =obj.hearing_date;
+            TradeMarkForm.date_of_hearing.value =obj.hearing_date || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
 
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
             let arr=[];
             for(var val of TradeMarkForm.filing_type_id.valueById ){
-                for(var t of filingTypeList.filingTypeData){
+                for(var t of filingTypeData){
                     if(t.id == val){
                         arr.push(t.value);
                     }
@@ -93,11 +93,11 @@ function RevocationFiled(props) {
             // if(obj.respondent_rep && obj.respondent_rep.length)
             // TradeMarkForm.respondent_rep.disabled = true;
             
-            TradeMarkForm.client_responent.value =obj.client_responent;
+           // TradeMarkForm.client_responent.value =obj.client_responent;
             // if(obj.client_responent && obj.client_responent.length)
             // TradeMarkForm.client_responent.disabled = true;
             
-            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date;
+            TradeMarkForm.revocation_filing_date.value =obj.rectification_filing_date || moment().format('YYYY-MM-DD');
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
         }
@@ -127,7 +127,6 @@ function RevocationFiled(props) {
     ProjectSubtype: props.ProjectDetails[0].sub_project_id,
     ProcessType:  props.ProjectDetails[0].process_id
 }
-//dispatch(getFilingType(id));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -139,34 +138,34 @@ function onSubmit() {
     ); 
     console.log(filtererr.length);
     let params  = {
-        "ip_type":"ddf",
+        "ip_type":0,
         "client_status_type": null,
-        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
-        "project_id": projectDetails.project_id,
+        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
+        "project_id": rowId,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
-        "rectification_filing" :"",
+        "rectification_filing_date" : null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
-        "hearing_date":TradeMarkForm.date_of_hearing.value || "",
+        "hearing_date":TradeMarkForm.date_of_hearing.value  =='' || null,
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
-        "filing_type_id" :TradeMarkForm.filing_type_id.value,
+        "filing_type_id" :TradeMarkForm.filing_type_id.valueById || 0,
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || "" ,
+        "created_on" : moment().format('YYYY-MM-DD HH:m:s')  || null  ,
+        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || null ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
-        "mark" :TradeMarkForm.mark.value,
         "respondent" :TradeMarkForm.respondent.value,
         "respondent_rep" :TradeMarkForm.respondent_rep.value,
-        "client_responent" :TradeMarkForm.client_responent.value,
-        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || "",
+        "client_responent" : "",
+        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value =='' || null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":""
+        "appeal_filing_date":null,
+        "client_applicant" :TradeMarkForm.client_applicant.value ,
+        "mark" :TradeMarkForm.mark.value
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){
@@ -191,14 +190,16 @@ function onSubmit() {
 const handleCancel = () => {
     let From_key = [        
         "ip_type",  "client_status_type", "trademark_ipab_id", "project_id", "trademark_no",  "class_id", "rectification_filing", "serial_no", "org_appeal_no", "hearing_date", 
-        "opp_applicant", "opp_applicant_rep", "filing_type_id", "status_id", "comments", "created_on", "updated_on", "created_by",  "updated_by", "client_application", 
-        "mark", "respondent", "respondent_rep", "client_responent", "revocation_filing_date", "applicant_no", "patent_title", "appeal_filing_date"
+        "opp_applicant", "opp_applicant_rep", "filing_type_id", "status_id", "comments", "created_on", "updated_on", "created_by",  "updated_by", "client_applicant", 
+        "mark", "respondent", "respondent_rep", "revocation_filing_date", "applicant_no", "patent_title", "appeal_filing_date"
     ]
 
     From_key.map((data) => {
         try {
+            if(TradeMarkForm[data] && TradeMarkForm[data].value){
             TradeMarkForm[data].value = "";
-          console.log("appealFiling cancel", TradeMarkForm[data].value);
+            }
+         // console.log("appealFiling cancel", TradeMarkForm[data].value);
         } catch (error) {
           throw error;
         }
@@ -212,7 +213,7 @@ const handleCancel = () => {
 
 const [TradeMarkForm, setTradeMarkForm] = useState({
     client_applicant: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -220,14 +221,14 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     trademark_ipab_id: {
-        value: "",
+        value: 0,
         validation: [],
         error: null,
         errmsg: null,
         disabled: false,
     },
     mark: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -235,7 +236,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     trade_mark_no: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -243,7 +244,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     class_id: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -251,7 +252,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     revocation_filing_date: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -259,7 +260,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     serial_no: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -267,7 +268,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     org_appeal_no: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -275,7 +276,15 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     date_of_hearing: {
-        value: "",
+        value: '',
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    respondent: {
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -283,16 +292,8 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     
-    respondent: {
-        value: "",
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
     respondent_rep: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -300,7 +301,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     filing_type_id: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -308,7 +309,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     status_id: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -316,7 +317,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     comments: {
-        value: "",
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -479,14 +480,15 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="select"
-                        placeholder={" Filing Type"} changeData={(data) => checkValidation(data, "filing_type_id")}
+                <Labelbox type="select"
+                       mode={"multiple"}
+                       placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
                         dropdown={filingTypeList.filingTypeData} 
-                        value={TradeMarkForm.filing_type_id.value}
-                        error={TradeMarkForm.filing_type_id.error}
-                        errmsg={TradeMarkForm.filing_type_id.errmsg}
-                        disabled={TradeMarkForm.filing_type_id.disabled}
-                        />
+                value={TradeMarkForm.filing_type_id.value}
+                error={TradeMarkForm.filing_type_id.error}
+                errmsg={TradeMarkForm.filing_type_id.errmsg}
+                disabled={TradeMarkForm.filing_type_id.disabled}
+                />
                 </Grid>
                 <Grid item xs={2}>
                     <Labelbox type="select"

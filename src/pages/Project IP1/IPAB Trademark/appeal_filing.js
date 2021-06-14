@@ -58,7 +58,7 @@ function AppealFiling(props){
             // if(obj.trade_mark_no && obj.trade_mark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
 
-            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date;
+            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date  || moment().format('YYYY-MM-DD');
             // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
             // TradeMarkForm.appeal_filing_date.disabled = true;
 

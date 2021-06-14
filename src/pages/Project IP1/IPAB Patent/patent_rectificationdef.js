@@ -59,22 +59,22 @@ function PatentRectificationDef(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value =obj.hearing_date;
+            TradeMarkForm.date_of_hearing.value =obj.hearing_date  || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
 
-            TradeMarkForm.opp_applicant.value =obj.opp_applicant;
+            TradeMarkForm.applicant.value =obj.opp_applicant;
             // if(obj.opp_applicant && obj.opp_applicant.length)
             // TradeMarkForm.opp_applicant.disabled = true;
             
-            TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
+            TradeMarkForm.applicant_rep.value =obj.opp_applicant_rep;
             // if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
             // TradeMarkForm.opp_applicant_rep.disabled = true;
             
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
             let arr=[];
             for(var val of TradeMarkForm.filing_type_id.valueById ){
-                for(var t of filingTypeList.filingTypeData){
+                for(var t of filingTypeData){
                     if(t.id == val){
                         arr.push(t.value);
                     }
@@ -244,7 +244,7 @@ function onSubmit() {
         "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
-        "project_id": projectDetails.project_id,
+        "project_id": rowId,
         "trademark_no" :"",
         "class_id" :0,
         "rectification_filing" :TradeMarkForm.recitification_filing_date.value || null,
@@ -260,7 +260,7 @@ function onSubmit() {
         "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || "" ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
+        "client_applicant" :"",
         "mark" :"",
         "respondent" :"",
         "respondent_rep" :"",
@@ -292,7 +292,7 @@ function onSubmit() {
 
 const handleCancel = () => {
     let From_key = [
-        "client_respondent", "application_no", "patent_title", "recitification_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "applicant", "applicant_rep",
+        "client_respondent", "application_no", "patent_title", "rectification_filing", "serial_no", "org_appeal_no", "hearing_date", "applicant", "applicant_rep",
         "filing_type_id", "status_id", "comments"
     ]
     From_key.map((data) => {
