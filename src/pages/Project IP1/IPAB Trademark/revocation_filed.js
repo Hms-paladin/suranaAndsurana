@@ -40,7 +40,7 @@ function RevocationFiled(props) {
         if(props.tradeMark && props.tradeMark[0]){
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id =obj.project_id;
-            TradeMarkForm.trademark_ipab_id = obj.trademark_ipab_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
             TradeMarkForm.status_id.value = obj.status_id;
             // if(obj.status_id && obj.status_id.length)
             // TradeMarkForm.status_id.disabled = true;
@@ -139,7 +139,7 @@ function onSubmit() {
     ); 
     console.log(filtererr.length);
     let params  = {
-        "ip_type":"ddf",
+        "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
         "project_id": projectDetails.project_id,
@@ -163,10 +163,10 @@ function onSubmit() {
         "respondent" :TradeMarkForm.respondent.value,
         "respondent_rep" :TradeMarkForm.respondent_rep.value,
         "client_responent" :TradeMarkForm.client_responent.value,
-        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || "",
+        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":""
+        "appeal_filing_date":null
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){

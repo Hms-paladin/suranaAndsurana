@@ -162,10 +162,10 @@ function onSubmit() {
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :"",
-        "revocation_filing_date" :"",
+        "revocation_filing_date" :null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":""
+        "appeal_filing_date":null
     }
 
     if(TradeMarkForm.class_id.value != ""){

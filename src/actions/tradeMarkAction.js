@@ -173,7 +173,7 @@ export const insertIPAB = (params) => async dispatch => {
         for (var x in params){
             if(x && x !='trademark_ipab_id'){
                 let da = params[x];
-                if(da && da=='' && da.length &&  da.length <1){
+                if(da ==''){
                     params[x]=null;
                 }
 
@@ -183,7 +183,7 @@ export const insertIPAB = (params) => async dispatch => {
         var url ='insert_ipab';
         var method = 'POST';
         var message="IPAB added sucessfully";
-        if(params.trademark_ipab_id && params.trademark_ipab_id.value !=0){
+        if(params.trademark_ipab_id.value && params.trademark_ipab_id.value !=0){
             url = 'update_ipab';
             method ='PUT';
             message="IPAB updated sucessfully";
