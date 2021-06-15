@@ -69,9 +69,9 @@ function RevocationDefended(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value =obj.hearing_date;
+            TradeMarkForm.hearing_date.value =obj.hearing_date || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.hearing_date.disabled = true;
+            // TradeMarkForm.date_of_hearing.disabled = true;
             
             TradeMarkForm.opp_applicant.value =obj.opp_applicant;
             // if(obj.opp_applicant && obj.opp_applicant.length)
@@ -84,7 +84,7 @@ function RevocationDefended(props){
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id?JSON.parse("["+ obj.filing_type_id+"]"):[];
             let arr=[];
             for(var val of TradeMarkForm.filing_type_id.valueById ){
-                for(var t of filingTypeList.filingTypeData){
+                for(var t of filingTypeData){
                     if(t.id == val){
                         arr.push(t.value);
                     }
@@ -157,7 +157,7 @@ function onSubmit() {
         "updated_on" : moment().format('YYYY-MM-DD HH:m:s')  || ""  ,
         "created_by" :localStorage.getItem("empId"),
         "updated_by" :localStorage.getItem("empId"),
-        "client_application" :"",
+        "client_applicant" :"",
         "mark" :TradeMarkForm.mark.value,
         "respondent" :"",
         "respondent_rep" :"",
@@ -165,7 +165,7 @@ function onSubmit() {
         "revocation_filing_date" :"",
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":""
+        "appeal_filing_date":null
     }
     console.log("paramscheck", params);
     if(TradeMarkForm.class_id.value != ""){

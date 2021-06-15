@@ -59,6 +59,8 @@ function TimeSheetView(props) {
           }, []);
     
         useEffect(() => {
+            //if(dispatch(getTaskTimeSheet(props.rowData.task_id));)
+            if(props.getTaskTimeSheet && props.getTaskTimeSheet[0] && props.getTaskTimeSheet[0].task_id==props.rowData.task_id ){
             if(props.getTaskTimeSheet.length >0 ){
                 
                 if(props.getTaskTimeSheet[0].timesheet.length >0 ){
@@ -76,6 +78,9 @@ function TimeSheetView(props) {
             }else{
                 setTimesheetStart(true)
             }
+        }else{
+            dispatch(getTaskTimeSheet(props.rowData.task_id));
+        }
             //var a =props.rowData
         }, [props.getTaskTimeSheet,props.rowData])
 
@@ -102,6 +107,7 @@ function TimeSheetView(props) {
     }
 
     function closeModel(){
+        
         props.handleChangeCloseModel(false);  
       }
     function changestart () {
