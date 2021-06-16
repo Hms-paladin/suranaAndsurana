@@ -231,7 +231,7 @@ function PatentRevocationFiled(props){
 //dispatch(getFilingType(id));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
 
-
+console.log(props.ProjectDetails[0].project_id,"props.projectDetails.project_id")
 function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(TradeMarkForm);
@@ -299,7 +299,7 @@ function onSubmit() {
          "appeal_filing_date":'00-00-0000',
          "client_applicant":TradeMarkForm.client_applicant.value,
          "mark":"2w222",
-         "project_id":'380',
+         "project_id":props.ProjectDetails[0].project_id,
     }
     console.log("paramscheck", params);
     // if(TradeMarkForm.class_id.value != ""){

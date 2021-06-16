@@ -249,7 +249,10 @@ setTradeMarkForm(prevState => ({
 }));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
 
+
 function onSubmit() {
+
+ 
     var mainvalue = {};
     var targetkeys = Object.keys(TradeMarkForm);
     var filtererr = targetkeys.filter(
@@ -260,7 +263,7 @@ function onSubmit() {
         "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
-        "project_id": '375',
+        "project_id": props.ProjectDetails[0].project_id,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
         "rectification_filing" :null,
