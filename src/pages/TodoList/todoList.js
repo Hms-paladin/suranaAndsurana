@@ -232,7 +232,7 @@ function TodoList(props) {
                 sub_activity: data.sub_activity,
                 startdate: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
                 enddate: data.end_date&&data.end_date!="0000-00-00" ? moment(data.end_date).format('DD-MMM-YYYY') : null,
-                no_hours: data.num_of_hrs,
+                no_hours: data.num_of_hrs==="0"?data.num_of_day:data.num_of_hrs,
 
             })
         })

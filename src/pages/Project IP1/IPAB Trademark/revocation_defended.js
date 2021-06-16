@@ -24,7 +24,7 @@ function RevocationDefended(props){
     
 const [TradeMarkForm, setTradeMarkForm] = useState({
     client_responent: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -32,14 +32,14 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     trademark_ipab_id: {
-        value: 0,
+        value: '',
         validation: [],
         error: null,
         errmsg: null,
         disabled: false,
     },
     mark: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -47,7 +47,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     trade_mark_no: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -55,7 +55,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     class_id: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -63,7 +63,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         
     },
     revocation_filing_date: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -71,7 +71,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     serial_no: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -79,7 +79,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     org_appeal_no: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -87,7 +87,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     date_of_hearing: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -95,7 +95,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
         
     },
     applicant: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -103,7 +103,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     Applicant_rep: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -111,7 +111,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     filing_type_id: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -119,7 +119,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     status_id: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -127,7 +127,7 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
 
     },
     comments: {
-        value: 0,
+        value: '',
         validation: [{ "name": "required" },],
         error: null,
         errmsg: null,
@@ -168,7 +168,8 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
             // if(obj.comments && obj.comments.length)
             // TradeMarkForm.comments.disabled = true;
             
-            TradeMarkForm.rectification_filing.value =obj.rectification_filing;
+            //// TradeMarkForm.rectification_filing.value =obj.rectification_filing;
+
             // if(obj.rectification_filing && obj.rectification_filing.length)
             // TradeMarkForm.rectification_filing.disabled = true;
             
@@ -184,15 +185,15 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value =obj.hearing_date || moment().format('YYYY-MM-DD');
+            TradeMarkForm.date_of_hearing.value =obj.hearing_date || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
             
-            TradeMarkForm.opp_applicant.value =obj.opp_applicant;
+            TradeMarkForm.applicant.value =obj.opp_applicant;
             // if(obj.opp_applicant && obj.opp_applicant.length)
             // TradeMarkForm.opp_applicant.disabled = true;
             
-            TradeMarkForm.opp_applicant_rep.value =obj.opp_applicant_rep;
+            TradeMarkForm.Applicant_rep.value =obj.opp_applicant_rep;
             // if(obj.opp_applicant_rep && obj.opp_applicant_rep.length)
             // TradeMarkForm.opp_applicant_rep.disabled = true;
 
@@ -243,6 +244,9 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
     ProcessType:  props.ProjectDetails[0].process_id
 }
 //dispatch(getFilingType(id));
+setTradeMarkForm(prevState => ({
+    ...prevState
+}));
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
 
 function onSubmit() {
@@ -255,8 +259,8 @@ function onSubmit() {
     let params  = {
         "ip_type":0,
         "client_status_type": null,
-        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id,
-        "project_id": projectDetails.project_id,
+        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
+        "project_id": '375',
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
         "rectification_filing" :null,
@@ -292,7 +296,7 @@ function onSubmit() {
         // setTradeMarkForm({ error: false });
 
         dispatch(insertIPAB(params)).then(() => {
-            handleCancel()
+            // handleCancel()
         })
     }
 
@@ -453,7 +457,7 @@ function checkValidation(data, key, multipleId) {
                         />
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text" placeholder=""></Labelbox>
+                    {/* <Labelbox type="text" placeholder=""></Labelbox> */}
                     <Labelbox type="text"
                         placeholder={" Applicant "}
                         disableFuture={false}
