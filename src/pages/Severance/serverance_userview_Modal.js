@@ -30,6 +30,7 @@ function ServeranceModal(props){
                 severanceId:data.severece_id,
                 resignationDate:moment(data.date_of_resignation).format("DD-MMM-YYYY"),
                 res_accepted_on:moment(data.resignation_accepted_on===null?"-":data.resignation_accepted_on).format("DD-MMM-YYYY"),
+                res_accepted_by:data.resignation_accepted_by===null?"-":data.resignation_accepted_by,
                 releive_date:moment(data.proposed_date_relieving===null?"-":data.proposed_date_relieving).format("DD-MMM-YYYY"),
                 it_noc_date:moment(data.it_noc_date===null?"-":data.it_noc_date).format("DD-MMM-YYYY"),
                 hr_noc_date:moment(data.hr_noc_date===null?"-":data.hr_noc_date).format("DD-MMM-YYYY"),
@@ -70,7 +71,7 @@ function ServeranceModal(props){
                 </div>
                 <div className="container_Date c1">
                     <div>{severanceData.resignationDate}</div>
-                    <div>{severanceData.res_accepted_on}</div>
+                    <div>{severanceData.res_accepted_on + ' - ' +severanceData.res_accepted_by}</div>
                     <div>{severanceData.releive_date}</div>
                 </div>
             </div>

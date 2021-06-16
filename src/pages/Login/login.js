@@ -95,8 +95,14 @@ const SignInSide = (props) => {
                     password:password
                   }).then(res => {
                     if (res.status === 200) {
+                        if(res.data.status===1){
                       setAuthTokens(res.data);
                       setLoggedIn(true);
+                       }else{
+                        notification.error({
+                            message: res.data.msg,
+                          });
+                        }
                     }
                   }).catch(e => {
                     notification.error({

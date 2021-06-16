@@ -419,7 +419,7 @@ function Employeeform(props) {
                             </div>
                         </div>}
 
-                        {!props.emp_list && val.type_of_resource !== 'Intern' && <div className="expDetailes">
+                        {val.type_of_resource !== 'Intern' && <div className="expDetailes">
                             <div className="tableHeading">Previous Employer Details</div>
                             <div className="educationtable">
                                 <div className="EmployeeHeader">
@@ -439,8 +439,8 @@ function Employeeform(props) {
                                             <div>{values.industry || "-"}</div>
                                             <div>{values.company_name || "-"}</div>
                                             <div>{values.city || "-"}</div>
-                                            <div>{values.department_id || "-"}</div>
-                                            <div>{values.designation_id || "-"}</div>
+                                            <div>{values.department_id ||values.department || "-"}</div>
+                                            <div>{values.designation_id ||values.designation || "-"}</div>
                                             <div>{values.period_from ? moment(val.period_from).format("DD-MMM-YYYY") : "-"}</div>
                                             <div>{values.period_to ? moment(val.period_to).format("DD-MMM-YYYY") : "-"}</div>
                                         </div>
@@ -463,8 +463,8 @@ function Employeeform(props) {
                         <div className="employeeform_row5">
                             <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no : "-"}</div></div>
                             <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr : "-"}</div></div>
-                            {!props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>}
-                            {props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.address ? val.address : "-"}</div></div>}
+                            {/* {!props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Postel Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>} */}
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Postel Address</div><div className="employeecont">{val.address ? val.address : "-"}</div></div>
                         </div>
                         {!props.emp_list && <div className="employeeform_row6">
                             <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>

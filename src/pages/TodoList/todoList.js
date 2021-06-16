@@ -57,8 +57,7 @@ const workflowheadCells = [
     { id: 'sub_activity', label: 'Sub Activity' },
     { id: 'startdate', label: 'Start Date' },
     { id: 'end_date', label: 'End Date' },
-    { id: 'no_hours', label: 'Number of Hours' },
-
+    { id: 'no_hours', label: 'No. of hours / No. of days' },
 
 ];
 
@@ -148,9 +147,11 @@ function TodoList(props) {
                 showName = ""
             }
             hrList.push({
-                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
+                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task_name?data.task_name:data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
-                designation: data.designation, candidates: data.no_of_candidates
+                designation: data.designation,
+                candidates: data.no_of_candidates,
+                department: data.department,
             },
             )
 
@@ -191,7 +192,7 @@ function TodoList(props) {
 
 
 
-        setProjectTodoList(projectTask)
+        // setProjectTodoList(projectTask)
 
         //Other Task
         let otherTask = []
@@ -207,7 +208,7 @@ function TodoList(props) {
                 showId = data.user_id
                 showName = "Unblock User"
                 projectTask.push({
-                    id: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task}</div>,
+                    id: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name?data.task_name:data.task}</div>,
                     activity: data.activity,
                     subactivity: data.sub_activity,
                     startdate: data.start_date,
@@ -225,12 +226,12 @@ function TodoList(props) {
             }
 
             otherTask.push({
-                task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task}</div>,
+                task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name?data.task_name:data.task}</div>,
                 empname: data.employee,
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 startdate: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
-                enddate: data.end_date ? moment(data.end_date).format('DD-MMM-YYYY') : null,
+                enddate: data.end_date&&data.end_date!="0000-00-00" ? moment(data.end_date).format('DD-MMM-YYYY') : null,
                 no_hours: data.num_of_hrs,
 
             })
@@ -256,6 +257,9 @@ function TodoList(props) {
 
 
         setOtherTodoList(otherTask)
+        // setOtherTodoList((prevState) => ({
+        //     ...prevState,
+        // }));
 
     }, [props.getOtherTask])
 

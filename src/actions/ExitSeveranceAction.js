@@ -232,8 +232,8 @@ export const UpdateHrNoc = (checked,emp_id) => async dispatch => {
     }
 }
 
-export const ViewSeverance = (emp_id) => async dispatch => {
-    console.log("emp_id",emp_id)
+export const ViewSeverance = () => async dispatch => {
+    // console.log("emp_id",emp_id)
     try {
 
         axios({

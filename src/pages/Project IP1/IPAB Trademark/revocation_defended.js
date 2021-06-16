@@ -21,6 +21,121 @@ function RevocationDefended(props){
     let { rowId } = useParams()
     var params = {};
     
+    
+const [TradeMarkForm, setTradeMarkForm] = useState({
+    client_responent: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    trademark_ipab_id: {
+        value: 0,
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false,
+    },
+    mark: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    trade_mark_no: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    class_id: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+        
+    },
+    revocation_filing_date: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    serial_no: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    org_appeal_no: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    date_of_hearing: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+        
+    },
+    applicant: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    Applicant_rep: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    filing_type_id: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    status_id: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+    comments: {
+        value: 0,
+        validation: [{ "name": "required" },],
+        error: null,
+        errmsg: null,
+        disabled: false,
+
+    },
+})
+
     useEffect(() => {
         dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
@@ -144,12 +259,12 @@ function onSubmit() {
         "project_id": projectDetails.project_id,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
-        "rectification_filing" :TradeMarkForm.rectification_filing_date.value || null,
+        "rectification_filing" :null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
         "hearing_date":TradeMarkForm.date_of_hearing.value || null,
         "opp_applicant" :TradeMarkForm.applicant.value,
-        "opp_applicant_rep" :TradeMarkForm.applicant_rep.value,
+        "opp_applicant_rep" : null,
         "filing_type_id" :TradeMarkForm.filing_type_id.valueById,
         "status_id" :TradeMarkForm.status_id.value,
         "comments":TradeMarkForm.comments.value,
@@ -208,119 +323,6 @@ const handleCancel = () => {
 
 
 
-const [TradeMarkForm, setTradeMarkForm] = useState({
-    client_responent: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    trademark_ipab_id: {
-        value: 0,
-        validation: [],
-        error: null,
-        errmsg: null,
-        disabled: false,
-    },
-    mark: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    trade_mark_no: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    class_id: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-        
-    },
-    revocation_filing_date: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    serial_no: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    org_appeal_no: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    date_of_hearing: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-        
-    },
-    applicant: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    Applicant_rep: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    filing_type_id: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    status_id: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    comments: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-})
 function checkValidation(data, key, multipleId) {
 
     var errorcheck = ValidationLibrary.checkValidation(

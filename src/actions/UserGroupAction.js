@@ -250,7 +250,7 @@ export const editEmployeeGroup = (UserGroup) => async dispatch => {
                 });
                 dispatch({ type: EDIT_GROUP_NAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
-                dispatch(getGroupName())
+                dispatch(getEmployeeGroupDetails())
                 return Promise.resolve();
             } else {
                 notification.success({
@@ -286,7 +286,7 @@ export const editGroupControl = (UserGroup) => async dispatch => {
                 });
                 dispatch({ type: EDIT_GROUP_CONTROL, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
-                dispatch(getGroupName())
+                dispatch(getGroupControlList())
                 return Promise.resolve();
             } else {
                 notification.success({

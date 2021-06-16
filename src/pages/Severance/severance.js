@@ -5,8 +5,9 @@ import CustomButton from '../../component/Butttons/button';
 import './severance.scss';
 import { notification } from "antd";
 import { useDispatch, connect } from "react-redux";
-import {GetEmployeeDetails,InsertSeverance}  from '../../actions/ExitSeveranceAction'
+import {GetEmployeeDetails,InsertSeverance,ViewSeverance}  from '../../actions/ExitSeveranceAction'
 import ValidationLibrary from "../../helpers/validationfunction";
+
 function Severance(props) {
 
     const [SeveranceDetails,setSeveranceDetails]=useState([])
@@ -27,6 +28,7 @@ function Severance(props) {
     })
     let dispatch=useDispatch()
     useEffect(() => {
+        dispatch(ViewSeverance())
         dispatch(GetEmployeeDetails())
     },[])
    
@@ -108,7 +110,7 @@ if(props.UserPermission.length>0&&props.UserPermission){
 }, [props.UserPermission]);
 
 
-// console.log(saveRights,"rights")
+console.log(props.ViewSeverance,"ViewSeverance")
 
 function rightsNotification(){
 notification.success({
@@ -173,10 +175,12 @@ notification.success({
 
                         </Grid>
                         <Grid item xs={9}>
+                            {props.ViewSeverance.length===0&&
                             <div className="appraisalBtn">
                                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onsubmit}/>
                                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={handleCancel}/>
                             </div>
+                            }
                             
                         </Grid>
                     </Grid>
@@ -191,6 +195,7 @@ notification.success({
     const mapStateToProps = (state) =>
     ({
         UserPermission: state.UserPermissionReducer.getUserPermission,
-        EmployeeDetails:state.ExitSeverance.EmployeeDetails
+        EmployeeDetails:state.ExitSeverance.EmployeeDetails,
+        ViewSeverance:state.ExitSeverance.ViewSeverance,
     });
 export default connect(mapStateToProps) (Severance);

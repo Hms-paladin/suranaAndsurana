@@ -152,7 +152,7 @@ function LeaveApproval(props) {
                         </div>
                         <div>
                             <div>To </div>
-                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].to!="Invalid date"?ApprovalData[0].to:'00-00-0000'}</div>
+                            <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].to!="Invalid date"?ApprovalData[0].to:'--'}</div>
                             {/* {console.log(ApprovalData[0])} */}
                         </div>
                         <div>

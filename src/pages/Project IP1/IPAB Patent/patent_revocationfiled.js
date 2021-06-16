@@ -19,6 +19,113 @@ function PatentRevocationFiled(props){
     const dispatch = useDispatch()
     let { rowId } = useParams()
     
+    const [TradeMarkForm, setTradeMarkForm] = useState({
+        client_applicant: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        trademark_ipab_id: {
+            value: '',
+            validation: [],
+            error: null,
+            errmsg: null,
+            disabled: false,
+        },
+        applicant_no: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        patent_title: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        revocation_filing_date: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        serial_no: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        org_appeal_no: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        date_of_hearing: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        respondent: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        respondent_rep: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        filing_type_id: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+        status_id: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+    
+        comments: {
+            value: '',
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+    
+        },
+    })
+
     useEffect(() => {
         dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
@@ -133,39 +240,71 @@ function onSubmit() {
     ); 
     console.log(filtererr.length);
     let params  = {
-        "ip_type":"ddf",
-        "client_status_type": null,
-        "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
-        "project_id": projectDetails.project_id,
-        "trademark_no" :"",
-        "class_id" :0,
-        "rectification_filing" :"",
-        "serial_no" :TradeMarkForm.serial_no.value,
-        "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
-        "hearing_date":TradeMarkForm.date_of_hearing.value || null,
-        "opp_applicant" :"",
-        "opp_applicant_rep" :"",
-        "filing_type_id" : TradeMarkForm.filing_type_id.valueById || null,
-        "status_id" :TradeMarkForm.status_id.value,
-        "comments":TradeMarkForm.comments.value,
-        "created_on" : moment().format('YYYY-MM-DD HH:m:s')   || null ,
-        "updated_on" : moment().format('YYYY-MM-DD HH:m:s')   || null ,
-        "created_by" :localStorage.getItem("empId"),
-        "updated_by" :localStorage.getItem("empId"),
-        "respondent" :TradeMarkForm.respondent.value,
-        "respondent_rep" :TradeMarkForm.respondent_rep.value,
-        "client_responent" :"",
-        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || null,
-        "applicant_no":TradeMarkForm.applicant_no.value,
-        "patent_title":TradeMarkForm.patent_title.value,
-        "appeal_filing_date": null,
-        "client_applicant" :TradeMarkForm.client_applicant.value,
-        "mark" :""
+        // "ip_type":"ddf",
+        // "client_status_type": 45,
+        // "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
+        // "project_id": projectDetails.project_id,
+        // "trademark_no" :"12",
+        
+        // "rectification_filing" :"ui",
+        // "serial_no" :TradeMarkForm.serial_no.value,
+        // "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
+        // "hearing_date":TradeMarkForm.date_of_hearing.value || '00-00-0000',
+        // "opp_applicant" :"uio",
+        // "opp_applicant_rep" :"srsr",
+        // "filing_type_id" : TradeMarkForm.filing_type_id.valueById || '0',
+        // "status_id" :TradeMarkForm.status_id.value,
+        // "comments":TradeMarkForm.comments.value,
+        // "created_on": moment().format("YYYY-MM-DD"),
+        // "updated_on": moment().format("YYYY-MM-DD "),
+        // "created_by": localStorage.getItem("empId"),
+        // "updated_by": localStorage.getItem("empId"),
+        // "respondent" :TradeMarkForm.respondent.value,
+        // "respondent_rep" :TradeMarkForm.respondent_rep.value,
+        // "client_responent" :"yu",
+        // "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || '00-00-0000',
+        // "applicant_no":TradeMarkForm.applicant_no.value,
+        // "patent_title":TradeMarkForm.patent_title.value,
+        // "appeal_filing_date": '00-00-0000',
+        // "client_applicant" :TradeMarkForm.client_applicant.value,
+        // "mark" :"67",
+        //  "class_id" :10,
+
+
+         "ip_type":null,
+         "client_status_type":null,
+         "trademark_ipab_id":TradeMarkForm.trademark_ipab_id.value,
+        
+         "trademark_no":"3",
+         "class_id":6,
+         "rectification_filing":null,
+         "serial_no":TradeMarkForm.serial_no.value,
+         "org_appeal_no":TradeMarkForm.org_appeal_no.value,
+         "hearing_date":TradeMarkForm.date_of_hearing.value || '00-00-0000',
+         "opp_applicant":null,
+         "opp_applicant_rep":null,
+         "filing_type_id":TradeMarkForm.filing_type_id.valueById || '0',
+         "status_id":TradeMarkForm.status_id.value,
+         "comments":TradeMarkForm.comments.value,
+         "created_on": moment().format("YYYY-MM-DD"),
+         "updated_on": moment().format("YYYY-MM-DD "),
+         "created_by": localStorage.getItem("empId"),
+         "updated_by": localStorage.getItem("empId"),
+         "respondent":TradeMarkForm.respondent.value,
+         "respondent_rep":TradeMarkForm.respondent_rep.value,
+         "client_responent":null,
+         "revocation_filing_date":TradeMarkForm.revocation_filing_date.value || '00-00-0000',
+         "applicant_no":TradeMarkForm.applicant_no.value,
+         "patent_title":TradeMarkForm.patent_title.value,
+         "appeal_filing_date":'00-00-0000',
+         "client_applicant":TradeMarkForm.client_applicant.value,
+         "mark":"2w222",
+         "project_id":'380',
     }
     console.log("paramscheck", params);
-    if(TradeMarkForm.class_id.value != ""){
-        params["class_id"] =TradeMarkForm.class_id.value;
-    }
+    // if(TradeMarkForm.class_id.value != ""){
+    //     params["class_id"] =TradeMarkForm.class_id.value;
+    // }
     if (filtererr.length > 0) {
         // setTradeMarkForm({ error: true });
     } else {
@@ -202,113 +341,22 @@ const handleCancel = () => {
 }
 
 
+useEffect(() => {
 
-const [TradeMarkForm, setTradeMarkForm] = useState({
-    client_applicant: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
+    if(props.tradeMark&&props.tradeMark.length>0){
+        // TradeMarkForm.class_id.value=props.tradeMark.class_id
+        TradeMarkForm.patent_title.value=props.tradeMark.patent_title
+        TradeMarkForm.serial_no.value=props.tradeMark.serial_no
+        TradeMarkForm.org_appeal_no.value=props.tradeMark.org_appeal_no
+        TradeMarkForm.respondent.value=props.tradeMark.respondent
+        TradeMarkForm.respondent_rep.value=props.tradeMark.respondent_rep
+        TradeMarkForm.filing_type_id.value=props.tradeMark.filing_type_id
+        TradeMarkForm.comments.value=props.tradeMark.comments
+        TradeMarkForm.status_id.value=props.tradeMark.status_id
+    }
 
-    },
-    trademark_ipab_id: {
-        value: 0,
-        validation: [],
-        error: null,
-        errmsg: null,
-        disabled: false,
-    },
-    applicant_no: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
+}, [props.tradeMark])
 
-    },
-    patent_title: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    revocation_filing_date: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    serial_no: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    org_appeal_no: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    date_of_hearing: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    respondent: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    respondent_rep: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    filing_type_id: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-    status_id: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-
-    comments: {
-        value: 0,
-        validation: [{ "name": "required" },],
-        error: null,
-        errmsg: null,
-        disabled: false,
-
-    },
-})
 function checkValidation(data, key, multipleId) {
 
     var errorcheck = ValidationLibrary.checkValidation(

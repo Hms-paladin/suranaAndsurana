@@ -171,6 +171,7 @@ export const INSERT_SUBSTAGE = "INSERT_SUBSTAGE"
 export const USER_GET_STATUS = "USER_GET_STATUS"
 export const INSERT_STATUS = "INSERT_STATUS"
 export const GET_USER_CLASS = "GET_USER_CLASS"
+export const GET_CITY_BY_ID = "GET_CITY_BY_ID"
 
 // user master Table
 export const GET_TABLE_STATUS = "GET_TABLE_STATUS"

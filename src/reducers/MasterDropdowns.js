@@ -47,6 +47,7 @@ import {
   GET_SUBACTIVITY,
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
+  GET_CITY_BY_ID
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -96,6 +97,7 @@ const initalState = {
   getUserStatus: [],
   getUserGroup: [],
   getCategory: [],
+  getCity_By_Id:[],
   getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
 };
 
@@ -112,6 +114,8 @@ export default function (state = initalState, action) {
       return { ...state, getState: payload };
     case GET_CITY:
       return { ...state, getCity: payload };
+    case GET_CITY_BY_ID:
+      return { ...state, getCity_By_Id: payload };
     case GET_LANGUAGES:
       return { ...state, getLanguages: payload };
     case GET_SKILLS:
