@@ -347,7 +347,7 @@ function ApplicationForeign(props) {
                     </Grid>
 
                     <Grid>
-                        <div className="Fieldheadings">TiCommentstle</div>
+                        <div className="Fieldheadings">Comment</div>
                         <div className="coments_div"><Labelbox type="text"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={patentForm.comments.value}

@@ -13,7 +13,9 @@ import { InesertResume } from "../../actions/ResumeAction";
 import { getExpenseType, getPaymentMode, InsertOPE } from "../../actions/projectTaskAction";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
-import moment from 'moment'
+import moment from 'moment';
+import { notification } from "antd";
+
 
 function OpeModel(props) {
     const [expenseLists, setexpenseLists] = useState({})
@@ -24,10 +26,10 @@ function OpeModel(props) {
     const [selectedFile, setselectedFile] = useState([]);
     const fileUpload = {
         name: 'file',
-
+        // console.log(name, "name"),
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+                // console.log(info.file.name, info.fileList, "opload");
             }
             if (info.file.status === 'done') {
                 setselectedFile(info.file.originFileObj);
@@ -37,6 +39,8 @@ function OpeModel(props) {
             }
         },
     };
+    console.log(selectedFile,selectedFile.name, "fileUpload")
+
     const [opeModel, setopeModel] = useState({
         expenseType: {
             value: "",
@@ -135,8 +139,16 @@ function OpeModel(props) {
                 "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
                 "updated_by": localStorage.getItem("empId"),
             }
-            dispatch(InsertOPE(params)).then(() => {
+            dispatch(InsertOPE(params)).then((response) => {
+
+                // if (response.data.status === 1) {
+                notification.success({
+                    message: "OPE Added Successfully",
+                });
                 handleCancel()
+                props.handleChangeCloseModel()
+                // fileUpload = " ";
+                // }
             })
         }
 
@@ -144,6 +156,8 @@ function OpeModel(props) {
             ...prevState
         }));
     };
+
+    // console.log(fileUpload, "fileUpload")
 
     const handleCancel = () => {
         let From_key = [
@@ -196,7 +210,7 @@ function OpeModel(props) {
     };
     return (
         <div>
-            { projectDetails.length > 0 && projectDetails.map((data) => {
+            {projectDetails.length > 0 && projectDetails.map((data) => {
                 return (
                     <div className="opeHeader">
                         <div>{data.project_type} </div>

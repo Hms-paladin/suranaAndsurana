@@ -367,8 +367,13 @@ function ProjectIp(props) {
     }
 
     const opeModel = () => {
+
+        const handleFieldNullExp = (bln) => {
+            setOpeModelOpen(bln);
+           
+        };
         return (
-            <OPEModel />
+            <OPEModel handleChangeCloseModel={(bln) => handleFieldNullExp(bln)} />
         )
     }
 
@@ -653,7 +658,7 @@ function ProjectIp(props) {
                                 {" "}
                                 <label className="notfound_label">
                                     Do You Want To Continue ?
-                    </label>
+                                </label>
                             </div>
                             <div className="customNotFoundbtn">
                                 <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />

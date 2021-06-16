@@ -364,7 +364,7 @@ function IndiaFilling(props) {
           </Grid>
 
           <Grid>
-            <div className="Fieldheadings">priority Country</div>
+            <div className="Fieldheadings">Priority Country</div>
             <Labelbox type="select"
               dropdown={indFilGetList.getCountryList}
               changeData={(data) => checkValidation(data, "priority_country")}
@@ -376,7 +376,7 @@ function IndiaFilling(props) {
           </Grid>
 
           <Grid>
-            <div className="Fieldheadings">priority Date</div>
+            <div className="Fieldheadings">Priority Date</div>
             <Labelbox type="datepicker"
               changeData={(data) => checkValidation(data, "priority_date")}
               value={IndiaForm.priority_date.value}

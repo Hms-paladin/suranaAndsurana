@@ -172,60 +172,61 @@ const CopyRight = (props) => {
     return (
         <div >
             <div className="copyright_div">
-                <Grid>
-                    <div className="Fieldheadings">Title</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "title")}
-                        value={copy_Right.title.value}
-                        error={copy_Right.title.error}
-                        errmsg={copy_Right.title.errmsg} />
-                </Grid>
+                <Grid item xs={12} md={12} className="app_cont_domestic">
 
-                <Grid>
-                    <div className="Fieldheadings">Type of work</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "type_of_work")}
-                        value={copy_Right.type_of_work.value}
-                        error={copy_Right.type_of_work.error}
-                        errmsg={copy_Right.type_of_work.errmsg} />
-                </Grid>
+                    <Grid>
+                        <div className="copyFieldheadings">Title</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "title")}
+                            value={copy_Right.title.value}
+                            error={copy_Right.title.error}
+                            errmsg={copy_Right.title.errmsg} />
+                    </Grid>
 
-                <Grid>
-                    <div className="Fieldheadings">Upload Image</div>
-                    <div className="uploadbox_div"  >
-                        <div>
-                            <Upload {...props} className="uploadbox_tag"
-                            // action='https://www.mocky.io/v2/5cc8019d300000980a055e76' 
-                            // onChange={(e)=>onFileChange()}
-                            >
+                    <Grid>
+                        <div className="copyFieldheadings">Type of work</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "type_of_work")}
+                            value={copy_Right.type_of_work.value}
+                            error={copy_Right.type_of_work.error}
+                            errmsg={copy_Right.type_of_work.errmsg} />
+                    </Grid>
 
-                                <div className="upload_file_inside" ><label style={{ whiteSpace: 'nowrap' }}>Upload Image</label><PublishIcon /></div>
-                            </Upload>
+                    <Grid>
+                        <div className="copyFieldheadings">Upload Image</div>
+                        <div className="uploadbox_div"  >
+                            <div>
+                                <Upload {...props} className="uploadbox_tag"
+                                    // action='https://www.mocky.io/v2/5cc8019d300000980a055e76' 
+                                    // onChange={(e)=>onFileChange()}
+                                    accept=".pdf"
+                                >
+                                    <div className="upload_file_inside" ><label style={{ whiteSpace: 'nowrap' }}>Upload Image</label><PublishIcon /></div>
+                                </Upload>
 
+                            </div>
                         </div>
-                    </div>
-                </Grid>
+                    </Grid>
 
-            </div>
-            <div className="copyright_div">
-                <Grid>
-                    <div className="Fieldheadings">Reference</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "reference")}
-                        value={copy_Right.reference.value}
-                        error={copy_Right.reference.error}
-                        errmsg={copy_Right.reference.errmsg} />
-                </Grid>
 
-                <Grid>
-                    <div className="Fieldheadings">Status</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "status")}
-                        value={copy_Right.status.value}
-                        error={copy_Right.status.error}
-                        errmsg={copy_Right.status.errmsg} />
-                </Grid>
+                    <Grid>
+                        <div className="copyFieldheadings">Reference</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "reference")}
+                            value={copy_Right.reference.value}
+                            error={copy_Right.reference.error}
+                            errmsg={copy_Right.reference.errmsg} />
+                    </Grid>
 
+                    <Grid>
+                        <div className="copyFieldheadings">Status</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "status")}
+                            value={copy_Right.status.value}
+                            error={copy_Right.status.error}
+                            errmsg={copy_Right.status.errmsg} />
+                    </Grid>
+                </Grid>
             </div>
             <Grid item xs={12} container justify="flex-end" className="patent_btns">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
