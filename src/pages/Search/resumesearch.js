@@ -284,7 +284,7 @@ function Resumesearch(props) {
         })
         obj = [];
     }
-    console.log(checkList,"checkedlist")
+    console.log(checkList, "checkedlist")
     const viewCandidate = (id) => {
         setViewId(id)
         setCandidateViewModel(true)
@@ -357,42 +357,42 @@ function Resumesearch(props) {
     }
     ///*****user permission**********/
     useEffect(() => {
-        if(props.UserPermission.length>0&&props.UserPermission){
-           let data_res_id = props.UserPermission.find((val) => { 
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
                 return (
-                    "Resume - Create Resume" == val.control 
-                ) 
+                    "Resume - Create Resume" == val.control
+                )
             })
-         setCreatRights(data_res_id)
+            setCreatRights(data_res_id)
 
-             data_res_id = props.UserPermission.find((val) => { 
+            data_res_id = props.UserPermission.find((val) => {
                 return (
-                    "Resume - Go" == val.control 
-                ) 
+                    "Resume - Go" == val.control
+                )
             })
-        setGoRights(data_res_id)
+            setGoRights(data_res_id)
 
-             data_res_id = props.UserPermission.find((val) => { 
+            data_res_id = props.UserPermission.find((val) => {
                 return (
-                    "Resume - Interview Details" == val.control 
-                ) 
-        })
-        setInterviewScheduleRights(data_res_id)
+                    "Resume - Interview Details" == val.control
+                )
+            })
+            setInterviewScheduleRights(data_res_id)
 
-       }
-   
-       }, [props.UserPermission]);
+        }
+
+    }, [props.UserPermission]);
 
 
 
- console.log(creatRights,"rigths")
+    console.log(creatRights, "rigths")
 
-    function rightsNotification(){
+    function rightsNotification() {
         notification.success({
             message: "You are not Authorized. Please Contact Administrator",
         });
     }
-/////////////
+    /////////////
     return (
         <div>
             <div>
@@ -473,7 +473,7 @@ function Resumesearch(props) {
                                 mode="multiple"
                             />
                         </Grid>
-                        
+
                         <Grid item xs={3} >
                             <div className="experienceSearch">
                                 <div>Experience</div>
@@ -496,14 +496,14 @@ function Resumesearch(props) {
                         <Grid container item xs={3} >
 
                             <Grid item xs={4}>
-                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
+                                <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} custombtnCSS={"goSearchbtn"} />
 
                             </Grid>
                             <Grid item xs={8}>
-                                <Link to={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?'search':'resume'}>
+                                <Link to={!creatRights || creatRights.display_control && creatRights.display_control === 'N' ? 'search' : 'resume'}>
                                     <CustomButton btnName={"Create Resume"} btnCustomColor="customPrimary" custombtnCSS={"createResumeSearchbtn"}
-                                    btnDisable={!creatRights||creatRights.display_control&&creatRights.display_control==='N'?true:false}
-                                      />
+                                        btnDisable={!creatRights || creatRights.display_control && creatRights.display_control === 'N' ? true : false}
+                                    />
                                 </Link>
                             </Grid>
                         </Grid>
@@ -513,7 +513,7 @@ function Resumesearch(props) {
                     <EnhancedTable headCells={headCells} rows={rows && rows} />
                 </div>
                 <div className="searchinterviewbtn">
-                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0||!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?true:false} onBtnClick={() =>setModelOpen(true)}  /></div>
+                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false} onBtnClick={() => setModelOpen(true)} /></div>
                 <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} handleUnCheck={handleUnCheck} />
 
             </div>

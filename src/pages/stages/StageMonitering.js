@@ -8,9 +8,9 @@ import Calender from "../../images/calender.svg";
 import Like from "../../images/like.svg";
 import Unlike from "../../images/unlike.svg";
 import More from "../../images/more.svg";
-import {getStageMonitor,insertStageMaonitor} from "../../actions/StageMonotorrAction";
+import { getStageMonitor, insertStageMaonitor } from "../../actions/StageMonotorrAction";
 import { useParams } from "react-router-dom";
-import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
+import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import Labelbox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
 
@@ -32,17 +32,17 @@ const StageMonitor = (props) => {
   const [updateParam, setupdateParam] = useState({
 
     compDate: {
-        value: "2021-04-28",
-        validation: [],
-        error: null,
-        errmsg: null,
+      value: "2021-04-28",
+      validation: [],
+      error: null,
+      errmsg: null,
     },
     stagelistid: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
-  }
+    }
   })
 
   function checkValidation(data, key, multipleId) {
@@ -61,105 +61,118 @@ const StageMonitor = (props) => {
       [key]: dynObj,
     }));
 
-    updateParam[key].value=data;
+    updateParam[key].value = data;
   };
 
   let { rowId } = useParams();
   useEffect(() => {
-    
+
     dispatch(getProjectDetails(rowId))
     dispatch(getStageMonitor(props.ProjectDetails))
-   // dispatch(insertStageMaonitor());
-   
-    
-    
+    // dispatch(insertStageMaonitor());
+
+
+
   }, []);
 
-  const like=()=>{
-    return(
+  const like = () => {
+    return (
       <div className="likeIcon">
-              <img src={Like} style={{ cursor: 'pointer', width: 19 }} />
+        <img src={Like} style={{ cursor: 'pointer', width: 19 }} />
       </div>
     );
   }
 
-  const dislike=()=>{
-    return(
+  const dislike = () => {
+    return (
       <div className="unlikeIcon">
-              <img src={Unlike} style={{ cursor: 'pointer', width: 19 }} />
+        <img src={Unlike} style={{ cursor: 'pointer', width: 19 }} />
       </div>
     )
   }
 
-  const more=()=>{
-    return(
+  const more = () => {
+    return (
       <div className="likeIcon">
-              <img src={More} style={{ cursor: 'pointer', width: 19 }} />
+        <img src={More} style={{ cursor: 'pointer', width: 19 }} />
       </div>
     )
   }
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
-        project_id:props.ProjectDetails[0].project_id,
-        client_id:props.ProjectDetails[0].client_id,
+      project_id: props.ProjectDetails[0].project_id,
+      client_id: props.ProjectDetails[0].client_id,
     })
-    
+
     let StageListData = []
-    props.stageList.map((data) =>{
-    let b = true;
-    if(b && (data.actual_date ==true)){
-      b= false;
-      let key ='stagelistid';
-      let obj = {
-        value: data.stage_list_id,
-        validation: [],
-      error: null,
-      errmsg: null,
+    props.stageList.map((data) => {
+      let b = true;
+      if (b && (data.actual_date == true)) {
+        b = false;
+        let key = 'stagelistid';
+        let obj = {
+          value: data.stage_list_id,
+          validation: [],
+          error: null,
+          errmsg: null,
+        }
+        setupdateParam(prevState => ({
+          ...prevState,
+          [key]: obj,
+        }));
+        setCompliance_date(data.compliance_date)
+
+        StageListData.push({
+          stage: data.stage,
+          substage: data.sub_stage, compliancedate: data.compliance_date,
+          actualdate: <div style={{ width: '70%' }}>
+            <Labelbox type='datepicker' placeholder={'Actual Date'}
+              changeData={(data) => checkValidation(data, 'compDate')}
+              value={updateParam.compDate.value} error={updateParam.compDate.error}
+              errmsg={updateParam.compDate.errmsg} />
+          </div>,
+          statusImg: data.statusImg
+        });
+      } else {
+        let icon = 0
+        if (data.compliance_date === data.actual_date)
+          icon = more()
+        else if (data.compliance_date < data.actual_date)
+          icon = dislike()
+        else if (data.compliance_date > data.actual_date)
+          icon = like()
+
+
+        StageListData.push({
+          stage: data.stage,
+          substage: data.sub_stage, compliancedate: data.compliance_date, actualdate: data.actual_date, statusImg: icon
+        })
       }
-      setupdateParam(prevState => ({
-        ...prevState,
-        [key]: obj,
-      }));
-      setCompliance_date(data.compliance_date)
-    
-    StageListData.push({ stage: data.stage,
-    substage: data.sub_stage,compliancedate: data.compliance_date,
-    actualdate: <div style={{width:'70%'}}>
-                  <Labelbox type='datepicker' placeholder={'Actual Date'} 
-                  changeData={(data)  => checkValidation(data, 'compDate')} 
-                  value={updateParam.compDate.value} error={updateParam.compDate.error}
-                  errmsg={updateParam.compDate.errmsg}/>
-                </div>,
-     statusImg: data.statusImg});
-  }else{
-    let icon=0
-      if(data.compliance_date===data.actual_date)
-      icon=more()
-      else if(data.compliance_date<data.actual_date)
-      icon=dislike()
-      else if(data.compliance_date>data.actual_date)
-      icon=like()
-      
-  
-    StageListData.push({ stage: data.stage,
-      substage: data.sub_stage,compliancedate: data.compliance_date,actualdate: data.actual_date,statusImg: icon})
-  }
-}
-)
-setStageList({ StageListData })
+    }
+    )
+    setStageList({ StageListData })
 
-  }, [props.stageList,props.ProjectDetails,updateParam.compDate.value]);
+  }, [props.stageList, props.ProjectDetails, updateParam.compDate.value]);
 
+  console.log(stageList && stageList?.StageListData?.length, "stage")
 
   function SubmitFunction() {
-    dispatch(insertStageMaonitor(updateParam,compliance_date,projectDetails));
+    // props.stageList.map((data, index) => {
+    //   console.log(stageList.StageListData.length, data.length, index, "stagelist")
+    //   if (index <= stageList.StageListData.length) {
+    dispatch(insertStageMaonitor(updateParam, compliance_date, projectDetails));
+
+    //   }
+
+    // })
+
   }
 
   return (
     <div>
       <Grid container spacing={2} className="ratemaster_firstgrid">
-      <EnhancedTable headCells={header}
+        <EnhancedTable headCells={header}
           rows={stageList.length == 0 ? stageList : stageList.StageListData} />
       </Grid>
       <div className="customstagemonitorbtn">
@@ -172,6 +185,7 @@ setStageList({ StageListData })
         <CustomButton
           btnName={"Cancel"}
           custombtnCSS={"btnstagemonitor"}
+          onBtnClick={SubmitFunction}
 
         />
       </div>
@@ -182,10 +196,10 @@ setStageList({ StageListData })
 const mapStateToProps = (state) =>
 
 ({
-    
-     stageList: state.StageMonotorReducer.getStageMonitor || [],
-     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
-    
+
+  stageList: state.StageMonotorReducer.getStageMonitor || [],
+  ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+
 });
 
 export default connect(mapStateToProps)(StageMonitor);

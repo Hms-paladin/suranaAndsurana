@@ -364,6 +364,8 @@ function TimeSheetStartModel(props) {
                                 value={timeSheetForm.startTime.value}
                                 error={timeSheetForm.startTime.error}
                                 errmsg={timeSheetForm.startTime.errmsg}
+                                disablePast={true}
+
                             />
                         </Grid>
                         <Grid item xs={3}>
