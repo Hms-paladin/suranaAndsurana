@@ -362,7 +362,7 @@ function ApplicationDomestic(props) {
             <div className="Fieldheadings">Comments</div>
             <div className="coments_div">
               <Labelbox
-                type="text"
+                type="textarea"
                 changeData={(data) => checkValidation(data, "comments")}
                 value={patentForm.comments.value}
                 error={patentForm.comments.error}

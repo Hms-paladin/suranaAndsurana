@@ -169,7 +169,7 @@ function RectificationDefended(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comments</div>
-                        <Labelbox type="text"
+                        <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={RectificationDefended.comments.value}
                             error={RectificationDefended.comments.error}
