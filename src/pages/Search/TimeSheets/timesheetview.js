@@ -49,7 +49,7 @@ function TimeSheetView(props) {
         }
 
     })
-    
+    //dispatch(getTaskTimeSheet(props.rowData.task_id));
    console.log('1')
         //var paramVal =props.rowData;
         console.log('2')
@@ -60,15 +60,20 @@ function TimeSheetView(props) {
     
         useEffect(() => {
             //if(dispatch(getTaskTimeSheet(props.rowData.task_id));)
+            handleCancel();
             if(props.getTaskTimeSheet && props.getTaskTimeSheet[0] && props.getTaskTimeSheet[0].task_id==props.rowData.task_id ){
             if(props.getTaskTimeSheet.length >0 ){
                 
                 if(props.getTaskTimeSheet[0].timesheet.length >0 ){
-                    var tsSize =props.getTaskTimeSheet.length -1;
+                    var tsSize =props.getTaskTimeSheet[0].timesheet.length -1;
                 if(props.getTaskTimeSheet[0].timesheet[tsSize].start_date == null && props.getTaskTimeSheet[0].timesheet[tsSize].start_time == null){
                     setTimesheetStart(true) 
                     settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
-                }else{
+                }else if(props.getTaskTimeSheet[0].timesheet[tsSize].end_date != null && props.getTaskTimeSheet[0].timesheet[tsSize].end_time != null){
+                    setTimesheetStart(true) 
+                    settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+                }
+                    else{
                 setTimesheetStart(false)
                 
                 setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
@@ -148,14 +153,10 @@ function TimeSheetView(props) {
     
     const handleCancel = () => {
         let From_key = [
-            "activity",
-            "subActivity",
+            "startTime",
             "fromDate",
             "toDate",
-            "assignTo",
-            "tag",
-            "priority",
-            "startTime", "description"
+            "endTime", "description"
         ];
 
         From_key.map((data) => {

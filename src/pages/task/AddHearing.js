@@ -7,7 +7,7 @@ import DynModel from "../../component/Model/model";
 import ValidationLibrary from "../../helpers/validationfunction";
 import EditTimeSheet from './Timesheet/Timesheet'
 import Adjournment from './Adjournment'
-
+import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import { getHearingDetails,InsertHearingDets } from "../../actions/projectTaskAction";
 
 import { useDispatch, connect } from "react-redux";
@@ -19,8 +19,17 @@ const handleChangeModel=()=>{
     setOpenSheet(true)
 }
 const [adjourn,setadjourn]=useState(false)
+const [modelOpen,setModelOpen]=useState(false)
+const modelContent = () => {
+  return (
+      <ProjectTaskModel />
+  )
+}
 const Adjourn_Model=()=>{
     setadjourn(true)
+}
+const openTaskModel=()=>{
+  setModelOpen(true)
 }
 
 useEffect(() => {
@@ -148,8 +157,8 @@ function onSubmit() {
               errmsg={HearingData.hearingoutcome.errmsg}
               />
               </div>
-          
-             <div className="cre_buttons_div"><CustomButton btnName={"Create Task"} btnCustomColor="customPrimary" custombtnCSS="cus_create_task"/>
+              <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
+             <div className="cre_buttons_div"><CustomButton btnName={"Create Task"} btnCustomColor="customPrimary" onBtnClick={openTaskModel} custombtnCSS="cus_create_task"/>
              <CustomButton btnName={"Adjournment"} btnCustomColor="customPrimary" custombtnCSS="cus_create_task" onBtnClick={Adjourn_Model}/>
              </div>
              <div>

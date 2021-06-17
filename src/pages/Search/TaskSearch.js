@@ -260,6 +260,13 @@ setStartModelOpen(flg);
                 <div className="card_div">
                 <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
                 content={<TimeSheetView rowData={taskData}  handleChangeCloseModel={(bln) => setStartModelOpen(bln)}/>} width={1000} />
+
+<DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  
+content={<TaskStatus rowData={taskData}/>} width={300}/>
+ <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
+
+<DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
+<DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
                 {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
                     if(data.totalHours && data.totalHours.length >0){
                         data.totalHours = data.totalHours.split(":")[0];
@@ -328,15 +335,13 @@ setStartModelOpen(flg);
                                 </div>
                                 <div className="images_div">
                                     <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
-                                    <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
                                     <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
-                                    <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
+                                   
                                     <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>fntaskcompletionstatus({data})}/>
-                                    <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  content={<TaskStatus rowData={taskData}/>} width={300}/>
                                     
                                    
-                                    {<img src={data.project_id != null || data.hearing != null ? Order : ""} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={data.project_id != null || data.hearing != null ? ()=>fntaskHearingDetails({data}) : ""}/>}
-                                    <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
+                                    {<img src={data.activity == 'Hearing' ? Order : ""} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={data.activity == 'Hearing' ? ()=>fntaskHearingDetails({data}) : ""}/>}
+                                    
                                     
                                 </div>
                             </div>
