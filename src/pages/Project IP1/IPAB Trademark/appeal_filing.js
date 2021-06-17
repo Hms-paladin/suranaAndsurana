@@ -15,6 +15,7 @@ function AppealFiling(props){
     const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
     const [projectDetails, setProjectDetails] = useState({})
+    const [saveOrUpdate, setSaveOrUpdate] = useState()
     const [idDetails, setidDetails] = useState({})
     console.log("appeal Filing", props);
     let { rowId } = useParams()
@@ -99,6 +100,13 @@ function AppealFiling(props){
           ProcessType:  props.ProjectDetails[0].process_id
       }
       dispatch(getFilingType(id));
+
+      
+      if(TradeMarkForm.trademark_ipab_id.value == "" || TradeMarkForm.trademark_ipab_id.value == null || TradeMarkForm.trademark_ipab_id.value == undefined){
+        setSaveOrUpdate("Save");
+      } else {
+        setSaveOrUpdate("Update");
+      }
 }, [props.tradeStatusList,props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
@@ -431,7 +439,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={1}></Grid>
             </Grid>
             <div className="trademarkbtn">
-                <CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                <CustomButton btnName={saveOrUpdate} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"   onBtnClick={handleCancel}  />
             </div>
         </div>
