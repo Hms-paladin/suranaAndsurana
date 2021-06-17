@@ -332,7 +332,7 @@ setStartModelOpen(flg);
                                     <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  content={<TaskStatus rowData={taskData}/>} width={300}/>
                                     
                                    
-                                    {<img src={data.project_id != null ? Order : ""} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={data.project_id != null ? ()=>fntaskHearingDetails({data}) : ""}/>}
+                                    {<img src={data.project_id != null || data.hearing != null ? Order : ""} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={data.project_id != null || data.hearing != null ? ()=>fntaskHearingDetails({data}) : ""}/>}
                                     <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
                                     
                                 </div>

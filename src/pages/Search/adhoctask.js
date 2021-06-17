@@ -19,7 +19,7 @@ function AdhocTaskModal(props) {
     const [adhoc_Form, setadhoc_Form] = useState({
         task_description: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "alphabetwithspace" }],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -134,8 +134,11 @@ function AdhocTaskModal(props) {
             // setadhoc_Form({ error: false });
 
         }
+        var dateFormat = require('dateformat');
+var now = new Date();
+var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
         var data ={
-            "start_date":adhoc_Form.start_date.value,
+            "start_date":fromDateval, //adhoc_Form.start_date.value,
             "end_date":adhoc_Form.end_date.value,
             "tag":adhoc_Form.tag.value,
             "assignee_id":adhoc_Form.assigned_task.value, 
