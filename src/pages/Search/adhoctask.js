@@ -143,7 +143,7 @@ var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
             "tag":adhoc_Form.tag.value,
             "assignee_id":adhoc_Form.assigned_task.value, 
             "assigned_by":localStorage.getItem("empId"),
-            "description":adhoc_Form.task_description.value
+            "description":encodeURI(adhoc_Form.task_description.value)
         }
         dispatch(insertAdhocTask(data)).then((response) => {
             console.log("Insert");
