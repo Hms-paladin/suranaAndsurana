@@ -310,7 +310,7 @@ setStartModelOpen(flg);
                             <div style={{ width: '37%' }}>
                                 <div className="start_date_yellow">
                                     <p>Started Date : {data.started_date && data.started_date!="" ? moment(data.started_date).format("DD MMM YYYY"):""}</p>
-                                    <p>Time : {data.started_time}</p>
+                                    <p>Time : {data.started_time && data.started_time!="" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p>
                                 </div>
                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date!="" ? moment(data.actual_start_date).format("DD MMM YYYY"):""}</span></span>

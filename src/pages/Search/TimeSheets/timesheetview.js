@@ -70,8 +70,10 @@ function TimeSheetView(props) {
                     settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
                 }else{
                 setTimesheetStart(false)
-                setstartDateDisplay(props.getTaskTimeSheet[0].timesheet[tsSize].start_date);
-                setstartTimeDisplay(props.getTaskTimeSheet[0].timesheet[tsSize].start_time);
+                
+                setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
+                var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
+                setstartTimeDisplay(startttime);
                 settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
                 }
             }
