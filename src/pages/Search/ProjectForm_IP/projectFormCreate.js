@@ -456,7 +456,6 @@ function ProjectFormCreate(props) {
     }
   }
 
-  console.log(projectform, "projectforms")
 
   const hideValidation = (From_key) => {
     From_key.map((data) => {
@@ -475,9 +474,6 @@ function ProjectFormCreate(props) {
 
 
   function onsubmit() {
-
-
-
     var mainvalue = {};
     var targetkeys = Object.keys(projectform);
     for (var i in targetkeys) {
@@ -494,6 +490,7 @@ function ProjectFormCreate(props) {
     console.log(filtererr.length, projectform, "projectform ")
 
     if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length === 0) {
+      alert("test1")
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
           handleCancel();
@@ -501,11 +498,13 @@ function ProjectFormCreate(props) {
       );
     }
     else if (filtererr.length > 1) {
+      alert("test2")
     }
     else if (filtererr.length == 0) {
+      alert("test3")
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
-          handleCancel();
+          // handleCancel();
         }
       );
     }
@@ -915,7 +914,7 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.unit_measurement.errmsg} /> </Grid></Grid>
               ) : (
                 <Grid item xs={6}>
-                  
+
                 </Grid>
               )}
               <Grid item xs={6}> <div className="Fieldheading">Comments</div>
@@ -1074,7 +1073,7 @@ function ProjectFormCreate(props) {
                     errmsg={projectform.comments.errmsg} />
                 </div>
               </Grid>
-              {console.log(projectform.billable_type.value, "projectform.limits.errors")}
+              {/* {console.log(projectform.billable_type.value, "projectform.limits.errors")} */}
 
               {projectform.billable_type.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
@@ -1094,7 +1093,7 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.unit_measurement.errmsg} />
                   </Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Limit</div>
-                    {console.log(projectform.limits.error, "projectform.limits.errors")}
+                    {/* {console.log(projectform.limits.error, "projectform.limits.errors")} */}
                     <Labelbox
                       type="text"
                       changeData={(data) => checkValidation(data, "limits")}

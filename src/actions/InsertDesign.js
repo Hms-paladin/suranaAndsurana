@@ -5,15 +5,15 @@ import { notification } from 'antd';
 import { GET_DESIGN_DETAILS } from "../utils/Constants";
 
 
-export const InsertDesign = (data, ProjectDetails, design_id ) => async dispatch => {
-    console.log(data, ProjectDetails, "ProjectDetailsTest")
+export const InsertDesign = (data, ProjectDetails, design_id) => async dispatch => {
+    console.log(data, "ProjectDetailsTest")
 
     try {
         axios({
             method: 'POST',
             url: apiurl + 'insert_design',
             data: {
-                "design_id": design_id.length > 0 ? design_id[0].design_id : 0 ,
+                "design_id": design_id || 0,
                 "project_id": ProjectDetails.project_id,
                 "file_cover": data.file_cover && data.file_cover.value || "",
                 "associate": data.associate && data.associate.value || "",
@@ -53,7 +53,7 @@ export const InsertDesign = (data, ProjectDetails, design_id ) => async dispatch
     } catch (err) {
         notification.error({
             message: 'Something Went Wrong,Record Not Added',
-          });
+        });
     }
 }
 
@@ -67,7 +67,7 @@ export const getDesignDetails = (ProjectId) => async dispatch => {
             }
         })
             .then((response) => {
-                dispatch({type:GET_DESIGN_DETAILS, payload: response.data.data})
+                dispatch({ type: GET_DESIGN_DETAILS, payload: response.data.data })
             })
 
     } catch (err) {

@@ -82,6 +82,7 @@ function RectificationFiled(props) {
         console.log(filtererr.length);
         if (filtererr.length > 0) {
         } else {
+            console.log(props.projectDetails && props.projectDetails[0],"dsignid")
             dispatch(InsertDesign(RectificationFiled, props.projectDetails && props.projectDetails[0])).then(() => {
                 handleCancel()
             })
@@ -168,7 +169,7 @@ function RectificationFiled(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comments</div>
-                        <Labelbox type="text"
+                        <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={RectificationFiled.comments.value}
                             error={RectificationFiled.comments.error}

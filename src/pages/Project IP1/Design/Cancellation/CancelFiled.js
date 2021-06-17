@@ -236,7 +236,7 @@ function CancelFiled(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comments</div>
-                        <Labelbox type="text"
+                        <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={CancelFiled.comments.value}
                             error={CancelFiled.comments.error}

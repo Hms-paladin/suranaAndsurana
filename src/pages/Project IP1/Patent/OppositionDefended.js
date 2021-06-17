@@ -273,7 +273,7 @@ function OppositionDefended(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comments</div>
-                        <div className="foreign_div"><Labelbox type="text"
+                        <div className="foreign_div"><Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={patentForm.comments.value}
                             error={patentForm.comments.error}

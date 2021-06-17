@@ -381,7 +381,7 @@ function checkValidation(data, key, multipleId) {
                 />
                 </Grid>
                 <Grid item xs={2}>
-                    <Labelbox type="text"
+                    <Labelbox type="textarea"
                         placeholder={" Comments"}
                         disableFuture={false}
                               changeData={(data) => checkValidation(data, "comments")}

@@ -400,13 +400,16 @@ function IndiaFilling(props) {
 
           <Grid>
             <div className="Fieldheadings">Comments</div>
-            <Labelbox type="textarea"
-              changeData={(data) => checkValidation(data, "comments")}
-              value={IndiaForm.comments.value}
-              error={IndiaForm.comments.error}
-              errmsg={IndiaForm.comments.errmsg}
-              disabled={IndiaForm.comments.disabled}
-            />
+            <div className="projectTaskCmd">
+              <Labelbox type="textarea"
+                changeData={(data) => checkValidation(data, "comments")}
+                value={IndiaForm.comments.value}
+                error={IndiaForm.comments.error}
+                errmsg={IndiaForm.comments.errmsg}
+                disabled={IndiaForm.comments.disabled}
+              />
+            </div>
+
           </Grid>
 
           <Grid>

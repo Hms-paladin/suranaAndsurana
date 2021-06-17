@@ -348,7 +348,7 @@ function ApplicationForeign(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comment</div>
-                        <div className="coments_div"><Labelbox type="text"
+                        <div className="coments_div"><Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={patentForm.comments.value}
                             error={patentForm.comments.error}

@@ -343,7 +343,7 @@ function ApplicationPCT(props) {
         <Grid item xs={12} md={12} className="comments_line">
           <Grid>
             <div className="Fieldheadings">Comments</div>
-            <div className="coments_div"><Labelbox type="text"
+            <div className="coments_div"><Labelbox type="textarea"
               changeData={(data) => checkValidation(data, "comments")}
               value={patentForm.comments.value}
               error={patentForm.comments.error}
