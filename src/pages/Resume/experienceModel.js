@@ -74,7 +74,7 @@ function ExperienceModel(props) {
         console.log(props.editExperiences,"props.editExperiences")
         const industry = props.editExperiences?.type_of_industry;
         const compName = props.editExperiences?.company_name;
-        const city = props.editExperiences?.city;
+        const city = props.editExperiences?.city_id;
         const dept = props.editExperiences?.department;
         const desig = props.editExperiences?.designation;
         const periodFrm = props.editExperiences?.period_from;
@@ -85,7 +85,7 @@ function ExperienceModel(props) {
 
         Experience_Form.industry.value = industry;
         Experience_Form.companyname.value = compName;
-        Experience_Form.city.value = city;
+        Experience_Form.city.value = Number(city);
         Experience_Form.department.value = dept;
         Experience_Form.designation.value = desig;
         Experience_Form.periodfrom.value = periodFrm;
@@ -114,18 +114,19 @@ function ExperienceModel(props) {
 
 
     useEffect(() => {
-        Axios({
-            method: "get",
-            url: apiurl + "get_s_tbl_m_city",
-        }).then((response) => {
-            let cityList = [];
-            response.data.data.map((data, index) =>
-                cityList.push({ value: data.state, id: data.city_id })
-            );
-            setCity(cityList);
-        });
-
-    }, [])
+        // Axios({
+        //     method: "get",
+        //     url: apiurl + "get_s_tbl_m_city",
+        // }).then((response) => {
+        //     let cityList = [];
+        //     response.data.data.map((data, index) =>
+        //         cityList.push({ value: data.state, id: data.city_id })
+        //     );
+        //     setCity(cityList);
+        // });
+        setCity(props.city);
+        
+    }, [props.city])
 
     function onSubmit() {
         var mainvalue = {};

@@ -24,6 +24,7 @@ import {
   GET_INTERVIEW_STATUS,
   GET_CASE_TYPE,
   GET_SUB_CASE_TYPE,
+  GET_CITY_BY_ID
 
 } from "../utils/Constants.js";
 import {
@@ -189,6 +190,18 @@ export const getProjectSubType = (id) => async (dispatch) => {
     },
   });
   return dispatch({ type: GET_PROJECT_SUB_TYPE, payload: response.data.data });
+};
+
+export const getCity_By_Id = (id) => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_city_by_id",
+    data: {
+      state_id: id,
+    },
+  });
+
+  return dispatch({ type: GET_CITY_BY_ID, payload: response.data.data });
 };
 
 export const getProcessType = (id) => async (dispatch) => {

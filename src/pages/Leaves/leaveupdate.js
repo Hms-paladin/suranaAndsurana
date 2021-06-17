@@ -22,6 +22,8 @@ const headCells = [
     { id: 'previousbalance', label: 'Previous Balance' },
     { id: 'eligible', label: 'Eligible' },
     { id: 'currentbalance', label: 'Current Balance' },
+    // { id: 'start_date', label: 'Start Date' },
+    // { id: 'end_date', label: 'End Date' },
     { id: 'action', label: 'Action' }
 ];
 
@@ -427,7 +429,7 @@ function LeaveUpdate(props) {
                     
                     {Leave_Update.leavetype.value?<Grid item xs={3} container direction="row" spacing={2}>
                         <Grid item xs={6}>
-                            <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onSubmit}  />
+                            <CustomButton btnName={editBtn?"Update":"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onSubmit}  />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel}/>

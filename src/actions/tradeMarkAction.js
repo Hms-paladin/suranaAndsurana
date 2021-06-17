@@ -197,6 +197,7 @@ export const insertIPAB = (params) => async dispatch => {
                 notification.success({
                     message: message,
                   });
+                  dispatch(getIPAP(params.project_id))
                 dispatch({type:INSERT_IPAB,payload:response.data.status})
               return Promise.resolve();
             }

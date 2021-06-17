@@ -83,6 +83,13 @@ function ResignationApproveval(props) {
     var mainvalue = {};
     var targetkeys = Object.keys(Resignation);
     for (var i in targetkeys) {
+        if(name==="reject")
+        Resignation[targetkeys[i]].validation=[]
+        else
+        Resignation[targetkeys[i]].validation=[{ name: "required" }]
+
+         
+        Resignation['actualdate_relieving'].validation=[]
         var errorcheck = ValidationLibrary.checkValidation(
             Resignation[targetkeys[i]].value,
             Resignation[targetkeys[i]].validation
@@ -93,11 +100,14 @@ function ResignationApproveval(props) {
     }
     var filtererr = targetkeys.filter((obj) => Resignation[obj].error == true);
     if(filtererr.length>0){
+        console.log(filtererr.length)
     }else{
        let status=false
        if(name==="accept"){
        status=true
        } if(name==="reject"){
+        Resignation.accept_date.value='00-00-0000'
+        Resignation.releive_date.value='00-00-0000'
         status=false
        }
        dispatch(InsertResignation(status,Resignation,props.GetSeverance[0]&&props.GetSeverance[0].employee_id,props.severanceId.severece_id)).then(()=>{

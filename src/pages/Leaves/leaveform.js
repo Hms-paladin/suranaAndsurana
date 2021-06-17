@@ -185,7 +185,7 @@ function LeaveForm(props) {
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff + 1)
 
         Leave_Form["tot_leave"].value =isNaN(diff) ? "" : (diff + 1)
-        // Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
+         Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
         setLeaveForm(prevState => ({
             ...prevState,
         }));
@@ -206,13 +206,15 @@ function LeaveForm(props) {
             Leave_Form.other_days.value = "";
         } else {
             let otherdays = Leave_Form.tot_leave.value - Leave_Form.exam_days.value;
-            setother_days(otherdays)
+            console.log(otherdays,"otherdays")
+            Leave_Form.other_days.value =Leave_Form.tot_leave.value < Leave_Form.exam_days.value?0: otherdays;
         }
 
-
-
+        setLeaveForm((prevState) => ({
+            ...prevState,
+        }));
     }, [Leave_Form.tot_leave.value, Leave_Form.exam_days.value])
-    Leave_Form.other_days.value = other_days;
+    // Leave_Form.other_days.value = other_days;
 
 
     function onDeleteLeaveForm(emp_leave_id) {
@@ -265,8 +267,6 @@ function LeaveForm(props) {
 
         console.log(val.leave_type_id, "leave_type_id")
     }
-    console.log(examSchedule, "Leave_Form")
-
 
     useEffect(() => {
         // Leave Type
@@ -424,10 +424,10 @@ function LeaveForm(props) {
                 leavetype: TableData[m].status,
                 fromdate: (TableData[m].from_date === "0000-00-00" || TableData[m].from_date === null) ? 0 : moment(TableData[m].from_date).format("DD-MM-YYYY"),
                 todate: (TableData[m].to_date === "0000-00-00" || TableData[m].to_date === null) ? 0 : moment(TableData[m].to_date).format("DD-MM-YYYY"),
-                fromtime: (TableData[m].from_time === "00:00:00" || TableData[m].from_time === null) ? 0 : moment(TableData[m].from_time, "HH:mm:ss").format("hh:mm:ss A"),
-                totime: (TableData[m].to_time === "00:00:00" || TableData[m].to_time === null) ? 0 : moment(TableData[m].to_time, "HH:mm:ss").format("hh:mm:ss A"),
+                fromtime: (TableData[m].from_time === "00:00:00" || TableData[m].from_time === null) ? 0 : moment(TableData[m].from_time, "HH:mm:ss").format("hh:mm A"),
+                totime: (TableData[m].to_time === "00:00:00" || TableData[m].to_time === null) ? 0 : moment(TableData[m].to_time, "HH:mm:ss").format("hh:mm A"),
                 status: TableData[m].approve_status === null ? 'Pending' : TableData[m].approve_status === 0 ? "Rejected" : 'Approved',
-                action: (
+                action: TableData[m].approve_status !== 1&&(
                     <>
                         <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onEditLeaveForm(TableData[index])} />{" "}
                         <img src={Delete} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onDeleteLeaveForm(TableData[index].emp_leave_id)} />
@@ -525,7 +525,7 @@ function LeaveForm(props) {
             } else {
                 console.log(Leave_Form, "Leave_Form")
                 dispatch(insertLeaveForm(Leave_Form)).then(() => {
-                    dispatch(getLeaveForm(Leave_Form.leavetype.value));
+                    // dispatch(getLeaveForm(Leave_Form.leavetype.value));
                     handleCancel()
                 })
             }

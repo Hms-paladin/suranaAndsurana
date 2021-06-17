@@ -564,7 +564,7 @@ export const editUser = (UserMaster, password, changeActive, user_id) => async d
 export const deleteUser = (user_id) => async dispatch => {
 
   var DocumentData = new FormData();
-  DocumentData.set("user_id", user_id)
+  DocumentData.set("user_id", user_id.user_id)
 
   try {
     axios({

@@ -17,7 +17,7 @@ import {
   getInstitute,
   getSpecialInterest,
   getStates,
-  getCity,
+  getCity_By_Id,
   getLanguages,
   getSkills,
   getTraits,
@@ -237,7 +237,7 @@ const ResumePage = (props) => {
     dispatch(getInstitute());
     dispatch(getSpecialInterest());
     dispatch(getStates());
-    dispatch(getCity());
+    // dispatch(getCity());
     dispatch(getLanguages());
     dispatch(getSkills());
     dispatch(getTraits());
@@ -249,6 +249,10 @@ const ResumePage = (props) => {
     dispatch(getIndustry());
     dispatch(getTalents());
   }, []);
+
+  useEffect(() => {
+    dispatch(getCity_By_Id(Resume_Form.state.value))
+  },[Resume_Form.state.value])  
 
   useEffect(() => {
     let candidateList = [];
@@ -358,12 +362,18 @@ const ResumePage = (props) => {
   }, [props]);
 
   function checkValidation(data, key, multipleId) {
-    if (data !== 1 && key === "candidate") {
+    if (data !== 1 && data !== 10 && key === "candidate") {
       console.log("candidate", data);
       setExpReq(true);
+      !employererr && setEmployererr(true);
     } else {
       setExpReq(false);
+      employererr && setEmployererr(false);
     }
+
+    // key === "candidate"&&data!==10&&!employererr && setEmployererr(true)&&setExpReq(true);
+    // key === "candidate"&&data===10&&employererr && setEmployererr(false)&&setExpReq(true);
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       Resume_Form[key].validation
@@ -563,7 +573,9 @@ const ResumePage = (props) => {
     // console.log(educationList.length, "educationList.length")
     if (educationList.length === 0 && experienceList.length === 0) {
       !educationerr && setEducationerr(true);
-      !employererr && setEmployererr(true);
+
+      Resume_Form.candidate.value!==10&&!employererr && setEmployererr(true);
+      Resume_Form.candidate.value===10&&employererr && setEmployererr(false);
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
@@ -1255,7 +1267,7 @@ const ResumePage = (props) => {
               alignItems="center"
               className="experienceContainer"
             >
-              {Resume_Form.candidate.value !== 1 && employererr && (
+              {Resume_Form.candidate.value !== 1 && Resume_Form.candidate.value !== 10 && employererr && (
                 <span className="errmsgClrResume">
                   Please Add Previous Employer
                 </span>
@@ -1370,6 +1382,7 @@ const ResumePage = (props) => {
                 nullFieldValueExp={nullFieldValueExp}
                 editExperienceid={experienceid}
                 editExperiences={experiencerow}
+                city={resumeGetList.cityList}
                 editbtn={onEdit}
                 handleChangeCloseModel={(bln) => handleFieldNullExp(bln)}
                 EditExperience={(data, id) => EditExperience(data, id)}
@@ -1389,7 +1402,7 @@ const mapStateToProps = (state) => (
     getInstitute: state.getOptions.getInstitute || [],
     getSpecialInterest: state.getOptions.getSpecialInterest || [],
     getState: state.getOptions.getState || [],
-    getCity: state.getOptions.getCity || [],
+    getCity: state.getOptions.getCity_By_Id || [],
     getLanguages: state.getOptions.getLanguages || [],
     getSkills: state.getOptions.getSkills || [],
     getTraits: state.getOptions.getTraits || [],

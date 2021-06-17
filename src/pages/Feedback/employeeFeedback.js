@@ -180,7 +180,7 @@ useEffect(() => {
                 </Grid>
                 <div className="feedbacbtn">
                     <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={submit} />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                    <CustomButton btnName={"Cancel"} onBtnClick={HandleCancel} custombtnCSS="custom_save" />
                 </div>
 
 

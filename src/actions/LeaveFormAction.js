@@ -44,7 +44,7 @@ export const getEmpAvailableBalance = (employee_id, leave_type_id) => async disp
             url: apiurl + 'get_emp_available_balance',
             data: {
                 "employee_id": employee_id,
-                "leave_type_id": leave_type_id,
+                "leave_type_id": leave_type_id?leave_type_id:0,
 
             }
         })
@@ -106,13 +106,14 @@ export const insertLeaveForm = (Leave_Form) => async dispatch => {
 
 
 export const getLeaveForm = (id) => async dispatch => {
+    console.log(id,"iddddd")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'get_leave_form',
             data: {
                 "employee_id": localStorage.getItem("empId"),
-                "leave_type_id": id || 0
+                "leave_type_id": id?id:0
             }
         }).then((response) => {
             if (response.data.status === 1) {
