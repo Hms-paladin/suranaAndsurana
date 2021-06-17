@@ -261,6 +261,9 @@ setStartModelOpen(flg);
                 <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
                 content={<TimeSheetView rowData={taskData}  handleChangeCloseModel={(bln) => setStartModelOpen(bln)}/>} width={1000} />
                 {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
+                    if(data.totalHours && data.totalHours.length >0){
+                        data.totalHours = data.totalHours.split(":")[0];
+                    }
                     if(data.perecent_completion == 100 && data.actual_end_date != null){
 
                     }else{
