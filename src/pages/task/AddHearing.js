@@ -9,7 +9,7 @@ import EditTimeSheet from './Timesheet/Timesheet'
 import Adjournment from './Adjournment'
 import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import { getHearingDetails,InsertHearingDets } from "../../actions/projectTaskAction";
-
+import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useDispatch, connect } from "react-redux";
 export function Hearing(props){
   const dispatch = useDispatch();
@@ -34,15 +34,18 @@ const openTaskModel=()=>{
 
 useEffect(() => {
   if(props.rowData){
+    dispatch(getProjectDetails(props.rowData.project_id))
   dispatch(getHearingDetails(props.rowData));
   }
 
 }, []);
 
 useEffect(() => {
-       
+  if(props.rowData){
+    dispatch(getProjectDetails(props.rowData.project_id))
+  }   
   
-}, [props.rowData,props.getHearingDets
+}, [props.rowData,props.getHearingDets,props.ProjectDetails
 ]);
 const [HearingData, setHearingData] = useState({
     nexthearing: {
@@ -176,5 +179,6 @@ function onSubmit() {
 const mapStateToProps = (state) =>
 ({
     getHearingDets: state.projectTasksReducer.getHearingDets,
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 export default connect(mapStateToProps)(Hearing);

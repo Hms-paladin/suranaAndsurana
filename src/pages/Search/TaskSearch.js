@@ -69,6 +69,7 @@ function Task(props) {
     const[task_tag,setTaskTag]=useState(false)
     const[task_status,setTaskStatus]=useState(false)
     const[subordinates,setSubordinates]=useState(false)
+    const[taskstatusLists,settaskstatusLists]=useState({})
     const[taskData,setTaskData]=useState({})
     const[subId,setSubId]=useState(false)
     const [fieldVal, setfieldVal] = useState({
@@ -77,7 +78,13 @@ function Task(props) {
           validation: [{ name: "required" }],
           error: null,
           errmsg: null,
-        }
+        },
+        taskstatus: {
+            value: "Active",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+          }
        
       });
       function fnPeriority(data){
@@ -99,6 +106,7 @@ function Task(props) {
         setTaskData(data);
         setHearing(true)
       }
+      let empid= localStorage.getItem("empId");
     function checkValidation(data, key, multipleId) {
         
         var errorcheck = ValidationLibrary.checkValidation(
@@ -129,13 +137,21 @@ function Task(props) {
         if (key == "subOrdinateVal") {
             dispatch(getTaskList(data));
           }
+          if (key == "taskstatus") {
+              if(fieldVal.subOrdinateVal.value){
+                dispatch(getTaskList(fieldVal.subOrdinateVal.value));
+              }else{
+                dispatch(getTaskList(empid));
+              }
+            
+          }
         
         setfieldVal((prevState) => ({
           ...prevState,
           [key]: dynObj,
         }));
       }
-    let empid= localStorage.getItem("empId");
+    
     useEffect(() => {
         dispatch(getTaskList(empid));
         dispatch(getSubordinate(empid)); 
@@ -143,20 +159,19 @@ function Task(props) {
       }, []);
       useEffect(() => {
         
-    //var tasks =props.getTaskLists;
-/*
-    if(props.getTaskLists && props.getTaskLists.length>0){
-        var obj =props.getTaskLists;
-        var list=[];
-    for(var i =0;i<obj.length; i++){
-       var timesheet =  getTaskTimeSheetbyTaskIdsss(obj[i].task_id);
-       if(timesheet && timesheet.length >0){
-       obj[i].ended_date = timesheet.end_date
-       obj[i].actual_end_time = timesheet.end_time
-       list.push(obj)
-       }
-    }
-} */
+        let taskbyStatus = []
+        taskbyStatus.push({
+            value: 'Active',
+            id: 'Active'   
+        })
+        taskbyStatus.push({
+            value: 'Completed',
+            id: 'Completed'   
+        })
+        
+    settaskstatusLists({ taskbyStatus })
+
+
 let subOrinateList = []
     props.subordinateslis.map((data) =>
     subOrinateList.push({ value: data.name,
@@ -243,6 +258,24 @@ setStartModelOpen(flg);
                                 
                                     </Grid>
                         </div>
+                        <p className="task_head">Tasks Status</p>
+                        <div style={{ width: '200px', }}>
+                            <Grid item xs={8}>
+                                
+                        <Labelbox type="select"
+                        placeholder={" taskstatus"} 
+                        dropdown={taskstatusLists.taskbyStatus}  
+            changeData={(data) => checkValidation(data, "taskstatus")}
+            value={fieldVal.taskstatus.value}
+            error={fieldVal.taskstatus.error}
+            errmsg={fieldVal.taskstatus.errmsg}
+
+                        />
+                                
+                                    </Grid>
+                        </div>
+
+
                     </div>
 
                     <div style={{ display: 'flex' }}>
@@ -271,9 +304,91 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                     if(data.totalHours && data.totalHours.length >0){
                         data.totalHours = data.totalHours.split(":")[0];
                     }
-                    if(data.perecent_completion == 100 && data.actual_end_date != null){
+                    if(data.perecent_completion == 100 && data.actual_end_date != null ){
 
+                        if(fieldVal.taskstatus.value=='Completed'){
+                        let datass = data;
+                   
+                        i++;
+                    return (
+                        <Card >
+                            <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
+                                <div style={{ backgroundColor: '#707070', width: '55px' }}>
+                                    <p className="num_align_side" onClick={stopModel}>{i}</p>
+                                    <Divider />
+                                    {/* <HtmlTooltip open={open}  onOpen={handleOpen} arrow
+                                        title={<Timesheetmodel />}
+                                        onMouseEnter={()=>setOpen(true)}
+                                        onMouseLeave={()=>setOpen(true)}
+                                    > */}
+                                         <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
+                                    {/* </HtmlTooltip> */}
+                                    
+                                   {/*  <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> 
+                                    {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} /> */}
+                                </div>
+    
+                                <div style={{ width: '36%', padding: '15px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
+                                        <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
+                                        <p>{data.project_id != null ? data.project_type : data.description}</p>
+                                        <p>{data.client}</p>
+                                    </div>
+                                    <div style={{ display: 'flex', marginLeft: '10px', fontWeight: 'bold', fontSize: '16px' }}>
+                                        <p style={{ paddingRight: '30px' }}>{data.activity}</p>
+                                        <p>{data.sub_activity}</p>
+                                    </div>
+                                    <div style={{ display: 'flex', fontWeight: 'bold' }}>
+                                        <p style={{ marginRight: '10px' }}>Start Date :  {data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</p>
+                                        <p>End Date : {data.end_date && data.end_date!="" ? moment(data.end_date).format("DD MMM YYYY"):""}</p>
+                                    </div>
+                                    <div className="task_bar_align">
+                                        <Progress percent={data.perecent_completion} status="active" />
+                                    </div>
+                                </div>
+                                <div className="divider"></div>
+                                <div style={{ width: '37%' }}>
+                                    <div className="start_date_yellow">
+                                        <p>Started Date : {data.started_date && data.started_date!="" ? moment(data.started_date).format("DD MMM YYYY"):""}</p>
+                                        <p>Time : {data.started_time && data.started_time!="" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p>
+                                    </div>
+                                    <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                                        <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date!="" ? moment(data.actual_start_date).format("DD MMM YYYY"):""}</span></span>
+                                        <span>End Date :<span>{data.actual_end_date && data.actual_end_date!="" ? moment(data.actual_end_date).format("DD MMM YYYY"):""}</span></span>
+                                    </div>
+                                    <div>
+                                        <p>Assigned By <a>{data.name}</a>On <a>{data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</a></p>
+                                    </div>
+                                </div>
+                                <div className="divider"></div>
+                                <div style={{ marginTop: '20px' }}>
+                                    <div className="total_12_div">
+                                        <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
+                                        <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}</p>
+                                    </div>
+                                    <div className="images_div">
+                                        <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
+                                        <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
+                                       
+                                        <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>fntaskcompletionstatus({data})}/>
+                                        
+                                       
+                                        {<img src={data.activity == 'Hearing' ? Order : ""} style={{ marginRight: '5px', width: '18px',cursor: 'pointer' }} onClick={data.activity == 'Hearing' ? ()=>fntaskHearingDetails({data}) : ""}/>}
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div style={{ backgroundColor: '#707070', width: '55px' }}>   
+                                    <img src={Star} style={{ margin: '12px' }} />
+                                    <Divider />
+                                    <img src={Tick} style={{ margin: '12px' }} />
+                                </div>
+                            </div>
+                        </Card>
+                                )
+                        }
                     }else{
+                        if(fieldVal.taskstatus.value=='Active'){
                    let datass = data;
                    
                     i++;
@@ -354,7 +469,7 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                     </Card>
                             )
                             }
-                        })} 
+                      }  })} 
                 </div>
                 {/* first card end */}
 
