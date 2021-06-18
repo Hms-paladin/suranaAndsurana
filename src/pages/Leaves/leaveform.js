@@ -45,6 +45,7 @@ function LeaveForm(props) {
     const [leaveFormTable, setLeaveFormTable] = useState({});
     const [emp_leave_id, setEmp_leave_id] = useState(0)
     const [samedateval, setSameDateVal] = useState([])
+    const [fromDate, setFromDate] = useState(new Date());
     const [starttime,setStartTime]=useState(new Date())
     var duplicateDate = false
     const [Leave_Form, setLeaveForm] = useState({
@@ -658,6 +659,12 @@ function LeaveForm(props) {
    }
    
    }, [props.UserPermission]);
+   
+   function handleChange(data) {
+       debugger;
+       console.log("data Handle change", data);
+        setFromDate(data);
+   }
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
@@ -691,7 +698,8 @@ function LeaveForm(props) {
                             <div> <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "todate")}
                                 value={Leave_Form.todate.value}
-                                minDate={Leave_Form.leavetype.value!==37&&new Date()}
+                               // minDate={Leave_Form.leavetype.value!==37&&new Date()}
+                               minDate={Leave_Form.fromdate.value}
                                 error={Leave_Form.todate.error}
                                 errmsg={Leave_Form.todate.errmsg} />
                             </div>
@@ -842,7 +850,7 @@ function LeaveForm(props) {
                                 <div> <Labelbox type="datepicker"
                                     changeData={(data) => checkValidation(data, "todate")}
                                     value={Leave_Form.todate.value}
-                                    minDate={new Date()}
+                                    minDate={Leave_Form.fromdate.value}
                                     error={Leave_Form.todate.error}
                                     errmsg={Leave_Form.todate.errmsg} />
                                 </div>
