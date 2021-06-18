@@ -183,9 +183,11 @@ function LeaveForm(props) {
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.todate.value) - Date.parse(Leave_Form.fromdate.value)) / 86400000)
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff + 1)
-
+// 
+        if(Leave_Form["leavetype"].value===40){
         Leave_Form["tot_leave"].value =isNaN(diff) ? "" : (diff + 1)
-         Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
+        //  Leave_Form.exam_days.validation[1].params = isNaN(diff) ? 0 : (diff + 1)
+        }
         setLeaveForm(prevState => ({
             ...prevState,
         }));

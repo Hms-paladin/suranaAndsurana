@@ -95,10 +95,11 @@ function ExperienceModel(props) {
         setExperienceForm((prevState) => ({
             ...prevState,
         }));
+        // Experience_Form.companyname.value = "compName";
     }, [props.editExperiences, props.editExperienceid]);
 
     //update experience details==>
-
+    // Experience_Form.companyname.value = "compName";
     function updateExperience() {
         setRowchange(Experience_Form)
         props.EditExperience(Experience_Form, props.editExperienceid);
@@ -111,22 +112,21 @@ function ExperienceModel(props) {
         handleCancel()
     }, [props.nullFieldValueExp])
 
-
+console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 
     useEffect(() => {
-        // Axios({
-        //     method: "get",
-        //     url: apiurl + "get_s_tbl_m_city",
-        // }).then((response) => {
-        //     let cityList = [];
-        //     response.data.data.map((data, index) =>
-        //         cityList.push({ value: data.state, id: data.city_id })
-        //     );
-        //     setCity(cityList);
-        // });
-        setCity(props.city);
-        
-    }, [props.city])
+        Axios({
+            method: "get",
+            url: apiurl + "get_s_tbl_m_city",
+        }).then((response) => {
+            let cityList = [];
+            response.data.data.map((data, index) =>
+                cityList.push({ value: data.state, id: data.city_id })
+            );
+            setCity(cityList);
+        });
+
+    }, [])
 
     function onSubmit() {
         var mainvalue = {};
