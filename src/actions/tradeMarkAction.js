@@ -202,8 +202,8 @@ export const insertIPAB = (params,projectdetails) => async dispatch => {
                   }else{
                       if(params.hearing_date != null){
                     var data = {
-                        "project_id": projectdetails.project_id,
-                        "activiity_id": projectdetails.activiity_id,
+                        "project_id": params.project_id,
+                        "activiity_id": projectdetails.activity_id,
                         "sub_activity_id": projectdetails.sub_activity_id,
                         "assignee_id": localStorage.getItem("empId"),
                         "start_date": params.hearing_date,

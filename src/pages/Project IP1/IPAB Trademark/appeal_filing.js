@@ -59,7 +59,7 @@ function AppealFiling(props){
             // if(obj.trade_mark_no && obj.trade_mark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
 
-            TradeMarkForm.appeal_filing_date.value =obj.appeal_filing_date  || moment().format('YYYY-MM-DD');
+            TradeMarkForm.appeal_filing_date.value = obj.appeal_filing_date  || moment().format('YYYY-MM-DD');
             // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
             // TradeMarkForm.appeal_filing_date.disabled = true;
 
@@ -67,7 +67,7 @@ function AppealFiling(props){
             // if(obj.serial_no && obj.serial_no.length)
             // TradeMarkForm.serial_no.disabled = true;
             
-            TradeMarkForm.date_of_hearing.value =obj.date_of_hearing || moment().format('YYYY-MM-DD');
+            TradeMarkForm.date_of_hearing.value = obj.hearing_date || moment().format('YYYY-MM-DD');
 
             TradeMarkForm.client_mark.value=obj.mark;
             TradeMarkForm.appeal_no.value =obj.org_appeal_no;
@@ -128,7 +128,7 @@ function onSubmit() {
         "rectification_filing" :null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.appeal_no.value,
-        "hearing_date":TradeMarkForm.date_of_hearing.value =='' || null,
+        "hearing_date":TradeMarkForm.date_of_hearing.value || null,
         "opp_applicant" :"",
         "opp_applicant_rep" :"",
         "filing_type_id" :0,
@@ -144,7 +144,7 @@ function onSubmit() {
         "revocation_filing_date" :null,
         "applicant_no":"",
         "patent_title":"",
-        "appeal_filing_date":TradeMarkForm.appeal_filing_date.value=='' || null,
+        "appeal_filing_date":TradeMarkForm.appeal_filing_date.value || null,
         "client_applicant":TradeMarkForm.client_applicant.value,
         "mark":TradeMarkForm.client_mark.value
             // if(obj.client_applicant && obj.client_applicant.length)

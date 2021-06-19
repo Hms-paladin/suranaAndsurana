@@ -55,7 +55,7 @@ function IPABRectificationDefended(props){
             // if(obj.trademark_no && obj.trademark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
 
-            TradeMarkForm.rectification_filing_date.value =obj.rectification_filing ;
+            TradeMarkForm.rectification_filing_date.value =obj.rectification_filing || moment().format('YYYY-MM-DD');
             // if(obj.rectification_filing && obj.rectification_filing.length)
             // TradeMarkForm.rectification_filing.disabled = true;
 
@@ -67,7 +67,7 @@ function IPABRectificationDefended(props){
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.date_of_hearing.value =obj.hearing_date || moment().format('YYYY-MM-DD HH:m:s');
+            TradeMarkForm.date_of_hearing.value =obj.hearing_date || moment().format('YYYY-MM-DD');
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
             
@@ -407,7 +407,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Rectification Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
                         error={TradeMarkForm.rectification_filing_date.error}
@@ -440,7 +440,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
