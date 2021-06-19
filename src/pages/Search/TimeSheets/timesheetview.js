@@ -74,7 +74,7 @@ function TimeSheetView(props) {
                     settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
                 }
                     else{
-                setTimesheetStart(false)
+                setTimesheetStart(false);
                 
                 setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
                 var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
@@ -118,7 +118,7 @@ function TimeSheetView(props) {
         props.handleChangeCloseModel(false);  
       }
     function changestart () {
-        setTimesheetStart(false)
+        setTimesheetStart(true);
         var a = props;
         var timesheetData =  {
             "end_date":timeSheetForm.toDate.value,
@@ -129,12 +129,17 @@ function TimeSheetView(props) {
         }
         dispatch(insertTimeSheetbyTime(timesheetData,false,props.rowData)).then((response) => {
            // handleCancel();
-           props.handleChangeCloseModel(false);  
+          // dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
+            // handleCancel();
+           // dispatch(getTaskTimeSheet(props.rowData.task_id));
+            props.handleChangeCloseModel(false);  
+           //})
+          // props.handleChangeCloseModel(false);  
           })
     }
 
     function changeStop() {
-        setTimesheetStart(true)
+        setTimesheetStart(false);
         
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
@@ -146,7 +151,9 @@ function TimeSheetView(props) {
         }
        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData,startDateDisplay)).then((response) => {
            // handleCancel();
+           dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
            props.handleChangeCloseModel(false);  
+        })
          })
     }
   
