@@ -171,7 +171,7 @@ function onSubmit() {
     } else {
         // setTradeMarkForm({ error: false });
 
-        dispatch(insertIPAB(params)).then(() => {
+        dispatch(insertIPAB(params,props.ProjectDetails[0])).then(() => {
             handleCancel()
         })
     }

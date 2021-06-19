@@ -8,7 +8,7 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-
+import { inserTask } from "../actions/projectTaskAction";
 export const getTradeMarkStatus= () => async dispatch => {
     try {
 
@@ -167,7 +167,8 @@ export const insertTradeMark = (params) => async dispatch => {
         
     }
 }
-export const insertIPAB = (params) => async dispatch => {
+
+export const insertIPAB = (params,projectdetails) => async dispatch => {
     try {
 
         for (var x in params){
@@ -197,6 +198,25 @@ export const insertIPAB = (params) => async dispatch => {
                 notification.success({
                     message: message,
                   });
+                  if(params.trademark_ipab_id && params.trademark_ipab_id !=0){
+                  }else{
+                      if(params.hearing_date != null){
+                    var data = {
+                        "project_id": projectdetails.project_id,
+                        "activiity_id": projectdetails.activiity_id,
+                        "sub_activity_id": projectdetails.sub_activity_id,
+                        "assignee_id": localStorage.getItem("empId"),
+                        "start_date": params.hearing_date,
+                        "end_date": params.hearing_date,
+                        "assigned_by": localStorage.getItem("empId"),
+                        "priority": '',
+                        "description": '',
+                        "tag": ''
+                      }
+                  dispatch(inserTask(data)).then((response) => {
+                  })
+                }
+                }
                   dispatch(getIPAP(params.project_id))
                 dispatch({type:INSERT_IPAB,payload:response.data.status})
               return Promise.resolve();

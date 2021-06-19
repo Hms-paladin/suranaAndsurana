@@ -278,11 +278,7 @@ setStartModelOpen(flg);
 
                     </div>
 
-                    <div style={{ display: 'flex' }}>
-                        <img src={Delete} style={{ width: '40px' }} />
-                        <img src={Edit} style={{ width: '33px' }} />
-                        <img src={Plus} style={{ width: '40px', height: '38px' }} />
-                    </div>
+                    
 
                 </div>
 
@@ -343,7 +339,11 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                                         <p>End Date : {data.end_date && data.end_date!="" ? moment(data.end_date).format("DD MMM YYYY"):""}</p>
                                     </div>
                                     <div className="task_bar_align">
-                                        <Progress percent={data.perecent_completion} status="active" />
+                                        <Progress trailColor={{
+        '0%': 'green',
+        '40%': 'blue',
+      }}
+      percent={data.perecent_completion}  />
                                     </div>
                                 </div>
                                 <div className="divider"></div>
@@ -379,9 +379,9 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                                     </div>
                                 </div>
                                 <div style={{ backgroundColor: '#707070', width: '55px' }}>   
-                                    <img src={Star} style={{ margin: '12px' }} />
+                                <img src={Tick} style={{ margin: '12px' }} />
                                     <Divider />
-                                    <img src={Tick} style={{ margin: '12px' }} />
+                                    
                                 </div>
                             </div>
                         </Card>
@@ -461,9 +461,9 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                                 </div>
                             </div>
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>   
-                                <img src={Star} style={{ margin: '12px' }} />
+                            <img src={Tick} style={{ margin: '12px' }} />
                                 <Divider />
-                                <img src={Tick} style={{ margin: '12px' }} />
+                                
                             </div>
                         </div>
                     </Card>
