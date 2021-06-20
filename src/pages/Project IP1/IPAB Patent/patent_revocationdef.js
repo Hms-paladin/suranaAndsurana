@@ -72,7 +72,7 @@ function PatentRevocationDef(props){
             // if(obj.client_responent && obj.client_responent.length)
             // TradeMarkForm.client_responent.disabled = true;
             
-            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date  || moment().format('YYYY-MM-DD');
+            TradeMarkForm.revocation_filing_date.value =obj.rectification_filing  || moment().format('YYYY-MM-DD');
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
             
@@ -128,7 +128,7 @@ function onSubmit() {
         "project_id": rowId,
         "trademark_no" :"",
         "class_id" : "",
-        "rectification_filing" :null,
+        "rectification_filing" :TradeMarkForm.revocation_filing_date.value || null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
         "hearing_date":TradeMarkForm.date_of_hearing.value || null,
@@ -146,7 +146,7 @@ function onSubmit() {
         "respondent" :"",
         "respondent_rep" :"",
         "client_responent" :TradeMarkForm.client_respondent.value,
-        "revocation_filing_date" :TradeMarkForm.revocation_filing_date.value || null,
+        "revocation_filing_date" : null,
         "applicant_no":TradeMarkForm.applicant_no.value,
         "patent_title":TradeMarkForm.patent_title.value,
         "appeal_filing_date":null
@@ -160,7 +160,7 @@ function onSubmit() {
     } else {
         // setTradeMarkForm({ error: false });
 
-        dispatch(insertIPAB(params)).then(() => {
+        dispatch(insertIPAB(params,props.ProjectDetails[0])).then(() => {
             handleCancel()
         })
     }
@@ -179,8 +179,9 @@ const handleCancel = () => {
 
     From_key.map((data) => {
         try {
+            if(TradeMarkForm[data] && TradeMarkForm[data].value)
             TradeMarkForm[data].value = "";
-          console.log("appealFiling cancel", TradeMarkForm[data].value);
+          //console.log("appealFiling cancel", TradeMarkForm[data].value);
         } catch (error) {
           throw error;
         }
@@ -367,7 +368,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Revocation Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -402,7 +403,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

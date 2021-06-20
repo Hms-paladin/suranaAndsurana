@@ -8,6 +8,7 @@ import { getTradeMarkStatus,getClassDetails, insertIPAB, getIPAP } from "../../.
 import moment from 'moment'
 import { useParams } from "react-router-dom";
 import { getFilingType,getFilingTypeIpab } from "../../../actions/MasterDropdowns";
+import { SignalCellularNullOutlined } from '@material-ui/icons';
 
 function PatentRevocationFiled(props){
     
@@ -191,7 +192,7 @@ function PatentRevocationFiled(props){
             // if(obj.respondent_rep && obj.respondent_rep.length)
             // TradeMarkForm.respondent_rep.disabled = true;
             
-            TradeMarkForm.revocation_filing_date.value =obj.revocation_filing_date  || moment().format('YYYY-MM-DD HH:m:s');
+            TradeMarkForm.revocation_filing_date.value =obj.rectification_filing  || moment().format('YYYY-MM-DD HH:m:s');
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
             
@@ -277,10 +278,10 @@ function onSubmit() {
         
          "trademark_no":"3",
          "class_id":6,
-         "rectification_filing":null,
+         "rectification_filing": TradeMarkForm.revocation_filing_date.value || null,
          "serial_no":TradeMarkForm.serial_no.value,
          "org_appeal_no":TradeMarkForm.org_appeal_no.value,
-         "hearing_date":TradeMarkForm.date_of_hearing.value || '00-00-0000',
+         "hearing_date":TradeMarkForm.date_of_hearing.value || SignalCellularNullOutlined,
          "opp_applicant":null,
          "opp_applicant_rep":null,
          "filing_type_id":TradeMarkForm.filing_type_id.valueById || '0',
@@ -293,13 +294,13 @@ function onSubmit() {
          "respondent":TradeMarkForm.respondent.value,
          "respondent_rep":TradeMarkForm.respondent_rep.value,
          "client_responent":null,
-         "revocation_filing_date":TradeMarkForm.revocation_filing_date.value || '00-00-0000',
+         "revocation_filing_date":TradeMarkForm.revocation_filing_date.value || null,
          "applicant_no":TradeMarkForm.applicant_no.value,
          "patent_title":TradeMarkForm.patent_title.value,
-         "appeal_filing_date":'00-00-0000',
+         "appeal_filing_date": null,
          "client_applicant":TradeMarkForm.client_applicant.value,
          "mark":"2w222",
-         "project_id":props.ProjectDetails[0].project_id,
+         "project_id": rowId
     }
     console.log("paramscheck", params);
     // if(TradeMarkForm.class_id.value != ""){
@@ -310,7 +311,7 @@ function onSubmit() {
     } else {
         // setTradeMarkForm({ error: false });
 
-        dispatch(insertIPAB(params)).then(() => {
+        dispatch(insertIPAB(params,props.ProjectDetails[0])).then(() => {
             handleCancel()
         })
     }
@@ -430,7 +431,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Revocation Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -465,7 +466,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

@@ -176,6 +176,10 @@ const [TradeMarkForm, setTradeMarkForm] = useState({
             TradeMarkForm.trade_mark_no.value =obj.trademark_no;
             // if(obj.trademark_no && obj.trademark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
+            
+            TradeMarkForm.revocation_filing_date.value =obj.rectification_filing;
+            // if(obj.rectification_filing && obj.rectification_filing.length)
+            // TradeMarkForm.revocation_filing_date.disabled = true;
 
             TradeMarkForm.serial_no.value=obj.serial_no;
             // if(obj.serial_no && obj.serial_no.length)
@@ -263,10 +267,10 @@ function onSubmit() {
         "ip_type":0,
         "client_status_type": null,
         "trademark_ipab_id":  TradeMarkForm.trademark_ipab_id.value,
-        "project_id": props.ProjectDetails[0].project_id,
+        "project_id": rowId,
         "trademark_no" :TradeMarkForm.trade_mark_no.value,
         "class_id" :TradeMarkForm.class_id.value,
-        "rectification_filing" :null,
+        "rectification_filing" :TradeMarkForm.revocation_filing_date.value || null,
         "serial_no" :TradeMarkForm.serial_no.value,
         "org_appeal_no" :TradeMarkForm.org_appeal_no.value,
         "hearing_date":TradeMarkForm.date_of_hearing.value || null,
@@ -298,7 +302,7 @@ function onSubmit() {
     } else {
         // setTradeMarkForm({ error: false });
 
-        dispatch(insertIPAB(params)).then(() => {
+        dispatch(insertIPAB(params,props.ProjectDetails[0])).then(() => {
             // handleCancel()
         })
     }
@@ -416,7 +420,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Revocation Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -451,7 +455,7 @@ function checkValidation(data, key, multipleId) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

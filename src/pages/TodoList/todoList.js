@@ -24,7 +24,7 @@ import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
 import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
-
+import { getTaskList } from "../../actions/projectTaskAction";
 // Hr Task:
 
 const headCells = [
@@ -102,8 +102,9 @@ function TodoList(props) {
 
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
-
+    let empid= localStorage.getItem("empId");
     useEffect(() => {
+        dispatch(getTaskList(empid));
         dispatch(getHrTaskList())
         dispatch(getOtherTask())
     }, [])
@@ -171,29 +172,25 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        projectTask.push({
-            id: <div className="ProjectTaskId" onClick={() => setKraapprovemodel(true)}
-            >KRA Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
-            >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-            {
-                id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal View</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
+        props.getTaskLists.map((data) => {
+            let showId = null
+            let showName = null
+
+            projectTask.push({
+                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.project_name?data.project_name:data.project_name}</div>,
+                activity: data.activity,
+                sub_activity: data.sub_activity,
+                case :'',
+                start_date: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
+                end_date: data.end_date ? moment(data.end_date).format('DD-MMM-YYYY') : null,
             },
-            // {
-            //     id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-            // },
-            {
-                id: <Link to={'MP_Appraisal'}><div className="ProjectTaskId">MP Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-            })
+            )
 
 
 
-        // setProjectTodoList(projectTask)
-
+        })
+        setProjectTodoList(projectTask)
+       
         //Other Task
         let otherTask = []
 
@@ -261,7 +258,7 @@ function TodoList(props) {
         //     ...prevState,
         // }));
 
-    }, [props.getOtherTask])
+    }, [props.getOtherTask,props.getTaskLists])
 
 
     function openModelFunc(name, id) {
@@ -445,7 +442,8 @@ function TodoList(props) {
 const mapStateToProps = state => (
     {
         getHrTodoList: state.getHrTodoList.getHrToDoListTableData || [],
-        getOtherTask: state.getHrTodoList.getOtherTask || []
+        getOtherTask: state.getHrTodoList.getOtherTask || [],
+        getTaskLists: state.projectTasksReducer.getTaskLists,
     }
 )
 
