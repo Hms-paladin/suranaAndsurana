@@ -167,6 +167,7 @@ export default class Labelbox extends Component {
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
 								disablePast={this.props.disablePast && this.props.disablePast}
 								minDate={this.props.minDate && this.props.minDate}
+								maxDate={this.props.maxDate && this.props.maxDate}
 								inputVariant="outlined"
 								format={this.props.format ? this.props.format : "dd-MMM-yyyy"}
 								margin="normal"
