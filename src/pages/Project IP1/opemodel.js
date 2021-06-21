@@ -15,6 +15,8 @@ import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 import moment from 'moment';
 import { notification } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+
 
 
 function OpeModel(props) {
@@ -24,22 +26,10 @@ function OpeModel(props) {
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const [selectedFile, setselectedFile] = useState([]);
-    const fileUpload = {
-        name: 'file',
-        // console.log(name, "name"),
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                // console.log(info.file.name, info.fileList, "opload");
-            }
-            if (info.file.status === 'done') {
-                setselectedFile(info.file.originFileObj);
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
-    console.log(selectedFile,selectedFile.name, "fileUpload")
+    const [uploadList, setUploadFile] = useState(true)
+
+
+
 
     const [opeModel, setopeModel] = useState({
         expenseType: {
@@ -142,12 +132,12 @@ function OpeModel(props) {
             dispatch(InsertOPE(params)).then((response) => {
 
                 // if (response.data.status === 1) {
-                notification.success({
-                    message: "OPE Added Successfully",
-                });
-                handleCancel()
-                props.handleChangeCloseModel()
-                // fileUpload = " ";
+                    notification.success({
+                        message: "OPE Added Successfully",
+                    });
+                    handleCancel()
+                    props.handleChangeCloseModel()
+                    setselectedFile([])
                 // }
             })
         }
@@ -156,6 +146,26 @@ function OpeModel(props) {
             ...prevState
         }));
     };
+
+
+    const handleChange = (info, uploadName) => {
+        if (info.status !== 'error' && info.status !== "uploading") {
+
+            let fileList = [...info.fileList];
+
+            // fileList = fileList.slice(-1);
+
+            fileList = fileList.map(file => {
+                if (file.response) {
+                    file.url = file.response.url;
+                }
+                return file;
+            });
+            setselectedFile(fileList);
+
+        }
+    };
+
 
     // console.log(fileUpload, "fileUpload")
 
@@ -259,10 +269,15 @@ function OpeModel(props) {
                                 </div>
                                 <div className="uploadbtn" >
                                     <div>
-                                        <Upload {...fileUpload}
-                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
-
-                                            <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
+                                        <Upload
+                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                                            onChange={(info) => handleChange(info, "examScheduleUpload")}
+                                            fileList={selectedFile}
+                                            accept={'jpg'}
+                                        >
+                                            <Button>
+                                                <UploadOutlined />Click to upload
+                                            </Button>
                                         </Upload>
                                     </div>
                                 </div>

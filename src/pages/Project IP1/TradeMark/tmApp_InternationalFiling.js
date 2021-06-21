@@ -592,7 +592,7 @@ function TradeMarkInternational(properties) {
                     <div className="uploadbox">
                         <div style={{ width: "280%" }}>
                             <Upload {...props} className="uploadbox_tag"
-                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' accept=".pdf" >
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' accept=".jpeg" >
 
                                 <div className="upload_file_inside"><label>Upload   </label><PublishIcon /></div>
                             </Upload>,

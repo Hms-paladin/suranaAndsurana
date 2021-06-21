@@ -75,7 +75,7 @@ function ProjectFormCreate(props) {
   const [disableCondition, setDisableCondition] = useState(true);
   const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
   const [proj_type_name, setProj_type_name] = useState();
-  const [activityid, setActivityid] = useState();
+  const [billable, setBillable] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [projectform, setprojectform] = useState({
     client: {
@@ -159,7 +159,7 @@ function ProjectFormCreate(props) {
     },
     limits: {
       value: "",
-      validation: [{ "name": "required" }, { "name": "allowNumaricOnly1" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -349,9 +349,6 @@ function ProjectFormCreate(props) {
       }
     }
 
-
-    console.log(data, key, "additonaldata")
-
     if (data && key === "billable_type") {
       if (data === 1 || data === 4 || data === 5) {
         projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly1" }])
@@ -360,7 +357,7 @@ function ProjectFormCreate(props) {
         projectform.additionalRate.validation = []
       }
       else if (data === 3) {
-        projectform.limits.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
+        projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
         projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly1" }])
         projectform.unit_measurement.validation = ([{ name: "required" }])
@@ -372,6 +369,10 @@ function ProjectFormCreate(props) {
       }
     }
 
+
+    // if (data && key === "billable_type") {
+    //   setBillable(data)
+    // }
     //  projectSubTypeValue
 
     if (key === "project_type" && data) {
@@ -487,24 +488,27 @@ function ProjectFormCreate(props) {
     }
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
+
+    // if (billable === 3) {
+    //   projectform.limits.error = false;
+    //   projectform.limits.errmsg = "";
+    // }
     console.log(filtererr.length, projectform, "projectform ")
 
+
     if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length === 0) {
-      alert("test1")
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
           handleCancel();
         }
       );
     }
-    else if (filtererr.length > 1) {
-      alert("test2")
+    else if (filtererr.length > 0) {
     }
     else if (filtererr.length == 0) {
-      alert("test3")
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
         (response) => {
-          // handleCancel();
+          handleCancel();
         }
       );
     }
