@@ -252,7 +252,7 @@ const ResumePage = (props) => {
 
   useEffect(() => {
     dispatch(getCity_By_Id(Resume_Form.state.value))
-  },[Resume_Form.state.value])  
+  }, [Resume_Form.state.value])
 
   useEffect(() => {
     let candidateList = [];
@@ -574,20 +574,20 @@ const ResumePage = (props) => {
     if (educationList.length === 0 && experienceList.length === 0) {
       !educationerr && setEducationerr(true);
 
-      Resume_Form.candidate.value!==10&&!employererr && setEmployererr(true);
-      Resume_Form.candidate.value===10&&employererr && setEmployererr(false);
+      Resume_Form.candidate.value !== 10 && !employererr && setEmployererr(true);
+      Resume_Form.candidate.value === 10 && employererr && setEmployererr(false);
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else if (text === "SAVE" && educationList.length !== 0 &&
-      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1 || Resume_Form.candidate.value === 10) &&
       filtererr.length === 0
     ) {
       // setResumeFrom({ error: false });
 
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
-          handleCancel();
+          // handleCancel();
         }
       );
     }
@@ -946,7 +946,7 @@ const ResumePage = (props) => {
 
             {educationList && educationList.length > 0 ? (
               <div className="educationOuterBox">
-                { educationList && educationList.map((data, index) => {
+                {educationList && educationList.map((data, index) => {
                   return (
                     <div className="educationKeyValue">
                       <div>
@@ -973,7 +973,7 @@ const ResumePage = (props) => {
                         <div>{data.cgpa || "-"}</div>
                       </div>
                     </div>
-                 
+
                   );
                 })}
               </div>
