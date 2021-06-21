@@ -6,7 +6,7 @@ import { notification } from "antd";
 
 
 export const InsertClient = (Addclient_Form, Document_Form) => async dispatch => {
-  console.log(Addclient_Form,"Addclient_Form")
+  console.log(Document_Form,"Document_Form")
   try {
 
     var DocumentData = new FormData();

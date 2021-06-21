@@ -17,7 +17,7 @@ import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
 
 
-function AddClient() {
+function AddClient(props) {
   const dispatch = useDispatch();
   const [clientName, setClientName] = useState({});
   const [fileupload, setFileupload] = useState([]);
@@ -25,6 +25,8 @@ function AddClient() {
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
+  const [uploadList, setUploadFile] = useState(false)
+  const [test, setTest] = useState([]);
   const [Addclient_Form, setAddclient_Form] = useState({
 
     client_name: {
@@ -136,25 +138,32 @@ function AddClient() {
     }
   });
 
-  const props = {
-    name: 'file',
-    // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    // headers: {
-    //   authorization: 'authorization-text',
-    // },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log("uploading", info.fileList);
-      }
-      if (info.file.status === 'done') {
+  // const props = {
+  //   name: 'file',
+  //   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  //   headers: {
+  //     authorization: 'authorization-text',
+  //   },
+  //   onChange(info) {
+  //     console.log(info.file.status, "info.file.status")
+  //     if (info.file.status !== 'uploading') {
+  //       console.log("uploading", info.fileList);
+  //       console.log(info.file, "info.file")
 
-        message.success(`${info.file.name} file uploaded successfully`);
-        setselectedFile(info.file.originFileObj);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+  //     }
+  //     if (info.file.status === 'done') {
+  //       alert("tset")
+  //       message.success(`${info.file.name} file uploaded successfully`);
+  //       setselectedFile([...selectedFile, info.file.originFileObj]);
+  //     } else if (info.file.status === 'error') {
+  //       message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
+  // };
+
+  console.log(selectedFile, "testing")
+
+
 
   useEffect(() => {
     console.log(props.getInsertStatus, "getInsertStatus")
@@ -229,6 +238,27 @@ function AddClient() {
     });
   }, []);
 
+  const handleChange = (info, uploadName) => {
+    console.log(info, 'sdfjdfsjklkl')
+
+
+    if (info.status !== 'error' && info.status !== "uploading") {
+
+      let fileList = [...info.fileList];
+
+      // fileList = fileList.slice(-1);
+
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+      setselectedFile(fileList);
+
+    }
+  };
+
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -273,17 +303,6 @@ function AddClient() {
     //     setAddclient_Form({ error: false });
     // }
   }
-  const handleImagePreview = (e) => {
-
-    // setselectedFile(URL.createObjectURL(e.target.files[0]))
-    setselectedFile(e.target.files[0].name);
-    console.log("testringhh", e.target.value)
-    //let image_as_files = e.target.files[0];
-    /*   this.setState({
-            image_preview: image_as_base64,
-            image_file: image_as_files,
-        }) */
-  };
 
   function onSubmit() {
     var mainvalue = {};
@@ -301,67 +320,69 @@ function AddClient() {
     var filtererr = targetkeys.filter(
       (obj) => Addclient_Form[obj].error == true
     );
-    // console.log(filtererr.length);
     if (filtererr.length > 0) {
-      // setAddclient_Form({ error: true });
     } else {
       dispatch(InsertClient(Addclient_Form, fileupload)).then((response) => {
         onStateClear()
+        setselectedFile([])
+
+
       })
     }
 
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
-    setFileupload([])
-    // setselectedFile([])
+
   }
 
+  // async function onfileupload() {
 
-  async function onfileupload() {
+  //   if (Addclient_Form.poa_name.value === '') {
+  //     notification.success({
+  //       message: 'Please Select Document',
+  //     });
+  //   } else {
 
-    if (Addclient_Form.poa_name.value === '') {
-      notification.success({
-        message: 'Please Select Document',
-      });
-    } else {
+  //     // let wait=await check()
+  //     // function check(){
 
-      // let wait=await check()
-      // function check(){
+  //     //   return new Promise((resolve)=>{
+  //     //     setFileupload((prevState) => (
+  //     //       [...prevState, {
+  //     //         poa_name: Addclient_Form.poa_name.value,
+  //     //         selectedFile: "",
+  //     //       }]
 
-      //   return new Promise((resolve)=>{
-      //     setFileupload((prevState) => (
-      //       [...prevState, {
-      //         poa_name: Addclient_Form.poa_name.value,
-      //         selectedFile: "",
-      //       }]
-
-      //     ));
-
+  //     //     ));
 
 
 
-      //   })
-      //   Addclient_Form["poa_name"].value=""
 
-      // //  return Promise.resolve(true);
-      // }
+  //     //   })
+  //     //   Addclient_Form["poa_name"].value=""
+
+  //     // //  return Promise.resolve(true);
+  //     // }
 
 
 
-      // }
-      setFileupload((prevState) => (
-        [...prevState, {
-          poa_name: Addclient_Form.poa_name.value,
-          selectedFile: "",
-        }]
+  //     // }
+  //     setFileupload((prevState) => (
+  //       [...prevState, {
+  //         poa_name: Addclient_Form.poa_name.value,
+  //         selectedFile: "",
+  //       }]
 
-      ));
-    }
-  }
+  //     ));
+  //   }
+  // }
 
+
+  console.log(test, "filetest");
 
   const onStateClear = () => {
+    alert("test")
     let From_key = [
       "poa_name",
       "city",
@@ -381,12 +402,15 @@ function AddClient() {
         throw (error)
       }
     });
-    setselectedFile("")
+    setselectedFile([])
     setFileupload([])
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
   };
+
+
+
 
   return (
     <div>
@@ -513,15 +537,22 @@ function AddClient() {
 
               <div className="uploadfileSpace">
                 {" "}
-                {/* <input type="file" onChange={handleImagePreview} /> */}
-                <Upload {...props} accept=".pdf" >
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                {console.log(props, selectedFile, "selectedFileprops")}
+                <Upload
+                  action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                  onChange={(info) => handleChange(info, "examScheduleUpload")}
+                  fileList={selectedFile}
+                  accept={'jpg'}
+                >
+                  <Button>
+                    <UploadOutlined />Click to upload
+                  </Button>
                 </Upload>
-                {/* <PublishIcon/> */}
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }}>
-                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }} >
+                {/* onClick={onfileupload} */}
+                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} />
               </div>
 
             </div>
@@ -642,6 +673,17 @@ function AddClient() {
                 errmsg={Addclient_Form.state.errmsg}
               />
             </Grid>
+            {/* <Upload
+              accept="jpg"
+              showUploadList={test === "" ? false : true}
+              beforeUpload={(e) => uploadcheck(e)}
+
+            >
+              <Button>
+                Click to Upload
+              </Button> </Upload> */}
+
+
             <Grid item xs={12}>
               <Labelbox
                 type="select"

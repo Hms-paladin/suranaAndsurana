@@ -3,11 +3,12 @@ import Grid from '@material-ui/core/Grid';
 import '../Project IP1/Patent/Patent.scss'
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import { Upload } from 'antd';
+import { Upload, Button } from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { insertCopyright, getCopyRight, updateCopyright } from "../../actions/copyrightAction";
+import { UploadOutlined } from '@ant-design/icons';
 
 
 
@@ -15,7 +16,7 @@ const CopyRight = (props) => {
 
     const dispatch = useDispatch()
     const [IdDetails, setIdDetails] = useState({});
-    const [fileupload, setFileupload] = useState("");
+    const [fileupload, setFileupload] = useState([]);
     const [copy_Right, setCopy_Right] = useState({
 
         title: {
@@ -77,6 +78,28 @@ const CopyRight = (props) => {
         // console.log(CopyRightData,"api data");
     }, [props.getCopyRightData])
 
+    const handleChange = (info, uploadName) => {
+        console.log(info, 'sdfjdfsjklkl')
+
+
+        if (info.status !== 'error' && info.status !== "uploading") {
+
+            let fileList = [...info.fileList];
+
+            // fileList = fileList.slice(-1);
+
+            fileList = fileList.map(file => {
+                if (file.response) {
+                    file.url = file.response.url;
+                }
+                return file;
+            });
+            setFileupload(fileList);
+
+        }
+    };
+
+
 
 
     function onSubmit() {
@@ -104,10 +127,12 @@ const CopyRight = (props) => {
                 console.log(copy_right_id)
                 dispatch(updateCopyright(copy_Right, IdDetails, fileupload, copy_right_id)).then(() => {
                     handleCancel()
+                    setFileupload([])
                 })
             } else {
                 dispatch(insertCopyright(copy_Right, IdDetails, fileupload)).then(() => {
                     handleCancel()
+                    setFileupload([])
 
                 })
             }
@@ -196,12 +221,15 @@ const CopyRight = (props) => {
                         <div className="copyFieldheadings">Upload Image</div>
                         <div className="uploadbox_div"  >
                             <div>
-                                <Upload {...props} className="uploadbox_tag"
-                                    // action='https://www.mocky.io/v2/5cc8019d300000980a055e76' 
-                                    // onChange={(e)=>onFileChange()}
-                                    accept=".pdf"
+                                <Upload
+                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                                    onChange={(info) => handleChange(info, "examScheduleUpload")}
+                                    fileList={fileupload}
+                                    accept={'jpg'}
                                 >
-                                    <div className="upload_file_inside" ><label style={{ whiteSpace: 'nowrap' }}>Upload Image</label><PublishIcon /></div>
+                                    <Button>
+                                        <UploadOutlined />Click to upload
+                                    </Button>
                                 </Upload>
 
                             </div>
