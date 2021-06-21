@@ -26,7 +26,7 @@ import {
   getSpecilization,
   getCapability,
   getTalents,
-  getIndustry,
+  getIndustry, getCity
 } from "../../actions/MasterDropdowns";
 import "./resume.scss";
 
@@ -50,7 +50,7 @@ const ResumePage = (props) => {
   const [editResume, setEditResume] = useState(false)
   const [resume_id, setResume_id] = useState()
   const [editcity, setEditcity] = useState(false)
-
+  const [expCity, setExpCity] = useState([])
 
   const [Resume_Form, setResumeFrom] = useState({
     name: {
@@ -248,6 +248,7 @@ const ResumePage = (props) => {
     dispatch(getTalents());
     dispatch(getIndustry());
     dispatch(getTalents());
+    dispatch(getCity())
   }, []);
 
   useEffect(() => {
@@ -255,6 +256,7 @@ const ResumePage = (props) => {
   }, [Resume_Form.state.value])
 
   useEffect(() => {
+    setExpCity(props.GetCityAll)
     let candidateList = [];
     props.getResourcesType.map((data, index) => {
       candidateList.push({
@@ -587,7 +589,7 @@ const ResumePage = (props) => {
 
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
-          handleCancel();
+          // handleCancel();
         }
       );
     }
@@ -725,7 +727,7 @@ const ResumePage = (props) => {
       {
         type_of_industry: data.industry.value,
         company_name: data.companyname.value,
-        city: data.city.value,
+        city_id: data.city.value,
         department: data.department.value,
         designation: data.designation.value,
         period_from: data.periodfrom.value,
@@ -741,7 +743,7 @@ const ResumePage = (props) => {
     experienceList[id] = {
       type_of_industry: data.industry.value,
       company_name: data.companyname.value,
-      city: data.city.value,
+      city_id: data.city.value,
       department: data.department.value,
       designation: data.designation.value,
       period_from: data.periodfrom.value,
@@ -1283,6 +1285,7 @@ const ResumePage = (props) => {
 
                 <div className="experienceOuterBox">
                   {experienceList.map((data, index) => {
+                    console.log(data.city_id, "experiencexperienceListeList")
                     return (
                       <div className="experienceKeyValue">
                         <div className="experienceKey">
@@ -1307,13 +1310,15 @@ const ResumePage = (props) => {
                           <div>
 
                             {" "}
-                            {editcity ?
-                              <> {data.city || "-"}</> :
-                              <> {resumeGetList.cityList.map((getName) => {
-                                if (data.city === getName.id) {
-                                  return getName.value || "-";
-                                }
-                              })}</>}
+                            {
+                              editcity
+                                ?
+                                <> {data.city || "-"}</> :
+                                <> {expCity.map((getName) => {
+                                  if (data.city_id === getName.city_id) {
+                                    return getName.state || "-";
+                                  }
+                                })}</>}
 
                           </div>
 
@@ -1414,6 +1419,8 @@ const mapStateToProps = (state) => (
     getStatus: state.getOptions.getStatus || [],
     getQualification: state.getOptions.getQualification || [],
     getIndustry: state.getOptions.getIndustry || [],
+    GetCityAll: state.getOptions.getCity
+
 
   }
 );

@@ -9,13 +9,13 @@ import { InesertResume } from "../../actions/ResumeAction"
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import './resume.scss';
-import { getIndustry } from '../../actions/MasterDropdowns';
+import { getIndustry, getCity } from '../../actions/MasterDropdowns';
 
 
 function ExperienceModel(props) {
 
     const dispatch = useDispatch()
-    const [city, setCity] = useState([])
+    const [city, setCity] = useState({})
     const [industryOptions, setIndustryOptions] = useState([])
     const [rowchange, setRowchange] = useState([]);
     const [Experience_Form, setExperienceForm] = useState({
@@ -64,14 +64,14 @@ function ExperienceModel(props) {
         },
         responsibilities: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "200"}],
+            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "200" }],
             error: null,
             errmsg: null,
         },
     })
 
     useEffect(() => {
-        console.log(props.editExperiences,"props.editExperiences")
+        console.log(props.editExperiences, "props.editExperiences")
         const industry = props.editExperiences?.type_of_industry;
         const compName = props.editExperiences?.company_name;
         const city = props.editExperiences?.city_id;
@@ -124,8 +124,8 @@ function ExperienceModel(props) {
         //     );
         //     setCity(cityList);
         // });
-        setCity(props.city);
-        
+        // setCity(props.city);
+
     }, [props.city])
 
     function onSubmit() {
@@ -193,6 +193,7 @@ function ExperienceModel(props) {
 
     useEffect(() => {
         dispatch(getIndustry())
+        dispatch(getCity())
     }, [])
 
     useEffect(() => {
@@ -201,7 +202,13 @@ function ExperienceModel(props) {
             industryList.push({ value: data.industry, id: data.industry_id })
         })
         setIndustryOptions(industryList)
-    }, [props.getOptions])
+
+        const City = []
+        props.GetCity && props.GetCity.map((data, index) => {
+            City.push({ value: data.state, id: data.city_id })
+        })
+        setCity({ City })
+    }, [props.getOptions, props.GetCity])
 
     return (
         <div className="experienceModelContainer">
@@ -223,7 +230,7 @@ function ExperienceModel(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="select" placeholder="City"
                     changeData={(data) => checkValidation(data, "city")}
-                    dropdown={city}
+                    dropdown={city.City}
                     value={Experience_Form.city.value}
                     error={Experience_Form.city.error}
                     errmsg={Experience_Form.city.errmsg} />
@@ -290,7 +297,9 @@ function ExperienceModel(props) {
 }
 
 const mapStateToProps = state => ({
-    getOptions: state.getOptions.getIndustry
+    getOptions: state.getOptions.getIndustry,
+    GetCity: state.getOptions.getCity
+
 })
 
 export default connect(mapStateToProps)(ExperienceModel);
