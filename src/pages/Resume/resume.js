@@ -597,7 +597,7 @@ const ResumePage = (props) => {
 
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
-          // handleCancel();
+          handleCancel();
         }
       );
     }
