@@ -422,7 +422,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Rectification Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
                         error={TradeMarkForm.rectification_filing_date.error}
@@ -455,7 +455,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

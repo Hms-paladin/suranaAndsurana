@@ -178,6 +178,10 @@ function RevocationDefended(props) {
             TradeMarkForm.trade_mark_no.value = obj.trademark_no;
             // if(obj.trademark_no && obj.trademark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
+            
+            TradeMarkForm.revocation_filing_date.value =obj.rectification_filing;
+            // if(obj.rectification_filing && obj.rectification_filing.length)
+            // TradeMarkForm.revocation_filing_date.disabled = true;
 
             TradeMarkForm.serial_no.value = obj.serial_no;
             // if(obj.serial_no && obj.serial_no.length)
@@ -429,7 +433,7 @@ function RevocationDefended(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Revocation Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -464,7 +468,7 @@ function RevocationDefended(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

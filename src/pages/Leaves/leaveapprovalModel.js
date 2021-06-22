@@ -53,6 +53,8 @@ function LeaveApproval(props) {
                 noofdaysleave:data.total_days_leave===null?"-":data.total_days_leave,
                 examdays:data.no_exam_days==null?"-":data.no_exam_days,
                 otherdays:data.no_other_days===null?"-":data.no_other_days,
+                num_of_hrs:data.num_of_hrs,
+                num_of_day:data.num_of_day,
             })
           }
         )
@@ -127,7 +129,7 @@ function LeaveApproval(props) {
                         </div></>}
             </div>
             <div className="leaveModelFields">
-            { ApprovalData[0]&&ApprovalData[0].leave_typeId === 38 &&
+            { ApprovalData[0]&&(ApprovalData[0].leave_typeId === 38||ApprovalData[0].leave_typeId === 39) &&
                     <>
                         <div>
                             <div>Date</div>
@@ -141,9 +143,12 @@ function LeaveApproval(props) {
                             <div>To</div>
                             <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].totime!==null?ApprovalData[0].totime:''}</div>
                         </div>
-
+                        <div>
+                        <div>Total No. of Hours</div>
+                        <div className="fielddataView">{ ApprovalData[0]&&ApprovalData[0].num_of_hrs}</div>
+                        </div>
                     </>}
-                {(ApprovalData[0]&&ApprovalData[0].leave_typeId === 35  || ApprovalData[0]&&ApprovalData[0].leave_typeId === 39 ||
+                {(ApprovalData[0]&&ApprovalData[0].leave_typeId === 35 ||
                 ApprovalData[0]&&ApprovalData[0].leave_typeId === 36 || ApprovalData[0]&&ApprovalData[0].leave_typeId === 37) &&
                     <>
                         <div>
@@ -158,6 +163,10 @@ function LeaveApproval(props) {
                         <div>
                             <div>Balance</div>
                             <div className="fielddataView">{ApprovalData[0]&&ApprovalData[0].balance}</div>
+                        </div>
+                        <div>
+                        <div>Total No. of Days</div>
+                        <div className="fielddataView">{ ApprovalData[0]&&ApprovalData[0].num_of_day}</div>
                         </div>
 
                     </>}

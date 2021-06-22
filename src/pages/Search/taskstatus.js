@@ -43,7 +43,10 @@ function TaskStatus(props) {
         })
             .then(function (response) {
                 if (response.data.status === 1) {
-                    dispatch(getTaskList(localStorage.getItem("empId")));
+                   // if(props.rowData.data.assignee_id==localStorage.getItem("empId"))
+
+                   // esle
+                    dispatch(getTaskList(props.rowData.data.assignee_id));
                     notification.success({
                         message: ' Updated Successfully',
                     });

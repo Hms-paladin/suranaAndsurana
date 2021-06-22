@@ -7,9 +7,9 @@ import DynModel from "../../component/Model/model";
 import ValidationLibrary from "../../helpers/validationfunction";
 import EditTimeSheet from './Timesheet/Timesheet'
 import Adjournment from './Adjournment'
-
-import { getHearingDetails,InsertHearingDets } from "../../actions/projectTaskAction";
-
+import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
+import { getHearingDetails,InsertHearingDets,inserTask } from "../../actions/projectTaskAction";
+import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useDispatch, connect } from "react-redux";
 export function Hearing(props){
   const dispatch = useDispatch();
@@ -18,22 +18,39 @@ const [OpenSheet,setOpenSheet]=useState(false)
 const handleChangeModel=()=>{
     setOpenSheet(true)
 }
+const [projectDetails, setProjectDetails] = useState({})
+const [taskDetails, settaskDetails] = useState({})
 const [adjourn,setadjourn]=useState(false)
+const [modelOpen,setModelOpen]=useState(false)
+const [idDetails, setidDetails] = useState({})
+const modelContent = () => {
+  return (
+      <ProjectTaskModel />
+  )
+}
 const Adjourn_Model=()=>{
     setadjourn(true)
+}
+const openTaskModel=()=>{
+  setModelOpen(true)
 }
 
 useEffect(() => {
   if(props.rowData){
+    dispatch(getProjectDetails(props.rowData.data.project_id))
   dispatch(getHearingDetails(props.rowData));
   }
 
 }, []);
 
 useEffect(() => {
-       
-  
-}, [props.rowData,props.getHearingDets
+  setProjectDetails(props.ProjectDetails);
+  props.ProjectDetails.length > 0 && setidDetails({
+    project_id: props.ProjectDetails[0].project_id,
+    client_id: props.ProjectDetails[0].client_id,
+  })
+  settaskDetails(props.rowData.data)
+}, [props.rowData,props.getHearingDets,props.ProjectDetails
 ]);
 const [HearingData, setHearingData] = useState({
     nexthearing: {
@@ -68,15 +85,9 @@ function onSubmit() {
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else {
-      // setResumeFrom({ error: false });
-
-    //   dispatch(InsertLitigationDetails(HearingData, LitiID)).then(() => {
-    //     handleCancel();
-    //     props.handleChangeCloseModel();
-    //     dispatch(GetLitigation(projtId));
-    //   });
+      
     }
-    var data ={
+   /* var data ={
       "project_id":props.rowData.project_id,
       "task_id":props.rowData.task_id,
       "hearing_outcome":"test",
@@ -91,7 +102,25 @@ function onSubmit() {
       }
     dispatch(InsertHearingDets(data)).then((response) => {
       handleCancel();
+    }) */
+
+    var data = {
+      "project_id": idDetails.project_id,
+      "activiity_id": taskDetails.activiity_id,
+      "sub_activity_id": taskDetails.sub_activity_id,
+      "assignee_id": localStorage.getItem("empId"),
+      "start_date": HearingData.nexthearing.value ,
+      "end_date": HearingData.nexthearing.value,
+      "assigned_by": localStorage.getItem("empId"),
+      "priority": '',
+      "description": HearingData.hearingoutcome.value,
+      "tag": ''
+    }
+
+    dispatch(inserTask(data)).then((response) => {
+      handleCancel();
     })
+
     setHearingData((prevState) => ({
       ...prevState,
     }));
@@ -128,11 +157,11 @@ function onSubmit() {
       <div>
            <div className="var_rate_master">Hearing</div>
            <div className="hearing_sh_table">
-            <div><div>Project Name</div><div>{props.rowData.project_name}</div></div>
-            <div><div>Client Name</div><div> {props.rowData.client}</div></div>
-            <div><div>Project Type</div><div></div>{props.rowData.project_type}</div>
-            <div><div>Project Sub Type</div><div>{props.rowData.project_type}</div></div>
-            <div><div>Process Type</div><div>{props.rowData.project_type}</div></div>
+            <div><div>Project Name</div><div>{props.rowData.data.project_name}</div></div>
+            <div><div>Client Name</div><div> {props.rowData.data.client}</div></div>
+            <div><div>Project Type</div><div></div>{props.rowData.data.project_type}</div>
+            <div><div>Project Sub Type</div><div>{props.rowData.data.project_type}</div></div>
+            <div><div>Process Type</div><div>{props.rowData.data.project_type}</div></div>
         </div>
             <div className="ad_journment"><Labelbox type="datepicker" placeholder={"Next Hearing Date"}
              changeData={(data) => checkValidation(data, "nexthearing")}
@@ -148,13 +177,13 @@ function onSubmit() {
               errmsg={HearingData.hearingoutcome.errmsg}
               />
               </div>
-          
-             <div className="cre_buttons_div"><CustomButton btnName={"Create Task"} btnCustomColor="customPrimary" custombtnCSS="cus_create_task"/>
+              <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
+             <div className="cre_buttons_div">
              <CustomButton btnName={"Adjournment"} btnCustomColor="customPrimary" custombtnCSS="cus_create_task" onBtnClick={Adjourn_Model}/>
              </div>
              <div>
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"/>
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"/>
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS="custom_save"/>
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel"  onBtnClick={handleCancel} />
             </div>  
         
        
@@ -167,5 +196,6 @@ function onSubmit() {
 const mapStateToProps = (state) =>
 ({
     getHearingDets: state.projectTasksReducer.getHearingDets,
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 export default connect(mapStateToProps)(Hearing);

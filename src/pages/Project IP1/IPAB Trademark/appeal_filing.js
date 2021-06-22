@@ -15,6 +15,7 @@ function AppealFiling(props) {
     const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
     const [projectDetails, setProjectDetails] = useState({})
+    const [saveOrUpdate, setSaveOrUpdate] = useState()
     const [idDetails, setidDetails] = useState({})
     console.log("appeal Filing", props);
     let { rowId } = useParams()

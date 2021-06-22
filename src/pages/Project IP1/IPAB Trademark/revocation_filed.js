@@ -427,7 +427,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Revocation Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -462,7 +462,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

@@ -464,7 +464,7 @@ function Employeeform(props) {
                             <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no : "-"}</div></div>
                             <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr : "-"}</div></div>
                             {/* {!props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Postel Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>} */}
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Postel Address</div><div className="employeecont">{val.address ? val.address : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.address ? val.address : "-"}</div></div>
                         </div>
                         {!props.emp_list && <div className="employeeform_row6">
                             <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>

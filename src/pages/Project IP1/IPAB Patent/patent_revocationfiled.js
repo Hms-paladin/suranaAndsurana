@@ -8,6 +8,7 @@ import { getTradeMarkStatus, getClassDetails, insertIPAB, getIPAP } from "../../
 import moment from 'moment'
 import { useParams } from "react-router-dom";
 import { getFilingType, getFilingTypeIpab } from "../../../actions/MasterDropdowns";
+import { SignalCellularNullOutlined } from '@material-ui/icons';
 
 function PatentRevocationFiled(props) {
 
@@ -445,7 +446,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Revocation Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -480,7 +481,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}

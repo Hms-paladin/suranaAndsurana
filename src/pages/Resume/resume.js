@@ -12,12 +12,14 @@ import DynModel from "../../component/Model/model";
 import moment from "moment";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
 import {
   getResourceType,
   getInstitute,
   getSpecialInterest,
   getStates,
   getCity_By_Id,
+  getCity,
   getLanguages,
   getSkills,
   getTraits,
@@ -26,7 +28,7 @@ import {
   getSpecilization,
   getCapability,
   getTalents,
-  getIndustry, getCity
+  getIndustry
 } from "../../actions/MasterDropdowns";
 import "./resume.scss";
 
@@ -237,7 +239,7 @@ const ResumePage = (props) => {
     dispatch(getInstitute());
     dispatch(getSpecialInterest());
     dispatch(getStates());
-    // dispatch(getCity());
+    dispatch(getCity());
     dispatch(getLanguages());
     dispatch(getSkills());
     dispatch(getTraits());
@@ -324,6 +326,11 @@ const ResumePage = (props) => {
       cityList.push({ value: data.state, id: data.city_id });
     });
 
+    let cityListAll = [];
+    props.getCityAll.map((data, index) => {
+      cityListAll.push({ value: data.state, id: data.city_id });
+    });
+
     let languagesList = [];
     props.getLanguages.map((data, index) => {
       languagesList.push({ value: data.language, id: data.language_id });
@@ -356,6 +363,7 @@ const ResumePage = (props) => {
       interestList,
       stateList,
       cityList,
+      cityListAll,
       languagesList,
       industryList,
       achivementsList,
@@ -419,6 +427,8 @@ const ResumePage = (props) => {
 
     if (props.resumeEditrow && props.resumeEditrow[0]?.experience.length > 0) {
       setExperienceList(props.resumeEditrow[0]?.experience)
+    }else{
+      setExperienceList([])
     }
 
     if (props.resumeEditrow && props.resumeEditrow.length > 0) {
@@ -602,6 +612,20 @@ const ResumePage = (props) => {
           setEditResume(false)
           setEditcity(false)
           // dispatch(GetResumeList(resume_id))
+          dispatch(searchRowdata({
+            "skill_id": "",
+            "trait_id": "",
+            "certification_id": "",
+            "achievement_id": "",
+            "specialization_id": "",
+            "capability_id": "",
+            "talent_id": "",
+            "status_id": "",
+            "qualification_id": "",
+            "exp_min": "",
+            "exp_max": ""
+
+        }))
           props.handleChangeCloseModel(false)
         }
       );
@@ -653,6 +677,7 @@ const ResumePage = (props) => {
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
+    props.handleChangeCloseModel()
   };
 
   function showEducationModel() {
@@ -764,7 +789,7 @@ const ResumePage = (props) => {
     SetNullFieldValueExp(!nullFieldValueExp);
     setOnEdit(false);
   };
-
+  console.log(experienceList,"yyyyyyyy")
   return (
     <div>
       {props.EditResume ? null : <Grid item xs={12} className="ContentTitle">
@@ -1387,7 +1412,7 @@ const ResumePage = (props) => {
                 nullFieldValueExp={nullFieldValueExp}
                 editExperienceid={experienceid}
                 editExperiences={experiencerow}
-                city={resumeGetList.cityList}
+                // city={resumeGetList.cityList}
                 editbtn={onEdit}
                 handleChangeCloseModel={(bln) => handleFieldNullExp(bln)}
                 EditExperience={(data, id) => EditExperience(data, id)}
@@ -1408,6 +1433,7 @@ const mapStateToProps = (state) => (
     getSpecialInterest: state.getOptions.getSpecialInterest || [],
     getState: state.getOptions.getState || [],
     getCity: state.getOptions.getCity_By_Id || [],
+    getCityAll: state.getOptions.getCity || [],
     getLanguages: state.getOptions.getLanguages || [],
     getSkills: state.getOptions.getSkills || [],
     getTraits: state.getOptions.getTraits || [],

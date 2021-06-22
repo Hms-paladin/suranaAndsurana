@@ -49,7 +49,7 @@ function TimeSheetView(props) {
         }
 
     })
-    
+    //dispatch(getTaskTimeSheet(props.rowData.task_id));
    console.log('1')
         //var paramVal =props.rowData;
         console.log('2')
@@ -60,18 +60,25 @@ function TimeSheetView(props) {
     
         useEffect(() => {
             //if(dispatch(getTaskTimeSheet(props.rowData.task_id));)
+            handleCancel();
             if(props.getTaskTimeSheet && props.getTaskTimeSheet[0] && props.getTaskTimeSheet[0].task_id==props.rowData.task_id ){
             if(props.getTaskTimeSheet.length >0 ){
                 
                 if(props.getTaskTimeSheet[0].timesheet.length >0 ){
-                    var tsSize =props.getTaskTimeSheet.length -1;
+                    var tsSize =props.getTaskTimeSheet[0].timesheet.length -1;
                 if(props.getTaskTimeSheet[0].timesheet[tsSize].start_date == null && props.getTaskTimeSheet[0].timesheet[tsSize].start_time == null){
                     setTimesheetStart(true) 
                     settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
-                }else{
-                setTimesheetStart(false)
-                setstartDateDisplay(props.getTaskTimeSheet[0].timesheet[tsSize].start_date);
-                setstartTimeDisplay(props.getTaskTimeSheet[0].timesheet[tsSize].start_time);
+                }else if(props.getTaskTimeSheet[0].timesheet[tsSize].end_date != null && props.getTaskTimeSheet[0].timesheet[tsSize].end_time != null){
+                    setTimesheetStart(true) 
+                    settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+                }
+                    else{
+                setTimesheetStart(false);
+                
+                setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
+                var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
+                setstartTimeDisplay(startttime);
                 settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
                 }
             }
@@ -111,49 +118,52 @@ function TimeSheetView(props) {
         props.handleChangeCloseModel(false);  
       }
     function changestart () {
-        setTimesheetStart(false)
+        setTimesheetStart(true);
         var a = props;
         var timesheetData =  {
             "end_date":timeSheetForm.toDate.value,
-            "end_time":(timeSheetForm.endTime.value!==null && timeSheetForm.endTime.value!=='')?moment(timeSheetForm.endTime.value).format('HH:mm:ss') : '00:00:00',//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
+            "end_time":(timeSheetForm.endTime.value!==null && timeSheetForm.endTime.value!=='')?moment(timeSheetForm.endTime.value).format('HH:mm:ss') : moment(new Date()).format("HH:mm:ss"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
             "comment":timeSheetForm.description.value,
             "updated_by":localStorage.getItem("empId"),
             "timesheet_id":timeSheetID
         }
         dispatch(insertTimeSheetbyTime(timesheetData,false,props.rowData)).then((response) => {
            // handleCancel();
-           props.handleChangeCloseModel(false);  
+          // dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
+            // handleCancel();
+           // dispatch(getTaskTimeSheet(props.rowData.task_id));
+            props.handleChangeCloseModel(false);  
+           //})
+          // props.handleChangeCloseModel(false);  
           })
     }
 
     function changeStop() {
-        setTimesheetStart(true)
+        setTimesheetStart(false);
         
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "task_id": props.rowData.task_id,
             "start_date": timeSheetForm.fromDate.value,
-            "start_time": (timeSheetForm.startTime.value!==null && timeSheetForm.startTime.value!=='')?moment(timeSheetForm.startTime.value).format('HH:mm:ss') : '00:00:00',//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+            "start_time": (timeSheetForm.startTime.value!==null && timeSheetForm.startTime.value!=='')?moment(timeSheetForm.startTime.value).format('HH:mm:ss') : moment(new Date()).format("HH:mm:ss"),//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
        dispatch(insertTimeSheetbyTime(timesheetData,true,props.rowData,startDateDisplay)).then((response) => {
            // handleCancel();
+           dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
            props.handleChangeCloseModel(false);  
+        })
          })
     }
   
     
     const handleCancel = () => {
         let From_key = [
-            "activity",
-            "subActivity",
+            "startTime",
             "fromDate",
             "toDate",
-            "assignTo",
-            "tag",
-            "priority",
-            "startTime", "description"
+            "endTime", "description"
         ];
 
         From_key.map((data) => {

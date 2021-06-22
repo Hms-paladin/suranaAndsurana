@@ -336,7 +336,7 @@ function Resumesearch(props) {
 
     //     )
     // }
-
+console.log(props.GetRowData,"GetRowData")
 
     function onSearch() {
         dispatch(searchRowdata({

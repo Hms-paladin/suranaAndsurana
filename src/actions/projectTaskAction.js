@@ -156,8 +156,8 @@ if(params.project_id != null){
         task_id:params.task_id,
         sub_activity_id:params.sub_activity_id,
         assignee_id:params.assignee_id,
-        start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
-        end_date:params.actual_end_date != null ? params.actual_end_date : null, 
+        actual_start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
+        actual_end_date:params.actual_end_date != null ? params.actual_end_date : null, 
         priority:params.Priority,
         description:params.description,
         tag:params.tag_id,
@@ -166,8 +166,8 @@ if(params.project_id != null){
     par={
         task_id:params.task_id,
         assignee_id:params.assignee_id,
-        start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
-        end_date:params.actual_end_date != null ? params.actual_end_date : null, 
+        actual_start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
+        actual_end_date:params.actual_end_date != null ? params.actual_end_date : null, 
         description:params.description,
         tag:params.tag_id,
     };
@@ -184,7 +184,7 @@ if(params.project_id != null){
                    // message: msg != "" ? msg : "Adhoc Task added Successfully",
                 //});
                // dispatch({ type: INSERT_ADHOC_TASK, payload: response.data.status })
-               dispatch(getTaskList(localStorage.getItem("empId")));
+               dispatch(getTaskList(params.assignee_id));//localStorage.getItem("empId")));
                 return Promise.resolve();
             }
         });
@@ -208,7 +208,7 @@ export const insertTimeSheetbyTime = (params, time,task,timeSheetStartDate) => a
             if (response.data.status === 1) {
                 task.Priority=task.priority_id;
                 task.tag =task.tag_id;
-                if(time == true && task && task.actual_start_date && task.actual_start_date.length < 2 ){
+                if(time == true && task && task.actual_start_date == null){
                     task.actual_start_date=params.start_date;
                     
                     

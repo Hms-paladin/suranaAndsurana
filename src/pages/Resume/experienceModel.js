@@ -95,10 +95,11 @@ function ExperienceModel(props) {
         setExperienceForm((prevState) => ({
             ...prevState,
         }));
+        // Experience_Form.companyname.value = "compName";
     }, [props.editExperiences, props.editExperienceid]);
 
     //update experience details==>
-
+    // Experience_Form.companyname.value = "compName";
     function updateExperience() {
         setRowchange(Experience_Form)
         props.EditExperience(Experience_Form, props.editExperienceid);
@@ -111,7 +112,7 @@ function ExperienceModel(props) {
         handleCancel()
     }, [props.nullFieldValueExp])
 
-
+console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 
     useEffect(() => {
         // Axios({

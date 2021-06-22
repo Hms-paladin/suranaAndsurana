@@ -1,6 +1,6 @@
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
-import { GET_TASK_LIST } from '../utils/Constants'
+import { GET_TASK_LIST, GET_PROJECT_TIME_SHEET } from '../utils/Constants'
 
 
 export const getTaskList = () => async dispatch => {
@@ -15,6 +15,24 @@ export const getTaskList = () => async dispatch => {
             .then((response) => {
 
                 dispatch({ type: GET_TASK_LIST, payload: response.data.data || [] })
+            })
+
+    } catch (err) {
+
+    }
+}
+export const getProjectTimeSheetList = (project_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_time_sheet_project',
+            data: {
+                "project_id": project_id,
+            }
+        })
+            .then((response) => {
+
+                dispatch({ type: GET_PROJECT_TIME_SHEET, payload: response.data.data || [] })
             })
 
     } catch (err) {

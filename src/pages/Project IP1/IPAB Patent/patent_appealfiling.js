@@ -342,7 +342,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Appeal Filing Date "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
                         error={TradeMarkForm.appeal_filing_date.error}
@@ -375,7 +375,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <Labelbox type="datepicker"
                         placeholder={" Date of Hearing "}
-                        disableFuture={false}
+                        disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
