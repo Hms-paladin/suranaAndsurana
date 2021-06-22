@@ -9,13 +9,13 @@ import { InesertResume } from "../../actions/ResumeAction"
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import './resume.scss';
-import { getIndustry, getCity } from '../../actions/MasterDropdowns';
+import { getIndustry } from '../../actions/MasterDropdowns';
 
 
 function ExperienceModel(props) {
-
+// console.log("parentToChild", parentToChild)
     const dispatch = useDispatch()
-    const [city, setCity] = useState({})
+    const [city, setCity] = useState([])
     const [industryOptions, setIndustryOptions] = useState([])
     const [rowchange, setRowchange] = useState([]);
     const [Experience_Form, setExperienceForm] = useState({
@@ -64,14 +64,14 @@ function ExperienceModel(props) {
         },
         responsibilities: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "200" }],
+            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "200"}],
             error: null,
             errmsg: null,
         },
     })
 
     useEffect(() => {
-        console.log(props.editExperiences, "props.editExperiences")
+        console.log(props.editExperiences,"props.editExperiences")
         const industry = props.editExperiences?.type_of_industry;
         const compName = props.editExperiences?.company_name;
         const city = props.editExperiences?.city_id;
@@ -115,20 +115,20 @@ function ExperienceModel(props) {
 console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 
     useEffect(() => {
-        // Axios({
-        //     method: "get",
-        //     url: apiurl + "get_s_tbl_m_city",
-        // }).then((response) => {
-        //     let cityList = [];
-        //     response.data.data.map((data, index) =>
-        //         cityList.push({ value: data.state, id: data.city_id })
-        //     );
-        //     setCity(cityList);
-        // });
-        // setCity(props.city);
+        Axios({
+            method: "get",
+            url: apiurl + "get_s_tbl_m_city",
+        }).then((response) => {
+            let cityList = [];
+            response.data.data.map((data, index) =>
+                cityList.push({ value: data.state, id: data.city_id })
+            );
+            setCity(cityList);
+        });
 
-    }, [props.city])
+    }, [])
 
+    
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Experience_Form);
@@ -194,7 +194,6 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 
     useEffect(() => {
         dispatch(getIndustry())
-        dispatch(getCity())
     }, [])
 
     useEffect(() => {
@@ -203,13 +202,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             industryList.push({ value: data.industry, id: data.industry_id })
         })
         setIndustryOptions(industryList)
-
-        const City = []
-        props.GetCity && props.GetCity.map((data, index) => {
-            City.push({ value: data.state, id: data.city_id })
-        })
-        setCity({ City })
-    }, [props.getOptions, props.GetCity])
+    }, [props.getOptions])
 
     return (
         <div className="experienceModelContainer">
@@ -217,13 +210,13 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
                 <Grid item xs={6}> <Labelbox type="select" placeholder="Type of Industry"
                     changeData={(data) => checkValidation(data, "industry")}
                     dropdown={industryOptions}
-                    value={Experience_Form.industry.value}
+                    value={Experience_Form.industry.value== "" ? props.editExperiences?.type_of_industry : Experience_Form.industry.value}
                     error={Experience_Form.industry.error}
                     errmsg={Experience_Form.industry.errmsg} />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="text" placeholder="Company Name"
                     changeData={(data) => checkValidation(data, "companyname")}
-                    value={Experience_Form.companyname.value}
+                    value={Experience_Form.companyname.value== "" ? props.editExperiences?.company_name : Experience_Form.companyname.value}
                     error={Experience_Form.companyname.error}
                     errmsg={Experience_Form.companyname.errmsg} />
                 </Grid>
@@ -231,8 +224,8 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="select" placeholder="City"
                     changeData={(data) => checkValidation(data, "city")}
-                    dropdown={city.City}
-                    value={Experience_Form.city.value}
+                    dropdown={city}
+                    value={Experience_Form.city.value== "" ? props.editExperiences?.city_id : Experience_Form.city.value}
                     error={Experience_Form.city.error}
                     errmsg={Experience_Form.city.errmsg} />
                 </Grid>
@@ -240,13 +233,13 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="text" placeholder="Department"
                     changeData={(data) => checkValidation(data, "department")}
-                    value={Experience_Form.department.value}
+                    value={Experience_Form.department.value== "" ? props.editExperiences?.department : Experience_Form.department.value}
                     error={Experience_Form.department.error}
                     errmsg={Experience_Form.department.errmsg} />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="text" placeholder="Designation"
                     changeData={(data) => checkValidation(data, "designation")}
-                    value={Experience_Form.designation.value}
+                    value={Experience_Form.designation.value== "" ? props.editExperiences?.designation : Experience_Form.designation.value}
                     error={Experience_Form.designation.error}
                     errmsg={Experience_Form.designation.errmsg} />
                 </Grid>
@@ -255,14 +248,14 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="datepicker" placeholder="Period From"
                     changeData={(data) => checkValidation(data, "periodfrom")}
-                    value={Experience_Form.periodfrom.value}
+                    value={Experience_Form.periodfrom.value== null ? props.editExperiences?.period_from : Experience_Form.periodfrom.value}
                     error={Experience_Form.periodfrom.error}
                     errmsg={Experience_Form.periodfrom.errmsg}
                     disableFuture={"false"} />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="datepicker" placeholder="Period To"
                     changeData={(data) => checkValidation(data, "periodto")}
-                    value={Experience_Form.periodto.value}
+                    value={Experience_Form.periodto.value== null ? props.editExperiences?.period_to : Experience_Form.periodto.value}
                     error={Experience_Form.periodto.error}
                     errmsg={Experience_Form.periodto.errmsg}
                     disableFuture={"false"}
@@ -275,7 +268,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
                 <Grid item xs={12}>
                     <div className="commentbox"> <Labelbox type="textarea" placeholder="Responsibilities"
                         changeData={(data) => checkValidation(data, "responsibilities")}
-                        value={Experience_Form.responsibilities.value}
+                        value={Experience_Form.responsibilities.value== "" ? props.editExperiences?.responsible : Experience_Form.responsibilities.value}
                         error={Experience_Form.responsibilities.error}
                         errmsg={Experience_Form.responsibilities.errmsg} />
                     </div>
@@ -298,9 +291,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 }
 
 const mapStateToProps = state => ({
-    getOptions: state.getOptions.getIndustry,
-    GetCity: state.getOptions.getCity
-
+    getOptions: state.getOptions.getIndustry
 })
 
 export default connect(mapStateToProps)(ExperienceModel);
