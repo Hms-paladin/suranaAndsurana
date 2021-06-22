@@ -184,7 +184,7 @@ if(params.project_id != null){
                    // message: msg != "" ? msg : "Adhoc Task added Successfully",
                 //});
                // dispatch({ type: INSERT_ADHOC_TASK, payload: response.data.status })
-               dispatch(getTaskList(localStorage.getItem("empId")));
+               dispatch(getTaskList(params.assignee_id));//localStorage.getItem("empId")));
                 return Promise.resolve();
             }
         });
