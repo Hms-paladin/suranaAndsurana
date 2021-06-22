@@ -239,8 +239,6 @@ function ProjectFormCreate(props) {
 
 
   function checkValidation(data, key, multipleId) {
-    console.log(data, "test")
-
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
