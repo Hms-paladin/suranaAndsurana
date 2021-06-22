@@ -80,7 +80,7 @@ function TimeSheetView(props) {
                         "start_time": null,
                         "sub_activity": null,
                         "sub_activity_id": null,
-                        "task_id":props.rowData.task_id,
+                        "task_id":props.rowData.task_id ,
                         "timesheet_id": null,
                         "total_hours": null
                     };
