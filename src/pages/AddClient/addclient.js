@@ -382,7 +382,6 @@ function AddClient(props) {
   console.log(test, "filetest");
 
   const onStateClear = () => {
-    alert("test")
     let From_key = [
       "poa_name",
       "city",

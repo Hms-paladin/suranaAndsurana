@@ -328,8 +328,8 @@ function AppealFiling(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        placeholder={" Client - Applicant"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
@@ -339,8 +339,8 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Mark</div>
                     <Labelbox type="text"
-                        placeholder={" Mark"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "client_mark")}
                         value={TradeMarkForm.client_mark.value}
@@ -350,8 +350,8 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Trade Mark No</div>
                     <Labelbox type="text"
-                        placeholder={" Trade Mark No"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "trade_mark_no")}
                         value={TradeMarkForm.trade_mark_no.value}
@@ -361,10 +361,8 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    {/* <Labelbox type="select" placeholder="Class"></Labelbox> */}
+                    <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="select"
-                        placeholder={" Class"}
-
                         dropdown={classDetList.classDetailsData}
                         changeData={(data) => checkValidation(data, "class_id")}
                         value={TradeMarkForm.class_id.value}
@@ -374,8 +372,8 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Appeal Filing Date</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Appeal Filing Date "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
@@ -387,8 +385,8 @@ function AppealFiling(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings"> Serial No</div>
                     <Labelbox type="text"
-                        placeholder={" Serial No"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
@@ -398,6 +396,7 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Appeal No</div>
                     <Labelbox type="text"
                         placeholder={" Appeal No"}
                         disableFuture={false}
@@ -409,8 +408,8 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Date of Hearing "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
@@ -420,8 +419,9 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                        changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
@@ -431,8 +431,8 @@ function AppealFiling(props) {
                     {/* <Labelbox type="select" placeholder="Status"></Labelbox> */}
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        placeholder={" Comments"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
