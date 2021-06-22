@@ -514,7 +514,7 @@ const ResumePage = (props) => {
       Resume_Form.DOB.value = props.resumeEditrow[0].dob
       Resume_Form.contactPhone.value = props.resumeEditrow[0].con_ph_no
       Resume_Form.emailId.value = props.resumeEditrow[0].email_addr
-      Resume_Form.mailAddress.value = props.resumeEditrow[0].email_addr
+      Resume_Form.mailAddress.value = props.resumeEditrow[0].postal_addr
       Resume_Form.state.value = props.resumeEditrow[0].state_id
       Resume_Form.city.value = props.resumeEditrow[0].city_id
 

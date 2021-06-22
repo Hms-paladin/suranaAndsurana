@@ -178,8 +178,8 @@ function RevocationDefended(props) {
             TradeMarkForm.trade_mark_no.value = obj.trademark_no;
             // if(obj.trademark_no && obj.trademark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
-            
-            TradeMarkForm.revocation_filing_date.value =obj.rectification_filing;
+
+            TradeMarkForm.revocation_filing_date.value = obj.rectification_filing;
             // if(obj.rectification_filing && obj.rectification_filing.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
 
@@ -387,8 +387,8 @@ function RevocationDefended(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Client - Respondent</div>
                     <Labelbox type="text"
-                        placeholder={" Client - Respondent"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "client_responent")}
                         value={TradeMarkForm.client_responent.value}
@@ -398,8 +398,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Mark</div>
                     <Labelbox type="text"
-                        placeholder={" Mark "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "mark")}
                         value={TradeMarkForm.mark.value}
@@ -409,8 +409,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Trade Mark No</div>
                     <Labelbox type="text"
-                        placeholder={" Trade Mark No"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "trade_mark_no")}
                         value={TradeMarkForm.trade_mark_no.value}
@@ -420,8 +420,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Class</div>
                     <Labelbox type="select"
-                        placeholder={" Class"}
                         dropdown={classDetList.classDetailsData}
                         changeData={(data) => checkValidation(data, "class_id")}
                         value={TradeMarkForm.class_id.value}
@@ -431,8 +431,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Revocation Filing Date</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Revocation Filing Date "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
@@ -444,8 +444,8 @@ function RevocationDefended(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        placeholder={" Serial No"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
@@ -455,8 +455,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        placeholder={" Org Appeal No."}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
@@ -466,8 +466,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Date of Hearing "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
@@ -477,9 +477,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    {/* <Labelbox type="text" placeholder=""></Labelbox> */}
+                <div className="copyFieldheadings">Applicant</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "applicant")}
                         value={TradeMarkForm.applicant.value}
@@ -489,8 +488,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Applicant - Rep</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant - Rep "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "Applicant_rep")}
                         value={TradeMarkForm.Applicant_rep.value}
@@ -502,9 +501,10 @@ function RevocationDefended(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"
                         mode={"multiple"}
-                        placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
+                        changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
                         dropdown={filingTypeList.filingTypeData}
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
@@ -513,8 +513,9 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                         changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
@@ -523,8 +524,8 @@ function RevocationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        placeholder={" Comments"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}

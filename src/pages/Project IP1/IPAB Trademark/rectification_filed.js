@@ -378,8 +378,8 @@ function IPABRectificationDefended(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        placeholder={" Client - Applicant"}
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
                         error={TradeMarkForm.client_applicant.error}
@@ -388,8 +388,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Mark</div>
                     <Labelbox type="text"
-                        placeholder={" Mark"}
                         changeData={(data) => checkValidation(data, "mark")}
                         value={TradeMarkForm.mark.value}
                         error={TradeMarkForm.mark.error}
@@ -398,8 +398,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Trade Mark No</div>
                     <Labelbox type="text"
-                        placeholder={" Trade Mark No"}
                         changeData={(data) => checkValidation(data, "trade_mark_no")}
                         value={TradeMarkForm.trade_mark_no.value}
                         error={TradeMarkForm.trade_mark_no.error}
@@ -408,9 +408,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Class</div>
                     <Labelbox type="select"
-                        placeholder={" Class"}
-
                         dropdown={classDetList.classDetailsData}
                         changeData={(data) => checkValidation(data, "class_id")}
                         value={TradeMarkForm.class_id.value}
@@ -420,8 +419,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Rectification Filing Date "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
@@ -433,8 +432,8 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        placeholder={" Serial No "}
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -443,8 +442,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        placeholder={" Org Appeal No "}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -453,8 +452,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Date of Hearing "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
@@ -464,8 +463,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Applicant</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant "}
                         changeData={(data) => checkValidation(data, "applicant")}
                         value={TradeMarkForm.applicant.value}
                         error={TradeMarkForm.applicant.error}
@@ -474,8 +473,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Applicant - Rep</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant - Rep "}
                         changeData={(data) => checkValidation(data, "applicant_rep")}
                         value={TradeMarkForm.applicant_rep.value}
                         error={TradeMarkForm.applicant_rep.error}
@@ -486,9 +485,10 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"
                         mode={"multiple"}
-                        placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
+                        changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
                         dropdown={filingTypeList.filingTypeData}
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
@@ -498,8 +498,9 @@ function IPABRectificationDefended(props) {
 
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                        changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
@@ -508,8 +509,8 @@ function IPABRectificationDefended(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        placeholder={" Comments"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
