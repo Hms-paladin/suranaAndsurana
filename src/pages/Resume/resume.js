@@ -28,7 +28,7 @@ import {
   getSpecilization,
   getCapability,
   getTalents,
-  getIndustry,
+  getIndustry
 } from "../../actions/MasterDropdowns";
 import "./resume.scss";
 
@@ -52,7 +52,7 @@ const ResumePage = (props) => {
   const [editResume, setEditResume] = useState(false)
   const [resume_id, setResume_id] = useState()
   const [editcity, setEditcity] = useState(false)
-
+  const [expCity, setExpCity] = useState([])
 
   const [Resume_Form, setResumeFrom] = useState({
     name: {
@@ -250,6 +250,7 @@ const ResumePage = (props) => {
     dispatch(getTalents());
     dispatch(getIndustry());
     dispatch(getTalents());
+    dispatch(getCity())
   }, []);
 
   useEffect(() => {
@@ -257,6 +258,7 @@ const ResumePage = (props) => {
   }, [Resume_Form.state.value])
 
   useEffect(() => {
+    setExpCity(props.GetCityAll)
     let candidateList = [];
     props.getResourcesType.map((data, index) => {
       candidateList.push({
@@ -512,7 +514,7 @@ const ResumePage = (props) => {
       Resume_Form.DOB.value = props.resumeEditrow[0].dob
       Resume_Form.contactPhone.value = props.resumeEditrow[0].con_ph_no
       Resume_Form.emailId.value = props.resumeEditrow[0].email_addr
-      Resume_Form.mailAddress.value = props.resumeEditrow[0].email_addr
+      Resume_Form.mailAddress.value = props.resumeEditrow[0].postal_addr
       Resume_Form.state.value = props.resumeEditrow[0].state_id
       Resume_Form.city.value = props.resumeEditrow[0].city_id
 
@@ -597,7 +599,7 @@ const ResumePage = (props) => {
 
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
-          handleCancel();
+          // handleCancel();
         }
       );
     }
@@ -750,7 +752,7 @@ const ResumePage = (props) => {
       {
         type_of_industry: data.industry.value,
         company_name: data.companyname.value,
-        city: data.city.value,
+        city_id: data.city.value,
         department: data.department.value,
         designation: data.designation.value,
         period_from: data.periodfrom.value,
@@ -1308,6 +1310,7 @@ const ResumePage = (props) => {
 
                 <div className="experienceOuterBox">
                   {experienceList.map((data, index) => {
+                    console.log(data.city_id, "experiencexperienceListeList")
                     return (
                       <div className="experienceKeyValue">
                         <div className="experienceKey">
@@ -1331,12 +1334,12 @@ const ResumePage = (props) => {
                           <div title={data.company_name} className="companyname">{data.company_name}</div>
                           <div>
 
-                            {console.log(experienceList,"resumeGetList.cityList")}
+                            {" "}
                             {
                             // editcity ?
                             //   <> {data.city || "-"}</> :
                               <> {resumeGetList.cityListAll.map((getName) => {
-                                if (data.city_id&&Number(data.city_id) === getName.id ) {
+                                if (data.city &&Number(data.city) === getName.id ) {
                                   return getName.value || '-';
                                 }
                               })}</>
@@ -1442,6 +1445,8 @@ const mapStateToProps = (state) => (
     getStatus: state.getOptions.getStatus || [],
     getQualification: state.getOptions.getQualification || [],
     getIndustry: state.getOptions.getIndustry || [],
+    GetCityAll: state.getOptions.getCity
+
 
   }
 );

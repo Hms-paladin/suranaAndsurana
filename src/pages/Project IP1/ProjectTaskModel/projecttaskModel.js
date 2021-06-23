@@ -37,7 +37,7 @@ function ProjectTaskModel(props) {
     },
     location: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -148,7 +148,6 @@ function ProjectTaskModel(props) {
   // })
 
   function onSubmit() {
-    alert("tset")
     var mainvalue = {};
     var targetkeys = Object.keys(InsertTaskForm);
 
@@ -167,7 +166,7 @@ function ProjectTaskModel(props) {
     var filtererr = targetkeys.filter(
       (obj) => InsertTaskForm[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
       // setInsertTaskForm({ error: true });
     } else {
@@ -189,8 +188,6 @@ function ProjectTaskModel(props) {
         handleCancel();
       })
 
-
-
       // dispatch(InesertResume(InsertTaskForm)).then(() => {
       //   handleCancel()
       // })
@@ -202,41 +199,45 @@ function ProjectTaskModel(props) {
   };
 
 
-  function checkValidation(data, key, multipleId) {
+  // function checkValidation(data, key, multipleId) {
+  //   alert("tset")
+  //   var errorcheck = ValidationLibrary.checkValidation(
+  //     data,
+  //     InsertTaskForm[key].validation
+  //   );
+  //   let dynObj = {
+  //     value: data,
+  //     error: !errorcheck.state,
+  //     errmsg: errorcheck.msg,
+  //     validation: InsertTaskForm[key].validation
+  //   }
 
-    var errorcheck = ValidationLibrary.checkValidation(
-      data,
-      InsertTaskForm[key].validation
-    );
-    let dynObj = {
-      value: data,
-      error: !errorcheck.state,
-      errmsg: errorcheck.msg,
-      validation: InsertTaskForm[key].validation
-    }
+  //   console.log(data, key, "oiuytre")
 
-    // only for multi select (start)
 
-    let multipleIdList = []
 
-    if (multipleId) {
-      multipleId.map((item) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i] === item.value) {
-            multipleIdList.push(item.id)
-          }
-        }
-      })
-      dynObj.valueById = multipleIdList.toString()
-    }
-    // (end)
+  //   // only for multi select (start)
 
-    setInsertTaskForm(prevState => ({
-      ...prevState,
-      [key]: dynObj,
-    }));
+  //   let multipleIdList = []
 
-  };
+  //   if (multipleId) {
+  //     multipleId.map((item) => {
+  //       for (let i = 0; i < data.length; i++) {
+  //         if (data[i] === item.value) {
+  //           multipleIdList.push(item.id)
+  //         }
+  //       }
+  //     })
+  //     dynObj.valueById = multipleIdList.toString()
+  //   }
+  //   // (end)
+  //   setInsertTaskForm(prevState => ({
+  //     ...prevState,
+  //     [key]: dynObj,
+  //   }));
+
+  // };
+
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
@@ -319,7 +320,7 @@ function ProjectTaskModel(props) {
     }
   }
 
- 
+
 
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
@@ -348,7 +349,13 @@ function ProjectTaskModel(props) {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
-    if (key == "activity") {
+
+    if (InsertTaskForm.activity.value === 6 ) {
+      InsertTaskForm.location.validation = ([{ "name": "required" }])
+
+    } 
+
+    if (data && key == "activity") {
       // Sub Activity
       Axios({
         method: "POST",

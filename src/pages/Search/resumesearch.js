@@ -510,7 +510,7 @@ console.log(props.GetRowData,"GetRowData")
                     </Grid>
                 </div>
                 <div className="resume_searchtable">
-                    <EnhancedTable headCells={headCells} rows={rows && rows} />
+                    <EnhancedTable headCells={headCells} rows={rows && rows} hideSortIcon={false} />
                 </div>
                 <div className="searchinterviewbtn">
                     <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false} onBtnClick={() => setModelOpen(true)} /></div>

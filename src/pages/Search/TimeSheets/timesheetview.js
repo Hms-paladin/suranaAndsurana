@@ -70,8 +70,23 @@ function TimeSheetView(props) {
                     setTimesheetStart(true) 
                     settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
                 }else if(props.getTaskTimeSheet[0].timesheet[tsSize].end_date != null && props.getTaskTimeSheet[0].timesheet[tsSize].end_time != null){
+                    var timeObj ={
+                
+                        "activity_id": null,
+                        "end_date": null,
+                        "end_time": null,
+                        "project_id": null,
+                        "start_date": null,
+                        "start_time": null,
+                        "sub_activity": null,
+                        "sub_activity_id": null,
+                        "task_id":props.rowData.task_id ,
+                        "timesheet_id": null,
+                        "total_hours": null
+                    };
+                    props.getTaskTimeSheet[0].timesheet.push(timeObj);
                     setTimesheetStart(true) 
-                    settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+                    settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize+1].timesheet_id);
                 }
                     else{
                 setTimesheetStart(false);
@@ -132,7 +147,9 @@ function TimeSheetView(props) {
           // dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
             // handleCancel();
            // dispatch(getTaskTimeSheet(props.rowData.task_id));
+           dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
             props.handleChangeCloseModel(false);  
+         })
            //})
           // props.handleChangeCloseModel(false);  
           })

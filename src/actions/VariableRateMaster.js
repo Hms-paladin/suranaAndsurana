@@ -326,32 +326,41 @@ export const deleteVariableRate = (id,project_id) => async dispatch => {
 }
 
 
-export const UpdateVariableRate = (data,amt) => async dispatch => {
+export const UpdateVariableRate = (data,allRowAmount, allrowList) => async dispatch => {
   // console.log(projectSearchCreate,"projectSearchCreate")
+
+  for(var i=0; i<allrowList.length;i++){
+var amount = allRowAmount["amountSearch"+i];
+var ratMasterId = allrowList[i].stage_list_id
+if(amount != allrowList[i].Amount){
+
     try {
-        axios({
-            method: 'PUT',
-            url: apiurl +'update_project_vairable_rate',
-            data:
-            {
-              "rate_master_id":data[0].rate_master_id || 0,
-              "amount":amt|| 0
-           
-            }
-        }).then((response) => {
-            if (response.data.status === 1) {
-              dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.status})
-                notification.success({
-                    message: "Variable rate amount updated sucessfully",
-                });
-                dispatch(getProjectVariableRate(data[0].project_id))
-                return Promise.resolve();
-            }
-        });
-  
-    } catch (err) {
-  
-    }
+      axios({
+          method: 'PUT',
+          url: apiurl +'update_project_vairable_rate',
+          data:
+          {
+            "rate_master_id":ratMasterId || 0,
+            "amount":amount|| 0
+         
+          }
+      }).then((response) => {
+          if (response.data.status === 1) {
+            dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.status})
+              notification.success({
+                  message: "Variable rate amount updated sucessfully",
+              });
+              //dispatch(getProjectVariableRate(data[0].project_id))
+              return Promise.resolve();
+          }
+      });
+
+  } catch (err) {
+
+  }
+
+  }
+}
   }
 
 

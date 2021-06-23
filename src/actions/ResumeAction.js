@@ -5,6 +5,7 @@ import { notification } from 'antd';
 import moment from "moment";
 
 export const InesertResume = (Resume_Form, educationList, experienceList) => async dispatch => {
+  console.log(experienceList, "experienceList")
   try {
     axios({
       method: 'POST',
