@@ -422,12 +422,12 @@ function ProjectIp(props) {
 
     function onsubmitvariablerate() {
         setVariableid(false)
-        // let AddRow =props.searchVariableRate.find((data)=>{
-        //     return data.stage_list_id
-        // })
-        //   dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate.amountSearch0)).then((response)=>{
-        //     setDisableCondition(false)
-        //   })
+        let AddRow =props.searchVariableRate.find((data)=>{
+            return data.stage_list_id
+        })
+          dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate,props.searchVariableRate)).then((response)=>{
+             setDisableCondition(false)
+          })
 
 
     }
