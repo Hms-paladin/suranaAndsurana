@@ -197,7 +197,6 @@ const RateMaster = (props) => {
         });
       }
       if (AmountChange) {
-        alert("hai")
         dispatch(UpdateVariableRate()).then((response) => {
           setAmountChange(false)
         })

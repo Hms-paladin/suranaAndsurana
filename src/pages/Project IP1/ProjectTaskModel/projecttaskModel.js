@@ -350,13 +350,10 @@ function ProjectTaskModel(props) {
     }
     // (end)
 
-    if (data === 6 && key == "activity") {
+    if (InsertTaskForm.activity.value === 6 ) {
       InsertTaskForm.location.validation = ([{ "name": "required" }])
 
-    } else {
-      InsertTaskForm.location.validation = ([])
-
-    }
+    } 
 
     if (data && key == "activity") {
       // Sub Activity

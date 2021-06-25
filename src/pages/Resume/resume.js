@@ -1336,14 +1336,14 @@ const ResumePage = (props) => {
 
                             {" "}
                             {
-                              editcity
-                                ?
-                                <> {data.city || "-"}</> :
-                                <> {expCity.map((getName) => {
-                                  if (data.city_id === getName.city_id) {
-                                    return getName.state || "-";
-                                  }
-                                })}</>}
+                            // editcity ?
+                            //   <> {data.city || "-"}</> :
+                              <> {resumeGetList.cityListAll.map((getName) => {
+                                if (data.city &&Number(data.city) === getName.id ) {
+                                  return getName.value || '-';
+                                }
+                              })}</>
+                               }
 
                           </div>
 
