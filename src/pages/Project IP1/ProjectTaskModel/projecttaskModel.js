@@ -181,7 +181,8 @@ function ProjectTaskModel(props) {
         "assigned_by": localStorage.getItem("empId"),
         "priority": InsertTaskForm.priority.value,
         "description": InsertTaskForm.description.value,
-        "tag": InsertTaskForm.tag.value
+        "tag": InsertTaskForm.tag.value,
+        "location_id": InsertTaskForm.location.value || 0
       }
 
       dispatch(inserTask(data)).then((response) => {
@@ -350,10 +351,10 @@ function ProjectTaskModel(props) {
     }
     // (end)
 
-    if (InsertTaskForm.activity.value === 6 ) {
+    if (InsertTaskForm.activity.value === 6) {
       InsertTaskForm.location.validation = ([{ "name": "required" }])
 
-    } 
+    }
 
     if (data && key == "activity") {
       // Sub Activity
