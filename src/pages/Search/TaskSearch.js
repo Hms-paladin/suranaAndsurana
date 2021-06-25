@@ -340,10 +340,10 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                                     </div>
                                     <div className="task_bar_align">
                                         <Progress trailColor={{
-        '0%': 'green',
-        '40%': 'blue',
-      }}
-      percent={data.perecent_completion}  />
+                                        '0%': 'green',
+                                        '40%': 'blue',
+                                    }}
+                                    percent={data.perecent_completion}  />
                                     </div>
                                 </div>
                                 <div className="divider"></div>
@@ -493,7 +493,7 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
-                            count={100}
+                            count={props.getTaskLists&&props.getTaskLists.length}
                             page={page}
                             onChangePage={handleChangePage}
                             rowsPerPage={rowsPerPage}
