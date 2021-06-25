@@ -132,12 +132,12 @@ function OpeModel(props) {
             dispatch(InsertOPE(params)).then((response) => {
 
                 // if (response.data.status === 1) {
-                    notification.success({
-                        message: "OPE Added Successfully",
-                    });
-                    handleCancel()
-                    props.handleChangeCloseModel()
-                    setselectedFile([])
+                notification.success({
+                    message: "OPE Added Successfully",
+                });
+                handleCancel()
+                props.handleChangeCloseModel()
+                setselectedFile([])
                 // }
             })
         }
@@ -273,7 +273,7 @@ function OpeModel(props) {
                                             action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
                                             onChange={(info) => handleChange(info, "examScheduleUpload")}
                                             fileList={selectedFile}
-                                            accept={'jpg'}
+                                            accept={'.jpg', '.pdf', '.png'}
                                         >
                                             <Button>
                                                 <UploadOutlined />Click to upload

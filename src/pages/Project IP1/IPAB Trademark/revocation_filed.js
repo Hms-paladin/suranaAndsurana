@@ -139,16 +139,6 @@ function RevocationFiled(props) {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
-
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
         console.log(filtererr.length);
@@ -380,7 +370,7 @@ function RevocationFiled(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Client - Responden</div>
+                    <div className="copyFieldheadings">Client - Responden</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "client_applicant")}
@@ -391,7 +381,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Mark</div>
+                    <div className="copyFieldheadings">Mark</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "mark")}
@@ -402,7 +392,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Trade Mark No</div>
+                    <div className="copyFieldheadings">Trade Mark No</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "trade_mark_no")}
@@ -413,7 +403,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Class</div>
+                    <div className="copyFieldheadings">Class</div>
                     <Labelbox type="select"
                         dropdown={classDetList.classDetailsData}
                         changeData={(data) => checkValidation(data, "class_id")}
@@ -424,7 +414,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Revocation Filing Date</div>
+                    <div className="copyFieldheadings">Revocation Filing Date</div>
                     <Labelbox type="datepicker"
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
@@ -437,7 +427,7 @@ function RevocationFiled(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Serial No</div>
+                    <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "serial_no")}
@@ -448,7 +438,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Org Appeal No</div>
+                    <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
@@ -459,7 +449,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Date of Hearing </div>
+                    <div className="copyFieldheadings">Date of Hearing </div>
                     <Labelbox type="datepicker"
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
@@ -470,7 +460,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Respondent</div>
+                    <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "respondent")}
@@ -481,7 +471,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Respondent - Rep</div>
+                    <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "respondent_rep")}
@@ -494,7 +484,7 @@ function RevocationFiled(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Filing Type</div>
+                    <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"
                         mode={"multiple"}
                         changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
@@ -506,7 +496,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Status</div>
+                    <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
                         changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
@@ -517,7 +507,7 @@ function RevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                <div className="copyFieldheadings">Comments</div>
+                    <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}

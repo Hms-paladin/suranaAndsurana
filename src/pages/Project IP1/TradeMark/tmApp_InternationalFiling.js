@@ -542,139 +542,164 @@ function TradeMarkInternational(properties) {
         <div className="tradeMarkContainer">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
-                        dropdown={tradeStatusList.tradeStatusData}
-                        value={TradeMarkForm.status_id.value}
-                        error={TradeMarkForm.status_id.error}
-                        errmsg={TradeMarkForm.status_id.errmsg}
-                        disabled={TradeMarkForm.status_id.disabled}
-                    />
-
-                    <Labelbox type="textarea"
-                        placeholder={" Associate Reference"}
-                        changeData={(data) => checkValidation(data, "associateRefernce")}
-                        value={TradeMarkForm.associateRefernce.value}
-                        error={TradeMarkForm.associateRefernce.error}
-                        errmsg={TradeMarkForm.associateRefernce.errmsg}
-                        disabled={TradeMarkForm.associateRefernce.disabled}
-
-                    />
-
-                    <Labelbox type="textarea"
-                        placeholder={" Our Reference"}
-                        changeData={(data) => checkValidation(data, "ourRefernce")}
-                        value={TradeMarkForm.ourRefernce.value}
-                        error={TradeMarkForm.ourRefernce.error}
-                        errmsg={TradeMarkForm.ourRefernce.errmsg}
-                        disabled={TradeMarkForm.ourRefernce.disabled}
-                    />
-
-                    <Labelbox type="select"
-                        placeholder={" Class"}
-                        dropdown={classDetList.classDetailsData}
-                        changeData={(data) => checkValidation(data, "class_id")}
-                        value={TradeMarkForm.class_id.value}
-                        error={TradeMarkForm.class_id.error}
-                        errmsg={TradeMarkForm.class_id.errmsg}
-                        disabled={TradeMarkForm.class_id.disabled}
-                    />
-
-                    <Labelbox type="textarea"
-                        placeholder={" Mark"}
-                        changeData={(data) => checkValidation(data, "mark_id")}
-                        value={TradeMarkForm.mark_id.value}
-                        error={TradeMarkForm.mark_id.error}
-                        errmsg={TradeMarkForm.mark_id.errmsg}
-                        disabled={TradeMarkForm.mark_id.disabled}
-                    />
-                    {/* <Labelbox> */}
-                    <div className="uploadbox">
-                        <div style={{ width: "280%" }}>
-                            <Upload {...props} className="uploadbox_tag"
-                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76' accept=".jpeg" >
-
-                                <div className="upload_file_inside"><label>Upload   </label><PublishIcon /></div>
-                            </Upload>,
-                        </div>
-                    </div>
-                    {/* </Labelbox> */}
-
-                    <Labelbox type="textarea"
-                        placeholder={" Associate"}
-                        changeData={(data) => checkValidation(data, "associate")}
-                        value={TradeMarkForm.associate.value}
-                        error={TradeMarkForm.associate.error}
-                        errmsg={TradeMarkForm.associate.errmsg}
-                        disabled={TradeMarkForm.associate.disabled}
-                    />
-
-                    <Labelbox type="text"
-                        placeholder={" Application Number"}
-                        changeData={(data) => checkValidation(data, "application_no")}
-                        value={TradeMarkForm.application_no.value}
-                        error={TradeMarkForm.application_no.error}
-                        errmsg={TradeMarkForm.application_no.errmsg}
-                        disabled={TradeMarkForm.application_no.disabled}
-                    />
-
-                    <Labelbox type="datepicker"
-                        placeholder={" Application Date"}
-                        disableFuture={true}
-                        changeData={(data) => checkValidation(data, "application_date")}
-                        value={TradeMarkForm.application_date.value}
-                        error={TradeMarkForm.application_date.error}
-                        errmsg={TradeMarkForm.application_date.errmsg}
-                        disabled={TradeMarkForm.application_date.disabled}
-                    />
-
-                    <Labelbox type="select"
-                        placeholder={" Country"}
-                        dropdown={countryDetList.countryListsData}
-                        changeData={(data) => checkValidation(data, "country_id")}
-                        value={TradeMarkForm.country_id.value}
-                        error={TradeMarkForm.country_id.error}
-                        errmsg={TradeMarkForm.country_id.errmsg}
-                        disabled={TradeMarkForm.country_id.disabled}
-                    />
-
-                    <Labelbox type="textarea"
-                        placeholder={" Priority Details"}
-                        changeData={(data) => checkValidation(data, "priority_details")}
-                        value={TradeMarkForm.priority_details.value}
-                        error={TradeMarkForm.priority_details.error}
-                        errmsg={TradeMarkForm.priority_details.errmsg}
-                        disabled={TradeMarkForm.priority_details.disabled}
-                    />
-
-                    <Labelbox type="textarea"
-                        placeholder={" User Claim"}
-                        changeData={(data) => checkValidation(data, "userclaim")}
-                        value={TradeMarkForm.userclaim.value}
-                        error={TradeMarkForm.userclaim.error}
-                        errmsg={TradeMarkForm.userclaim.errmsg}
-                        disabled={TradeMarkForm.userclaim.disabled}
-                    />
-
-                    <Labelbox type="text"
-                        placeholder={" Allotment"}
-                        changeData={(data) => checkValidation(data, "allotment")}
-                        value={TradeMarkForm.allotment.value}
-                        error={TradeMarkForm.allotment.error}
-                        errmsg={TradeMarkForm.allotment.errmsg}
-                        disabled={TradeMarkForm.allotment.disabled}
-                    />
-                    <div className="projectFormComments">
-                        <Labelbox type="textarea"
-                            placeholder={" Goods and Services Description"}
-                            changeData={(data) => checkValidation(data, "goods_description")}
-                            value={TradeMarkForm.goods_description.value}
-                            error={TradeMarkForm.goods_description.error}
-                            errmsg={TradeMarkForm.goods_description.errmsg}
-                            disabled={TradeMarkForm.goods_description.disabled}
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Status</div>
+                        <Labelbox type="select"
+                             changeData={(data) => checkValidation(data, "status_id")}
+                            dropdown={tradeStatusList.tradeStatusData}
+                            value={TradeMarkForm.status_id.value}
+                            error={TradeMarkForm.status_id.error}
+                            errmsg={TradeMarkForm.status_id.errmsg}
+                            disabled={TradeMarkForm.status_id.disabled}
                         />
-                    </div>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Associate Reference</div>
+                        <Labelbox type="textarea"
+                            changeData={(data) => checkValidation(data, "associateRefernce")}
+                            value={TradeMarkForm.associateRefernce.value}
+                            error={TradeMarkForm.associateRefernce.error}
+                            errmsg={TradeMarkForm.associateRefernce.errmsg}
+                            disabled={TradeMarkForm.associateRefernce.disabled}
 
+                        />
+                    </Grid>
+
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Our Reference</div>
+                        <Labelbox type="textarea"
+                            changeData={(data) => checkValidation(data, "ourRefernce")}
+                            value={TradeMarkForm.ourRefernce.value}
+                            error={TradeMarkForm.ourRefernce.error}
+                            errmsg={TradeMarkForm.ourRefernce.errmsg}
+                            disabled={TradeMarkForm.ourRefernce.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Class</div>
+                        <Labelbox type="select"
+                            dropdown={classDetList.classDetailsData}
+                            changeData={(data) => checkValidation(data, "class_id")}
+                            value={TradeMarkForm.class_id.value}
+                            error={TradeMarkForm.class_id.error}
+                            errmsg={TradeMarkForm.class_id.errmsg}
+                            disabled={TradeMarkForm.class_id.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Mark</div>
+                        <Labelbox type="textarea"
+                            changeData={(data) => checkValidation(data, "mark_id")}
+                            value={TradeMarkForm.mark_id.value}
+                            error={TradeMarkForm.mark_id.error}
+                            errmsg={TradeMarkForm.mark_id.errmsg}
+                            disabled={TradeMarkForm.mark_id.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={1}></Grid>
+
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Upload</div>
+                        {/* <Labelbox> */}
+                        <div className="uploadbox">
+                            <div style={{ width: "280%" }}>
+                                <Upload {...props} className="uploadbox_tag"
+                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76' accept=".jpeg" >
+
+                                    <div className="upload_file_inside"><PublishIcon /></div>
+                                </Upload>,
+                            </div>
+                        </div>
+                    </Grid>
+                    {/* </Labelbox> */}
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Associate</div>
+                        <Labelbox type="textarea"
+                            changeData={(data) => checkValidation(data, "associate")}
+                            value={TradeMarkForm.associate.value}
+                            error={TradeMarkForm.associate.error}
+                            errmsg={TradeMarkForm.associate.errmsg}
+                            disabled={TradeMarkForm.associate.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Application Number</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "application_no")}
+                            value={TradeMarkForm.application_no.value}
+                            error={TradeMarkForm.application_no.error}
+                            errmsg={TradeMarkForm.application_no.errmsg}
+                            disabled={TradeMarkForm.application_no.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Application Date</div>
+                        <Labelbox type="datepicker"
+                            disableFuture={true}
+                            changeData={(data) => checkValidation(data, "application_date")}
+                            value={TradeMarkForm.application_date.value}
+                            error={TradeMarkForm.application_date.error}
+                            errmsg={TradeMarkForm.application_date.errmsg}
+                            disabled={TradeMarkForm.application_date.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Country</div>
+                        <Labelbox type="select"
+                            dropdown={countryDetList.countryListsData}
+                            changeData={(data) => checkValidation(data, "country_id")}
+                            value={TradeMarkForm.country_id.value}
+                            error={TradeMarkForm.country_id.error}
+                            errmsg={TradeMarkForm.country_id.errmsg}
+                            disabled={TradeMarkForm.country_id.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Priority Details</div>
+                        <Labelbox type="textarea"
+                            changeData={(data) => checkValidation(data, "priority_details")}
+                            value={TradeMarkForm.priority_details.value}
+                            error={TradeMarkForm.priority_details.error}
+                            errmsg={TradeMarkForm.priority_details.errmsg}
+                            disabled={TradeMarkForm.priority_details.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings"> User Claim</div>
+                        <Labelbox type="textarea"
+                            changeData={(data) => checkValidation(data, "userclaim")}
+                            value={TradeMarkForm.userclaim.value}
+                            error={TradeMarkForm.userclaim.error}
+                            errmsg={TradeMarkForm.userclaim.errmsg}
+                            disabled={TradeMarkForm.userclaim.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Allotment</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "allotment")}
+                            value={TradeMarkForm.allotment.value}
+                            error={TradeMarkForm.allotment.error}
+                            errmsg={TradeMarkForm.allotment.errmsg}
+                            disabled={TradeMarkForm.allotment.disabled}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className="Tradeheadings">Goods and Services Description</div>
+                        <div className="projectFormComments">
+                            <Labelbox type="textarea"
+                                changeData={(data) => checkValidation(data, "goods_description")}
+                                value={TradeMarkForm.goods_description.value}
+                                error={TradeMarkForm.goods_description.error}
+                                errmsg={TradeMarkForm.goods_description.errmsg}
+                                disabled={TradeMarkForm.goods_description.disabled}
+                            />
+                        </div>
+                    </Grid>
 
                 </Grid>
             </Grid>

@@ -106,16 +106,6 @@ function PatentAppealFiling(props) {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
-
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
         console.log(filtererr.length);
@@ -310,6 +300,7 @@ function PatentAppealFiling(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
                         placeholder={" Client - Applicant"}
                         changeData={(data) => checkValidation(data, "client_applicant")}
@@ -320,8 +311,8 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Applicant No </div>
                     <Labelbox type="text"
-                        placeholder={" Applicant No "}
                         changeData={(data) => checkValidation(data, "applicant_no")}
                         value={TradeMarkForm.applicant_no.value}
                         error={TradeMarkForm.applicant_no.error}
@@ -330,8 +321,8 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings"> Patent Title</div>
                     <Labelbox type="text"
-                        placeholder={" Patent Title "}
                         changeData={(data) => checkValidation(data, "patent_title")}
                         value={TradeMarkForm.patent_title.value}
                         error={TradeMarkForm.patent_title.error}
@@ -340,8 +331,8 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Appeal Filing Date</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Appeal Filing Date "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
@@ -351,8 +342,8 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        placeholder={" Serial No "}
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -363,8 +354,8 @@ function PatentAppealFiling(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        placeholder={" Org Appeal No "}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -373,8 +364,8 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Date of Hearing "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
@@ -384,8 +375,9 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                        changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
@@ -394,8 +386,8 @@ function PatentAppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        placeholder={" Comments"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
