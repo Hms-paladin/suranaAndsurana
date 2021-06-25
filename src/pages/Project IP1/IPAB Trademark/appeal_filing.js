@@ -107,22 +107,33 @@ function AppealFiling(props) {
     }, [props.tradeStatusList, props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
 
 
+    const errorMessege = () => {
+        let From_key = [
+            "status_id", "class_id", "comments", "client_applicant", "client_mark", "trade_mark_no", "appeal_filing_date", "serial_no", "date_of_hearing"
+        ]
+
+        From_key.map((data) => {
+            try {
+                if (TradeMarkForm[data].value = "") {
+                    TradeMarkForm[data].error = true;
+
+                }
+            } catch (error) {
+                throw error;
+            }
+        });
+        setTradeMarkForm(prevState => ({
+            ...prevState,
+        }));
+    }
+
+
 
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
-
+     
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
-        console.log(filtererr.length);
         params = {
             "ip_type": 0,
             "client_status_type": null,
@@ -152,10 +163,6 @@ function AppealFiling(props) {
             "appeal_filing_date": TradeMarkForm.appeal_filing_date.value == '' || null,
             "client_applicant": TradeMarkForm.client_applicant.value,
             "mark": TradeMarkForm.client_mark.value
-            // if(obj.client_applicant && obj.client_applicant.length)
-            // TradeMarkForm.client_applicant.disabled = true;
-
-
         }
         console.log("paramscheck", params);
         if (TradeMarkForm.class_id.value != "") {

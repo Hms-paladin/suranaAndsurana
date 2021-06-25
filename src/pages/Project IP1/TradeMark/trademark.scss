@@ -6,8 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    bottom: 10px;
+    padding-top: 6px;
 
     path {
         fill: #023e7d;
@@ -33,7 +32,7 @@
         justify-content: space-between;
         display: flex;
         align-items: center;
-        padding: 1px;
+        padding: 2px;
         margin-right: 8px;
         margin-left: 3px;
     }
@@ -130,4 +129,9 @@
 }
 .txtmark{
     overflow:auto
+}
+
+.Tradeheadings{
+    font-weight: 600;
+    padding-left: 8px;
 }

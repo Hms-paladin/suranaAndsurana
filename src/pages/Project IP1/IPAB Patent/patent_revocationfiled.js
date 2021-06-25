@@ -242,16 +242,6 @@ function PatentRevocationFiled(props) {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
-
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
         console.log(filtererr.length);
@@ -413,8 +403,8 @@ function PatentRevocationFiled(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        placeholder={" Client - Applicant"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
@@ -424,8 +414,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Applicant No</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant No "}
                         changeData={(data) => checkValidation(data, "applicant_no")}
                         value={TradeMarkForm.applicant_no.value}
                         error={TradeMarkForm.applicant_no.error}
@@ -434,8 +424,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Patent Title</div>
                     <Labelbox type="text"
-                        placeholder={" Patent Title "}
                         changeData={(data) => checkValidation(data, "patent_title")}
                         value={TradeMarkForm.patent_title.value}
                         error={TradeMarkForm.patent_title.error}
@@ -444,8 +434,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Revocation Filing Date</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Revocation Filing Date "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
@@ -455,8 +445,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        placeholder={" Serial No"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
@@ -468,8 +458,8 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Org Appeal No.</div>
                     <Labelbox type="text"
-                        placeholder={" Org Appeal No."}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
@@ -479,8 +469,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings"> Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Date of Hearing "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
@@ -490,8 +480,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
-                        placeholder={" Respondent "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "respondent")}
                         value={TradeMarkForm.respondent.value}
@@ -501,8 +491,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
-                        placeholder={" Respondent - Rep "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "respondent_rep")}
                         value={TradeMarkForm.respondent_rep.value}
@@ -512,9 +502,10 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"
                         mode={"multiple"}
-                        placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
+                        changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
                         dropdown={filingTypeList.filingTypeData}
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
@@ -525,8 +516,9 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                        changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
@@ -535,8 +527,8 @@ function PatentRevocationFiled(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        placeholder={" Comments"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}

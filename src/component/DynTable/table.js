@@ -142,7 +142,7 @@ function EnhancedTableHead(props) {
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            {console.log(headCell, "headcell")}
+            {console.log(orderBy === headCell.id, order, "headcell")}
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
@@ -297,7 +297,6 @@ export default function EnhancedTable(props) {
             rowCount={rows.length}
             headCells={props.headCells}
             className={props.aligncss}
-            hideSortIcon={props.hideSortIcon}
           />
           <TableBody>
             {rows.length > 0 ?

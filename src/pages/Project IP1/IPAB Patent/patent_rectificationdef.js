@@ -242,15 +242,6 @@ function PatentRectificationDef(props) {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                TradeMarkForm[targetkeys[i]].value,
-                TradeMarkForm[targetkeys[i]].validation
-            );
-            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-        }
 
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
@@ -364,8 +355,8 @@ function PatentRectificationDef(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Client - Respondent</div>
                     <Labelbox type="text"
-                        placeholder={" Client - Respondent"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "client_respondent")}
                         value={TradeMarkForm.client_respondent.value}
@@ -375,8 +366,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Application No </div>
                     <Labelbox type="text"
-                        placeholder={" Application No "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "application_no")}
                         value={TradeMarkForm.application_no.value}
@@ -386,8 +377,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">patent Title</div>
                     <Labelbox type="text"
-                        placeholder={" patent Title "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "patent_title")}
                         value={TradeMarkForm.patent_title.value}
@@ -397,8 +388,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Rectification Filing Date "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "recitification_filing_date")}
                         value={TradeMarkForm.recitification_filing_date.value}
@@ -408,8 +399,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings"> Serial No</div>
                     <Labelbox type="text"
-                        placeholder={" Serial No"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
@@ -421,8 +412,8 @@ function PatentRectificationDef(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        placeholder={" Org Appeal No."}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
@@ -432,8 +423,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        placeholder={" Date of Hearing "}
                         disablePast={true}
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
@@ -443,8 +434,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Applicant</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "applicant")}
                         value={TradeMarkForm.applicant.value}
@@ -454,8 +445,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Applicant - Rep</div>
                     <Labelbox type="text"
-                        placeholder={" Applicant - Rep "}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "applicant_rep")}
                         value={TradeMarkForm.applicant_rep.value}
@@ -465,9 +456,10 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"
                         mode={"multiple"}
-                        placeholder={" Filing Type "} changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
+                        changeData={(data) => checkValidation(data, "filing_type_id", filingTypeList.filingTypeData)}
                         dropdown={filingTypeList.filingTypeData}
                         value={TradeMarkForm.filing_type_id.value}
                         error={TradeMarkForm.filing_type_id.error}
@@ -478,8 +470,9 @@ function PatentRectificationDef(props) {
                 <Grid item xs={1}></Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"
-                        placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                        changeData={(data) => checkValidation(data, "status_id")}
                         dropdown={tradeStatusList.tradeStatusData}
                         value={TradeMarkForm.status_id.value}
                         error={TradeMarkForm.status_id.error}
@@ -488,8 +481,8 @@ function PatentRectificationDef(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
+                    <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        placeholder={" Comments"}
                         disableFuture={false}
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
