@@ -197,7 +197,9 @@ function OnlineQA(props) {
                 </div>
                 <div className="question_traverse">
                     <div className="question_flows">
-                        {no_of_questions.map(noq => <div>{noq}</div>)}
+                        {/* {console.log(props.GettemplateQuetions[0]?.testQuestionDetails,"hhhhhhhhhhhhhhhhhhhhhh")} */}
+                        {props.GettemplateQuetions[0]?.testQuestionDetails.map((noq,index) =>
+                         <div>{index+1}</div>)}
                     </div>
                     <div className="color_initmation">
                         <div className="color_circles">

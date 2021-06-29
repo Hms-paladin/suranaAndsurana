@@ -1,8 +1,10 @@
-import { INSERT_TESTTEMPLATE } from '../utils/Constants'
+import { INSERT_TESTTEMPLATE ,GET_NO_OF_QUETIONS} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
+
+
 export const InsertTestTemplate = (tempname,postarr,maxques,durations) => async dispatch => {
     try {
         console.log(tempname,postarr,maxques,durations,"actions")
@@ -26,6 +28,28 @@ export const InsertTestTemplate = (tempname,postarr,maxques,durations) => async 
         });
     }
     catch (error) {
+
+    }
+}
+
+export const GetNoOfQuetions = (QuesCatId,QuesubcatId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_no_of_questions',
+            data: {
+                "QuesCatId": QuesCatId || 0,
+                "QuesubcatId": QuesubcatId || 0
+
+            }
+        })
+            .then((response) => {
+                console.log(response.data.data, "response.data.data")
+                dispatch({ type: GET_NO_OF_QUETIONS, payload: response.data.data})
+
+            })
+
+    } catch (err) {
 
     }
 }

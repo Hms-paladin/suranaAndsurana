@@ -206,12 +206,14 @@ setSubordinates({ subOrinateList })
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+      };
+    
+      const handleChangeRowsPerPage = (event) => {
+    
+        setRowsPerPage(event.target.value);
         setPage(0);
-    };
+    
+      };
 
     // TimeSheet Start Model ==>
     function startModel() {
@@ -236,6 +238,40 @@ setStartModelOpen(flg);
     const handleOpen = () => {
         setOpen(true);
     };
+//************************* */
+
+const [order, setOrder] = React.useState("asc");
+const [orderBy, setOrderBy] = React.useState("calories");
+// const [page, setPage] = React.useState(0);
+// const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    function stableSort(array, comparator) {
+        const stabilizedThis = array.map((el, index) => [el, index]);
+        stabilizedThis.sort((a, b) => {
+          const order = comparator(a[0], b[0]);
+          if (order !== 0) return order;
+          return a[1] - b[1];
+        });
+       
+        return stabilizedThis.map((el) => el[0]);
+      }
+
+      function getComparator(order, orderBy) {
+        return order === "desc"
+          ? (a, b) => descendingComparator(a, b, orderBy)
+          : (a, b) => -descendingComparator(a, b, orderBy);
+      }
+
+      function descendingComparator(a, b, orderBy) {
+        if (b[orderBy] < a[orderBy]) {
+          return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+          return 1;
+        }
+        return 0;
+      }
+
     return (
         <div>
             <div className="searchfilterflex">
@@ -290,13 +326,16 @@ setStartModelOpen(flg);
                 <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} 
                 content={<TimeSheetView rowData={taskData}  handleChangeCloseModel={(bln) => setStartModelOpen(bln)}/>} width={1000} />
 
-<DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  
-content={<TaskStatus rowData={taskData}/>} width={300}/>
- <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
+                <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  
+                content={<TaskStatus rowData={taskData}/>} width={300}/>
+                <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
 
-<DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
-<DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
-                {props.getTaskLists.length > 0 && props.getTaskLists.map((data) => {
+                <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>
+                <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)}  content={<AddHearing  rowData={taskData} onhearingclose={()=>setHearing(false)} />} width={1000}/>
+               
+               
+                {props.getTaskLists.length > 0 && stableSort(props.getTaskLists, getComparator(order, orderBy))
+                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data) => {
                     if(data.totalHours && data.totalHours.length >0){
                         data.totalHours = data.totalHours.split(":")[0];
                     }
@@ -306,7 +345,8 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                         let datass = data;
                    
                         i++;
-                    return (
+                   
+                       return (
                         <Card >
                             <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
                                 <div style={{ backgroundColor: '#707070', width: '55px' }}>
@@ -490,7 +530,7 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                         </div>
                     </div>
                     <div>
-                        <TablePagination
+                        {/* <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
                             count={props.getTaskLists&&props.getTaskLists.length}
@@ -499,7 +539,22 @@ content={<TaskStatus rowData={taskData}/>} width={300}/>
                             rowsPerPage={rowsPerPage}
                             onChangeRowsPerPage={handleChangeRowsPerPage}
 
-                        />
+                        /> */}
+                         <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={props.getTaskLists&&props.getTaskLists.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                            }}
+                            nextIconButtonProps={{
+                                'aria-label': 'Next Page',
+                            }}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            />
                     </div>
                     <div style={{ display: 'flex' }}>
                         <div style={{ display: 'flex' }}>

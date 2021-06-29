@@ -7,7 +7,7 @@ import Edit from "../../images/editable.svg";
 import Delete from '../../images/dashboard/delete.svg';
 import './onlinetest.scss'
 import { getCategory, getSubCategory } from '../../actions/MasterDropdowns'
-import { InsertTestTemplate } from '../../actions/TestTemplateAction'
+import { InsertTestTemplate,GetNoOfQuetions } from '../../actions/TestTemplateAction'
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 
@@ -20,10 +20,12 @@ function TestTemplate(props) {
     const [list, setList] = useState([])
     const [Itemkeys, setItemKeys] = useState([])
     const [dynarr, setdynarr] = useState([])
-    const [dynkey, setdynkey] = useState([])
+    const [dynQA, setdynQA] = useState([])
     const [ind, setInd] = useState(0)
     const [maxques, setmaxques] = useState(0)
     const [postTemplate, setPostTemplate] = useState([])
+    const [getNoOfquestions, setNoOfquestions] = useState([])
+
     const [template, setTemplate] = useState({
         tempname: {
             value: "",
@@ -90,6 +92,30 @@ function TestTemplate(props) {
         dispatch(getCategory());
     }, [])
 
+    useEffect(() => {
+        console.log(props.GetNoOfQuetions.length>0&&props.GetNoOfQuetions[0].no_of_questions);
+        var noofqtnsArr=[];
+        if(props.GetNoOfQuetions.length>0&&props.GetNoOfQuetions[0].no_of_questions&&props.GetNoOfQuetions[0].no_of_questions!==0){
+            for(var i=0;i<props.GetNoOfQuetions[0].no_of_questions;i++){
+                var listarray = {
+                    id:i+1,
+                    value:i+1
+                }
+                noofqtnsArr.push(listarray);
+            }
+            // setNoOfquestions({noofqtnsArr})
+            dynQA[ind] = {noofqtnsArr};
+            setdynQA([...dynQA])
+            // setdynQA((prevState) => ({
+            //     ...prevState,
+            // }));
+        }else if(props.GetNoOfQuetions.length>0&&props.GetNoOfQuetions[0].no_of_questions&&props.GetNoOfQuetions[0].no_of_questions===0){
+            dynQA[ind] = {noofqtnsArr};
+            // setNoOfquestions([])
+        }
+       
+    }, [props.GetNoOfQuetions])
+    // console.log(getNoOfquestions,"noofqtnsArrnoofqtnsArr")
     //Called Second
     useEffect(() => {
         let obj = Object.keys(list);
@@ -104,6 +130,7 @@ function TestTemplate(props) {
             })
         )
         setdynarr([...dynarr, []])
+        setdynQA([...dynQA, []])
     }, [count])
 
     useEffect(() => {
@@ -186,6 +213,9 @@ function TestTemplate(props) {
         let temp = [...dynarr]
         temp.splice(index, 1)
         setdynarr(temp)
+        let tempQA = [...dynQA]
+        tempQA.splice(index, 1)
+        setdynQA(tempQA)
         let tempkey = Itemkeys
         var x = tempkey.filter(item => item !== data)
         setItemKeys(x)
@@ -206,11 +236,21 @@ function TestTemplate(props) {
         if (key == "category") {
             setInd(i)
             dispatch((getSubCategory(item)))
+            var noofqtnsArr=[];
+            dynQA[i] = {noofqtnsArr};
         }
         if (key == "no_of_ques") {
             maxquesval()
         }
 
+        if(key==='subcategory'){
+            // console.log(list[data]['category'].value,i,"testtttttttttttt")
+            dispatch(GetNoOfQuetions(list[data]['category'].value,item))
+        }
+
+        // if(key==='category'){
+        //     setNoOfquestions([])
+        // }
     }
 
     // //Category function
@@ -324,6 +364,9 @@ function TestTemplate(props) {
             else { setmaxques(false) }
         }
 
+     
+
+
     }
 
     function onSubmit() {
@@ -377,7 +420,8 @@ useEffect(() => {
    }, [props.UserPermission]);
   
   /////////////
-   
+   console.log(dynQA,template,"dynObjs")
+   console.log(list,Itemkeys,"list")
    
 
     return (
@@ -435,7 +479,9 @@ useEffect(() => {
                                 </Grid>
                                 <Grid item xs={3} container direction="column">
                                     <div className="TThead">No .of Questions</div>
-                                    <Labelbox type="text"
+                                    <Labelbox type="select"
+                                        // dropdown={getNoOfquestions.noofqtnsArr}
+                                        dropdown={dynQA[index].noofqtnsArr}
                                         value={list[data]["no_of_ques"].value == "" ? template.no_of_ques.value : list[data]["no_of_ques"].value}
                                         changeData={(item) => DynValidation(item, "no_of_ques", data, index)}
                                         error={list[data]["no_of_ques"].error == null ? template.no_of_ques.error : list[data]["no_of_ques"].error}
@@ -462,6 +508,7 @@ useEffect(() => {
 const mapStatetoProps = (state) => ({
     categoryList: state.getOptions.getCategory || [],
     subCategoryList: state.getOptions.getSubCategory || [],
+    GetNoOfQuetions: state.OnlineTest.GetNoOfQuetions || [],
     UserPermission: state.UserPermissionReducer.getUserPermission,
 })
 export default connect(mapStatetoProps)(TestTemplate);
