@@ -16,6 +16,7 @@ import EnhancedTable from '../../component/DynTable/table';
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import Axios from "axios";
+import { getOnlineTestDetails } from '../../actions/OnlineTestAction';
 
 // Model
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
@@ -36,6 +37,8 @@ function InerviewScreen(props) {
   const [canName, setcanName] = useState("");
   const [dropDownSel, setdropDownSel] = useState(false);
   const [interviewDetails, setInterviewDetails] = useState({})
+  const [testDetails, setTestDetails] = useState({})
+  
   const headCells = [
     { id: "testname", label: "Test Name" },
     { id: "testdate", label: "Test Date" },
@@ -72,7 +75,7 @@ function InerviewScreen(props) {
   useEffect(() => {
     dispatch(getInterviewStatus());
     dispatch(getInterviewQuestions());
-
+    dispatch(getOnlineTestDetails(141));
   }, []);
 
 
@@ -83,9 +86,18 @@ function InerviewScreen(props) {
     );
     setoptionvalues({ interview_status });
 
+    //test details
+    let test_details = [];
+    props.getOnlineTestDetails&&props.getOnlineTestDetails.length>0&&props.getOnlineTestDetails.map((data, index) =>
+      test_details.push({ test_name: data.TestTempName,Test_Date: data.Test_Date,score:data.Score_Percentage})
+    );
+    setTestDetails({ test_details });
+
     //Questions
     setgetData(props.getQuestions);
-  }, [props.getInterviewStatus, props.getQuestions]);
+  }, [props.getInterviewStatus, props.getQuestions,props.getOnlineTestDetails]);
+
+  console.log(props,testDetails,"testDetails")
   useEffect(() => {
     Axios({
       method: "POST",
@@ -373,7 +385,7 @@ function InerviewScreen(props) {
             <div>{canName}</div>
           </div>
           <div className="score_table">
-            <EnhancedTable headCells={headCells} rows={rows}></EnhancedTable>
+            <EnhancedTable headCells={headCells} rows={testDetails.test_details}></EnhancedTable>
           </div>
           <div className="inter_status_div">
             <Labelbox
@@ -453,7 +465,8 @@ const mapStateToProps = (state) => ({
   GetCandiateDetails: state.getcandiate,
   getInterviewStatus: state.getOptions.getInterviewStatus || [],
   getQuestions: state.getHrTodoList.getQuestions || [],
-  getSelectedCandidates: state.getHrTodoList.getSelectedCandidates || []
+  getSelectedCandidates: state.getHrTodoList.getSelectedCandidates || [],
+  getOnlineTestDetails: state.OnlineTest.getOnlineTestDetails || []
 });
 
 export default connect(mapStateToProps)(InerviewScreen);

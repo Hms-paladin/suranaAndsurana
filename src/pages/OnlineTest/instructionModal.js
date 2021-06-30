@@ -11,17 +11,22 @@ function InstructionModal(props) {
     const dispatch = useDispatch();
     const [pathnameQA, setpathnameQA] = useState(window.location.pathname)
     const [templateRowdata, setTemplateRowdata] = useState([])
-    const [starttime, setStarttime] = useState()
+    const [testTemplateId, setTestTemplateId] = useState()
+    const [designation, setDesignation] = useState()
+    const [candidate, setCandidate] = useState()
 
     useEffect(() => {
-        dispatch(GettemplateQuetions(props.resumeId))
-        setStarttime(props.resumeId)
-    }, [props.resumeId])
+        dispatch(GettemplateQuetions(props.test_data.temp_name.value))
+        setTestTemplateId(props.test_data.temp_name.value)
+        setDesignation(props.test_data.designation.value)
+        setCandidate(props.test_data.candidate.value)
+        // props.handle_hancel()
+    }, [props.test_data])
 
     useEffect(() => {
         setTemplateRowdata(props.GettemplateQuetions)
     }, [props.GettemplateQuetions])
-
+console.log(props.test_data,"temp_nametest_data")
     return (
         <div>
             <div className="Instruction_Modal_Container">
@@ -55,8 +60,8 @@ function InstructionModal(props) {
                 })}
 
                 <div>
-                    <Link to={`/onlineQA/${starttime}`}>
-                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setpathnameQA(`/onlineQA/${starttime}`)} />
+                    <Link to={`/onlineQA/${designation}/${candidate}/${testTemplateId}`}>
+                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary"  />
                     </Link>
                 </div>
             </div>
