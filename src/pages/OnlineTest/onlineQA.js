@@ -26,7 +26,7 @@ function OnlineQA(props) {
     const [questions, setQuestions] = useState([])
     const [increament, setIncreament] = useState(1)
     const runTime = useRef({
-        runSec: 0, runMin: 0
+        runSec: 0, runMin: 15
     });
     const setCount = useRef({
         count: 0
@@ -47,7 +47,9 @@ function OnlineQA(props) {
     }, [])
 
     useEffect(() => {
-        setCount.current.count = props.GettemplateQuetions[0]?.Duration
+        // setCount.current.count = props.GettemplateQuetions[0]?.Duration
+        // setCount.current.count = 0
+
         setTemplateRowdata(props.GettemplateQuetions)
         setQuestions(props.GettemplateQuetions[0]?.testQuestionDetails)
         setQues_length(props.GettemplateQuetions[0]?.testQuestionDetails.length)
@@ -61,13 +63,16 @@ function OnlineQA(props) {
         let myInterval = setInterval(() => {
             console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
 
-            if (runTime.current.runMin > setCount.current.count - 1) {
+            console.log(runTime.current.runMin, setCount.current.count, runTime.current.runSec, "timing")
+
+            if (runTime.current.runMin === setCount.current.count && runTime.current.runSec === 1) {
+
                 clearInterval(myInterval);
                 // runTime.current.runMin += 1
                 // runTime.current.runSec = 0
                 let digitmin = runTime.current.runMin < 10 ? "0" : ""
                 let digitsec = runTime.current.runSec < 10 ? "0" : ""
-                const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
+                const timer = digitmin + runTime.current.runMin + ":" + digitsec + 0
 
                 setText(timer)
             }
@@ -84,20 +89,36 @@ function OnlineQA(props) {
         let digitsec = runTime.current.runSec < 10 ? "0" : ""
         const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
 
-        if (runTime.current.runSec < 59) {
-            runTime.current.runSec += 1
+        // if (runTime.current.runSec === 0) {
+        //     runTime.current.runSec = runTime.current.runSec - 1
+        //     if()
+        //     runTime.current.runSec = 59
+
+
+        // }
+
+
+
+        if (runTime.current.runSec > 0) {
+            runTime.current.runSec = runTime.current.runSec - 1
         } else {
             runTime.current.runSec = 0
         }
 
         if (runTime.current.runSec === 0) {
-            runTime.current.runMin += 1
+            runTime.current.runMin = runTime.current.runMin - 1
+            if (runTime.current.runMin != props.GettemplateQuetions[0]?.Duration) {
+                runTime.current.runSec = 59
+            }
+            if (runTime.current.runMin === 0) {
+                runTime.current.runSec = 59
+            }
+          
         }
 
         setText(timer)
 
     }, [])
-
 
     // useEffect(() => {
     //     if (increament === ques_length) {
@@ -166,19 +187,19 @@ function OnlineQA(props) {
                         {/* {ques_no.Choice?.split(',').map((val) => {
                             return (
                                 <> */}
-                                    <FormControl component="fieldset">
-                                        <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+                        <FormControl component="fieldset">
+                            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
 
-                                            <FormControlLabel value="male" control={<Radio />} label={ques_no.Choice?.split(',')[0]} />
-                                            <FormControlLabel value="f" control={<Radio />} label={ques_no.Choice?.split(',')[1]} />
-                                            <FormControlLabel value="o" control={<Radio />} label={ques_no.Choice?.split(',')[2]} />
-
-
+                                <FormControlLabel value="male" control={<Radio />} label={ques_no.Choice?.split(',')[0]} />
+                                <FormControlLabel value="f" control={<Radio />} label={ques_no.Choice?.split(',')[1]} />
+                                <FormControlLabel value="o" control={<Radio />} label={ques_no.Choice?.split(',')[2]} />
 
 
-                                        </RadioGroup>
-                                    </FormControl>
-                                {/* </>
+
+
+                            </RadioGroup>
+                        </FormControl>
+                        {/* </>
                             )
                         })} */}
 
