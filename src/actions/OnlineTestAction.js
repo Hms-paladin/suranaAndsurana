@@ -59,7 +59,7 @@ export const getOnlineTestDetails = (data)  => async dispatch => {
             method: 'POST',
             url: apiurl +'getscoredetails',
             data: {
-                ResId: data
+                ResId: data || 0
             }
         }).then((response) => {
             console.log(response.data.data, 'asdfasdfas')

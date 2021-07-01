@@ -202,7 +202,7 @@ function OnlineQA(props) {
 
 
     //  console.log((increament === 1&&props.GettemplateQuetions[0]?.testQuestionDetails[0]?.Choice.split(','))||(ques_no.Choice?.split(',')), "increamentincreament")
-    console.log(submitData,"22222222222222222222")
+    // console.log(submitData,"22222222222222222222")
     // console.log(questions&&questions.length>0&&questions[increament- 1].checked?questions[increament- 1].checked:'uncheck',"testttttt")
     // const mapingdata = () => {
 

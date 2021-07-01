@@ -75,9 +75,12 @@ function InerviewScreen(props) {
   useEffect(() => {
     dispatch(getInterviewStatus());
     dispatch(getInterviewQuestions());
-    dispatch(getOnlineTestDetails(141));
+   
   }, []);
 
+  useEffect(() => {
+    dispatch(getOnlineTestDetails(cand_data[0]?.resume_id&&cand_data[0].resume_id));
+  }, [cand_data[0]?.resume_id&&cand_data[0].resume_id]);
 
   useEffect(() => {
     let interview_status = [];
@@ -97,7 +100,7 @@ function InerviewScreen(props) {
     setgetData(props.getQuestions);
   }, [props.getInterviewStatus, props.getQuestions,props.getOnlineTestDetails]);
 
-  console.log(props,testDetails,"testDetails")
+  console.log(cand_data[0]?.resume_id&&cand_data[0].resume_id,testDetails,"testDetails")
   useEffect(() => {
     Axios({
       method: "POST",
