@@ -45,7 +45,9 @@ function LeaveForm(props) {
     const [leaveFormTable, setLeaveFormTable] = useState({});
     const [emp_leave_id, setEmp_leave_id] = useState(0)
     const [availabledates, setAvailableDates] = useState([])
-  
+    
+    const [timeexceed, setTimeexceed] = useState(false)
+
     var duplicateDate = false
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
@@ -319,9 +321,30 @@ function LeaveForm(props) {
 
     function checkValidation(data, key) {
 
-        if (key === "fromtime") {
-            console.log(moment(data).format('HH:mm:ss'), "check")
+        if (key === "fromtime" || key === "totime") {
+            var startTime=Leave_Form.fromtime.value
+            if (key === "fromtime")
+             startTime=moment(data).format('HH:mm:ss')
+
+             var endTime=Leave_Form.totime.value
+            if (key === "totime")
+            endTime=moment(data).format('HH:mm:ss')
+            // var duration = moment.duration(endTime.diff(startTime));
+            var duration= moment.utc(moment(endTime, "HH:mm:ss").diff(moment(startTime, "HH:mm:ss"))).format("HH")
+            // // duration in hours
+            // var hours = parseInt(duration.asHours());
+            if(duration>empLeaveBal){
+                setTimeexceed(true)
+                notification.success({
+                    message: 'Time Hours not more than available hours',
+                  }); 
+            }else{
+                setTimeexceed(false)
+            }
+            console.log(startTime,endTime,duration, "ssssssssssssss")
+
         }
+
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -526,6 +549,11 @@ function LeaveForm(props) {
         if (filtererr.length > 0) {
 
         }
+        else if(timeexceed){
+            notification.success({
+                message: "Time Hours not more than available hours.",
+              });
+        }
         else if (timeVal) { 
             notification.success({
                 message: "To time should not less than the From time.",
@@ -618,6 +646,11 @@ function LeaveForm(props) {
 
         }
         else if (dateVal) { }
+        else if(timeexceed){
+            notification.success({
+                message: "Time Hours not more than available hours.",
+              });
+        }
         else if (timeVal) { 
             notification.success({
                 message: "To time should not less than the From time.",
@@ -781,7 +814,11 @@ function LeaveForm(props) {
                     {(Leave_Form.leavetype.value === 38 || Leave_Form.leavetype.value === 39) &&
                         <> <Grid item xs={2}>
                             <div className="leaveFieldheading"> Date</div>
-                            <div> <Labelbox type="datepicker" minDate={new Date()}
+                            <div> <Labelbox type="datepicker"
+                            //  minDate={new Date()}
+                            minDate={moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
+                            maxDate={moment(`${availabledates.end_date&&availabledates.end_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
+                            disabled={availabledates.start_date&&availabledates.end_date?false:true}
                                 changeData={(data) => checkValidation(data, "fromdate")}
                                 value={Leave_Form.fromdate.value}
                                 error={Leave_Form.fromdate.error}

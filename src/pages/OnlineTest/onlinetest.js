@@ -18,7 +18,7 @@ function OnlineTest(props) {
     const [designation, setDesignation] = useState({})
     const [candidate, setCandidate] = useState({})
     const [templateName, setTemplateName] = useState({})
-    const [resumeId, setResumeId] = useState()
+    // const [testTemplateId, setTestTemplateId] = useState()
     const [onlinetest, setOnlinetest] = useState({
         candidate: {
             value: "",
@@ -80,9 +80,9 @@ function OnlineTest(props) {
             validation: onlinetest[key].validation,
         };
 
-        if (data && key === "temp_name") {
-            setResumeId(data)
-        }
+        // if (data && key === "temp_name") {
+        //     setTestTemplateId(data)
+        // }
 
         setOnlinetest((prevState) => ({
             ...prevState,
@@ -114,17 +114,18 @@ function OnlineTest(props) {
             // setOnlinetest({ error: false });
             setInstModal(true)
 
-            // dispatch(GettemplateQuetions(resumeId)).then(
+            // dispatch(GettemplateQuetions(testTemplateId)).then(
             //     () => {
-            handleCancel();
+            
             //     }
             // );
         }
 
-
+        
         setOnlinetest((prevState) => ({
             ...prevState,
         }));
+        console.log(onlinetest,"onlinetestonlinetest")
     }
 
 
@@ -193,7 +194,7 @@ function OnlineTest(props) {
                     <CustomButton btnName={"Submit"} btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
                     <DynModel modelTitle="Online Test Instructions" handleChangeModel={instModal} handleChangeCloseModel={(bln) => setInstModal(bln)} width={700}
-                        content={<InstructionModal resumeId={resumeId} />} closeModel={() => setInstModal(false)} />
+                        content={<InstructionModal test_data={onlinetest} />} handle_hancel={()=>handleCancel()} closeModel={() => setInstModal(false)} />
                 </div>
             </div>
         </div>

@@ -38,6 +38,14 @@
 
 //////////////
 
+.totalPercentage{
+    padding: 5px 17px;
+    display: flex;
+    >div{
+        width: 40%;
+    }
+}
+
 .kra_table_row {
     border-bottom: 1px solid lightgray;
     height: 35px;

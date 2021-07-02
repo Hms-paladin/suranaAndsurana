@@ -200,30 +200,26 @@ function TimeSheetView(props) {
         <div className="timeSheetStartContainer">
             {timesheetStart ?
                 <>
-                    <Grid item xs={12} container direction="row" spacing={3}>
+                    <Grid item xs={12} container direction="row" >
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>{props.rowData.project_type}</Grid>
-                            <Grid item xs={12}>{props.rowData.activity}</Grid>
-                            <Grid item xs={12}>{props.rowData.Priority}</Grid>
-                            {/* <Grid item xs={9}>
-                        <Labelbox type="datepicker"
-                            placeholder={" Deadline "}
-                             />
-                    </Grid> */}
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.activity}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.Priority}</div></Grid>
+       
+                        </Grid>
+                        <Grid item xs={4} container direction="column" spacing={1}>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.sub_activity}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.tag}</div></Grid>
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>{props.rowData.project_name}</Grid>
-                            <Grid item xs={12}>{props.rowData.sub_activity}</Grid>
-                            <Grid item xs={12}>{props.rowData.tag}</Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.client}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.assignee_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.description}</div></Grid>
 
                         </Grid>
-                        <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={12}>{props.rowData.client}</Grid>
-                            <Grid item xs={12}>{props.rowData.assignee_name}</Grid>
-                            <Grid item xs={12}>{props.rowData.description}</Grid>
-
-                        </Grid>
+               
 
                     </Grid>
                     <div className="timeSheetDatesFormat">
@@ -278,27 +274,23 @@ function TimeSheetView(props) {
                 :
                 <>
                     <Grid item xs={12} container direction="row" spacing={3}>
+                        
                         <Grid item xs={4} container direction="column" spacing={1}>
-                        <Grid item xs={12}>{props.rowData.project_type}</Grid>
-                            <Grid item xs={12}>{props.rowData.activity}</Grid>
-                            <Grid item xs={12}>{props.rowData.Priority}</Grid>
-                            {/* <Grid item xs={9}>
-                        <Labelbox type="datepicker"
-                            placeholder={" Deadline "}
-                             />
-                    </Grid> */}
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.activity}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.Priority}</div></Grid>
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                        <Grid item xs={12}>{props.rowData.project_name}</Grid>
-                            <Grid item xs={12}>{props.rowData.sub_activity}</Grid>
-                            <Grid item xs={12}>{props.rowData.tag}</Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.sub_activity}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.tag}</div></Grid>
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                        <Grid item xs={12}>{props.rowData.client}</Grid>
-                            <Grid item xs={12}>{props.rowData.assignee_name}</Grid>
-                            <Grid item xs={12}>{props.rowData.description}</Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.client}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.assignee_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.description}</div></Grid>
 
                         </Grid>
 

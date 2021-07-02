@@ -184,7 +184,7 @@ function Routes(props) {
         <PrivateRoute path="/testtemplate" component={TestTemplate} exact />
         <PrivateRoute path="/onlinetest" component={OnlineTest} exact />
         <PrivateRoute path="/instructionModal" component={InstructionModal} exact />
-        <PrivateRoute path="/onlineQA/:starttime" component={OnlineQA} exact />
+        <PrivateRoute path="/onlineQA/:designation/:candidate/:testTemplateId" component={OnlineQA} exact />
 
         {/* out of packet */}
         <PrivateRoute path="/outofpacket" component={OutofPacket} exact />

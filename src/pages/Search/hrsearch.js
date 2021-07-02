@@ -144,7 +144,7 @@ function Hrsearch(props) {
   }, [])
   useEffect(() => {
     let multipleTable = []
-    console.log(props.GetRowData,"GetRowData")
+    console.log(props.GetRowData, "GetRowData")
     props.GetRowData.map((data) => {
       let rowDataList = []
 
@@ -230,36 +230,36 @@ function Hrsearch(props) {
   };
   console.log(roundValue, "rowDataList")
 
-///*****user permission**********/
+  ///*****user permission**********/
 
- useEffect(() => {
-  if(props.UserPermission.length>0&&props.UserPermission){
-     let data_res_id = props.UserPermission.find((val) => { 
-      return (
-          "HR - Go" == val.control 
-            ) 
-        })
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "HR - Go" == val.control
+        )
+      })
       setGoRights(data_res_id)
 
-       data_res_id = props.UserPermission.find((val) => { 
+      data_res_id = props.UserPermission.find((val) => {
         return (
-            "HR - Schedule Interview" == val.control 
-        ) 
+          "HR - Schedule Interview" == val.control
+        )
       })
       setInterviewScheduleRights(data_res_id)
-      }
+    }
 
- }, [props.UserPermission]);
+  }, [props.UserPermission]);
 
 
-//    console.log(rights,"rigths")
+  //    console.log(rights,"rigths")
 
- function rightsNotification(){
-  notification.success({
+  function rightsNotification() {
+    notification.success({
       message: "You are not Authorized. Please Contact Administrator",
-  });
-}
-/////////////
+    });
+  }
+  /////////////
   return (
     <div className="hrContainer">
       <div className="hrHeader">
@@ -293,7 +293,7 @@ function Hrsearch(props) {
             />
           </Grid>
           <Grid item xs={3}>
-            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} />
+            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
           </Grid>
         </Grid>
       </div>
@@ -303,9 +303,9 @@ function Hrsearch(props) {
           btnName={"Schedule Interview"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          btnDisable={selectedCandidateId.length <= 0||!interviewScheduleRights||interviewScheduleRights.display_control&&interviewScheduleRights.display_control==='N'?true:false}
+          btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false}
           onBtnClick={() => scheduleInterview()}
-      
+
         />
         <DynModel
           modelTitle={"Interview Details"}
