@@ -24,7 +24,7 @@ import {
   GET_INTERVIEW_STATUS,
   GET_CASE_TYPE,
   GET_SUB_CASE_TYPE,
-  GET_CITY_BY_ID
+  GET_CITY_BY_ID,GET_CHECKLIST_TYPE,GET_CHECKLIST_CAT,GET_FREQUENCY
 
 } from "../utils/Constants.js";
 import {
@@ -390,6 +390,46 @@ export const getCategory = () => async (dispatch) => {
   }
   catch (err) { }
 }
+
+export const getCheckListType = () => async (dispatch) => {
+  try {
+    axios({
+      method: 'GET',
+      url: apiurl + "get_checklist_type",
+    })
+      .then((response) => {
+        dispatch({ type: GET_CHECKLIST_TYPE, payload: response.data.data })
+      });
+  }
+  catch (err) { }
+}
+
+export const getCheckListCategory = () => async (dispatch) => {
+  try {
+    axios({
+      method: 'GET',
+      url: apiurl + "get_category",
+    })
+      .then((response) => { 
+        dispatch({ type: GET_CHECKLIST_CAT, payload: response.data.data })
+      });
+  }
+  catch (err) { }
+}
+
+export const getFrequency = () => async (dispatch) => {
+  try {
+    axios({
+      method: 'GET',
+      url: apiurl + "get_frequency",
+    })
+      .then((response) => { 
+        dispatch({ type: GET_FREQUENCY, payload: response.data.data })
+      });
+  }
+  catch (err) { }
+}
+
 export const getSubCategory = (id) => async (dispatch) => {
   try {
     const response = await axios({
