@@ -10,8 +10,8 @@ import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
   GET_DEPARTMENT,
-  GET_INTERVIEWERS_LIST,GET_FREQUENCY,
-  GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES,GET_TEMPLATE_NAME,GET_CHECKLIST_TYPE,GET_CHECKLIST_CAT
+  GET_INTERVIEWERS_LIST, GET_FREQUENCY,
+  GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES, GET_TEMPLATE_NAME, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -34,7 +34,7 @@ import {
   GET_COURT_LOCATION,
   GET_TRADE_MARK_STATUS,
   GET_CASE_TYPE,
-  GET_SUB_CASE_TYPE, GET_QUATIONTYPE,
+  GET_SUB_CASE_TYPE, GET_QUATIONTYPE
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -97,9 +97,9 @@ const initalState = {
   getUserStatus: [],
   getUserGroup: [],
   getCategory: [],
-  getCity_By_Id:[],
+  getCity_By_Id: [],
   getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
-  getCchecklistcategory: [], getCchecklisttype: [],getFrequency:[]
+  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: []
 };
 
 export default function (state = initalState, action) {
@@ -209,10 +209,10 @@ export default function (state = initalState, action) {
       return { ...state, GetTemplateName: payload };
     case GET_CHECKLIST_TYPE:
       return { ...state, getCchecklisttype: payload };
-    case GET_CHECKLIST_CAT: 
-    return { ...state,getCchecklistcategory : payload };
+    case GET_CHECKLIST_CAT:
+      return { ...state, getCchecklistcategory: payload };
     case GET_FREQUENCY:
-    return { ...state,getFrequency : payload };
+      return { ...state, getFrequency: payload };
     default:
       return state;
   }

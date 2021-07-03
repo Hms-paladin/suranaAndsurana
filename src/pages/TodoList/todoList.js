@@ -86,7 +86,6 @@ function TodoList(props) {
     const [modelTitle, setModeltitle] = useState()
     const [TaskModelTitle, setTaskModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
-    const [kraapprovemodel, setKraapprovemodel] = useState(false);
     // timesheet
     const [TimeSheet_Approval, setTimeSheet_Approval] = useState(false)
     // recruitment
@@ -98,11 +97,13 @@ function TodoList(props) {
     const [LeaveId, setLeaveId] = useState([])
     const [severanceId, setseveranceId] = useState([])
 
+    // KRA Approval
+    const [kraapprovemodel, setKraapprovemodel] = useState(false)
 
 
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
-    let empid= localStorage.getItem("empId");
+    let empid = localStorage.getItem("empId");
     useEffect(() => {
         dispatch(getTaskList(empid));
         dispatch(getHrTaskList())
@@ -144,11 +145,15 @@ function TodoList(props) {
                 showId = data.ticket_id
                 showName = "Recruitment Request"
             }
+            else if (data.kra_id) {
+                showId = data.kra_id
+                showName = "KRA Approval"
+            }
             else {
                 showName = ""
             }
             hrList.push({
-                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task_name?data.task_name:data.task}</div>,
+                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task_name ? data.task_name : data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
                 designation: data.designation,
                 candidates: data.no_of_candidates,
@@ -177,10 +182,10 @@ function TodoList(props) {
             let showName = null
 
             projectTask.push({
-                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.project_name?data.project_name:data.project_name}</div>,
+                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.project_name ? data.project_name : data.project_name}</div>,
                 activity: data.activity,
                 sub_activity: data.sub_activity,
-                case :'',
+                case: '',
                 start_date: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
                 end_date: data.end_date ? moment(data.end_date).format('DD-MMM-YYYY') : null,
             },
@@ -190,7 +195,7 @@ function TodoList(props) {
 
         })
         setProjectTodoList(projectTask)
-       
+
         //Other Task
         let otherTask = []
 
@@ -205,7 +210,7 @@ function TodoList(props) {
                 showId = data.user_id
                 showName = "Unblock User"
                 projectTask.push({
-                    id: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name?data.task_name:data.task}</div>,
+                    id: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
                     activity: data.activity,
                     subactivity: data.sub_activity,
                     startdate: data.start_date,
@@ -223,13 +228,13 @@ function TodoList(props) {
             }
 
             otherTask.push({
-                task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name?data.task_name:data.task}</div>,
+                task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
                 empname: data.employee,
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 startdate: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
-                enddate: data.end_date&&data.end_date!="0000-00-00" ? moment(data.end_date).format('DD-MMM-YYYY') : null,
-                no_hours: data.num_of_hrs==="0"?data.num_of_day:data.num_of_hrs,
+                enddate: data.end_date && data.end_date != "0000-00-00" ? moment(data.end_date).format('DD-MMM-YYYY') : null,
+                no_hours: data.num_of_hrs === "0" ? data.num_of_day : data.num_of_hrs,
 
             })
         })
@@ -258,10 +263,11 @@ function TodoList(props) {
         //     ...prevState,
         // }));
 
-    }, [props.getOtherTask,props.getTaskLists])
+    }, [props.getOtherTask, props.getTaskLists])
 
 
     function openModelFunc(name, id) {
+        console.log(name, id, "asdfghjkl")
         if (name === "interviewer_id") {
             setApproveOpen(true)
             let int_viewer_id = props.getHrTodoList.find((val) => {
@@ -311,12 +317,20 @@ function TodoList(props) {
             setRecruitmentData(checkData)
             setTicket_id(id)
             console.log(checkData, "props.getHrTodoList")
+        }
+        else if (name === "KRA Approval") {
+            setKraapprovemodel(true)
+            // setEditTickettemplate(true)
+            let checkData = props.getHrTodoList.find((val) => {
 
-
-
+                return (
+                    id == val.kra_id
+                )
+            })
         }
 
     }
+
 
     function OtherTaskFunction(name, id, data) {
         setTaskModelTitle(data.task)

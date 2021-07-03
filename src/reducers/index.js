@@ -36,6 +36,7 @@ import GetResumeList from './ResumeReducer';
 import ExitSeverance from './ExitSeveranceReducers'
 import AddQuations from "./AddQuationsReducer";
 import OnlineTest from './OnlineTestREducer';
+import KraReducer from './KraReducer';
 import CheckListReducer from './CheckListReducer';
 
 
@@ -77,6 +78,7 @@ export default combineReducers({
   ExitSeverance,
   AddQuations,
   OnlineTest,
+  KraReducer,
   CheckListReducer
 });
 

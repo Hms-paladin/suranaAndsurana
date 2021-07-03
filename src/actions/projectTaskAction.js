@@ -9,7 +9,9 @@ import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
 
-export const getActivity = () => async dispatch => {
+export const 
+
+getActivity = () => async dispatch => {
     try {
 
         axios({
