@@ -14,7 +14,8 @@ import Stages from '../stages/stageicon';
 import TimeSheets from '../Search/TimeSheets/timesheetStart';
 import OPEModel from './opemodel';
 import StageMonitor from '../stages/StageMonitering';
-
+import {getCheckListsAssigned,insertCheckListsAssigned
+} from "../../actions/CheckListAction";
 
 // IP Project:
 // 1.TradeMark==>
@@ -259,6 +260,7 @@ function ProjectIp(props) {
 
     }, [])
 
+    
 
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
@@ -267,8 +269,65 @@ function ProjectIp(props) {
             client_id: props.ProjectDetails[0].client_id,
             billable_type_id: props.ProjectDetails[0].billable_type_id
         })
-        // console.log("dtata", props.ProjectDetails[0])
+if(props.ProjectDetails && props.ProjectDetails.length >0){
+        dispatch(getCheckListsAssigned(props.ProjectDetails[0].project_id,props.ProjectDetails[0].project_type_id))
+    }
     }, [props.ProjectDetails])
+    const [checkListsView, setcheckListsView] = useState([])
+    const [checkListsToGlobalSave, setcheckListsToGlobalSave] = useState([])
+    function handleCheck(event,data){
+        console.log("mapping", data);
+       let oo= checkListsView;
+       let d=[];
+       for(var i=0;i < oo.length; i++){
+         if(oo[i] && oo[i].check_list_id ==data.check_list_id){
+           if(data.check_list_status ==null ||  data.check_list_status == 0){
+            oo[i].check_list_status =1;
+            data.check_list_status =1;
+           }else{
+            oo[i].check_list_status =0;
+            data.check_list_status =0;
+          }
+          d.push(data);
+        }else{
+          d.push(oo[i]);
+        }
+      }
+    
+      setcheckListsView(
+        prevState => ({
+            ...prevState,
+        })
+    );
+    
+    
+    setcheckListsView(d);
+       }
+
+       function submitCheckList(){
+      
+        let obj={"checklist":[]}; 
+        for(let i=0; i< checkListsView.length; i++ ){
+         let oo=checkListsView[i];
+         let pOb = {
+            "check_list_id":oo.check_list_id,
+            "project_id":rowId,
+            "check_list_status":oo.check_list_status == null || oo.check_list_status == 0 ? 0 : 1
+        }
+            obj.checklist.push(pOb);
+        }
+       
+  
+        dispatch(insertCheckListsAssigned(obj));
+        setChecklistModelOpen(false)
+       }
+    useEffect(() => {
+        
+        if(props.getCheckListsAssigned && props.getCheckListsAssigned.length >0){
+        setcheckListsView(props.getCheckListsAssigned )
+        }
+        //setValue(props.rowData.data.priority_id)
+    }, [props.getCheckListsAssigned])
 
     console.log(props.ProjectDetails, "props.ProjectDetails")
 
@@ -473,15 +532,16 @@ function ProjectIp(props) {
         // }
     };
 
-    const onchangeapplicableAmount = (data, key, id) => {
+    const onchangeapplicableAmount = (data, key) => {
         setAmountChange(true)
         console.log(parseInt(data), key, "onchangeAmountappli")
+        setDisableCondition(false)
         // if (key === "amt" && data) {
         setApplicableamount((prevState) => ({
             ...prevState,
-            [key]: data,
+            [key]: parseInt(data),
         }));
-        setDisableCondition(false)
+        console.log(disableCondition, "console")
         // }
 
 
@@ -514,6 +574,7 @@ function ProjectIp(props) {
                     changeData={(data) => onchangeapplicableAmount(data, "amt" + index)}
                     //   SubmitData={()=>onsubmitvariablerate(data.rate_master_id)}
                     value={applicableamount["amt" + index]}
+                    
                 />,
                 UOM: data.unit_of_measure,
                 del: (
@@ -535,7 +596,7 @@ function ProjectIp(props) {
         setShowVariableTable([...searchVariableTableData]);
         setSendVariableData([...sendprojVariableTableData]);
 
-    }, [props.getProjectVariableRate])
+    }, [props.getProjectVariableRate,applicableamount])
 
     console.log(applicableamount, "applicableamount")
     ///
@@ -767,20 +828,32 @@ function ProjectIp(props) {
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
+                   
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={
                             <div style={{ textAlign: 'center' }}>
                                 <Grid container spacing={1}>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 1</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 2</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}></Grid></Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 3</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 4</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
-                                    <div className="customchecklistbtn">
+
+                                {checkListsView.map((data,index)=>
+                                <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center">
+                                    
+                                    <Grid item xs={7}>
+                                     <label className="checklist_label">{data.check_list}</label></Grid>
+                                     
+                                     <Grid item xs={2}><Checkbox checked={data.check_list_status == null || data.check_list_status ==0  ? false: true}
+                                      name={data.check_list} value={data.check_list_id}  onClick={(event) => handleCheck(event,data)}
+                                      /></Grid>
+                                     <Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid>
+                                     </Grid>
+                                     )}
+
+
+<div className="customchecklistbtn">
                                         <CustomButton
                                             btnName={"Save"}
                                             btnCustomColor="customPrimary"
                                             custombtnCSS={"btnchecklist"}
-                                            onBtnClick={() => setChecklistModelOpen(false)}
+                                            onBtnClick={submitCheckList}
                                         />
                                     </div>
                                 </Grid>
@@ -935,7 +1008,8 @@ const mapStateToProps = (state) => (
         searchVariableRate: state.variableRateMaster.searchVariableRate,
         getProjectVariableRate: state.variableRateMaster.getProjectVariableRate,
         UpdateProjectVariableRate: state.variableRateMaster.updateProjectVariableRate,
-        UpdateVariableRate: state.variableRateMaster.UpdateVariableRate || []
+        UpdateVariableRate: state.variableRateMaster.UpdateVariableRate || [],
+        getCheckListsAssigned : state.CheckListReducer.getCheckListsAssigned || [],
     }
 );
 

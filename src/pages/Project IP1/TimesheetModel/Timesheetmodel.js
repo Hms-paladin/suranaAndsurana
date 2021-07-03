@@ -17,12 +17,19 @@ function Timesheetmodel(props) {
     const[timesheetview,setTimeSheetView]=useState(false)
     const dispatch = useDispatch()
     let { rowId } = useParams()
-
+    useEffect(() => {
+       
+    }, [props.rowData])
+if(rowId == undefined){
+    if(props.rowData && props.rowData.length>0){
+    rowId = props.rowData.project_Id;
+    }
+}
 
 useEffect(() => {
     dispatch(getProjectTimeSheetList(rowId)); 
     
-  }, []);
+  }, [props.rowData]);
 
   
 console.log("propsTImeSheet", props);

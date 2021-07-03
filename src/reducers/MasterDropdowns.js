@@ -10,8 +10,8 @@ import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
   GET_DEPARTMENT,
-  GET_INTERVIEWERS_LIST,
-  GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES,GET_TEMPLATE_NAME
+  GET_INTERVIEWERS_LIST,GET_FREQUENCY,
+  GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES,GET_TEMPLATE_NAME,GET_CHECKLIST_TYPE,GET_CHECKLIST_CAT
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -99,6 +99,7 @@ const initalState = {
   getCategory: [],
   getCity_By_Id:[],
   getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
+  getCchecklistcategory: [], getCchecklisttype: [],getFrequency:[]
 };
 
 export default function (state = initalState, action) {
@@ -206,6 +207,12 @@ export default function (state = initalState, action) {
       return { ...state, getCandidateName: payload };
     case GET_TEMPLATE_NAME:
       return { ...state, GetTemplateName: payload };
+    case GET_CHECKLIST_TYPE:
+      return { ...state, getCchecklisttype: payload };
+    case GET_CHECKLIST_CAT: 
+    return { ...state,getCchecklistcategory : payload };
+    case GET_FREQUENCY:
+    return { ...state,getFrequency : payload };
     default:
       return state;
   }

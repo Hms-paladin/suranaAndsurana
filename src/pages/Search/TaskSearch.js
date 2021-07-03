@@ -352,16 +352,17 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                 <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                     <p className="num_align_side" onClick={stopModel}>{i}</p>
                                     <Divider />
-                                    {/* <HtmlTooltip open={open}  onOpen={handleOpen} arrow
-                                        title={<Timesheetmodel />}
-                                        onMouseEnter={()=>setOpen(true)}
-                                        onMouseLeave={()=>setOpen(true)}
-                                    > */}
-                                         <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
-                                    {/* </HtmlTooltip> */}
-                                    
-                                   {/*  <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> 
-                                    {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} /> */}
+                                  
+
+                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+onMouseEnter={() => setOpen(true)}
+onMouseLeave={() => setOpen(false)}
+                                    title={<Timesheetmodel rowData={taskData} />}
+                                >
+                                      <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
+                                </HtmlTooltip>
+
+                                
                                 </div>
     
                                 <div style={{ width: '36%', padding: '15px' }}>
@@ -438,17 +439,16 @@ const [orderBy, setOrderBy] = React.useState("calories");
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                 <p className="num_align_side" onClick={stopModel}>{i}</p>
                                 <Divider />
-                                {/* <HtmlTooltip open={open}  onOpen={handleOpen} arrow
-                                    title={<Timesheetmodel />}
-                                    onMouseEnter={()=>setOpen(true)}
-                                    onMouseLeave={()=>setOpen(true)}
-                                > */}
-                                     <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
-                                {/* </HtmlTooltip> */}
-                                
-                               {/*  <DynModel modelTitle={"Time Sheettt"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} content={<TimeSheetView />} width={1000} /> 
-                                {/* <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetmodal} handleChangeCloseModel={(bln) => setTimesheetmodal(bln)} content={<Timesheetmodel />} width={1000} /> */}
-                            </div>
+                            
+                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+onMouseEnter={() => setOpen(true)}
+onMouseLeave={() => setOpen(false)}
+                                    title={<Timesheetmodel rowData={taskData} />}
+                                >
+                                      <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
+                                </HtmlTooltip>
+                            
+                             </div>
 
                             <div style={{ width: '36%', padding: '15px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
