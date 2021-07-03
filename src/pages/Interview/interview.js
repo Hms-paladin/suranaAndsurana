@@ -345,6 +345,7 @@ function InerviewScreen(props) {
                       justify="center"
                       alignItems="left"
                       display="flex"
+                      style={{cursor:'pointer'}}
                       className={`${data &&
                         data.resume_id &&
                         data.resume_id === selectedCandidateId &&

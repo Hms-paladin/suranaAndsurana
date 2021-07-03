@@ -179,13 +179,14 @@ const StageMonitor = (props) => {
 
   const handleCancel = () => {
     updateParam.compDate.value = "";
-    if (disablebtn) {
+    // if (disablebtn) {
 
-    }
-    else {
-      history.goBack();
+    // }
+    // else {
+    //   history.goBack();
 
-    }
+    // }
+    props.cancel_btn('APPLICATION')
 
   }
 

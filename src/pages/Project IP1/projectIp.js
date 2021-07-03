@@ -789,7 +789,7 @@ function ProjectIp(props) {
                         } width={300} />
 
                     {/* TradeMark */}
-                    {stageMonitor && <StageMonitor />}
+                    {stageMonitor && <StageMonitor cancel_btn={(data) => projectTaskModel(data)}/>}
                     {stage && <Stages projectDetails={props.ProjectDetails} />}
 
                     {projecttypes && <div>{

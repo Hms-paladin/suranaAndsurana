@@ -54,6 +54,8 @@ const ResumePage = (props) => {
   const [editcity, setEditcity] = useState(false)
   const [expCity, setExpCity] = useState([])
 
+  const [saveButton, setSaveButton] = useState(true)
+
   const [Resume_Form, setResumeFrom] = useState({
     name: {
       value: "",
@@ -596,22 +598,27 @@ const ResumePage = (props) => {
       filtererr.length === 0
     ) {
       // setResumeFrom({ error: false });
-
+      setSaveButton(false)
       dispatch(InesertResume(Resume_Form, educationList, experienceList)).then(
         () => {
-          // handleCancel();
+          
+          handleCancel();
+          setSaveButton(true)
         }
       );
     }
     else if (text === "UPDATE" && educationList.length !== 0 &&
       (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0) {
+        setSaveButton(false)
       dispatch(UpdateResume(Resume_Form, educationList, experienceList, resume_id)).then(
         () => {
+          
           handleCancel();
           setEditResume(false)
           setEditcity(false)
           // dispatch(GetResumeList(resume_id))
+          setSaveButton(true)
           dispatch(searchRowdata({
             "skill_id": "",
             "trait_id": "",
@@ -677,7 +684,7 @@ const ResumePage = (props) => {
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
-    props.handleChangeCloseModel()
+    props.handleChangeCloseModel&&props.handleChangeCloseModel()
   };
 
   function showEducationModel() {
@@ -1377,6 +1384,7 @@ const ResumePage = (props) => {
               className="resumeBtnContainer"
             >
               <CustomButton
+                btnDisable={!saveButton}
                 btnName={editResume ? "UPDATE" : "SAVE"}
                 btnCustomColor="customPrimary"
                 onBtnClick={() => onSubmit(editResume ? "UPDATE" : "SAVE")}
