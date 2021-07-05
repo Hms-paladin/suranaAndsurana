@@ -5,12 +5,12 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import DynModel from "../../component/Model/model";
-import { Redirect, Link,useHistory  } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
 import InerviewScreen from '../Interview/interview';
 import './onlinetest.scss'
 import moment from 'moment';
 import { useParams } from "react-router-dom";
-import { GettemplateQuetions,onlinetest } from '../../actions/OnlineTestAction';
+import { GettemplateQuetions, onlinetest } from '../../actions/OnlineTestAction';
 import { useDispatch, connect } from "react-redux";
 import { SettingsBackupRestore } from '@material-ui/icons';
 
@@ -47,12 +47,12 @@ function OnlineQA(props) {
 
     const handleChange = (event) => {
         setValue(event.target.value);
-        questions[increament- 1].checked=event.target.value
+        questions[increament - 1].checked = event.target.value
         // console.log(event.target.value,"event.target.value")
     };
 
-    
-    let { testTemplateId,designation,candidate } = useParams()
+
+    let { testTemplateId, designation, candidate } = useParams()
 
     useEffect(() => {
         setDesignation(designation)
@@ -62,26 +62,26 @@ function OnlineQA(props) {
 
     useEffect(() => {
         // setCount.current.count = props.GettemplateQuetions[0]?.Duration
-         runTime.current.runMin = props.GettemplateQuetions[0]?.Duration-1 || 0
+        runTime.current.runMin = props.GettemplateQuetions[0]?.Duration - 1 || 0
         setTemplateRowdata(props.GettemplateQuetions)
         setQuestions(props.GettemplateQuetions[0]?.testQuestionDetails)
         setQues_length(props.GettemplateQuetions[0]?.testQuestionDetails.length)
 
-        if(props.GettemplateQuetions[0]?.testQuestionDetails.length>0){
-            var updatelist=[]
-            for(var i=0;i<props.GettemplateQuetions[0]?.testQuestionDetails.length;i++){
+        if (props.GettemplateQuetions[0]?.testQuestionDetails.length > 0) {
+            var updatelist = []
+            for (var i = 0; i < props.GettemplateQuetions[0]?.testQuestionDetails.length; i++) {
                 var listarray = {
-                    testTempId:props.GettemplateQuetions[0].TestTempId,
-                    quesId:props.GettemplateQuetions[0]?.testQuestionDetails[i].QuesId,
-                    answer:''
+                    testTempId: props.GettemplateQuetions[0].TestTempId,
+                    quesId: props.GettemplateQuetions[0]?.testQuestionDetails[i].QuesId,
+                    answer: ''
                 }
                 updatelist.push(listarray);
-             }
+            }
             //  console.log(updatelist, "arrarrarrarrarrarr")
-             setSubmitData(updatelist)
+            setSubmitData(updatelist)
         }
-       
-        
+
+
     }, [props.GettemplateQuetions])
 
     // console.log(submitData, "templateRowdata")
@@ -133,13 +133,12 @@ function OnlineQA(props) {
             if (runTime.current.runMin === 0) {
                 runTime.current.runSec = 59
             }
-          
+
         }
 
         setText(timer)
 
     }, [])
-
 
     // useEffect(() => {
     //     if (increament === ques_length) {
@@ -150,30 +149,30 @@ function OnlineQA(props) {
     const submitAnswer = useCallback(() => {
         if (increament <= ques_length) {
             setBtnchange(true)
-            if(increament !== ques_length){
-            let testvalue = questions[increament]
-            setQues_no(testvalue)
-            setIncreament(increament + 1)
+            if (increament !== ques_length) {
+                let testvalue = questions[increament]
+                setQues_no(testvalue)
+                setIncreament(increament + 1)
             }
-            submitData[increament-1].answer=questions[increament- 1].checked?questions[increament- 1].checked:''
+            submitData[increament - 1].answer = questions[increament - 1].checked ? questions[increament - 1].checked : ''
             // no_of_questions.map((data) => {
             //     alert("tset")
             //     console.log(data, "datadatagdjsfjdk")
             // })
 
-            console.log(questions[increament- 1], "datadatagdjsfjdk")
+            console.log(questions[increament - 1], "datadatagdjsfjdk")
         }
-        if(questions[increament- 1].checked)
-        questions[increament- 1].visited='submited'
+        if (questions[increament - 1].checked)
+            questions[increament - 1].visited = 'submited'
         else
-        questions[increament- 1].visited='visited'
+            questions[increament - 1].visited = 'visited'
 
 
     })
 
     const submitOnlineTest = useCallback(() => {
 
-        dispatch(onlinetest(designationId,candidateId,submitData)).then(() => {
+        dispatch(onlinetest(designationId, candidateId, submitData)).then(() => {
             history.push("/onlinetest");
         })
 
@@ -185,17 +184,17 @@ function OnlineQA(props) {
 
         // console.log(increament,"increamentincreament")
 
-        var inc=increament - 2
+        var inc = increament - 2
         let testvalue = questions[inc]
         setQues_no(testvalue)
-        console.log(testvalue,inc, "increament")
+        console.log(testvalue, inc, "increament")
 
-        if(questions[increament- 1].checked){
-            if( submitData[increament-1].answer!=='')
-            questions[increament- 1].visited='submited'
+        if (questions[increament - 1].checked) {
+            if (submitData[increament - 1].answer !== '')
+                questions[increament - 1].visited = 'submited'
         }
         else
-        questions[increament- 1].visited='visited'
+            questions[increament - 1].visited = 'visited'
 
 
     })
@@ -236,23 +235,23 @@ function OnlineQA(props) {
                     <div className="options">
 
                         {/* {console.log(ques_no,"ques_noques_noques_no")} */}
-                                    <FormControl component="fieldset">
-                                        <RadioGroup aria-label="gender" name="gender1" value={questions&&questions.length>0&&questions[increament- 1].checked?questions[increament- 1].checked:'uncheck'} onChange={handleChange}>
+                        <FormControl component="fieldset">
+                            <RadioGroup aria-label="gender" name="gender1" value={questions && questions.length > 0 && questions[increament - 1].checked ? questions[increament - 1].checked : 'uncheck'} onChange={handleChange}>
 
-                                        {(increament === 1&&props.GettemplateQuetions[0]?.testQuestionDetails[0]?.Choice||ques_no.Choice&&ques_no.Choice||names).split(',').map((data)=>{
-                                            if(data===''){ return}
-                                            return (
-                                            <FormControlLabel value={data} unchecked control={<Radio />} label={data} />
-                                            )
-                                        }
-                                        )}
-                                            {/* <FormControlLabel value={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[0]:ques_no.Choice?.split(',')[0]} unchecked control={<Radio />} label={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[0]:ques_no.Choice?.split(',')[0]} />
+                                {(increament === 1 && props.GettemplateQuetions[0]?.testQuestionDetails[0]?.Choice || ques_no.Choice && ques_no.Choice || names).split(',').map((data) => {
+                                    if (data === '') { return }
+                                    return (
+                                        <FormControlLabel value={data} unchecked control={<Radio />} label={data} />
+                                    )
+                                }
+                                )}
+                                {/* <FormControlLabel value={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[0]:ques_no.Choice?.split(',')[0]} unchecked control={<Radio />} label={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[0]:ques_no.Choice?.split(',')[0]} />
                                             <FormControlLabel value={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[1]:ques_no.Choice?.split(',')[1]} unchecked control={<Radio />} label={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[1]:ques_no.Choice?.split(',')[1]} />
                                             <FormControlLabel value={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[2]:ques_no.Choice?.split(',')[2]} unchecked control={<Radio />} label={increament === 1 ?props.GettemplateQuetions[0]?.testQuestionDetails[0].Choice?.split(',')[2]:ques_no.Choice?.split(',')[2]} /> */}
 
-                                        </RadioGroup>
-                                    </FormControl>
-                                {/* </>
+                            </RadioGroup>
+                        </FormControl>
+                        {/* </>
                             )
                         })} */}
 
@@ -272,8 +271,8 @@ function OnlineQA(props) {
                 <div className="question_traverse">
                     <div className="question_flows">
                         {/* {console.log(props.GettemplateQuetions[0]?.testQuestionDetails,"hhhhhhhhhhhhhhhhhhhhhh")} */}
-                        {props.GettemplateQuetions[0]&&questions&&questions.map((noq,index) =>
-                         <div style={{backgroundColor:noq.visited&&noq.visited==="submited"?'#14D756':noq.visited==="visited"?'white':'#D77E4D',color:noq.visited&&noq.visited==="submited"?'white':noq.visited==="visited"?'blue':'white'}} >{index+1}</div>)}
+                        {props.GettemplateQuetions[0] && questions && questions.map((noq, index) =>
+                            <div style={{ backgroundColor: noq.visited && noq.visited === "submited" ? '#14D756' : noq.visited === "visited" ? 'white' : '#D77E4D', color: noq.visited && noq.visited === "submited" ? 'white' : noq.visited === "visited" ? 'blue' : 'white' }} >{index + 1}</div>)}
                     </div>
                     <div className="color_initmation">
                         <div className="color_circles">
@@ -288,9 +287,9 @@ function OnlineQA(props) {
                         </div>
                     </div>
                     <div id="answer_btns">
-                        <CustomButton btnName={"Submit"}  custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={()=>setConfirmModel(true)} />
+                        <CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={() => setConfirmModel(true)} />
                         {/* <Link to="/interview"><CustomButton btnName={"Submit"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={()=>setPathName("/interview")} /></Link> */}
-                        <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={()=>setExitOnlineTest(true)} />
+                        <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={() => setExitOnlineTest(true)} />
                     </div>
                 </div>
             </div>
@@ -298,46 +297,46 @@ function OnlineQA(props) {
 
 
             <DynModel
-                    modelTitle={"Exit Online Test"}
-                    handleChangeModel={exitOnlineTestModel}
-                    handleChangeCloseModel={(bln) => setExitOnlineTest(bln)}
-                    content={
+                modelTitle={"Exit Online Test"}
+                handleChangeModel={exitOnlineTestModel}
+                handleChangeCloseModel={(bln) => setExitOnlineTest(bln)}
+                content={
                     <div className="successModel">
                         <div>
-                        {" "}
-                        <label className="notfound_label">
-                        Do You Really Want to Exit this Online Test?This Process cannot be undone
+                            {" "}
+                            <label className="notfound_label">
+                                Do You Really Want to Exit this Online Test?This Process cannot be undone
                             </label>
                         </div>
                         <div className="customNotFoundbtn">
-                        <CustomButton btnName={"EXIT"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"}  onBtnClick={()=>history.push('/onlinetest')}  />
-                        <CustomButton btnName={"CANCEL "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setExitOnlineTest(false)} />
+                            <CustomButton btnName={"EXIT"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => history.push('/onlinetest')} />
+                            <CustomButton btnName={"CANCEL "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setExitOnlineTest(false)} />
                         </div>
                     </div>
-                    }
-                    width={500}
-                />
+                }
+                width={500}
+            />
 
-                <DynModel
-                    modelTitle={"Confirm Online Test"}
-                    handleChangeModel={confirmmodel}
-                    handleChangeCloseModel={(bln) => setConfirmModel(bln)}
-                    content={
+            <DynModel
+                modelTitle={"Confirm Online Test"}
+                handleChangeModel={confirmmodel}
+                handleChangeCloseModel={(bln) => setConfirmModel(bln)}
+                content={
                     <div className="successModel">
                         <div>
-                        {" "}
-                        <label className="notfound_label">
-                        Are You Confirm to Submit this Online Test ?
+                            {" "}
+                            <label className="notfound_label">
+                                Are You Confirm to Submit this Online Test ?
                             </label>
                         </div>
                         <div className="customNotFoundbtn">
-                        <CustomButton btnName={"YES"}  btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={submitOnlineTest}  />
-                        <CustomButton btnName={"NO "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setConfirmModel(false)} />
+                            <CustomButton btnName={"YES"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={submitOnlineTest} />
+                            <CustomButton btnName={"NO "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setConfirmModel(false)} />
                         </div>
                     </div>
-                    }
-                    width={500}
-                />
+                }
+                width={500}
+            />
         </div>
     )
 }
