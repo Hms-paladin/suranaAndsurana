@@ -5,10 +5,13 @@ import Dollar from '../../images/dollar.svg'
 import CustomButton from '../../component/Butttons/button'
 import Divider from '@material-ui/core/Divider';
 import { useDispatch, connect } from "react-redux";
-
+import { GetOpeAdvance,InsertOpeAdvance} from '../../actions/OutofPacketActions'
 function OPE(props) {
+    let dispatch=useDispatch()
     const [saveRights, setSaveRights] = useState([])
-    
+    const [OpeDetails,setOpeDetails]=useState([])
+    const [Advance_amt,setAdvance_amt]=useState("")
+    const [Error,setError]=useState(false)
     ///***********user permission**********/
 useEffect(() => {
 if(props.UserPermission.length>0&&props.UserPermission){
@@ -23,30 +26,59 @@ if(props.UserPermission.length>0&&props.UserPermission){
 }
 
 }, [props.UserPermission]);
+const OnChangeData=(e)=>{
+    setError(false)
+    setAdvance_amt(e.target.value)
+}
+const SubmitAdvanceAmt=()=>{
+    if(Advance_amt===""){
+        setError(true)
+    }else{
+  dispatch(InsertOpeAdvance(Advance_amt)).then((data)=>{
+  })
+}
+setAdvance_amt("")
+
+}
+console.log("setAdvance_amt",Advance_amt)
+
+
+useEffect(() => {
+    dispatch(GetOpeAdvance())
+},[])
+useEffect(() => {
+    let AdvanceData=[]
+    props.OpeAdvance.map((data)=>{
+        AdvanceData.push(data)
+    })
+    setOpeDetails(AdvanceData)
+},[props.OpeAdvance])
+console.log("setOpeDetails",OpeDetails)
 ////////
     return (
         <div>
             <div className="lib_master_h">OPE Advance</div>
             <div className="parent_div_ope">
                 <div className="noposition">
-                    <div><div>Employee</div><div>Rajesh</div></div>
-                    <div><div>Designation</div><div>Attorney</div></div>
-                    <div><div>Department</div><div>Litigation</div></div>
+                    <div><div>Employee</div><div>{OpeDetails[0]?.name}</div></div>
+                    <div><div>Designation</div><div>{OpeDetails[0]?.designation}</div></div>
+                    <div><div>Department</div><div>{OpeDetails[0]?.department}</div></div>
                 </div>
                 <Divider />
                 <div className="noposition_snd">
-                    <div><div>Current Advance Amount</div><div>₹ 5000</div></div>
-                    <div><div>Amount Spent</div><div>₹ 4,500</div></div>
-                    <div><div>Balance</div><div>₹ 500</div></div>
+                    <div><div>Current Advance Amount</div><div>₹ {OpeDetails[0]?.advance_amount}</div></div>
+                    <div><div>Amount Spent</div><div>₹ {OpeDetails[0]?.amount_spent===null?"0":OpeDetails[0]?.amount_spent}</div></div>
+                    <div><div>Balance</div><div>₹ {OpeDetails[0]?.balance===null?"0":OpeDetails[0]?.balance}</div></div>
                 </div>
 
                 <div className="advance_amt">
                     <div>Advance Amount</div>
-                    <Input prefix={<img src={Dollar} />} style={{ width: "40%" }} />
+                    <Input prefix={<img src={Dollar}/>} style={{ width: "40%" }} onChange={OnChangeData} value={Advance_amt}/>
+                    <div style={{color:"red",fontSize:"13px",marginTop:"5px"}}>{Error?"Please Enter Advance Amount":""}</div>
                 </div>
                 <div className="ope_advance_btns">
-                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="ope_save" />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="ope_save" />
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="ope_save"   onBtnClick={SubmitAdvanceAmt}/>
+                    <CustomButton btnName={"Cancel"} custombtnCSS="ope_save" onBtnClick={()=>setAdvance_amt("")}/>
                 </div>
             </div>
         </div>
@@ -56,5 +88,6 @@ if(props.UserPermission.length>0&&props.UserPermission){
 const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
+    OpeAdvance:state.OutofPacket.Ope_advance
 });
 export default connect(mapStateToProps) (OPE);
