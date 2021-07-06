@@ -225,7 +225,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
                 <Grid item xs={6}> <Labelbox type="select" placeholder="City"
                     changeData={(data) => checkValidation(data, "city")}
                     dropdown={city}
-                    value={Experience_Form.city.value== "" ? props.editExperiences?.city_id : Experience_Form.city.value}
+                    value={Experience_Form.city.value== "" ? props.editExperiences&&Number(props.editExperiences.city_id) : Experience_Form.city.value}
                     error={Experience_Form.city.error}
                     errmsg={Experience_Form.city.errmsg} />
                 </Grid>
