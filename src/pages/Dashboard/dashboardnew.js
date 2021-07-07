@@ -133,6 +133,11 @@ function DashboardNew() {
       title: "Day Report",
       path: "/dayreport",
     },
+    {
+      img: <img src={Employee} className="imageicons" />,
+      title: "CheckList Assigning View",
+      path: "/checklistview",
+    },
   ]);
 
   const handleClick = (data) => {

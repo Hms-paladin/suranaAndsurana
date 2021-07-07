@@ -16,7 +16,7 @@ function OPE_Expense(props) {
     const [saveRights, setSaveRights] = useState([])
     const [ListItems,setListItems]=useState("")
     let dispatch=useDispatch()
-    const [FileList,setFileList]=useState([])
+    const [FileList,setFileList]=useState("")
     const [bill,setbill]=useState(false)
     const [Expenses,setExpenses]=useState({
         project_type:{
@@ -64,36 +64,34 @@ function OPE_Expense(props) {
 
     })
     
-        function handleChange(info) {
-            if(bill===false){
-                notification.warning({
-                    message:"Please check the bill then upload"
-                })
-            }
-            else{
-          if (info.status !== 'error' && info.status !== 'uploading') {
 
-            let fileData=[...info.fileList]
-            let File=[]
-            fileData = fileData.map(file => {
-                if (file.response) {
-                    file.url = file.response.url;
-                }
-                return file;
-            });
-            setFileList(fileData)
+const upload = {
+    name: 'file',
 
-
-          }
-          if (info.file.status === 'done') {
-            console.log("info",info.file.originFileObj);
+    onChange(info) {
+        if (info.file.status !== 'uploading') {
+        }
+        if (info.file.status === 'done') {
+            setFileList(info.file.originFileObj?.name);
+            console.log(FileList,"FileList");
 
             message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
+        } else if (info.file.status === 'error') {
             message.error(`${info.file.name} file upload failed.`);
-          }
         }
-        }
+    },
+};   
+function onFileChange(e) {
+    if(bill===false){
+      notification.success({
+          message:"Please check the bill then upload"
+      })
+    }
+    else{
+    setFileList(e.target.files[0])
+    }
+}  
+// console.log("files",FileList)
     
 useEffect(() => {
     dispatch(getProjectType())
@@ -209,6 +207,11 @@ useEffect(() => {
             ...prevState,
         }));
     }
+    const dummyRequest = ({ file, onSuccess }) => {
+        setTimeout(() => {
+          onSuccess("ok");
+        }, 0);
+      };
 
     return (
         <div>
@@ -277,14 +280,24 @@ useEffect(() => {
                 </Grid>
                 <div className="bill_contianer">
                     <div>BILL <Checkbox checked={bill} onChange={()=>setbill(!bill)}/></div>
-                    <Upload
+                    {/* <Upload
+                    {...upload}
                      action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                     onChange={(info) => handleChange(info)}
-                     fileList={FileList}
+                    //  onChange={(info) => handleChange(info)}
+                    //  fileList={FileList}
                      accept={'.jpg', '.pdf', '.png'}
+                    //  customRequest={dummyRequest}
                     >
                       <Button icon={<PublishIcon />} className="ope_upload">Upload</Button>
-                   </Upload>,
+                   </Upload>, */}
+                   <div className="upload_div">
+                    <div style={{width:"70%",backgroundColor:"#023e7d"}}>
+                   
+                        <input type="file" name="img" accept="image/*" style={{fontSize:"14px",color:"#fff"}}
+                            onChange={onFileChange} id="img" /> <PublishIcon className="publish_ic"/>
+                    </div>
+
+                </div>
                     {/* <CustomButton btnName={"Upload"}  btnCustomColor="customPrimary" custombtnCSS="custom_save" /> */}
                 </div>
                 <div className="des_grid">

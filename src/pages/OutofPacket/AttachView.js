@@ -41,40 +41,33 @@ const settings = {
 
 
 function AttachView (props) {
- 
+ const download=(file)=>{
+
+        const url = window.URL.createObjectURL(new Blob([file]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "image.png"); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+
+console.log("ViewData",file)
+
+ }
 
   return (
     <div className="carosal_root">
-        <div style={{textAlign:"end"}}>
-           <CustomButton btnName={"Download"} custombtnCSS={"attch_btn_css"} onBtnClick={""} btnCustomColor="customPrimary"/>
-        </div>
-          <Carousel {...settings} arrows draggable={true}>
+      
+          {/* <Carousel {...settings} arrows draggable={true}>
         
                 <div>
                     <img src={File} />
                 </div>
-                <div>
-                    <img src={File} />
-                </div>
-                <div>
-                    <img src={File} />
-                </div>
-                <div>
-                    <img src={File} />
-                </div>
-                <div>
-                    <img src={File} />
-                </div>
-                <div>
-                    <img src={File} />
-                </div>
-                <div>
-                    <img src={File} />
-                </div>
-                <div>
-                    <img src={File} />
-                </div>
-          </Carousel>
+                
+          </Carousel> */}
+          <div><img src={props.ViewData.bill} style={{width:"100%",height:"100%"}}/></div>
+          <div style={{textAlign:"center",marginTop:"10px"}}>
+           <CustomButton btnName={"Download"} custombtnCSS={"attch_btn_css"} onBtnClick={()=>download(props.ViewData.bill) } btnCustomColor="customPrimary"/>
+        </div>
       
     </div>
   )

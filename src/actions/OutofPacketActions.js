@@ -77,7 +77,7 @@ export const InsertOpeAdvance = (amt) => async dispatch => {
 
 
 export const InsertOpeExpenses = (data,file) => async dispatch => {
-    // console.log("data",file[0].response.url)
+    console.log("divya",file)
     var fromData=new FormData()
     fromData.set("project_id",data.project_name.value)
     fromData.set("project_type_id",data.project_type.value)
@@ -88,7 +88,9 @@ export const InsertOpeExpenses = (data,file) => async dispatch => {
     fromData.set("mode_of_payment",data.modeofpayment.value)
     fromData.set("created_on",moment().format("YYYY-MM-DD hh:mm:s"))
     fromData.set("created_by",localStorage.getItem("empId"))
-    fromData.append("bill", file)
+    // fromData.set("bill", file)
+    fromData.append('bill', file)
+        console.log("formdafdsfsdf", file)
     try {
         axios({
             method: 'POST',

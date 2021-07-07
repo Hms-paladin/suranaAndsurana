@@ -94,7 +94,7 @@ import ProjectwiseTS from '../pages/Search/TimeSheets/projectwise_timesheet'
 // CheckList Creation
 import checkListCreation from '../pages/Checklist/checklistCreation';
 import checkListAssign from '../pages/Checklist/checklistAssigning';
-
+import CheckListView from '../pages/Checklist/ChecklistView'
 //OPEAdvance
 // import OPE from '../pages/OPE/OpeAdvance'
 import OPE_Expense from '../pages/OPE/OpeExpense'
@@ -233,7 +233,7 @@ function Routes(props) {
         {/* checkListCreation */}
         <PrivateRoute path="/checklistCreation" component={checkListCreation} exact />
         <PrivateRoute path="/checklistAssigning" component={checkListAssign} exact />
-
+        <PrivateRoute path="/checklistview" component={CheckListView} exact />
         {/* OPEAdvance */}
         {/* <PrivateRoute path="/OpeAdvance" component={OPE} exact /> */}
         <PrivateRoute path="/OpeExpense" component={OPE_Expense} exact />

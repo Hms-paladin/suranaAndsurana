@@ -23,6 +23,7 @@ function OutofPacket(props){
     const [OpeList,setOpeList]=useState([])
     const [PacketList,setPacketList]=useState([])
     const [spinner,setspinner]=useState(false)
+    const [ViewData,setViewData]=useState("")
     const Header=[
         {id:"ope",label:"OPE/OPA"},
         {id:"date",label:"Date"},
@@ -83,6 +84,14 @@ function OutofPacket(props){
             }));
         
           };
+   const AttachFileView=(id)=>{
+    setattchOpen(true) 
+    var File=props.OutOfPacket.find((data)=>{
+         return(data.ope_id==id)
+    })
+    setViewData(File)
+    console.log("file",File)
+   }       
         ///***********user permission**********/
 useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
@@ -113,13 +122,22 @@ useEffect(() => {
                 expanse_type:data.expence_type,
                 amount:data.amount,
                 mop:data.mode_of_payment,
-                bill:data.bill===null?"No":<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,
+                bill:data.bill===null?"No":<AttachmentIcon className="attch" onClick={()=>AttachFileView(data.ope_id)}/>,
                 description:data.description
 
             })
-            OpeSearch.total_advance=data.Total_advance
-            OpeSearch.total_expense=data.total_expense===null?"0":data.total_expense
-            OpeSearch.balance=OpeSearch.total_advance-OpeSearch.total_expense
+            var advance=data.Total_advance.toString().replace(/\D/g, '')
+            OpeSearch.total_advance=Number(advance).toLocaleString()
+
+            var expense=data.total_expense===null?"0":data.total_expense.toString().replace(/\D/g, '')
+            OpeSearch.total_expense=Number(expense).toLocaleString()
+
+            var balance=Math.abs(data.Total_advance-data.total_expense)
+            var result=balance.toString().replace(/\D/g, '')
+            OpeSearch.balance=Number(result).toLocaleString()
+           console.log("props",balance)
+
+
             OpeSearch.fromDate=moment(data.from_date).format("DD-MMM-YYYY")
             OpeSearch.ToDate=moment(data.to_date).format("DD-MMM-YYYY")
             setOpeSearch(prevState => ({
@@ -165,7 +183,6 @@ useEffect(() => {
           ...prevState,
         }));
     }
-    console.log("props",props)
     // console.log(searchRights,"rights")
     
     function rightsNotification(){
@@ -235,7 +252,7 @@ useEffect(() => {
                     rows={PacketList}
                     aligncss="aligncss" /> 
                     </Spin> 
-                      <DynModel modelTitle={"Attached Bills"} handleChangeModel={attchOpen} handleChangeCloseModel={(bln) => setattchOpen(bln)} content={<AttachView />} width={600} />
+                      <DynModel modelTitle={"Attached Bills"} handleChangeModel={attchOpen} handleChangeCloseModel={(bln) => setattchOpen(bln)} content={<AttachView ViewData={ViewData}/>} width={600} />
                 </div>
        </div>
     )

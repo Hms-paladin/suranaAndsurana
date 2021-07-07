@@ -558,15 +558,8 @@ function Employeeform(props) {
                 /></div>
 
                 <div className="upload_div">
-                    {/* <div><Labelbox type="text" placeholder="Upload Document"/></div> */}
                     <div>
-                        {/* <Upload {...props} className="upload_tag"
-                      action= 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                    //   onChange= {(info)=>handleChange(info) } 
-                    //   fileList={fileListData}
-                    >
-                          <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
-                     </Upload>, */}
+                   
                         <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
                             onChange={onFileChange} id="pdfupload" /> <PublishIcon />
                     </div>
