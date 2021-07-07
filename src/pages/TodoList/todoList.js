@@ -99,7 +99,7 @@ function TodoList(props) {
 
     // KRA Approval
     const [kraapprovemodel, setKraapprovemodel] = useState(false)
-
+    const [kraApprove, setKraApprove] = useState([])
 
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
@@ -145,10 +145,11 @@ function TodoList(props) {
                 showId = data.ticket_id
                 showName = "Recruitment Request"
             }
-            else if (data.kra_id) {
-                showId = data.kra_id
-                showName = "KRA Approval"
-            }
+            //  else if (data.kra_id) {
+            //     showId = data.kra_id
+            //     showName = "KRA Approval"
+            // }
+
             else {
                 showName = ""
             }
@@ -160,15 +161,11 @@ function TodoList(props) {
                 department: data.department,
             },
             )
-
-
-
         })
 
         setHrTodoList(hrList)
 
         if (props.getHrTodoList.assigned_by !== props.getHrTodoList.assignee_id) {
-            alert("test")
         }
 
 
@@ -226,7 +223,10 @@ function TodoList(props) {
                 showName = "Severance"
                 showId = data.severece_id
             }
-
+            else if (data.kra_id) {
+                showId = data.kra_id
+                showName = "KRA Approval"
+            }
             otherTask.push({
                 task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
                 empname: data.employee,
@@ -238,26 +238,6 @@ function TodoList(props) {
 
             })
         })
-        // otherTask.push({
-        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Resignation Approval")}
-        //     >Resignation Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        // }, {
-        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("HR Noc")}
-        //     >HR Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        // }, {
-        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("IT Noc")}
-        //     >IT Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        // }, {
-        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Admin Noc")}
-        //     >Admin Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        // }, {
-        //     id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Final Relieving")}
-        //     >Final Relieving</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        // },
-
-
-
-
         setOtherTodoList(otherTask)
         // setOtherTodoList((prevState) => ({
         //     ...prevState,
@@ -316,18 +296,17 @@ function TodoList(props) {
             })
             setRecruitmentData(checkData)
             setTicket_id(id)
-            console.log(checkData, "props.getHrTodoList")
         }
         else if (name === "KRA Approval") {
             setKraapprovemodel(true)
-            // setEditTickettemplate(true)
-            let checkData = props.getHrTodoList.find((val) => {
-
+            let checkData = props.getOtherTask.find((val) => {
                 return (
                     id == val.kra_id
                 )
             })
+            setKraApprove(checkData)
         }
+
 
     }
 
@@ -359,8 +338,18 @@ function TodoList(props) {
             })
             setseveranceId(Sevevarncedata)
         }
-
+        else if (name === "KRA Approval") {
+            setKraapprovemodel(true)
+            let checkData = props.getOtherTask.find((val) => {
+                return (
+                    id == val.kra_id
+                )
+            })
+            setKraApprove(checkData)
+        }
     }
+
+    console.log(kraApprove,"kras")
 
     // unblockUsers ==>
     function unblockUser() {

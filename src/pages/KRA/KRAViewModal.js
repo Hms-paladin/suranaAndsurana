@@ -62,7 +62,7 @@ function KRAModal(props) {
         props.getKra && props.getKra.map((data, index) => {
             rowDataList.push({
 
-                employeename: data.name, activity: data.activity, target: data.gender ,
+                employeename: data.name, activity: data.activity, target: data.kra_percentage ,
             })
         })
 
