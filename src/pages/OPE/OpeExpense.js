@@ -83,7 +83,7 @@ const upload = {
 };   
 function onFileChange(e) {
     if(bill===false){
-      notification.success({
+      notification.warning({
           message:"Please check the bill then upload"
       })
     }
