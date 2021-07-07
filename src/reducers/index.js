@@ -38,7 +38,7 @@ import AddQuations from "./AddQuationsReducer";
 import OnlineTest from './OnlineTestREducer';
 import KraReducer from './KraReducer';
 import CheckListReducer from './CheckListReducer';
-
+import OutofPacket from './OutofPacketReducers'
 
 export default combineReducers({
   getInterviewquestions,
@@ -79,7 +79,8 @@ export default combineReducers({
   AddQuations,
   OnlineTest,
   KraReducer,
-  CheckListReducer
+  CheckListReducer,
+  OutofPacket
 });
 
 

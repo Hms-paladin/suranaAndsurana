@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
@@ -94,12 +94,51 @@ import ProjectwiseTS from '../pages/Search/TimeSheets/projectwise_timesheet'
 // CheckList Creation
 import checkListCreation from '../pages/Checklist/checklistCreation';
 import checkListAssign from '../pages/Checklist/checklistAssigning';
-
+import CheckListView from '../pages/Checklist/ChecklistView'
 //OPEAdvance
 // import OPE from '../pages/OPE/OpeAdvance'
 import OPE_Expense from '../pages/OPE/OpeExpense'
 
+// import { UserBlockUnblock } from '../actions/UserAccessRightsAction';
+// import { useDispatch, connect } from "react-redux";
+
+import { apiurl } from "../utils/baseUrl.js";
+import axios from "axios";
+import moment from 'moment';
+import { notification } from "antd";
+import { useHistory } from "react-router-dom";
+
 function Routes(props) {
+
+  const history = useHistory();
+
+
+  useEffect(() => {
+   
+      var DocumentData = new FormData();
+      DocumentData.set("user_id",localStorage.getItem("user_id"))
+      try {
+        axios({
+          method: 'POST',
+          url: apiurl + 'login_referesh_page',
+          data: DocumentData
+        })
+          .then((response) => {
+              console.log("resuser",response)
+              if (response.data.status === 0) {
+                localStorage.clear();
+                history.push("/login")
+                notification.success({
+                  message: response.data.msg,
+                });
+              }
+      
+          })
+
+    } catch (err) {
+
+    }
+  }, []);
 
   return (
     <Navbar>
@@ -194,7 +233,7 @@ function Routes(props) {
         {/* checkListCreation */}
         <PrivateRoute path="/checklistCreation" component={checkListCreation} exact />
         <PrivateRoute path="/checklistAssigning" component={checkListAssign} exact />
-
+        <PrivateRoute path="/checklistview" component={CheckListView} exact />
         {/* OPEAdvance */}
         {/* <PrivateRoute path="/OpeAdvance" component={OPE} exact /> */}
         <PrivateRoute path="/OpeExpense" component={OPE_Expense} exact />

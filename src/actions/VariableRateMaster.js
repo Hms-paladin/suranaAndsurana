@@ -81,8 +81,11 @@ export const InsertProjectVariableRate = (data,DataId) => async dispatch => {
           DocumentData.set("amount", data.Amount || 0)
           DocumentData.set("upper_limit", data.upper_limit || 0)
           DocumentData.set("lower_limit", data.lower_limit || 0)
+          if(data && data.unit_id){
+            DocumentData.set("unit_of_measure", data.unit_id || 0) 
+          }else if(data && isNaN(data.unit_of_measure)){
           DocumentData.set("unit_of_measure", data.unit_of_measure || 0)
-
+          }
           DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
           DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
           DocumentData.set("created_by", localStorage.getItem("empId"))

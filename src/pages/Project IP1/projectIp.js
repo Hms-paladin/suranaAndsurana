@@ -532,15 +532,16 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
         // }
     };
 
-    const onchangeapplicableAmount = (data, key, id) => {
+    const onchangeapplicableAmount = (data, key) => {
         setAmountChange(true)
         console.log(parseInt(data), key, "onchangeAmountappli")
+        setDisableCondition(false)
         // if (key === "amt" && data) {
         setApplicableamount((prevState) => ({
             ...prevState,
-            [key]: data,
+            [key]: parseInt(data),
         }));
-        setDisableCondition(false)
+        console.log(disableCondition, "console")
         // }
 
 
@@ -573,6 +574,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                     changeData={(data) => onchangeapplicableAmount(data, "amt" + index)}
                     //   SubmitData={()=>onsubmitvariablerate(data.rate_master_id)}
                     value={applicableamount["amt" + index]}
+                    
                 />,
                 UOM: data.unit_of_measure,
                 del: (
@@ -594,7 +596,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
         setShowVariableTable([...searchVariableTableData]);
         setSendVariableData([...sendprojVariableTableData]);
 
-    }, [props.getProjectVariableRate])
+    }, [props.getProjectVariableRate,applicableamount])
 
     console.log(applicableamount, "applicableamount")
     ///
@@ -860,7 +862,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                         } width={300} />
 
                     {/* TradeMark */}
-                    {stageMonitor && <StageMonitor />}
+                    {stageMonitor && <StageMonitor cancel_btn={(data) => projectTaskModel(data)}/>}
                     {stage && <Stages projectDetails={props.ProjectDetails} />}
 
                     {projecttypes && <div>{
