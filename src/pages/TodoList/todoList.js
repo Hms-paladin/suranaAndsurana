@@ -247,7 +247,6 @@ function TodoList(props) {
 
 
     function openModelFunc(name, id) {
-        console.log(name, id, "asdfghjkl")
         if (name === "interviewer_id") {
             setApproveOpen(true)
             let int_viewer_id = props.getHrTodoList.find((val) => {
@@ -297,18 +296,8 @@ function TodoList(props) {
             setRecruitmentData(checkData)
             setTicket_id(id)
         }
-        else if (name === "KRA Approval") {
-            setKraapprovemodel(true)
-            let checkData = props.getOtherTask.find((val) => {
-                return (
-                    id == val.kra_id
-                )
-            })
-            setKraApprove(checkData)
-        }
-
-
     }
+
 
 
     function OtherTaskFunction(name, id, data) {
@@ -345,11 +334,9 @@ function TodoList(props) {
                     id == val.kra_id
                 )
             })
-            setKraApprove(checkData)
+            setKraApprove(checkData.kra_id)
         }
     }
-
-    console.log(kraApprove,"kras")
 
     // unblockUsers ==>
     function unblockUser() {
@@ -368,8 +355,6 @@ function TodoList(props) {
         // setleaveModelTitle(val)
     }
 
-
-
     const onNewPageClear = (bln) => {
         setStateClear(!stateClear);
         setInerviewScreen(bln);
@@ -377,8 +362,7 @@ function TodoList(props) {
         setApproveOpen(bln);
 
     }
-    //appraisalSupervisor
-    console.log(props.getOtherTask, "getOtherTask")
+    
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
@@ -426,7 +410,7 @@ function TodoList(props) {
                 <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
 
 
-                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} />} />
+                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} />} />
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
 
