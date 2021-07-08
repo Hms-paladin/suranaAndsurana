@@ -9,13 +9,13 @@ import CustomButton from '../../component/Butttons/button';
 import DynModel from '../../component/Model/model';
 import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
-import { getTagList, insertAdhocTask,getAssignedTo } from "../../actions/projectTaskAction";
+import { getTagList, insertAdhocTask, getAssignedTo } from "../../actions/projectTaskAction";
 import { connect, useDispatch } from "react-redux";
 
 function AdhocTaskModal(props) {
     const dispatch = useDispatch();
     const [taggList, settaggList] = useState({})
-    const [assignedToLists, setassignedToLists] = useState({}) 
+    const [assignedToLists, setassignedToLists] = useState({})
     const [adhoc_Form, setadhoc_Form] = useState({
         task_description: {
             value: "",
@@ -53,27 +53,31 @@ function AdhocTaskModal(props) {
     useEffect(() => {
         dispatch(getTagList());
         dispatch(getAssignedTo());
-        
-      }, []);
 
-      useEffect(() => {
-    let tagTypeData = []
-    props.tagsList.map((data) =>
-    tagTypeData.push({ value: data.status,
-        id: data.status_id })
-    )
-    settaggList({ tagTypeData })
+    }, []);
 
-    let assignedToData = []
-    props.assignToList.map((data) =>
-    assignedToData.push({ value: data.name,
-        id: data.emp_id })
-    )
-    setassignedToLists({ assignedToData })
+    useEffect(() => {
+        let tagTypeData = []
+        props.tagsList.map((data) =>
+            tagTypeData.push({
+                value: data.status,
+                id: data.status_id
+            })
+        )
+        settaggList({ tagTypeData })
 
-      }, [
-        props.tagsList,props.assignToList,props.insertAdhocTask
-      ]);
+        let assignedToData = []
+        props.assignToList.map((data) =>
+            assignedToData.push({
+                value: data.name,
+                id: data.emp_id
+            })
+        )
+        setassignedToLists({ assignedToData })
+
+    }, [
+        props.tagsList, props.assignToList, props.insertAdhocTask
+    ]);
 
     function checkValidation(data, key, multipleId) {
 
@@ -135,15 +139,15 @@ function AdhocTaskModal(props) {
 
         }
         var dateFormat = require('dateformat');
-var now = new Date();
-var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
-        var data ={
-            "start_date":fromDateval, //adhoc_Form.start_date.value,
-            "end_date":adhoc_Form.end_date.value,
-            "tag":adhoc_Form.tag.value,
-            "assignee_id":adhoc_Form.assigned_task.value, 
-            "assigned_by":localStorage.getItem("empId"),
-            "description":encodeURI(adhoc_Form.task_description.value)
+        var now = new Date();
+        var fromDateval = dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
+        var data = {
+            "start_date": fromDateval, //adhoc_Form.start_date.value,
+            "end_date": adhoc_Form.end_date.value,
+            "tag": adhoc_Form.tag.value,
+            "assignee_id": adhoc_Form.assigned_task.value,
+            "assigned_by": localStorage.getItem("empId"),
+            "description": encodeURI(adhoc_Form.task_description.value)
         }
         dispatch(insertAdhocTask(data)).then((response) => {
             console.log("Insert");
@@ -156,46 +160,46 @@ var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
 
     const handleCancel = () => {
         let From_key = [
-          "task_description",
-          "start_date",
-          "end_date",
-          "tag",
-          "assigned_task"
+            "task_description",
+            "start_date",
+            "end_date",
+            "tag",
+            "assigned_task"
         ];
-    
+
         From_key.map((data) => {
-          try {
-            adhoc_Form[data].value = "";
-            console.log("mapping", adhoc_Form[data].value);
-          } catch (error) {
-            throw error;
-          }
+            try {
+                adhoc_Form[data].value = "";
+                console.log("mapping", adhoc_Form[data].value);
+            } catch (error) {
+                throw error;
+            }
         });
         setadhoc_Form((prevState) => ({
-          ...prevState,
+            ...prevState,
         }));
-      };
+    };
 
-      const [saveRights, setSaveRights] = useState([])
+    const [saveRights, setSaveRights] = useState([])
 
-      ///***********user permission**********/
-     useEffect(() => {
-     if(props.UserPermission.length>0&&props.UserPermission){
-        let  data_res_id = props.UserPermission.find((val) => { 
-         return (
-             "Adhoc Task - Save" == val.control 
-         ) 
-        })
-        setSaveRights(data_res_id)
-     
-        
-     }
-     
-     }, [props.UserPermission]);
-     ////////
+    ///***********user permission**********/
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Adhoc Task - Save" == val.control
+                )
+            })
+            setSaveRights(data_res_id)
+
+
+        }
+
+    }, [props.UserPermission]);
+    ////////
     return (
-        <div className="adhoc_container" style={{backgroundColor:"white",borderRadius:"5px",padding:"15px"}}>
-            <div style={{fontWeight:"600",fontSize:"20px",paddingBottom:"10px"}}>Adhoc Task</div>
+        <div className="adhoc_container" style={{ backgroundColor: "white", borderRadius: "5px", padding: "15px" }}>
+            <div style={{ fontWeight: "600", fontSize: "20px", paddingBottom: "10px" }}>Adhoc Task</div>
             <div className="AdhocTask">
                 <Grid item xs={10} >
                     <LabelBox type="text"
@@ -258,8 +262,8 @@ var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
 
             </Grid>
             <div className="adhocModelButtons">
-                <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={handleCancel}  />
-                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS={"projectTaskGo"} onBtnClick={adhocSubmit} />
+                <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={handleCancel} />
+                <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS={"projectTaskGo"} onBtnClick={adhocSubmit} />
 
             </div>
 
@@ -272,7 +276,7 @@ var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
 const mapStateToProps = (state) =>
 // console.log(state.getOptions.getProcessType, "getProcessType")
 ({
-    
+
     tagsList: state.projectTasksReducer.tagsList || [],
     assignToList: state.projectTasksReducer.assignToLists || [],
     UserPermission: state.UserPermissionReducer.getUserPermission,

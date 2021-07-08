@@ -43,7 +43,6 @@ function KRAModal(props) {
     });
     useEffect(() => {
         dispatch(getEmployeeList());
-
     }, []);
 
     useEffect(() => {
@@ -55,14 +54,12 @@ function KRAModal(props) {
             });
         });
         setEmployeeList({ EmployeeList })
-
-        console.log(props.getKra, "getKra")
         // GET_KRA:
         let rowDataList = []
         props.getKra && props.getKra.map((data, index) => {
             rowDataList.push({
 
-                employeename: data.name, activity: data.activity, target: data.gender ,
+                employeename: data.name, activity: data.activity, target: data.kra_percentage ,
             })
         })
 

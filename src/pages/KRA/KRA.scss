@@ -38,6 +38,33 @@
 
 //////////////
 
+.updatePercentage{
+    display: flex;
+}
+
+.totalPercentageshow{
+    padding: 5px 17px;
+    display: flex;
+    >div{
+        width: 50%;
+    }
+    .percentShow{
+        padding-left: 25px;
+    }
+}
+
+.percenrInput{
+    width: 35%;
+}
+
+.editView{
+    cursor:pointer;
+    width:20px;
+    margin-left: 10px;
+    margin-bottom: 7px;
+
+}
+
 .totalPercentage{
     padding: 5px 17px;
     display: flex;

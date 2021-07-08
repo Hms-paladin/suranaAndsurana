@@ -17,18 +17,10 @@ import { InsertKra } from '../../actions/KraAction';
 const KRA = (props) => {
     const dispatch = useDispatch();
     const header = [
-        // { id: 'table_name', label: 'Table Name' },
         { id: 'activitys', label: 'Activity' },
         { id: 'percent', label: 'Percentage' },
         { id: 'action', label: 'Action' },
     ];
-
-    // const rows = [
-    //     { activity: "Hearing", percent: "20", action: <img src={Edit} className="editicon" /> },
-    //     { activity: "Documentation", percent: "40", action: <img src={Edit} className="editicon" /> },
-    //     { activity: "Research", percent: "40", action: <img src={Edit} className="editicon" /> },
-    //     { activity: "Total", percent: "100" },
-    // ]
 
     const [kramodel, setKramodel] = useState(false);
     const [activity, setActivity] = useState({});
@@ -439,7 +431,8 @@ const KRA = (props) => {
                 <div className="totalPercentage">
                     <div>Total</div>
                     <div>{totalPercentage > 0 ? totalPercentage : ""}
-                    </div>  </div>
+                    </div>
+                </div>
 
 
 
@@ -468,7 +461,6 @@ const KRA = (props) => {
 const mapStateToProps = (state) =>
 
 (
-    console.log(state, "kra"),
     {
         UserPermission: state.UserPermissionReducer.getUserPermission,
         getActivity: state.getOptions.getActivity
