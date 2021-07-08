@@ -24,7 +24,7 @@ import {
   GET_INTERVIEW_STATUS,
   GET_CASE_TYPE,
   GET_SUB_CASE_TYPE,
-  GET_CITY_BY_ID,GET_CHECKLIST_TYPE,GET_CHECKLIST_CAT,GET_FREQUENCY
+  GET_CITY_BY_ID, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT, GET_FREQUENCY
 
 } from "../utils/Constants.js";
 import {
@@ -49,7 +49,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE,GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -410,7 +410,7 @@ export const getCheckListCategory = () => async (dispatch) => {
       method: 'GET',
       url: apiurl + "get_category",
     })
-      .then((response) => { 
+      .then((response) => {
         dispatch({ type: GET_CHECKLIST_CAT, payload: response.data.data })
       });
   }
@@ -423,7 +423,7 @@ export const getFrequency = () => async (dispatch) => {
       method: 'GET',
       url: apiurl + "get_frequency",
     })
-      .then((response) => { 
+      .then((response) => {
         dispatch({ type: GET_FREQUENCY, payload: response.data.data })
       });
   }
@@ -456,5 +456,20 @@ export const GetTemplateName = () => async (dispatch) => {
   return dispatch({ type: GET_TEMPLATE_NAME, payload: response.data.data });
 };
 
+//get_subordinate
+
+export const getSubordinate = (id) => async (dispatch) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: apiurl + "get_subordinate",
+      data: {
+        "emp_id": id
+      }
+    });
+    return dispatch({ type: GET_SUBORDINATE, payload: response.data.data });
+  }
+  catch (err) { }
+}
 
 

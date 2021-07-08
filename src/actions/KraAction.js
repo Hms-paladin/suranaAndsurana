@@ -6,14 +6,15 @@ import { GET_KRA, GET_KRA_APPROVE } from "../utils/Constants";
 
 
 export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async dispatch => {
+    console.log(moment(kpi_form.fromperiod.value).format('YYYY-MM-DD HH:m:s'), kpi_form, "kra")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'insert_kra',
             data: {
                 "emp_id": localStorage.getItem("empId"),
-                "period_from": kpi_form.fromperiod.value || 0,
-                "period_to": kpi_form.toperiod.value,
+                "period_from": moment(kpi_form.fromperiod.value).format('YYYY-MM-DD HH:m:s') || 0,
+                "period_to": moment(kpi_form.toperiod.value).format('YYYY-MM-DD HH:m:s'),
                 "activity_id": Active,
                 "kra_percentage": Percent,
                 "created_on": moment().format('YYYY-MM-DD HH:m:s'),

@@ -5,7 +5,7 @@ import CustomButton from '../../component/Butttons/button';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import './KRA.scss'
-import { getEmployeeList } from '../../actions/MasterDropdowns';
+import { getSubordinate } from '../../actions/MasterDropdowns';
 import { getKra } from '../../actions/KraAction';
 import EnhancedTable from "../../component/DynTable/table";
 
@@ -42,12 +42,12 @@ function KRAModal(props) {
 
     });
     useEffect(() => {
-        dispatch(getEmployeeList());
-    }, []);
+        dispatch(getSubordinate(props.empId));
+    }, [props.empId]);
 
     useEffect(() => {
         let EmployeeList = []
-        props.getEmployeeList.map((data, index) => {
+        props.getSubordinate.map((data, index) => {
             EmployeeList.push({
                 value: data.name,
                 id: data.emp_id,
@@ -59,7 +59,7 @@ function KRAModal(props) {
         props.getKra && props.getKra.map((data, index) => {
             rowDataList.push({
 
-                employeename: data.name, activity: data.activity, target: data.kra_percentage ,
+                employeename: data.name, activity: data.activity, target: data.kra_percentage,
             })
         })
 
@@ -67,7 +67,7 @@ function KRAModal(props) {
 
 
 
-    }, [props.getEmployeeList, props.getKra])
+    }, [props.getSubordinate, props.getKra])
 
     function checkValidation(data, key, multipleId) {
 
@@ -88,7 +88,6 @@ function KRAModal(props) {
             [key]: dynObj,
         }));
     }
-    console.log(kra_Model, "kra_Model")
 
     const onsubmit = () => {
         var mainvalue = {};
@@ -238,7 +237,7 @@ const mapStateToProps = (state) =>
 (
     console.log(state, "krastare"),
     {
-        getEmployeeList: state.getOptions.getEmployeeList,
+        getSubordinate: state.getOptions.getSubordinate,
         getKra: state.KraReducer.getKra
     });
 export default connect(mapStateToProps)(KRAModal);
