@@ -17,6 +17,7 @@ export const GetOpeSearch = (data) => async dispatch => {
             },
         })
         .then((response) => {
+            
             dispatch({type:GET_OPE_SEARCH,payload:response.data.data})
         })
         
@@ -25,8 +26,7 @@ export const GetOpeSearch = (data) => async dispatch => {
     }
 }
 
-export const GetOpeAdvance = (data) => async dispatch => {
-    console.log(data,"data")
+export const GetOpeAdvance = (id) => async dispatch => {
     try {
         axios({
             method: 'POST',
@@ -67,7 +67,8 @@ export const InsertOpeAdvance = (amt) => async dispatch => {
                   });
                 }
             dispatch(GetOpeAdvance())
-            dispatch(GetOpeSearch(localStorage.getItem("empId")))    
+            dispatch(GetOpeSearch()) 
+            return Promise.resolve();   
         })
         
     } catch (err) {
@@ -76,8 +77,8 @@ export const InsertOpeAdvance = (amt) => async dispatch => {
 }
 
 
-export const InsertOpeExpenses = (data,file) => async dispatch => {
-    console.log("divya",file)
+export const InsertOpeExpenses = (data,file,state) => async dispatch => {
+    // console.log("divya",file)
     var fromData=new FormData()
     fromData.set("project_id",data.project_name.value)
     fromData.set("project_type_id",data.project_type.value)
@@ -86,11 +87,10 @@ export const InsertOpeExpenses = (data,file) => async dispatch => {
     fromData.set("description",data.description.value)
     fromData.set("expence_type",data.expense.value)
     fromData.set("mode_of_payment",data.modeofpayment.value)
-    fromData.set("created_on",moment().format("YYYY-MM-DD hh:mm:s"))
+    fromData.set("created_on",moment().format("YYYY-MM-DD"))
     fromData.set("created_by",localStorage.getItem("empId"))
     // fromData.set("bill", file)
     fromData.append('bill', file)
-        console.log("formdafdsfsdf", file)
     try {
         axios({
             method: 'POST',
@@ -99,14 +99,18 @@ export const InsertOpeExpenses = (data,file) => async dispatch => {
               
         })
         .then((response) => {
+            
             dispatch({type:INSERT_OPE_ADVANCE,payload:response.data.data})
             if(response.data.status===1){
                 notification.success({
                     message: 'Expense added successfully',
                   });
-                }
-            dispatch(GetOpeAdvance())
-            dispatch(GetOpeSearch(localStorage.getItem("empId")))    
+                  dispatch(GetOpeAdvance())
+                  dispatch(GetOpeSearch(state))
+                  
+            }
+              
+            return Promise.resolve();   
         })
         
     } catch (err) {

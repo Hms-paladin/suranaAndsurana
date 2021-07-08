@@ -57,7 +57,7 @@ console.log("setOpeDetails",OpeDetails)
 ////////
     return (
         <div>
-            <div className="lib_master_h">OPE Advance</div>
+            <div className="lib_master_h">OP Advances</div>
             <div className="parent_div_ope">
                 <div className="noposition">
                     <div><div>Employee</div><div>{OpeDetails[0]?.name}</div></div>

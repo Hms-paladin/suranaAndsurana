@@ -24,6 +24,8 @@ function OutofPacket(props){
     const [PacketList,setPacketList]=useState([])
     const [spinner,setspinner]=useState(false)
     const [ViewData,setViewData]=useState("")
+    const [minDate,setminDate]=useState("")
+    const [localValue,setlocalValue]=useState(localStorage.getItem("empId"))
     const Header=[
         {id:"ope",label:"OPE/OPA"},
         {id:"date",label:"Date"},
@@ -33,28 +35,22 @@ function OutofPacket(props){
         {id:"bill",label:"Bill"},
         {id:"comment",label:"Comment"}
     ]
-    const Rows=[
-        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Travel",amount:"500.00",mop:"Credit Card",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Food",amount:"120.00",mop:"Cash",bill:"No",comment:<div className="comment_txt_pack"></div>},
-        {ope:"Advance",date:"02-May-2021",expensetype:"",amount:"10,000.00",mop:"",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
-        {ope:"Expense",date:"02-May-2021",expensetype:"Stationery",amount:"1200.00",mop:"Cash",bill:<AttachmentIcon className="attch" onClick={()=>setattchOpen(true)}/>,comment:<div className="comment_txt_pack"></div>},
-    ]
+  
     const [OpeSearch, setOpeSearch] = useState({
         from_date: {
-          value: "",
+          value: moment().format("YYYY-MM-DD"),
           validation: [{name:"required"}],
           errmsg: null,
           error: null,
         },
         to_date: {
-            value: "",
+            value: moment().format("YYYY-MM-DD"),
             validation: [{name:"required"}],
             errmsg: null,
             error: null,
           },
         employee: {
-          value: "",
+          value:Number(localStorage.getItem("empId")),
           validation: [{name:"required"}],
           errmsg: null,
           error: null,
@@ -67,7 +63,9 @@ function OutofPacket(props){
 
         })
         function checkValidation(data, key) {
-           
+           if(key==="from_date"){
+             setminDate(data)
+           }
             var errorcheck = ValidationLibrary.checkValidation(
               data,
               OpeSearch[key].validation
@@ -90,8 +88,9 @@ function OutofPacket(props){
          return(data.ope_id==id)
     })
     setViewData(File)
-    console.log("file",File)
-   }       
+   }   
+   console.log("file",Number(localStorage.getItem("empId")))
+
         ///***********user permission**********/
 useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
@@ -107,7 +106,7 @@ useEffect(() => {
     }, [props.UserPermission]);
     useEffect(() => {
         dispatch(getEmployeeList())
-        // dispatch(GetOpeSearch(OpeSearch))
+        dispatch(GetOpeSearch(OpeSearch))
     },[])
     useEffect(() => {
         let employeeName=[]
@@ -120,22 +119,20 @@ useEffect(() => {
                 ope_type_id:data.ope_type,
                 date:moment(data.date).format("DD-MMM-YYYY"),
                 expanse_type:data.expence_type,
-                amount:data.amount,
+                amount:data.expence_type_id?data.amount:data.advance_amount,
                 mop:data.mode_of_payment,
                 bill:data.bill===null?"No":<AttachmentIcon className="attch" onClick={()=>AttachFileView(data.ope_id)}/>,
-                description:data.description
-
+                description:data.description,
             })
-            var advance=data.Total_advance.toString().replace(/\D/g, '')
+            var advance=data.Total_advance===null?"0":data.Total_advance.toString().replace(/\D/g, '')
             OpeSearch.total_advance=Number(advance).toLocaleString()
-
             var expense=data.total_expense===null?"0":data.total_expense.toString().replace(/\D/g, '')
             OpeSearch.total_expense=Number(expense).toLocaleString()
 
             var balance=Math.abs(data.Total_advance-data.total_expense)
             var result=balance.toString().replace(/\D/g, '')
             OpeSearch.balance=Number(result).toLocaleString()
-           console.log("props",balance)
+          //  console.log("props",(data.amount)+(data.advance_amount))
 
 
             OpeSearch.fromDate=moment(data.from_date).format("DD-MMM-YYYY")
@@ -200,7 +197,7 @@ useEffect(() => {
                     <Grid item xs={12} container direction="row" alignItems="center" spacing={2} className="cont_lib_item_grid">
                         <Grid item xs={3}>
                             <Labelbox type="datepicker" labelname="From Date" 
-                             
+                               maxDate={OpeSearch.to_date.value}
                               changeData={(data) => checkValidation(data, "from_date")}
                               value={OpeSearch.from_date.value}
                               error={OpeSearch.from_date.error}
@@ -209,6 +206,7 @@ useEffect(() => {
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker" labelname="To Date" 
+                              minDate={minDate}
                              changeData={(data) => checkValidation(data, "to_date")}
                              value={OpeSearch.to_date.value}
                              error={OpeSearch.to_date.error}
@@ -243,8 +241,12 @@ useEffect(() => {
                            <div><div>Total Expense</div><div>{OpeSearch.total_expense?OpeSearch.total_expense:"-"}</div></div>
                     
                            <div><div>Balance</div><div>{OpeSearch.balance?OpeSearch.balance:"-"}</div></div>
-                           <NavLink to="/OpeExpense"><div className="div_ope"><img src={OPExp}/><div className="ope_text">OPE Expenses</div></div></NavLink> 
-                           <NavLink to="/ope_advance"><div  className="div_ope"><img src={OPAdv}/><div className="ope_text">OPE Advances</div></div></NavLink> 
+                           <NavLink to={{
+                             pathname:"/OpeExpense",
+                             state:OpeSearch
+                             }}
+                             ><div className="div_ope"><img src={OPExp}/><div className="ope_text">OP Expenses</div></div></NavLink> 
+                           <NavLink to="/ope_advance"><div  className="div_ope"><img src={OPAdv}/><div className="ope_text">OP Advances</div></div></NavLink> 
                            </div>
                        
                   <Spin spinning={spinner}>
@@ -261,6 +263,6 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     EmployeeList: state.getOptions.getEmployeeList,
-    OutOfPacket:state.OutofPacket.OutofPacketList
+    OutOfPacket:state.OutofPacket.OutofPacketList || []
 });
 export default connect(mapStateToProps) (OutofPacket);

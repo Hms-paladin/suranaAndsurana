@@ -8,7 +8,7 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-
+import {GetOpeSearch} from './OutofPacketActions'
 export const 
 
 getActivity = () => async dispatch => {
@@ -313,6 +313,7 @@ export const InsertOPE = (ope_form) => async dispatch => {
                     notification.success({
                         message: 'OPE Added Successfully',
                     });
+                    dispatch(GetOpeSearch())
                     return Promise.resolve();
                 }
             });

@@ -51,7 +51,7 @@ function OPE_Expense(props) {
         },
         amount:{
             value:"",
-            validation:[{name:"required"},{name:"allowNumaricOnly1"}],
+            validation:[{name:"required"}],
             errmsg:null,
             error:null
         },
@@ -62,35 +62,22 @@ function OPE_Expense(props) {
             error:null
         },
 
-    })
-    
-
-const upload = {
-    name: 'file',
-
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-        }
-        if (info.file.status === 'done') {
-            setFileList(info.file.originFileObj?.name);
-            console.log(FileList,"FileList");
-
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};   
+    })   
 function onFileChange(e) {
-    if(bill===false){
-      notification.warning({
-          message:"Please check the bill then upload"
-      })
-    }
-    else{
+  
     setFileList(e.target.files[0])
-    }
+    
 }  
+const Notification=()=>{
+    if(bill){
+        onFileChange()
+      }
+      else{
+        notification.warning({
+            message:"Please check the bill then upload"
+        })
+      }
+}
 // console.log("files",FileList)
     
 useEffect(() => {
@@ -187,7 +174,7 @@ useEffect(() => {
         if (filtererr.length > 0) {
 
         } else {
-            dispatch(InsertOpeExpenses(Expenses,FileList)).then(() => {
+            dispatch(InsertOpeExpenses(Expenses,FileList,props.location.state)).then(() => {
                 handleCancel()
                 setFileList([])
                 setbill(false)
@@ -215,7 +202,7 @@ useEffect(() => {
 
     return (
         <div>
-            <div style={{ fontSize: "20px", fontWeight: "600" }}>OPE</div>
+            <div style={{ fontSize: "20px", fontWeight: "600" }}>OP Expenses</div>
             <div className="ope_container">
                 <Grid item xs={12} spacing={2} container direction="row">
                     <Grid item xs={4} container direction="column">
@@ -280,16 +267,7 @@ useEffect(() => {
                 </Grid>
                 <div className="bill_contianer">
                     <div>BILL <Checkbox checked={bill} onChange={()=>setbill(!bill)}/></div>
-                    {/* <Upload
-                    {...upload}
-                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                    //  onChange={(info) => handleChange(info)}
-                    //  fileList={FileList}
-                     accept={'.jpg', '.pdf', '.png'}
-                    //  customRequest={dummyRequest}
-                    >
-                      <Button icon={<PublishIcon />} className="ope_upload">Upload</Button>
-                   </Upload>, */}
+                   {bill?
                    <div className="upload_div">
                     <div style={{width:"70%",backgroundColor:"#023e7d"}}>
                    
@@ -297,8 +275,9 @@ useEffect(() => {
                             onChange={onFileChange} id="img" /> <PublishIcon className="publish_ic"/>
                     </div>
 
-                </div>
-                    {/* <CustomButton btnName={"Upload"}  btnCustomColor="customPrimary" custombtnCSS="custom_save" /> */}
+                   </div>:
+                    <CustomButton btnName={"Upload"}  btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={Notification}/>
+                   }
                 </div>
                 <div className="des_grid">
                     <Grid item xs={6} spacing={2}>
