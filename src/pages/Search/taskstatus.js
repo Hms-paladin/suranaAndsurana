@@ -47,6 +47,7 @@ function TaskStatus(props) {
 
                    // esle
                     dispatch(getTaskList(props.rowData.data.assignee_id));
+                    props.handleChangeCloseModel(false); 
                     notification.success({
                         message: ' Updated Successfully',
                     });

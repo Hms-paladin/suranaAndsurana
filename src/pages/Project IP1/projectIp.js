@@ -484,7 +484,9 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
         let AddRow =props.searchVariableRate.find((data)=>{
             return data.stage_list_id
         })
-          dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate,props.searchVariableRate)).then((response)=>{
+          dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate,props.searchVariableRate
+            ,applicableamount,props.getProjectVariableRate
+            )).then((response)=>{
              setDisableCondition(false)
           })
 
@@ -546,7 +548,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
 
 
     };
-
+//applicableamount,props.getProjectVariableRate
     useEffect(() => {
         let searchVariableTableData = [];
         let sendprojVariableTableData = [];

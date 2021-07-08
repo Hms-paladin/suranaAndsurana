@@ -327,7 +327,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
                 content={<TimeSheetView rowData={taskData}  handleChangeCloseModel={(bln) => setStartModelOpen(bln)}/>} width={1000} />
 
                 <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}  
-                content={<TaskStatus rowData={taskData}/>} width={300}/>
+                content={<TaskStatus rowData={taskData} handleChangeCloseModel={(bln) => setTaskStatus(bln)} />} width={300}/>
                 <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)}  content={<TaskTag rowData={taskData}/>} width={300}/>
 
                 <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)}  content={<TaskPriority rowData={taskData}/>} width={300}/>

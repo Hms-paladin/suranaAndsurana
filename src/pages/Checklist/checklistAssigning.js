@@ -64,9 +64,9 @@ function CheckListAssign(props) {
           // setInsertTaskForm({ error: false });
           var data = {
             "check_list_id":checkListForm.checkListNameId.value,
-            "emp_id":checkListForm.employeeId.value,
-            "project_type_id":checkListForm.projectId.value,
-            "project_sub_type_id":checkListForm.subProjectId.value,
+            "emp_id":checkListForm.employeeId.value == '' ? 0 : checkListForm.employeeId.value,
+            "project_type_id":checkListForm.projectId.value == '' ? 0 : checkListForm.projectId.value,
+            "project_sub_type_id":checkListForm.subProjectId.value == '' ? 0 : checkListForm.subProjectId.value ,
             "start_date":checkListForm.startDate.value,
             "end_date":checkListForm.endDate.value,
             "created_on":moment().format('YYYY-MM-DD HH:m:s'),
@@ -115,10 +115,13 @@ function CheckListAssign(props) {
           dynObj.valueById = multipleIdList.toString();
         }
         // (end)
-    
+        if (data && key == "employeeId") {
+          checkListForm['projectId'].disabled = true;
+          checkListForm['subProjectId'].disabled = true;
+        }
        
         if (data && key == "projectId") {
-          // Sub Activity
+          checkListForm['employeeId'].disabled = true;
           Axios({
             method: "POST",
             url: apiurl + "get_project_sub_type",
@@ -154,18 +157,21 @@ function CheckListAssign(props) {
           validation: [],
           error: null,
           errmsg: null,
+          disabled: false
         },
         projectId: {
           value: "",
           validation: [],
           error: null,
           errmsg: null,
+          disabled: false
         },
         subProjectId: {
           value: "",
           validation: [],
           error: null,
           errmsg: null,
+          disabled: false
         },
         startDate: {
           value: "",
@@ -278,6 +284,7 @@ useEffect(() => {
                         value={checkListForm.employeeId.value}
                         error={checkListForm.employeeId.error}
                         errmsg={checkListForm.employeeId.errmsg}
+                        disabled={checkListForm.employeeId.disabled}
                         ></Labelbox>
                     </Grid>
                     <Grid item xs={3} container direction="column">
@@ -288,7 +295,8 @@ useEffect(() => {
                         placeholder={"Project "}
                         value={checkListForm.projectId.value}
                         error={checkListForm.projectId.error}
-                        errmsg={checkListForm.projectId.errmsg}></Labelbox>
+                        errmsg={checkListForm.projectId.errmsg}
+                        disabled={checkListForm.projectId.disabled}></Labelbox>
 
                     </Grid>
                     <Grid item xs={3} container direction="column">
@@ -300,6 +308,7 @@ useEffect(() => {
                         value={checkListForm.subProjectId.value}
                         error={checkListForm.subProjectId.error}
                         errmsg={checkListForm.subProjectId.errmsg}
+                        disabled={checkListForm.subProjectId.disabled}
                         ></Labelbox>
                     </Grid>
                     <Grid item xs={3} container direction="column">

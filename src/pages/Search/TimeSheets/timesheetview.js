@@ -200,23 +200,23 @@ function TimeSheetView(props) {
         <div className="timeSheetStartContainer">
             {timesheetStart ?
                 <>
-                    <Grid item xs={12} container direction="row" >
+                      <Grid item xs={12} container direction="row" >
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.activity}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ? props.rowData.project_type : 'Adhoc Task'}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.activity != null ? props.rowData.activity  : props.rowData.tag}</div></Grid>
                             <Grid item xs={4}><div style={{width: 250}}>{props.rowData.Priority}</div></Grid>
        
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_name != null ? props.rowData.project_name : props.rowData.description}</div></Grid>
                             <Grid item xs={4}><div style={{width: 250}}>{props.rowData.sub_activity}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.tag}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ?  props.rowData.tag : ''}</div></Grid>
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.client}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.assignee_name}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.description}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.client  != null ? props.rowData.client : props.rowData.assignee_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ? props.rowData.assignee_name : ""}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ? props.rowData.description : ''}</div></Grid>
 
                         </Grid>
                
@@ -273,26 +273,26 @@ function TimeSheetView(props) {
                 </>
                 :
                 <>
-                    <Grid item xs={12} container direction="row" spacing={3}>
-                        
+                        <Grid item xs={12} container direction="row" >
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.activity}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ? props.rowData.project_type : 'Adhoc Task'}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.activity != null ? props.rowData.activity  : props.rowData.tag}</div></Grid>
                             <Grid item xs={4}><div style={{width: 250}}>{props.rowData.Priority}</div></Grid>
-
+       
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_name != null ? props.rowData.project_name : props.rowData.description}</div></Grid>
                             <Grid item xs={4}><div style={{width: 250}}>{props.rowData.sub_activity}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.tag}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ?  props.rowData.tag : ''}</div></Grid>
 
                         </Grid>
                         <Grid item xs={4} container direction="column" spacing={1}>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.client}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.assignee_name}</div></Grid>
-                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.description}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.client  != null ? props.rowData.client : props.rowData.assignee_name}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ? props.rowData.assignee_name : ""}</div></Grid>
+                            <Grid item xs={4}><div style={{width: 250}}>{props.rowData.project_type != null ? props.rowData.description : ''}</div></Grid>
 
                         </Grid>
+               
 
                     </Grid>
                     <div className="timeSheetDatesFormat">

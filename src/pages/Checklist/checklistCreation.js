@@ -38,19 +38,24 @@ function CheckListCreation(props) {
         if (filtererr.length > 0) {
           // setInsertTaskForm({ error: true });
         } else {
-          // setInsertTaskForm({ error: false });
+          var checkListName = encodeURI(checkListForm.checkListName.value)
+          checkListName = checkListName.replace(/%20/g, ' ');
+
+          var taskDesc = encodeURI(checkListForm.task.value)
+          taskDesc = taskDesc.replace(/%20/g, ' ');
+
           var data = {
             
                 "department":checkListForm.department.value,
                 "category_id":checkListForm.checkListCategory.value,
-                "check_list":checkListForm.checkListName.value,
+                "check_list":checkListName,
                 "check_list_type":checkListForm.checkListType.value,
                 "project_type_id":checkListForm.department.value,
                 "project_sub_type_id":checkListForm.department.value,
                 "activity_id":checkListForm.activity.value,
                 "sub_activity_id":checkListForm.subActivity.value,
                 "frequency_id":checkListForm.frequency.value,
-                "task":checkListForm.task.value,
+                "task":taskDesc,
                 "created_on":moment().format('YYYY-MM-DD HH:m:s'),
                 "created_by":localStorage.getItem("empId")
              
@@ -428,7 +433,16 @@ function CheckListCreation(props) {
                 errmsg={checkListForm.task.errmsg}
                         
                         /></div>
-                    <div> <div className="TThead"></div><CustomButton btnName={"Add"} custombtnCSS="customaddbtn" btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={''}/></div>
+                    <div> 
+
+<div className="checklistBtn">
+           
+           {/* <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  onBtnClick={onSubmit}/> */}
+               <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  btnDisable={!addRights||addRights.display_control&&addRights.display_control==='N'?true:false} onBtnClick={onSubmit}/>
+                <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} custombtnCSS="custombtn" />
+            </div>
+            </div>
+            
                 </div>
 
             </div>
@@ -437,12 +451,7 @@ function CheckListCreation(props) {
                 rows={checkMasterListsData.length == 0 ? checkMasterListsData : checkMasterListsData.lists}
                 aligncss="aligncss"
             />
-            <div className="checklistBtn">
            
-           {/* <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  onBtnClick={onSubmit}/> */}
-               <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  btnDisable={!addRights||addRights.display_control&&addRights.display_control==='N'?true:false} onBtnClick={onSubmit}/>
-                <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} custombtnCSS="custombtn" />
-            </div>
         </div>
     )
 }

@@ -16,11 +16,13 @@ export const insertCheckList = (data) => async dispatch => {
         })
             .then(function (response) {
                 if (response.data.status === 1) {
+                    dispatch(getCheckLists());
                     notification.success({
                         message: 'Checklist created Successfully',
                     });
                     return Promise.resolve();
                 }
+                
             });
 
     } catch (err) {
