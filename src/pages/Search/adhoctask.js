@@ -139,15 +139,18 @@ function AdhocTaskModal(props) {
 
         }
         var dateFormat = require('dateformat');
-        var now = new Date();
-        var fromDateval = dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
-        var data = {
-            "start_date": fromDateval, //adhoc_Form.start_date.value,
-            "end_date": adhoc_Form.end_date.value,
-            "tag": adhoc_Form.tag.value,
-            "assignee_id": adhoc_Form.assigned_task.value,
-            "assigned_by": localStorage.getItem("empId"),
-            "description": encodeURI(adhoc_Form.task_description.value)
+
+var now = new Date();
+var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
+var descVal = encodeURI(adhoc_Form.task_description.value)
+descVal = descVal.replace(/%20/g, ' ');
+        var data ={
+            "start_date":fromDateval, //adhoc_Form.start_date.value,
+            "end_date":adhoc_Form.end_date.value,
+            "tag":adhoc_Form.tag.value,
+            "assignee_id":adhoc_Form.assigned_task.value, 
+            "assigned_by":localStorage.getItem("empId"),
+            "description":descVal
         }
         dispatch(insertAdhocTask(data)).then((response) => {
             console.log("Insert");
