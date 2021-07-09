@@ -10,6 +10,8 @@ import { getKraApprove, updateKraApprove, InsertApproveKra } from '../../actions
 import EnhancedTable from "../../component/DynTable/table";
 import PlusIcon from "../../images/plusIcon.svg";
 import moment from "moment";
+import { notification } from 'antd';
+
 
 
 const KRA = (props) => {
@@ -82,17 +84,24 @@ const KRA = (props) => {
     }, [props.getKraApprove, kra_form, approveid])
 
     const approveKra = useCallback(() => {
-        console.log(kraList, "kraList")
-        let refLength = kraList && kraList.length
-        for (let i = 0; i < refLength; i++) {
-            let activityId;
-            kraList && kraList.filter((data) => {
-                if (data.activity === kraList[i].activity) {
-                    activityId = data.activity_id
-                }
-            })
-            dispatch(InsertApproveKra(kraList, activityId, kraList[i].kra_percentage, refLength, i + 1)).then((response) => {
-            })
+        if (totalPercent < 100 || totalPercent > 100) {
+            notification.error({
+                message: 'Total Percent Value should 100 only',
+            });
+        } else {
+            let refLength = kraList && kraList.length
+            for (let i = 0; i < refLength; i++) {
+                let activityId;
+                kraList && kraList.filter((data) => {
+                    if (data.activity === kraList[i].activity) {
+                        activityId = data.activity_id
+                    }
+                })
+                dispatch(InsertApproveKra(kraList, activityId, kraList[i].kra_percentage, refLength, i + 1)).then((response) => {
+                })
+            }
+            props.closemodal()
+
         }
     }, [kraList])
 

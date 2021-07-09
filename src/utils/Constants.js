@@ -336,6 +336,7 @@ export const GET_PROJECT_TIME_SHEET = 'GET_PROJECT_TIME_SHEET';
 
 export const GET_KRA = "GET_KRA";
 export const GET_KRA_APPROVE = "GET_KRA_APPROVE";
+export const GET_SUBORDINATE = "GET_SUBORDINATE";
 
 //checklist
 export const GET_CHECKLIST_TYPE = 'GET_CHECKLIST_TYPE';
