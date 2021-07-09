@@ -11,7 +11,7 @@ function OPE(props) {
     const [saveRights, setSaveRights] = useState([])
     const [OpeDetails,setOpeDetails]=useState([])
     const [Advance_amt,setAdvance_amt]=useState("")
-    const [Error,setError]=useState(false)
+    const [Error,setError]=useState("")
     ///***********user permission**********/
 useEffect(() => {
 if(props.UserPermission.length>0&&props.UserPermission){
@@ -27,12 +27,19 @@ if(props.UserPermission.length>0&&props.UserPermission){
 
 }, [props.UserPermission]);
 const OnChangeData=(e)=>{
-    setError(false)
+    // setError(false)
     setAdvance_amt(e.target.value)
+    var re = /^(?=.*?[1-9])[0-9()-]+$/;
+    if(re.test(Advance_amt)){
+        setError("")
+    }
+    else{
+        setError("Please Enter Numeric Value Only")
+    }
 }
 const SubmitAdvanceAmt=()=>{
     if(Advance_amt===""){
-        setError(true)
+        setError("Please Enter Advance Amount")
     }else{
   dispatch(InsertOpeAdvance(Advance_amt)).then((data)=>{
   })
@@ -74,7 +81,7 @@ console.log("setOpeDetails",OpeDetails)
                 <div className="advance_amt">
                     <div>Advance Amount</div>
                     <Input prefix={<img src={Dollar}/>} style={{ width: "40%" }} onChange={OnChangeData} value={Advance_amt}/>
-                    <div style={{color:"red",fontSize:"13px",marginTop:"5px"}}>{Error?"Please Enter Advance Amount":""}</div>
+                    <div style={{color:"red",fontSize:"13px",marginTop:"5px"}}>{Error?Error:""}</div>
                 </div>
                 <div className="ope_advance_btns">
                     <CustomButton btnName={"Save"} btnCustomColor="customPrimary"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="ope_save"   onBtnClick={SubmitAdvanceAmt}/>

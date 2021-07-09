@@ -100,7 +100,9 @@ function TodoList(props) {
     // KRA Approval
     const [kraapprovemodel, setKraapprovemodel] = useState(false)
     const [kraApprove, setKraApprove] = useState([])
-
+    
+    // KPI APPROVAL
+    const [KpiApproval,setKpiApproval]=useState("")
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
     let empid = localStorage.getItem("empId");
@@ -227,6 +229,10 @@ function TodoList(props) {
                 showId = data.kra_id
                 showName = "KRA Approval"
             }
+            else if (data.kpi_id) {
+                showId = data.kpi_id
+                showName = "KPI Approval"
+            }
             otherTask.push({
                 task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
                 empname: data.employee,
@@ -335,6 +341,15 @@ function TodoList(props) {
                 )
             })
             setKraApprove(checkData.kra_id)
+        }
+        else if (name === "KPI Approval") {
+            setKpiapprovemodel(true)
+            let Kpi = props.getOtherTask.find((val) => {
+                return (
+                    id == val.kpi_id
+                )
+            })
+            setKpiApproval(Kpi)
         }
     }
 
