@@ -1,7 +1,7 @@
-import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES,GET_OTHER_TASK} from "../utils/Constants";
+import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES,GET_OTHER_TASK,GET_PROJECT_TASK} from "../utils/Constants";
 const intialState = {
   getHrToDoListTableData: [],
-  getQuestions: [],getSelectedCandidates:[],getOtherTask:[]
+  getQuestions: [],getSelectedCandidates:[],getOtherTask:[],getProjectTasks:[]
 };
 
 export default function (state = intialState, action) {
@@ -15,6 +15,8 @@ export default function (state = intialState, action) {
       return { ...state, getSelectedCandidates: payload };
     case GET_OTHER_TASK:
       return {...state, getOtherTask: payload}
+      case GET_PROJECT_TASK:
+      return {...state, getProjectTasks: payload}
     default:
       return state;
   }

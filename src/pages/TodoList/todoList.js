@@ -25,6 +25,7 @@ import RecruitmentModal from './RecruitmentModal'
 import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
 import { getTaskList } from "../../actions/projectTaskAction";
+import {getProjectTasks } from "../../actions/TodoListAction";
 // Hr Task:
 
 const headCells = [
@@ -103,11 +104,16 @@ function TodoList(props) {
 
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
+
+    const [unblockUser, setUnblockUser] = useState([])
+    const [timesheetID, setTimesheetID] = useState()
+
     let empid = localStorage.getItem("empId");
     useEffect(() => {
         dispatch(getTaskList(empid));
-        dispatch(getHrTaskList())
+        // dispatch(getHrTaskList())
         dispatch(getOtherTask())
+        dispatch(getProjectTasks())
     }, [])
 
     // let { rowId } = useParams(false)
@@ -174,12 +180,12 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        props.getTaskLists.map((data) => {
+        props.getProjectTasks.map((data) => {
             let showId = null
             let showName = null
 
             projectTask.push({
-                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.project_name ? data.project_name : data.project_name}</div>,
+                id: <div onClick={(id, name) => ProjectTaskFunction(data.task, data.task_id,data)} className="tempClass" >{data.task ? data.task : data.task}</div>,
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 case: '',
@@ -243,7 +249,7 @@ function TodoList(props) {
         //     ...prevState,
         // }));
 
-    }, [props.getOtherTask, props.getTaskLists])
+    }, [props.getOtherTask, props.getProjectTasks])
 
 
     function openModelFunc(name, id) {
@@ -297,9 +303,21 @@ function TodoList(props) {
             setTicket_id(id)
         }
     }
+console.log(unblockUser,"unblockUser")
 
+    function ProjectTaskFunction(name, id, data) {
+        // setTaskModelTitle(data.task)
+        if (name === "Unblock User") {
+            setUnblockUser(data)
+            setUnblockuserActive(true)
+            
+        }
+        else if (name === "Timesheet Approval") {
+            setTimesheetID(id)
+            setTimeSheet_Approval(true)
 
-
+        }
+    }
     function OtherTaskFunction(name, id, data) {
         setTaskModelTitle(data.task)
         if (name === "Leave Approval") {
@@ -339,9 +357,9 @@ function TodoList(props) {
     }
 
     // unblockUsers ==>
-    function unblockUser() {
-        setUnblockuserActive(true)
-    }
+    // function unblockUser() {
+    //     setUnblockuserActive(true)
+    // }
 
     // resignationApproveval
 
@@ -394,9 +412,9 @@ function TodoList(props) {
             {/* __________________________________________________________________________ */}
             <div>
                 <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project Task"} />
-                <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
+                <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive unblock_user_data={unblockUser} closemodal={(bln) => setUnblockuserActive(bln)} />} />
 
-                <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
+                <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval timesheet_data={timesheetID} closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
                 {/* severance */}
                 <DynModel modelTitle={TaskModelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval TaskModelTitle={TaskModelTitle} closemodal={(bln) => setResignationApprove(bln)} severanceId={severanceId} />} />
 
@@ -407,7 +425,7 @@ function TodoList(props) {
 
                 <DynModel modelTitle={"Leave Approval"} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={800} content={<LeaveApproval LeaveData={LeaveId} closemodal={(bln) => setLeaveApproval(bln)} />} />
 
-                <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
+                {/* <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} /> */}
 
 
                 <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} />} />
@@ -431,6 +449,7 @@ const mapStateToProps = state => (
         getHrTodoList: state.getHrTodoList.getHrToDoListTableData || [],
         getOtherTask: state.getHrTodoList.getOtherTask || [],
         getTaskLists: state.projectTasksReducer.getTaskLists,
+        getProjectTasks: state.getHrTodoList.getProjectTasks,
     }
 )
 
