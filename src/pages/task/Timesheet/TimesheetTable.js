@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState, useEffect } from 'react';
 import './TimeSheetTable.scss'
 import {Checkbox} from 'antd'
 import EnhancedTable from '../../../component/DynTable/table';
@@ -7,12 +7,17 @@ import CustomButton from '../../../component/Butttons/button';
 import edit from '../../../images/edit.svg'
 import DynModel from "../../../component/Model/model";
 import EditTimeSheet from '../Timesheet/Timesheet'
+import {getTaskTimeSheetbyTaskId } from "../../../actions/projectTaskAction";
+import { useDispatch, connect } from "react-redux";
+
 export default function TimeSheetApproval(props){
+    
+    const dispatch = useDispatch()
     const [OpenSheet,setOpenSheet]=useState(false)
-const [Ts_approval,setTs_approval]=useState(false)
-const handleChangeModel=()=>{
-    setOpenSheet(true)
-}
+    const [Ts_approval,setTs_approval]=useState(false)
+    const handleChangeModel=()=>{
+        setOpenSheet(true)
+    }
     const [check,setcheck]=useState({})
     const name=[
         "name1","name2"
@@ -20,6 +25,14 @@ const handleChangeModel=()=>{
     function Changecheckbox(e){
         setcheck(e.target.checked)
     }
+
+    
+    useEffect(() => {
+        dispatch(getTaskTimeSheetbyTaskId(props.timesheet_data)); 
+        console.log(props.timesheet_data,"timesheet_data")
+      }, [props.timesheet_data]);
+
+      
     const header = [
         { id: 'activity', label: 'Activity' },
         { id: 'sub_act', label: 'Sub Activity' },

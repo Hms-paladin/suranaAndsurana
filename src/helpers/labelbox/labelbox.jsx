@@ -17,10 +17,10 @@ import DateFnsUtils from '@date-io/date-fns';
 //   KeyboardTimePicker,
 //   KeyboardDatePicker,
 // } from '@material-ui/pickers';
-import { DatePicker, Select} from 'antd';
+import { DatePicker, Select } from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
-import {TimePicker} from  '@material-ui/pickers'
+import { TimePicker } from '@material-ui/pickers'
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
@@ -83,9 +83,9 @@ export default class Labelbox extends Component {
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
 						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text"
-						 onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} 
-						 onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
-						placeholder={this.props.placeholder} disabled={this.props.disabled} />
+							onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
+							onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
+							placeholder={this.props.placeholder} disabled={this.props.disabled} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -169,7 +169,7 @@ export default class Labelbox extends Component {
 								minDate={this.props.minDate && this.props.minDate}
 								maxDate={this.props.maxDate && this.props.maxDate}
 								inputVariant="outlined"
-								format={this.props.format ? this.props.format : "dd-MMM-yyyy"}
+								format={this.props.format === "dd-MMM-yyyy" ? "dd-MMM-yyyy" : this.props.format}
 								margin="normal"
 								id="date-picker-inline"
 								// value={this.state.selecteddate}
@@ -219,8 +219,8 @@ export default class Labelbox extends Component {
 								maxTime={this.props.maxTime && this.props.maxTime}
 								InputProps={{ readOnly: true }}
 								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker"
-								minTime={this.props.minTime && this.props.minTime}
-								maxTime={this.props.maxTime && this.props.maxTime} />
+									minTime={this.props.minTime && this.props.minTime}
+									maxTime={this.props.maxTime && this.props.maxTime} />
 								}
 							/>
 						</MuiPickersUtilsProvider>
@@ -234,7 +234,7 @@ export default class Labelbox extends Component {
 				</div>
 			)
 		}
-		   else if (data.type == 'select') {
+		else if (data.type == 'select') {
 			function onChange(value) {
 				console.log(`selected ${value}`);
 			}

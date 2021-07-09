@@ -136,12 +136,12 @@ class ValidationLibrary extends Component {
           }
         }
       }
-       else if (validatorsArray[valid].name == "numericanddot") {
+      else if (validatorsArray[valid].name == "numericanddot") {
         var re = /^[0-9]*\.?[0-9]*$/;
         if (re.test(textValue) == false) {
           return { msg: "Please Enter Numeric and dot only", state: false };
         }
-      } 
+      }
       else if (validatorsArray[valid].name == "PercentageCGPA") {
         var re = /	^100$|^\d{0,2}(\.\d{1,2})? *%?$/;
         if (re.test(textValue) == false || Number(textValue) == "00") {
@@ -168,13 +168,16 @@ class ValidationLibrary extends Component {
           return { msg: " Invalid Input ", state: false };
         }
       } else if (validatorsArray[valid].name == "alphaspecialwithwhitespace") {
-        var re =/^[a-zA-Z !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+        var re = /^[a-zA-Z !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
         if (re.test(textValue) == false) {
           return { msg: " Invalid Input ", state: false };
         }
+      } else if (validatorsArray[valid].name == "allowtwodigit") {
+        var re = /^\S[0-9]{0,1}$/;
+        if (re.test(textValue) == false) {
+          return { msg: " Value allow only two digit ", state: false };
+        }
       }
-
-
     }
     return { msg: "", state: true };//if no error throw empty message
   }

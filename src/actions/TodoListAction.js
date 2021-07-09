@@ -1,4 +1,4 @@
-import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES } from "../utils/Constants";
+import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES,GET_PROJECT_TASK } from "../utils/Constants";
 import {GET_OTHER_TASK} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -106,6 +106,49 @@ export const getOtherTask = () =>async dispatch => {
         })
         .then((response) => {
             dispatch({type:GET_OTHER_TASK,payload:response.data.data})
+        })
+    }
+    catch(err){
+
+    }
+}
+
+// project task
+export const getProjectTasks = () =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'get_project_tasks',
+            data:{
+                "emp_id":localStorage.getItem("empId")
+            }
+        })
+        .then((response) => {
+            dispatch({type:GET_PROJECT_TASK,payload:response.data.data})
+        })
+    }
+    catch(err){
+
+    }
+}
+
+export const unblockUser = (data) =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'update_unblock_status',
+            data:{
+                "emp_id":data.employee_id,
+                "active_flag":"1",
+                "status_change_datetime":"2021-02-01"
+            }
+        })
+        .then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "User Unblocked Successfully",
+                  });
+                }
         })
     }
     catch(err){
