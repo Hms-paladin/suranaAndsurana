@@ -5,9 +5,9 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Checkbox, Collapse } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import './OpeAdvance.scss'
-import { getProjectType,getProjectName,getClientlist} from '../../actions/MasterDropdowns'
+import { getProjectType} from '../../actions/MasterDropdowns'
 import { getExpenseType ,getPaymentMode} from '../../actions/projectTaskAction'
-import { InsertOpeExpenses } from '../../actions/OutofPacketActions'
+import { InsertOpeExpenses,GetOpeProjectType,ProjectBased_ClientName} from '../../actions/OutofPacketActions'
 import { useDispatch, connect } from "react-redux";
 import { UploadOutlined } from '@ant-design/icons';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -18,6 +18,7 @@ function OPE_Expense(props) {
     let dispatch=useDispatch()
     const [FileList,setFileList]=useState("")
     const [bill,setbill]=useState(false)
+    const [disable,setdisable]=useState(false)
     const [Expenses,setExpenses]=useState({
         project_type:{
             value:"",
@@ -51,7 +52,7 @@ function OPE_Expense(props) {
         },
         amount:{
             value:"",
-            validation:[{name:"required"}],
+            validation:[{name:"required"}, { name: "custommaxLength", "params": "15" }, { name: "allowNumaricOnly" }],
             errmsg:null,
             error:null
         },
@@ -82,8 +83,6 @@ const Notification=()=>{
     
 useEffect(() => {
     dispatch(getProjectType())
-    dispatch(getProjectName())
-    dispatch(getClientlist())
     dispatch(getExpenseType())
     dispatch(getPaymentMode())
 },[])
@@ -104,7 +103,11 @@ useEffect(() => {
 
 
     props.ClientName.map((data)=>{
-        Client_list.push({id:data.client_id,value:data.client})
+        setdisable(true)
+        setExpenses((prevState)=>({
+            ...prevState,
+            client:{value:data.client,id:data.client_id}
+        }))
     })
 
 
@@ -122,7 +125,7 @@ useEffect(() => {
 
 
 },[props.ProjectName,props.ProjectType,props.ClientName,props.ExpenseType,props.ModeOfPayment])
-console.log("props",props)
+console.log("props",Expenses.client.id)
         ///***********user permission**********/
 useEffect(() => {
     if(props.UserPermission.length>0&&props.UserPermission){
@@ -137,7 +140,13 @@ useEffect(() => {
     
     }, [props.UserPermission]);
     function checkValidation(data, key) {
-
+       if(key==="project_type"){
+        dispatch(GetOpeProjectType(data))
+       }
+       if(key==="project_name"){
+           Expenses.client.value=""
+           dispatch(ProjectBased_ClientName(data))
+       }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -176,8 +185,9 @@ useEffect(() => {
         } else {
             dispatch(InsertOpeExpenses(Expenses,FileList,props.location.state)).then(() => {
                 handleCancel()
-                setFileList([])
+                setFileList("")
                 setbill(false)
+                setdisable(false)
             })
         }
 
@@ -227,8 +237,9 @@ useEffect(() => {
                     </Grid>
                     <Grid item xs={4} container direction="column">
                         <div>Client Name</div>
-                        <Labelbox type="select"
-                         dropdown={ListItems.Client_list}
+                        <Labelbox type="text"
+                        //  dropdown={ListItems.Client_list}
+                         disabled={disable}
                          changeData={(data) => checkValidation(data, "client")}
                          value={Expenses.client.value}
                          error={Expenses.client.error}
@@ -302,9 +313,9 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     EmployeeList: state.getOptions.getEmployeeList||[],
-    ProjectName: state.getOptions.getProjectName||[],
+    ProjectName: state.OutofPacket.projectTypebase_projectName||[],
     ProjectType : state.getOptions.getProjectType || [],
-    ClientName:state.getOptions.getClientlist || [],
+    ClientName:state.OutofPacket.projectNameBased_ClientName || [],
     ExpenseType:state.projectTasksReducer.expenseType || [],
     ModeOfPayment:state.projectTasksReducer.paymentMode || []
 });
