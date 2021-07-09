@@ -367,7 +367,7 @@ console.log(unblockUser,"unblockUser")
                     id == val.kpi_id
                 )
             })
-            setKpiApproval(Kpi)
+            setKpiApproval(Kpi.kpi_id)
         }
     }
 
@@ -445,7 +445,7 @@ console.log(unblockUser,"unblockUser")
 
                 <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} />} />
 
-                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
+                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} KpiId={KpiApproval}/>} />
 
 
 

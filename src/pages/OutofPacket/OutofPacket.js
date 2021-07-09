@@ -89,7 +89,6 @@ function OutofPacket(props){
     })
     setViewData(File)
    }   
-   console.log("file",Number(localStorage.getItem("empId")))
 
         ///***********user permission**********/
 useEffect(() => {

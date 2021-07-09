@@ -30,7 +30,7 @@ const OnChangeData=(e)=>{
     // setError(false)
     setAdvance_amt(e.target.value)
     var re = /^(?=.*?[1-9])[0-9()-]+$/;
-    if(re.test(Advance_amt)){
+    if(re.test(Advance_amt)||Advance_amt===""){
         setError("")
     }
     else{

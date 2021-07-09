@@ -7,7 +7,22 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
-function KPIModal() {
+import { useDispatch,connect } from 'react-redux';
+import {getEmployeeList} from '../../actions/MasterDropdowns'
+function KPIModal(props) {
+    let dispatch=useDispatch()
+    const [EmployeeList,setEmployeeList]=useState("")
+    useEffect(()=>{
+        dispatch(getEmployeeList())
+    },[])
+    useEffect(()=>{
+        let Employee=[]
+        props.EmployeeList.map((data)=>{
+            Employee.push({id:data.emp_id,value:data.name})
+        })
+        setEmployeeList(Employee)
+    },[props.EmployeeList])
+
     return (
         <div>
             <div className="kra_main">
@@ -27,6 +42,7 @@ function KPIModal() {
                                 <div className="KRAhead"><label onClick="">Employee Name</label></div>
                                 <Labelbox
                                     type="select"
+                                    dropdown={EmployeeList}
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
@@ -35,7 +51,7 @@ function KPIModal() {
                                     type="datepicker"
                                     placeholder={"From Period"}
                                     view={["year", "month"]}
-                                    format={"mm/yyyy"}
+                                    format={"mmm/yyyy"}
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
@@ -44,7 +60,7 @@ function KPIModal() {
                                     type="datepicker"
                                     placeholder={"to Period"}
                                     view={["year", "month"]}
-                                    format={"mm/yyyy"}
+                                    format={"mmm/yyyy"}
                                 /></Grid>
 
                             <Grid item xs={3}>
@@ -75,13 +91,7 @@ function KPIModal() {
                         </Grid>
 
 
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={3}><label className="maintitle">Rajesh</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle">20</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle">15</label></Grid>
-
-                        </Grid>
+                     
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={3}><label className="maintitle"></label></Grid>
                             <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
@@ -89,13 +99,7 @@ function KPIModal() {
                             <Grid item xs={3}> <label className="maintitle">35</label></Grid>
 
                         </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={3}> <label className="maintitle"></label></Grid>
-                            <Grid item xs={3}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                            <Grid item xs={3}> <label className="maintitle">33</label></Grid>
-
-                        </Grid>
+                      
 
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
@@ -124,4 +128,7 @@ function KPIModal() {
         </div>
     )
 }
-export default KPIModal;
+const mapStateToProps=(state)=>({
+    EmployeeList: state.getOptions.getEmployeeList,
+})
+export default connect(mapStateToProps)(KPIModal);
