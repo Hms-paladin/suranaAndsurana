@@ -267,43 +267,42 @@ const KRA = (props) => {
 
 
     const onsubmit = () => {
-        var mainvalue = {};
-        var targetkeys = Object.keys(kpi_form);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                kpi_form[targetkeys[i]].value,
-                kpi_form[targetkeys[i]].validation
-            );
-            kpi_form[targetkeys[i]].error = !errorcheck.state;
-            kpi_form[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = kpi_form[targetkeys[i]].value;
-        }
-        var filtererr = targetkeys.filter(
-            (obj) => kpi_form[obj].error == true
-        );
+        // var mainvalue = {};
+        // var targetkeys = Object.keys(kpi_form);
+        // for (var i in targetkeys) {
+        //     var errorcheck = ValidationLibrary.checkValidation(
+        //         kpi_form[targetkeys[i]].value,
+        //         kpi_form[targetkeys[i]].validation
+        //     );
+        //     kpi_form[targetkeys[i]].error = !errorcheck.state;
+        //     kpi_form[targetkeys[i]].errmsg = errorcheck.msg;
+        //     mainvalue[targetkeys[i]] = kpi_form[targetkeys[i]].value;
+        // }
+        // var filtererr = targetkeys.filter(
+        //     (obj) => kpi_form[obj].error == true
+        // );
 
-        if (filtererr.length > 0) {
-        }
-        else {
-            if (totalPercentage > 100 || totalPercentage < 100) {
-                notification.error({
-                    message: 'Total Percent Value should 100 only',
-                });
-            } else {
-                let refLength = reference.current.length
-
-                for (let i = 0; i < refLength; i++) {
-                    console.log(reference.current[i].activitys, "length")
-                    let activityId;
-                    activity.Activity && activity.Activity.filter((data) => {
-                        if (data.value === reference.current[i].activitys) {
-                            activityId = data.id
-                        }
-                    })
-                    dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
-                    })
-                }
+        // if (filtererr.length > 0) {
+        // }
+        // else {
+        if (totalPercentage > 100 || totalPercentage < 100) {
+            notification.error({
+                message: 'Total Percent Value should 100 only',
+            });
+        } else {
+            let refLength = reference.current.length
+            for (let i = 0; i < refLength; i++) {
+                console.log(reference.current[i].activitys, "length")
+                let activityId;
+                activity.Activity && activity.Activity.filter((data) => {
+                    if (data.value === reference.current[i].activitys) {
+                        activityId = data.id
+                    }
+                })
+                dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
+                })
             }
+            // }
         }
         setKpi_form((prevState) => ({
             ...prevState,
@@ -347,7 +346,7 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={'MMM/yyyy'}
+                                        format={'MMM-yyyy'}
                                         changeData={(data) => checkValidation(data, "toperiod")}
                                         value={kpi_form.toperiod.value}
                                         error={kpi_form.toperiod.error}
