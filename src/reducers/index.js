@@ -39,7 +39,7 @@ import OnlineTest from './OnlineTestREducer';
 import KraReducer from './KraReducer';
 import CheckListReducer from './CheckListReducer';
 import OutofPacket from './OutofPacketReducers'
-
+import KpiReducer from './KPIReducers'
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -80,7 +80,8 @@ export default combineReducers({
   OnlineTest,
   KraReducer,
   CheckListReducer,
-  OutofPacket
+  OutofPacket,
+  KpiReducer
 });
 
 
