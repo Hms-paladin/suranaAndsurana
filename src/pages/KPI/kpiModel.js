@@ -8,8 +8,12 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
-
+import { getEmployeeList} from '../../actions/MasterDropdowns'
+import { connect,useDispatch} from 'react-redux';
+import {GetKpiApproval} from '../../actions/KPIActions'
 const KPI = (props) => {
+    let dispatch=useDispatch()
+
     const header = [
         // { id: 'table_name', label: 'Table Name' },
         { id: 'activity', label: 'Activity' },
@@ -21,30 +25,11 @@ const KPI = (props) => {
     const [kpimodel, setKpimodel] = useState(false);
 
     const [isLoaded, setIsLoaded] = useState(true);
-
+    const [ApprovalData,setApprovalData]=useState("")
     const [kpi_form, setKpi_form] = useState({
 
         achivements: {
             value: "",
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
-            error: null,
-            errmsg: null,
-        },
-
-        achivements1: {
-            value: 17,
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
-            error: null,
-            errmsg: null,
-        },
-        achivements2: {
-            value: 35,
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
-            error: null,
-            errmsg: null,
-        },
-        achivements3: {
-            value: 40,
             validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
@@ -71,9 +56,16 @@ const KPI = (props) => {
             [key]: dynObj,
         }));
     }
-
-
-
+ useEffect(()=>{
+ dispatch(GetKpiApproval(props.KpiId))
+ },[])
+useEffect(()=>{
+    let Data=[]
+    props.KpiApproval.map((data)=>{
+        Data.push(data)
+    })
+    setApprovalData(Data)
+},[props.KpiApproval])
     return (
         <div>
             <div className="kpi_sudb">
@@ -81,7 +73,7 @@ const KPI = (props) => {
                     <Grid item xs={7} container direction="row" className="spaceBtGrid" alignItems="center">
                         <Grid item xs={6}>
                             <div><label style={{ fontSize: 11 }}>Employee Name</label></div>
-                            <div><label style={{ fontWeight: 'bold' }}>Rajesh</label></div>
+                            <div><label style={{ fontWeight: 'bold' }}>{JSON.parse(localStorage.getItem("user_name"))}</label></div>
                         </Grid>
                         <Grid item xs={6}>
                             <div><label style={{ fontSize: 11 }}>Period</label></div>
@@ -241,5 +233,8 @@ const KPI = (props) => {
     )
 }
 
-
-export default (KPI);
+const mapStateToProps=(state)=>({
+    EmployeeList: state.getOptions.getEmployeeList,
+    KpiApproval:state.KpiReducer.ApprovalData
+})
+export default connect(mapStateToProps)(KPI);

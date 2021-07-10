@@ -10,12 +10,15 @@
 
 .kpi_table {
     background-color: #F3F3F3;
-    padding-bottom: 10px;
+    // padding-bottom: 10px;
 }
 .kpi_sub{
     height: 85px;
 }
-
+.save_ic{
+    fill:blue !important;
+    margin-left: 33px;
+}
 .kpi_btn {
     height: 65px;
     align-items: center;

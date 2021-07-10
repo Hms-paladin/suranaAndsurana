@@ -10,8 +10,10 @@ import { Checkbox } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import KPIModal from './KPIViewModal'
 import Edit from "../../images/editable.svg";
-
+import {GetKpiAchivement,UpdateKpiAchivement} from '../../actions/KPIActions'
+import SaveIcon from '@material-ui/icons/Save';
 const KPI = (props) => {
+    let dispatch=useDispatch()
     const header = [
         // { id: 'table_name', label: 'Table Name' },
         { id: 'activity', label: 'Activity' },
@@ -26,7 +28,9 @@ const KPI = (props) => {
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [kpiViewModal, setKpiViewModal] = useState(false)
-
+    const [Achivement,setAchivement]=useState("")
+    const [KpiId,setKpiId]=useState("")
+    const [KpiData,setkpiData]=useState("")
     const [kpi_form, setKpi_form] = useState({
 
         achivements: {
@@ -36,56 +40,10 @@ const KPI = (props) => {
             errmsg: null,
         },
 
-        achivements1: {
-            value: 17,
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
-            error: null,
-            errmsg: null,
-        },
-        achivements2: {
-            value: 35,
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
-            error: null,
-            errmsg: null,
-        },
-        achivements3: {
-            value: 40,
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
-            error: null,
-            errmsg: null,
-        },
+       
     });
 
-    const rows = [
-        { activity: "Hearing", target: "20",achievement: <Labelbox
-        type="text"
-        placeholder={""}
-        value={35}
-        changeData={(data) => checkValidation(data, "achivements1")}
-        value={kpi_form.achivements1.value}
-        error={kpi_form.achivements1.error}
-        errmsg={kpi_form.achivements1.errmsg}
-    />,action:<img src={Edit} className="editicon"/> },
-        { activity: "Documentation", percent: "40",achievement:<Labelbox
-        type="text"
-        placeholder={""}
-        value={35}
-        changeData={(data) => checkValidation(data, "achivements2")}
-        value={kpi_form.achivements2.value}
-        error={kpi_form.achivements2.error}
-        errmsg={kpi_form.achivements2.errmsg}
-    />,action:<img src={Edit} className="editicon"/> },
-        { activity: "Research", percent: "40",acheivements:<Labelbox
-        type="text"
-        placeholder={""}
-        value={35}
-        changeData={(data) => checkValidation(data, "achivements3")}
-        value={kpi_form.achivements3.value}
-        error={kpi_form.achivements3.error}
-        errmsg={kpi_form.achivements3.errmsg}
-    />,action:<img src={Edit} className="editicon"/> },
-        { activity: "Total", percent: "100", acheivements:"920"},
-    ]
+ 
 
     function checkValidation(data, key, multipleId) {
 
@@ -131,6 +89,35 @@ useEffect(() => {
 
   /////////////
 
+  useEffect(()=>{
+     dispatch(GetKpiAchivement())
+  },[])
+
+  useEffect(()=>{
+      let kpiData=[]
+      props.Kpiachivement.map((data)=>{
+        kpiData.push(data)
+      })
+      setAchivement(kpiData)
+ },[ props.Kpiachivement])
+console.log("props",props)
+const EditData=(id)=>{
+    kpi_form.achivements.value=""
+    setKpiId(id)
+    var KpiData=props.Kpiachivement.find((data)=>{
+        return(data.kra_id==id)
+    })
+    setkpiData(KpiData)
+}
+const UpdateAchivement=()=>{
+    dispatch(UpdateKpiAchivement(KpiId,kpi_form.achivements.value)).then(()=>{
+    setKpiId("")
+    kpi_form.achivements.value=""
+    })
+    setKpi_form((prevState) => ({
+        ...prevState,
+    }));
+}
     return (
         <div>
             <div className="kpi">KPI</div>
@@ -147,7 +134,7 @@ useEffect(() => {
                         >
                             <Grid item xs={4}>
                                 <div className="KRAhead"><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
-                                <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>Rajesh</label></div>
+                                <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>{JSON.parse(localStorage.getItem("user_name"))}</label></div>
                             </Grid>
                             <Grid item xs={4}>
                                 <div className="KRAhead"><label >Period</label></div>
@@ -184,59 +171,32 @@ useEffect(() => {
 
                         </Grid>
 
-
+                       {Achivement.length>0&&Achivement.map((data)=>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                            <Grid item xs={3}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle">20</label></Grid>
-                            <Grid item xs={3}><div style={{ width: '70%' }}>
-                                <Labelbox
+                            <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
+                            <Grid item xs={3}> <label className="maintitle">{data.kra_percentage}</label></Grid>
+                            {KpiId===data.kra_id?<Grid item xs={3}><div style={{ width: '50%',marginLeft:"30px"}}>
+                            <Labelbox
                                     type="text"
                                     placeholder={""}
                                     value={35}
-                                    changeData={(data) => checkValidation(data, "achivements1")}
-                                    value={kpi_form.achivements1.value}
-                                    error={kpi_form.achivements1.error}
-                                    errmsg={kpi_form.achivements1.errmsg}
+                                    changeData={(data) => checkValidation(data, "achivements")}
+                                    value={kpi_form.achivements.value}
+                                    // error={kpi_form.achivements1.error}
+                                    // errmsg={kpi_form.achivements1.errmsg}
                                 /></div>
+                            </Grid>:
+                             <Grid item xs={3}> <label className="maintitle">{data.activity_id}</label></Grid>}
+                            <Grid item xs={3}>
+                            {KpiId===data.kra_id?
+                                 <SaveIcon onClick={()=>UpdateAchivement(data.kra_id)} className="save_ic"/>:
+                                <img src={Edit} className="editicon" onClick={()=>EditData(data.kra_id)}/>}
                             </Grid>
-                            <Grid item xs={3}><img src={Edit} className="editicon"/></Grid>
 
                         </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                            <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                            <Grid item xs={3}><div style={{ width: '70%' }}>
-                                <Labelbox
-                                    type="text"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "achivements2")}
-                                    value={kpi_form.achivements2.value}
-                                    error={kpi_form.achivements2.error}
-                                    errmsg={kpi_form.achivements2.errmsg}
-                                /></div>
-                            </Grid>
-                            <Grid item xs={3}><img src={Edit} className="editicon"/></Grid>
-
-                        </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                            <Grid item xs={3}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                            <Grid item xs={3}><div style={{ width: '70%' }}>
-                                <Labelbox
-                                    type="text"
-                                    placeholder={""}
-                                    value={35}
-                                    changeData={(data) => checkValidation(data, "achivements3")}
-                                    value={kpi_form.achivements3.value}
-                                    error={kpi_form.achivements3.error}
-                                    errmsg={kpi_form.achivements3.errmsg}
-                                /></div>
-                            </Grid>
-                            <Grid item xs={3}><img src={Edit} className="editicon"/></Grid>
-
-                        </Grid>
-
+                        )}
+                       
+                       
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>100</label> </Grid>
@@ -259,7 +219,7 @@ useEffect(() => {
                     />
                 </div>
             </div>
-            <DynModel modelTitle={"KPI View"} handleChangeModel={kpiViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKpiViewModal(bln)} width={900} content={<KPIModal />} />
+            <DynModel modelTitle={"KPI View"} handleChangeModel={kpiViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKpiViewModal(bln)} width={900} content={<KPIModal/>} />
         </div>
     )
 }
@@ -267,5 +227,6 @@ useEffect(() => {
 const mapStateToProps = (state) =>
     ({
         UserPermission: state.UserPermissionReducer.getUserPermission,
+        Kpiachivement:state.KpiReducer.GetKpi_Achivement
     });
 export default connect(mapStateToProps) (KPI);
