@@ -211,7 +211,7 @@ const HrInterviewModel = (props) => {
     
   }, [props])
 
-
+console.log(props,"yyyyyyyyyyyyyyy")
   return (
     <div>
       <Labelbox
@@ -237,7 +237,7 @@ const HrInterviewModel = (props) => {
       <Labelbox
         type="datepicker"
         placeholder="Proposed Date"
-        disablePast={true}
+        minDate={new Date(new Date().getTime() + 86400000)}
         changeData={(data) => checkValidation(data, "propsedDate")}
         value={Interviewschedule.propsedDate.value}
         error={Interviewschedule.propsedDate.error}

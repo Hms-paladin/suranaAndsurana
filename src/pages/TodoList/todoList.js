@@ -113,7 +113,7 @@ function TodoList(props) {
     let empid = localStorage.getItem("empId");
     useEffect(() => {
         dispatch(getTaskList(empid));
-        // dispatch(getHrTaskList())
+        dispatch(getHrTaskList())
         dispatch(getOtherTask())
         dispatch(getProjectTasks())
     }, [])

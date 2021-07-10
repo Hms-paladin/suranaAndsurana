@@ -77,26 +77,34 @@ function Hrsearch(props) {
   const handleCheck = (event, resume_id, designation_id, round) => {
     setRoundValue(round)
 
-    if (selectedCandidateId.includes(resume_id)) {
-      selectedCandidateId.map((data, index) => {
-        if (data === resume_id) {
-          selectedCandidateId.splice(index, 1);
-        }
-      })
-
-    } else {
-      selectedCandidateId.push(resume_id)
+    if (event.target.checked===true) {
+      setSelectedCandidateId([resume_id])
       setDeignationID(designation_id)
-    }
+    } else {
+      setSelectedCandidateId([])
+      setDeignationID()
+    } 
+    // if (selectedCandidateId.includes(resume_id)) {
+    //   selectedCandidateId.map((data, index) => {
+    //     if (data === resume_id) {
+    //       selectedCandidateId.splice(index, 1);
+    //     }
+    //   })
 
+    // } else {
+    //   selectedCandidateId.push(resume_id)
+    //   setDeignationID(designation_id)
+    // }
+// console.log(event.target.checked,"checkList")
     setCheckedList(
       prevState => ({
-        ...prevState,
+        // ...prevState,
         [event.target.name]: !checkList[event.target.name],
       })
     )
     setTest(!test)
   }
+  // console.log(checkList,selectedCandidateId,"checkList")
   const viewCandidate = (id) => {
     setViewId(id)
     setCandidateViewModel(true)
@@ -158,8 +166,8 @@ function Hrsearch(props) {
           />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
           basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: moment(data.interviewed_date).format('DD-MM-YYYY'),
           score: data.score, round: data.round, result: data.status,
-          box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id, data.designation_id, data.round)} name={"checked" + data.resume_id}
-            checked={checkList["checked" + data.resume_id]} value={checkList["checked" + data.resume_id]} />
+          box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id, data.designation_id, data.round)} name={"checked" + data.resume_id+data.designation_id}
+            checked={checkList["checked" + data.resume_id+data.designation_id]} value={checkList["checked" + data.resume_id]} />
         })
       })
       multipleTable.push(
