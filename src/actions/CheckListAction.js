@@ -1,5 +1,5 @@
 import {
-    INSERT_CHECKLIST_CREATION,GET_CHECKLIST_LISTS,GET_CHECKLIST_LISTS_NAMES,GET_CHECK_LIST_ASSIGNED
+    INSERT_CHECKLIST_CREATION, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED,GET_CHECK_LIST_VIEW
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -124,5 +124,25 @@ export const insertCheckListsAssigned = (data) => async dispatch => {
         notification.error({
             message: 'Record Not Added',
         });
+    }
+}
+
+// Checklist View:
+
+export const getCheckListsView = (emp_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_checklist_by_empId ',
+            data: {
+                "emp_id": emp_id,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_CHECK_LIST_VIEW, payload: response.data.data })
+            })
+
+    } catch (err) {
+
     }
 }

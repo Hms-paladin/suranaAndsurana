@@ -3,11 +3,14 @@ import EnhancedTable from '../../component/DynTable/table'
 import Labelbox from '../../helpers/labelbox/labelbox';
 import { useDispatch, connect } from "react-redux";
 import { getEmployeeList } from '../../actions/MasterDropdowns';
+import { getCheckListsView } from '../../actions/CheckListAction';
+import moment from 'moment';
 
 function CheckListView(props) {
     const dispatch = useDispatch();
     const [employeeId, setEmployeeId] = useState()
     const [employeelist, setEmployeelist] = useState({})
+    const [rowData, setRowData] = useState([])
 
     const header = [
         { id: 'checklist', label: 'CheckList Name' },
@@ -21,6 +24,8 @@ function CheckListView(props) {
     }, [])
 
     useEffect(() => {
+        console.log(props.getCheckListsView, "getCheckListsView")
+
         let EmployeeList = []
         props.getEmployeeList.map((data, index) => {
             EmployeeList.push({
@@ -29,13 +34,30 @@ function CheckListView(props) {
             });
         });
         setEmployeelist({ EmployeeList })
-    }, [props.getEmployeeList])
+
+        // Table Show:
+
+        let rowDataList = []
+        props.getCheckListsView && props.getCheckListsView.map((data, index) => {
+            rowDataList.push({
+                checklist: data.name,
+                startdate: moment(data.start_date).format("DD-MMM-YYYY"),
+                endmonth: moment(data.end_date).format("MMMM"),
+                week: data.days_of_week.map((val) => {
+                    return val.days_of_week_id
+                })
+            })
+        })
+
+        setRowData(rowDataList)
 
 
-    const Rows = [
-        { checklist: "Checklist1", startdate: "15/06/2021", endmonth: "Septemper", week: "7" }
-    ]
+    }, [props.getEmployeeList, props.getCheckListsView])
+
+
     const checkValidation = useCallback((data, key) => {
+
+        dispatch(getCheckListsView(data))
         setEmployeeId(data)
     }, [employeeId])
 
@@ -53,7 +75,7 @@ function CheckListView(props) {
                 </div>
                 <EnhancedTable
                     headCells={header}
-                    rows={Rows}
+                    rows={rowData}
                     aligncss="aligncss" />
             </div>
         </div>
@@ -63,6 +85,7 @@ function CheckListView(props) {
 const mapStateToProps = (state) =>
 (
     {
-        getEmployeeList: state.getOptions.getEmployeeList
+        getEmployeeList: state.getOptions.getEmployeeList,
+        getCheckListsView: state.CheckListReducer.getCheckListsView
     });
 export default connect(mapStateToProps)(CheckListView);
