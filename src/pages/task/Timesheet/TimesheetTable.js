@@ -57,7 +57,7 @@ import TimeSheetStart from '../../Search/TimeSheets/timesheetStart';
                 assigend_to: data.assign_to===null?'-':data.assign_to,
                 startdate_time: (data.start_date===null?'-':data.start_date)+' '+(data.start_time===null?'-':data.start_time),
                 enddate_time: (data.end_date===null?'-':data.end_date)+' '+(data.end_time===null?'-':data.end_time),
-                noofhours: data.end_date===null?'-':data.end_date,
+                noofhours: data.no_of_hrs===null?'-':data.no_of_hrs,
                 comments: <Labelbox type="text"/>,
                 checkbox: <Checkbox onClick={(e)=>checkboxClick(e,index)} />,
                 editicon: data.editicon&&data.editicon===true?<img src={edit} style={{width:"15px",cursor:"pointer"}} onClick={() => EditTimeSheetModel(data,index) }/>:<></>,
@@ -103,8 +103,8 @@ import TimeSheetStart from '../../Search/TimeSheets/timesheetStart';
             <div><div>Project Name</div><div>{props.gettimeSheet.length>0&&props.gettimeSheet[0].project_name||'-'}</div></div>
             <div><div>Client Name</div><div> {props.gettimeSheet.length>0&&props.gettimeSheet[0].client||'-'}</div></div>
             <div><div>Project Type</div><div>{props.gettimeSheet.length>0&&props.gettimeSheet[0].project_type||'-'}</div></div>
-            <div><div>Project Sub Type</div><div>{props.gettimeSheet.length>0&&props.gettimeSheet[0].client||'-'}</div></div>
-            <div><div>Process Type</div><div>{props.gettimeSheet.length>0&&props.gettimeSheet[0].project_type||'-'}</div></div>
+            <div><div>Project Sub Type</div><div>{props.gettimeSheet.length>0&&props.gettimeSheet[0].sub_project_type||'-'}</div></div>
+            <div><div>Process Type</div><div>{props.gettimeSheet.length>0&&props.gettimeSheet[0].process||'-'}</div></div>
         </div>
         <EnhancedTable headCells={header}  rows={TimeSheetData.length == 0 ? TimeSheetData : TimeSheetData.updatelist} />
         <div className="time_s_btnsdiv">

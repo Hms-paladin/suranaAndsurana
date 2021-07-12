@@ -211,7 +211,7 @@ const HrInterviewModel = (props) => {
     
   }, [props])
 
-console.log(props,"yyyyyyyyyyyyyyy")
+// console.log(props,"yyyyyyyyyyyyyyy")
   return (
     <div>
       <Labelbox
