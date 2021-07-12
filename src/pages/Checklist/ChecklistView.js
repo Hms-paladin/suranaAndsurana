@@ -40,7 +40,7 @@ function CheckListView(props) {
         let rowDataList = []
         props.getCheckListsView && props.getCheckListsView.map((data, index) => {
             rowDataList.push({
-                checklist: data.name,
+                checklist: data.check_list,
                 startdate: moment(data.start_date).format("DD-MMM-YYYY"),
                 endmonth: moment(data.end_date).format("MMMM"),
                 week: data.days_of_week.map((val) => {
