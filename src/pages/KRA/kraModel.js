@@ -11,7 +11,7 @@ import EnhancedTable from "../../component/DynTable/table";
 import PlusIcon from "../../images/plusIcon.svg";
 import moment from "moment";
 import { notification } from 'antd';
-
+import { getOtherTask } from '../../actions/TodoListAction';
 
 
 const KRA = (props) => {
@@ -99,7 +99,8 @@ const KRA = (props) => {
                         activityId = data.activity_id
                     }
                 })
-                dispatch(InsertApproveKra(kraList, activityId, kraList[i].kra_percentage, refLength, i + 1)).then((response) => {
+                dispatch(InsertApproveKra(approveid, kraList, activityId, kraList[i].kra_percentage, refLength, i + 1)).then((response) => {
+                    dispatch(getOtherTask())
                 })
             }
             props.closemodal()

@@ -4,7 +4,8 @@ import DynModel from "../../component/Model/model";
 import { getHrTaskList, getOtherTask } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
-import { useParams, Link } from 'react-router-dom';
+import { Redirect, Link } from "react-router-dom";
+
 
 
 // Model
@@ -99,8 +100,13 @@ function TodoList(props) {
 
     // KRA Approval
     const [kraapprovemodel, setKraapprovemodel] = useState(false)
-    const [kraApprove, setKraApprove] = useState([])
+    const [kraApprove, setKraApprove] = useState()
     const [kraempname, setKraempname] = useState()
+
+    // Appraisal
+
+    const [appraisalModel, setAppraisalModel] = useState(false)
+    const [appraisalData, setAppraisalData] = useState()
 
 
     //serverance
@@ -199,7 +205,7 @@ function TodoList(props) {
         let otherTask = []
 
         props.getOtherTask.map((data) => {
-            console.log(data,"othertask")
+            console.log(data, "othertask")
             let showId = null
             let showName = null
             if (data.emp_leave_id) {
@@ -230,10 +236,10 @@ function TodoList(props) {
                 showId = data.kra_id
                 showName = "KRA Approval"
             }
-            // else if (data.task_id) {
-            //     showId = data.task_id
-            //     showName = "Employee Appraisal"
-            // }
+            else if (data.emp_appr_id) {
+                showId = data.emp_appr_id
+                showName = "Employee Appraisal"
+            }
 
             otherTask.push({
                 task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
@@ -309,7 +315,9 @@ function TodoList(props) {
 
 
     function OtherTaskFunction(name, id, data) {
-        console.log(name,id,"names")
+
+
+        console.log(name, id, "names")
         setTaskModelTitle(data.task)
         if (name === "Leave Approval") {
             setLeaveApproval(true)
@@ -346,13 +354,14 @@ function TodoList(props) {
             setKraApprove(checkData.kra_id)
             setKraempname(checkData.employee)
         }
-        // else if (name === "Employee Appraisal") {
-        //     setResignationApprove(true)
-        //     let Sevevarncedata = props.getOtherTask.find((val) => {
-        //         return id === val.severece_id
-        //     })
-        //     setseveranceId(Sevevarncedata)
-        // }
+        else if (name === "Employee Appraisal") {
+            setAppraisalModel(true)
+            let Appraisaldata = props.getOtherTask.find((val) => {
+                return id === val.emp_appr_id
+
+            })
+            setAppraisalData(Appraisaldata.emp_appr_id)
+        }
     }
 
     // unblockUsers ==>
@@ -431,9 +440,7 @@ function TodoList(props) {
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
 
-
-
-
+                {appraisalModel && <Redirect push to={`/appraisal/${appraisalData}`} />}
 
             </div>
 
