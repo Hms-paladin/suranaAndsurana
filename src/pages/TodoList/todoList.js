@@ -104,6 +104,9 @@ function TodoList(props) {
     
     // KPI APPROVAL
     const [KpiApproval,setKpiApproval]=useState("")
+    const [kraempname, setKraempname] = useState()
+
+
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
 
@@ -359,6 +362,7 @@ console.log(unblockUser,"unblockUser")
                 )
             })
             setKraApprove(checkData.kra_id)
+            setKraempname(checkData.employee)
         }
         else if (name === "KPI Approval") {
             setKpiapprovemodel(true)
@@ -395,7 +399,7 @@ console.log(unblockUser,"unblockUser")
         setApproveOpen(bln);
 
     }
-    
+
     return (
         <div>
             {/* <div className="blinkingtext">Welcome</div>   -> blinking content */}
@@ -443,7 +447,7 @@ console.log(unblockUser,"unblockUser")
                 {/* <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} /> */}
 
 
-                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} />} />
+                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} kraempname={kraempname} />} />
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} KpiId={KpiApproval}/>} />
 

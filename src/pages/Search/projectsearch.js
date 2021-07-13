@@ -110,7 +110,6 @@ function Projectsearch(props) {
   });
 
   const onChange = (e) => {
-    console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
 

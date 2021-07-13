@@ -10,20 +10,23 @@ export default function EditTimeSheet(props){
     const [noofhours,setNoOHours]=useState()
     const [Timesheet, setTimesheet] = useState({
     fromtime: {
-        value: "",
+        value: new Date(moment(props.edit_timesheet&&props.edit_timesheet.start_time,'HH:mm:ss').format()),
         // validation: [{ "name": "required" }],
         error: null,
         errmsg: null,
     },
     totime: {
-        value: "",
+        value:  new Date(moment(props.edit_timesheet&&props.edit_timesheet.end_time,'HH:mm:ss').format()),
         // validation: [{ "name": "required" }],
         error: null,
         errmsg: null,
     },
 })
     // console.log(props.edit_timesheet&&props.edit_timesheet,noofhours,"edit_timesheet")
-
+    useEffect(() => {
+        setNoOHours(props.edit_timesheet&&props.edit_timesheet.no_of_hrs)
+        console.log(new Date(moment(props.edit_timesheet&&props.edit_timesheet.start_time,'HH:MM:ss').format()),"data") 
+    }, [props.edit_timesheet]);
     function timesheet_edit(){
         // props.closemodal(false)
         props.edit_timesheet.start_time=Timesheet.fromtime.value
@@ -43,7 +46,7 @@ export default function EditTimeSheet(props){
             validation: Timesheet[key].validation,
         };
 
-        
+       console.log(data,"data") 
         // if(key==='noofdays'){
         //     setEligible_leave(data)
         // }
@@ -58,12 +61,37 @@ export default function EditTimeSheet(props){
             [key]: dynObj,
         }));
 
-        // console.log(moment(Timesheet.totime.value),"edit_timesheet")
+        // if(key=="fromtime" || key=="totime"){
+        //     // console.log(moment(Timesheet.totime.value),"edit_timesheet")
+        // let starttime = moment(Timesheet.fromtime.value, "HH:mm:ss").format("hh:mm:ss A")
+        // let endtime = moment(Timesheet.totime.value, "HH:mm:ss").format("hh:mm:ss A")
+        // // let timeVal = false
+        // // if (Date.parse('01/01/2011 ' + endtime)  Date.parse('01/01/2011 ' + starttime)) {
+        // //     timeVal = true
+        // // }
+        // var diff =(data.getHours() - starttime) / 1000;
+        // diff /= 60;
+        // console.log(Math.abs(Math.round(diff)),"yyyyyyyyy");
+        // // var diff = endtime - starttime;
 
-        var diff = Math.floor((Date.parse(moment(Timesheet.totime.value).format('DD-MM-YYYY hh:mm:ss A')) - Date.parse(moment(Timesheet.fromtime.value).format('DD-MM-YYYY hh:mm:ss A'))) / 86400000)
-        isNaN(diff) ? setNoOHours(0) : setNoOHours(diff)
-        console.log(Date.parse(moment(Timesheet.totime.value).format('DD-MM-YYYY hh:mm:ss A')),diff,"edit_timesheet")
+        // isNaN(diff) ? setNoOHours(0) : setNoOHours(diff)
+        // console.log(starttime,endtime,diff,"edit_timesheet")
+        // }
+
+          let st = Timesheet.fromtime.value;
+        let et = Timesheet.totime.value;
+        // console.log(st, et, "yyyyyy")
+        if (et != "" && st != "") {
+            var diff = (st.getTime() - et.getTime()) / 1000;
+            diff /= 60;
+            var num = Math.abs(Math.round(diff));
+            var Hours = Math.floor(num / 60)
+            var min = num % 60
+            console.log(Hours + ":" + min, "aaaaaaa");
+        }
+        
     }
+    console.log(Timesheet)
     return(
         <>
         <div>
@@ -94,7 +122,7 @@ export default function EditTimeSheet(props){
                             errmsg={Timesheet.totime.errmsg}
                         />
                 {/* <Labelbox type="timepicker"/> */}
-                <Labelbox type="text" value={noofhours} />
+                <Labelbox type="text" value={noofhours} disabled={true}/>
             </div>
             <div className="time_save_btndiv">
             <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  onBtnClick={()=>timesheet_edit ()}/>

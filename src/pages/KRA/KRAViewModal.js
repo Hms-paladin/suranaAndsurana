@@ -108,6 +108,8 @@ function KRAModal(props) {
         if (filtererr.length > 0) {
             // setkra_Model({ error: true });
         } else {
+            console.log(kra_Model, "kra_Modkra_Modelelkra_Model")
+
             dispatch(getKra(kra_Model)).then((response) => {
                 handleCancel();
             })
@@ -117,6 +119,7 @@ function KRAModal(props) {
 
         }));
     }
+
 
 
     const handleCancel = () => {

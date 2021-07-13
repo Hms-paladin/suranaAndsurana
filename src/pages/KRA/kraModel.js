@@ -27,12 +27,14 @@ const KRA = (props) => {
     const [kra_form, setKra_form] = useState();
     const [approveid, setApproveid] = useState()
     const [kraSelected, setKraSelected] = useState()
+    const [kraempname, setKraempname] = useState()
+
 
     useEffect(() => {
-        console.log(props.kraApproveid, "props.kraApproveid")
+        setKraempname(props.kraempname)
         setApproveid(props.kraApproveid)
         dispatch(getKraApprove(props.kraApproveid))
-    }, [props.kraApproveid])
+    }, [props.kraApproveid, props.kraempname])
 
     useEffect(() => {
         let periodfrom = moment(props.getKraApprove[0]?.period_from).format("MMM YYYY")
@@ -113,7 +115,7 @@ const KRA = (props) => {
                         <Grid item xs={7} container direction="row" className="spaceBtGrid" alignItems="center">
                             <Grid item xs={6}>
                                 <div><label style={{ fontSize: 16 }}>Employee Name</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>{JSON.parse(localStorage.getItem("token")).user_name}</label></div>
+                                <div><label style={{ fontWeight: 'bold' }}>{kraempname}</label></div>
                             </Grid>
                             <Grid item xs={6}>
                                 <div><label style={{ fontSize: 16 }}>Period</label></div>
