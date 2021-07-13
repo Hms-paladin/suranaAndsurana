@@ -18,6 +18,7 @@ function KPIModal(props) {
     const [Achivement,setAchivement]=useState("")
     const [achiveTotal,setachiveTotal]=useState("0")
     const [percentageTotal,setpercentageTotal]=useState("0")
+    const [empty,setempty]=useState(true)
     const [KpiSearch,setKpiSearch]=useState({
         employee: {
             value:Number(localStorage.getItem("empId")),
@@ -102,8 +103,11 @@ function KPIModal(props) {
     
      useEffect(()=>{
          let kpiData=[]
-         let Achivement=[]
-         let percentage=[]
+         let Achivement=["0"]
+         let percentage=["0"]
+         if(props.Kpiachivement.length>0){
+             setempty(false)
+         }
          props.Kpiachivement.map((data)=>{
            kpiData.push(data)
            percentage.push(data.kra_percentage)
@@ -193,11 +197,14 @@ function KPIModal(props) {
 
 
                         </Grid>
-                        <div>
-                        <img src={NoDataFound} />
+                       {empty?
+                       <div className="nodata_found_div">
+                        <div className="nodatafound">
+                         <img src={NoDataFound} />
                          <div className="nodatatext">No Data Found</div>
                        </div>
-
+                       </div>
+                       :<>
                      {Achivement&&Achivement.map((data)=>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
                             <Grid item xs={3}><label className="maintitle">{Achivement[0]?.name}</label></Grid>
@@ -206,7 +213,10 @@ function KPIModal(props) {
                             <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>
 
                         </Grid>
+                        
                         )}
+                        </>
+                        }
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
