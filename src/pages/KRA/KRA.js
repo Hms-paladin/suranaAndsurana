@@ -12,8 +12,6 @@ import KRAModal from "./KRAViewModal"
 import Edit from "../../images/editable.svg";
 import { getActivity } from '../../actions/MasterDropdowns';
 import { InsertKra } from '../../actions/KraAction';
-import moment from "moment";
-import { notification } from 'antd';
 
 
 const KRA = (props) => {
@@ -34,8 +32,7 @@ const KRA = (props) => {
     const [totalPercentage, setTotalPercentage] = useState(0)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
-    const [empId, setEmpId] = useState(localStorage.getItem("empId"))
-
+    const [storageDate,setstorageDate]=useState({})
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -58,7 +55,7 @@ const KRA = (props) => {
         },
         percentage: {
             value: "",
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }, { name: "allowtwodigit" }],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
@@ -83,22 +80,15 @@ const KRA = (props) => {
     }, [props.getActivity])
 
     function checkValidation(data, key, multipleId) {
-        console.log(moment(data).format("MM/YYYY"), "dfghjk")
-        var startDate = kpi_form.fromperiod.value
-        if (data && key === "fromperiod") {
-            startDate = moment(data).format("MMM-yyyy");
-        }
-        var toDate = kpi_form.toperiod.value
-        if (data && key === "toperiod") {
-            toDate = moment(data).format("MMM-yyyy");
-        }
-
+     
+        
+         
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             kpi_form[key].validation
         );
         let dynObj = {
-            value: key === "fromperiod" || key === "toperiod" ? (key === "fromperiod" ? startDate : toDate) : data,
+            value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
             validation: kpi_form[key].validation,
@@ -148,32 +138,12 @@ const KRA = (props) => {
         if (reference.current && reference.current.length >= 0) {
             setCount(count + 1)
         }
-        var mainvalue = {};
-        var targetkeys = Object.keys(kpi_form);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                kpi_form[targetkeys[i]].value,
-                kpi_form[targetkeys[i]].validation
-            );
-            kpi_form[targetkeys[i]].error = !errorcheck.state;
-            kpi_form[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = kpi_form[targetkeys[i]].value;
-        }
-        var filtererr = targetkeys.filter(
-            (obj) => kpi_form[obj].error == true
-        );
 
-        if (filtererr.length > 0) {
-        } else {
-            reference.current = ([...reference.current, {
-                activitys: activityName,
-                percent: kpi_form.percentage.value,
-                action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
-            }])
-        }
-
-
-
+        reference.current = ([...reference.current, {
+            activitys: activityName,
+            percent: kpi_form.percentage.value,
+            action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
+        }])
         addpercentage()
         // setTotalPercentage(Number(totalPercentage) + Number(kpi_form.percentage.value))
         kpi_form.activity.value = "";
@@ -195,6 +165,7 @@ const KRA = (props) => {
         })
         setKpi_form((prevState) => ({
             ...prevState,
+            // kpi_form:{
             percentage: {
                 value: reference.current[data].percent,
                 validation: [{ name: "required" }],
@@ -207,16 +178,24 @@ const KRA = (props) => {
                 error: null,
                 errmsg: null,
             },
+            // }
         }));
 
     }
 
     const addpercentage = () => {
+        alert("test")
+        console.log(reference.current, "dfghjklrtyui")
+
         let Percentage = []
         reference.current.map((data) => {
             Percentage.push(Number(data.percent))
         })
+
+        console.log(Percentage.reduce((a, b) => a + b, 0), "Percentage")
+
         setTotalPercentage(Percentage.reduce((a, b) => a + b, 0))
+
     }
 
     const updateRow = () => {
@@ -238,6 +217,7 @@ const KRA = (props) => {
         kpi_form.percentage.value = "";
     }
 
+    // console.log(reference.current.activitys, "percent")
 
     const handleCancel = () => {
         let From_key = [
@@ -247,19 +227,14 @@ const KRA = (props) => {
             "percentage",
         ];
 
-        if (disabledate === true) {
-            kpi_form.activity.value = "";
-            kpi_form.percentage.value = "";
-
-        } else {
-            From_key.map((data) => {
-                try {
-                    kpi_form[data].value = "";
-                } catch (error) {
-                    throw error;
-                }
-            });
-        }
+        From_key.map((data) => {
+            try {
+                kpi_form[data].value = "";
+                console.log("mapping", kpi_form[data].value);
+            } catch (error) {
+                throw error;
+            }
+        });
         setKpi_form((prevState) => ({
             ...prevState,
         }));
@@ -267,6 +242,20 @@ const KRA = (props) => {
 
 
     const onsubmit = () => {
+        sessionStorage.setItem("from", kpi_form.fromperiod.value);
+        sessionStorage.setItem("to", kpi_form.toperiod.value);
+        // let Active = []
+        // let Percent = []
+        // reference.current.map((val) => {
+        //     let activityId;
+        //     activity.Activity && activity.Activity.filter((data) => {
+        //         if (data.value === val.activitys) {
+        //             activityId = data.id
+        //         }
+        //     })
+        //     Active.push(activityId)
+        //     Percent.push(val.percent)
+        // })
         // var mainvalue = {};
         // var targetkeys = Object.keys(kpi_form);
         // for (var i in targetkeys) {
@@ -283,32 +272,32 @@ const KRA = (props) => {
         // );
 
         // if (filtererr.length > 0) {
-        // }
+        // } 
         // else {
-        if (totalPercentage > 100 || totalPercentage < 100) {
-            notification.error({
-                message: 'Total Percent Value should 100 only',
-            });
-        } else {
-            let refLength = reference.current.length
-            for (let i = 0; i < refLength; i++) {
-                console.log(reference.current[i].activitys, "length")
-                let activityId;
-                activity.Activity && activity.Activity.filter((data) => {
-                    if (data.value === reference.current[i].activitys) {
-                        activityId = data.id
-                    }
-                })
-                dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
-                })
-            }
-            // }
+        let refLength = reference.current.length
+
+        for (let i = 0; i < refLength; i++) {
+            console.log(reference.current[i].activitys, "length")
+            let activityId;
+            activity.Activity && activity.Activity.filter((data) => {
+                if (data.value === reference.current[i].activitys) {
+                    activityId = data.id
+                }
+            })
+            dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
+            })
         }
+
+        // }
         setKpi_form((prevState) => ({
             ...prevState,
 
         }));
     }
+
+
+
+
     return (
         <div>
             <div className="kra">KRA</div>
@@ -336,7 +325,7 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={"MMM-yyyy"}
+                                        format={"mm/yyyy"}
                                         changeData={(data) => checkValidation(data, "fromperiod")}
                                         value={kpi_form.fromperiod.value}
                                         error={kpi_form.fromperiod.error}
@@ -346,7 +335,7 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={'MMM-yyyy'}
+                                        format={'mm/yyyy'}
                                         changeData={(data) => checkValidation(data, "toperiod")}
                                         value={kpi_form.toperiod.value}
                                         error={kpi_form.toperiod.error}
@@ -419,7 +408,7 @@ const KRA = (props) => {
                                         btnCustomColor="customPrimary"
                                         custombtnCSS={"btnUsergroup"}
                                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                                        // btnDisable={totalPercentage >= 101 ? true : false}
+                                        btnDisable={totalPercentage >= 101 ? true : false}
                                         onBtnClick={updateRow}
                                     />
 
@@ -439,7 +428,7 @@ const KRA = (props) => {
                     </Grid>
                 </div>
 
-                <div style={{ padding: "10px", marginTop: "25px" }}>
+                <div style={{ padding: "10px" }}>
                     <EnhancedTable headCells={header} aligncss="kra_table"
                         rows={reference.current} />
                 </div>
@@ -457,18 +446,16 @@ const KRA = (props) => {
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                        // btnDisable={totalPercentage <= 100 ? false : true}
+                        // btnDisable={totalPercentage === 100 ? false : true}
                         onBtnClick={onsubmit}
                     />
                     <CustomButton
                         btnName={"Cancel"}
                         custombtnCSS={"btnUsergroup"}
-                        onBtnClick={handleCancel}
-
                     />
                 </div>
 
-                <DynModel modelTitle={"KRA View"} handleChangeModel={kraViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKraViewModal(bln)} width={900} content={<KRAModal empId={empId} />} />
+                <DynModel modelTitle={"KRA View"} handleChangeModel={kraViewModal} modalchanges="recruit_modal_css" handleChangeCloseModel={(bln) => setKraViewModal(bln)} width={900} content={<KRAModal />} />
             </div>
         </div>
     )
