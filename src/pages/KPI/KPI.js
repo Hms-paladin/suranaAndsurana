@@ -13,6 +13,7 @@ import Edit from "../../images/editable.svg";
 import {GetKpiAchivement,UpdateKpiAchivement,InsertKpi} from '../../actions/KPIActions'
 import SaveIcon from '@material-ui/icons/Save';
 import moment from 'moment'
+import NoDataFound from '../../images/noDatas.svg';
 const KPI = (props) => {
     let dispatch=useDispatch()
     const header = [
@@ -33,6 +34,7 @@ const KPI = (props) => {
     const [KpiId,setKpiId]=useState("")
     const [EditTrue,setEditTrue]=useState(false)
     const [achiveTotal,setachiveTotal]=useState("0")
+    const [empty,setempty]=useState(true)
     const [percentageTotal,setpercentageTotal]=useState("0")
     const [DataStorage,setDataStorage]=useState({
         from:sessionStorage.getItem("from"),
@@ -108,6 +110,9 @@ useEffect(() => {
       let kpiData=[]
       let Achivement=["0"]
       let percentage=["0"]
+      if(props.Kpiachivement.length>0){
+      setempty(false)
+      }
       props.Kpiachivement.map((data)=>{
         kpiData.push(data)
         percentage.push(data.kra_percentage)
@@ -215,7 +220,14 @@ const HandleCancel=()=>{
                                 Action</label></Grid>
 
                         </Grid>
-
+                        {empty?
+                        <div className="nodata_found_div">
+                        <div className="nodatafound">
+                         <img src={NoDataFound} />
+                         <div className="nodatatext">No Data Found</div>
+                       </div>
+                       </div>:
+                       <>
                        {Achivement.length>0&&Achivement.map((data)=>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
@@ -240,6 +252,8 @@ const HandleCancel=()=>{
 
                         </Grid>
                         )}
+                        </>
+                        }
                        
                        
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>

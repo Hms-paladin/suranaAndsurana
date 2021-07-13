@@ -10,9 +10,12 @@ export const GetKpiAchivement=(data,search)=>async (dispatch)=>{
             method:"post",
             url:apiurl+"get_kpi_achivement",
             data:{
-                "emp_id":search?data.employee.value:localStorage.getItem("empId"),
-                "period_from":search?data.from.value:sessionStorage.getItem("from"),
-                "period_to":search?data.to.value:sessionStorage.getItem("to")
+                // "emp_id":search?data.employee.value:localStorage.getItem("empId"),
+                // "period_from":search?data.from.value:sessionStorage.getItem("from"),
+                // "period_to":search?data.to.value:sessionStorage.getItem("to")
+                "emp_id":"1",
+              "period_from":"2021-01-01",
+           "period_to":"2021-06-01"
              
             }
         });

@@ -10,6 +10,7 @@ import EditIcon from "../../images/edit.svg";
 import { useDispatch,connect } from 'react-redux';
 import {GetKpiAchivement} from '../../actions/KPIActions'
 import {getEmployeeList} from '../../actions/MasterDropdowns'
+import NoDataFound from '../../images/noDatas.svg';
 function KPIModal(props) {
     let dispatch=useDispatch()
     const [EmployeeList,setEmployeeList]=useState("")
@@ -192,7 +193,10 @@ function KPIModal(props) {
 
 
                         </Grid>
-
+                        <div>
+                        <img src={NoDataFound} />
+                         <div className="nodatatext">No Data Found</div>
+                       </div>
 
                      {Achivement&&Achivement.map((data)=>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
