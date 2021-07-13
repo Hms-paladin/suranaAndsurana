@@ -41,6 +41,7 @@ export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async disp
 }
 
 export const getKra = (kra_Model) => async (dispatch) => {
+    console.log(kra_Model, "kra_Model")
     const response = await axios({
         method: "post",
         url: apiurl + "get_kra",

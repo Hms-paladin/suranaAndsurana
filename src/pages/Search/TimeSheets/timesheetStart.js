@@ -86,6 +86,7 @@ function TimeSheetStartModel(props) {
     }, [props.projectrow])
 
     const handleCancel = () => {
+
         let From_key = [
             "activity",
             "subActivity",
@@ -108,6 +109,8 @@ function TimeSheetStartModel(props) {
         settimeSheetForm((prevState) => ({
             ...prevState,
         }));
+
+        props.close_model&&props.close_model(false)
     };
 
     useEffect(() => {
@@ -118,7 +121,6 @@ function TimeSheetStartModel(props) {
         dispatch(getLocation());
 
     }, []);
-
 
 
     useEffect(() => {
@@ -273,7 +275,7 @@ function TimeSheetStartModel(props) {
         }));
     }
 
-
+    console.log(props,"rowData")
     return (
         <div className="timeSheetStartContainer">
             {changeStop ?
@@ -392,7 +394,7 @@ function TimeSheetStartModel(props) {
                             errmsg={timeSheetForm.description.errmsg} />
                     </div>
                     <div className="customiseButton">
-                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" />
+                        <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={handleCancel} />
                         <CustomButton btnName={"Start"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={submitstop} />
                         {/* <CustomButton btnName={"START"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnclick={props.changeStop}/> */}
 

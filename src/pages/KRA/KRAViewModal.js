@@ -108,6 +108,8 @@ function KRAModal(props) {
         if (filtererr.length > 0) {
             // setkra_Model({ error: true });
         } else {
+            console.log(kra_Model, "kra_Modkra_Modelelkra_Model")
+
             dispatch(getKra(kra_Model)).then((response) => {
                 handleCancel();
             })
@@ -117,6 +119,7 @@ function KRAModal(props) {
 
         }));
     }
+
 
 
     const handleCancel = () => {
@@ -170,7 +173,7 @@ function KRAModal(props) {
                                     type="datepicker"
                                     placeholder={"From Period"}
                                     view={["year", "month"]}
-                                    format={"mm/yyyy"}
+                                    format={"MMM-yyyy"}
                                     changeData={(data) => checkValidation(data, "fromperiod")}
                                     value={kra_Model.fromperiod.value}
                                     error={kra_Model.fromperiod.error}
@@ -183,7 +186,7 @@ function KRAModal(props) {
                                     type="datepicker"
                                     placeholder={"to Period"}
                                     view={["year", "month"]}
-                                    format={"mm/yyyy"}
+                                    format={"MMM-yyyy"}
                                     changeData={(data) => checkValidation(data, "toperiod")}
                                     value={kra_Model.toperiod.value}
                                     error={kra_Model.toperiod.error}

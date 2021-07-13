@@ -1,5 +1,5 @@
 import {
-    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK,
+    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK,GET_TIMESHEET_BY_TASK,
     GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
     GET_PROJECT_STAGES_LIST,GET_TASK_LIST,GET_TASK_TIME_SHEET,GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
@@ -466,7 +466,8 @@ export const getTaskTimeSheetbyTaskId = (taskId) => async dispatch => {
             }
         })
             .then((response) => {
-                return response.data.data;
+                dispatch({ type: GET_TIMESHEET_BY_TASK, payload: response.data.data })
+                // return response.data.data;
             })
 
     } catch (err) {

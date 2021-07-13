@@ -92,7 +92,7 @@ function InerviewScreen(props) {
     //test details
     let test_details = [];
     props.getOnlineTestDetails&&props.getOnlineTestDetails.length>0&&props.getOnlineTestDetails.map((data, index) =>
-      test_details.push({ test_name: data.TestTempName,Test_Date: data.Test_Date,score:data.Score_Percentage})
+      test_details.push({ test_name: data.TestTempName,Test_Date: data.Test_Date!==null&&moment(data.Test_Date).format('DD-MMM-YYYY'),score:data.Score_Percentage})
     );
     setTestDetails({ test_details });
 
