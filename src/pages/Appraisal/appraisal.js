@@ -118,6 +118,14 @@ function Appraisal(props) {
             setSaveRights(data_res_id)
         }
 
+
+        var cars = 2;
+        do {
+            cars /= 2;
+        } while (cars < 1);
+
+        console.log("Number of cars: " + cars)
+
     }, [props.UserPermission]);
 
 
@@ -137,7 +145,7 @@ function Appraisal(props) {
                 <div className="empDetails">
                     <div>
                         <div>Employee Name</div>
-                        <div>Rajesh</div>
+                        <div>{JSON.parse(localStorage.getItem("token")).user_name}</div>
                     </div>
                     {(rowID == 1 || rowIdtw == 2) && <div>
                         <div>DOB</div>
@@ -204,7 +212,7 @@ function Appraisal(props) {
                     </Grid>
 
                 </div>
-              
+
 
                 <div className="employeeApprisal_Container">
                     <div className="employeeApprisal_Child_Container">
@@ -243,7 +251,7 @@ function Appraisal(props) {
                     </div>
                 </div>
 
-                
+
                 {addemployeeDetails.length > 0 &&
                     <div className="appraisalTable" >
                         <div className="appraisaldetails">
