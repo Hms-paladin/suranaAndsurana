@@ -103,8 +103,8 @@ function KPIModal(props) {
     
      useEffect(()=>{
          let kpiData=[]
-         let Achivement=["0"]
-         let percentage=["0"]
+         let Achivement=[]
+         let percentage=[]
          if(props.Kpiachivement.length>0){
              setempty(false)
          }
@@ -114,9 +114,17 @@ function KPIModal(props) {
            Achivement.push(data.achivement)
          })
          setAchivement(kpiData)
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      setachiveTotal(Achivement.reduce(reducer))
-      setpercentageTotal(percentage.reduce(reducer))
+         let total=0
+      let achive_total=0
+      for(let i=0;i<percentage.length;i++){
+         total+=percentage[i]
+      }
+      for(let i=0;i<Achivement.length;i++){
+        achive_total+=Achivement[i]
+      }
+
+      setachiveTotal(achive_total)
+      setpercentageTotal(total)
     },[ props.Kpiachivement])
     console.log("dddd",props.Kpiachivement)
     return (
@@ -207,7 +215,7 @@ function KPIModal(props) {
                        :<>
                      {Achivement&&Achivement.map((data)=>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={3}><label className="maintitle">{Achivement[0]?.name}</label></Grid>
+                            <Grid item xs={3}><label className="maintitle"  key={0}>{Achivement[0]?.name}</label></Grid>
                             <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
                             <Grid item xs={3}><label className="maintitle">{data.kra_percentage}</label> </Grid>
                             <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>
