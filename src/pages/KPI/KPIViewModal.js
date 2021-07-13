@@ -8,10 +8,55 @@ import DynModel from "../../component/Model/model";
 import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
 import { useDispatch,connect } from 'react-redux';
+import {GetKpiAchivement} from '../../actions/KPIActions'
 import {getEmployeeList} from '../../actions/MasterDropdowns'
 function KPIModal(props) {
     let dispatch=useDispatch()
     const [EmployeeList,setEmployeeList]=useState("")
+    const [search,setSearch]=useState(false)
+    const [Achivement,setAchivement]=useState("")
+    const [achiveTotal,setachiveTotal]=useState("0")
+    const [percentageTotal,setpercentageTotal]=useState("0")
+    const [KpiSearch,setKpiSearch]=useState({
+        employee: {
+            value:Number(localStorage.getItem("empId")),
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
+        from:{
+            value:"",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
+        to:{
+            value:"",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null, 
+        }
+    })
+    function checkValidation(data, key) {
+
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            KpiSearch[key].validation
+        );
+        let dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: KpiSearch[key].validation,
+        };
+
+
+
+        setKpiSearch((prevState) => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    }
     useEffect(()=>{
         dispatch(getEmployeeList())
     },[])
@@ -22,7 +67,53 @@ function KPIModal(props) {
         })
         setEmployeeList(Employee)
     },[props.EmployeeList])
+    useEffect(()=>{
+     },[])
+    const SearchData=()=>{
+        setSearch(true)
+        var mainvalue = {};
+        var targetkeys = Object.keys(KpiSearch);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                KpiSearch[targetkeys[i]].value,
+                KpiSearch[targetkeys[i]].validation
+            );
+            KpiSearch[targetkeys[i]].error = !errorcheck.state;
+            KpiSearch[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = KpiSearch[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter((obj) => KpiSearch[obj].error == true);
 
+        if (filtererr.length > 0) {
+        
+        } else{
+            alert("haia")
+            if(search)
+            dispatch(GetKpiAchivement(KpiSearch,search)).then(()=>{
+                // props.closemodal()
+             })
+        }
+      
+        setKpiSearch((prevState) => ({
+            ...prevState,
+        }));
+    }
+    
+     useEffect(()=>{
+         let kpiData=[]
+         let Achivement=[]
+         let percentage=[]
+         props.Kpiachivement.map((data)=>{
+           kpiData.push(data)
+           percentage.push(data.kra_percentage)
+           Achivement.push(data.achivement)
+         })
+         setAchivement(kpiData)
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      setachiveTotal(Achivement.reduce(reducer))
+      setpercentageTotal(percentage.reduce(reducer))
+    },[ props.Kpiachivement])
+    console.log("dddd",props.Kpiachivement)
     return (
         <div>
             <div className="kra_main">
@@ -43,24 +134,35 @@ function KPIModal(props) {
                                 <Labelbox
                                     type="select"
                                     dropdown={EmployeeList}
+                                    changeData={(data) => checkValidation(data, "employee")}
+                                    value={KpiSearch.employee.value}
+                                    error={KpiSearch.employee.error}
+                                    errmsg={KpiSearch.employee.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
                                 <div className="period"><label >From Period</label></div>
                                 <Labelbox
                                     type="datepicker"
-                                    placeholder={"From Period"}
+                                    // placeholder={"From Period"}
                                     view={["year", "month"]}
                                     format={"mmm/yyyy"}
+                                    changeData={(data) => checkValidation(data, "from")}
+                                    value={KpiSearch.from.value}
+                                    error={KpiSearch.from.error}
+                                    errmsg={KpiSearch.from.errmsg}
                                 />
                             </Grid>
                             <Grid item xs={3} container direction="column">
                                 <div className="period"><label >To Period</label></div>
                                 <Labelbox
                                     type="datepicker"
-                                    placeholder={"to Period"}
                                     view={["year", "month"]}
                                     format={"mmm/yyyy"}
+                                    changeData={(data) => checkValidation(data, "to")}
+                                    value={KpiSearch.to.value}
+                                    error={KpiSearch.to.error}
+                                    errmsg={KpiSearch.to.errmsg}
                                 /></Grid>
 
                             <Grid item xs={3}>
@@ -70,6 +172,7 @@ function KPIModal(props) {
                                         btnName={"GO"}
                                         btnCustomColor="customPrimary"
                                         custombtnCSS={"btnUsergroup"}
+                                        onBtnClick={SearchData}
                                     />
                                 </div>
                             </Grid>
@@ -91,22 +194,22 @@ function KPIModal(props) {
                         </Grid>
 
 
-                     
+                     {Achivement&&Achivement.map((data)=>
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={3}><label className="maintitle"></label></Grid>
-                            <Grid item xs={3}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={3}><label className="maintitle">40</label> </Grid>
-                            <Grid item xs={3}> <label className="maintitle">35</label></Grid>
+                            <Grid item xs={3}><label className="maintitle">{Achivement[0]?.name}</label></Grid>
+                            <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
+                            <Grid item xs={3}><label className="maintitle">{data.kra_percentage}</label> </Grid>
+                            <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>
 
                         </Grid>
-                      
-
+                        )}
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>100</label></Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>83</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{percentageTotal}</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{achiveTotal}</label></Grid>
                         </Grid>
+                       
                     </Grid>
                 </div>
 
@@ -130,5 +233,6 @@ function KPIModal(props) {
 }
 const mapStateToProps=(state)=>({
     EmployeeList: state.getOptions.getEmployeeList,
+    Kpiachivement:state.KpiReducer.GetKpi_Achivement
 })
 export default connect(mapStateToProps)(KPIModal);

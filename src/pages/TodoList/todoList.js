@@ -367,7 +367,7 @@ console.log(unblockUser,"unblockUser")
                     id == val.kpi_id
                 )
             })
-            setKpiApproval(Kpi.kpi_id)
+            setKpiApproval(Kpi)
         }
     }
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import { notification } from 'antd';
 import { GET_KRA, GET_KRA_APPROVE } from "../utils/Constants";
-
+import {GetKpiAchivement} from './KPIActions'
 
 export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async dispatch => {
     console.log(moment(kpi_form.fromperiod.value).format('YYYY-MM-DD HH:m:s'), kpi_form, "kra")
@@ -28,6 +28,7 @@ export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async disp
                             message: 'KRA Added Successfully',
                         });
                     }
+                    dispatch(GetKpiAchivement())
                     return Promise.resolve();
                 }
             })

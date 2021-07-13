@@ -32,6 +32,7 @@ const KRA = (props) => {
     const [totalPercentage, setTotalPercentage] = useState(0)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
+    const [storageDate,setstorageDate]=useState({})
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -79,7 +80,9 @@ const KRA = (props) => {
     }, [props.getActivity])
 
     function checkValidation(data, key, multipleId) {
-
+     
+        
+         
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             kpi_form[key].validation
@@ -239,6 +242,8 @@ const KRA = (props) => {
 
 
     const onsubmit = () => {
+        sessionStorage.setItem("from", kpi_form.fromperiod.value);
+        sessionStorage.setItem("to", kpi_form.toperiod.value);
         // let Active = []
         // let Percent = []
         // reference.current.map((val) => {
@@ -291,7 +296,6 @@ const KRA = (props) => {
     }
 
 
-    console.log(reference.current, "dfghjk")
 
 
     return (
@@ -404,7 +408,7 @@ const KRA = (props) => {
                                         btnCustomColor="customPrimary"
                                         custombtnCSS={"btnUsergroup"}
                                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                                        // btnDisable={totalPercentage >= 101 ? true : false}
+                                        btnDisable={totalPercentage >= 101 ? true : false}
                                         onBtnClick={updateRow}
                                     />
 
@@ -442,13 +446,12 @@ const KRA = (props) => {
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                        btnDisable={totalPercentage === 100 ? false : true}
+                        // btnDisable={totalPercentage === 100 ? false : true}
                         onBtnClick={onsubmit}
                     />
                     <CustomButton
                         btnName={"Cancel"}
                         custombtnCSS={"btnUsergroup"}
-
                     />
                 </div>
 

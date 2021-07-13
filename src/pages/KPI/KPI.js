@@ -10,8 +10,9 @@ import { Checkbox } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import KPIModal from './KPIViewModal'
 import Edit from "../../images/editable.svg";
-import {GetKpiAchivement,UpdateKpiAchivement} from '../../actions/KPIActions'
+import {GetKpiAchivement,UpdateKpiAchivement,InsertKpi} from '../../actions/KPIActions'
 import SaveIcon from '@material-ui/icons/Save';
+import moment from 'moment'
 const KPI = (props) => {
     let dispatch=useDispatch()
     const header = [
@@ -30,6 +31,14 @@ const KPI = (props) => {
     const [kpiViewModal, setKpiViewModal] = useState(false)
     const [Achivement,setAchivement]=useState("")
     const [KpiId,setKpiId]=useState("")
+    const [EditTrue,setEditTrue]=useState(false)
+    const [achiveTotal,setachiveTotal]=useState("0")
+    const [percentageTotal,setpercentageTotal]=useState("0")
+    const [DataStorage,setDataStorage]=useState({
+        from:sessionStorage.getItem("from"),
+        to: sessionStorage.getItem("to")
+    })
+
     const [KpiData,setkpiData]=useState("")
     const [kpi_form, setKpi_form] = useState({
 
@@ -90,34 +99,70 @@ useEffect(() => {
   /////////////
 
   useEffect(()=>{
-     dispatch(GetKpiAchivement())
+     dispatch(GetKpiAchivement(DataStorage)).then(()=>{
+        sessionStorage.clear();
+     })
   },[])
 
   useEffect(()=>{
       let kpiData=[]
+      let Achivement=["0"]
+      let percentage=["0"]
       props.Kpiachivement.map((data)=>{
         kpiData.push(data)
+        percentage.push(data.kra_percentage)
+        Achivement.push(data.achivement)
       })
       setAchivement(kpiData)
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      console.log(Achivement.reduce(reducer),"Total")
+      setachiveTotal(Achivement.reduce(reducer))
+      setpercentageTotal(percentage.reduce(reducer))
+// console.log("Total",Total)
+
  },[ props.Kpiachivement])
-console.log("props",props)
 const EditData=(id)=>{
     kpi_form.achivements.value=""
     setKpiId(id)
+    setEditTrue(true)
     var KpiData=props.Kpiachivement.find((data)=>{
         return(data.kra_id==id)
     })
     setkpiData(KpiData)
 }
 const UpdateAchivement=()=>{
+    if(EditTrue){
     dispatch(UpdateKpiAchivement(KpiId,kpi_form.achivements.value)).then(()=>{
     setKpiId("")
     kpi_form.achivements.value=""
     })
+  }
     setKpi_form((prevState) => ({
         ...prevState,
     }));
 }
+const Submit =()=>{
+    let KpiData=[]
+    for(let i=0;i<Achivement.length;i++){
+       let Data={
+        "kra_id":Achivement[i].kra_id,
+        "emp_id":Achivement[i].emp_id,
+        "achievement":Achivement[i].achivement,
+        "created_on":moment().format("YYYY-MM-DD"),
+        "created_by":localStorage.getItem("empId")
+       }
+       console.log("Achivementlength",Data)
+       KpiData.push(Data)
+
+    }
+    dispatch(InsertKpi(KpiData)).then(()=>{ 
+    })
+}
+const HandleCancel=()=>{
+    setKpiId("")
+}
+
+
     return (
         <div>
             <div className="kpi">KPI</div>
@@ -138,7 +183,7 @@ const UpdateAchivement=()=>{
                             </Grid>
                             <Grid item xs={4}>
                                 <div className="KRAhead"><label >Period</label></div>
-                                <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>April 2021 to March 2021</label></div>
+                                <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>{DataStorage.from} to {DataStorage.to}</label></div>
                             </Grid>
                             <Grid item xs={4}>
                             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -186,7 +231,7 @@ const UpdateAchivement=()=>{
                                     // errmsg={kpi_form.achivements1.errmsg}
                                 /></div>
                             </Grid>:
-                             <Grid item xs={3}> <label className="maintitle">{data.activity_id}</label></Grid>}
+                             <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>}
                             <Grid item xs={3}>
                             {KpiId===data.kra_id?
                                  <SaveIcon onClick={()=>UpdateAchivement(data.kra_id)} className="save_ic"/>:
@@ -199,8 +244,8 @@ const UpdateAchivement=()=>{
                        
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>100</label> </Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>92</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{percentageTotal}</label> </Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{achiveTotal}</label></Grid>
                             <Grid item xs={3}></Grid>
                         </Grid>
                     </Grid>
@@ -210,12 +255,13 @@ const UpdateAchivement=()=>{
                         btnName={"Save"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
+                        onBtnClick={Submit}
                         btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
                     />
                     <CustomButton
                         btnName={"Cancel"}
                         custombtnCSS={"btnUsergroup"}
-
+                        onBtnClick={HandleCancel}
                     />
                 </div>
             </div>
