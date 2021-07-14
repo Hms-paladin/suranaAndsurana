@@ -111,6 +111,7 @@ function KRAModal(props) {
             console.log(kra_Model, "kra_Modkra_Modelelkra_Model")
 
             dispatch(getKra(kra_Model)).then((response) => {
+                handleCancel()
             })
         }
         setkra_Model((prevState) => ({
