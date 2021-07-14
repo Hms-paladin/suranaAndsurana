@@ -239,6 +239,10 @@ function TodoList(props) {
                 showId = data.kra_id
                 showName = "KRA Approval"
             }
+            else if(data.kpi_id){
+                showId = data.kpi_id
+                showName = "KPI Approval"
+            }
             // else if (data.task_id) {
             //     showId = data.task_id
             //     showName = "Employee Appraisal"
@@ -366,6 +370,15 @@ console.log(unblockUser,"unblockUser")
             })
             setKraApprove(checkData.kra_id)
             setKraempname(checkData.employee)
+        }
+        else if(name==="KPI Approval"){
+            setKpiapprovemodel(true)
+            let Kpi = props.getOtherTask.find((val) => {
+                return (
+                    id == val.kpi_id
+                )
+            })
+            setKpiApproval(Kpi)
         }
         // else if (name === "Employee Appraisal") {
         //     setResignationApprove(true)
