@@ -89,9 +89,9 @@ function OnlineQA(props) {
     // templateRowdata
     useEffect(() => {
         let myInterval = setInterval(() => {
-            console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
+            // console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
 
-            console.log(runTime.current.runMin, setCount.current.count, runTime.current.runSec, "timing")
+            // console.log(runTime.current.runMin, setCount.current.count, runTime.current.runSec, "timing")
 
             if (runTime.current.runMin === setCount.current.count && runTime.current.runSec === 1) {
 

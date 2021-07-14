@@ -315,7 +315,7 @@ function LeaveUpdate(props) {
             <div className="leaveMainHeader">Leave Balance Update</div>
             <div className="leaveFields">
                 <Grid item xs={12} container direction="row" spacing={2}>
-                    {Leave_Update.leavetype.value !== 38 && Leave_Update.leavetype.value !== "" &&
+                    { Leave_Update.leavetype.value !== "" &&
                         <>
 
                             <Grid item xs={3}>
@@ -361,12 +361,12 @@ function LeaveUpdate(props) {
                                 {employeeName.length>0?employeeName[0].name:''}
                         </div>
                         </Grid>
-                        {Leave_Update.leavetype.value === 38 &&
+                        {/* {Leave_Update.leavetype.value === 38 &&
                             <>
                                 <Grid item xs={6}></Grid>
 
                             </>
-                        }
+                        } */}
                     </>}
 
                     <Grid item xs={3}>

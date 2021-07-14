@@ -122,6 +122,16 @@ function TimeSheetStartModel(props) {
 
     }, []);
 
+    useEffect(() => {
+        if(props.approve_timesheet&&props.approve_timesheet!==''){
+
+            // timeSheetForm.startTime.value
+            // timeSheetForm.startTime.value
+            // timeSheetForm.startTime.value
+            // timeSheetForm.startTime.value
+        }
+        console.log(props.approve_timesheet,props.projectrow,'approve_timesheetd')
+    }, [props.approve_timesheet]);
 
     useEffect(() => {
         let activityTypeData = []
@@ -170,7 +180,7 @@ function TimeSheetStartModel(props) {
         let tim= dateFormat(timeSheetForm.startTime.value != undefined &&  timeSheetForm.startTime.value !=''? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
        
         var data = {
-            "project_id": rowId,
+            "project_id": props.approve_timesheet&&props.approve_timesheet!=''&&props.approve_timesheet.project_id||rowId,
             "activiity_id": timeSheetForm.activity.value,
             "sub_activity_id": timeSheetForm.subActivity.value,
             "assignee_id": timeSheetForm.assignTo.value,
@@ -194,7 +204,7 @@ function TimeSheetStartModel(props) {
             handleCancel();
             setChangeStop(false)
         })
-
+ 
 
     }
     const submitstart = () => {
@@ -292,7 +302,12 @@ function TimeSheetStartModel(props) {
 
                             )
                         })}
+                        {props.approve_timesheet&&props.approve_timesheet!==''&&<>
+                                    <Grid item xs={4}>{props.approve_timesheet.project_type}</Grid>
+                                    <Grid item xs={4}>{props.approve_timesheet.project_name}</Grid>
+                                    <Grid item xs={4}>{props.approve_timesheet.client} </Grid>
 
+                                </>}
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Activity"}
@@ -308,7 +323,7 @@ function TimeSheetStartModel(props) {
                         </Grid>
                         <Grid item xs={4}>
                             <Labelbox type="select"
-                                placeholder={"sub Activity"}
+                                placeholder={"Sub Activity"}
                                 dropdown={projectSubActivity.projectSubActivitydata}
                                 changeData={(data) =>
                                     checkValidation(data, "subActivity")
@@ -354,12 +369,12 @@ function TimeSheetStartModel(props) {
                                 value={timeSheetForm.fromDate.value}
                                 error={timeSheetForm.fromDate.error}
                                 errmsg={timeSheetForm.fromDate.errmsg}
-                                placeholder={" Deadline "}
+                                placeholder={"Start Date"}
                             />
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="timepicker"
-                                placeholder={"Deadline"}
+                                placeholder={"Start Date"}
                                 changeData={(data) =>
                                     checkValidation(data, "startTime")
                                 }
@@ -424,7 +439,7 @@ function TimeSheetStartModel(props) {
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 dropdown={projectSubActivity.projectSubActivitydata}
-                                placeholder={"sub Activity"}
+                                placeholder={"Sub Activity"}
                                 changeData={(data) =>
                                     checkValidation(data, "subActivity")
                                 }
@@ -464,7 +479,7 @@ function TimeSheetStartModel(props) {
                         <Grid item xs={4}></Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
-                                placeholder={" Deadline "}
+                                placeholder={"Start Date"}
                             />
                         </Grid>
                         <Grid item xs={3}>
@@ -480,7 +495,7 @@ function TimeSheetStartModel(props) {
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
-                                placeholder={" Deadline "}
+                                placeholder={"Start Date"}
                             />
                         </Grid>
                         <Grid item xs={3}>

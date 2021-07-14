@@ -73,7 +73,7 @@ export const inserTask = (params, timeSheetParams) => async dispatch => {
 
                
                 dispatch({ type: INSERT_TASK, payload: response.data.status })
-                if(timeSheetParams && response.data.data && response.data.data[response.data.data.length-1][0]){
+                if(timeSheetParams && response.data.data&& response.data.data.length>0 && response.data.data[response.data.data.length-1][0]){
                     let tid= response.data.data[response.data.data.length-1][0]['@tid'];
                     timeSheetParams.task_id =tid;
                     dispatch(insertTimeSheet(timeSheetParams, 'id'))

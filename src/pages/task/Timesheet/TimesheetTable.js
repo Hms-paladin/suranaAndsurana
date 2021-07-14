@@ -166,7 +166,7 @@ function edittimesheetResult(data){
         </div>
         <DynModel modelTitle={"Edit TimeSheet"} handleChangeModel={OpenSheet} handleChangeCloseModel={(bln) => setOpenSheet(bln)}  content={<EditTimeSheet edit_timesheet={edit_timesheet_data} update_data={(data)=>edittimesheetResult(data)} closemodal={(bln) => setOpenSheet(bln)} />} />
 
-        <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetOpens} handleChangeCloseModel={(bln) => setTimesheetOpens(bln)} width={1000} content={<TimeSheetStart close_model={() => setTimesheetOpens(false)} />} />
+        <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetOpens} handleChangeCloseModel={(bln) => setTimesheetOpens(bln)} width={1000} content={<TimeSheetStart approve_timesheet={TimeSheetArr[0]} close_model={() => setTimesheetOpens(false)} />} />
         </div>
     )
 }
