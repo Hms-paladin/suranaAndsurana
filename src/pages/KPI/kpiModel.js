@@ -150,8 +150,8 @@ useEffect(()=>{
 
                     {ApprovalData.length>0&&ApprovalData.map((data)=>
                     <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
-                        <Grid item xs={3} ><label >{data.activity}</label></Grid>
-                        <Grid item xs={3} > <label >{data.kra_percentage}</label></Grid>
+                        <Grid item xs={3}><label >{data.activity}</label></Grid>
+                        <Grid item xs={3}> <label >{data.kra_percentage}</label></Grid>
                         {/* <Grid item xs={3} ><div style={{ width: '70%' }}>
                             <Labelbox
                                 type="text"

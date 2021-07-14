@@ -101,7 +101,10 @@ function TodoList(props) {
 
     // KRA Approval
     const [kraapprovemodel, setKraapprovemodel] = useState(false)
-    const [kraApprove, setKraApprove] = useState()
+    const [kraApprove, setKraApprove] = useState([])
+    
+    // KPI APPROVAL
+    const [KpiApproval,setKpiApproval]=useState("")
     const [kraempname, setKraempname] = useState()
 
     // Appraisal

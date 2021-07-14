@@ -12,7 +12,7 @@ import KRAModal from "./KRAViewModal"
 import Edit from "../../images/editable.svg";
 import { getActivity } from '../../actions/MasterDropdowns';
 import { InsertKra } from '../../actions/KraAction';
-
+import moment from "moment";
 
 const KRA = (props) => {
     const dispatch = useDispatch();
@@ -414,7 +414,7 @@ const KRA = (props) => {
                                         btnCustomColor="customPrimary"
                                         custombtnCSS={"btnUsergroup"}
                                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                                        btnDisable={totalPercentage >= 101 ? true : false}
+                                        // btnDisable={totalPercentage >= 101 ? true : false}
                                         onBtnClick={updateRow}
                                     />
 
@@ -452,7 +452,7 @@ const KRA = (props) => {
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                        // btnDisable={totalPercentage === 100 ? false : true}
+                        btnDisable={totalPercentage === 100 ? false : true}
                         onBtnClick={onsubmit}
                     />
                     <CustomButton

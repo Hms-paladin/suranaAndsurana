@@ -9,17 +9,20 @@ import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
 import { useDispatch,connect } from 'react-redux';
 import {GetKpiAchivement} from '../../actions/KPIActions'
-import {getEmployeeList} from '../../actions/MasterDropdowns'
+import {getEmployeeList,getSubordinate} from '../../actions/MasterDropdowns'
+import NoDataFound from '../../images/noDatas.svg';
 function KPIModal(props) {
     let dispatch=useDispatch()
     const [EmployeeList,setEmployeeList]=useState("")
     const [search,setSearch]=useState(false)
+    const [empId,setempId]=useState(localStorage.getItem("empId"))
     const [Achivement,setAchivement]=useState("")
     const [achiveTotal,setachiveTotal]=useState("0")
     const [percentageTotal,setpercentageTotal]=useState("0")
+    const [empty,setempty]=useState(true)
     const [KpiSearch,setKpiSearch]=useState({
         employee: {
-            value:Number(localStorage.getItem("empId")),
+            value:"",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -58,8 +61,8 @@ function KPIModal(props) {
         }));
     }
     useEffect(()=>{
-        dispatch(getEmployeeList())
-    },[])
+        dispatch(getSubordinate(empId))
+    },[empId])
     useEffect(()=>{
         let Employee=[]
         props.EmployeeList.map((data)=>{
@@ -87,8 +90,6 @@ function KPIModal(props) {
         if (filtererr.length > 0) {
         
         } else{
-            alert("haia")
-            if(search)
             dispatch(GetKpiAchivement(KpiSearch,search)).then(()=>{
                 // props.closemodal()
              })
@@ -103,15 +104,26 @@ function KPIModal(props) {
          let kpiData=[]
          let Achivement=[]
          let percentage=[]
+         if(props.Kpiachivement.length>0){
+             setempty(false)
+         }
          props.Kpiachivement.map((data)=>{
            kpiData.push(data)
            percentage.push(data.kra_percentage)
            Achivement.push(data.achivement)
          })
          setAchivement(kpiData)
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      setachiveTotal(Achivement.reduce(reducer))
-      setpercentageTotal(percentage.reduce(reducer))
+         let total=0
+      let achive_total=0
+      for(let i=0;i<percentage.length;i++){
+         total+=percentage[i]
+      }
+      for(let i=0;i<Achivement.length;i++){
+        achive_total+=Achivement[i]
+      }
+
+      setachiveTotal(achive_total)
+      setpercentageTotal(total)
     },[ props.Kpiachivement])
     console.log("dddd",props.Kpiachivement)
     return (
@@ -192,17 +204,31 @@ function KPIModal(props) {
 
 
                         </Grid>
-
-
-                     {Achivement&&Achivement.map((data)=>
+                       {empty?
+                       <div className="nodata_found_div">
+                        <div className="nodatafound">
+                         <img src={NoDataFound} />
+                         <div className="nodatatext">No Data Found</div>
+                       </div>
+                       </div>
+                       :<>
+                     {Achivement&&Achivement.map((data,index)=>{
+                          let Name=[]
+                         Name.push(data.name)
+                         let employee=Name[0];
+                         console.log("nmae",Name)
+                         return(
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={3}><label className="maintitle">{Achivement[0]?.name}</label></Grid>
+                            <Grid item xs={3}><label className="maintitle"  >{employee}</label></Grid>
                             <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
                             <Grid item xs={3}><label className="maintitle">{data.kra_percentage}</label> </Grid>
                             <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>
 
                         </Grid>
-                        )}
+                        
+                      )})}
+                        </>
+                        }
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
@@ -232,7 +258,7 @@ function KPIModal(props) {
     )
 }
 const mapStateToProps=(state)=>({
-    EmployeeList: state.getOptions.getEmployeeList,
+    EmployeeList: state.getOptions.getSubordinate,
     Kpiachivement:state.KpiReducer.GetKpi_Achivement
 })
 export default connect(mapStateToProps)(KPIModal);
