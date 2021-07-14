@@ -111,10 +111,10 @@ useEffect(() => {
       let kpiData=[]
       let Achivement=[]
       let percentage=[]
-      if(props.Kpiachivement.length>=0){
+      if(props.Kpiachivement.length>0){
       setempty(false)
       }
-      else if(props.Kpiachivement.length=0){
+      else if(props.Kpiachivement.length===0){
         setempty(true) 
       }
       props.Kpiachivement.length>0&&props.Kpiachivement.map((data)=>{

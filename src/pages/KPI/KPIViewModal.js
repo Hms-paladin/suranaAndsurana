@@ -9,19 +9,20 @@ import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
 import { useDispatch,connect } from 'react-redux';
 import {GetKpiAchivement} from '../../actions/KPIActions'
-import {getEmployeeList} from '../../actions/MasterDropdowns'
+import {getEmployeeList,getSubordinate} from '../../actions/MasterDropdowns'
 import NoDataFound from '../../images/noDatas.svg';
 function KPIModal(props) {
     let dispatch=useDispatch()
     const [EmployeeList,setEmployeeList]=useState("")
     const [search,setSearch]=useState(false)
+    const [empId,setempId]=useState(localStorage.getItem("empId"))
     const [Achivement,setAchivement]=useState("")
     const [achiveTotal,setachiveTotal]=useState("0")
     const [percentageTotal,setpercentageTotal]=useState("0")
     const [empty,setempty]=useState(true)
     const [KpiSearch,setKpiSearch]=useState({
         employee: {
-            value:Number(localStorage.getItem("empId")),
+            value:"",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -60,8 +61,8 @@ function KPIModal(props) {
         }));
     }
     useEffect(()=>{
-        dispatch(getEmployeeList())
-    },[])
+        dispatch(getSubordinate(empId))
+    },[empId])
     useEffect(()=>{
         let Employee=[]
         props.EmployeeList.map((data)=>{
@@ -89,8 +90,6 @@ function KPIModal(props) {
         if (filtererr.length > 0) {
         
         } else{
-            alert("haia")
-            if(search)
             dispatch(GetKpiAchivement(KpiSearch,search)).then(()=>{
                 // props.closemodal()
              })
@@ -259,7 +258,7 @@ function KPIModal(props) {
     )
 }
 const mapStateToProps=(state)=>({
-    EmployeeList: state.getOptions.getEmployeeList,
+    EmployeeList: state.getOptions.getSubordinate,
     Kpiachivement:state.KpiReducer.GetKpi_Achivement
 })
 export default connect(mapStateToProps)(KPIModal);

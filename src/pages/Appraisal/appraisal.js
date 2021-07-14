@@ -106,32 +106,32 @@ function Appraisal(props) {
     }
     // console.log(rowID, "rowID")
 
-  
-///***********user permission**********/
-useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission){
-       let data_res_id = props.UserPermission.find((val) => { 
-       return (
-           "Appraisal - Save" == val.control 
-       ) 
-      })
-      setSaveRights(data_res_id)
-   }
-  
-   }, [props.UserPermission]);
-  
-  
+
+    ///***********user permission**********/
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Appraisal - Save" == val.control
+                )
+            })
+            setSaveRights(data_res_id)
+        }
+
+    }, [props.UserPermission]);
+
+
     // console.log(saveRights,"rights")
-  
-   function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
-  /////////////
+
+    function rightsNotification() {
+        notification.success({
+            message: "You are not Authorized. Please Contact Administrator",
+        });
+    }
+    /////////////
     return (
         <div>
-       {/* { permission.allow_view==='Y'&& <div> */}
+            {/* { permission.allow_view==='Y'&& <div> */}
             <div>Appraisal</div>
             <div className="appraisalContainer">
                 <div className="empDetails">
@@ -153,44 +153,7 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <div className="employeeApprisal_Container">
-                    <div className="employeeApprisal_Child_Container">
-                        <div className="TitleChildDiv">
-                            <div>Qualification</div>
-                            <div>Date</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>LLB</div>
-                            <div>Mar 2021</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>Diploma in Law</div>
-                            <div>Dec 2021</div>
-                        </div>
-                    </div>
-                    <div className="employeeApprisal_Child_Container">
-                        <div className="TitleChildDiv">
-                            <div>Program</div>
-                            <div>Date</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>Legal Practice</div>
-                            <div>Jan 2021</div>
-                        </div>
-                    </div>
-                    <div className="employeeApprisal_Child_Container">
-                        <div className="TitleChildDiv">
-                            <div>Seminar</div>
-                            <div>Date</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>Seminar 1</div>
-                            <div>Feb 2021</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* <div>
+                <div>
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
@@ -240,7 +203,47 @@ useEffect(() => {
                         </Grid>
                     </Grid>
 
-                </div> */}
+                </div>
+              
+
+                <div className="employeeApprisal_Container">
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Qualification</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>LLB</div>
+                            <div>Mar 2021</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Diploma in Law</div>
+                            <div>Dec 2021</div>
+                        </div>
+                    </div>
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Program</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Legal Practice</div>
+                            <div>Jan 2021</div>
+                        </div>
+                    </div>
+                    <div className="employeeApprisal_Child_Container">
+                        <div className="TitleChildDiv">
+                            <div>Seminar</div>
+                            <div>Date</div>
+                        </div>
+                        <div className="ValueChildDiv">
+                            <div>Seminar 1</div>
+                            <div>Feb 2021</div>
+                        </div>
+                    </div>
+                </div>
+
+                
                 {addemployeeDetails.length > 0 &&
                     <div className="appraisalTable" >
                         <div className="appraisaldetails">
@@ -261,7 +264,7 @@ useEffect(() => {
             </div>
 
 
-            { rowID == 1 ?
+            {rowID == 1 ?
                 <>
                     <div className="appraisal_collapse">
                         <Collapse onChange={callback}><Panel header="Area of Specialization" ><div>Area of Specialization</div></Panel></Collapse>
@@ -426,20 +429,20 @@ useEffect(() => {
 
             <div className="appraisalBtn">
                 {rowID == 1 && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={() => ('')} />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => ('')} />
                 <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
 
 
 
-        {/* </div > } */}
+            {/* </div > } */}
         </div>
     )
 }
 
 const mapStateToProps = (state) =>
-    ({
-        UserPermission: state.UserPermissionReducer.getUserPermission,
-    });
-export default connect(mapStateToProps) (Appraisal);
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+});
+export default connect(mapStateToProps)(Appraisal);

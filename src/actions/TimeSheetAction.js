@@ -2,6 +2,7 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { GET_TASK_LIST, GET_PROJECT_TIME_SHEET} from '../utils/Constants'
 import { PROJECTWISE_TIME_SHEET_SEARCH } from '../utils/Constants'
+import { notification } from "antd";
 
 export const getTaskList = () => async dispatch => {
     try {
@@ -60,6 +61,45 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
 
     } catch (err) {
 
+    }
+}
+
+export const update_approve_timesheet = (data) => async dispatch => {
+   
+    var updatelist = [];
+    data&&data.length>0&&data.map((data)=>{
+        if(data.editicon){
+            var listarray = {
+                timesheet_id:data.timesheet_id===null?'-':data.timesheet_id,
+                approve_start_date: data.start_date===null?'-':data.start_date,
+                approved_start_time: data.start_time===null?'-':data.start_time,
+                approved_end_date: data.end_date===null?'-':data.end_date,
+                approved_end_time: data.end_time===null?'-':data.end_time,
+                approved_by: 1
+            };
+            updatelist.push(listarray);
+        }
+    })
+    console.log(updatelist,"update_approve_timesheet")
+    if(updatelist.length>0){
+        try {
+            axios({
+                method: 'PUT',
+                url: apiurl + 'update_approve_timesheet',
+                data: {
+                    "timesheet":[updatelist]
+                }
+            })
+                .then((response) => {
+
+                    notification.success({
+                        message: 'Timesheet Approved Successfully',
+                    });
+                })
+
+        } catch (err) {
+
+        }
     }
 }
 //select SEC_TO_TIME(sum(time_to_sec(TIMEDIFF(CONCAT(end_date,' ',end_time),CONCAT(start_date,' ',start_time))))) 

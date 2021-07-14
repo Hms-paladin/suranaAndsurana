@@ -6,7 +6,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from "react-redux";
 import { Switch } from 'antd';
 import './usermanagement.scss';
-import { getUserGroup } from "../../actions/MasterDropdowns";
+import { getUserGroup,getEmployeeList } from "../../actions/MasterDropdowns";
 import {insertUser,editUser,getCandidateName,GetEmployeeDetails} from "../../actions/UserMasterAction";
 import {
     getGroupList
@@ -59,7 +59,7 @@ function UserMasterModal(props) {
     ////// api dispatch
     useEffect(() => {
         dispatch(getGroupList())
-        dispatch(getCandidateName())
+        dispatch(getEmployeeList())
         dispatch(getUserGroup())
         dispatch(GetEmployeeDetails())
     }, [])
@@ -68,7 +68,7 @@ function UserMasterModal(props) {
 
 
     useEffect(() => {
-        dispatch(getCandidateName())
+        dispatch(getEmployeeList())
 
     }, [props.user_add])
 
@@ -87,7 +87,7 @@ function UserMasterModal(props) {
         if(!props.user_data){
         const Employee_List = []
         props.EmployeeList.map((data, index) => {
-            Employee_List.push({ value: data.EmpName, id: data.emp_id })
+            Employee_List.push({ value: data.name, id: data.emp_id })
         })
        
         
@@ -335,7 +335,7 @@ const mapStateToProps = (state) =>
     {
         groupLists: state.UserGroupReducer.groupLists || [],
         getUserList: state.UserMasterReducer.getUser || [],
-        EmployeeList: state.UserMasterReducer.getCandidateName || [],
+        EmployeeList: state.getOptions.getEmployeeList || [],
         UserGroup: state.getOptions.getUserGroup || [],
         GetEmployeeDetails:state.UserMasterReducer.getEmployeeDetails||[]
     }

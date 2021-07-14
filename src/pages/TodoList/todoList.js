@@ -208,6 +208,7 @@ function TodoList(props) {
         let otherTask = []
 
         props.getOtherTask.map((data) => {
+            console.log(data,"othertask")
             let showId = null
             let showName = null
             if (data.emp_leave_id) {
@@ -238,10 +239,11 @@ function TodoList(props) {
                 showId = data.kra_id
                 showName = "KRA Approval"
             }
-            else if (data.kpi_id) {
-                showId = data.kpi_id
-                showName = "KPI Approval"
-            }
+            // else if (data.task_id) {
+            //     showId = data.task_id
+            //     showName = "Employee Appraisal"
+            // }
+
             otherTask.push({
                 task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
                 empname: data.employee,
@@ -328,6 +330,7 @@ console.log(unblockUser,"unblockUser")
         }
     }
     function OtherTaskFunction(name, id, data) {
+        console.log(name,id,"names")
         setTaskModelTitle(data.task)
         if (name === "Leave Approval") {
             setLeaveApproval(true)
@@ -364,15 +367,13 @@ console.log(unblockUser,"unblockUser")
             setKraApprove(checkData.kra_id)
             setKraempname(checkData.employee)
         }
-        else if (name === "KPI Approval") {
-            setKpiapprovemodel(true)
-            let Kpi = props.getOtherTask.find((val) => {
-                return (
-                    id == val.kpi_id
-                )
-            })
-            setKpiApproval(Kpi)
-        }
+        // else if (name === "Employee Appraisal") {
+        //     setResignationApprove(true)
+        //     let Sevevarncedata = props.getOtherTask.find((val) => {
+        //         return id === val.severece_id
+        //     })
+        //     setseveranceId(Sevevarncedata)
+        // }
     }
 
     // unblockUsers ==>
