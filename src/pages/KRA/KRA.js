@@ -79,10 +79,16 @@ const KRA = (props) => {
         setActivity({ Activity })
     }, [props.getActivity])
 
-    function checkValidation(data, key, multipleId) {
-     
-        
-         
+    function checkValidation(data, key) {
+        var startDate = kpi_form.fromperiod.value
+        if (data && key === "fromperiod") {
+            startDate = moment(data).format("MMM-yyyy");
+        }
+        var toDate = kpi_form.toperiod.value
+        if (data && key === "toperiod") {
+            toDate = moment(data).format("MMM-yyyy");
+        }
+
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             kpi_form[key].validation

@@ -79,13 +79,14 @@ export const updateKraApprove = (kra_id, kra_form, approveid) => async (dispatch
 };
 
 
-export const InsertApproveKra = (kraList, Active, Percent, refLength, i) => async dispatch => {
-    console.log(i, refLength, "kpi_form, Active, Percent")
+export const InsertApproveKra = (approveid, kraList, Active, Percent, refLength, i) => async dispatch => {
+    console.log(approveid, "approveid")
     try {
         axios({
             method: 'POST',
             url: apiurl + 'insert_kra_approval',
             data: {
+                "kra_id": approveid,
                 "emp_id": localStorage.getItem("empId"),
                 "period_from": kraList.period_from || 0,
                 "period_to": kraList.period_to || 0,
