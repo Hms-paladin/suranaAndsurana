@@ -163,13 +163,24 @@ const KRA = (props) => {
         );
 
         if (filtererr.length > 0) {
-        } else {
-            reference.current = ([...reference.current, {
-                activitys: activityName,
-                percent: kpi_form.percentage.value,
-                action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
-            }])
         }
+
+        else {
+            if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
+                notification.error({
+                    message: 'Total Percent Value should be 100 only',
+                });
+            }
+            else {
+                reference.current = ([...reference.current, {
+                    activitys: activityName,
+                    percent: kpi_form.percentage.value,
+                    action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
+                }])
+            }
+        }
+
+
 
 
 
@@ -281,14 +292,13 @@ const KRA = (props) => {
         //     (obj) => kpi_form[obj].error == true
         // );
 
-        // if (filtererr.length > 0) {
-        // }
-        // else {
         if (totalPercentage > 100 || totalPercentage < 100) {
             notification.error({
-                message: 'Total Percent Value should 100 only',
+                message: 'Total Percent Value should be 100 only',
             });
-        } else {
+        }
+        else {
+
             let refLength = reference.current.length
             for (let i = 0; i < refLength; i++) {
                 console.log(reference.current[i].activitys, "length")
@@ -301,8 +311,8 @@ const KRA = (props) => {
                 dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
                 })
             }
-            // }
         }
+
         setKpi_form((prevState) => ({
             ...prevState,
 
