@@ -65,104 +65,104 @@ const UserMaster = (props) => {
   const header2 = [
     { id: "type", label: "Status Type" },
     { id: "statusname", label: "Status Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header3 = [
     { id: "skills", label: "Skills Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header4 = [
     { id: "traits", label: "Traits Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header5 = [
     { id: "certification", label: "Certification Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header6 = [
     { id: "specification", label: "Specification Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header7 = [
     { id: "qualification", label: "Qualification Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header8 = [
     { id: "industry", label: "Industry Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header9 = [
     { id: "institute", label: "Institute Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header10 = [
     { id: "Capalitity", label: "Capability Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header11 = [
     { id: "talents", label: "Talents Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header12 = [
     { id: "resource", label: "Type of Resource" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header13 = [
     { id: "desgination", label: "Designation Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header14 = [
     { id: "question", label: "Question Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header15 = [
     { id: "department", label: "Department Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header16 = [
     { id: "activity", label: "Activity Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header17 = [
     { id: "activity", label: "Activity" },
     { id: "activityname", label: "Sub Activity Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header18 = [
     { id: "class", label: "Class Type" },
     { id: "classname", label: "Class Name" },
     { id: "des", label: "Class Description" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header19 = [
     { id: "mark", label: "Mark Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header20 = [
     { id: "court", label: "Court Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header21 = [
     { id: "range", label: "Range Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header22 = [
     { id: "stage", label: "Stage Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header25 = [
     { id: "project_type", label: "Project Type" },
     { id: "checklist_name", label: "Check List" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header23 = [
     { id: "stage", label: "Stage" },
     { id: "sub_stage", label: "Sub Stage Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header24 = [
     { id: "case", label: "Case Type Name" },
-    { id: "edit", label: "Edit" },
+    { id: "", label: "Edit" },
   ];
   const header26 = [
     { id: "control", label: "Control Name" },
@@ -173,12 +173,12 @@ const UserMaster = (props) => {
     header1: [
       // { id: 'table_name', label: 'Table Name' },
       { id: "groupname", label: "Group Name" },
-      { id: "edit", label: "Edit" },
+      { id: " ", label: "Edit" },
     ],
     header2: [
       { id: "status", label: "Status" },
       { id: "type", label: "Status Type" },
-      { id: "edit", label: "Edit" },
+      { id: " ", label: "Edit" },
     ],
   });
   const [userTableHeader, setUserTableHeader] = useState([]);
