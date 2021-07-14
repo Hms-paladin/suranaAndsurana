@@ -158,7 +158,7 @@ function KPIModal(props) {
                                     type="datepicker"
                                     // placeholder={"From Period"}
                                     view={["year", "month"]}
-                                    format={"mmm/yyyy"}
+                                    format={"MMM-yyyy"}
                                     changeData={(data) => checkValidation(data, "from")}
                                     value={KpiSearch.from.value}
                                     error={KpiSearch.from.error}
@@ -170,7 +170,7 @@ function KPIModal(props) {
                                 <Labelbox
                                     type="datepicker"
                                     view={["year", "month"]}
-                                    format={"mmm/yyyy"}
+                                    format={"MMM-yyyy"}
                                     changeData={(data) => checkValidation(data, "to")}
                                     value={KpiSearch.to.value}
                                     error={KpiSearch.to.error}
