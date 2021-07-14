@@ -6,7 +6,7 @@ import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KPI.scss'
-import { Checkbox } from 'antd';
+import { Checkbox, notification } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import KPIModal from './KPIViewModal'
 import Edit from "../../images/editable.svg";
@@ -136,26 +136,7 @@ useEffect(() => {
       setpercentageTotal(total)
 
  },[ props.Kpiachivement,disable,achivement])
-const EditData=(id)=>{
-    kpi_form.achivements.value=""
-    setKpiId(id)
-    setEditTrue(true)
-    var KpiData=props.Kpiachivement.find((data)=>{
-        return(data.kra_id==id)
-    })
-    setkpiData(KpiData)
-}
-const UpdateAchivement=()=>{
-    if(EditTrue){
-    dispatch(UpdateKpiAchivement(KpiId,kpi_form.achivements.value)).then(()=>{
-    setKpiId("")
-    kpi_form.achivements.value=""
-    })
-  }
-    setKpi_form((prevState) => ({
-        ...prevState,
-    }));
-}
+
 const AchivementEditable=(data,key)=>{
     console.log("edit",disable)
     setdisble(false)
@@ -178,8 +159,15 @@ const Submit =()=>{
        KpiData.push(Data)
 
     }
+    if(Achivement.length===0){
+        notification.warning({
+            message:"No Data Found"
+        })
+    }
+    else{
     dispatch(InsertKpi(KpiData)).then(()=>{ 
     })
+   }
 }
 const HandleCancel=()=>{
     setdisble(true)

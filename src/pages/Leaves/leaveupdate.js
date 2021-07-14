@@ -24,7 +24,7 @@ const headCells = [
     { id: 'currentbalance', label: 'Current Balance' },
     // { id: 'start_date', label: 'Start Date' },
     // { id: 'end_date', label: 'End Date' },
-    { id: 'action', label: 'Action' }
+    { id: '', label: 'Action' }
 ];
 
 function LeaveUpdate(props) {
@@ -183,10 +183,10 @@ function LeaveUpdate(props) {
         for (var m = 0; m < leaveUpdateList.length; m++) {
             const index = m;
           var listarray = {
-            leave_type: leaveUpdateList[m].leave_type,
-            previous_balance: leaveUpdateList[m].previous_balance===0?'0':leaveUpdateList[m].previous_balance,
-            eligible_leave: leaveUpdateList[m].eligible_leave===0?'0':leaveUpdateList[m].eligible_leave,
-            current_balance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
+            leavetype: leaveUpdateList[m].leave_type,
+            previousbalance: leaveUpdateList[m].previous_balance===0?'0':leaveUpdateList[m].previous_balance,
+            eligible: leaveUpdateList[m].eligible_leave===0?'0':leaveUpdateList[m].eligible_leave,
+            currentbalance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
             action: (
                 <>
                     <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])}    />{" "}

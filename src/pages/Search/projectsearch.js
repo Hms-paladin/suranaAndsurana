@@ -273,25 +273,25 @@ function Projectsearch(props) {
         if (data.project_type_id === 1) {
           let currentData = {}
           rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
-          rowdataListobj["ClientName"] = data.client;
-          rowdataListobj["SubProjectType"] = data.sub_project_type;
-          rowdataListobj["Process"] = data.process;
-          rowdataListobj["filing_type"] = data.filing_type;
-          rowdataListobj["BillingType"] = data.billable_type;
+          rowdataListobj["clientname"] = data.client;
+          rowdataListobj["subprojectype"] = data.sub_project_type;
+          rowdataListobj["processtype"] = data.process;
+          rowdataListobj["fillingtype"] = data.filing_type;
+          rowdataListobj["billabletype"] = data.billable_type;
         } else if (data.project_type_id === 6) {
-          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
-          rowdataListobj["ClientName"] = data.client;
-          rowdataListobj["HR_name"] = data.HR_name;
-          rowdataListobj["councel_name"] = data.councel_name;
-          rowdataListobj["filing_type"] = data.filing_type;
-          rowdataListobj["BillingType"] = data.billable_type;
+          rowdataListobj["projectname"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["clientname"] = data.client;
+          rowdataListobj["DRA"] = data.HR_name;
+          rowdataListobj["DDRA"] = data.councel_name;
+          rowdataListobj["fillingtype"] = data.filing_type;
+          rowdataListobj["billabletype"] = data.billable_type;
         } else {
-          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
-          rowdataListobj["ClientName"] = data.client;
-          rowdataListobj["SubProjectType"] = data.councel_name;
-          rowdataListobj["HR_name"] = data.HR_name;
-          rowdataListobj["RangeOfCost"] = data.filing_type;
-          rowdataListobj["BillingType"] = data.billable_type;
+          rowdataListobj["projectname"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["clientname"] = data.client;
+          rowdataListobj["hodAttorney"] = data.councel_name;
+          rowdataListobj["Counsel"] = data.HR_name;
+          rowdataListobj["rangeOfCost"] = data.filing_type;
+          rowdataListobj["billabletype"] = data.billable_type;
         }
         ipProjectDataList.push(rowdataListobj);
       });

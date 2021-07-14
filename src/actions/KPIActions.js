@@ -13,11 +13,6 @@ export const GetKpiAchivement=(data,search)=>async (dispatch)=>{
                 "emp_id":search?data.employee.value:localStorage.getItem("empId"),
                 "period_from":search?data.from.value:"",
                 "period_to":search?data.to.value:moment().format("YYYY-MM-DD")
-                 
-                // "emp_id": "1",
-                // "period_from": "2021-07-01",
-                // "period_to": "2021-09-01"
-             
             }
         });
         return dispatch({type:GET_KPI_ACHIVEMENT,payload:response.data.data})
