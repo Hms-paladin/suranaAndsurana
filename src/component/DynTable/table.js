@@ -141,12 +141,17 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
+            // hideSortIcon={headCell.id?true:false}
           >
-            {console.log(orderBy === headCell.id, order, "headcell")}
+            {console.log(headCell.id, orderBy, "headcell")}
+
+            {headCell.id?
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              // icon={}
+              hideSortIcon={orderBy===headCell.id?true:false}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -154,7 +159,10 @@ function EnhancedTableHead(props) {
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </span>
               ) : null}
-            </TableSortLabel>
+            </TableSortLabel>:
+            <>{headCell.label}</>
+              }
+           
           </TableCell>
         ))}
       </TableRow>
@@ -193,6 +201,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 20,
     width: 1,
+  },
+  inactiveSortIcon: {
+    display:'none',
   },
 }));
 
