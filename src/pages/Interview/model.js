@@ -131,8 +131,8 @@ function DynModelView(props) {
                       <div>{values.city}</div>
                       <div>{values.department}</div>
                       <div>{values.designation}</div>
-                      <div>{values.period_from ? moment(val.period_from).format("DD-MMM-YYYY") : "-"}</div>
-                      <div>{values.period_to ? moment(val.period_to).format("DD-MMM-YYYY") : "-"}</div>
+                      <div>{values.period_from ? moment(values.period_from,"YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
+                      <div>{values.period_to ? moment(values.period_to,"YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
                     </div>
 
                   )

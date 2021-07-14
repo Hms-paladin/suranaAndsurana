@@ -13,6 +13,7 @@ import Edit from "../../images/editable.svg";
 import { getActivity } from '../../actions/MasterDropdowns';
 import { InsertKra } from '../../actions/KraAction';
 import moment from "moment";
+import { notification } from "antd";
 
 const KRA = (props) => {
     const dispatch = useDispatch();
@@ -144,6 +145,42 @@ const KRA = (props) => {
         if (reference.current && reference.current.length >= 0) {
             setCount(count + 1)
         }
+        var mainvalue = {};
+        var targetkeys = Object.keys(kpi_form);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                kpi_form[targetkeys[i]].value,
+                kpi_form[targetkeys[i]].validation
+            );
+            kpi_form[targetkeys[i]].error = !errorcheck.state;
+            kpi_form[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = kpi_form[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => kpi_form[obj].error == true
+        );
+
+        if (filtererr.length > 0) {
+        }
+
+        else {
+            if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
+                notification.error({
+                    message: 'Total Percent Value should be 100 only',
+                });
+            }
+            else {
+                reference.current = ([...reference.current, {
+                    activitys: activityName,
+                    percent: kpi_form.percentage.value,
+                    action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
+                }])
+            }
+        }
+
+
+
+
 
         reference.current = ([...reference.current, {
             activitys: activityName,
@@ -277,24 +314,27 @@ const KRA = (props) => {
         //     (obj) => kpi_form[obj].error == true
         // );
 
-        // if (filtererr.length > 0) {
-        // } 
-        // else {
-        let refLength = reference.current.length
+        if (totalPercentage > 100 || totalPercentage < 100) {
+            notification.error({
+                message: 'Total Percent Value should be 100 only',
+            });
+        }
+        else {
 
-        for (let i = 0; i < refLength; i++) {
-            console.log(reference.current[i].activitys, "length")
-            let activityId;
-            activity.Activity && activity.Activity.filter((data) => {
-                if (data.value === reference.current[i].activitys) {
-                    activityId = data.id
-                }
-            })
-            dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
-            })
+            let refLength = reference.current.length
+            for (let i = 0; i < refLength; i++) {
+                console.log(reference.current[i].activitys, "length")
+                let activityId;
+                activity.Activity && activity.Activity.filter((data) => {
+                    if (data.value === reference.current[i].activitys) {
+                        activityId = data.id
+                    }
+                })
+                dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
+                })
+            }
         }
 
-        // }
         setKpi_form((prevState) => ({
             ...prevState,
 

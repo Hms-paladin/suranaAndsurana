@@ -10,7 +10,7 @@ import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import './resume.scss';
 import { getIndustry } from '../../actions/MasterDropdowns';
-
+import moment from "moment";
 
 function ExperienceModel(props) {
 // console.log("parentToChild", parentToChild)
@@ -51,7 +51,7 @@ function ExperienceModel(props) {
             errmsg: null,
         },
         periodfrom: {
-            value: "",
+            value: '',
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -71,7 +71,16 @@ function ExperienceModel(props) {
     })
 
     useEffect(() => {
-        console.log(props.editExperiences,"props.editExperiences")
+        handleCancel()
+    }, [props.nullFieldValueExp])
+
+    useEffect(() => {
+
+        // if(props.nullFieldValueExp){
+        //     handleCancel()
+        // }
+        // console.log(props.editExperiences,"props.editExperiences")
+        if(props.editExperiences&&props.editExperiences!==''>0){
         const industry = props.editExperiences?.type_of_industry;
         const compName = props.editExperiences?.company_name;
         const city = props.editExperiences?.city_id;
@@ -80,8 +89,6 @@ function ExperienceModel(props) {
         const periodFrm = props.editExperiences?.period_from;
         const periodTo = props.editExperiences?.period_to;
         const respons = props.editExperiences?.responsible;
-
-
 
         Experience_Form.industry.value = industry;
         Experience_Form.companyname.value = compName;
@@ -95,22 +102,21 @@ function ExperienceModel(props) {
         setExperienceForm((prevState) => ({
             ...prevState,
         }));
+        }
         // Experience_Form.companyname.value = "compName";
     }, [props.editExperiences, props.editExperienceid]);
 
-    //update experience details==>
-    // Experience_Form.companyname.value = "compName";
+
     function updateExperience() {
-        setRowchange(Experience_Form)
+
         props.EditExperience(Experience_Form, props.editExperienceid);
         handleCancel()
+       
         props.handleChangeCloseModel()
-    }
+    
+}
 
 
-    useEffect(() => {
-        handleCancel()
-    }, [props.nullFieldValueExp])
 
 console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 
@@ -149,7 +155,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             // setExperienceForm({ error: true });
         } else {
             // setExperienceForm({ error: false });
-
+            console.log(Experience_Form,"Experience_Form")
             props.addExperience(Experience_Form)
             handleCancel()
         }
@@ -184,7 +190,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             errmsg: errorcheck.msg,
             validation: Experience_Form[key].validation
         }
-
+console.log(data,"dddd")
         setExperienceForm(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -210,13 +216,13 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
                 <Grid item xs={6}> <Labelbox type="select" placeholder="Type of Industry"
                     changeData={(data) => checkValidation(data, "industry")}
                     dropdown={industryOptions}
-                    value={Experience_Form.industry.value== "" ? props.editExperiences?.type_of_industry : Experience_Form.industry.value}
+                    value={Experience_Form.industry.value}
                     error={Experience_Form.industry.error}
                     errmsg={Experience_Form.industry.errmsg} />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="text" placeholder="Company Name"
                     changeData={(data) => checkValidation(data, "companyname")}
-                    value={Experience_Form.companyname.value== "" ? props.editExperiences?.company_name : Experience_Form.companyname.value}
+                    value={Experience_Form.companyname.value}
                     error={Experience_Form.companyname.error}
                     errmsg={Experience_Form.companyname.errmsg} />
                 </Grid>
@@ -225,7 +231,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
                 <Grid item xs={6}> <Labelbox type="select" placeholder="City"
                     changeData={(data) => checkValidation(data, "city")}
                     dropdown={city}
-                    value={Experience_Form.city.value== "" ? props.editExperiences&&Number(props.editExperiences.city_id) : Experience_Form.city.value}
+                    value={Experience_Form.city.value}
                     error={Experience_Form.city.error}
                     errmsg={Experience_Form.city.errmsg} />
                 </Grid>
@@ -233,13 +239,13 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="text" placeholder="Department"
                     changeData={(data) => checkValidation(data, "department")}
-                    value={Experience_Form.department.value== "" ? props.editExperiences?.department : Experience_Form.department.value}
+                    value={Experience_Form.department.value}
                     error={Experience_Form.department.error}
                     errmsg={Experience_Form.department.errmsg} />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="text" placeholder="Designation"
                     changeData={(data) => checkValidation(data, "designation")}
-                    value={Experience_Form.designation.value== "" ? props.editExperiences?.designation : Experience_Form.designation.value}
+                    value={Experience_Form.designation.value}
                     error={Experience_Form.designation.error}
                     errmsg={Experience_Form.designation.errmsg} />
                 </Grid>
@@ -248,14 +254,15 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={6}> <Labelbox type="datepicker" placeholder="Period From"
                     changeData={(data) => checkValidation(data, "periodfrom")}
-                    value={Experience_Form.periodfrom.value== null ? props.editExperiences?.period_from : Experience_Form.periodfrom.value}
+                     value={Experience_Form.periodfrom.value}
                     error={Experience_Form.periodfrom.error}
                     errmsg={Experience_Form.periodfrom.errmsg}
-                    disableFuture={"false"} />
+                    disableFuture={"false"} 
+                    />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="datepicker" placeholder="Period To"
                     changeData={(data) => checkValidation(data, "periodto")}
-                    value={Experience_Form.periodto.value== null ? props.editExperiences?.period_to : Experience_Form.periodto.value}
+                    value={Experience_Form.periodto.value}
                     error={Experience_Form.periodto.error}
                     errmsg={Experience_Form.periodto.errmsg}
                     disableFuture={"false"}
@@ -268,7 +275,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
                 <Grid item xs={12}>
                     <div className="commentbox"> <Labelbox type="textarea" placeholder="Responsibilities"
                         changeData={(data) => checkValidation(data, "responsibilities")}
-                        value={Experience_Form.responsibilities.value== "" ? props.editExperiences?.responsible : Experience_Form.responsibilities.value}
+                        value={Experience_Form.responsibilities.value}
                         error={Experience_Form.responsibilities.error}
                         errmsg={Experience_Form.responsibilities.errmsg} />
                     </div>
