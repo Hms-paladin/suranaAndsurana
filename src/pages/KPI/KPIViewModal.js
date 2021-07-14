@@ -213,16 +213,21 @@ function KPIModal(props) {
                        </div>
                        </div>
                        :<>
-                     {Achivement&&Achivement.map((data)=>
+                     {Achivement&&Achivement.map((data,index)=>{
+                          let Name=[]
+                         Name.push(data.name)
+                         let employee=Name[0];
+                         console.log("nmae",Name)
+                         return(
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={3}><label className="maintitle"  key={0}>{Achivement[0]?.name}</label></Grid>
+                            <Grid item xs={3}><label className="maintitle"  >{employee}</label></Grid>
                             <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
                             <Grid item xs={3}><label className="maintitle">{data.kra_percentage}</label> </Grid>
                             <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>
 
                         </Grid>
                         
-                        )}
+                      )})}
                         </>
                         }
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>

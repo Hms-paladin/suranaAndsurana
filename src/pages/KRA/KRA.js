@@ -446,7 +446,7 @@ const KRA = (props) => {
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
                         // btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
-                        // btnDisable={totalPercentage === 100 ? false : true}
+                        btnDisable={totalPercentage === 100 ? false : true}
                         onBtnClick={onsubmit}
                     />
                     <CustomButton

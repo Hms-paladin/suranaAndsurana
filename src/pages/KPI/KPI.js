@@ -135,7 +135,7 @@ useEffect(() => {
       setachiveTotal(achive_total)
       setpercentageTotal(total)
 
- },[ props.Kpiachivement,disable])
+ },[ props.Kpiachivement,disable,achivement])
 const EditData=(id)=>{
     kpi_form.achivements.value=""
     setKpiId(id)
@@ -159,7 +159,7 @@ const UpdateAchivement=()=>{
 const AchivementEditable=(data,key)=>{
     console.log("edit",disable)
     setdisble(false)
-    setKpi_form((prevState) => ({
+    setachivement((prevState) => ({
         ...prevState,
         [key]: data,
     }));
@@ -175,7 +175,6 @@ const Submit =()=>{
         "created_on":moment().format("YYYY-MM-DD"),
         "created_by":localStorage.getItem("empId")
        }
-       console.log("Achivementlength",achivement["value"+0])
        KpiData.push(Data)
 
     }
@@ -185,7 +184,6 @@ const Submit =()=>{
 const HandleCancel=()=>{
     setdisble(true)
 }
-console.log("Kpiachivement",disable)
 
     return (
         <div>
