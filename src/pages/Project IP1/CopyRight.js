@@ -175,7 +175,7 @@ const CopyRight = (props) => {
         let multipleIdList = []
 
         if (multipleId) {
-            multipleId.map((item) => {
+            multipleId.length>0&&multipleId.map((item) => {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i] === item.value) {
                         multipleIdList.push(item.id)
@@ -196,10 +196,11 @@ const CopyRight = (props) => {
 
     return (
         <div >
+            
             <div className="copyright_div">
                 <Grid item xs={12} md={12} className="app_cont_domestic">
 
-                    <Grid>
+                    <Grid >
                         <div className="copyFieldheadings">Title</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "title")}
@@ -217,14 +218,14 @@ const CopyRight = (props) => {
                             errmsg={copy_Right.type_of_work.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid xs={2}>
                         <div className="copyFieldheadings">Upload Image</div>
                         <div className="uploadbox_div"  >
-                            <div>
+                            {/* <div> */}
                                 <Upload
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
                                     onChange={(info) => handleChange(info, "examScheduleUpload")}
-                                    fileList={fileupload}
+                                    // fileList={fileupload}
                                     accept={'jpg'}
                                 >
                                     <Button>
@@ -232,7 +233,7 @@ const CopyRight = (props) => {
                                     </Button>
                                 </Upload>
 
-                            </div>
+                            {/* </div> */}
                         </div>
                     </Grid>
 
@@ -256,6 +257,7 @@ const CopyRight = (props) => {
                     </Grid>
                 </Grid>
             </div>
+           
             <Grid item xs={12} container justify="flex-end" className="patent_btns">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />

@@ -11,7 +11,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 import KRAModal from "./KRAViewModal"
 import Edit from "../../images/editable.svg";
 import { getActivity } from '../../actions/MasterDropdowns';
-import { InsertKra } from '../../actions/KraAction';
+import { InsertKra, getKra } from '../../actions/KraAction';
 import moment from "moment";
 import { notification } from "antd";
 
@@ -33,7 +33,7 @@ const KRA = (props) => {
     const [totalPercentage, setTotalPercentage] = useState(0)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
-    const [storageDate,setstorageDate]=useState({})
+    const [empId, setEmpId] = useState(localStorage.getItem("empId"))
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -62,11 +62,12 @@ const KRA = (props) => {
         },
     });
     const reference = useRef([]);
+    const [testDate, setTestDate] = useState({})
 
 
     useEffect(() => {
         dispatch(getActivity());
-    }, []);
+    }, [kpi_form]);
 
 
     useEffect(() => {
@@ -78,7 +79,24 @@ const KRA = (props) => {
             });
         });
         setActivity({ Activity })
-    }, [props.getActivity])
+        setTestDate(props.getKra[0])
+    }, [props.getActivity, props.getKra, kpi_form])
+
+    useEffect(() => {
+        checking()
+    }, [testDate])
+
+    const checking = useCallback(() => {
+        let id = testDate && testDate.emp_id
+        if (Number(localStorage.getItem("empId")) === (testDate && testDate.emp_id)) {
+            if (kpi_form.fromperiod.value === moment(testDate.period_from).format("MMM-yyyy") || kpi_form.toperiod.value === moment(testDate.period_to).format("MMM-yyyy")) {
+                notification.error({
+                    message: 'This Period Already Exist. Choose After Date  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
+                });
+            }
+        }
+
+    }, [testDate])
 
     function checkValidation(data, key) {
         var startDate = kpi_form.fromperiod.value
@@ -88,8 +106,8 @@ const KRA = (props) => {
         var toDate = kpi_form.toperiod.value
         if (data && key === "toperiod") {
             toDate = moment(data).format("MMM-yyyy");
+            dispatch(getKra(localStorage.getItem("empId"), startDate, toDate))
         }
-
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             kpi_form[key].validation
@@ -129,9 +147,7 @@ const KRA = (props) => {
     /////////////
 
     const addkraDetails = () => {
-
         let activityName;
-
         activity.Activity.filter((data) => {
             if (data.id === kpi_form.activity.value) {
                 activityName = data.value
@@ -168,6 +184,7 @@ const KRA = (props) => {
                 notification.error({
                     message: 'Total Percent Value should be 100 only',
                 });
+
             }
             else {
                 reference.current = ([...reference.current, {
@@ -175,24 +192,12 @@ const KRA = (props) => {
                     percent: kpi_form.percentage.value,
                     action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
                 }])
+
+                kpi_form.activity.value = "";
+                kpi_form.percentage.value = "";
             }
         }
-
-
-
-
-
-        reference.current = ([...reference.current, {
-            activitys: activityName,
-            percent: kpi_form.percentage.value,
-            action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
-        }])
         addpercentage()
-        // setTotalPercentage(Number(totalPercentage) + Number(kpi_form.percentage.value))
-        kpi_form.activity.value = "";
-        kpi_form.percentage.value = "";
-
-
     }
 
     const editRows = (data) => {
@@ -285,35 +290,6 @@ const KRA = (props) => {
 
 
     const onsubmit = () => {
-        sessionStorage.setItem("from", kpi_form.fromperiod.value);
-        sessionStorage.setItem("to", kpi_form.toperiod.value);
-        // let Active = []
-        // let Percent = []
-        // reference.current.map((val) => {
-        //     let activityId;
-        //     activity.Activity && activity.Activity.filter((data) => {
-        //         if (data.value === val.activitys) {
-        //             activityId = data.id
-        //         }
-        //     })
-        //     Active.push(activityId)
-        //     Percent.push(val.percent)
-        // })
-        // var mainvalue = {};
-        // var targetkeys = Object.keys(kpi_form);
-        // for (var i in targetkeys) {
-        //     var errorcheck = ValidationLibrary.checkValidation(
-        //         kpi_form[targetkeys[i]].value,
-        //         kpi_form[targetkeys[i]].validation
-        //     );
-        //     kpi_form[targetkeys[i]].error = !errorcheck.state;
-        //     kpi_form[targetkeys[i]].errmsg = errorcheck.msg;
-        //     mainvalue[targetkeys[i]] = kpi_form[targetkeys[i]].value;
-        // }
-        // var filtererr = targetkeys.filter(
-        //     (obj) => kpi_form[obj].error == true
-        // );
-
         if (totalPercentage > 100 || totalPercentage < 100) {
             notification.error({
                 message: 'Total Percent Value should be 100 only',
@@ -512,6 +488,7 @@ const mapStateToProps = (state) =>
 (
     {
         UserPermission: state.UserPermissionReducer.getUserPermission,
-        getActivity: state.getOptions.getActivity
+        getActivity: state.getOptions.getActivity,
+        getKra: state.KraReducer.getKra
     });
 export default connect(mapStateToProps)(KRA);

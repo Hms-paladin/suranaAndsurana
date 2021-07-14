@@ -40,15 +40,15 @@ export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async disp
     }
 }
 
-export const getKra = (kra_Model) => async (dispatch) => {
-    console.log(moment(kra_Model.fromperiod.value).format('YYYY-MM'), "kra_Model")
+export const getKra = (empid, from, to) => async (dispatch) => {
+    console.log(empid, from, to, "kra_Model")
     const response = await axios({
         method: "post",
         url: apiurl + "get_kra",
         data: {
-            "emp_id": kra_Model.employee.value,
-            "period_from": moment(kra_Model.fromperiod.value).format('YYYY-MM'),
-            "period_to": moment(kra_Model.toperiod.value).format('YYYY-MM')
+            "emp_id": empid,
+            "period_from": moment(from).format('YYYY-MM'),
+            "period_to": moment(to).format('YYYY-MM')
         }
     });
     return dispatch({ type: GET_KRA, payload: response.data.data });
