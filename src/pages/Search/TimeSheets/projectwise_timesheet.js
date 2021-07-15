@@ -18,6 +18,7 @@ function ProjectwiseTS(props) {
     const { Option } = Select;
     let dispatch=useDispatch()
     const [projectList,setprojectList]=useState([])
+    const [openPanel,setopenPanel]=useState(0)
     const [projectSearch, setprojectSearch] = useState({
         emp_name: {
           value: "",
@@ -195,7 +196,7 @@ function ProjectwiseTS(props) {
             </div>
             <div className="DRcollapsecss">
             {props.Project_TimeSheet.map((data)=>
-                <Collapse>
+                <Collapse activeKey={openPanel}>
                     <Panel header={data.project_type}>
                     {data.project_details.map((data)=>
                         <Collapse>
