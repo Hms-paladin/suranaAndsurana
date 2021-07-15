@@ -40,9 +40,11 @@ function CheckListCreation(props) {
         } else {
           var checkListName = encodeURI(checkListForm.checkListName.value)
           checkListName = checkListName.replace(/%20/g, ' ');
+          checkListName = checkListName.replace(/%25/g, ' ');
 
           var taskDesc = encodeURI(checkListForm.task.value)
           taskDesc = taskDesc.replace(/%20/g, ' ');
+          taskDesc = taskDesc.replace(/%25/g, ' ');
 
           var data = {
             
@@ -52,8 +54,8 @@ function CheckListCreation(props) {
                 "check_list_type":checkListForm.checkListType.value,
                 "project_type_id":checkListForm.department.value,
                 "project_sub_type_id":checkListForm.department.value,
-                "activity_id":checkListForm.activity.value,
-                "sub_activity_id":checkListForm.subActivity.value,
+                "activity_id":checkListForm.activity.value != '' ? checkListForm.activity : 0 ,
+                "sub_activity_id":checkListForm.subActivity.value  != '' ? checkListForm.subActivity : 0 ,
                 "frequency_id":checkListForm.frequency.value,
                 "task":taskDesc,
                 "created_on":moment().format('YYYY-MM-DD HH:m:s'),
@@ -83,8 +85,7 @@ function CheckListCreation(props) {
           "checkListName",
           "checkListType",
           "task",
-          "frequency",
-          "description"
+          "frequency"
         ];
     
         From_key.map((data) => {
@@ -102,63 +103,58 @@ function CheckListCreation(props) {
     const [checkListForm, setcheckListForm] = useState({
         activity: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
+          disabled: false
         },
         subActivity: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
+          disabled: false
         },
         department: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         checkListCategory: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         checkListName: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         checkListType: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         frequency: {
           value: "",
           valueById: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         task: {
           value: "",
           valueById: "",
-          validation: [],
-          error: null,
-          errmsg: null,
-        },
-        description: {
-          value: "",
-          valueById: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         }
       });
-
+      
     useEffect(() => {
         dispatch(getDepartment());
         dispatch(getCheckListType());
@@ -280,7 +276,21 @@ function CheckListCreation(props) {
           dynObj.valueById = multipleIdList.toString();
         }
         // (end)
-    
+        if (data && key == "checkListType") {
+
+          if(data =='198' || data == '200'){
+          checkListForm['activity'].disabled = true;
+          checkListForm['activity'].validation =[];
+          checkListForm['subActivity'].validation =[];
+          checkListForm['subActivity'].disabled = true;
+          }else{
+            checkListForm['activity'].disabled = false;
+            checkListForm['subActivity'].disabled = false;
+            checkListForm['activity'].validation =[{ name: "required" }];
+            checkListForm['subActivity'].validation =[{ name: "required" }];
+          }
+
+        }
        
         if (data && key == "activity") {
           // Sub Activity
@@ -404,6 +414,7 @@ function CheckListCreation(props) {
                          value={checkListForm.activity.value}
                          error={checkListForm.activity.error}
                          errmsg={checkListForm.activity.errmsg} 
+                         disabled={checkListForm.activity.disabled}
                          /></div>
                 </div>
                 <div className="secondrowFields">
@@ -412,9 +423,10 @@ function CheckListCreation(props) {
                           dropdown={subActivity.projectSubActivitydata}
                           changeData={(data) => checkValidation(data, "subActivity")}
                           placeholder={"Sub Activity"}
-                          value={checkListForm.activity.value}
-                          error={checkListForm.activity.error}
-                          errmsg={checkListForm.activity.errmsg} 
+                          value={checkListForm.subActivity.value}
+                          error={checkListForm.subActivity.error}
+                          errmsg={checkListForm.subActivity.errmsg} 
+                          disabled={checkListForm.subActivity.disabled}
                           /></div>
                     <div>  <div className="TThead">Frequency</div>
                         <Labelbox type="select" 

@@ -108,9 +108,8 @@ function KRAModal(props) {
         if (filtererr.length > 0) {
             // setkra_Model({ error: true });
         } else {
-            console.log(kra_Model, "kra_Modkra_Modelelkra_Model")
-
-            dispatch(getKra(kra_Model)).then((response) => {
+            dispatch(getKra(kra_Model.employee.value, kra_Model.fromperiod.value, kra_Model.toperiod.value)).then((response) => {
+                handleCancel()
             })
         }
         setkra_Model((prevState) => ({
@@ -183,7 +182,7 @@ function KRAModal(props) {
                                 <div className="period"><label >To Period</label></div>
                                 <Labelbox
                                     type="datepicker"
-                                    placeholder={"to Period"}
+                                    placeholder={"To Period"}
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
                                     changeData={(data) => checkValidation(data, "toperiod")}

@@ -796,12 +796,12 @@ const ResumePage = (props) => {
     SetNullFieldValueExp(!nullFieldValueExp);
     setOnEdit(false);
   };
-  console.log(experienceList,"yyyyyyyy")
+
   return (
     <div>
-      {props.EditResume ? null : <Grid item xs={12} className="ContentTitle">
-        Add Resume
-      </Grid>}
+       <Grid item xs={12} className="ContentTitle">
+       {editResume ? 'Edit Resume' :'Add Resume'}
+      </Grid>
       <div className="Container">
         <div className="leftContainer">
           <Grid container spacing={3}>
@@ -1317,7 +1317,7 @@ const ResumePage = (props) => {
 
                 <div className="experienceOuterBox">
                   {experienceList.map((data, index) => {
-                    console.log(data.city_id, "experiencexperienceListeList")
+                    console.log(data, "experiencexperienceListeList")
                     return (
                       <div className="experienceKeyValue">
                         <div className="experienceKey">
@@ -1346,7 +1346,7 @@ const ResumePage = (props) => {
                             // editcity ?
                             //   <> {data.city || "-"}</> :
                               <> {resumeGetList.cityListAll.map((getName) => {
-                                if (data.city &&Number(data.city) === getName.id ) {
+                                if (data.city_id &&Number(data.city_id) === getName.id ) {
                                   return getName.value || '-';
                                 }
                               })}</>

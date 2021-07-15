@@ -70,7 +70,7 @@ function CheckListView(props) {
                 <div className="label_div_card"><Labelbox type="select" labelname="Employee"
                     changeData={(data) => checkValidation(data, "employee")}
                     dropdown={employeelist.EmployeeList}
-                // value={kpi_form.toperiod.value}
+                    value={employeeId}
                 />
                 </div>
                 <EnhancedTable
