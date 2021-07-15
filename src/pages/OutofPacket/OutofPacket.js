@@ -241,11 +241,11 @@ useEffect(() => {
                     
                            <div><div>Balance</div><div>{OpeSearch.balance?OpeSearch.balance:"-"}</div></div>
                            <NavLink to={{
-                             pathname:"/OpeExpense",
+                             pathname:"/Home/OpeExpense",
                              state:OpeSearch
                              }}
                              ><div className="div_ope"><img src={OPExp}/><div className="ope_text">OP Expenses</div></div></NavLink> 
-                           <NavLink to="/ope_advance"><div  className="div_ope"><img src={OPAdv}/><div className="ope_text">OP Advances</div></div></NavLink> 
+                           <NavLink to="/Home/ope_advance"><div  className="div_ope"><img src={OPAdv}/><div className="ope_text">OP Advances</div></div></NavLink> 
                            </div>
                        
                   <Spin spinning={spinner}>

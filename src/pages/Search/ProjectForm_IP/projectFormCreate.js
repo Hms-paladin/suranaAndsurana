@@ -797,7 +797,7 @@ function ProjectFormCreate(props) {
               errmsg={projectform.client.errmsg} />
           </Grid>
           <Grid item xs={2}><br />
-            <Link to="/addclient">
+            <Link to="/Home/addclient">
               <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary" custombtnCSS="btnCreateClient" onBtnClick={() => setpathname("/addclient")} />
             </Link>
           </Grid>

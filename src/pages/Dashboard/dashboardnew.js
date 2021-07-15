@@ -80,63 +80,63 @@ function DashboardNew() {
     {
       img: <img src={Library} className="imageicons" />,
       title: "Library",
-      path: "/librarybook",
+      path: "/Home/librarybook",
     },
     {
       img: <img src={appraisal} className="imageicons" />,
       title: "Appraisal",
-      path: "/appraisal",
+      path: "/Home/appraisal",
     },
     {
       img: <img src={KRA} className="imageicons" />,
       title: "KRA",
-      path: "/KRA",
+      path: "/Home/KRA",
     },
     {
       img: <img src={KPI} className="imageicons" />,
       title: "KPI",
-      path: "/KPI",
+      path: "/Home/KPI",
     },
     {
       img: <img src={Timesheet} className="imageicons" />,
       title: "Time Sheet",
-      path: "/projectwise_timesheet",
+      path: "/Home/projectwise_timesheet",
     },
     {
       img: <img src={AdhocTask} className="imageicons" />,
       title: "Adhoc Task",
-      path: "/adhoctask",
+      path: "/Home/adhoctask",
     },
 
     {
       img: <img src={ApplyLeave} className="imageicons" />,
       title: "Apply Leave",
-      path: "/leaveform",
+      path: "/Home/leaveform",
     },
     {
       img: <img src={TicketCreation} className="imageicons" />,
       title: "Ticket Creation",
-      path: "/ticketcreation",
+      path: "/Home/ticketcreation",
     },
     {
       img: <img src={Employee} className="imageicons" />,
       title: "List of Employees",
-      path: "/employeelist",
+      path: "/Home/employeelist",
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
       title: "OPA/Expenses",
-      path: "/outofpacket",
+      path: "/Home/outofpacket",
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
       title: "Day Report",
-      path: "/dayreport",
+      path: "/Home/dayreport",
     },
     {
       img: <img src={Employee} className="imageicons" />,
       title: "CheckList Assigning View",
-      path: "/checklistview",
+      path: "/Home/checklistview",
     },
   ]);
 

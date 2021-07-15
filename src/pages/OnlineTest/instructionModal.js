@@ -60,7 +60,7 @@ console.log(props.test_data,"temp_nametest_data")
                 })}
 
                 <div>
-                    <Link to={`/onlineQA/${designation}/${candidate}/${testTemplateId}`}>
+                    <Link to={`/Home/onlineQA/${designation}/${candidate}/${testTemplateId}`}>
                         <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary"  />
                     </Link>
                 </div>

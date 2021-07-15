@@ -28,7 +28,7 @@ import Generateinvoice from '../../images/generateinvoice.svg';
 import Variableratemaster from '../../images/variableratemaster.svg';
 import Stagemaster from '../../images/stagemaster.svg';
 import Usergroups from '../../images/usergroups.svg';
-import Dashboard from '../../images/dashboard.svg';
+import DashboardIcon from '../../images/dashboard.svg';
 
 import { createStyles } from '@material-ui/core/styles'
 
@@ -46,12 +46,104 @@ import IconShoppingCart from '@material-ui/icons/ShoppingCart'
 import IconPeople from '@material-ui/icons/People'
 import IconBarChart from '@material-ui/icons/BarChart'
 import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
-
-import { useHistory } from "react-router-dom";
-
+import { useHistory,Route} from "react-router-dom";
 
 import './navbar.scss';
-import { ImportantDevices } from "@material-ui/icons";
+// import DashboardNew from '../../pages/Dashboard/dashboardnew';
+
+// pages
+import Dashboard from "../../pages/Dashboard/dashboard.js";
+import Resume from "../../pages/Resume/resume.js";
+import Interview from "../../pages/Interview/interview";
+import TodoList from "../../pages/TodoList/todoList";
+import ProjectTask from "../../pages/ProjectTask/projectTask";
+import ProjectIp1 from "../../pages/Project IP1/projectIp";
+import Employeeform from "../../pages/Employeeform/employeeform.js";
+import SearchProject from "../../pages/Search/search";
+import Stages from "../../pages/stages/stageicon";
+import ProjectForm from "../../pages/Search/ProjectForm_IP/projectFormCreate";
+import Task from "../../pages/task/Task";
+import AddClient from "../../pages/AddClient/addclient";
+// import GenerateInvoice from "../pages/Generateinvoi/ce/generateinvoice";
+import GenerateInvoice from "../../pages/Generateinvoice/generateinvoice";
+import StagesMaster from "../../pages/stages/StagesMaster";
+import AddHearing from "../../pages/task/AddHearing";
+import RateMaster from "../../pages/stages/RateMaster";
+import ProjectFormCreate from "../../pages/Search/ProjectForm_IP/projectFormCreate";
+
+//Litigation :
+import Litigation from "../../pages/Litigation/litigation";
+
+//User Groups :
+import UserGroups from "../../pages/UserGroups/usergroups";
+
+//Group Control:
+import GroupControl from "../../pages/GroupControl/groupcontrol";
+
+import GroupAccess from "../../pages/GroupAcess/GroupAccessRights";
+//Stage Monitering:
+import StageMonitering from "../../pages/stages/StageMonitering";
+
+// Leave Update:
+import LeaveUpdate from "../../pages/Leaves/leaveupdate";
+
+//employeeFeedback
+
+import EmployeeFeedback from "../../pages/Feedback/employeeFeedback";
+
+//DashBoard
+
+import DashboardNew from '../../pages/Dashboard/dashboardnew';
+import KPI from '../../pages/KPI/KPI';
+import LeaveForm from '../../pages/Leaves/leaveform';
+import Appraisal from '../../pages/Appraisal/appraisal';
+import Severance from '../../pages/Severance/severance';
+import KRA from '../../pages/KRA/KRA';
+import EmployeeList from '../../pages/EmployeeList/EmployeeList'
+import LibraryBook from '../../pages/LibraryBook/LibraryBook'
+import TicketCreation from '../../pages/RequestTicket/ticketcreation';
+import AdhocTask from '../../pages/Search/adhoctask'
+
+import RatingModel from '../../pages/Appraisal/ratingModel'
+
+import UserMaster from '../../pages/UserMaster/Usermaster'
+import OPE from '../../pages/OPE/OpeAdvance'
+//UserManagement
+import UserGroup from '../../pages/UserManagement/usergroup'
+import NewUserMaster from '../../pages/UserManagement/newusermaster'
+//Library
+import AddResource from '../../pages/LibraryBook/addresource'
+
+//userRights
+import UserRights from '../../pages/UserRights/UserAccess/userAccessRights'
+
+import userAccessRights from "../../pages/UserRights/UserAccess/userAccessRights";
+//To do list
+import AppraisalView from '../../pages/Appraisal/appraisalView';
+import ServeranceModal from '../../pages/Severance/serverance_userview_Modal';
+import MPAppraisal from '../../pages/Appraisal/MP_Appraisal'
+
+//DayReport
+import DayReport from '../../pages/DayReport/dayreport'
+
+//OnlineTest
+import AddQuestion from '../../pages/OnlineTest/addquestion'
+import TestTemplate from '../../pages/OnlineTest/testtemplate'
+import OnlineTest from '../../pages/OnlineTest/onlinetest'
+import InstructionModal from '../../pages/OnlineTest/instructionModal'
+import OnlineQA from '../../pages/OnlineTest/onlineQA'
+import OutofPacket from '../../pages/OutofPacket/OutofPacket'
+
+//TimeSheet
+import ProjectwiseTS from '../../pages/Search/TimeSheets/projectwise_timesheet'
+
+// CheckList Creation
+import checkListCreation from '../../pages/Checklist/checklistCreation';
+import checkListAssign from '../../pages/Checklist/checklistAssigning';
+import CheckListView from '../../pages/Checklist/ChecklistView'
+//OPEAdvance
+// import OPE from '../pages/OPE/OpeAdvance'
+import OPE_Expense from '../../pages/OPE/OpeExpense'
 
 const { Option } = Select
 const { Search } = Input;
@@ -101,14 +193,14 @@ function Navbar(props) {
 
   const [menuItems, setMenuItems] = useState(
     [
-      { path: "/dashboardnew", title: "Dashboard", img: Dashboard },
+      { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
       // { path: "/resume", title: "Resume", img: ResumeIcon },
-      { path: "/todoList", title: "To Do List", img: TodoIcon },
+      { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
       // {path:"/interview",title:"Interview"},
       // { path: "/employeeform", title: "Employee Form" },
-      { path: "/search", title: "Search", img: SearchbarIcon },
-      { path: "/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
-      { path: "/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
+      { path: "/Home/search", title: "Search", img: SearchbarIcon },
+      { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
+      { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
 
       // variable rate master
       // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
@@ -135,9 +227,9 @@ function Navbar(props) {
       {
         active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
         subtree: [
-          { path: "/severance", title: "Exit Interview Form", img: Usergroups },
-          { path: "/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
-          { path: "/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
+          { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
+          { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
+          { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
         ]
       },
 
@@ -145,11 +237,11 @@ function Navbar(props) {
       {
         active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
         subtree: [
-          { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-          { path: "/stagesmaster", title: "Stage Template", img: Stagemaster },
-          { path: "/leaveupdate", title: "Leave Master", img: MasterIcon },
-          { path: "/usermaster", title: "User Master", img: MasterIcon },
-          { path: "/checklistCreation", title: "CheckList Creation", img: MasterIcon },
+          { path: "/Home/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+          { path: "/Home/stagesmaster", title: "Stage Template", img: Stagemaster },
+          { path: "/Home/leaveupdate", title: "Leave Master", img: MasterIcon },
+          { path: "/Home/usermaster", title: "User Master", img: MasterIcon },
+          { path: "/Home/checklistCreation", title: "CheckList Creation", img: MasterIcon },
 
         ]
       },
@@ -159,9 +251,9 @@ function Navbar(props) {
         active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
         subtree: [
           // { path: "/usergroup", title: "User Group", img: Usergroups },
-          { path: "/usergroups", title: "User Groups", img: Usergroups },
-          { path: "/newusermaster", title: "User Master", img: MasterIcon },
-          { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+          { path: "/Home/usergroups", title: "User Groups", img: Usergroups },
+          { path: "/Home/newusermaster", title: "User Master", img: MasterIcon },
+          { path: "/Home/groupcontrol", title: "Group Control", img: MasterIcon },
           // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
           // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
         ]
@@ -171,9 +263,9 @@ function Navbar(props) {
       {
         active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
         subtree: [
-          { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-          { path: "/testtemplate", title: "Test Template", img: MasterIcon },
-          { path: "/onlinetest", title: "Online Test", img: MasterIcon }
+          { path: "/Home/addquestion", title: "Add Questions", img: MasterIcon },
+          { path: "/Home/testtemplate", title: "Test Template", img: MasterIcon },
+          { path: "/Home/onlinetest", title: "Online Test", img: MasterIcon }
         ]
       },
 
@@ -190,7 +282,7 @@ function Navbar(props) {
 
   function handleLogout() {
     localStorage.clear();
-    history.push("/login")
+    history.push("/")
     // window.location.reload()
   }
   // console.log(pathname,"pathname")
@@ -370,7 +462,104 @@ function Navbar(props) {
       </Drawer>
       <main className={` MasterContainer ${classes.content}`}>
         <Toolbar />
+        <Route path={`${props.match.path}/DashboardNew`} component={DashboardNew} />
+        <Route path={`${props.match.path}/resume`} component={Resume} exact />
+        <Route path={`${props.match.path}/dashboard`} component={Dashboard} exact />
+        <Route path={`${props.match.path}/interview`} component={Interview} exact />
+        <Route path={`${props.match.path}/employeeform`} component={Employeeform} exact />
+        <Route path={`${props.match.path}/todolist`} component={TodoList}/>
+        <Route path={`${props.match.path}/search`} component={SearchProject} exact />
+        <Route path={`${props.match.path}/task`} component={Task} exact />
+        <Route path={`${props.match.path}/addclient`} component={AddClient} exact />
+        <Route path={`${props.match.path}/generateinvoice`} component={GenerateInvoice} exact />
+
+        {/* Create Project Form */}
+        <Route path={`${props.match.path}/projectFormCreate`} component={ProjectFormCreate} exact />
+        {/* Ip TradeMark */}
+        <Route path={`${props.match.path}/projectTask`} component={ProjectTask} exact />
+        <Route path={`${props.match.path}/projectIp/:rowId`} component={ProjectIp1} exact />
+        <Route path={`${props.match.path}/stageicon`} component={Stages} exact />
+        <Route path={`${props.match.path}/stagesmaster`} component={StagesMaster} exact />
+        <Route path={`${props.match.path}/addhearing`} component={AddHearing} exact />
+        <Route path={`${props.match.path}/ratemaster`} component={RateMaster} exact />
+
+        {/* Litigation */}
+        <Route path={`${props.match.path}/litigation`} component={Litigation} exact />
+        {/* User Groups */}
+        <Route path={`${props.match.path}/usergroups`} component={UserGroups} exact />
+        {/*  Group Control */}
+        <Route path={`${props.match.path}/groupcontrol`} component={GroupControl} exact />
+        <Route path={`${props.match.path}/groupaccess`} component={GroupAccess} exact />
+
+
+        {/*  Stage Monitering */}
+        <Route path={`${props.match.path}/stagemonitering`} component={StageMonitering} exact />
+
+        {/* Dashboarde */}
+        <Route path={`${props.match.path}/kpi`} component={KPI} exact />
+        {/* <PrivateRoute path={`${props.match.patch}/dashboardnew`} component={DashboardNew} exact /> */}
+        <Route path={`${props.match.path}/leaveform`} component={LeaveForm} exact />
+        <Route path={`${props.match.path}/appraisal/:rowId`} component={Appraisal} exact />
+        <Route path={`${props.match.path}/appraisal`} component={Appraisal} exact />
+        <Route path={`${props.match.path}/ratingModel`} component={RatingModel} exact />
+        <Route path={`${props.match.path}/ticketcreation`} component={TicketCreation} exact />
+        <Route path={`${props.match.path}/KRA`} component={KRA} exact />
+        <Route path={`${props.match.path}/adhoctask`} component={AdhocTask} exact />
+
+
+        {/* Leaves Update */}
+        <Route path={`${props.match.path}/leaveupdate`} component={LeaveUpdate} exact />
+        <Route path={`${props.match.path}/severance`} component={Severance} exact />
+
+
+        {/* EmployeeFeedback */}
+        <Route path={`${props.match.path}/employeeFeedback`} component={EmployeeFeedback} exact />
+
+        {/* Usermaster */}
+        <Route path={`${props.match.path}/usermaster`} component={UserMaster} />
+
+        <Route path={`${props.match.path}/employeelist`} component={EmployeeList} />
+        <Route path={`${props.match.path}/librarybook`} component={LibraryBook} />
+        <Route path={`${props.match.path}/ope_advance`} component={OPE} />
+        {/* UserManagement */}
+        <Route path={`${props.match.path}/usergroup`} component={UserGroup} />
+        <Route path={`${props.match.path}/newusermaster`} component={NewUserMaster} />
+        <Route path={`${props.match.path}/useraccessrights`} component={userAccessRights} />
+        {/* Library */}
+        <Route path={`${props.match.path}/addresource`} component={AddResource} />
+
+        {/* UserRights */}
+        <Route path={`${props.match.path}/userrights`} component={UserRights} />
+        {/* To do list */}
+        <Route path={`${props.match.path}/appraisalView`} component={AppraisalView} exact />
+        <Route path={`${props.match.path}/serverance_userview_Modal`} component={ServeranceModal} exact />
+        <Route path={`${props.match.path}/MP_Appraisal`} component={MPAppraisal} exact />
+
+        {/* DayReport */}
+        <Route path={`${props.match.path}/dayreport`} component={DayReport} exact />
+
+        {/* Online Test */}
+        <Route path={`${props.match.path}/addquestion`} component={AddQuestion} exact />
+        <Route path={`${props.match.path}/testtemplate`} component={TestTemplate} exact />
+        <Route path={`${props.match.path}/onlinetest`} component={OnlineTest} exact />
+        <Route path={`${props.match.path}/instructionModal`} component={InstructionModal} exact />
+        <Route path={`${props.match.path}/onlineQA/:designation/:candidate/:testTemplateId`} component={OnlineQA} exact />
+
+        {/* out of packet */}
+        <Route path={`${props.match.path}/outofpacket`} component={OutofPacket} exact />
+        {/* TimeSheet */}
+        <Route path={`${props.match.path}/projectwise_timesheet`} component={ProjectwiseTS} exact />
+
+        {/* checkListCreation */}
+        <Route path={`${props.match.path}/checklistCreation`} component={checkListCreation} exact />
+        <Route path={`${props.match.path}/checklistAssigning`} component={checkListAssign} exact />
+        <Route path={`${props.match.path}/checklistview`} component={CheckListView} exact />
+        {/* OPEAdvance */}
+        {/* <PrivateRoute path="/OpeAdvance" component={OPE} exact /> */}
+        <Route path={`${props.match.path}/OpeExpense`} component={OPE_Expense} exact />
+        <div>
         {props.children}
+        </div>
       </main>
     </div>
   )
