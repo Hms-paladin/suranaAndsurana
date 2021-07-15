@@ -1,5 +1,5 @@
 import {
-    INSERT_CHECKLIST_CREATION, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED,GET_CHECK_LIST_VIEW
+    INSERT_CHECKLIST_CREATION, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED,GET_CHECK_LIST_VIEW,GET_DAYS_WEEK
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -64,6 +64,22 @@ export const getCheckLists = () => async dispatch => {
         })
             .then((response) => {
                 dispatch({ type: GET_CHECKLIST_LISTS, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const getDaysOfWeek = () => async dispatch => {
+    try {
+
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_days_of_week'
+        })
+            .then((response) => {
+                dispatch({ type: GET_DAYS_WEEK, payload: response.data.data })
             })
 
     } catch (err) {

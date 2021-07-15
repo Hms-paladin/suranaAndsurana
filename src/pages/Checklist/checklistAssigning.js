@@ -8,10 +8,10 @@ import Axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment"
 import { useDispatch, connect } from "react-redux";
-import {getCheckListsNames,insert_check_list_assign,
+import {getCheckListsNames,insert_check_list_assign,getDaysOfWeek
 } from "../../actions/CheckListAction";
 import {
-    getEmployeeList,getProjectType,getCheckListType,getActivity,getFrequency,
+    getEmployeeList,getProjectType
   } from "../../actions/MasterDropdowns";
   import ValidationLibrary from "../../helpers/validationfunction";
 function CheckListAssign(props) {
@@ -25,7 +25,7 @@ function CheckListAssign(props) {
           "projectId",
           "subProjectId",
           "startDate",
-          "endDate",
+          "endDate","noOfDaysWeeks"
         ];
     
         From_key.map((data) => {
@@ -69,6 +69,7 @@ function CheckListAssign(props) {
             "project_sub_type_id":checkListForm.subProjectId.value == '' ? 0 : checkListForm.subProjectId.value ,
             "start_date":checkListForm.startDate.value,
             "end_date":checkListForm.endDate.value,
+            "days_of_week_id" :checkListForm.noOfDaysWeeks.valueById,
             "created_on":moment().format('YYYY-MM-DD HH:m:s'),
             "created_by":localStorage.getItem("empId")
              
@@ -118,10 +119,13 @@ function CheckListAssign(props) {
         if (data && key == "employeeId") {
           checkListForm['projectId'].disabled = true;
           checkListForm['subProjectId'].disabled = true;
+          checkListForm['projectId'].validation =[];
+          checkListForm['subProjectId'].validation =[];
         }
        
         if (data && key == "projectId") {
           checkListForm['employeeId'].disabled = true;
+          checkListForm['employeeId'].validation =[];
           Axios({
             method: "POST",
             url: apiurl + "get_project_sub_type",
@@ -148,54 +152,63 @@ function CheckListAssign(props) {
     const [checkListForm, setcheckListForm] = useState({
         checkListNameId: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         employeeId: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
           disabled: false
         },
         projectId: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
           disabled: false
         },
         subProjectId: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
           disabled: false
         },
         startDate: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
         },
         endDate: {
           value: "",
-          validation: [],
+          validation: [{ name: "required" }],
           error: null,
           errmsg: null,
-        }
+        },
+        noOfDaysWeeks: {
+          value: "",
+          valueById: "",
+          validation: [{ name: "required" }],
+          error: null,
+          errmsg: null,
+        } 
       });
     useEffect(() => {
         dispatch(getCheckListsNames());
         dispatch(getEmployeeList());
         dispatch(getProjectType());
+        dispatch(getDaysOfWeek()); 
       }, []);
 
 
 const [projectTypeList, setprojectTypeList] = useState({})
 const [projectSubTypeList, setprojectSubTypeList] = useState({})
-const [employeeList, setemployeeList] = useState({})
+const [employeeList, setemployeeList] = useState({}) 
+const [daysOfWeeksLists, setdaysOfWeeksLists] = useState({})
 const [checkListNames, setcheckListNames] = useState({})
 useEffect(() => {
   
@@ -228,10 +241,18 @@ useEffect(() => {
   )
   setcheckListNames({ checkListnamesdata })
   
+  let daysofWeeksData = []
+  props.getDaysofWeeks.map((data) =>
+  daysofWeeksData.push({
+      value: data.days_of_week,
+      id: data.days_of_week_id
+    })
+  )
+  setdaysOfWeeksLists({ daysofWeeksData })
 
+  //daysOfWeeksLists.daysofWeeksData
 
-
-}, [props.getProjectType,props.getEmployeeList,props.getCheckListsNames
+}, [props.getProjectType,props.getEmployeeList,props.getCheckListsNames,props.getDaysofWeeks
 ]);
 
     ///***********user permission**********/
@@ -322,7 +343,7 @@ useEffect(() => {
 
                     </Grid>
                     <Grid item xs={3} container direction="column">
-                        <div className="TThead">End Month</div>
+                        <div className="TThead">End Date</div>
                         <Labelbox type="datepicker"
                         changeData={(data) => checkValidation(data, "endDate")}
                         placeholder={"End date "}
@@ -332,6 +353,23 @@ useEffect(() => {
                         
                         ></Labelbox>
                     </Grid>
+
+                    <Grid item xs={3} container direction="column">
+                    <div className="TThead">Days of Week</div>
+                <Labelbox
+                  type="select"
+                  mode={"multiple"}
+                  placeholder={"Days of Week"}
+                  dropdown={daysOfWeeksLists.daysofWeeksData}
+                  changeData={(data) =>
+                    checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
+                  }
+                  value={checkListForm.noOfDaysWeeks.value}
+                  error={checkListForm.noOfDaysWeeks.error}
+                  errmsg={checkListForm.noOfDaysWeeks.errmsg}
+                />
+              </Grid>
+
                 </Grid>
 
                 <div className="checklistAssignBtn">
@@ -349,5 +387,6 @@ const mapStateToProps = (state) =>
         getProjectType : state.getOptions.getProjectType || [],
         getEmployeeList : state.getOptions.getEmployeeList || [],
         getCheckListsNames : state.CheckListReducer.getCheckListsNames || [],
+        getDaysofWeeks: state.CheckListReducer.getDaysofWeeks || [],
     });
 export default connect(mapStateToProps) (CheckListAssign);
