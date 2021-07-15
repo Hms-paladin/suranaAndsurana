@@ -19,6 +19,7 @@ function KRAModal(props) {
     ];
     const [employeeList, setEmployeeList] = useState({});
     const [rowData, setRowData] = useState([])
+    const [empId,setempId]=useState(localStorage.getItem("empId"))
     const [kra_Model, setkra_Model] = useState({
 
         employee: {
@@ -42,8 +43,8 @@ function KRAModal(props) {
 
     });
     useEffect(() => {
-        dispatch(getSubordinate(props.empId));
-    }, [props.empId]);
+        dispatch(getSubordinate(empId));
+    }, [empId]);
 
     useEffect(() => {
         let EmployeeList = []

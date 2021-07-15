@@ -232,7 +232,6 @@ const KRA = (props) => {
     }
 
     const addpercentage = () => {
-        alert("test")
         console.log(reference.current, "dfghjklrtyui")
 
         let Percentage = []
@@ -450,7 +449,7 @@ const KRA = (props) => {
                     </Grid>
                 </div>
 
-                <div style={{ padding: "10px" }}>
+                <div style={{ padding: "20px 10px 10px 10px" }}>
                     <EnhancedTable headCells={header} aligncss="kra_table"
                         rows={reference.current} />
                 </div>
