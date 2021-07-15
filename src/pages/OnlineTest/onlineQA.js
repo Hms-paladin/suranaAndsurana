@@ -173,7 +173,7 @@ function OnlineQA(props) {
     const submitOnlineTest = useCallback(() => {
 
         dispatch(onlinetest(designationId, candidateId, submitData)).then(() => {
-            history.push("/onlinetest");
+            history.push("/Home/onlinetest");
         })
 
     })
@@ -309,7 +309,7 @@ function OnlineQA(props) {
                             </label>
                         </div>
                         <div className="customNotFoundbtn">
-                            <CustomButton btnName={"EXIT"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => history.push('/onlinetest')} />
+                            <CustomButton btnName={"EXIT"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => history.push('/Home/onlinetest')} />
                             <CustomButton btnName={"CANCEL "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setExitOnlineTest(false)} />
                         </div>
                     </div>

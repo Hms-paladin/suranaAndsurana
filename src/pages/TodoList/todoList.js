@@ -461,7 +461,7 @@ console.log(unblockUser,"unblockUser")
 
                 <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} KpiId={KpiApproval}/>} />
 
-                {appraisalModel && <Redirect push to={`/appraisal/${appraisalData}`} />}
+                {appraisalModel && <Redirect push to={`/Home/appraisal/${appraisalData}`} />}
 
             </div>
 

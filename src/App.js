@@ -5,6 +5,7 @@ import PrivateRoute from './Router/PrivateRoute';
 import Login from "./pages/Login/login.js";
 import Routes from "./Router/route";
 import { useDispatch} from "react-redux";
+import Navbar from "./component/Navbar/navbar.js";
 import {get_user_rights} from "./actions/UserAccessRightsAction";
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("token"));
@@ -23,8 +24,8 @@ function App() {
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Router basename="suranaAndsurana/?/">
         <Switch>
-          <Route path="/login" component={Login} exact />
-          <PrivateRoute path="/" component={Routes} />
+          <Route path="/" component={Login} exact />
+          <Route path="/Home" component={Navbar} />
         </Switch>
       </Router>
     </AuthContext.Provider>

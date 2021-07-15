@@ -272,21 +272,21 @@ function Projectsearch(props) {
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
           let currentData = {}
-          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["ProjectName"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["subprojectype"] = data.sub_project_type;
           rowdataListobj["processtype"] = data.process;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
         } else if (data.project_type_id === 6) {
-          rowdataListobj["projectname"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["DRA"] = data.HR_name;
           rowdataListobj["DDRA"] = data.councel_name;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
         } else {
-          rowdataListobj["projectname"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["hodAttorney"] = data.councel_name;
           rowdataListobj["Counsel"] = data.HR_name;
@@ -461,7 +461,7 @@ useEffect(() => {
         />
       </div>
       {redirectToProject && createProjectRights&&createProjectRights.display_control&&createProjectRights.display_control==='Y' &&
-        <Redirect push to="/projectFormCreate" />
+        <Redirect push to="/Home/projectFormCreate" />
       }
       {/* {console.log(pathname, "projectFormCreate")} */}
 
