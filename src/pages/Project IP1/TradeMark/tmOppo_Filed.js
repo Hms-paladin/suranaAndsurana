@@ -495,14 +495,14 @@ function TradeMarkOposition1(properties) {
         //console.log(filtererr.length);
         let params = {
             "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
-            "status_id": TradeMarkForm.status_id.value,
+            "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
             "our_reference": TradeMarkForm.ourReference.value,
-            "mark_id": TradeMarkForm.mark_id.value,
+            "mark_id": TradeMarkForm.mark_id.value===''?'0':TradeMarkForm.mark_id.value,
             "upload_image": selectedFile,
             "application_no": TradeMarkForm.application_no.value,
-            "application_date": TradeMarkForm.application_date.value,
+            "application_date": TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value,
             "tmj_number": TradeMarkForm.tmj_number.value,
-            "tmj_date": TradeMarkForm.tmj_date.value,
+            "tmj_date": TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value,
             "opposition_no": TradeMarkForm.opositionNumber.value,
             "applicant": TradeMarkForm.applicant.value,
             "applicant_agent": TradeMarkForm.applicantAgent.value,

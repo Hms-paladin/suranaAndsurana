@@ -50,6 +50,18 @@ function TradeMark(properties) {
             TradeMarkForm.comments.value = obj.comments;
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
+            TradeMarkForm.next_renewal.value = obj.next_renewal;
+            if (obj.next_renewal && obj.next_renewal.length)
+                TradeMarkForm.next_renewal.disabled = false;
+
+            TradeMarkForm.poa.value = obj.poa;
+            if (obj.poa && obj.poa.length)
+                TradeMarkForm.poa.disabled = false;
+
+            TradeMarkForm.class_id.value = obj.class_id;
+            if (obj.class_id && obj.class_id.length)
+                TradeMarkForm.class_id.disabled = false;
+
             TradeMarkForm.status_id.value = obj.status_id;
             if (obj.status_id && obj.status_id.length)
                 TradeMarkForm.status_id.disabled = false;
@@ -446,7 +458,7 @@ function TradeMark(properties) {
             disabled: false,
 
         },
-        nextRenewal: {
+        next_renewal: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
@@ -482,7 +494,7 @@ function TradeMark(properties) {
             "mark_id": TradeMarkForm.mark_id.value,
             "upload_image": selectedFile,
             "application_no": TradeMarkForm.application_no.value,
-            "application_date": TradeMarkForm.application_date.value,
+            "application_date": TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value,
             "usage_details_id": TradeMarkForm.usage_details_id.value,
             "goods_description": TradeMarkForm.goods_description.value,
             "usage_from_date": TradeMarkForm.usage_from_date.value,
@@ -498,7 +510,7 @@ function TradeMark(properties) {
             "journel_extract": TradeMarkForm.journel_extract.value,
             "certificate_date": TradeMarkForm.certificate_date.value,
             "renewal_certificate_date": TradeMarkForm.renewal_certificate_date.value,
-            "next_renewal": TradeMarkForm.nextRenewal.value,
+            "next_renewal": TradeMarkForm.next_renewal.value,
             "created_by": localStorage.getItem("empId"),
             "created_on": moment().format('YYYY-MM-DD HH:m:s'),
             "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
@@ -518,6 +530,7 @@ function TradeMark(properties) {
 
             dispatch(insertTradeMark(params)).then(() => {
                 handleCancel()
+                // dispatch(getTradeMark(rowId))
             })
         }
 
@@ -704,11 +717,11 @@ function TradeMark(properties) {
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Next Renewal</div>
                         <Labelbox type="datepicker"
-                            changeData={(data) => checkValidation(data, "nextRenewal")}
-                            value={TradeMarkForm.nextRenewal.value}
-                            error={TradeMarkForm.nextRenewal.error}
-                            errmsg={TradeMarkForm.nextRenewal.errmsg}
-                            disabled={TradeMarkForm.nextRenewal.disabled}
+                            changeData={(data) => checkValidation(data, "next_renewal")}
+                            value={TradeMarkForm.next_renewal.value}
+                            error={TradeMarkForm.next_renewal.error}
+                            errmsg={TradeMarkForm.next_renewal.errmsg}
+                            disabled={TradeMarkForm.next_renewal.disabled}
                             disablePast={true}
                         />
                     </Grid>
