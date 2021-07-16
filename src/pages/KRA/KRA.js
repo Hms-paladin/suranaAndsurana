@@ -33,6 +33,7 @@ const KRA = (props) => {
     const [totalPercentage, setTotalPercentage] = useState(0)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
+    const [minDate,setminDate]=useState("")
     const [empId, setEmpId] = useState(localStorage.getItem("empId"))
     const [kpi_form, setKpi_form] = useState({
 
@@ -80,6 +81,7 @@ const KRA = (props) => {
         });
         setActivity({ Activity })
         setTestDate(props.getKra[0])
+        console.log(props.getKra,"idddd")
     }, [props.getActivity, props.getKra, kpi_form])
 
     useEffect(() => {
@@ -102,6 +104,7 @@ const KRA = (props) => {
         var startDate = kpi_form.fromperiod.value
         if (data && key === "fromperiod") {
             startDate = moment(data).format("MMM-yyyy");
+            setminDate(data)
         }
         var toDate = kpi_form.toperiod.value
         if (data && key === "toperiod") {
@@ -346,7 +349,7 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={"mm/yyyy"}
+                                        format={"MMM-yyyy"}
                                         changeData={(data) => checkValidation(data, "fromperiod")}
                                         value={kpi_form.fromperiod.value}
                                         error={kpi_form.fromperiod.error}
@@ -356,12 +359,13 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={'mm/yyyy'}
+                                        format={'MMM-yyyy'}
                                         changeData={(data) => checkValidation(data, "toperiod")}
                                         value={kpi_form.toperiod.value}
                                         error={kpi_form.toperiod.error}
                                         errmsg={kpi_form.toperiod.errmsg}
                                         disabled={disabledate ? true : false}
+                                        minDate={minDate}
                                     /></div>
                                 {/* <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div> */}
                             </Grid>
