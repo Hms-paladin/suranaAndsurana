@@ -13,7 +13,7 @@ export const InsertDesign = (data, ProjectDetails, design_id) => async dispatch 
             method: 'POST',
             url: apiurl + 'insert_design',
             data: {
-                "design_id": design_id || 0,
+                "design_id": design_id.design_id || 0,
                 "project_id": ProjectDetails.project_id,
                 "file_cover": data.file_cover && data.file_cover.value || "",
                 "associate": data.associate && data.associate.value || "",
