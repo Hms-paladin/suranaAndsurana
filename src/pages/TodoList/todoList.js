@@ -250,7 +250,7 @@ function TodoList(props) {
                 showName = "Employee Appraisal"
             }
             else if(data.kpi_id){
-                showId = data.kra_id
+                showId = data.kpi_id
                 showName = "KPI Approval"
             }
 
@@ -391,7 +391,7 @@ console.log(unblockUser,"unblockUser")
             setKpiapprovemodel(true)
             let Kpi = props.getOtherTask.find((val) => {
                 return (
-                    id == val.kra_id
+                    id == val.kpi_id
                 )
             })
             setKpiApproval(Kpi)

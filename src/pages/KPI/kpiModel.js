@@ -105,6 +105,7 @@ const KPI = (props) => {
  dispatch(GetKpiApproval(props.KpiId))
 
  },[props.KpiId])
+ console.log("props",props)
 useEffect(()=>{
     let Data=[]
     props.KpiApproval.length>0&&props.KpiApproval.map((data)=>{
@@ -132,7 +133,7 @@ useEffect(()=>{
                         <Grid item xs={6}>
                             <div><label style={{ fontSize: 11 }}>Period</label></div>
                             <div><label style={{ fontWeight: 'bold' }}>
-                            {moment(ApprovalData[0]?.period_from).format("DD-MMM-YYYY")} to {moment(ApprovalData[0]?.period_to).format("DD-MMM-YYYY")}</label></div>
+                            {moment(ApprovalData[0]?.period_from).format("MMM-YYYY")} to {moment(ApprovalData[0]?.period_to).format("MMM-YYYY")}</label></div>
                         </Grid>
                     </Grid>
 

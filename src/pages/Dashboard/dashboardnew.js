@@ -74,6 +74,8 @@ function DashboardNew() {
   const [menuListItem, setMenuListItem] = useState([]);
   const [arrowHide, setArrowHide] = useState(false);
   const [changedashBoard, setChangedashBoard] = useState(true);
+  const [color,setcolor]=useState("")
+  const [userclr,setuserclr]=useState("customPrimary")
   // const[adhoc,setAdhoc]=useState(false)
 
   const [menulist, setMenulist] = useState([
@@ -173,12 +175,17 @@ function DashboardNew() {
     []
   );
 
-  const userdashboard = () => {
+  const userdashboard = (color) => {
     setChangedashBoard(true)
+    setcolor("")
+    setuserclr(color)
+
   }
 
-  const compliancedashboard = () => {
+  const compliancedashboard = (color) => {
     setChangedashBoard(false)
+    setcolor(color)
+    setuserclr("")
   }
 
   console.log(arrowHide, "arrowHide");
@@ -206,13 +213,16 @@ function DashboardNew() {
 
       <div className="dashboardbtn">
         <CustomButton
+          btnCustomColor={userclr}
           btnName={"User Overview"}
-          onBtnClick={userdashboard}
+          custombtnCSS="btncustom_css"
+          onBtnClick={()=>userdashboard("customPrimary")}
         />
         <CustomButton btnName={"Compliance"}
-          btnCustomColor="customPrimary"
+          btnCustomColor={color}
           onBtnClick={userdashboard}
-          onBtnClick={compliancedashboard}
+          custombtnCSS="btncustom_css"
+          onBtnClick={()=>compliancedashboard("customPrimary")}
         />
       </div>
 
