@@ -13,25 +13,29 @@ import RatingModel from './ratingModel';
 import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
+import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
 
 const { Panel } = Collapse;
 
 function Appraisal(props) {
     let { rowId } = useParams()
-
-
-    // useEffect(() => {
-    // dispatch(getProjectDetails(rowId))
-    // }, [])
     const dispatch = useDispatch();
     const rowIdtw = ""
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
+    const [addemployeeseminar, setAddemployeeSeminar] = useState([])
+    const [addemployeeProgram, setAddemployeeProgram] = useState([])
     const [changeCheckbox, setChangeCheckbox] = useState(false)
     const [modelOpen, setModelOpen] = useState(false)
     const [ratingModelOpen, setRatingModelOpen] = useState(false)
     const [modelTitle, setModelTitle] = useState()
     const [rowID, setRowID] = useState(rowId)
     const [saveRights, setSaveRights] = useState([])
+    const [areDevelopment, setAreDevelopment] = useState({})
+    const [showQual, setShowQual] = useState(false)
+    const [showProgram, setShowProgram] = useState(false)
+    const [showSeminar, setShowSeminar] = useState(false)
+    const [showKeys, setShowKeys] = useState(false)
+
 
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
@@ -60,12 +64,37 @@ function Appraisal(props) {
         },
     })
 
+    useEffect(() => {
+        dispatch(GetAreaDevelopment())
+    }, [])
+
+    useEffect(() => {
+        let AreDevelopment = []
+        props.GetAreaDevelopment.map((data) =>
+            AreDevelopment.push({ id: data.area_development_id, value: data.area_development })
+        );
+        setAreDevelopment({ AreDevelopment });
+    }, [props.GetAreaDevelopment])
+
 
     const AddempDetails = () => {
-        addemployeeDetails.push({ details: Appraisal.details.value, date: Appraisal.date.value })
-        setAddemployeeDetails([...addemployeeDetails])
-
+        console.log(showKeys, "showKeys")
+        if (showKeys === 1) {
+            addemployeeDetails.push({ details: Appraisal.details.value, date: Appraisal.date.value })
+            setAddemployeeDetails([...addemployeeDetails])
+        }
+        else if (showKeys === 3) {
+            addemployeeseminar.push({ details: Appraisal.details.value, date: Appraisal.date.value })
+            setAddemployeeSeminar([...addemployeeseminar])
+        }
+        else {
+            addemployeeProgram.push({ details: Appraisal.details.value, date: Appraisal.date.value })
+            setAddemployeeProgram([...addemployeeProgram])
+        }
+        handleCancel()
     }
+
+
 
     function callback(key) {
         console.log(key);
@@ -79,6 +108,19 @@ function Appraisal(props) {
 
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
+
+        if (data === 1 && key === "area_dev") {
+            setShowKeys(data)
+            setShowQual(true)
+        }
+        if (data === 2 && key === "area_dev") {
+            setShowProgram(true)
+            setShowKeys(data)
+        }
+        if (data === 3 && key === "area_dev") {
+            setShowSeminar(true)
+            setShowKeys(data)
+        }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -109,7 +151,7 @@ function Appraisal(props) {
 
     ///***********user permission**********/
     useEffect(() => {
-        if (props.UserPermission.length > 0 && props.UserPermission) {
+        if (props.UserPermission && props.UserPermission.length > 0 && props.UserPermission) {
             let data_res_id = props.UserPermission.find((val) => {
                 return (
                     "Appraisal - Save" == val.control
@@ -137,6 +179,27 @@ function Appraisal(props) {
         });
     }
     /////////////
+
+    const handleCancel = () => {
+        let From_key = [
+            "area_dev",
+            "details",
+            "date",
+            "comment",
+        ];
+
+        From_key.map((data) => {
+            try {
+                Appraisal[data].value = "";
+            } catch (error) {
+                throw error;
+            }
+        });
+        setAppraisal((prevState) => ({
+            ...prevState,
+        }));
+    };
+
     return (
         <div>
             {/* { permission.allow_view==='Y'&& <div> */}
@@ -174,6 +237,7 @@ function Appraisal(props) {
                                     value={Appraisal.area_dev.value}
                                     error={Appraisal.area_dev.error}
                                     errmsg={Appraisal.area_dev.errmsg}
+                                    dropdown={areDevelopment.AreDevelopment}
                                 />
                             </div>
                         </Grid>
@@ -215,44 +279,59 @@ function Appraisal(props) {
 
 
                 <div className="employeeApprisal_Container">
-                    <div className="employeeApprisal_Child_Container">
+                    {showQual && addemployeeDetails.length > 0 && <div className="employeeApprisal_Child_Container">
                         <div className="TitleChildDiv">
                             <div>Qualification</div>
                             <div>Date</div>
                         </div>
-                        <div className="ValueChildDiv">
-                            <div>LLB</div>
-                            <div>Mar 2021</div>
+                        <div className="gridDatashow">
+                            {addemployeeDetails.map((data) => {
+                                return (
+                                    <div className="ValueChildDiv">
+                                        <div>{data.details}</div>
+                                        <div>{data.date}</div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                        <div className="ValueChildDiv">
-                            <div>Diploma in Law</div>
-                            <div>Dec 2021</div>
-                        </div>
-                    </div>
-                    <div className="employeeApprisal_Child_Container">
+                    </div>}
+                    {showProgram && addemployeeProgram.length > 0 && <div className="employeeApprisal_Child_Container">
                         <div className="TitleChildDiv">
                             <div>Program</div>
                             <div>Date</div>
                         </div>
-                        <div className="ValueChildDiv">
-                            <div>Legal Practice</div>
-                            <div>Jan 2021</div>
+                        <div className="gridDatashow">
+                            {addemployeeProgram.map((data) => {
+                                return (
+                                    <div className="ValueChildDiv">
+                                        <div>{data.details}</div>
+                                        <div>{data.date}</div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                    </div>
-                    <div className="employeeApprisal_Child_Container">
+                    </div>}
+                    {showSeminar && addemployeeseminar.length > 0 && <div className="employeeApprisal_Child_Container">
                         <div className="TitleChildDiv">
                             <div>Seminar</div>
                             <div>Date</div>
                         </div>
-                        <div className="ValueChildDiv">
-                            <div>Seminar 1</div>
-                            <div>Feb 2021</div>
+                        <div className="gridDatashow">
+                            {addemployeeseminar.map((data) => {
+                                console.log(addemployeeseminar, "addemployeeseminar")
+                                return (
+                                    <div className="ValueChildDiv">
+                                        <div>{data.details}</div>
+                                        <div>{data.date}</div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                    </div>
+                    </div>}
                 </div>
 
 
-                {addemployeeDetails.length > 0 &&
+                {/* {addemployeeDetails.length > 0 &&
                     <div className="appraisalTable" >
                         <div className="appraisaldetails">
                             <div>Qualification</div>
@@ -268,7 +347,7 @@ function Appraisal(props) {
                             )
                         })}
 
-                    </div>}
+                    </div>} */}
             </div>
 
 
@@ -451,6 +530,6 @@ function Appraisal(props) {
 
 const mapStateToProps = (state) =>
 ({
-    UserPermission: state.UserPermissionReducer.getUserPermission,
+    GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
 });
 export default connect(mapStateToProps)(Appraisal);
