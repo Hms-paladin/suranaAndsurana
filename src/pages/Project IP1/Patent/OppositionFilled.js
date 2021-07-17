@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import {
     getTradeMarkStatus, getCountryDetails,
 } from "../../../actions/tradeMarkAction";
-import { insertPatent } from "../../../actions/PatentAction";
+import { insertPatent,getPatentDetails } from "../../../actions/PatentAction";
 import moment from 'moment'
 
 function OppositionFilled(props) {
@@ -77,7 +77,7 @@ function OppositionFilled(props) {
         dispatch(getProjectDetails(rowId))
         dispatch(getTradeMarkStatus());
         dispatch(getCountryDetails());
-
+        dispatch(getPatentDetails(rowId));
     }, []);
 
     useEffect(() => {
@@ -111,6 +111,30 @@ function OppositionFilled(props) {
     props.tradeStatusList, props.countriesList
     ]);
 
+    useEffect(() => {
+        if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
+          let indiaFil_key = ["opp_fill_date", "app_agent", "type_grant", "app_num", "opponent", "publicationdate", "title", "applicant"]
+    
+          let indiaFil_value = ["opposition_filled_date", "application_agent","types_of_grant", "application_agent","opponent_agent", "publication_date", "patent_title",  "patent_applicant"]
+    
+          indiaFil_key.map((data, index) => {
+            // console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", props.getPatentDetails[0][indiaFil_value[index]],"indiaFil_value[index]")
+            if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" ) {
+              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]];
+              patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
+            }
+            else {
+              console.log(props.getPatentDetails[0][indiaFil_value[index]], "props.getPatentDetails[0]")
+              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]);
+              patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+    
+            } 
+          });
+          setpatentForm((prevState) => ({
+            ...prevState,
+          }));
+        }
+      }, [props.getPatentDetails])
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(patentForm);
@@ -143,6 +167,10 @@ function OppositionFilled(props) {
             "updated_by": localStorage.getItem("empId"),
         }
 
+        if (props.getPatentDetails[0]?.patent_id != "0") {
+            params["patent_id"] = props.getPatentDetails[0]?.patent_id;
+          }
+              
         if (filtererr.length > 0) {
             // setpatentForm({ error: true });
         } else {
@@ -300,6 +328,7 @@ const mapStateToProps = (state) =>
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    getPatentDetails: state.PatentReducer.getPatentDetails || [],
 });
 
 export default connect(mapStateToProps)(OppositionFilled);

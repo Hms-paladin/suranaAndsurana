@@ -161,7 +161,7 @@ function InternationalFilling(props) {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertDesign(InternationlForm, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
+      dispatch(InsertDesign(InternationlForm, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
         // handleCancel()
       })
     }

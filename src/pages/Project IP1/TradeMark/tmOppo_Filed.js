@@ -83,9 +83,11 @@ function TradeMarkOposition1(properties) {
             if (obj.tmj_number && obj.tmj_number.length)
                 TradeMarkForm.tmj_number.disabled = true;
 
-            TradeMarkForm.tmj_date.value = obj.tmj_date;
-            if (obj.tmj_date && obj.tmj_date.length)
-                TradeMarkForm.tmj_date.disabled = true;
+            if(obj.tmj_date!="0000-00-00"){
+                TradeMarkForm.tmj_date.value = obj.tmj_date;
+                if (obj.tmj_date && obj.tmj_date.length)
+                    TradeMarkForm.tmj_date.disabled = true;
+                }
 
             TradeMarkForm.opositionNumber.value = obj.opposition_no;
             if (obj.opositionNumber && obj.opositionNumber.length)
@@ -152,7 +154,7 @@ function TradeMarkOposition1(properties) {
 
 
     }, [
-        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList
+        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList,properties.tradeMark
     ]);
 
     const dispatch = useDispatch()
@@ -172,41 +174,41 @@ function TradeMarkOposition1(properties) {
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
             value: 0,
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         project_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         }, associateRefernce: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, ourReference: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, associate: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, applicantAgent: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -214,7 +216,7 @@ function TradeMarkOposition1(properties) {
         },
         userclaim: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -222,7 +224,7 @@ function TradeMarkOposition1(properties) {
         },
         status_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -230,7 +232,7 @@ function TradeMarkOposition1(properties) {
         },
         class_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -238,7 +240,7 @@ function TradeMarkOposition1(properties) {
         },
         usage_details_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -246,21 +248,21 @@ function TradeMarkOposition1(properties) {
         },
         mark_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, internalstutus: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, end_date: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -284,14 +286,14 @@ function TradeMarkOposition1(properties) {
         },
         upload_image: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, country_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -299,7 +301,7 @@ function TradeMarkOposition1(properties) {
         },
         goods_description: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -307,14 +309,14 @@ function TradeMarkOposition1(properties) {
         },
         usage_from_date: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, opositionNumber: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -322,7 +324,7 @@ function TradeMarkOposition1(properties) {
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -330,7 +332,7 @@ function TradeMarkOposition1(properties) {
         },
         internal_status: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -338,7 +340,7 @@ function TradeMarkOposition1(properties) {
         },
         allotment: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -346,7 +348,7 @@ function TradeMarkOposition1(properties) {
         },
         ip_india_status: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -354,7 +356,7 @@ function TradeMarkOposition1(properties) {
         },
         amendment: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -362,7 +364,7 @@ function TradeMarkOposition1(properties) {
         },
         orders: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -370,7 +372,7 @@ function TradeMarkOposition1(properties) {
         },
         priority_details: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -378,14 +380,14 @@ function TradeMarkOposition1(properties) {
         },
         tmj_number: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, applicant: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -393,7 +395,7 @@ function TradeMarkOposition1(properties) {
         },
         tmj_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -401,7 +403,7 @@ function TradeMarkOposition1(properties) {
         },
         journel_extract: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -409,7 +411,7 @@ function TradeMarkOposition1(properties) {
         },
         poa: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -417,49 +419,49 @@ function TradeMarkOposition1(properties) {
         },
         certificate_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, renewal_certificate_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, created_on: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, updated_on: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, created_by: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, updated_by: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
 
         }, ip_address: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -467,7 +469,7 @@ function TradeMarkOposition1(properties) {
         },
         nextRenewal: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -478,7 +480,7 @@ function TradeMarkOposition1(properties) {
     })
 
     function onSubmit() {
-        /*  var mainvalue = {};
+        var mainvalue = {};
           var targetkeys = Object.keys(TradeMarkForm);
           for (var i in targetkeys) {
               var errorcheck = ValidationLibrary.checkValidation(
@@ -491,9 +493,13 @@ function TradeMarkOposition1(properties) {
           }
           var filtererr = targetkeys.filter(
               (obj) => TradeMarkForm[obj].error == true
-          ); */
+          ); 
         //console.log(filtererr.length);
+
+        if (filtererr.length > 0) {
+        }else{
         let params = {
+            "trademark_id":TradeMarkForm.trademark_id.value,
             "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
             "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
             "our_reference": TradeMarkForm.ourReference.value,
@@ -517,9 +523,13 @@ function TradeMarkOposition1(properties) {
         if (TradeMarkForm.class_id.value != "") {
             params["class_id"] = TradeMarkForm.class_id.value;
         }
+
         dispatch(insertTradeMark(params)).then(() => {
-            //handleCancel()
+            
+            // dispatch(getTradeMark(rowId))
+            handleCancel()
         })
+    }
         /* if (filtererr.length > 0) {
              // setResumeFrom({ error: true });
          } else {
@@ -534,7 +544,7 @@ function TradeMarkOposition1(properties) {
 
     const handleCancel = () => {
         let From_key = [
-            "project_id", "associateRefernce", "ourReference", "applicant", "status_id", "class_id", "associate", "userclaim", "aplicant", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
+            "project_id", "associateRefernce", "ourReference", "applicant", "status_id", "class_id", "associate", "userclaim", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
             "internalstutus", "opositionNumber", "end_date", "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
             "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",

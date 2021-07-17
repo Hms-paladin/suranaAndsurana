@@ -6,6 +6,7 @@ import ValidationLibrary from "../../../../helpers/validationfunction";
 import { useSelector, useDispatch } from 'react-redux';
 import { getIPStatus } from "../../../../actions/IPDropdown.js";
 import { InsertDesign } from "../../../../actions/InsertDesign";
+import moment from "moment";
 
 function RectificationFiled(props) {
     const [RectificationFiled, setCancelDefended] = useState({
@@ -45,7 +46,32 @@ function RectificationFiled(props) {
     })
     const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
     const dispatch = useDispatch();
+    const getDesign = useSelector((state) => state.getDesignDetails)
 
+    useEffect(() => {
+        if (getDesign.length > 0) {
+          let indiaFil_key = ["des_number", "petitioner", "respondent_rep", "status", "comments"]
+    
+          let indiaFil_value = ["design_number", "petitioner", "responent_rep", "status_id", "comments"]
+    
+          indiaFil_key.map((data, index) => {
+            console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", getDesign[0][indiaFil_value[index]],"indiaFil_value[index]")
+            if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date") {
+              RectificationFiled[data].value = getDesign[0][indiaFil_value[index]];
+              RectificationFiled[data].disabled = indiaFil_value[index]!=='status_id'&&getDesign[0][indiaFil_value[index]] ? true : false;
+            }
+            else {
+              console.log(getDesign[0][indiaFil_value[index]], "getDesign[0]")
+              RectificationFiled[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
+              RectificationFiled[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+    
+            }
+          });
+          setCancelDefended((prevState) => ({
+            ...prevState,
+          }));
+        }
+      }, [getDesign])
     function checkValidation(data, key) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -83,7 +109,7 @@ function RectificationFiled(props) {
         if (filtererr.length > 0) {
         } else {
             console.log(props.projectDetails && props.projectDetails[0],"dsignid")
-            dispatch(InsertDesign(RectificationFiled, props.projectDetails && props.projectDetails[0])).then(() => {
+            dispatch(InsertDesign(RectificationFiled, props.projectDetails && props.projectDetails[0],getDesign[0])).then(() => {
                 handleCancel()
             })
         }

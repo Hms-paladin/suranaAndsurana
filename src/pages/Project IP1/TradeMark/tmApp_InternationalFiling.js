@@ -179,66 +179,66 @@ function TradeMarkInternational(properties) {
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
             value: 0,
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         project_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         }, associateRefernce: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         }, ourRefernce: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         }, associate: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         }, userclaim: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         status_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         class_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         usage_details_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         mark_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -259,161 +259,161 @@ function TradeMarkInternational(properties) {
         },
         upload_image: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         }, country_id: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         goods_description: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         usage_from_date: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         internal_status: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         allotment: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         ip_india_status: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         amendment: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         orders: {
             value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
         priority_details: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         tmj_number: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         tmj_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         journel_extract: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         poa: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         certificate_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         }, renewal_certificate_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         }, created_on: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         }, updated_on: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         }, created_by: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         }, updated_by: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         }, ip_address: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         nextRenewal: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
         },
         opositionNumber: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -423,7 +423,7 @@ function TradeMarkInternational(properties) {
     })
 
     function onSubmit() {
-        /*  var mainvalue = {};
+         var mainvalue = {};
           var targetkeys = Object.keys(TradeMarkForm);
           for (var i in targetkeys) {
               var errorcheck = ValidationLibrary.checkValidation(
@@ -436,19 +436,21 @@ function TradeMarkInternational(properties) {
           }
           var filtererr = targetkeys.filter(
               (obj) => TradeMarkForm[obj].error == true
-          ); */
+          );
         //console.log(filtererr.length);
+        if (filtererr.length > 0) {
+        }else{
         let params = {
             "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
-            "status_id": TradeMarkForm.status_id.value,
+            "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
             "associate_reference": TradeMarkForm.associateRefernce.value,
             "our_reference": TradeMarkForm.ourRefernce.value,
-            "mark_id": TradeMarkForm.mark_id.value,
+            "mark_id": TradeMarkForm.mark_id.value===''?'0':TradeMarkForm.mark_id.value,
             "upload_image": selectedFile,
             "associate": TradeMarkForm.associate.value,
             "application_no": TradeMarkForm.application_no.value,
-            "application_date": TradeMarkForm.application_date.value,
-            "country_id": TradeMarkForm.country_id.value,
+            "application_date": TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value,
+            "country_id": TradeMarkForm.country_id.value===''?'0':TradeMarkForm.country_id.value,
             "priority_details": TradeMarkForm.priority_details.value,
             "user_claim": TradeMarkForm.userclaim.value,
             "allotment": TradeMarkForm.allotment.value,
@@ -465,6 +467,7 @@ function TradeMarkInternational(properties) {
         dispatch(insertTradeMark(params)).then(() => {
             handleCancel()
         })
+    }
         /* if (filtererr.length > 0) {
              // setResumeFrom({ error: true });
          } else {
