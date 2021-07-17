@@ -18,6 +18,7 @@ function ProjectwiseTS(props) {
     const { Option } = Select;
     let dispatch=useDispatch()
     const [projectList,setprojectList]=useState([])
+    const [openPanel,setopenPanel]=useState(0)
     const [projectSearch, setprojectSearch] = useState({
         emp_name: {
           value: "",
@@ -52,7 +53,6 @@ function ProjectwiseTS(props) {
     })
     function checkValidation(data, key) {
         if(key==="project_type"){
-            alert(data)
             dispatch(getProjectSubType(data))
         }
         var errorcheck = ValidationLibrary.checkValidation(
@@ -137,7 +137,7 @@ function ProjectwiseTS(props) {
     return (
         <div>
 
-            <div className="DRtitle">Project Wise Time sheet - {empname}</div>
+            <div className="DRtitle">Project Wise Time Sheet - {empname}</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
                     <Grid item xs={2} container direction="column" spacing={1}>
@@ -151,7 +151,7 @@ function ProjectwiseTS(props) {
                         />
                     </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">Project type</div>
+                        <div className="Reporthead">Project Type</div>
                         <Labelbox type="select"
                         dropdown={projectList.Project_type}
                          changeData={(data) => checkValidation(data, "project_type")}
@@ -161,7 +161,7 @@ function ProjectwiseTS(props) {
                         />
                     </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">Project sub type</div>
+                        <div className="Reporthead">Project Sub Type</div>
                         <Labelbox type="select"
                            dropdown={projectList.Project_Sub_type}
                            changeData={(data) => checkValidation(data, "project_subtype")}
@@ -171,7 +171,7 @@ function ProjectwiseTS(props) {
                         />
                     </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">From date</div>
+                        <div className="Reporthead">From Date</div>
                         <Labelbox type="datepicker"
                         changeData={(data) => checkValidation(data, "from_date")}
                         value={projectSearch.from_date.value}
@@ -180,7 +180,7 @@ function ProjectwiseTS(props) {
                         />
                     </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">To date</div>
+                        <div className="Reporthead">To Date</div>
                         <Labelbox type="datepicker"
                           changeData={(data) => checkValidation(data, "to_date")}
                           value={projectSearch.to_date.value}
@@ -195,7 +195,7 @@ function ProjectwiseTS(props) {
             </div>
             <div className="DRcollapsecss">
             {props.Project_TimeSheet.map((data)=>
-                <Collapse>
+                <Collapse activeKey={openPanel}>
                     <Panel header={data.project_type}>
                     {data.project_details.map((data)=>
                         <Collapse>

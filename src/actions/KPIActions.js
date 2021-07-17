@@ -57,7 +57,7 @@ export const GetKpiApproval = (data) => async dispatch => {
             method: 'POST',
             url: apiurl + 'get_kpi_approval',
             data: {
-                "kpi_id":data.kpi_id || 0
+                "kpi_id":data.kpi_id
             },
         })
         .then((response) => {

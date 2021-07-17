@@ -28,6 +28,7 @@ export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async disp
                             message: 'KRA Added Successfully',
                         });
                     }
+                    dispatch(getKra())
                     dispatch(GetKpiAchivement())
                     return Promise.resolve();
                 }
@@ -46,9 +47,9 @@ export const getKra = (empid, from, to) => async (dispatch) => {
         method: "post",
         url: apiurl + "get_kra",
         data: {
-            "emp_id": empid,
-            "period_from": moment(from).format('YYYY-MM'),
-            "period_to": moment(to).format('YYYY-MM')
+            "emp_id": empid || localStorage.getItem("empId"),
+            "period_from": moment(from).format('YYYY-MM') || moment().format('YYYY-MM-DD'),
+            "period_to": moment(to).format('YYYY-MM') || moment().format('YYYY-MM-DD')
         }
     });
     return dispatch({ type: GET_KRA, payload: response.data.data });

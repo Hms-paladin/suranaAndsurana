@@ -20,6 +20,7 @@ function KPIModal(props) {
     const [achiveTotal,setachiveTotal]=useState("0")
     const [percentageTotal,setpercentageTotal]=useState("0")
     const [empty,setempty]=useState(true)
+    const [minDate,setminDate]=useState("")
     const [KpiSearch,setKpiSearch]=useState({
         employee: {
             value:"",
@@ -41,7 +42,9 @@ function KPIModal(props) {
         }
     })
     function checkValidation(data, key) {
-
+        if(data&&key==="from"){
+            setminDate(data)
+        }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             KpiSearch[key].validation
@@ -159,6 +162,7 @@ function KPIModal(props) {
                                     // placeholder={"From Period"}
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
+                                    // maxDate={KpiSearch.to.value}
                                     changeData={(data) => checkValidation(data, "from")}
                                     value={KpiSearch.from.value}
                                     error={KpiSearch.from.error}
@@ -171,6 +175,7 @@ function KPIModal(props) {
                                     type="datepicker"
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
+                                    minDate={minDate}
                                     changeData={(data) => checkValidation(data, "to")}
                                     value={KpiSearch.to.value}
                                     error={KpiSearch.to.error}

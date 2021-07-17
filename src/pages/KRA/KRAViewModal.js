@@ -19,6 +19,8 @@ function KRAModal(props) {
     ];
     const [employeeList, setEmployeeList] = useState({});
     const [rowData, setRowData] = useState([])
+    const [empId,setempId]=useState(localStorage.getItem("empId"))
+    const [minDate,setminDate]=useState("")
     const [kra_Model, setkra_Model] = useState({
 
         employee: {
@@ -42,8 +44,8 @@ function KRAModal(props) {
 
     });
     useEffect(() => {
-        dispatch(getSubordinate(props.empId));
-    }, [props.empId]);
+        dispatch(getSubordinate(empId));
+    }, [empId]);
 
     useEffect(() => {
         let EmployeeList = []
@@ -70,8 +72,10 @@ function KRAModal(props) {
     }, [props.getSubordinate, props.getKra])
 
     function checkValidation(data, key, multipleId) {
-
-
+         if(data&&key==="fromperiod"){
+            setminDate(data)
+         }
+        
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             kra_Model[key].validation
@@ -172,6 +176,7 @@ function KRAModal(props) {
                                     placeholder={"From Period"}
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
+                                    // maxDate={kra_Model.toperiod.value}
                                     changeData={(data) => checkValidation(data, "fromperiod")}
                                     value={kra_Model.fromperiod.value}
                                     error={kra_Model.fromperiod.error}
@@ -185,6 +190,7 @@ function KRAModal(props) {
                                     placeholder={"To Period"}
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
+                                    minDate={minDate}
                                     changeData={(data) => checkValidation(data, "toperiod")}
                                     value={kra_Model.toperiod.value}
                                     error={kra_Model.toperiod.error}

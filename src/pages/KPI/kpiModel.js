@@ -105,6 +105,7 @@ const KPI = (props) => {
  dispatch(GetKpiApproval(props.KpiId))
 
  },[props.KpiId])
+ console.log("props",props)
 useEffect(()=>{
     let Data=[]
     props.KpiApproval.length>0&&props.KpiApproval.map((data)=>{
@@ -132,7 +133,7 @@ useEffect(()=>{
                         <Grid item xs={6}>
                             <div><label style={{ fontSize: 11 }}>Period</label></div>
                             <div><label style={{ fontWeight: 'bold' }}>
-                            {moment(ApprovalData[0]?.period_from).format("DD-MMM-YYYY")} to {moment(ApprovalData[0]?.period_to).format("DD-MMM-YYYY")}</label></div>
+                            {moment(ApprovalData[0]?.period_from).format("MMM-YYYY")} to {moment(ApprovalData[0]?.period_to).format("MMM-YYYY")}</label></div>
                         </Grid>
                     </Grid>
 
@@ -141,7 +142,7 @@ useEffect(()=>{
             </div>
             <div className="kpi_table">
                 <Grid container >
-                    <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header title_label" alignItems="center">
+                    <Grid item xs={12} container direction="row" className="spaceBtnGrid kpi_table_header title_label" alignItems="center">
                         <Grid item xs={3}><label >Activity</label></Grid>
                         <Grid item xs={3}> <label >Target %</label></Grid>
                         <Grid item xs={3}><label >Achievement</label></Grid>
@@ -149,7 +150,7 @@ useEffect(()=>{
                     </Grid>
 
                     {ApprovalData.length>0&&ApprovalData.map((data)=>
-                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
+                    <Grid item xs={12} container direction="row" className="spaceBtnGrid title_label" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                         <Grid item xs={3}><label >{data.activity}</label></Grid>
                         <Grid item xs={3}> <label >{data.kra_percentage}</label></Grid>
                         {/* <Grid item xs={3} ><div style={{ width: '70%' }}>
@@ -168,7 +169,7 @@ useEffect(()=>{
                     )}
                   
 
-                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
+                    <Grid item xs={12} container direction="row" className="spaceBtnGrid title_label" alignItems="center" style={{ backgroundColor: "#D8D8D8", height: 50 }}>
                         <Grid item xs={3}><label style={{ color: 'black' }}>Total </label></Grid>                        
                         <Grid item xs={3}><label style={{ color: 'black' }}>{ApprovalData[0]?.total}</label> </Grid>
                         <Grid item xs={3}><label style={{ color: 'black' }}></label></Grid>
@@ -178,7 +179,7 @@ useEffect(()=>{
 
             <div style={{ marginTop: 20 }}>
                 <Grid container >
-                    <Grid item xs={12} container direction="row" className="spaceBtGrid  title_label" alignItems="center">
+                    <Grid item xs={12} container direction="row" className="spaceBtnGrid  title_label" alignItems="center">
                         <Grid item xs={3}><label >Qualification</label></Grid>
                         <Grid item xs={3}> <label >Achievements</label> </Grid>
                         <Grid item xs={3}> <label >Seminar</label></Grid>
@@ -187,7 +188,7 @@ useEffect(()=>{
                     </Grid>
 
 
-                    <Grid item xs={12} container direction="row" className="spaceBtGrid title_label" alignItems="center" >
+                    <Grid item xs={12} container direction="row" className="spaceBtnGrid title_label" alignItems="center" >
                         <Grid item xs={3}><div style={{ width: '70%', display: 'inline-block' }}>
                             <Labelbox
                                 type="text"
