@@ -818,7 +818,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                         {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
                             props.ProjectDetails[0].project_type} */}
                     </div>
-                    <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <div className="TabIconsview"><TabIcons variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
                      */}
 
