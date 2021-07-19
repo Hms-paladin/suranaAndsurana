@@ -159,12 +159,12 @@ function CancelFiled(props) {
             cancFil_key.map((data, index) => {
                 if (cancFil_value[index] !== "application_date" && cancFil_value[index] !== "priority_date" && cancFil_value[index] !== "renewal_date") {
                     CancelFiled[data].value = getDesign[0][cancFil_value[index]];
-                    CancelFiled[data].disabled = cancFil_value[index]!=='status_id'&&getDesign[0][cancFil_value[index]] ? true : false;
+                    // CancelFiled[data].disabled = cancFil_value[index]!=='status_id'&&getDesign[0][cancFil_value[index]] ? true : false;
                 }
                 else {
                     console.log(getDesign[0][cancFil_value[index]], "getDesign[0]")
                     CancelFiled[data].value = getDesign[0][cancFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancFil_value[index]]);
-                    CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] === "0000-00-00" ? false : true;
+                    // CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] === "0000-00-00" ? false : true;
                 }
             });
             setCancFilGetList((prevState) => ({

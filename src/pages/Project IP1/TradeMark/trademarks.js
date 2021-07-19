@@ -234,15 +234,7 @@ function TradeMark(properties) {
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
             value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        project_id: {
-            value: "",
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
@@ -296,14 +288,14 @@ function TradeMark(properties) {
             disabled: false,
 
         },
-        upload_image: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
+        // upload_image: {
+        //     value: "",
+        //     validation: [{ "name": "required" },],
+        //     error: null,
+        //     errmsg: null,
+        //     disabled: false,
 
-        },
+        // },
         goods_description: {
             value: "",
             validation: [{ "name": "required" },],
@@ -360,14 +352,14 @@ function TradeMark(properties) {
             disabled: false,
 
         },
-        orders: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
+        // orders: {
+        //     value: "",
+        //     validation: [{ "name": "required" },],
+        //     error: null,
+        //     errmsg: null,
+        //     disabled: false,
 
-        },
+        // },
         priority_details: {
             value: "",
             validation: [{ "name": "required" }],
@@ -422,41 +414,6 @@ function TradeMark(properties) {
             errmsg: null,
             disabled: false,
 
-        }, created_on: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        }, updated_on: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        }, created_by: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        }, updated_by: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        }, ip_address: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
         },
         next_renewal: {
             value: "",
@@ -473,7 +430,7 @@ function TradeMark(properties) {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-        /*  for (var i in targetkeys) {
+         for (var i in targetkeys) {
               var errorcheck = ValidationLibrary.checkValidation(
                   TradeMarkForm[targetkeys[i]].value,
                   TradeMarkForm[targetkeys[i]].validation
@@ -481,7 +438,7 @@ function TradeMark(properties) {
               TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
               TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
               mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-          } */
+          }
         var filtererr = targetkeys.filter(
             (obj) => TradeMarkForm[obj].error == true
         );
@@ -523,6 +480,10 @@ function TradeMark(properties) {
         if (TradeMarkForm.class_id.value != "") {
             params["class_id"] = TradeMarkForm.class_id.value;
         }
+
+        if (TradeMarkForm.trademark_id.value != 0) {
+            params["trademark_id"] = TradeMarkForm.trademark_id.value;
+        }
         if (filtererr.length > 0) {
             // setTradeMarkForm({ error: true });
         } else {
@@ -541,11 +502,9 @@ function TradeMark(properties) {
 
     const handleCancel = () => {
         let From_key = [
-            "project_id", "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date",
-            "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
-            "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-            "ip_address"
+            "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date","goods_description", "usage_from_date", "comments", "internal_status", "allotment",
+            "ip_india_status", "amendment", "priority_details", "tmj_number", "tmj_date", "journel_extract",
+            "poa", "certificate_date", "renewal_certificate_date"
         ]
 
         From_key.map((data) => {
@@ -633,7 +592,7 @@ function TradeMark(properties) {
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                     <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>,
+                                </Upload>
                             </div>
                         </div>
                     </Grid>
@@ -764,7 +723,7 @@ function TradeMark(properties) {
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                     <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>,
+                                </Upload>
                             </div>
                         </div>
                     </Grid>

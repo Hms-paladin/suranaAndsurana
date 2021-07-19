@@ -62,6 +62,10 @@ function TradeMarkOposition1(properties) {
             if (obj.status_id && obj.status_id.length)
                 TradeMarkForm.status_id.disabled = true;
 
+            TradeMarkForm.class_id.value = obj.class_id;
+            if (obj.class_id && obj.class_id.length)
+            TradeMarkForm.class_id.disabled = true;
+    
             TradeMarkForm.mark_id.value = obj.mark_id;
             if (obj.mark_id && obj.mark_id.length)
                 TradeMarkForm.mark_id.disabled = true;
@@ -684,7 +688,7 @@ function TradeMarkOposition1(properties) {
                                         action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                         <div className="upload_file_inside" ><label>Upload</label><PublishIcon /></div>
-                                    </Upload>,
+                                    </Upload>
                                 </div>
                             </div>
                         </Grid>
@@ -739,9 +743,9 @@ function TradeMarkOposition1(properties) {
                             disabled={TradeMarkForm.class_id.disabled}
                         />
                     </Grid>
-                    <Grid item xs={12} > <div className="Fieldheading">Internal status</div>
+                    <Grid item xs={12} > <div className="Fieldheading">Opposition Number</div>
                         <Labelbox type="text"
-                            placeholder={"Internal status "}
+                            placeholder={"Opposition Number"}
                             changeData={(data) => checkValidation(data, "opositionNumber")}
                             value={TradeMarkForm.opositionNumber.value}
                             error={TradeMarkForm.opositionNumber.error}
@@ -783,7 +787,7 @@ function TradeMarkOposition1(properties) {
                                         action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                         <div className="upload_file_inside"><label>Order</label><PublishIcon /></div>
-                                    </Upload>,
+                                    </Upload>
                                 </div>
                             </div>
                         </Grid>

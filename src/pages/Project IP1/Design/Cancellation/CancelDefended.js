@@ -153,12 +153,12 @@ function CancelDefended(props) {
             cancDef_key.map((data, index) => {
                 if (cancDef_value[index] !== "application_date" && cancDef_value[index] !== "priority_date" && cancDef_value[index] !== "renewal_date") {
                     CancelDefended[data].value = getDesign[0][cancDef_value[index]];
-                    CancelDefended[data].disabled = cancDef_value[index]!=='status_id'&&getDesign[0][cancDef_value[index]] ? true : false;
+                    // CancelDefended[data].disabled = cancDef_value[index]!=='status_id'&&getDesign[0][cancDef_value[index]] ? true : false;
                 }
                 else {
                     console.log(getDesign[0][cancDef_value[index]], "getDesign[0]")
                     CancelDefended[data].value = getDesign[0][cancDef_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancDef_value[index]]);
-                    CancelDefended[data].disabled = getDesign[0][cancDef_value[index]] === "0000-00-00" ? false : true;
+                    // CancelDefended[data].disabled = getDesign[0][cancDef_value[index]] === "0000-00-00" ? false : true;
                 }
             });
             setCancDefGetList((prevState) => ({

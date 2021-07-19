@@ -47,8 +47,6 @@ function TradeMarkOposition2(properties) {
         dispatch(getUsageDetails());
         dispatch(getCountryDetails());
 
-
-
     }, []);
 
     useEffect(() => {
@@ -57,11 +55,30 @@ function TradeMarkOposition2(properties) {
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
-
             TradeMarkForm.status_id.value = obj.status_id;
             if (obj.status_id && obj.status_id.length)
                 TradeMarkForm.status_id.disabled = true;
+            
+            TradeMarkForm.class_id.value = obj.class_id;
+            if (obj.class_id && obj.class_id.length)
+                TradeMarkForm.class_id.disabled = true;
 
+            TradeMarkForm.oppositionNumber.value = obj.application_no;
+            if (obj.application_no && obj.application_no.length)
+                TradeMarkForm.oppositionNumber.disabled = true;
+
+            TradeMarkForm.class_id.value = obj.class_id;
+            if (obj.class_id && obj.class_id.length)
+            TradeMarkForm.class_id.disabled = true;
+
+            // TradeMarkForm.class_id.value = obj.class_id;
+            // if (obj.class_id && obj.class_id.length)
+            // TradeMarkForm.class_id.disabled = true;
+
+            // TradeMarkForm.class_id.value = obj.class_id;
+            // if (obj.class_id && obj.class_id.length)
+            // TradeMarkForm.class_id.disabled = true;
+        
             TradeMarkForm.mark_id.value = obj.mark_id;
             if (obj.mark_id && obj.mark_id.length)
                 TradeMarkForm.mark_id.disabled = true;
@@ -69,7 +86,6 @@ function TradeMarkOposition2(properties) {
             TradeMarkForm.ourReference.value = obj.our_reference;
             if (obj.ourReference && obj.ourReference.length)
                 TradeMarkForm.ourReference.disabled = true;
-
 
             // "upload_image" :selectedFile,
             TradeMarkForm.application_no.value = obj.application_no;
@@ -88,15 +104,15 @@ function TradeMarkOposition2(properties) {
             if (obj.status_id && obj.status_id.length)
                 TradeMarkForm.status_id.disabled = true;
 
+            if(obj.tmj_date!="0000-00-00"){
+                TradeMarkForm.tmj_date.value = obj.tmj_date;
+                if (obj.tmj_date && obj.tmj_date.length)
+                    TradeMarkForm.tmj_date.disabled = true;
+            }
 
-
-            TradeMarkForm.tmj_date.value = obj.tmj_date;
-            if (obj.tmj_date && obj.tmj_date.length)
-                TradeMarkForm.tmj_date.disabled = true;
-
-            TradeMarkForm.opositionNumber.value = obj.oposition_Number;
-            if (obj.opositionNumber && obj.opositionNumber.length)
-                TradeMarkForm.opositionNumber.disabled = true;
+            TradeMarkForm.oppositionNumber.value = obj.oposition_Number;
+            if (obj.oppositionNumber && obj.oppositionNumber.length)
+                TradeMarkForm.oppositionNumber.disabled = true;
 
             TradeMarkForm.applicant.value = obj.applicant;
             if (obj.applicant && obj.applicant.length)
@@ -159,9 +175,7 @@ function TradeMarkOposition2(properties) {
 
 
 
-    }, [
-        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList
-    ]);
+    }, [properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList,properties.tradeMark  ]);
 
     const dispatch = useDispatch()
     let { rowId } = useParams()
@@ -180,61 +194,25 @@ function TradeMarkOposition2(properties) {
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
             value: 0,
-            validation: [{ "name": "required" },],
+            // validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
-        project_id: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, associateRefernce: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, ourRefernce: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, associate: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, userclaim: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, agent: {
+        applicantAgent: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
         },
-        opositionNumber: {
+        oppositionNumber: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
-        }, opponent: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
+        },  
         status_id: {
             value: "",
             validation: [{ "name": "required" },],
@@ -249,26 +227,21 @@ function TradeMarkOposition2(properties) {
             errmsg: null,
             disabled: false,
         },
-        usage_details_id: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
         mark_id: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
-        }, internalstutus: {
+        }, 
+        end_date: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
             disabled: false,
-        }, end_date: {
+        },
+        applicant: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -289,40 +262,7 @@ function TradeMarkOposition2(properties) {
             errmsg: null,
             disabled: false,
         },
-        upload_image: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, country_id: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, ourReference: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        goods_description: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        usage_from_date: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        comments: {
+        ourReference: {
             value: "",
             validation: [{ "name": "required" },],
             error: null,
@@ -332,41 +272,6 @@ function TradeMarkOposition2(properties) {
         internal_status: {
             value: "",
             validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        allotment: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        ip_india_status: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        amendment: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        orders: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        priority_details: {
-            value: "",
-            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
             disabled: false,
@@ -384,77 +289,14 @@ function TradeMarkOposition2(properties) {
             error: null,
             errmsg: null,
             disabled: false,
-        },
-        journel_extract: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        poa: {
-            value: "",
-            // validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        certificate_date: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, renewal_certificate_date: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, created_on: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, updated_on: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, created_by: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, updated_by: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, ip_address: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        nextRenewal: {
-            value: "",
-            validation: [{ "name": "required" }],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
+        }
 
 
     })
 
     function onSubmit() {
-        /*  var mainvalue = {};
+
+          var mainvalue = {};
           var targetkeys = Object.keys(TradeMarkForm);
           for (var i in targetkeys) {
               var errorcheck = ValidationLibrary.checkValidation(
@@ -467,8 +309,8 @@ function TradeMarkOposition2(properties) {
           }
           var filtererr = targetkeys.filter(
               (obj) => TradeMarkForm[obj].error == true
-          ); */
-        //console.log(filtererr.length);
+          ); 
+        console.log(filtererr.length);
         let params = {
             "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
             "status_id": TradeMarkForm.status_id.value,
@@ -479,11 +321,11 @@ function TradeMarkOposition2(properties) {
             "application_date": TradeMarkForm.application_date.value,
             "tmj_number": TradeMarkForm.tmj_number.value,
             "tmj_date": TradeMarkForm.tmj_date.value,
-            "opposition_no": TradeMarkForm.opositionNumber.value,
+            "opposition_no": TradeMarkForm.oppositionNumber.value,
             "applicant": TradeMarkForm.applicant.value,
             "applicant_agent": TradeMarkForm.applicantAgent.value,
             "internal_status": TradeMarkForm.internal_status.value,
-            "end_date": moment().format('YYYY-MM-DD HH:m:s'),
+            "end_date": TradeMarkForm.end_date.value,
             "created_by": localStorage.getItem("empId"),
             "created_on": moment().format('YYYY-MM-DD HH:m:s'),
             "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
@@ -493,9 +335,18 @@ function TradeMarkOposition2(properties) {
         if (TradeMarkForm.class_id.value != "") {
             params["class_id"] = TradeMarkForm.class_id.value;
         }
+        
+        if (TradeMarkForm.trademark_id.value != 0) {
+            params["trademark_id"] = TradeMarkForm.trademark_id.value;
+        }
+
+        if (filtererr.length > 0) {
+            // setResumeFrom({ error: true });
+        } else {
         dispatch(insertTradeMark(params)).then(() => {
-            //handleCancel()
+            handleCancel()
         })
+    }
         /* if (filtererr.length > 0) {
              // setResumeFrom({ error: true });
          } else {
@@ -509,12 +360,8 @@ function TradeMarkOposition2(properties) {
     };
 
     const handleCancel = () => {
-        let From_key = [
-            "project_id", "associateRefernce", "ourRefernce", "status_id", "class_id", "associate", "userclaim", "aplicant", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
-            "end_date", "upload_image", "ourReference", "opositionNumber", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
-            "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-            "ip_address"
+        let From_key = ["ourReference", "status_id", "class_id", "applicant", "applicantAgent", "mark_id", "application_no", "application_date",
+            "end_date","oppositionNumber", "internal_status", "tmj_number", "tmj_date"
         ]
 
         From_key.map((data) => {
@@ -588,7 +435,7 @@ function TradeMarkOposition2(properties) {
                             value={TradeMarkForm.ourReference.value}
                             error={TradeMarkForm.ourReference.error}
                             errmsg={TradeMarkForm.ourReference.errmsg}
-                            disabled={TradeMarkForm.ourRefernce.disabled}
+                            disabled={TradeMarkForm.ourReference.disabled}
                         />
                     </Grid>
                     <Grid item xs={2}>
@@ -609,7 +456,7 @@ function TradeMarkOposition2(properties) {
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
                                     <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>,
+                                </Upload>
                             </div>
                         </div>
                     </Grid>
@@ -625,7 +472,7 @@ function TradeMarkOposition2(properties) {
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <div className="Tradeheadings">Ma Application Numberrk</div>
+                        <div className="Tradeheadings">Application Number</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "application_no")}
                             value={TradeMarkForm.application_no.value}
@@ -667,33 +514,33 @@ function TradeMarkOposition2(properties) {
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <div className="Tradeheadings">Oposition Number</div>
+                        <div className="Tradeheadings">Opposition Number</div>
                         <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "opositionNumber")}
-                            value={TradeMarkForm.opositionNumber.value}
-                            error={TradeMarkForm.opositionNumber.error}
-                            errmsg={TradeMarkForm.opositionNumber.errmsg}
-                            disabled={TradeMarkForm.opositionNumber.disabled}
+                            changeData={(data) => checkValidation(data, "oppositionNumber")}
+                            value={TradeMarkForm.oppositionNumber.value}
+                            error={TradeMarkForm.oppositionNumber.error}
+                            errmsg={TradeMarkForm.oppositionNumber.errmsg}
+                            disabled={TradeMarkForm.oppositionNumber.disabled}
                         />
                     </Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Applicant</div>
                         <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "opponent")}
-                            value={TradeMarkForm.opponent.value}
-                            error={TradeMarkForm.opponent.error}
-                            errmsg={TradeMarkForm.opponent.errmsg}
-                            disabled={TradeMarkForm.opponent.disabled}
+                            changeData={(data) => checkValidation(data, "applicant")}
+                            value={TradeMarkForm.applicant.value}
+                            error={TradeMarkForm.applicant.error}
+                            errmsg={TradeMarkForm.applicant.errmsg}
+                            disabled={TradeMarkForm.applicant.disabled}
                         />
                     </Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Applicant Agent</div>
                         <Labelbox type="text"
-                            changeData={(data) => checkValidation(data, "agent")}
-                            value={TradeMarkForm.agent.value}
-                            error={TradeMarkForm.agent.error}
-                            errmsg={TradeMarkForm.agent.errmsg}
-                            disabled={TradeMarkForm.agent.disabled}
+                            changeData={(data) => checkValidation(data, "applicantAgent")}
+                            value={TradeMarkForm.applicantAgent.value}
+                            error={TradeMarkForm.applicantAgent.error}
+                            errmsg={TradeMarkForm.applicantAgent.errmsg}
+                            disabled={TradeMarkForm.applicantAgent.disabled}
                         />
                     </Grid>
                     <Grid item xs={2}>
@@ -724,7 +571,7 @@ function TradeMarkOposition2(properties) {
                                 <Upload {...props} className="uploadbox_tag"
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
                                     <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>,
+                                </Upload>
                             </div>
                         </div>
                     </Grid>

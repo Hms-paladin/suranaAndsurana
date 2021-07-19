@@ -154,7 +154,7 @@ function ApplicationForeign(props) {
             }
             else {
               console.log(props.getPatentDetails[0][indiaFil_value[index]], "props.getPatentDetails[0]")
-              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]);
+              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]).format('DD-MM-YYYY');
               patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
     
             } 

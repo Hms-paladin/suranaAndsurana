@@ -612,7 +612,7 @@ function TradeMarkInternational(properties) {
                                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76' accept=".jpeg" >
 
                                     <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>,
+                                </Upload>
                             </div>
                         </div>
                     </Grid>
