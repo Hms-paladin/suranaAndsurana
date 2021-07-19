@@ -39,7 +39,7 @@ export const getPatentStatus= () => async dispatch => {
 }
 
 export const insertPatent = (params) => async dispatch => {
-    console.log("ddddddddddddddd")
+
     try {
         axios({
             method: 'POST',
@@ -48,7 +48,7 @@ export const insertPatent = (params) => async dispatch => {
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Patent Added Successfully",
+                    message: 'Patent '+response.data.msg,
                   });
                 dispatch({type:INSERT_PATENT,payload:response.data.status})
                 dispatch(getPatentDetails(params.project_id))

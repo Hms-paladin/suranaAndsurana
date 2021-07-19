@@ -34,7 +34,7 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
-    const TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+    var TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {

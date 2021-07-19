@@ -61,53 +61,66 @@ function TradeMarkInternational(properties) {
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
             TradeMarkForm.status_id.value = obj.status_id;
-            if (obj.status_id && obj.status_id.length)
-                TradeMarkForm.status_id.disabled = true;
-
+            // if (obj.status_id && obj.status_id.length)
+            //     TradeMarkForm.status_id.disabled = true;
+            
             TradeMarkForm.associateRefernce.value = obj.associatereference;
-            if (obj.associateRefernce && obj.associatereference.length)
-                TradeMarkForm.associateRefernce.disabled = true;
-
-
+            // if (obj.associateRefernce && obj.associatereference.length)
+            //     TradeMarkForm.associateRefernce.disabled = true;
+                
+            TradeMarkForm.application_no.value = obj.application_no;
+            // if (obj.application_no && obj.application_no.length)
+            //     TradeMarkForm.application_no.disabled = true;
+    
+            TradeMarkForm.class_id.value = obj.class_id;
+            // if (obj.class_id && obj.class_id.length)
+            // TradeMarkForm.class_id.disabled = true;
+            
             TradeMarkForm.ourRefernce.value = obj.our_reference;
-            if (obj.ourRefernce && obj.our_reference.length)
-                TradeMarkForm.our_reference.disabled = true;
+            // if (obj.ourRefernce && obj.our_reference.length)
+            //     TradeMarkForm.our_reference.disabled = true;
+
+            TradeMarkForm.associateRefernce.value = obj.associate_reference;
+            // if (obj.associate_reference && obj.associate_reference.length)
+            //     TradeMarkForm.associateRefernce.disabled = true;
 
             TradeMarkForm.mark_id.value = obj.mark_id;
-            if (obj.mark_id && obj.mark_id.length)
-                TradeMarkForm.mark_id.disabled = true;
+            // if (obj.mark_id && obj.mark_id.length)
+            //     TradeMarkForm.mark_id.disabled = true;
+
             //"upload_image" :selectedFile,
+
             TradeMarkForm.associate.value = obj.associate;
-            if (obj.associate && obj.associate.length)
-                TradeMarkForm.associate.disabled = true;
+            // if (obj.associate && obj.associate.length)
+            //     TradeMarkForm.associate.disabled = true;
 
             TradeMarkForm.opositionNumber.value = obj.opposition_no;
-            if (obj.opositionNumber && obj.opositionNumber.length)
-                TradeMarkForm.opositionNumber.disabled = true;
+            // if (obj.opositionNumber && obj.opositionNumber.length)
+            //     TradeMarkForm.opositionNumber.disabled = true;
 
             TradeMarkForm.application_date.value = obj.application_date;
-            if (obj.application_date && obj.application_date.length)
-                TradeMarkForm.application_date.disabled = true;
+            // if (obj.application_date && obj.application_date.length)
+            //     TradeMarkForm.application_date.disabled = true;
 
             TradeMarkForm.country_id.value = obj.country_id;
-            if (obj.country_id && obj.country_id.length)
-                TradeMarkForm.country_id.disabled = true;
+            // if (obj.country_id && obj.country_id.length)
+            //     TradeMarkForm.country_id.disabled = true;
 
             TradeMarkForm.priority_details.value = obj.priority_details;
-            if (obj.priority_details && obj.priority_details.length)
-                TradeMarkForm.priority_details.disabled = true;
+            // if (obj.priority_details && obj.priority_details.length)
+            //     TradeMarkForm.priority_details.disabled = true;
 
             TradeMarkForm.userclaim.value = obj.user_claim;
-            if (obj.user_claim && obj.user_claim.length)
-                TradeMarkForm.user_claim.disabled = true;
+            // if (obj.user_claim && obj.user_claim.length)
+            //     TradeMarkForm.userclaim.disabled = true;
 
             TradeMarkForm.allotment.value = obj.allotment;
-            if (obj.allotment && obj.allotment.length)
-                TradeMarkForm.allotment.disabled = true;
+            // if (obj.allotment && obj.allotment.length)
+            //     TradeMarkForm.allotment.disabled = true;
 
             TradeMarkForm.goods_description.value = obj.goods_description;
-            if (obj.goods_description && obj.goods_description.length)
-                TradeMarkForm.goods_description.disabled = true;
+            // if (obj.goods_description && obj.goods_description.length)
+            //     TradeMarkForm.goods_description.disabled = true;
 
         }
 
@@ -158,8 +171,7 @@ function TradeMarkInternational(properties) {
 
 
 
-    }, [
-        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList
+    }, [properties.tradeMark,properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList
     ]);
 
     const dispatch = useDispatch()
@@ -464,6 +476,11 @@ function TradeMarkInternational(properties) {
         if (TradeMarkForm.class_id.value != "") {
             params["class_id"] = TradeMarkForm.class_id.value;
         }
+
+        if (TradeMarkForm.trademark_id.value != 0) {
+            params["trademark_id"] = TradeMarkForm.trademark_id.value;
+        }
+
         dispatch(insertTradeMark(params)).then(() => {
             handleCancel()
         })
@@ -485,7 +502,7 @@ function TradeMarkInternational(properties) {
             "project_id", "associateRefernce", "ourRefernce", "status_id", "class_id", "associate", "userclaim", "usage_details_id", "mark_id", "application_no", "application_date",
             "upload_image", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
-            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
+            "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by","country_id",
             "ip_address"
         ]
 
@@ -500,7 +517,7 @@ function TradeMarkInternational(properties) {
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
-        history.goBack();
+        // history.goBack();
     }
 
     function checkValidation(data, key, multipleId) {

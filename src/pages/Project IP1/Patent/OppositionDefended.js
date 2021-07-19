@@ -170,12 +170,12 @@ function OppositionDefended(props) {
             // console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", props.getPatentDetails[0][indiaFil_value[index]],"indiaFil_value[index]")
             if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" ) {
               patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]];
-              patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
+            //   patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
             }
             else {
               console.log(props.getPatentDetails[0][indiaFil_value[index]], "props.getPatentDetails[0]")
               patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]);
-              patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+            //   patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
     
             } 
           });

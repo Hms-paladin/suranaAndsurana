@@ -141,10 +141,9 @@ function ApplicationForeign(props) {
 
     useEffect(() => {
         if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
-          let indiaFil_key = [ "file_cover", "our_ref", "associate", "title", "client_ref", "app_num", "app_date", "comments", "status", "priority_country"
-          , "priority_num", "priority_date"]
+          let indiaFil_key = [ "file_cover", "our_ref", "associate", "title", "client_ref", "app_num","priority_date", "app_date", "comments", "status", "priority_country", "priority_num"]
     
-          let indiaFil_value = ["file_cover", "our_reference", "associate", "patent_title","client_reference", "application_no", "application_date", "comments", "status_id",  "priority_country"]
+          let indiaFil_value = ["file_cover", "our_reference", "associate", "patent_title","client_reference", "application_no","priority_date", "application_date", "comments", "status_id", "priority_country","priority_application_no"]
     
           indiaFil_key.map((data, index) => {
             // console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", props.getPatentDetails[0][indiaFil_value[index]],"indiaFil_value[index]")
@@ -153,8 +152,8 @@ function ApplicationForeign(props) {
               patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
             }
             else {
-              console.log(props.getPatentDetails[0][indiaFil_value[index]], "props.getPatentDetails[0]")
-              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]).format('DD-MM-YYYY');
+                // console.log(props.getPatentDetails[0][indiaFil_value[index]],"rrrrrrrrr")
+              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : props.getPatentDetails[0][indiaFil_value[index]];
               patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
     
             } 
@@ -188,10 +187,10 @@ function ApplicationForeign(props) {
             "our_reference": patentForm.our_ref.value,
             "client_reference": patentForm.client_ref.value,
             "application_no": patentForm.app_num.value,
-            "application_date": patentForm.app_date.value===''?'0000-00-00':moment(patentForm.app_date.value,"DD-MM-YYYY").format("YYYY-MM-DD"),
+            "application_date": patentForm.app_date.value===''?'0000-00-00':patentForm.app_date.value,
             "priority_country": patentForm.priority_country.value,
             "priority_application_no": patentForm.priority_num.value,
-            "priority_date": patentForm.priority_date.value===''?'0000-00-00':moment(patentForm.priority_date.value,"DD-MM-YYYY").format("YYYY-MM-DD"),
+            "priority_date": patentForm.priority_date.value===''?'0000-00-00':patentForm.priority_date.value,
             "patent_title": patentForm.title.value,
             "associate": patentForm.associate.value,
             "status_id": patentForm.status.value,

@@ -43,7 +43,7 @@ export const InsertDesign = (data, ProjectDetails, design_id) => async dispatch 
             .then((response) => {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Record Added Successfully',
+                        message: 'Design '+response.data.msg,
                     });
                     dispatch(getDesignDetails(ProjectDetails.project_id))
                     return Promise.resolve();

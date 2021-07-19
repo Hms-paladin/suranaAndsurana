@@ -56,20 +56,25 @@ function TradeMarkOposition2(properties) {
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
             TradeMarkForm.status_id.value = obj.status_id;
-            if (obj.status_id && obj.status_id.length)
-                TradeMarkForm.status_id.disabled = true;
+            // if (obj.status_id && obj.status_id.length)
+            //     TradeMarkForm.status_id.disabled = true;
             
+            if(obj.deadline!=null&&obj.deadline!="0000-00-00"){    
+                TradeMarkForm.end_date.value = obj.deadline;
+                // if (obj.deadline && obj.deadline.length)
+                //     TradeMarkForm.end_date.disabled = true;
+            }  
             TradeMarkForm.class_id.value = obj.class_id;
-            if (obj.class_id && obj.class_id.length)
-                TradeMarkForm.class_id.disabled = true;
+            // if (obj.class_id && obj.class_id.length)
+            //     TradeMarkForm.class_id.disabled = true;
 
             TradeMarkForm.oppositionNumber.value = obj.application_no;
-            if (obj.application_no && obj.application_no.length)
-                TradeMarkForm.oppositionNumber.disabled = true;
+            // if (obj.application_no && obj.application_no.length)
+            //     TradeMarkForm.oppositionNumber.disabled = true;
 
             TradeMarkForm.class_id.value = obj.class_id;
-            if (obj.class_id && obj.class_id.length)
-            TradeMarkForm.class_id.disabled = true;
+            // if (obj.class_id && obj.class_id.length)
+            // TradeMarkForm.class_id.disabled = true;
 
             // TradeMarkForm.class_id.value = obj.class_id;
             // if (obj.class_id && obj.class_id.length)
@@ -80,51 +85,51 @@ function TradeMarkOposition2(properties) {
             // TradeMarkForm.class_id.disabled = true;
         
             TradeMarkForm.mark_id.value = obj.mark_id;
-            if (obj.mark_id && obj.mark_id.length)
-                TradeMarkForm.mark_id.disabled = true;
+            // if (obj.mark_id && obj.mark_id.length)
+            //     TradeMarkForm.mark_id.disabled = true;
 
             TradeMarkForm.ourReference.value = obj.our_reference;
-            if (obj.ourReference && obj.ourReference.length)
-                TradeMarkForm.ourReference.disabled = true;
+            // if (obj.ourReference && obj.ourReference.length)
+            //     TradeMarkForm.ourReference.disabled = true;
 
             // "upload_image" :selectedFile,
             TradeMarkForm.application_no.value = obj.application_no;
-            if (obj.application_no && obj.application_no.length)
-                TradeMarkForm.application_no.disabled = true;
+            // if (obj.application_no && obj.application_no.length)
+            //     TradeMarkForm.application_no.disabled = true;
 
             TradeMarkForm.application_date.value = obj.application_date;
-            if (obj.application_date && obj.application_date.length)
-                TradeMarkForm.application_date.disabled = true;
+            // if (obj.application_date && obj.application_date.length)
+            //     TradeMarkForm.application_date.disabled = true;
 
             TradeMarkForm.tmj_number.value = obj.tmj_number;
-            if (obj.tmj_number && obj.tmj_number.length)
-                TradeMarkForm.tmj_number.disabled = true;
+            // if (obj.tmj_number && obj.tmj_number.length)
+            //     TradeMarkForm.tmj_number.disabled = true;
 
             TradeMarkForm.status_id.value = obj.status_id;
-            if (obj.status_id && obj.status_id.length)
-                TradeMarkForm.status_id.disabled = true;
+            // if (obj.status_id && obj.status_id.length)
+            //     TradeMarkForm.status_id.disabled = true;
 
             if(obj.tmj_date!="0000-00-00"){
                 TradeMarkForm.tmj_date.value = obj.tmj_date;
-                if (obj.tmj_date && obj.tmj_date.length)
-                    TradeMarkForm.tmj_date.disabled = true;
+                // if (obj.tmj_date && obj.tmj_date.length)
+                //     TradeMarkForm.tmj_date.disabled = true;
             }
 
-            TradeMarkForm.oppositionNumber.value = obj.oposition_Number;
-            if (obj.oppositionNumber && obj.oppositionNumber.length)
-                TradeMarkForm.oppositionNumber.disabled = true;
+            TradeMarkForm.oppositionNumber.value = obj.opposition_no;
+            // if (obj.opposition_no && obj.opposition_no.length)
+            //     TradeMarkForm.oppositionNumber.disabled = true;
 
             TradeMarkForm.applicant.value = obj.applicant;
-            if (obj.applicant && obj.applicant.length)
-                TradeMarkForm.applicant.disabled = true;
+            // if (obj.applicant && obj.applicant.length)
+            //     TradeMarkForm.applicant.disabled = true;
 
             TradeMarkForm.applicantAgent.value = obj.applicant_agent;
-            if (obj.applicantAgent && obj.applicantAgent.length)
-                TradeMarkForm.applicantAgent.disabled = true;
+            // if (obj.applicantAgent && obj.applicantAgent.length)
+            //     TradeMarkForm.applicantAgent.disabled = true;
 
             TradeMarkForm.internal_status.value = obj.internal_status;
-            if (obj.internal_status && obj.internal_status.length)
-                TradeMarkForm.internal_status.disabled = true;
+            // if (obj.internal_status && obj.internal_status.length)
+            //     TradeMarkForm.internal_status.disabled = true;
         }
 
 
@@ -325,7 +330,7 @@ function TradeMarkOposition2(properties) {
             "applicant": TradeMarkForm.applicant.value,
             "applicant_agent": TradeMarkForm.applicantAgent.value,
             "internal_status": TradeMarkForm.internal_status.value,
-            "end_date": TradeMarkForm.end_date.value,
+            "deadline":TradeMarkForm.end_date.value===''?'0000-00-00':TradeMarkForm.end_date.value,
             "created_by": localStorage.getItem("empId"),
             "created_on": moment().format('YYYY-MM-DD HH:m:s'),
             "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
@@ -556,7 +561,7 @@ function TradeMarkOposition2(properties) {
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Deadline</div>
                         <Labelbox type="datepicker"
-                            disableFuture={true}
+                            // disableFuture={true}
                             changeData={(data) => checkValidation(data, "end_date")}
                             value={TradeMarkForm.end_date.value}
                             error={TradeMarkForm.end_date.error}
