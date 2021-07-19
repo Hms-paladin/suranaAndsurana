@@ -435,7 +435,9 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
             <OPEModel handleChangeCloseModel={(bln) => handleFieldNullExp(bln)} />
         )
     }
-
+    const openProjectTask=()=>{
+        setModelOpen(true)
+    }
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
             setModelOpen(true)
@@ -845,7 +847,13 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                                      <Grid item xs={2}><Checkbox checked={data.check_list_status == null || data.check_list_status ==0  ? false: true}
                                       name={data.check_list} value={data.check_list_id}  onClick={(event) => handleCheck(event,data)}
                                       /></Grid>
-                                     <Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid>
+
+                                     <Grid item xs={3}>      {<img src={data.check_list_type != 'Simple' ? Tasks : ""} className="tabIconImage"
+
+                                     onClick={data.check_list_type != 'Simple' ? ()=>openProjectTask() : ""}/>}
+
+</Grid>
+
                                      </Grid>
                                      )}
 
