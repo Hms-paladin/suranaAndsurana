@@ -183,13 +183,13 @@ function CheckListCreation(props) {
     for (var m = 0; m < checkListsData.length; m++) {
       var listarray = {
         department: checkListsData[m].department, 
-        category: checkListsData[m].category_id, 
+        category: checkListsData[m].category, 
         listName: checkListsData[m].check_list,
          listType:checkListsData[m].check_list_type, 
         taskItem: checkListsData[m].task,
          activity: checkListsData[m].activity,
           subactivity: checkListsData[m].sub_activity,
-           frequency: checkListsData[m].frequency_id
+           frequency: checkListsData[m].frequency
       }
       lists.push(listarray);
     }

@@ -51,14 +51,34 @@ const HtmlTooltip = withStyles((theme) => ({
 
     useEffect(()=>{
       setVariableRateIcon(props.variableRate.billable_type_id)
-    },[props.variableRate])
+    },[props.variableRate,props.checkListsAssigned])
     const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
+    const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
     return (
         <div className="tradeMarkIcons">
  
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
                 {TabIcons.map((data, index) => {
-                        if(showFromSec !== index ){
+                    if(showFromCheckList !== index){
+                        TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, 
+                        { img: TimeSheet, title: "TIME SHEET" }, 
+                        { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
+                         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]   
+                    }
+                     
+                    if(showFromSec !== index){
+                        TabIcons = [{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, 
+                        { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, 
+                        { img: Tasks, title: "TASKS" },
+                         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }] 
+                    }
+                        if(showFromSec !== index && showFromCheckList !== index){
+                            TabIcons = [{ img: Rupees, title: "OPE" }, 
+                            { img: TimeSheet, title: "TIME SHEET" },
+                             { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, 
+                             { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+    
+                        }
                     return (
                         <div>
                             {data.title === "TIME SHEET" ?
@@ -88,7 +108,7 @@ const HtmlTooltip = withStyles((theme) => ({
 
                         </div>
 
-                    )}
+                    )
                 })}
 
             </Grid>
