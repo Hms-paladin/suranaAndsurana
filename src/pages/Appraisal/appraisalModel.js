@@ -8,27 +8,39 @@ import CustomButton from '../../component/Butttons/button';
 
 function AppraisalModel(props) {
     const [modelTitle, setModelTitle] = useState()
+    const [appraisalcmt, setAppraisalcmt] = useState()
+
     useEffect(() => {
         setModelTitle(props.modelTitle)
+        console.log(props.modelCommentID, "modelCommentID")
     }, [props])
+
+    const checkValidation = (data, key) => {
+        setAppraisalcmt(data)
+    }
+
+    const onsubmit = () => {
+        props.addAppraisalcmt(appraisalcmt, props.modelCommentID)
+        props.handleChangeCloseModel()
+        setAppraisalcmt("")
+    }
+
     return (
         <div>
             <div className="modelbox">
                 <div className="appModeltitle">{modelTitle}</div>
                 <div className="reasonscmt">
                     <Labelbox type="textarea"
-                    // changeData={(data) =>
-                    //     checkValidation(data, "comment")
-                    // }
-                    // value={Appraisal.comment.value}
-                    // error={Appraisal.comment.error}
-                    // errmsg={Appraisal.comment.errmsg}
+                        changeData={(data) =>
+                            checkValidation(data, "comment")
+                        }
+                        value={appraisalcmt}
                     />
                 </div>
             </div>
             <div className="appraisalBtn">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onsubmit} />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={() => setAppraisalcmt("")} />
             </div>
 
         </div>

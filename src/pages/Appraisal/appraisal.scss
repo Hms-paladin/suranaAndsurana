@@ -72,6 +72,10 @@
     margin: 10px;
 }
 
+.ant-collapse-content > .ant-collapse-content-box {
+    padding: 16px 16px 16px 40px !important;
+}
+
 .linkChoose {
     width: 100%;
     padding: 10px;
@@ -177,9 +181,9 @@
     }
     .ant-collapse-arrow svg{
     position: relative;
-    top: 50%  !important;
-    left: 1200px !important;
-    font-size: 16px !important;
+    // top: 50%  !important;
+    left: 1050px !important;
+    // font-size: 16px !important;
     .ant-collapse-header{
         font-weight: 600 !important;
         font-size: 16px;
