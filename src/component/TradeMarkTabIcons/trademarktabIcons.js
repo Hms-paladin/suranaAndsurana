@@ -51,11 +51,21 @@ const HtmlTooltip = withStyles((theme) => ({
 
     useEffect(()=>{
       setVariableRateIcon(props.variableRate.billable_type_id)
-    },[props.variableRate,props.checkListsAssigned])
+    },[props.variableRate,props.checkListsAssigned,props.projectDetails])
     const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
-    const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
+    //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
+    var showFromCheckList = true;
+    for(var i=0; i<props.checkListsAssigned.length;i++ ){
 
-    if(showFromCheckList == 3){
+        if(props.projectDetails  && 
+            props.projectDetails.project_type_id == props.checkListsAssigned[i].project_type_id 
+            && props.projectDetails.sub_project_id == props.checkListsAssigned[i].project_sub_type_id ){
+            showFromCheckList = false;
+        }
+    }
+    //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
+
+    if(showFromCheckList){
         TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, 
         { img: TimeSheet, title: "TIME SHEET" }, 
         { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
@@ -68,7 +78,7 @@ const HtmlTooltip = withStyles((theme) => ({
         { img: Tasks, title: "TASKS" },
          { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }] 
     }
-        if(showFromSec == 0 && showFromCheckList == 3){
+        if(showFromSec == 0 && showFromCheckList){
             TabIcons = [{ img: Rupees, title: "OPE" }, 
             { img: TimeSheet, title: "TIME SHEET" },
              { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, 

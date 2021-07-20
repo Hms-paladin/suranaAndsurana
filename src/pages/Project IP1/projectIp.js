@@ -324,6 +324,15 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
     useEffect(() => {
         
         if(props.getCheckListsAssigned && props.getCheckListsAssigned.length >0){
+ var lists=[];
+            for(var i=0; i< props.getCheckListsAssigned ;i++){
+
+                if(props.ProjectDetails && props.ProjectDetails[0] && 
+                    props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id 
+                    && props.ProjectDetails[0].sub_project_id == props.getCheckListsAssigned[i].project_sub_type_id ){
+                lists.push(props.getCheckListsAssigned);
+                    }
+            }
         setcheckListsView(props.getCheckListsAssigned )
         }
         //setValue(props.rowData.data.priority_id)
@@ -820,7 +829,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                         {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
                             props.ProjectDetails[0].project_type} */}
                     </div>
-                    <div className="TabIconsview"><TabIcons variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <div className="TabIconsview"><TabIcons variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
                      */}
 
@@ -839,6 +848,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                                 <Grid container spacing={1}>
 
                                 {checkListsView.map((data,index)=>
+                                
                                 <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center">
                                     
                                     <Grid item xs={7}>
