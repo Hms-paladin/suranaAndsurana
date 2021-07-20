@@ -39,7 +39,8 @@ import OnlineTest from './OnlineTestREducer';
 import KraReducer from './KraReducer';
 import CheckListReducer from './CheckListReducer';
 import OutofPacket from './OutofPacketReducers'
-import KpiReducer from './KPIReducers'
+import KpiReducer from './KPIReducers';
+import GetEmpAppraisalDetails from './AppraisalReducer';
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -81,7 +82,8 @@ export default combineReducers({
   KraReducer,
   CheckListReducer,
   OutofPacket,
-  KpiReducer
+  KpiReducer,
+  GetEmpAppraisalDetails
 });
 
 

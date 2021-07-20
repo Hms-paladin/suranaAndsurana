@@ -1,38 +1,61 @@
-import react, { useEffect, useState } from 'react';
+import react, { useCallback, useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
-import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import PlusIcon from "../../images/plusIcon.svg";
 import { useDispatch, connect } from "react-redux";
-import { Checkbox, Collapse } from 'antd';
+import { Checkbox, Collapse, Radio } from 'antd';
 import AppraisalModel from './appraisalModel';
 import DynModel from "../../component/Model/model";
 import RatingModel from './ratingModel';
 import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
+import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
+import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor } from '../../actions/AppraisalAction';
 
 const { Panel } = Collapse;
 
 function Appraisal(props) {
-    let { rowId } = useParams()
-
-
-    // useEffect(() => {
-    // dispatch(getProjectDetails(rowId))
-    // }, [])
     const dispatch = useDispatch();
     const rowIdtw = ""
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
+    const [addemployeeseminar, setAddemployeeSeminar] = useState([])
+    const [addemployeeProgram, setAddemployeeProgram] = useState([])
     const [changeCheckbox, setChangeCheckbox] = useState(false)
     const [modelOpen, setModelOpen] = useState(false)
     const [ratingModelOpen, setRatingModelOpen] = useState(false)
     const [modelTitle, setModelTitle] = useState()
-    const [rowID, setRowID] = useState(rowId)
     const [saveRights, setSaveRights] = useState([])
-
+    const [areDevelopment, setAreDevelopment] = useState({})
+    const [showQual, setShowQual] = useState(false)
+    const [showProgram, setShowProgram] = useState(false)
+    const [showSeminar, setShowSeminar] = useState(false)
+    const [showKeys, setShowKeys] = useState(false)
+    const [modelCommentID, setModelCommentID] = useState()
+    const [respbtn, setRespbtn] = useState()
+    const [assignbtn, setAssignbtn] = useState()
+    const [rowID, setRowID] = useState()
+    const [todoListdata, setTodoListdata] = useState([])
+    const [emp_appr_id, setEmp_appr_id] = useState()
+    const [modelComment, setModelComment] = useState({
+        area_of_speci: { value: "" },
+        self_work_des: { value: "" },
+        current_duties: { value: "" },
+        major_achievement: { value: "" },
+        urge_to_learn: { value: "" },
+        enhance_your_productivity: { value: "" },
+        improvement_ssia: { value: "" },
+        opinion_remark: { value: "" },
+        growth_plan_three_yrs: { value: "" },
+        growth_plan_five_yrs: { value: "" },
+    })
+    const [supmodelComment, setSupModelComment] = useState({
+        appraisar_comments: { values: "" },
+        instruction_action: { values: "" },
+        advice_manage_parter: { values: "" },
+    })
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
             value: "",
@@ -60,11 +83,57 @@ function Appraisal(props) {
         },
     })
 
+    useEffect(() => {
+        dispatch(GetAreaDevelopment())
+        dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
+        setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
+        setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : null)
+    }, [props.location.state])
+
+    useEffect(() => {
+        let AreDevelopment = []
+        props.GetAreaDevelopment.map((data) =>
+            AreDevelopment.push({ id: data.area_development_id, value: data.area_development })
+        );
+        setAreDevelopment({ AreDevelopment });
+
+        if (props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails.length > 0) {
+            props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.area_development.map((val) => {
+                if (val.area_development_id === 1) {
+                    addemployeeDetails.push({ details: val.details, date: val.details_date })
+                    setAddemployeeDetails([...addemployeeDetails])
+                } else if (val.area_development_id === 3) {
+                    addemployeeseminar.push({ details: val.details, date: val.details_date })
+                    setAddemployeeSeminar([...addemployeeseminar])
+                } else {
+                    addemployeeProgram.push({ details: val.details, date: val.details_date })
+                    setAddemployeeProgram([...addemployeeProgram])
+                }
+            })
+
+            Appraisal.comment.value = props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.current_assignment_command
+
+            setTodoListdata(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0])
+        }
+    }, [props.GetAreaDevelopment, props.GetEmpAppraisalDetails])
+
+
 
     const AddempDetails = () => {
-        addemployeeDetails.push({ details: Appraisal.details.value, date: Appraisal.date.value })
-        setAddemployeeDetails([...addemployeeDetails])
-
+        dispatch(InsertAreaDevelopment(showKeys, Appraisal.details.value, Appraisal.date.value))
+        if (showKeys === 1) {
+            addemployeeDetails.push({ details: Appraisal.details.value, date: Appraisal.date.value })
+            setAddemployeeDetails([...addemployeeDetails])
+        }
+        else if (showKeys === 3) {
+            addemployeeseminar.push({ details: Appraisal.details.value, date: Appraisal.date.value })
+            setAddemployeeSeminar([...addemployeeseminar])
+        }
+        else {
+            addemployeeProgram.push({ details: Appraisal.details.value, date: Appraisal.date.value })
+            setAddemployeeProgram([...addemployeeProgram])
+        }
+        handleCancel()
     }
 
     function callback(key) {
@@ -79,6 +148,19 @@ function Appraisal(props) {
 
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
+
+        if (data === 1 && key === "area_dev") {
+            setShowKeys(data)
+            setShowQual(true)
+        }
+        if (data === 2 && key === "area_dev") {
+            setShowProgram(true)
+            setShowKeys(data)
+        }
+        if (data === 3 && key === "area_dev") {
+            setShowSeminar(true)
+            setShowKeys(data)
+        }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -97,19 +179,18 @@ function Appraisal(props) {
             [key]: dynObj,
         }));
     }
-    const linkChoose = () => {
-        setChangeCheckbox(!changeCheckbox)
-    }
-    const appraisalModelOpen = (data) => {
+
+    const appraisalModelOpen = (data, id) => {
         setModelOpen(true)
         setModelTitle(data)
+        setModelCommentID(id)
     }
     // console.log(rowID, "rowID")
 
 
     ///***********user permission**********/
     useEffect(() => {
-        if (props.UserPermission.length > 0 && props.UserPermission) {
+        if (props.UserPermission && props.UserPermission.length > 0 && props.UserPermission) {
             let data_res_id = props.UserPermission.find((val) => {
                 return (
                     "Appraisal - Save" == val.control
@@ -137,6 +218,159 @@ function Appraisal(props) {
         });
     }
     /////////////
+
+    const onChange = e => {
+        setRespbtn(e.target.value)
+    }
+
+    const linkChoose = (e) => {
+        if (e.target.value === 2) {
+            setChangeCheckbox(!changeCheckbox)
+        }
+        else {
+            setChangeCheckbox(false)
+        }
+        setAssignbtn(e.target.value)
+    }
+
+    const addAppraisalcmt = (data, value) => {
+        console.log(data,value,"modelCommentID")
+        if (rowID === 1) {
+            if (value === "appraisar_comments") {
+                supmodelComment.appraisar_comments.values = data
+            } else if (value === "instruction_action") {
+                supmodelComment.instruction_action.values = data
+            } else if (value === "advice_manage_parter") {
+                supmodelComment.advice_manage_parter.values = data
+            }
+            setSupModelComment((prevState) => ({
+                ...prevState,
+            }));
+        } else {
+            if (value === "area_of_speci") {
+                modelComment.area_of_speci.value = data
+            } else if (value === "self_work_des") {
+                modelComment.self_work_des.value = data
+            } else if (value === "current_duties") {
+                modelComment.current_duties.value = data
+            } else if (value === "major_achievement") {
+                modelComment.major_achievement.value = data
+            } else if (value === "urge_to_learn") {
+                modelComment.urge_to_learn.value = data
+            } else if (value === "enhance_your_productivity") {
+                modelComment.enhance_your_productivity.value = data
+            } else if (value === "improvement_ssia") {
+                modelComment.improvement_ssia.value = data
+            } else if (value === "opinion_remark") {
+                modelComment.opinion_remark.value = data
+            } else if (value === "growth_plan_three_yrs") {
+                modelComment.growth_plan_three_yrs.value = data
+            } else if (value === "growth_plan_five_yrs") {
+                modelComment.growth_plan_five_yrs.value = data
+            }
+            setModelComment((prevState) => ({
+                ...prevState,
+            }));
+        }
+    }
+
+    console.log(Appraisal, "Appraisal")
+
+    const onsubmit = () => {
+        if (rowID === 1) {
+            dispatch(InsertApraisalSupervisor(supmodelComment,emp_appr_id))
+        } else {
+            console.log(modelComment, respbtn, assignbtn, "appraisal")
+            dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+        }
+    }
+
+
+    const handleCancel = () => {
+        let From_key = [
+            "area_dev",
+            "details",
+            "date",
+            "comment",
+        ];
+
+        From_key.map((data) => {
+            try {
+                Appraisal[data].value = "";
+            } catch (error) {
+                throw error;
+            }
+        });
+        setAppraisal((prevState) => ({
+            ...prevState,
+        }));
+    };
+
+
+    const qualification = () => {
+        return (
+            <div className="employeeApprisal_Child_Container">
+                <div className="TitleChildDiv">
+                    <div>Qualification</div>
+                    <div>Date</div>
+                </div>
+                <div className="gridDatashow">
+                    {addemployeeDetails.map((data) => {
+                        return (
+                            <div className="ValueChildDiv">
+                                <div>{data.details}</div>
+                                <div>{data.date}</div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        )
+    }
+
+    const program = () => {
+        return (
+            <div className="employeeApprisal_Child_Container">
+                <div className="TitleChildDiv">
+                    <div>Program</div>
+                    <div>Date</div>
+                </div>
+                <div className="gridDatashow">
+                    {addemployeeProgram.map((data) => {
+                        return (
+                            <div className="ValueChildDiv">
+                                <div>{data.details}</div>
+                                <div>{data.date}</div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        )
+    }
+
+    const seminar = () => {
+        return (
+            <div className="employeeApprisal_Child_Container">
+                <div className="TitleChildDiv">
+                    <div>Seminar</div>
+                    <div>Date</div>
+                </div>
+                <div className="gridDatashow">
+                    {addemployeeseminar.map((data) => {
+                        console.log(addemployeeseminar, "addemployeeseminar")
+                        return (
+                            <div className="ValueChildDiv">
+                                <div>{data.details}</div>
+                                <div>{data.date}</div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div>
             {/* { permission.allow_view==='Y'&& <div> */}
@@ -161,7 +395,7 @@ function Appraisal(props) {
                     </div>
                 </div>
 
-                <div>
+                {rowID == 1 ? null : <div>
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
@@ -174,6 +408,7 @@ function Appraisal(props) {
                                     value={Appraisal.area_dev.value}
                                     error={Appraisal.area_dev.error}
                                     errmsg={Appraisal.area_dev.errmsg}
+                                    dropdown={areDevelopment.AreDevelopment}
                                 />
                             </div>
                         </Grid>
@@ -213,101 +448,52 @@ function Appraisal(props) {
 
                 </div>
 
-
+                }
                 <div className="employeeApprisal_Container">
-                    <div className="employeeApprisal_Child_Container">
-                        <div className="TitleChildDiv">
-                            <div>Qualification</div>
-                            <div>Date</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>LLB</div>
-                            <div>Mar 2021</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>Diploma in Law</div>
-                            <div>Dec 2021</div>
-                        </div>
-                    </div>
-                    <div className="employeeApprisal_Child_Container">
-                        <div className="TitleChildDiv">
-                            <div>Program</div>
-                            <div>Date</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>Legal Practice</div>
-                            <div>Jan 2021</div>
-                        </div>
-                    </div>
-                    <div className="employeeApprisal_Child_Container">
-                        <div className="TitleChildDiv">
-                            <div>Seminar</div>
-                            <div>Date</div>
-                        </div>
-                        <div className="ValueChildDiv">
-                            <div>Seminar 1</div>
-                            <div>Feb 2021</div>
-                        </div>
-                    </div>
+                    {rowID == 1 ? addemployeeDetails.length > 0 && qualification() :
+                        showQual && addemployeeDetails.length > 0 && qualification()}
+                    {rowID == 1 ? addemployeeProgram.length > 0 && program() :
+                        showProgram && addemployeeProgram.length > 0 && program()}
+                    {rowID == 1 ? addemployeeseminar.length > 0 && seminar() :
+                        showSeminar && addemployeeseminar.length > 0 && seminar()}
                 </div>
-
-
-                {addemployeeDetails.length > 0 &&
-                    <div className="appraisalTable" >
-                        <div className="appraisaldetails">
-                            <div>Qualification</div>
-                            <div>Date</div>
-                        </div>
-
-                        {addemployeeDetails.map((data) => {
-                            return (
-                                <div className="appraisaldata">
-                                    <div>{data.details}</div>
-                                    <div>{data.date}</div>
-                                </div>
-                            )
-                        })}
-
-                    </div>}
             </div>
 
 
             {rowID == 1 ?
                 <>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Area of Specialization" ><div>Area of Specialization</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Area of Specialization" ><div>{todoListdata && todoListdata.area_of_speci}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Self work descripition (List out the details of works carried and the frequency)" ><div>Self work descripition (List out the details of works carried and the frequency)</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Self work descripition (List out the details of works carried and the frequency)" ><div>{todoListdata && todoListdata.self_work_des}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Out of the above, list out your current duties/work, which is your opinion, are not you competency" ><div>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Out of the above, list out your current duties/work, which is your opinion, are not you competency" ><div>{todoListdata && todoListdata.current_duties}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Major Achievements in the review period" ><div>Major Achievements in the review period</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Major Achievements in the review period" ><div>{todoListdata && todoListdata.major_achievement}</div></Panel></Collapse>
                     </div>
                     <div className="linkChoose">
                         <div>Was your comfort level in your current responsibilities was adequate </div>
-                        <div><Checkbox /> Yes</div>
-                        <div><Checkbox /> No</div>
+                        <div><Radio value={1}>{todoListdata && todoListdata.current_responsibilites}</Radio></div>
                     </div>
 
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Urge to learn" ><div>Urge to learn</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Urge to learn" ><div>{todoListdata && todoListdata.urge_to_learn}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Do you feel any specific training is required to enhance your productivity? if so, please specify" ><div>Do you feel any specific training is required to enhance your productivity? if so, please specify</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Do you feel any specific training is required to enhance your productivity? if so, please specify" ><div>{todoListdata && todoListdata.enhance_your_productivity}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Suggestions, If any for improvement at SSIA" ><div>Suggestions, If any for improvement at SSIA</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Suggestions, If any for improvement at SSIA" ><div>{todoListdata && todoListdata.improvement_ssia}</div></Panel></Collapse>
                     </div>
                     <div className="chooseleave">
                         <div className="linkChooseOption">
                             <div>Is your potential utilized fully in the current assignment </div>
-                            <div><Checkbox /> Yes</div>
-                            <div><Checkbox onChange={linkChoose} /> No</div>
+                            <div> <Radio value={1}>{todoListdata && todoListdata.current_assignment}</Radio></div>
                         </div>
-                        {changeCheckbox &&
+                        {todoListdata && todoListdata.current_assignment === "No" &&
                             <div className="reasonBox">
                                 <div>Reason for why the potential was not fully utilized</div>
                                 <div className="reasonscmt">
@@ -325,49 +511,57 @@ function Appraisal(props) {
                     </div>
 
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Any other specific opinion/remarks" ><div>Any other specific opinion/remarks</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Any other specific opinion/remarks" ><div>{todoListdata && todoListdata.opinion_remark}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Spell out your growth plan for the next three years" ><div>Spell out your growth plan for the next three years</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Spell out your growth plan for the next three years" ><div>{todoListdata && todoListdata.growth_plan_three_yrs}</div></Panel></Collapse>
                     </div>
                     <div className="appraisal_collapse">
-                        <Collapse onChange={callback}><Panel header="Spell out your growth plan for the next five years" ><div>Spell out your growth plan for the next five years</div></Panel></Collapse>
+                        <Collapse onChange={callback}><Panel header="Spell out your growth plan for the next five years" ><div>{todoListdata && todoListdata.growth_plan_five_yrs}</div></Panel></Collapse>
                     </div>
 
                 </>
                 : <>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Area of Specialization")}>Area of Specialization</div>
+                        <div className="linkview" id="areaofspec" onClick={() => appraisalModelOpen("Area of Specialization", "area_of_speci")}>Area of Specialization</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)")}>Self work descripition (List out the details of works carried and the frequency)</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)", "self_work_des")}>Self work descripition (List out the details of works carried and the frequency)</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency", "current_duties")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period")}>Major Achievements in the review period</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period", "major_achievement")}>Major Achievements in the review period</div>
                     </div>
                     <div className="subheading">In your opinion</div>
                     <div className="linkChoose">
                         <div>Was your comfort level in your current responsibilities was adequate </div>
-                        <div><Checkbox /> Yes</div>
-                        <div><Checkbox /> No</div>
+                        <Radio.Group onChange={onChange} value={respbtn}>
+                            <Radio value={1}>Yes</Radio>
+                            <Radio value={2}>No</Radio>
+
+                        </Radio.Group>
+                        {/* <div><Checkbox /> Yes</div>
+                        <div><Checkbox /> No</div> */}
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn")}>Urge to learn</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn", "urge_to_learn")}>Urge to learn</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify")}>Do you feel any specific training is required to enhance your productivity? if so, please specify</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify", "enhance_your_productivity")}>Do you feel any specific training is required to enhance your productivity? if so, please specify</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA")}>Suggestions, If any for improvement at SSIA</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA", "improvement_ssia")}>Suggestions, If any for improvement at SSIA</div>
                     </div>
                     <div className="chooseleave">
                         <div className="linkChooseOption">
                             <div>Is your potential utilized fully in the current assignment </div>
-                            <div><Checkbox /> Yes</div>
-                            <div><Checkbox onChange={linkChoose} /> No</div>
+                            <Radio.Group onChange={linkChoose} value={assignbtn}>
+                                <Radio value={1}>Yes</Radio>
+                                <Radio value={2}>No</Radio>
+
+                            </Radio.Group>
                         </div>
                         {changeCheckbox &&
                             <div className="reasonBox">
@@ -386,16 +580,16 @@ function Appraisal(props) {
                         }
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks")}>Any other specific opinion/remarks</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks", "opinion_remark")}>Any other specific opinion/remarks</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years")}>Spell out your growth plan for the next three years</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years", "growth_plan_three_yrs")}>Spell out your growth plan for the next three years</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years")}>Spell out your growth plan for the next five years</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years", "growth_plan_five_yrs")}>Spell out your growth plan for the next five years</div>
                     </div>
                 </>}
-            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} />} />
+            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} />} />
 
             {(rowID == 1 || rowIdtw == 2) &&
                 <>
@@ -404,17 +598,16 @@ function Appraisal(props) {
             {rowID == 1 &&
                 <>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Appraiser Comments")}>Appraiser Comments</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Appraiser Comments", "appraisar_comments")}>Appraiser Comments</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Instruction/Advice")}>Instruction/Advice</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Instruction/Advice", "instruction_action")}>Instruction/Advice</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Advice to Managing Partner")}>Advice to Managing Partner</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Advice to Managing Partner", "advice_manage_parter")}>Advice to Managing Partner</div>
                     </div>
                 </>
             }
-
 
             {
                 rowIdtw == 2 &&
@@ -437,8 +630,10 @@ function Appraisal(props) {
 
             <div className="appraisalBtn">
                 {rowID == 1 && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => ('')} />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />
+
                 <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
+
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
 
@@ -450,7 +645,10 @@ function Appraisal(props) {
 }
 
 const mapStateToProps = (state) =>
-({
-    UserPermission: state.UserPermissionReducer.getUserPermission,
-});
+(
+    console.log(state, "tesdfghjst"),
+    {
+        GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
+        GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],
+    });
 export default connect(mapStateToProps)(Appraisal);

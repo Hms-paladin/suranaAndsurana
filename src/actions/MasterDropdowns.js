@@ -49,7 +49,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE,GET_AREA_DEVELOPMENT
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -472,4 +472,10 @@ export const getSubordinate = (id) => async (dispatch) => {
   catch (err) { }
 }
 
+
+// Appraisal 
+export const GetAreaDevelopment = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_area_development");
+  return dispatch({ type: GET_AREA_DEVELOPMENT, payload: response.data.data });
+};
 

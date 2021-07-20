@@ -26,7 +26,7 @@ import RecruitmentModal from './RecruitmentModal'
 import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
 import { getTaskList } from "../../actions/projectTaskAction";
-import {getProjectTasks } from "../../actions/TodoListAction";
+import { getProjectTasks } from "../../actions/TodoListAction";
 // Hr Task:
 
 const headCells = [
@@ -102,9 +102,9 @@ function TodoList(props) {
     // KRA Approval
     const [kraapprovemodel, setKraapprovemodel] = useState(false)
     const [kraApprove, setKraApprove] = useState([])
-    
+
     // KPI APPROVAL
-    const [KpiApproval,setKpiApproval]=useState("")
+    const [KpiApproval, setKpiApproval] = useState("")
     const [kraempname, setKraempname] = useState()
 
     // Appraisal
@@ -196,7 +196,7 @@ function TodoList(props) {
             let showName = null
 
             projectTask.push({
-                id: <div onClick={(id, name) => ProjectTaskFunction(data.task, data.task_id,data)} className="tempClass" >{data.task ? data.task : data.task}</div>,
+                id: <div onClick={(id, name) => ProjectTaskFunction(data.task, data.task_id, data)} className="tempClass" >{data.task ? data.task : data.task}</div>,
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 case: '',
@@ -209,6 +209,7 @@ function TodoList(props) {
 
         })
         setProjectTodoList(projectTask)
+        console.log(props.getOtherTask, "props.getOtherTask")
 
         //Other Task
         let otherTask = []
@@ -324,14 +325,14 @@ function TodoList(props) {
             setTicket_id(id)
         }
     }
-console.log(unblockUser,"unblockUser")
+    console.log(unblockUser, "unblockUser")
 
     function ProjectTaskFunction(name, id, data) {
         // setTaskModelTitle(data.task)
         if (name === "Unblock User") {
             setUnblockUser(data)
             setUnblockuserActive(true)
-            
+
         }
         else if (name === "Timesheet Approval") {
             setTimesheetID(id)
@@ -340,8 +341,6 @@ console.log(unblockUser,"unblockUser")
         }
     }
     function OtherTaskFunction(name, id, data) {
-
-
         console.log(name, id, "names")
         setTaskModelTitle(data.task)
         if (name === "Leave Approval") {
@@ -385,7 +384,10 @@ console.log(unblockUser,"unblockUser")
                 return id === val.emp_appr_id
 
             })
-            setAppraisalData(Appraisaldata.emp_appr_id)
+            console.log(Appraisaldata, "Appraisaldata")
+            // setAppraisalData(Appraisaldata.task === "Employee Appraisal" ? 1 : null)
+            setAppraisalData(Appraisaldata)
+
         }
         else if (name === "KPI Approval") {
             setKpiapprovemodel(true)
@@ -472,9 +474,13 @@ console.log(unblockUser,"unblockUser")
 
                 <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} kraempname={kraempname} />} />
 
-                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} KpiId={KpiApproval}/>} />
+                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} KpiId={KpiApproval} />} />
+                {/* {appraisalModel && <Redirect push to={`/Home/appraisal/${appraisalData}`} */}
 
-                {appraisalModel && <Redirect push to={`/Home/appraisal/${appraisalData}`} />}
+                {appraisalModel && <Redirect push to={{
+                    pathname: "/Home/appraisal/",
+                    state: { appraisalData }
+                }} />}
 
             </div>
 
