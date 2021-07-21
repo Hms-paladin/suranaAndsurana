@@ -58,7 +58,7 @@ function KRAModal(props) {
         setEmployeeList({ EmployeeList })
         // GET_KRA:
         let rowDataList = []
-        props.getKra && props.getKra.map((data, index) => {
+        props.getKra.length>0&& props.getKra.map((data, index) => {
             rowDataList.push({
 
                 employeename: data.name, activity: data.activity, target: data.kra_percentage,
@@ -112,7 +112,7 @@ function KRAModal(props) {
         if (filtererr.length > 0) {
             // setkra_Model({ error: true });
         } else {
-            dispatch(getKra(kra_Model.employee.value, kra_Model.fromperiod.value, kra_Model.toperiod.value)).then((response) => {
+            dispatch(getKra(kra_Model.fromperiod.value, kra_Model.toperiod.value,kra_Model.employee.value)).then((response) => {
                 handleCancel()
             })
         }

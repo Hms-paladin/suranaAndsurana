@@ -462,7 +462,7 @@ export const UpdateSubstage = (UserMaster,stageId, Editvisible,id) => async disp
 }
 // insert status insert api
 export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => async dispatch => {
-  // alert(Statusvalue&&Statusvalue?.value)
+  console.log(StatusId,"StatusId")
   try {
     axios({
       method: 'POST',
