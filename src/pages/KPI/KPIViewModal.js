@@ -45,6 +45,11 @@ function KPIModal(props) {
         if(data&&key==="from"){
             setminDate(data)
         }
+        if(data&&key==="employee"){
+        console.log(data,"datacheck")
+
+        }
+
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             KpiSearch[key].validation
@@ -76,7 +81,6 @@ function KPIModal(props) {
     useEffect(()=>{
      },[])
     const SearchData=()=>{
-        setSearch(true)
         var mainvalue = {};
         var targetkeys = Object.keys(KpiSearch);
         for (var i in targetkeys) {
@@ -91,10 +95,10 @@ function KPIModal(props) {
         var filtererr = targetkeys.filter((obj) => KpiSearch[obj].error == true);
 
         if (filtererr.length > 0) {
-        
         } else{
-            dispatch(GetKpiAchivement(KpiSearch,search)).then(()=>{
+            dispatch(GetKpiAchivement(KpiSearch,KpiSearch.employee.value)).then(()=>{
                 // props.closemodal()
+                setSearch(false)
              })
         }
       
@@ -109,6 +113,8 @@ function KPIModal(props) {
          let percentage=[]
          if(props.Kpiachivement.length>0){
              setempty(false)
+         }else if(props.Kpiachivement.length===0){
+            setempty(true)
          }
          props.Kpiachivement.map((data)=>{
            kpiData.push(data)
@@ -125,10 +131,10 @@ function KPIModal(props) {
         achive_total+=Achivement[i]
       }
 
-      setachiveTotal(achive_total)
-      setpercentageTotal(total)
-    },[ props.Kpiachivement])
+      setachiveTotal(Math.abs(achive_total))
     console.log("dddd",props.Kpiachivement)
+      setpercentageTotal(total)
+    },[ props.Kpiachivement,search])
     return (
         <div>
             <div className="kra_main">

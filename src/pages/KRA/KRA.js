@@ -34,6 +34,7 @@ const KRA = (props) => {
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
     const [minDate,setminDate]=useState("")
+    const [datechange,setdatechange]=useState(false)
     const [empId, setEmpId] = useState(localStorage.getItem("empId"))
     const [kpi_form, setKpi_form] = useState({
 
@@ -69,7 +70,10 @@ const KRA = (props) => {
     useEffect(() => {
         dispatch(getActivity());
     }, [kpi_form]);
-
+    useEffect(()=>{
+        dispatch(getKra())
+        console.log(props.getKra,"datechange")
+    },[]);
 
     useEffect(() => {
         let Activity = []
@@ -81,19 +85,23 @@ const KRA = (props) => {
         });
         setActivity({ Activity })
         setTestDate(props.getKra[0])
-        console.log(props.getKra,"idddd")
-    }, [props.getActivity, props.getKra, kpi_form])
+    console.log(props.getKra,"datechange")
 
-    useEffect(() => {
-        checking()
-    }, [testDate])
+    }, [props.getActivity, props.getKra, kpi_form,datechange])
+    // useEffect(() => {
+    //     checking()
+    // }, [testDate])
 
     const checking = useCallback(() => {
         let id = testDate && testDate.emp_id
         if (Number(localStorage.getItem("empId")) === (testDate && testDate.emp_id)) {
-            if (kpi_form.fromperiod.value === moment(testDate.period_from).format("MMM-yyyy") || kpi_form.toperiod.value === moment(testDate.period_to).format("MMM-yyyy")) {
+            if (moment(kpi_form.fromperiod.value).format("MMM-YYYY") == moment(testDate.period_from).format("MMM-yyyy") ||
+              moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy")||
+              moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate.period_from).format("MMM-yyyy")||
+             moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy")) {
+                setDisabledate(true)
                 notification.error({
-                    message: 'This Period Already Exist. Choose After Date  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
+                    message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
                 });
             }
         }
@@ -108,8 +116,13 @@ const KRA = (props) => {
         }
         var toDate = kpi_form.toperiod.value
         if (data && key === "toperiod") {
+            setdatechange(true)
             toDate = moment(data).format("MMM-yyyy");
-            dispatch(getKra(localStorage.getItem("empId"), startDate, toDate))
+            dispatch(getKra(startDate, toDate))
+            checking()
+        }
+        if(moment(kpi_form.toperiod.value).format("MMM-yyyy")==moment().format("MMM-yyyy")){
+            setdatechange(false)
         }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -292,6 +305,7 @@ const KRA = (props) => {
 
 
     const onsubmit = () => {
+        
         if (totalPercentage > 100 || totalPercentage < 100) {
             notification.error({
                 message: 'Total Percent Value should be 100 only',
@@ -366,7 +380,8 @@ const KRA = (props) => {
                                         errmsg={kpi_form.toperiod.errmsg}
                                         disabled={disabledate ? true : false}
                                         minDate={minDate}
-                                    /></div>
+                                    />
+                                    </div>
                                 {/* <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div> */}
                             </Grid>
                             <Grid item xs={2}>
