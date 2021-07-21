@@ -11,9 +11,9 @@ function DynModelView(props) {
   const [getdata, setgetData] = useState([])
   const [res_id, setres_id] = useState({})
   useEffect(() => {
-    console.log(props, "propsprops")
+    // console.log(props, "propsprops")
     setres_id(props.data_id && props.data_id.resume_id)
-    console.log(props.data_id, "//")
+    // console.log(props.data_id, "//")
     Axios({
       method: "POST",
       url: apiurl + 'get_candidate_details_by_id',
@@ -25,22 +25,9 @@ function DynModelView(props) {
         setgetData(response.data.data[0].result)
       })
 
+  }, [props.res_data_id,props.data_id])
 
-    // setres_id(props.data_id.map((data,index)=>{
-
-    //   getres_id(data.resume_id)
-
-    // }))
-
-    // setres_id(prevState =>({
-    //   ...prevState,
-    //    res_id:props.data_id&&props.data_id.resume_id
-    // }))
-
-
-  }, [props.res_data_id])
-
-  console.log(getdata.type_of_resource, "type_of_resource")
+  // console.log(props.res_data_id, "type_of_resource")
 
 
   function handleCancel() {
