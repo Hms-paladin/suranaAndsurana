@@ -16,6 +16,7 @@ function KRAModal(props) {
         { id: 'employeename', label: 'Employee Name' },
         { id: 'activity', label: 'Activity' },
         { id: 'target', label: 'Target' },
+        { id:"percentage",label:"Percentage"}
     ];
     const [employeeList, setEmployeeList] = useState({});
     const [rowData, setRowData] = useState([])
@@ -61,7 +62,7 @@ function KRAModal(props) {
         props.getKra.length>0&& props.getKra.map((data, index) => {
             rowDataList.push({
 
-                employeename: data.name, activity: data.activity, target: data.kra_percentage,
+                employeename: data.name, activity: data.activity, target: data.kra_percentage,percentage:data.kra_percentage
             })
         })
 

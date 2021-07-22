@@ -145,6 +145,10 @@ import CheckListView from '../../pages/Checklist/ChecklistView'
 // import OPE from '../pages/OPE/OpeAdvance'
 import OPE_Expense from '../../pages/OPE/OpeExpense'
 
+import axios from "axios";
+import moment from 'moment';
+import { notification } from "antd";
+import { apiurl } from "../../utils/baseUrl.js";
 const { Option } = Select
 const { Search } = Input;
 
@@ -343,6 +347,33 @@ function Navbar(props) {
     }),
   )
   const classes1 = useStyles1();
+  useEffect(() => {
+   
+    var DocumentData = new FormData();
+    DocumentData.set("user_id",localStorage.getItem("user_id"))
+    try {
+      axios({
+        method: 'POST',
+        url: apiurl + 'login_referesh_page',
+        data: DocumentData
+      })
+        .then((response) => {
+            console.log("resuser",response)
+            if (response.data.status === 0) {
+              localStorage.clear();
+              history.push("/login")
+              notification.success({
+                message: response.data.msg,
+              });
+            }
+    
+        })
+
+  } catch (err) {
+
+  }
+}, []);
+console.log("propsload",props.match.path)
   return (
     <div className={`navbarContainer ${classes.root}`}>
       <CssBaseline />
