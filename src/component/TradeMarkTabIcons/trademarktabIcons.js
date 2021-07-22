@@ -65,6 +65,7 @@ const HtmlTooltip = withStyles((theme) => ({
 
                                 <div>
                                     
+                                 {data.title === data.title&&
                                     <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
         
                                         title={<Timesheetmodel/>}
@@ -75,7 +76,7 @@ const HtmlTooltip = withStyles((theme) => ({
                                             <Grid><img src={data.img} className="tabIconImage" /></Grid>
                                             <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
                                         </div>
-                                    </HtmlTooltip>
+                                    </HtmlTooltip>}
                                
                                 </div>
                                 :

@@ -30,6 +30,7 @@ const KRA = (props) => {
     const [viewRights, setViewRights] = useState([])
     const [kraViewModal, setKraViewModal] = useState(false)
     const [disabledate, setDisabledate] = useState(false);
+    const [Todisable,setTodisable]=useState(false)
     const [totalPercentage, setTotalPercentage] = useState(0)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
@@ -88,9 +89,9 @@ const KRA = (props) => {
     console.log(props.getKra,"datechange")
 
     }, [props.getActivity, props.getKra, kpi_form,datechange])
-    // useEffect(() => {
-    //     checking()
-    // }, [testDate])
+    useEffect(() => {
+        checking()
+    }, [testDate])
 
     const checking = useCallback(() => {
         let id = testDate && testDate.emp_id
@@ -99,11 +100,16 @@ const KRA = (props) => {
               moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy")||
               moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate.period_from).format("MMM-yyyy")||
              moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy")) {
-                setDisabledate(true)
+                // setDisabledate(true)
+                setTodisable(true)
                 notification.error({
                     message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
                 });
             }
+            else if(
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy") ){
+                    setTodisable(true) 
+                }
         }
 
     }, [testDate])
@@ -116,13 +122,17 @@ const KRA = (props) => {
         }
         var toDate = kpi_form.toperiod.value
         if (data && key === "toperiod") {
-            setdatechange(true)
             toDate = moment(data).format("MMM-yyyy");
             dispatch(getKra(startDate, toDate))
             checking()
         }
         if(moment(kpi_form.toperiod.value).format("MMM-yyyy")==moment().format("MMM-yyyy")){
             setdatechange(false)
+        }
+        if(moment(kpi_form.toperiod.value).format("MMM-yyyy")!=moment().format("MMM-yyyy")){
+            setTodisable(false)
+        }else if(kpi_form.toperiod.value){
+            setTodisable(false)
         }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -172,6 +182,7 @@ const KRA = (props) => {
 
         if (kpi_form.fromperiod.value != "" && kpi_form.toperiod.value != "") {
             setDisabledate(true)
+            setTodisable(true)
         }
 
         if (reference.current && reference.current.length >= 0) {
@@ -378,7 +389,7 @@ const KRA = (props) => {
                                         value={kpi_form.toperiod.value}
                                         error={kpi_form.toperiod.error}
                                         errmsg={kpi_form.toperiod.errmsg}
-                                        disabled={disabledate ? true : false}
+                                        disabled={Todisable ? true : false}
                                         minDate={minDate}
                                     />
                                     </div>
