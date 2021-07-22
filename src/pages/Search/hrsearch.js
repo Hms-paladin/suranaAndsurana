@@ -155,8 +155,8 @@ function Hrsearch(props) {
     console.log(props.GetRowData, "GetRowData")
     props.GetRowData.map((data) => {
       let rowDataList = []
-
-      data.result.map((data, index) => {
+if(data.result.length>0){
+      data.result.length>0&&data.result.map((data, index) => {
 
         rowDataList.push({
           view: <img
@@ -177,6 +177,7 @@ function Hrsearch(props) {
           tabletitle={data.designation}
         />
       )
+}
     })
     setMultipleTable(multipleTable)
 

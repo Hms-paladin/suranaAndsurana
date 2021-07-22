@@ -75,7 +75,7 @@ try {
                 //<RadioGroup aria-label="task" name="task_pri" value={value} onChange={handleChange}>
                      <RadioGroup aria-label="task" name="task_pri" value={value} >
                     <FormControlLabel value={data.status_id} 
-                    onClick={(event) => handelCheck(event,data)}
+                    onChange={(event) => handelCheck(event,data)}
                     control={<Radio />} label={data.status} style={{borderBottom:"1px solid #f5efef",width:"275px"}}/>
                     
                 </RadioGroup>

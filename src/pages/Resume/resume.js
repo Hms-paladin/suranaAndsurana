@@ -583,7 +583,7 @@ const ResumePage = (props) => {
       mainvalue[targetkeys[i]] = Resume_Form[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => Resume_Form[obj].error == true);
-    // console.log(filtererr.length);
+    console.log(filtererr.length,"error");
     // console.log(educationList.length, "educationList.length")
     if (educationList.length === 0 && experienceList.length === 0) {
       !educationerr && setEducationerr(true);
@@ -610,6 +610,7 @@ const ResumePage = (props) => {
     else if (text === "UPDATE" && educationList.length !== 0 &&
       (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
       filtererr.length === 0) {
+        console.log("checkkkk")
         setSaveButton(false)
       dispatch(UpdateResume(Resume_Form, educationList, experienceList, resume_id)).then(
         () => {
@@ -637,7 +638,7 @@ const ResumePage = (props) => {
         }
       );
     }
-
+    console.log(educationList.length,experienceList.length,Resume_Form.candidate.value,filtererr.length,"checkkkk")
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
@@ -698,7 +699,6 @@ const ResumePage = (props) => {
     setOnEdit(true);
   };
   const showDeleteEducationModel = (x) => {
-    alert("test")
     console.log(educationList[x], "educationList");
     if (x > -1) {
       educationList.splice(x, 1);
@@ -982,32 +982,49 @@ const ResumePage = (props) => {
               <div className="educationOuterBox">
                 {educationList && educationList.map((data, index) => {
                   return (
+                    <>
+                    {index>0&&<><hr/></>}
                     <div className="educationKeyValue">
                       <div>
+                      <div>
                         <div className="qualheading">Qualification</div>
-                        <div>
+                        <div className="qualdata">
                           {resumeGetList.qualificationList.map((getName) => {
                             if (data.qualification === getName.id) {
                               return getName.value || "-";
                             }
                           })}
                         </div>
-
+                     
                       </div>
                       <div>
                         <div className="qualheading">Insitution/University</div>
-                        <div>{data.institution || "-"}</div>
+                        <div className="qualdata">{data.institution || "-"}</div>
                       </div>
                       <div>
                         <div className="qualheading">Year of Passing</div>
-                        <div>{data.year_of_passing || "-"}</div>
+                        <div className="qualdata">{data.year_of_passing || "-"}</div>
                       </div>
                       <div>
                         <div className="qualheading">Percentage</div>
-                        <div>{data.cgpa || "-"}</div>
+                        <div className="qualdata">{data.cgpa || "-"}</div>
                       </div>
                     </div>
+                    <div className="education_edit_delete">
+                    <EditIcon
+                          fontSize="small"
+                          onClick={() => showEditEducationModel(index)}
+                        />
+                        <DeleteIcon
+                          fontSize="small"
+                          onClick={() => showDeleteEducationModel(index)}
+                        />
+                    </div>
+                    </div>
 
+                   
+                    
+                  </>        
                   );
                 })}
               </div>

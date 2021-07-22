@@ -47,7 +47,7 @@ function LeaveForm(props) {
     const [availabledates, setAvailableDates] = useState([])
     
     const [timeexceed, setTimeexceed] = useState(false)
-
+    const [SubjectIndex, setSubjectIndex] = useState('')
     var duplicateDate = false
     const [Leave_Form, setLeaveForm] = useState({
         leavetype: {
@@ -392,20 +392,27 @@ function LeaveForm(props) {
             [key]: dynObj,
         }));
     }
-    const editsubjectdetails = (leave_form) => {
-
+    const editsubjectdetails = (leave_form,index) => {
+        setPlusicon(1)
         if (leave_form !== '') {
             Leave_Form.subject.value = leave_form.subject_id
             Leave_Form.exam_date.value = leave_form.subject_date
-
+            setSubjectIndex(index)
             setPlusicon(1)
             setLeaveForm(prevState => ({
                 ...prevState,
             }));
         }
     }
+    const deletesubjectdetails =(index)=>{
+        if (index > -1) {
+            examSchedule.splice(index, 1);
+          }
+          setExamSchedule([...examSchedule]);
+    }
 
     const viewexamschedule = () => {
+console.log(SubjectIndex,"examSchedule")
 
         const From_key = ["subject", "exam_date"]
         From_key.map((data) => {
@@ -425,6 +432,33 @@ function LeaveForm(props) {
 
         if (Leave_Form["subject"].value !== "" && Leave_Form["exam_date"].value !== "") {
 
+           var sub_date = examSchedule.find((val) => { 
+                return (
+                    Leave_Form["exam_date"].value == val.subject_date 
+                ) 
+               })
+               if(sub_date){
+                notification.success({
+                    message: "Cannot add same date",
+                  });
+                  return
+               }
+console.log(sub_date,"sub_date")
+            if(examSchedule[SubjectIndex]&&SubjectIndex!==''){
+                 
+                examSchedule[SubjectIndex].subject=subjectList.SubjectList.map((data) => {
+                    if (data.id === Leave_Form.subject.value) {
+                        return (
+                            data.value
+                        )
+                    }
+                });
+                examSchedule[SubjectIndex].subject_id=Leave_Form.subject.value;
+                examSchedule[SubjectIndex].subject_date=Leave_Form.exam_date.value;
+                setSubjectIndex('')
+            }else{
+
+            
             examSchedule.push({
                 subject: subjectList.SubjectList.map((data) => {
                     if (data.id === Leave_Form.subject.value) {
@@ -434,10 +468,11 @@ function LeaveForm(props) {
                     }
                 }),
                 subject_id: Leave_Form.subject.value,
-                date: Leave_Form.exam_date.value
+                subject_date: Leave_Form.exam_date.value
             })
 
             setExamSchedule([...examSchedule])
+        }
             Leave_Form["exam_date"].value = ""
             Leave_Form["subject"].value = ""
 
@@ -700,9 +735,9 @@ function LeaveForm(props) {
     };
 
 
-    console.log(moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format(),"examSchedule")
+    // console.log(moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format(),"examSchedule")
     // console.log(`${availabledates.start_date} 11:00:00 AM`,availabledates.start_date&&availabledates.start_date,"examSchedule")
-    console.log(new Date().toLocaleTimeString(), "time")
+    // console.log(new Date().toLocaleTimeString(), "time")
 
     const [saveRights, setSaveRights] = useState([])
 
@@ -1049,13 +1084,14 @@ function LeaveForm(props) {
                                                 errmsg={Leave_Form.reasoncmt.errmsg} />
                                         </div>
                                     </Grid> </Grid>
+                                    
                                 <Grid item xs={6} container direction="row" spacing={2}>
 
                                     {(examSchedule.length > 0 || examSchedule[0] && examSchedule[0].length > 0) && <div className="examinfotable">
                                         <div>
                                             <div className="examfieldSubject">Subject</div>
                                             <div className="examfieldDate">Date</div>
-                                            <div className="examfieldEdit"></div>
+                                            <div className="examfieldDate">Action</div>
                                         </div>
 
                                         {examSchedule.length > 0 && examSchedule.map((data, index) => {
@@ -1063,29 +1099,21 @@ function LeaveForm(props) {
                                             return (
                                                 <div className="examdate">
                                                     <div className="subvalue">{data.subject}</div>
-                                                    <div className="subvalue">{data.date || data.subject_date}</div>
-                                                    <div className="subvalue">{data.subject_date ? <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => editsubjectdetails(data)} /> : ''}</div>
+                                                    <div className="subvalue">{data.subject_date}</div>
+                                                        <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => editsubjectdetails(data,index)} />
+                     
+                                                        <img src={Delete} className="editImage" style={{ cursor: 'pointer' }} onClick={() => deletesubjectdetails(index)} />
+                                    
                                                 </div>
                                             )
                                         })
                                         }
 
-                                        {/* {examSchedule[0].length > 0 && examSchedule[0].map((data, index) => {
-                                           
-                                            return (
-                                                <div className="examdate">
-                                                    <div className="subvalue">{data.subject}</div>
-                                                    <div className="subvalue">{data.subject_date}</div>
-                                                    <div className="subvalue">{<img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => editsubjectdetails(data)} />}</div>
-                                                </div>
-                                            )
-                                        }) 
-                                        }         */}
-
-
-
                                     </div>}
-                                </Grid> </Grid>
+                                </Grid> 
+                                
+                                </Grid>
+                          
                             <Grid item xs={5}>
                                 <div className="leaveFieldheading">Remarks</div>
                                 <div className="reasonscmt">
