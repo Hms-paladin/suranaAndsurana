@@ -54,8 +54,8 @@ function CheckListCreation(props) {
                 "check_list_type":checkListForm.checkListType.value,
                 "project_type_id":checkListForm.department.value,
                 "project_sub_type_id":checkListForm.department.value,
-                "activity_id":checkListForm.activity.value != '' ? checkListForm.activity : 0 ,
-                "sub_activity_id":checkListForm.subActivity.value  != '' ? checkListForm.subActivity : 0 ,
+                "activity_id":checkListForm.activity.value != '' ? checkListForm.activity.value : 0 ,
+                "sub_activity_id":checkListForm.subActivity.value  != '' ? checkListForm.subActivity.value : 0 ,
                 "frequency_id":checkListForm.frequency.value,
                 "task":taskDesc,
                 "created_on":moment().format('YYYY-MM-DD HH:m:s'),
@@ -183,13 +183,13 @@ function CheckListCreation(props) {
     for (var m = 0; m < checkListsData.length; m++) {
       var listarray = {
         department: checkListsData[m].department, 
-        category: checkListsData[m].category_id, 
+        category: checkListsData[m].category, 
         listName: checkListsData[m].check_list,
          listType:checkListsData[m].check_list_type, 
         taskItem: checkListsData[m].task,
          activity: checkListsData[m].activity,
           subactivity: checkListsData[m].sub_activity,
-           frequency: checkListsData[m].frequency_id
+           frequency: checkListsData[m].frequency
       }
       lists.push(listarray);
     }

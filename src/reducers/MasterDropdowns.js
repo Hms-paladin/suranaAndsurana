@@ -47,7 +47,8 @@ import {
   GET_SUBACTIVITY,
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
-  GET_CITY_BY_ID, GET_SUBORDINATE
+  GET_CITY_BY_ID, GET_SUBORDINATE,
+  GET_AREA_DEVELOPMENT
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -99,7 +100,7 @@ const initalState = {
   getCategory: [],
   getCity_By_Id: [],
   getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
-  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: [], getSubordinate: []
+  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: [], getSubordinate: [],GetAreaDevelopment:[]
 };
 
 export default function (state = initalState, action) {
@@ -215,6 +216,8 @@ export default function (state = initalState, action) {
       return { ...state, getFrequency: payload };
     case GET_SUBORDINATE:
       return { ...state, getSubordinate: payload };
+    case GET_AREA_DEVELOPMENT:
+      return { ...state, GetAreaDevelopment: payload };
     default:
       return state;
   }

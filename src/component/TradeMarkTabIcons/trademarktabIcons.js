@@ -34,7 +34,7 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
-    const TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+    var TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -51,14 +51,48 @@ const HtmlTooltip = withStyles((theme) => ({
 
     useEffect(()=>{
       setVariableRateIcon(props.variableRate.billable_type_id)
-    },[props.variableRate])
+    },[props.variableRate,props.checkListsAssigned,props.projectDetails])
     const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
+    //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
+    var showFromCheckList = true;
+    for(var i=0; i<props.checkListsAssigned.length;i++ ){
+
+        if(props.projectDetails  && 
+            props.projectDetails.project_type_id == props.checkListsAssigned[i].project_type_id 
+            && props.projectDetails.sub_project_id == props.checkListsAssigned[i].project_sub_type_id ){
+            showFromCheckList = false;
+        }
+    }
+    //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
+
+    if(showFromCheckList){
+        TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, 
+        { img: TimeSheet, title: "TIME SHEET" }, 
+        { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
+         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]   
+    }
+     
+    if(showFromSec == 0){
+        TabIcons = [{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, 
+        { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, 
+        { img: Tasks, title: "TASKS" },
+         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }] 
+    }
+        if(showFromSec == 0 && showFromCheckList){
+            TabIcons = [{ img: Rupees, title: "OPE" }, 
+            { img: TimeSheet, title: "TIME SHEET" },
+             { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, 
+             { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+
+        }
+
     return (
         <div className="tradeMarkIcons">
  
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
+
                 {TabIcons.map((data, index) => {
-                        if(showFromSec !== index ){
+                   
                     return (
                         <div>
                             {data.title === "TIME SHEET" ?
@@ -89,7 +123,7 @@ const HtmlTooltip = withStyles((theme) => ({
 
                         </div>
 
-                    )}
+                    )
                 })}
 
             </Grid>

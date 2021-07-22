@@ -25,7 +25,7 @@ function App() {
       <Router basename="suranaAndsurana/?/">
         <Switch>
           <Route path="/" component={Login} exact />
-          <Route path="/Home" component={Navbar} />
+          <Route path="/Home" component={Navbar}/>
         </Switch>
       </Router>
     </AuthContext.Provider>

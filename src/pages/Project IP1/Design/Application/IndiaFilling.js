@@ -161,7 +161,7 @@ function IndiaFilling(props) {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
+      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
         // handleCancel()
       })
     }
@@ -210,12 +210,12 @@ function IndiaFilling(props) {
         console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", getDesign[0][indiaFil_value[index]],"indiaFil_value[index]")
         if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date") {
           IndiaForm[data].value = getDesign[0][indiaFil_value[index]];
-          IndiaForm[data].disabled = indiaFil_value[index]!=='status_id'&&getDesign[0][indiaFil_value[index]] ? true : false;
+          // IndiaForm[data].disabled = indiaFil_value[index]!=='status_id'&&getDesign[0][indiaFil_value[index]] ? true : false;
         }
         else {
           console.log(getDesign[0][indiaFil_value[index]], "getDesign[0]")
           IndiaForm[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
-          IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+          // IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
 
         }
       });
