@@ -178,6 +178,12 @@ class ValidationLibrary extends Component {
           return { msg: " Value allow only two digit ", state: false };
         }
       }
+      else if (validatorsArray[valid].name == "Allow numeric and special characters") {
+        var re =/^[0-9-+()]*$/;
+        if (!re.test(textValue) == false) {
+          return { msg: " Value allow only two digit ", state: false };
+        }
+      }
     }
     return { msg: "", state: true };//if no error throw empty message
   }

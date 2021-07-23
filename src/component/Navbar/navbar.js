@@ -497,7 +497,7 @@ console.log("propsload",props.match.path)
         <Route path={`${props.match.path}/resume`} component={Resume} exact />
         <Route path={`${props.match.path}/dashboard`} component={Dashboard} exact />
         <Route path={`${props.match.path}/interview`} component={Interview} exact />
-        <Route path={`${props.match.path}/employeeform`} component={Employeeform} exact />
+        <Route path={`${props.match.path}/employeeform`} component={Employeeform}/>
         <Route path={`${props.match.path}/todolist`} component={TodoList}/>
         <Route path={`${props.match.path}/search`} component={SearchProject} exact />
         <Route path={`${props.match.path}/task`} component={Task} exact />

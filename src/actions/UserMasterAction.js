@@ -472,7 +472,7 @@ export const InsertStatus = (UserMaster,StatusId,Editvisible,Statusvalue) => asy
         "status_id":Editvisible?StatusId.status_id:0,
         "status_type":Statusvalue?.value,
         "status": UserMaster.status_name.value,
-        "created_on": moment().format("YYYY-MM-DD HH:m:s"),
+        "created_on": moment().format("YYYY-MM-DD"),
         "created_by":localStorage.getItem("empId")
       }
     })

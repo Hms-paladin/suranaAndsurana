@@ -129,7 +129,7 @@ function CheckListCreation(props) {
         },
         checkListName: {
           value: "",
-          validation: [{ name: "required" }],
+          validation: [{ name: "required" },{name:"allowNumaricOnly1"}],
           error: null,
           errmsg: null,
         },
