@@ -21,8 +21,8 @@ function Timesheetmodel(props) {
        
     }, [props.rowData])
 if(rowId == undefined){
-    if(props.rowData && props.rowData.length>0){
-    rowId = props.rowData.project_Id;
+    if(props.rowData && props.rowData != undefined){
+    rowId = props.rowData.project_id;
     }
 }
 
