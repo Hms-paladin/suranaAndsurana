@@ -354,10 +354,10 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                     <Divider />
                                   
 
-                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+                                <HtmlTooltip  onClose={handleClose} onOpen={handleOpen} arrow
 onMouseEnter={() => setOpen(true)}
 onMouseLeave={() => setOpen(false)}
-                                    title={<Timesheetmodel rowData={taskData} />}
+                                    title={<Timesheetmodel rowData={data} />}
                                 >
                                       <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 </HtmlTooltip>
@@ -440,10 +440,10 @@ onMouseLeave={() => setOpen(false)}
                                 <p className="num_align_side" onClick={stopModel}>{i}</p>
                                 <Divider />
                             
-                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+                                <HtmlTooltip  onClose={handleClose} onOpen={handleOpen} arrow
 onMouseEnter={() => setOpen(true)}
 onMouseLeave={() => setOpen(false)}
-                                    title={<Timesheetmodel rowData={taskData} />}
+                                    title={<Timesheetmodel rowData={data} />}
                                 >
                                       <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 </HtmlTooltip>
