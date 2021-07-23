@@ -24,6 +24,7 @@ function Employeeform(props) {
     const [sup_name, setsup_name] = useState({})
     const [file, setfile] = useState("")
     const [fileList, setfileList] = useState("")
+    const [EmpCodeDub, setEmpCodeDub] = useState(false)
     const [EmpForm, setEmpFrom] = useState({
         desgination: {
             value: props.emp_form_id.designation_id,
@@ -301,7 +302,7 @@ function Employeeform(props) {
     }
 
     function get_employee_code_check(data){
-  
+  if(data!=''){
             try {
                 Axios({
                     method: 'POST',
@@ -310,12 +311,18 @@ function Employeeform(props) {
                         employee_code:data
                     }
                 }).then((response) => {
-                    if (response.data.status === 1) {
-                        // return Promise.resolve();
-                    }else{
-                            notification.success({
-                                message: "Employee Code Already Exits",
-                            });
+                    if(response.data.status !== 1){
+                            let dynObj = {
+                                value: data,
+                                error: true,
+                                errmsg: "Employee Code Already Exits",
+                                validation: [{ "name": "required" }],
+                              };
+                          
+                              setEmpFrom((prevState) => ({
+                                ...prevState,
+                                ['employee_code']: dynObj,
+                              }));
                             return Promise.resolve();
                         
                     }
@@ -324,8 +331,9 @@ function Employeeform(props) {
             } catch (err) {
         
             }
+        }
     }
-
+console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
 

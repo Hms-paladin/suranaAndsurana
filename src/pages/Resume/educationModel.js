@@ -42,33 +42,15 @@ function EducationModel(props) {
       errmsg: null,
     },
   });
-
   useEffect(() => {
-    if(!props.editbtn){
-      handleCancel()
-    }
+    if(!props.editbtn)
+    handleCancel()
+}, [props.editbtn])
+  
+  
 
-  }, [props.nullFieldValue])
 
-  useEffect(() => {
-
-    if(props.editEducations!=''&&props.editbtn){
-    const basicQual = props.editEducations?.qualification;
-    const instution = props.editEducations?.institution;
-    const Passing = props.editEducations?.year_of_passing;
-    const CGPA = props.editEducations?.cgpa;
-
-    Education_Form.basicQualification.value = basicQual;
-    Education_Form.institution.value = instution;
-    Education_Form.yearpassing.value = Passing;
-    Education_Form.percentage.value = CGPA;
-
-    setEducationForm((prevState) => ({
-      ...prevState,
-    }));
-    }
-  }, [props.editEducations, props.editEducationid]);
-
+console.log(props.editbtn,"edittt")
   //   useEffect(() => {
   //     setEditbtn(props.editbtn);
   //   }, [props]);
@@ -174,6 +156,23 @@ function EducationModel(props) {
     setQualificationList(qualificationList);
   }, [props.getOptions]);
 
+  useEffect(() => {
+if(props.editbtn){
+    const basicQual = props.editEducations?.qualification;
+    const instution = props.editEducations?.institution;
+    const Passing = props.editEducations?.year_of_passing;
+    const CGPA = props.editEducations?.cgpa;
+
+    Education_Form.basicQualification.value = basicQual;
+    Education_Form.institution.value = instution;
+    Education_Form.yearpassing.value = Passing;
+    Education_Form.percentage.value = CGPA;
+
+    setEducationForm((prevState) => ({
+      ...prevState,
+    }));
+  }
+  }, [props.editEducations, props.editEducationid,props.editbtn]);
   return (
     <div className="educationModelContainer">
       <Labelbox
