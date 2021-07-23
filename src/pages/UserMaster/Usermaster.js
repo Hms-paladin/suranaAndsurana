@@ -1056,7 +1056,7 @@ const UserMaster = (props) => {
 
  
   }, [props, table_name_value.table_names]);
-
+console.log(props.stage,"satge")
   function Submit(data) {
     // alert(substageId)
     setStatusvalue((prevState) => ({

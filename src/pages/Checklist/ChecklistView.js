@@ -39,19 +39,21 @@ function CheckListView(props) {
 
         let rowDataList = []
         props.getCheckListsView && props.getCheckListsView.map((data, index) => {
+            var Days=[]
+            var weeks= data.days_of_week.map((val) => {
+                Days.push(val.days_of_week)
+            })
             rowDataList.push({
                 checklist: data.check_list,
                 startdate: moment(data.start_date).format("DD-MMM-YYYY"),
                 endmonth: moment(data.end_date).format("MMMM"),
-                week: data.days_of_week.map((val) => {
-                    return val.days_of_week_id
-                })
+                week:Days.toString()
             })
         })
 
         setRowData(rowDataList)
 
-
+     console.log("setRowData",rowData)
     }, [props.getEmployeeList, props.getCheckListsView])
 
 
