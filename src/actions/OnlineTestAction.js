@@ -34,8 +34,6 @@ export const onlinetest = (designation,candidate,testData) => async dispatch => 
                 resId: candidate,
                 desigId:designation,
                 test:testData
-
-
             }
         })
             .then((response) => {
@@ -43,7 +41,7 @@ export const onlinetest = (designation,candidate,testData) => async dispatch => 
                 // dispatch({ type: GET_TEMPLATE_QUETIONS, payload: response.data.data})
                 if(response.data.status===1){
                 notification.success({
-                    message: 'Online Test Applied Successfully',
+                    message: 'Online Test Submitted Successfully',
                   });
                 }
             })
