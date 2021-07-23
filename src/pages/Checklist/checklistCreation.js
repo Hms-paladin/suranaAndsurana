@@ -129,7 +129,7 @@ function CheckListCreation(props) {
         },
         checkListName: {
           value: "",
-          validation: [{ name: "required" },{name:"allowNumaricOnly1"}],
+          validation: [{ name: "required" },{name:"AllowNumeric"}],
           error: null,
           errmsg: null,
         },
@@ -149,7 +149,7 @@ function CheckListCreation(props) {
         task: {
           value: "",
           valueById: "",
-          validation: [{ name: "required" },{name:"allowNumaricOnly1"}],
+          validation: [{ name: "required" },{name:"AllowNumeric"}],
           error: null,
           errmsg: null,
         }
