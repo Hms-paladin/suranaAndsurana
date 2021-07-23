@@ -60,7 +60,7 @@ function InterviewApprover(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(interviewApproverTableData(props.int_resume_id));
+    dispatch(interviewApproverTableData(props.int_resume_id,props.int_props.designationID));
   }, []);
 
   useEffect(() => {
@@ -164,7 +164,7 @@ function InterviewApprover(props) {
     }));
   }
 
-
+console.log(props,"prop")
   return (
     <div className="interviewapprove_root">
       {/* <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} contents={<div>sdfghjkl</div>}> */}

@@ -585,11 +585,11 @@ const ResumePage = (props) => {
     var filtererr = targetkeys.filter((obj) => Resume_Form[obj].error == true);
     console.log(filtererr.length,"error");
     // console.log(educationList.length, "educationList.length")
-    if (educationList.length === 0 && experienceList.length === 0) {
-      !educationerr && setEducationerr(true);
+    if (educationList.length === 0 || experienceList.length === 0) {
+      educationList.length === 0&& !educationerr && setEducationerr(true);
 
-      Resume_Form.candidate.value !== 10 && !employererr && setEmployererr(true);
-      Resume_Form.candidate.value === 10 && employererr && setEmployererr(false);
+      experienceList.length === 0&&(Resume_Form.candidate.value !== 1||Resume_Form.candidate.value !== 10) && !employererr && setEmployererr(true);
+      experienceList.length === 0&&(Resume_Form.candidate.value === 10 || Resume_Form.candidate.value === 1) && employererr && setEmployererr(false);
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
@@ -682,6 +682,7 @@ const ResumePage = (props) => {
     });
     setEducationList([]);
     setExperienceList([]);
+    setEmployererr(false)
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
@@ -689,14 +690,17 @@ const ResumePage = (props) => {
   };
 
   function showEducationModel() {
+    SetNullFieldValue(!nullFieldValue);
     setEducationModelOpen(true);
   }
 
   const showEditEducationModel = (x) => {
-    setEducationModelOpen(true);
+    SetNullFieldValue(!nullFieldValue);
+    
     setEducationid(x);
     setEducationrow(educationList[x]);
     setOnEdit(true);
+    setEducationModelOpen(true);
   };
   const showDeleteEducationModel = (x) => {
     console.log(educationList[x], "educationList");
@@ -733,7 +737,7 @@ const ResumePage = (props) => {
 
   const handleFieldNull = (bln) => {
     setEducationModelOpen(bln);
-    SetNullFieldValue(!nullFieldValue);
+    // SetNullFieldValue(!nullFieldValue);
     setOnEdit(false);
   };
 

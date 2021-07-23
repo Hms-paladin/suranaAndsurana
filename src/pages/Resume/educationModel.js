@@ -44,6 +44,15 @@ function EducationModel(props) {
   });
 
   useEffect(() => {
+    if(!props.editbtn){
+      handleCancel()
+    }
+
+  }, [props.nullFieldValue])
+
+  useEffect(() => {
+
+    if(props.editEducations!=''&&props.editbtn){
     const basicQual = props.editEducations?.qualification;
     const instution = props.editEducations?.institution;
     const Passing = props.editEducations?.year_of_passing;
@@ -57,7 +66,7 @@ function EducationModel(props) {
     setEducationForm((prevState) => ({
       ...prevState,
     }));
-  
+    }
   }, [props.editEducations, props.editEducationid]);
 
   //   useEffect(() => {
@@ -109,10 +118,8 @@ function EducationModel(props) {
 
 
 
-  useEffect(() => {
-    handleCancel()
-  }, [props.nullFieldValue])
-
+ 
+    console.log(props.nullFieldValue,props.editEducations,"props.editExperiences")
 
   const handleCancel = () => {
     let ResumeFrom_key = [

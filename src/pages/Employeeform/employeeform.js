@@ -300,6 +300,31 @@ function Employeeform(props) {
         setfile(e.target.files[0].name)
     }
 
+    function get_employee_code_check(data){
+  
+            try {
+                Axios({
+                    method: 'POST',
+                    url: apiurl + 'get_employee_code_check',
+                    data: {
+                        employee_code:data
+                    }
+                }).then((response) => {
+                    if (response.data.status === 1) {
+                        // return Promise.resolve();
+                    }else{
+                            notification.success({
+                                message: "Employee Code Already Exits",
+                            });
+                            return Promise.resolve();
+                        
+                    }
+                });
+        
+            } catch (err) {
+        
+            }
+    }
 
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
@@ -340,6 +365,9 @@ function Employeeform(props) {
         }
         // (end)
 
+        if (key === "employee_code") {
+            get_employee_code_check(data)
+        }
         setEmpFrom(prevState => ({
             ...prevState,
             [key]: dynObj,
