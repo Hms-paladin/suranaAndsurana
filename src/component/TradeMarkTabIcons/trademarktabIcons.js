@@ -61,6 +61,11 @@ const HtmlTooltip = withStyles((theme) => ({
             props.projectDetails.project_type_id == props.checkListsAssigned[i].project_type_id 
             && props.projectDetails.sub_project_id == props.checkListsAssigned[i].project_sub_type_id ){
             showFromCheckList = false;
+        } else if(props.projectDetails  && 
+            props.projectDetails.project_type_id == props.checkListsAssigned[i].project_type_id 
+            && props.projectDetails.sub_project_id == 0 ){
+            showFromCheckList = false;
+
         }
     }
     //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3

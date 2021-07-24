@@ -325,15 +325,19 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
         
         if(props.getCheckListsAssigned && props.getCheckListsAssigned.length >0){
  var lists=[];
-            for(var i=0; i< props.getCheckListsAssigned ;i++){
+            for(var i=0; i< props.getCheckListsAssigned.length ;i++){
 
                 if(props.ProjectDetails && props.ProjectDetails[0] && 
                     props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id 
                     && props.ProjectDetails[0].sub_project_id == props.getCheckListsAssigned[i].project_sub_type_id ){
-                lists.push(props.getCheckListsAssigned);
-                    }
+                lists.push(props.getCheckListsAssigned[i]);
+                    } else if(props.ProjectDetails && props.ProjectDetails[0] && 
+                        props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id 
+                        && props.ProjectDetails[0].sub_project_id == 0 ){
+                            lists.push(props.getCheckListsAssigned[i]);   
+                        }
             }
-        setcheckListsView(props.getCheckListsAssigned )
+        setcheckListsView(lists )
         }
         //setValue(props.rowData.data.priority_id)
     }, [props.getCheckListsAssigned])

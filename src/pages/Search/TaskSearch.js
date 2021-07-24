@@ -235,7 +235,8 @@ setStartModelOpen(flg);
         setOpen(false);
     };
     var i= 0;
-    const handleOpen = () => {
+    const handleOpen = (data) => {
+        setTaskData(data);
         setOpen(true);
     };
 //************************* */
@@ -354,10 +355,10 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                     <Divider />
                                   
 
-                                <HtmlTooltip  onClose={handleClose} onOpen={handleOpen} arrow
+                                <HtmlTooltip  onClose= {handleClose} onOpen=  {()=>handleOpen(data)} arrow
 onMouseEnter={() => setOpen(true)}
 onMouseLeave={() => setOpen(false)}
-                                    title={<Timesheetmodel rowData={data} />}
+                                    title={<Timesheetmodel rowData={taskData} />}
                                 >
                                       <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 </HtmlTooltip>
@@ -440,7 +441,7 @@ onMouseLeave={() => setOpen(false)}
                                 <p className="num_align_side" onClick={stopModel}>{i}</p>
                                 <Divider />
                             
-                                <HtmlTooltip  onClose={handleClose} onOpen={handleOpen} arrow
+                                <HtmlTooltip  onClose={handleClose} onOpen={()=>handleOpen(data)} arrow
 onMouseEnter={() => setOpen(true)}
 onMouseLeave={() => setOpen(false)}
                                     title={<Timesheetmodel rowData={data} />}
