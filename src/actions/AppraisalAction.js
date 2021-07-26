@@ -1,4 +1,4 @@
-import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL ,GET_EMP_APPRAISAL_SUP_RATE} from "../utils/Constants";
+import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
@@ -174,4 +174,54 @@ export const GetEmpAppraisalSupRate = (empid) => async dispatch => {
     }
 }
 
+
+export const InsertManagingPartnerRate = (rateList) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_emp_appraisal_manag_partner_rating',
+            data: {
+                "rating": rateList,
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: ' Rating Updated Successfully',
+                    });
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+
+    }
+}
+
+export const InsertManagingPartnerEmpAppraisal = (managemodelComment, emp_appr_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_emp_appraisal_manag_parter',
+            data: {
+                "emp_appr_id": emp_appr_id,
+                "instruction_to_appraise": managemodelComment.instruction_to_appraise.value,
+                "advice_to_hod": managemodelComment.advice_to_hod.value,
+                "instruction_to_admin_hod": managemodelComment.instruction_to_admin_hod.value,
+                "fb_managing_parter": managemodelComment.fb_managing_parter.value
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Manager Approved Successfully',
+                    });
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+
+    }
+}
 

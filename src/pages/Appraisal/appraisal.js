@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
 import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
-import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal } from '../../actions/AppraisalAction';
+import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal } from '../../actions/AppraisalAction';
 import moment from 'moment';
 
 
@@ -104,10 +104,8 @@ function Appraisal(props) {
 
         if (props.location.state?.appraisalData.task === "Employee Appraisal") {
             if (Number(localStorage.getItem("empId")) === 1) {
-                alert("tet")
                 setRowID(2)
             } else {
-                alert("test")
                 setRowID(1)
             }
         }
@@ -264,7 +262,6 @@ function Appraisal(props) {
     }
 
     const addAppraisalcmt = (data, value) => {
-        console.log(data, value, "modelCommentID")
         if (rowID === 1) {
             if (value === "appraisar_comments") {
                 supmodelComment.appraisar_comments.values = data
@@ -324,7 +321,7 @@ function Appraisal(props) {
             if (rowID === 1) {
                 dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
             } else if (rowID == 2) {
-                alert("test")
+                dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
             }
         }
         else {

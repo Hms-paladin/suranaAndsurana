@@ -7,7 +7,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 import { GetDevelopment } from '../../actions/MasterDropdowns';
 import { useDispatch, connect } from "react-redux";
 import { id, tr } from 'date-fns/locale';
-import { InsertSupervisorRate, GetEmpAppraisalSupRate } from '../../actions/AppraisalAction';
+import { InsertSupervisorRate, GetEmpAppraisalSupRate, InsertManagingPartnerRate } from '../../actions/AppraisalAction';
 import moment from 'moment';
 import { notification } from 'antd';
 import Edit from "../../images/editable.svg";
@@ -131,7 +131,7 @@ function RatingModel(props) {
     const rating = [punchuvality, communication, teamwork, endurance, initiative, personalhabit, commitment, supervision, presentassignment, applicationknowledge, meatingdeadlines, presentationskills, suitableassignment, preparationdocument, additionwork, clientmanagement, practicedevelopment, prnetworking]
     const [showdropdown, setShowdropdown] = useState([])
     const [showdropdownindex, setShowdropdownindex] = useState()
-    const [selectRate, setSelectRate] = useState()
+    const [changeeditrate, setChangeeditrate] = useState(true)
 
 
     useEffect(() => {
@@ -251,25 +251,37 @@ function RatingModel(props) {
     }
     const listratingDetails = (data, dropDownID) => {
         const editRating = (data, id, key, dropid) => {
+            setChangeeditrate(true)
             setShowdropdown(dropid)
             setShowdropdownindex(key)
-
         }
-
-        const chooserate = (data, index) => {
+        const chooserate = (data, index, editrows) => {
             let rate = showdropdown[data - 1]
-            console.log(showdropdown[data - 1], data, "edit")
-            setSelectRate(rate)
+            if (rate === 9 || rate === 8 || rate === 7) {
+                dropdownValue[dropDownID].key1 = rate
+            }
+            else if (rate === 6 || rate === 5 || rate === 4) {
+                dropdownValue[dropDownID].key2 = rate
+            }
+            else {
+                dropdownValue[dropDownID].key3 = rate
+            }
+            setChangeeditrate(false)
+            setRateList([
+                ...rateList,
+                {
+                    "emp_id": localStorage.getItem("empId"),
+                    "development_id": dropDownID + 1,
+                    "rating": rate
+                },
+            ]);
         }
-
-        console.log(selectRate, "rrr")
-
         return (
             data.map((val, index) => {
                 return (
                     <div className="showRatings" >
                         <div className="showratingContent">{val.key}</div>
-                        {showdropdownindex === val.key ?
+                        {changeeditrate && showdropdownindex === val.key ?
                             <div className="showratingdrop"><Labelbox type="select"
                                 dropdown={[
                                     { id: 1, value: showdropdown[0] },
@@ -277,9 +289,8 @@ function RatingModel(props) {
                                     { id: 3, value: showdropdown[2] },
                                 ]}
                                 changeData={(data) =>
-                                    chooserate(data, index)
+                                    chooserate(data, index, val)
                                 }
-                                value={selectRate}
                             />
                             </div> :
                             <div className="showratingValue" >
@@ -294,8 +305,6 @@ function RatingModel(props) {
             })
         )
     }
-
-
 
     const showdevelopmentdetails = () => {
 
@@ -327,18 +336,25 @@ function RatingModel(props) {
     }
 
     const submitrate = () => {
-        console.log(dropdownValue.length, "dropdownValue.length ")
-        if (dropdownValue.length === 17) {
-            dispatch(InsertSupervisorRate(rateList))
+        if (showrowID == 2) {
+            dispatch(InsertManagingPartnerRate(rateList))
             props.handleChangeCloseModel()
             props.changeenable(true)
-        } else {
-            notification.error({
-                message: 'Please Rate All Options',
-            });
+        }
+        else {
+            if (dropdownValue.length === 19) {
+                dispatch(InsertSupervisorRate(rateList))
+                props.handleChangeCloseModel()
+                props.changeenable(true)
+            } else {
+                notification.error({
+                    message: 'Please Rate All Options',
+                });
+            }
         }
 
     }
+
     return (
         <div>
             <div className="empDetailsIn">
@@ -391,7 +407,7 @@ function RatingModel(props) {
             }
 
             <div className="appraisalBtn">
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
         </div>
