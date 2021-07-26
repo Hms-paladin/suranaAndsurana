@@ -129,6 +129,10 @@ function RatingModel(props) {
     const { punchuvality, communication, teamwork, endurance, initiative, personalhabit, commitment, supervision, presentassignment, applicationknowledge, meatingdeadlines, presentationskills, suitableassignment, preparationdocument, additionwork, clientmanagement, practicedevelopment, prnetworking } = ratingAttribute
 
     const rating = [punchuvality, communication, teamwork, endurance, initiative, personalhabit, commitment, supervision, presentassignment, applicationknowledge, meatingdeadlines, presentationskills, suitableassignment, preparationdocument, additionwork, clientmanagement, practicedevelopment, prnetworking]
+    const [showdropdown, setShowdropdown] = useState([])
+    const [showdropdownindex, setShowdropdownindex] = useState()
+    const [selectRate, setSelectRate] = useState()
+
 
     useEffect(() => {
         dispatch(GetDevelopment())
@@ -154,13 +158,6 @@ function RatingModel(props) {
 
     useEffect(() => {
         if (props.rowID == 2) {
-            let ids = areDevelopment.AreDevelopment && areDevelopment.AreDevelopment.map((data) => {
-                return data.value
-            })
-
-            var firstval;
-            var secondval;
-            var thirdval;
             let arrVal = []
 
             showratingDetails && showratingDetails.map((data, index) => {
@@ -173,20 +170,16 @@ function RatingModel(props) {
                     obj.key1 = data.rating
                     obj.key2 = "-"
                     obj.key3 = "-"
-
-
                 }
                 else if (data.rating === 6 || data.rating === 5 || data.rating === 4) {
                     obj.key2 = data.rating
                     obj.key1 = "-"
                     obj.key3 = "-"
-
                 }
                 else {
                     obj.key3 = data.rating
                     obj.key1 = "-"
                     obj.key2 = "-"
-
                 }
 
                 arrVal.push(obj)
@@ -257,21 +250,52 @@ function RatingModel(props) {
         )
     }
     const listratingDetails = (data, dropDownID) => {
+        const editRating = (data, id, key, dropid) => {
+            setShowdropdown(dropid)
+            setShowdropdownindex(key)
+
+        }
+
+        const chooserate = (data, index) => {
+            let rate = showdropdown[data - 1]
+            console.log(showdropdown[data - 1], data, "edit")
+            setSelectRate(rate)
+        }
+
+        console.log(selectRate, "rrr")
 
         return (
             data.map((val, index) => {
                 return (
                     <div className="showRatings" >
                         <div className="showratingContent">{val.key}</div>
-                        <div className="showratingValue" >
-                            {(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)])}
-                        </div>
-                        <div>{showrowID == 2 && < img src={Edit} className="editRating" on />}</div>
+                        {showdropdownindex === val.key ?
+                            <div className="showratingdrop"><Labelbox type="select"
+                                dropdown={[
+                                    { id: 1, value: showdropdown[0] },
+                                    { id: 2, value: showdropdown[1] },
+                                    { id: 3, value: showdropdown[2] },
+                                ]}
+                                changeData={(data) =>
+                                    chooserate(data, index)
+                                }
+                                value={selectRate}
+                            />
+                            </div> :
+                            <div className="showratingValue" >
+                                {console.log(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)], "dropdownValue")}
+                                {(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)])}
+                            </div>}
+
+                        {showrowID == 2 && <div className="editrow">{(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)]) === "-" ? " " : < img src={Edit} className="editRating" onClick={() => editRating(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)], index, val.key, val.value)} />}</div>}
+
                     </div>
                 )
             })
         )
     }
+
+
 
     const showdevelopmentdetails = () => {
 
