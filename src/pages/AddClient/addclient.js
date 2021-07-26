@@ -31,7 +31,7 @@ function AddClient(props) {
 
     client_name: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphabetwithspace" }],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
@@ -61,7 +61,7 @@ function AddClient(props) {
     },
     con_ph_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "mobileSurana" }],
+      validation: [{ name: "required" }, { name: "mobile" }],
       error: null,
       errmsg: null,
     },
@@ -108,7 +108,7 @@ function AddClient(props) {
     },
     con_ph_2: {
       value: "",
-      validation: [{ name: "mobileSurana" }],
+      validation: [{ name: "mobile" }],
       error: null,
       errmsg: null,
     },
@@ -303,7 +303,7 @@ function AddClient(props) {
     //     setAddclient_Form({ error: false });
     // }
   }
-
+// console.log(Addclient_Form,"Addclient_Form")
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Addclient_Form);
@@ -336,47 +336,71 @@ function AddClient(props) {
 
   }
 
-  // async function onfileupload() {
+  async function onfileupload() {
 
-  //   if (Addclient_Form.poa_name.value === '') {
-  //     notification.success({
-  //       message: 'Please Select Document',
-  //     });
-  //   } else {
+    if (Addclient_Form.poa_name.value === '') {
+      // notification.success({
+      //   message: 'Please Select Document',
+      // });
+      let dynObj = {
+        value: Addclient_Form['poa_name'].value,
+        error: true,
+        errmsg: "Field required",
+        validation: [{ "name": "required" }],
+    };
+    // console.log(dynObj,'dynObj')
+    setAddclient_Form((prevState) => ({
+        ...prevState,
+        ['poa_name']: dynObj,
+    }));
+    } else {
 
-  //     // let wait=await check()
-  //     // function check(){
+      // let wait=await check()
+      // function check(){
 
-  //     //   return new Promise((resolve)=>{
-  //     //     setFileupload((prevState) => (
-  //     //       [...prevState, {
-  //     //         poa_name: Addclient_Form.poa_name.value,
-  //     //         selectedFile: "",
-  //     //       }]
+      //   return new Promise((resolve)=>{
+      //     setFileupload((prevState) => (
+      //       [...prevState, {
+      //         poa_name: Addclient_Form.poa_name.value,
+      //         selectedFile: "",
+      //       }]
 
-  //     //     ));
-
-
-
-
-  //     //   })
-  //     //   Addclient_Form["poa_name"].value=""
-
-  //     // //  return Promise.resolve(true);
-  //     // }
+      //     ));
 
 
 
-  //     // }
-  //     setFileupload((prevState) => (
-  //       [...prevState, {
-  //         poa_name: Addclient_Form.poa_name.value,
-  //         selectedFile: "",
-  //       }]
 
-  //     ));
-  //   }
-  // }
+      //   })
+      //   Addclient_Form["poa_name"].value=""
+
+      // //  return Promise.resolve(true);
+      // }
+
+
+
+      // }
+      setFileupload((prevState) => (
+        [...prevState, {
+          poa_name: Addclient_Form.poa_name.value,
+          selectedFile: "",
+        }]
+
+      ));
+
+      let dynObj = {
+        value: '',
+        error: false,
+        errmsg: "",
+        validation: [],
+    };
+    setAddclient_Form((prevState) => ({
+        ...prevState,
+        ['poa_name']: dynObj,
+    }));
+    }
+
+  
+  }
 
 
   console.log(test, "filetest");
@@ -550,8 +574,8 @@ function AddClient(props) {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }} >
-                {/* onClick={onfileupload} */}
-                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} />
+                
+                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload}/>
               </div>
 
             </div>

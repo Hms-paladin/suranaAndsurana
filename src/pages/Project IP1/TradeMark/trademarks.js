@@ -50,6 +50,7 @@ function TradeMark(properties) {
             TradeMarkForm.comments.value = obj.comments;
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
+            if(obj.next_renewal!='0000-00-00')
             TradeMarkForm.next_renewal.value = obj.next_renewal;
             // if (obj.next_renewal && obj.next_renewal.length)
             //     TradeMarkForm.next_renewal.disabled = false;
@@ -94,7 +95,7 @@ function TradeMark(properties) {
             // if (obj.goods_description && obj.goods_description.length)
             //     TradeMarkForm.goods_description.disabled = false;
 
-
+            if(obj.usage_from_date!='0000-00-00')
             TradeMarkForm.usage_from_date.value = obj.usage_from_date;
             // if (obj.usage_from_date && obj.usage_from_date.length)
             //     TradeMarkForm.usage_from_date.disabled = false;
@@ -128,7 +129,7 @@ function TradeMark(properties) {
             // if (obj.tmj_number && obj.tmj_number.length)
             //     TradeMarkForm.tmj_number.disabled = false;
 
-
+            if(obj.tmj_date!='0000-00-00')
             TradeMarkForm.tmj_date.value = obj.tmj_date;
             // if (obj.tmj_date && obj.tmj_date.length)
             //     TradeMarkForm.status_id.disabled = false;
@@ -138,12 +139,12 @@ function TradeMark(properties) {
             // if (obj.journel_extract && obj.journel_extract.length)
             //     TradeMarkForm.journel_extract.disabled = false;
 
-
+            if(obj.certificate_date!='0000-00-00')
             TradeMarkForm.certificate_date.value = obj.certificate_date;
             // if (obj.certificate_date && obj.certificate_date.length)
             //     TradeMarkForm.certificate_date.disabled = false;
 
-
+            if(obj.renewal_certificate_date!='0000-00-00')
             TradeMarkForm.renewal_certificate_date.value = obj.renewal_certificate_date;
             // if (obj.renewal_certificate_date && obj.renewal_certificate_date.length)
             //     TradeMarkForm.renewal_certificate_date.disabled = false;
@@ -452,9 +453,9 @@ function TradeMark(properties) {
             "upload_image": selectedFile,
             "application_no": TradeMarkForm.application_no.value,
             "application_date": TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value,
-            "usage_details_id": TradeMarkForm.usage_details_id.value,
+            "usage_details_id": TradeMarkForm.usage_details_id.value===''?'0':TradeMarkForm.usage_details_id.value,
             "goods_description": TradeMarkForm.goods_description.value,
-            "usage_from_date": TradeMarkForm.usage_from_date.value,
+            "usage_from_date": TradeMarkForm.usage_from_date.value===''?'0000-00-00':TradeMarkForm.usage_from_date.value,
             "ip_india_status": TradeMarkForm.ip_india_status.value,
             "comments": TradeMarkForm.comments.value,
             "internal_status": TradeMarkForm.internal_status.value,
