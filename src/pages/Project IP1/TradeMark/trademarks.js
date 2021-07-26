@@ -491,7 +491,7 @@ function TradeMark(properties) {
             // setTradeMarkForm({ error: false });
 
             dispatch(insertTradeMark(params)).then(() => {
-                // handleCancel()
+                handleCancel()
                 // dispatch(getTradeMark(rowId))
             })
         }
