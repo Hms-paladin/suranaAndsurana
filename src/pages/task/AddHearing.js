@@ -11,6 +11,7 @@ import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import { getHearingDetails,InsertHearingDets,inserTask } from "../../actions/projectTaskAction";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useDispatch, connect } from "react-redux";
+import moment from 'moment'
 export function Hearing(props){
   const dispatch = useDispatch();
 // timesheet modal
@@ -38,7 +39,7 @@ const openTaskModel=()=>{
 useEffect(() => {
   if(props.rowData){
     dispatch(getProjectDetails(props.rowData.data.project_id))
-  dispatch(getHearingDetails(props.rowData));
+  dispatch(getHearingDetails(props.rowData.data));
   }
 
 }, []);
@@ -50,9 +51,22 @@ useEffect(() => {
     client_id: props.ProjectDetails[0].client_id,
   })
   settaskDetails(props.rowData.data)
+if(props.getHearingDets && props.getHearingDets.length >0){
+  HearingData.nexthearing.value =props.getHearingDets[0].next_hearing_date;
+  HearingData.hearingoutcome.value =props.getHearingDets[0].hearing_outcome;
+  HearingData.hearing_id.value =props.getHearingDets[0].hearing_id;
+}
+
 }, [props.rowData,props.getHearingDets,props.ProjectDetails
 ]);
 const [HearingData, setHearingData] = useState({
+  hearing_id: {
+    value: 0,
+    error: null,
+    errmsg: null,
+    disabled: false,
+
+},
     nexthearing: {
       value: "",
       validation: [{ name: "required" }],
@@ -87,23 +101,28 @@ function onSubmit() {
     } else {
       
     }
-   /* var data ={
-      "project_id":props.rowData.project_id,
-      "task_id":props.rowData.task_id,
-      "hearing_outcome":"test",
-      "hearing_date":"2020-03-17",
-      "next_hearing_date":"0",
+    var data ={
+      "project_id":props.rowData.data.project_id,
+      "task_id":props.rowData.data.task_id,
+      "hearing_outcome":HearingData.hearingoutcome.value,
+      "hearing_date":HearingData.nexthearing.value,
+      "next_hearing_date":HearingData.nexthearing.value,
       "adjournment_taken_by":"1",
-      "created_on":"2021-03-21",
-      "created_by":"4", 
-      "reason":"hello",
-      "hearing_id":"8",
+      "created_on":moment().format('YYYY-MM-DD HH:m:s'),
+      "created_by":localStorage.getItem("empId"),
+      "reason":"",
       "active_status":"1"
       }
+      if (HearingData.hearing_id.value != 0) {
+        data["hearing_id"] = HearingData.hearing_id.value;
+
+    }else{
+      data["hearing_id"] = 0;
+    }
     dispatch(InsertHearingDets(data)).then((response) => {
       handleCancel();
-    }) */
-
+    }) 
+/*
     var data = {
       "project_id": idDetails.project_id,
       "activiity_id": taskDetails.activiity_id,
@@ -120,7 +139,7 @@ function onSubmit() {
     dispatch(inserTask(data)).then((response) => {
       handleCancel();
     })
-
+*/
     setHearingData((prevState) => ({
       ...prevState,
     }));

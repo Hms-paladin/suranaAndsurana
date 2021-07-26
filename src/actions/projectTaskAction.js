@@ -497,7 +497,7 @@ export const getHearingDetails = (data) => async dispatch => {
     try {
         axios({
             method: 'POST',
-            url: apiurl + 'get_task_timesheet',
+            url: apiurl + 'get_hearing_details',
             data: {
                 "project_id":data.project_id,
                 "task_id":data.task_id
