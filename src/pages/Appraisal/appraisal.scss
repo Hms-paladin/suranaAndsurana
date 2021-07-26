@@ -146,7 +146,7 @@
 .empDetailsIn{
     display: flex;
     >div{
-        width: 30%;
+        width: 50%;
     }
 }
 
@@ -348,4 +348,58 @@
     display: flex;
 }
 
+// Rating Model
 
+.attributes{
+    width: 100%;
+    display: flex;
+}
+
+.attributeKey{
+    width: 90%;
+}
+
+.attributeValue{
+    width: 10%;
+}
+
+.ratingList{
+    margin-top: 20px;
+}
+
+.ratingHeading{
+    font-weight: 600;
+    font-size: 17px;
+    color: #3f51b5;
+    padding: 5px 0px;
+}
+
+.showRatings{
+    width: 100%;
+    display: flex;
+    height: 35px;
+}
+
+.showratingContent{
+    width: 95%;
+    color: #000000;
+}
+
+
+.showratingValue{
+    border: 1px solid #0353A4;
+    text-align: center;
+    margin: 4px;
+    padding: 2px 5px;
+    width: 31px;
+    height: 25px;
+    border-radius: 6px;
+}
+
+
+//showRateingscontainer
+.editRating{
+    width: 20px;
+    margin-top: 6px;
+    cursor: pointer;
+}

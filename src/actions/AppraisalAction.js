@@ -1,4 +1,4 @@
-import { GET_EMP_APPRAISAL_DETAILS } from "../utils/Constants";
+import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL ,GET_EMP_APPRAISAL_SUP_RATE} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
@@ -113,4 +113,65 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
 
     }
 }
+
+export const InsertSupervisorRate = (rateList) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_emp_appraisal_super_rating',
+            data: {
+                "rating": rateList,
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: ' Rating Added Successfully',
+                    });
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+
+    }
+}
+
+
+export const GetEmpAppraisal = () => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_emp_appraisal',
+            data: {
+                "emp_id": localStorage.getItem("empId"),
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_EMP_APPRAISAL, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const GetEmpAppraisalSupRate = (empid) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_emp_appraisal_super_rating',
+            data: {
+                "emp_id": empid,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_EMP_APPRAISAL_SUP_RATE, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
 
