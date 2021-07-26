@@ -41,6 +41,27 @@ export const getProjectTimeSheetList = (project_id) => async dispatch => {
     }
 }
 
+export const getProjectTimeSheetListByTaskId = (taskId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_timesheet_by_taskid',
+            data: {
+                "task_id": taskId,
+            }
+        })
+            .then((response) => {
+
+                dispatch({ type: GET_PROJECT_TIME_SHEET, payload: response.data.data || [] })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+
+
 export const getProjectWise_TimeSheet = (data) => async dispatch => {
     try {
         axios({

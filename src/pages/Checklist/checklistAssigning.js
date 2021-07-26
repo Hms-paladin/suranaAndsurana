@@ -121,7 +121,7 @@ function CheckListAssign(props) {
         if (data && key == "checkListNameId") {
           //checkListForm['employeeId'].disabled = false;
           for(var i=0; i< props.getCheckListsNames.length; i++){
-            if(data  == props.getCheckListsNames[i].check_list_id && props.getCheckListsNames[i].frequency =='On Demand'){
+            if(data  == props.getCheckListsNames[i].check_list_id && props.getCheckListsNames[i].frequency != 'On Demand'){
              // checkListForm['noOfDaysWeeks'].disabled = true;
               checkListForm['noOfDaysWeeks'].validation =[];
             }
