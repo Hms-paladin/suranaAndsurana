@@ -109,42 +109,7 @@ const KRA = (props) => {
     //     }
 
     // }, [testDate])
- const checking=()=>{
-    if (Number(localStorage.getItem("empId")) === (testDate && testDate.emp_id)) {
-              
-            
-        if (
-  
-          moment(kpi_form.toperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&& 
-          moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
 
-        //   moment(kpi_form.toperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")&& 
-        //   moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate?.period_from).format("MMM-yyyy")||
-
-        //   moment(kpi_form.toperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")&& 
-        //   moment(kpi_form.fromperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")||
-
-        //   moment(kpi_form.toperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")&& 
-        //   moment(kpi_form.fromperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")||
-
-          moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy")&& 
-          moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate.period_to).format("MMM-yyyy")||
-          moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate.period_from).format("MMM-yyyy")&& 
-          moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate.period_from).format("MMM-yyyy")
-
-          ) {
-
-            // setDisabledate(true)
-            // setTodisable(true)
-            setEmpIdTrue(true)
-            setDisabledate(false)
-
-            notification.error({
-                message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
-            });
-        }
-    }
- }
     function checkValidation(data, key) {
         var startDate = kpi_form.fromperiod.value
         if (data && key === "fromperiod") {
@@ -238,9 +203,33 @@ const KRA = (props) => {
         }
        
         else {
-           if(testDate && testDate.emp_id){
-               checking()
-           }
+            if (moment(kpi_form.fromperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&&
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
+
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") < moment(testDate?.period_from).format("MMM-yyyy")&&
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") > moment(testDate?.period_from).format("MMM-yyyy")||
+               
+                
+                // moment(kpi_form.toperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&&
+                // moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
+
+
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") < moment(testDate?.period_to).format("MMM-yyyy")&&
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") < moment(testDate?.period_to).format("MMM-yyyy")||
+                
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate?.period_to).format("MMM-yyyy")||
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate?.period_to).format("MMM-yyyy")||
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate?.period_from).format("MMM-yyyy")||
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate?.period_from).format("MMM-yyyy")
+      
+                ) {
+                  setEmpIdTrue(true)
+                  setDisabledate(false)
+      
+                  notification.error({
+                      message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
+                  });
+              }
             else{
             if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
                 notification.error({

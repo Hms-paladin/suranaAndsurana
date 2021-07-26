@@ -83,7 +83,7 @@ function TradeMarkInternational(properties) {
             TradeMarkForm.associateRefernce.value = obj.associate_reference;
             // if (obj.associate_reference && obj.associate_reference.length)
             //     TradeMarkForm.associateRefernce.disabled = true;
-
+            if(obj.mark_id!=0)
             TradeMarkForm.mark_id.value = obj.mark_id;
             // if (obj.mark_id && obj.mark_id.length)
             //     TradeMarkForm.mark_id.disabled = true;
