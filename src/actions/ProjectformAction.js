@@ -1,5 +1,5 @@
 
-import { GET_PROJECT_TYPE, INSERT_IPPROJECT } from "../utils/Constants";
+import { GET_DEPARTMENT, GET_PROJECT_TYPE, INSERT_IPPROJECT,GET_EMP_BY_DEPARTMENT } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
@@ -21,6 +21,25 @@ export const GetProject_Type = () => async dispatch => {
     }
 }
 
+export const getEmployeeByDepartment = (department) => async dispatch => {
+    // try {
+        axios({
+            method: "POST",
+            url: apiurl + "get_employee_by_departmentId",
+            data: {
+                department: department || 0,
+            },
+        }).then((response) => {
+            if (response.data.status === 1) {
+                dispatch({ type: GET_EMP_BY_DEPARTMENT, payload: response.data.data })
+                return Promise.resolve();
+            }
+        });
+
+    // } catch (err) {
+
+    // }
+}
 
 export const InsertIpProject = (projectform, VariableRate, proj_type_name) => async dispatch => {
     console.log(projectform, "projectformprojectform")

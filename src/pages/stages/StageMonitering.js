@@ -30,7 +30,7 @@ const StageMonitor = (props) => {
   const [compliance_date, setCompliance_date] = useState("1");
   const [stageList, setStageList] = useState([]);
   const dispatch = useDispatch();
-  const [disablebtn, setdisablebtn] = useState(true)
+  const [disablebtn, setdisablebtn] = useState(false)
   const [updateParam, setupdateParam] = useState({
 
     compDate: {
@@ -73,10 +73,8 @@ const StageMonitor = (props) => {
     dispatch(getStageMonitor(props.ProjectDetails))
     // dispatch(insertStageMaonitor());
 
-
-
   }, []);
-
+console.log(disablebtn,"disablebtn")
   const like = () => {
     return (
       <div className="likeIcon">
@@ -107,6 +105,13 @@ const StageMonitor = (props) => {
       client_id: props.ProjectDetails[0].client_id,
     })
 
+    if(props.stageList.length > 0){
+      // console.log(props.stageList[props.stageList.length-1],"props.stageList[props.stageList.length-1].actual_date")
+      if(props.stageList[props.stageList.length-1].actual_date===true || props.stageList[props.stageList.length-1].actual_date===null)
+      setdisablebtn(false)
+      else
+      setdisablebtn(true)
+    }
     let StageListData = []
     props.stageList.map((data) => {
       let b = true;
@@ -160,19 +165,19 @@ const StageMonitor = (props) => {
   console.log(stageList && stageList?.StageListData?.length, "stage")
 
   function SubmitFunction() {
-    props.stageList.map((data, index) => {
-      if (data.actual_date === null) {
+    // props.stageList.map((data, index) => {
+    //   if (data.actual_date === null) {
 
-      }
-      else {
-        setdisablebtn(false)
-      }
-      console.log(data, data.actual_date === null, "stagelist")
-      // if (index <= stageList.StageListData.length) {
+    //   }
+    //   else {
+    //     setdisablebtn(false)
+    //   }
+    //   console.log(data, data.actual_date === null, "stagelist")
+    //   // if (index <= stageList.StageListData.length) {
 
-      // }
+    //   // }
 
-    })
+    // })
     dispatch(insertStageMaonitor(updateParam, compliance_date, projectDetails));
 
   }
@@ -204,7 +209,7 @@ const StageMonitor = (props) => {
           btnCustomColor="customPrimary"
           custombtnCSS={"btnstagemonitor"}
           onBtnClick={SubmitFunction}
-          btnDisable={disablebtn ? false : true}
+          btnDisable={disablebtn ? true : false}
         />
         <CustomButton
           btnName={"Cancel"}

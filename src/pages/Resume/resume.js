@@ -375,9 +375,10 @@ const ResumePage = (props) => {
 
   function checkValidation(data, key, multipleId) {
     if (data !== 1 && data !== 10 && key === "candidate") {
-      console.log("candidate", data);
-      setExpReq(true);
-      !employererr && setEmployererr(true);
+      console.log("candidate", experienceList.length);
+     setExpReq(true);
+     experienceList.length ===0&&!employererr && setEmployererr(true);
+     experienceList.length !==0&&employererr && setEmployererr(false);
     } else {
       setExpReq(false);
       employererr && setEmployererr(false);
@@ -607,9 +608,14 @@ const ResumePage = (props) => {
         }
       );
     }
-    else if (text === "UPDATE" && educationList.length !== 0 &&
-      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
-      filtererr.length === 0) {
+    // else if (text === "UPDATE" && educationList.length !== 0 &&
+    //   (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
+    //   filtererr.length === 0) {
+    
+     else if (text === "UPDATE" && educationList.length !== 0 &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1 || Resume_Form.candidate.value === 10) &&
+      filtererr.length === 0
+    ) {    
         console.log("checkkkk")
         setSaveButton(false)
       dispatch(UpdateResume(Resume_Form, educationList, experienceList, resume_id)).then(
@@ -989,7 +995,7 @@ const ResumePage = (props) => {
                     <>
                     {index>0&&<><hr/></>}
                     <div className="educationKeyValue">
-                      <div>
+                      <div style={{width: 400}}>
                       <div>
                         <div className="qualheading">Qualification</div>
                         <div className="qualdata">

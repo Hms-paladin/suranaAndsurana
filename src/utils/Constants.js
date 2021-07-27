@@ -58,6 +58,8 @@ export const GET_PROJECT_VARIABLE_RATE = "GET_PROJECT_VARIABLE_RATE";
 
 //Project form create
 export const GET_FILING_TYPE = "GET_FILING_TYPE";
+export const GET_EMP_BY_DEPARTMENT = "GET_EMP_BY_DEPARTMENT";
+
 // AddClient
 export const ADD_CLIENT = "ADD_CLIENT";
 export const ADD_CLIENT_DOCUMENT = "ADD_CLIENT_DOCUMENT";
