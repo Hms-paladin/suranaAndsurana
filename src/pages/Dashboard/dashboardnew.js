@@ -19,6 +19,8 @@ import DynModel from "../../component/Model/model";
 import AdhocTaskModal from "../Search/adhoctask"
 import { Calendar } from 'antd';
 import Grid from "@material-ui/core/Grid";
+import Axios from 'axios';
+import { apiurl } from "../../utils/baseUrl";
 
 
 const Projectbox = [
@@ -28,11 +30,6 @@ const Projectbox = [
   { projects: "Project 4", projecttype: "Project Type 4 ", client: "Client 4" },
 ];
 
-const Tasks = [
-  { task: "Project", count: 12 },
-  { task: "HR", count: " 2 " },
-  { task: "Other", count: "1 " },
-];
 
 const projectwise = [
   { projects: "IP Project", task: "24% ", stage: "10%" },
@@ -77,6 +74,7 @@ function DashboardNew() {
   const [color,setcolor]=useState("")
   const [userclr,setuserclr]=useState("customPrimary")
   // const[adhoc,setAdhoc]=useState(false)
+  const [dashboardValues,setDashboardValues]=useState([])
 
   const [menulist, setMenulist] = useState([
     {
@@ -142,6 +140,13 @@ function DashboardNew() {
     },
   ]);
 
+  const Tasks = [
+    { task: "Project", count:dashboardValues[0]?.Tasks[1]?.[0]?.Project_task || 0},
+    { task: "HR", count:dashboardValues[0]?.Tasks[0]?.[0]?.HR_task || 0},
+    { task: "Other", count: dashboardValues[0]?.Tasks[2]?.[0]?.Other_task || 0},
+  ];
+  
+
   const handleClick = (data) => {
     setpathname(data.path);
   };
@@ -149,6 +154,27 @@ function DashboardNew() {
   useEffect(() => {
     orderChange();
   }, []);
+
+
+  useEffect(() => {
+    Axios({
+      method: 'POST',
+      url: apiurl + 'get_dashboard_user',
+      data:{
+        "emp_id": localStorage.getItem("empId"),
+      }
+    }).then((response) => {
+      let dashboardData = []
+      dashboardData.push({
+        Projects:response.data.data[0].Projects,
+        Due_task:response.data.data[0].Due_task,
+        Expense:response.data.data[0].Expense[0],
+        Tasks:response.data.data[0].Task
+      })
+      setDashboardValues(dashboardData)
+    })
+   
+  }, [])
 
   function onPanelChange(value, mode) {
     console.log(value, mode);
@@ -231,8 +257,8 @@ function DashboardNew() {
       {changedashBoard ?
         <>
           <div className="expAdvContainer">
-            <div className="expensePalce">Expenses  4000</div>
-            <div className="advancePlace">Advance  20000</div>
+      <div className="expensePalce">Expenses {dashboardValues[0]?.Expense?.expences}</div>
+            <div className="advancePlace">Advance  {dashboardValues[0]?.Expense?.advance}</div>
 
           </div>
 
@@ -243,19 +269,19 @@ function DashboardNew() {
                 <div>Projects</div>
               </div>
               <div className="projectdatas">
-                {Projectbox.map((data) => {
+                {dashboardValues[0]?.Projects.length ? dashboardValues[0]?.Projects?.map((data) => {
                   return (
                     <div className="projecttable">
                       <div>
                         <a href={"#"} className="linktable">
-                          {data.projects}
+                          {data.project_name}
                         </a>
                       </div>
-                      <div>{data.projecttype}</div>
+                      <div>{data.project_type}</div>
                       <div>{data.client}</div>
                     </div>
                   );
-                })}
+                }) : "No Projects Found"}
               </div>
             </div>
             <div className="taskscroll">
@@ -311,7 +337,7 @@ function DashboardNew() {
                 <div>%Completed</div>
                 <div>Assigned By</div>
               </div>
-              {Taskdays.map((data) => {
+              {dashboardValues[0]?.Due_task.length ?  dashboardValues[0]?.Due_task?.map((data) => {
                 return (
                   <>
                     <div className="taskdaystable">
@@ -328,12 +354,10 @@ function DashboardNew() {
                     </div>
                   </>
                 );
-              })}
+              }): "No Tasks Found" }
+              {}
             </div>
-
           </div>
-
-
         </>
         :
         <>
