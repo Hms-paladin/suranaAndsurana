@@ -13,13 +13,16 @@ import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
 import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
-import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor } from '../../actions/AppraisalAction';
+import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal } from '../../actions/AppraisalAction';
+import moment from 'moment';
+
+
 
 const { Panel } = Collapse;
 
 function Appraisal(props) {
     const dispatch = useDispatch();
-    const rowIdtw = ""
+    // const rowID = ""
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
     const [addemployeeseminar, setAddemployeeSeminar] = useState([])
     const [addemployeeProgram, setAddemployeeProgram] = useState([])
@@ -39,6 +42,8 @@ function Appraisal(props) {
     const [rowID, setRowID] = useState()
     const [todoListdata, setTodoListdata] = useState([])
     const [emp_appr_id, setEmp_appr_id] = useState()
+    const [enableSave, setEnableSave] = useState(false)
+    const [emp_id, setEmp_id] = useState()
     const [modelComment, setModelComment] = useState({
         area_of_speci: { value: "" },
         self_work_des: { value: "" },
@@ -55,6 +60,13 @@ function Appraisal(props) {
         appraisar_comments: { values: "" },
         instruction_action: { values: "" },
         advice_manage_parter: { values: "" },
+    })
+    const [managemodelComment, setManageModelComment] = useState({
+        instruction_to_appraise: { values: "" },
+        advice_to_hod: { values: "" },
+        instruction_to_admin_hod: { values: "" },
+        fb_managing_parter: { values: "" },
+
     })
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
@@ -82,13 +94,24 @@ function Appraisal(props) {
             errmsg: null,
         },
     })
+    const [empDetail, setEmpDetail] = useState({})
 
     useEffect(() => {
         dispatch(GetAreaDevelopment())
+        dispatch(GetEmpAppraisal())
         dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
         setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
-        setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : null)
+
+        if (props.location.state?.appraisalData.task === "Employee Appraisal") {
+            if (Number(localStorage.getItem("empId")) === 1) {
+                setRowID(2)
+            } else {
+                setRowID(1)
+            }
+        }
+        // setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : 2)
     }, [props.location.state])
+
 
     useEffect(() => {
         let AreDevelopment = []
@@ -112,12 +135,17 @@ function Appraisal(props) {
             })
 
             Appraisal.comment.value = props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.current_assignment_command
-
+            setEmp_id(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.emp_id)
+            console.log(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.emp_id, "emp")
             setTodoListdata(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0])
         }
+
+
     }, [props.GetAreaDevelopment, props.GetEmpAppraisalDetails])
 
-
+    useEffect(() => {
+        setEmpDetail(props.GetEmpAppraisal)
+    }, [props.GetEmpAppraisal])
 
     const AddempDetails = () => {
         dispatch(InsertAreaDevelopment(showKeys, Appraisal.details.value, Appraisal.date.value))
@@ -234,7 +262,6 @@ function Appraisal(props) {
     }
 
     const addAppraisalcmt = (data, value) => {
-        console.log(data,value,"modelCommentID")
         if (rowID === 1) {
             if (value === "appraisar_comments") {
                 supmodelComment.appraisar_comments.values = data
@@ -246,6 +273,20 @@ function Appraisal(props) {
             setSupModelComment((prevState) => ({
                 ...prevState,
             }));
+        } else if (rowID == 2) {
+            if (value === "instruction_to_appraise") {
+                managemodelComment.instruction_to_appraise.value = data
+            } else if (value === "advice_to_hod") {
+                managemodelComment.advice_to_hod.value = data
+            } else if (value === "instruction_to_admin_hod") {
+                managemodelComment.instruction_to_admin_hod.value = data
+            } else if (value === "fb_managing_parter") {
+                managemodelComment.fb_managing_parter.value = data
+            }
+            setManageModelComment((prevState) => ({
+                ...prevState,
+            }));
+
         } else {
             if (value === "area_of_speci") {
                 modelComment.area_of_speci.value = data
@@ -274,14 +315,30 @@ function Appraisal(props) {
         }
     }
 
-    console.log(Appraisal, "Appraisal")
 
     const onsubmit = () => {
-        if (rowID === 1) {
-            dispatch(InsertApraisalSupervisor(supmodelComment,emp_appr_id))
-        } else {
-            console.log(modelComment, respbtn, assignbtn, "appraisal")
-            dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+        if (enableSave === true) {
+            if (rowID === 1) {
+                dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
+            } else if (rowID == 2) {
+                dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+            }
+        }
+        else {
+            if (rowID === 1) {
+                notification.error({
+                    message: ' Please give a Rating',
+                });
+            } else if (rowID == 2) {
+                notification.error({
+                    message: ' Please approve a Rating',
+                });
+            }
+            else {
+                dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+
+            }
+
         }
     }
 
@@ -371,6 +428,11 @@ function Appraisal(props) {
         )
     }
 
+    const changeenable = (data) => {
+        setEnableSave(data)
+    }
+
+
     return (
         <div>
             {/* { permission.allow_view==='Y'&& <div> */}
@@ -381,21 +443,21 @@ function Appraisal(props) {
                         <div>Employee Name</div>
                         <div>{JSON.parse(localStorage.getItem("token")).user_name}</div>
                     </div>
-                    {(rowID == 1 || rowIdtw == 2) && <div>
+                    {(rowID == 1 || rowID == 2) && <div>
                         <div>DOB</div>
-                        <div>14-Jan-1989</div>
+                        <div>{moment(empDetail?.dob).format("DD-MMM-yyy")}</div>
                     </div>}
-                    {(rowID == 1 || rowIdtw == 2) && <div>
+                    {(rowID == 1 || rowID == 2) && <div>
                         <div>DOJ</div>
-                        <div>21-Feb-2017</div>
+                        <div>{moment(empDetail?.doj).format("DD-MMM-yyy")}</div>
                     </div>}
                     <div>
                         <div>Period</div>
-                        <div>April 2021 to March 2021</div>
+                        <div>{moment(empDetail?.period_from).format("DD-MMM-yyy") + " to " + moment(empDetail?.period_to).format("DD-MMM-yyy")}</div>
                     </div>
                 </div>
 
-                {rowID == 1 ? null : <div>
+                {rowID == 1 || rowID == 2 ? null : <div>
                     <Grid item xs={12} container direction="row" spacing={2}>
 
                         <Grid item xs={3}>
@@ -450,17 +512,17 @@ function Appraisal(props) {
 
                 }
                 <div className="employeeApprisal_Container">
-                    {rowID == 1 ? addemployeeDetails.length > 0 && qualification() :
+                    {rowID == 1 || rowID == 2 ? addemployeeDetails.length > 0 && qualification() :
                         showQual && addemployeeDetails.length > 0 && qualification()}
-                    {rowID == 1 ? addemployeeProgram.length > 0 && program() :
+                    {rowID == 1 || rowID == 2 ? addemployeeProgram.length > 0 && program() :
                         showProgram && addemployeeProgram.length > 0 && program()}
-                    {rowID == 1 ? addemployeeseminar.length > 0 && seminar() :
+                    {rowID == 1 || rowID == 2 ? addemployeeseminar.length > 0 && seminar() :
                         showSeminar && addemployeeseminar.length > 0 && seminar()}
                 </div>
             </div>
 
 
-            {rowID == 1 ?
+            {rowID == 1 || rowID == 2 ?
                 <>
                     <div className="appraisal_collapse">
                         <Collapse onChange={callback}><Panel header="Area of Specialization" ><div>{todoListdata && todoListdata.area_of_speci}</div></Panel></Collapse>
@@ -591,9 +653,9 @@ function Appraisal(props) {
                 </>}
             <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} />} />
 
-            {(rowID == 1 || rowIdtw == 2) &&
+            {(rowID == 1 || rowID == 2) &&
                 <>
-                    <div className="commentLine">------------------------------------------------------------- Your comment -------------------------------------------------------------------</div>
+                    <div className="commentLine">------------------------------------------------------------- {rowID == 2 ? " Appraisal Section" : "Your comment "} ----------------------------------------------------------------</div>
                 </>}
             {rowID == 1 &&
                 <>
@@ -609,30 +671,48 @@ function Appraisal(props) {
                 </>
             }
 
+            {rowID == 2 &&
+                <>
+                    <div className="appraisal_collapse">
+                        <Collapse onChange={callback}><Panel header="Appraiser Comments" ><div>{todoListdata && todoListdata.appraisar_comments}</div></Panel></Collapse>
+                    </div>
+                    <div className="appraisal_collapse">
+                        <Collapse onChange={callback}><Panel header="Instruction/Advice" ><div>{todoListdata && todoListdata.instruction_action}</div></Panel></Collapse>
+                    </div>
+                    <div className="appraisal_collapse">
+                        <Collapse onChange={callback}><Panel header="Advice to Managing Partner" ><div>{todoListdata && todoListdata.advice_manage_parter}</div></Panel></Collapse>
+                    </div>
+                </>}
+            {rowID == 2 &&
+                <>
+                    <div className="commentLine">------------------------------------------------------------- Your comment  ----------------------------------------------------------------</div>
+                </>}
+
             {
-                rowIdtw == 2 &&
+                rowID == 2 &&
                 <>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Advice/Instruction to Appraise")}>Advice/Instruction to Appraise</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Advice/Instruction to Appraise", "instruction_to_appraise")}>Advice/Instruction to Appraise</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Advice to HOD")}>Advice to HOD</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Advice to HOD", "advice_to_hod")}>Advice to HOD</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Instruction to Head Admin/HOD")}>Instruction to Head Admin/HOD</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Instruction to Head Admin/HOD", "instruction_to_admin_hod")}>Instruction to Head Admin/HOD</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Feedback of Managing Partner")}>Feedback of Managing Partner</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Feedback of Managing Partner", "instruction_to_appraise")}>Feedback of Managing Partner</div>
                     </div>
 
                 </>
             }
 
             <div className="appraisalBtn">
-                {rowID == 1 && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
+                {(rowID == 1 || rowID == 2) && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />
 
-                <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel />} width={700} />
+                <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel employeeID={emp_id} rowID={rowID} empDetail={empDetail} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} changeenable={(data) => changeenable(data)} />} width={700} />
+
 
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
@@ -650,5 +730,6 @@ const mapStateToProps = (state) =>
     {
         GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
         GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],
+        GetEmpAppraisal: state.GetEmpAppraisalDetails.GetEmpAppraisal
     });
 export default connect(mapStateToProps)(Appraisal);
