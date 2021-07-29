@@ -312,9 +312,10 @@ const [menuItems, setMenuItems] = useState(
   // }
 
   function handleLogout() {
+    // menuItems1.current=[];
     localStorage.clear();
     history.push("/")
-    // window.location.reload()
+    window.location.reload()
   }
   // console.log(pathname,"pathname")
   const [severanceopen, setSeveranceopen] = React.useState(false);
@@ -405,19 +406,132 @@ const [menuItems, setMenuItems] = useState(
 useEffect(() => {
   if (props.UserPermission.length > 0 && props.UserPermission) {
     props.UserPermission.map((data)=>{
+
+      if(data.control==='Library - Add Resource'&&data.display_control==='Y'||data.control==='Library - Receive'&&data.display_control==='Y'
+      ||data.control==='Library - Issue'&&data.display_control==='Y'||data.control==='Library - Search'&&data.display_control==='Y'
+      ||data.control==='Appraisal - Save'&&data.display_control==='Y'||data.control==='KRA - Save'&&data.display_control==='Y'
+      ||data.control==='KPI - Save'&&data.display_control==='Y'||data.control==='KRA - View KRA'&&data.display_control==='Y'
+      ||data.control==='KPI - View KPI'&&data.display_control==='Y'||data.control==='Timesheet - Search'&&data.display_control==='Y'
+      ||data.control==='Adhoc Task - Save'&&data.display_control==='Y'||data.control==='Apply Leave - Save'&&data.display_control==='Y'
+      ||data.control==='List of Employees - Go'&&data.display_control==='Y'||data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'
+      ||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'||data.control==='OPA/ Expenses - Search'&&data.display_control==='Y'
+      ||data.control==='OPA/ Expenses- OPE - Save'&&data.display_control==='Y'||data.control==='OPA/ Expenses- OPA - Save'&&data.display_control==='Y'
+      ||data.control==='Day Report - Save'&&data.display_control==='Y'){
+
+        menuItems1.current[0].menu_rights=true;
+      }
+
+      menuItems1.current[1].menu_rights=true;
+
+
       if(data.control==='Resume - Go'&&data.display_control==='Y'||data.control==='Resume - Create Resume'&&data.display_control==='Y'
       ||data.control==='Resume - Interview Details'&&data.display_control==='Y'||data.control==='HR - Go'&&data.display_control==='Y'
       ||data.control==='Project - Go'&&data.display_control==='Y'||data.control==='Project - Create Project'&&data.display_control==='Y'
       ||data.control==='Project - Create Adhoc Task'&&data.display_control==='Y'||data.control==='Adhoc Task - Save'&&data.display_control==='Y'){
-        MenuRights.dashboardnew=false;
+
+        menuItems1.current[2].menu_rights=true;
       }
+
+      if(data.control==='Generate Invoice - Search'&&data.display_control==='Y'||data.control==='Generate Invoice - Generate'&&data.display_control==='Y'){  
+        menuItems1.current[3].menu_rights=true;
+      }
+      
+      if(data.control==='Check List Assigning'&&data.display_control==='Y'){  
+        menuItems1.current[4].menu_rights=true;
+      }
+
+      if(data.control==='Exit Interview Form - Save'&&data.display_control==='Y'||
+      data.control==='Employee Feedback - Save'&&data.display_control==='Y'){
+
+          if(data.control==='Exit Interview Form - Save'&&data.display_control==='Y'){
+            menuItems1.current[5].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='Employee Feedback - Save'&&data.display_control==='Y'){
+            menuItems1.current[5].subtree[1].sub_menu_rights=true;
+          }
+          menuItems1.current[5].subtree[2].sub_menu_rights=true;    
+        menuItems1.current[5].menu_rights=true;
+
+      }
+
+      if(data.control==='Leave Master - Save'&&data.display_control==='Y'||data.control==='User Masters - Save'&&data.display_control==='Y'
+      ||data.control==='CheckList Creation - Save'&&data.display_control==='Y'||data.control==='CheckList Creation - Add'&&data.display_control==='Y'
+      ||data.control==='Variable Rate Master - Save'&&data.display_control==='Y'||data.control==='Stage Template - Save'&&data.display_control==='Y'){
+
+          if(data.control==='Variable Rate Master - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='Stage Template - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[1].sub_menu_rights=true;
+          }
+
+          if(data.control==='Leave Master - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[2].sub_menu_rights=true;
+          }
+
+          
+          if(data.control==='User Masters - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[3].sub_menu_rights=true;
+          }
+
+          if(data.control==='CheckList Creation - Save'&&data.display_control==='Y'||data.control==='CheckList Creation - Add'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[4].sub_menu_rights=true;
+          }
+
+        menuItems1.current[6].menu_rights=true;
+
+      }
+
+
+      if(data.control==='User Group - Add'&&data.display_control==='Y'||data.control==='UserMaster - Create User'&&data.display_control==='Y'
+      ||data.control==='Group Control - Add'&&data.display_control==='Y'){
+
+          if(data.control==='User Group - Add'&&data.display_control==='Y'){
+            menuItems1.current[7].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='UserMaster - Create User'&&data.display_control==='Y'){
+            menuItems1.current[7].subtree[1].sub_menu_rights=true;
+          }
+
+          if(data.control==='Group Control - Add'&&data.display_control==='Y'){
+            menuItems1.current[7].subtree[2].sub_menu_rights=true;
+          }
+
+        menuItems1.current[7].menu_rights=true;
+
+      }
+
+
+      if(data.control==='Add Questions - Add'&&data.display_control==='Y'||data.control==='Test - Submit'&&data.display_control==='Y'
+      ||data.control==='Online Test - Submit'&&data.display_control==='Y'){
+
+          if(data.control==='Add Questions - Add'&&data.display_control==='Y'){
+            menuItems1.current[8].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='Test - Submit'&&data.display_control==='Y'){
+            menuItems1.current[8].subtree[1].sub_menu_rights=true;
+          }
+
+          if(data.control==='Online Test - Submit'&&data.display_control==='Y'){
+            menuItems1.current[8].subtree[2].sub_menu_rights=true;
+          }
+
+        menuItems1.current[8].menu_rights=true;
+
+      }
+ 
+    
     })
     setMenuRights((prevState) => ({
       ...prevState,
   }));
-  setMenuItems((prevState) => ([
-    ...prevState,
-  ]));
+  // setMenuItems((prevState) => ([
+  //   ...prevState,
+  // ]));
     setRights(props.UserPermission)
   }
  
@@ -433,7 +547,7 @@ useEffect(() => {
 
 const menuItems1 = useRef( [
 
-  MenuRights.dashboardnew&&{ path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
+  { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
   // { path: "/resume", title: "Resume", img: ResumeIcon },
   { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
   // {path:"/interview",title:"Interview"},
@@ -626,9 +740,8 @@ console.log(menuItems1,"Rights")
         <div className={classes.drawerContainer}>
 
           <div className="suranaLogo"><img src={logo} /></div>
-          {console.log(menuItems,"menuItems")}
           { menuItems1.current.map((data, index) => {
-          if(data){
+          if(data.menu_rights){
           if (!data.submenu) {
             return (
 
@@ -661,6 +774,7 @@ console.log(menuItems1,"Rights")
                   <Divider />
                   <List component="div" disablePadding>
                     {data.subtree.map((subdata, index) => {
+                      if(subdata.sub_menu_rights){
                       return (
                         <Link to={subdata.path} onClick={() => handleClick(subdata)}>
                           <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
@@ -670,6 +784,7 @@ console.log(menuItems1,"Rights")
                           </div>
                         </Link>
                       )
+                      }
                     }
                     )}
                   </List>

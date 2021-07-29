@@ -11,9 +11,9 @@ import { Checkbox } from 'antd';
 import ValidationLibrary from "../../helpers/validationfunction";
 import Edit from "../../images/pencil.svg";
 import {
-  getGroupList,getEmployeeGroupDetails,
-  getEmployeeList,InsertUsergroupMaster,editEmployeeGroup,
+  getGroupList,getEmployeeGroupDetails,InsertUsergroupMaster,editEmployeeGroup,
 } from "../../actions/UserGroupAction";
+import {getEmployeeList } from "../../actions/MasterDropdowns";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from "antd";

@@ -61,12 +61,10 @@ export const insertUser = (UserMaster, password, changeActive) => async dispatch
   DocumentData.set("active_flag", changeActive === true ? 1 : 0)
   DocumentData.set("created_by", localStorage.getItem("empId"))
   DocumentData.set("email", UserMaster.emailid.value)
-  DocumentData.set("groupId", UserMaster.usergroup.value)
   DocumentData.set("mobileno", UserMaster.mobilenumber.value)
   DocumentData.set("password", password)
   DocumentData.set("username", UserMaster.user_name.value)
   DocumentData.set("employee_id", UserMaster.emp_name.value)
-  DocumentData.set("user_id", 0)
   try {
     axios({
       method: 'POST',
@@ -534,7 +532,6 @@ export const editUser = (UserMaster, password, changeActive, user_id) => async d
   DocumentData.set("active_flag", changeActive === true ? 1 : 0)
   DocumentData.set("created_by", localStorage.getItem("empId"))
   DocumentData.set("email", UserMaster.emailid.value)
-  DocumentData.set("groupId", UserMaster.usergroup.value)
   DocumentData.set("mobileno", UserMaster.mobilenumber.value)
   DocumentData.set("password", password)
   DocumentData.set("username", UserMaster.user_name.value)

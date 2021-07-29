@@ -1,5 +1,5 @@
 import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, 
-    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,MASTER_EMPLOYEE_DETAILS,
+    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_NOT_IN_USER,GET_EMP_GROUP_LIST,MASTER_EMPLOYEE_DETAILS,
     GET_GROUP_EMP,GET_GROUP_CONTROL_LIST,EDIT_GROUP_NAME,EDIT_GROUP_CONTROL,GET_CONTROL_LIST,INSERT_GROUP_CONTROL} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -38,15 +38,16 @@ export const getControl = () => async dispatch => {
 
     }
 }
-export const getEmployeeList = () => async dispatch => {
+
+export const get_emp_not_in_user = () => async dispatch => {
     try {
 
         axios({
             method: 'GET',
-            url: apiurl + 'get_employee_list',
+            url: apiurl + 'get_emp_not_in_user',
         })
             .then((response) => {
-                dispatch({ type: GET_EMP_LIST, payload: response.data.data })
+                dispatch({ type: GET_EMP_NOT_IN_USER, payload: response.data.data })
             })
 
     } catch (err) {

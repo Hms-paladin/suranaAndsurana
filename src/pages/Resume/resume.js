@@ -1333,12 +1333,13 @@ const ResumePage = (props) => {
                   Please Add Previous Employer
                 </span>
               )}
-              <div className="experienceList">
+              {Resume_Form.candidate.value !== 1 && Resume_Form.candidate.value !== 10 && employererr && <div className="experienceList">
                 <div style={{ fontWeight: 600 }}>Previous Employer Details{expReq && "*"}</div>
                 <div>
                   <img src={PlusIcon} onClick={showExperienceModel} />
                 </div>
               </div>
+              }
 
               {experienceList.length > 0 && (
 
