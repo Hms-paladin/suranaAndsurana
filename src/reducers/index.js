@@ -41,6 +41,8 @@ import CheckListReducer from './CheckListReducer';
 import OutofPacket from './OutofPacketReducers'
 import KpiReducer from './KPIReducers';
 import GetEmpAppraisalDetails from './AppraisalReducer';
+import ProjectformReducers from './ProjectformReducers';
+
 export default combineReducers({
   getInterviewquestions,
   ResumeSearchStatus,
@@ -83,7 +85,8 @@ export default combineReducers({
   CheckListReducer,
   OutofPacket,
   KpiReducer,
-  GetEmpAppraisalDetails
+  GetEmpAppraisalDetails,
+  ProjectformReducers
 });
 
 

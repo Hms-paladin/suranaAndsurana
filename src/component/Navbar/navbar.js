@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef,useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -146,7 +146,7 @@ import CheckListView from '../../pages/Checklist/ChecklistView'
 import OPE_Expense from '../../pages/OPE/OpeExpense'
 
 import axios from "axios";
-import moment from 'moment';
+import { useDispatch, connect } from "react-redux";
 import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl.js";
 const { Option } = Select
@@ -194,92 +194,119 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [open, setOpen] = React.useState(false)
+  const [Rights, setRights] = useState([])
+  const [MenuRights, setMenuRights] = useState({
 
-  const [menuItems, setMenuItems] = useState(
-    [
-      { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
-      // { path: "/resume", title: "Resume", img: ResumeIcon },
-      { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
-      // {path:"/interview",title:"Interview"},
-      // { path: "/employeeform", title: "Employee Form" },
-      { path: "/Home/search", title: "Search", img: SearchbarIcon },
-      { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
-      { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
+    dashboardnew: false,
+    todoList: false,
+    search: false,
+    generateinvoice: false,
+    checklistAssigning: false,
+    severance: false,
+    exitinterviewform: false,
+    employeeFeedback: false,
+    serverance_userview_Modal: false,
+    master: false,
+    ratemaster: false,
+    stagesmaster: false,
+    leaveupdate: false,
+    usermaster: false,
+    checklistCreation: false,
+    usermanagement: false,
+    usergroups: false,
+    newusermaster: false,
+    groupcontrol: false,
+    onlinetest: false,
+    addquestion: false,
+    testtemplate: false,
+    onlinetest: false,
+})
 
-      // variable rate master
-      // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-      // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
-      // user groups
-      // { path: "/usergroups", title: "User Groups", img: Usergroups },
+const [menuItems, setMenuItems] = useState(
+  [
 
-      // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
-      // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
+    { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
+    // { path: "/resume", title: "Resume", img: ResumeIcon },
+    { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
+    // {path:"/interview",title:"Interview"},
+    // { path: "/employeeform", title: "Employee Form" },
+    { path: "/Home/search", title: "Search", img: SearchbarIcon },
+    { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
+    { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
 
-      // { path: "/severance", title: "Severance", img: Stagemaster },
-      // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
-      // { path: "/usermaster", title: "User Master", img: Stagemaster },
-      // //User Management
-      // { path: "/usergroup", title: "User Management Group", img: Usergroups },
-      // { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
-      // // group control
-      // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
+    // variable rate master
+    // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+    // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
+    // user groups
+    // { path: "/usergroups", title: "User Groups", img: Usergroups },
 
-      // //user rights
-      // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
+    // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+    // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
 
-      //severance
-      {
-        active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
-        subtree: [
-          { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
-          { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
-          { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
-        ]
-      },
+    // { path: "/severance", title: "Severance", img: Stagemaster },
+    // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
+    // { path: "/usermaster", title: "User Master", img: Stagemaster },
+    // //User Management
+    // { path: "/usergroup", title: "User Management Group", img: Usergroups },
+    // { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
+    // // group control
+    // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
 
-      //master
-      {
-        active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
-        subtree: [
-          { path: "/Home/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-          { path: "/Home/stagesmaster", title: "Stage Template", img: Stagemaster },
-          { path: "/Home/leaveupdate", title: "Leave Master", img: MasterIcon },
-          { path: "/Home/usermaster", title: "User Master", img: MasterIcon },
-          { path: "/Home/checklistCreation", title: "CheckList Creation", img: MasterIcon },
+    // //user rights
+    // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
 
-        ]
-      },
+    //severance
+    {
+      active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
+      subtree: [
+        { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
+        { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
+        { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
+      ]
+    },
 
-      //user management
-      {
-        active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
-        subtree: [
-          // { path: "/usergroup", title: "User Group", img: Usergroups },
-          { path: "/Home/usergroups", title: "User Groups", img: Usergroups },
-          { path: "/Home/newusermaster", title: "User Master", img: MasterIcon },
-          { path: "/Home/groupcontrol", title: "Group Control", img: MasterIcon },
-          // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-          // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
-        ]
-      },
+    //master
+    {
+      active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
+      subtree: [
+        { path: "/Home/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+        { path: "/Home/stagesmaster", title: "Stage Template", img: Stagemaster },
+        { path: "/Home/leaveupdate", title: "Leave Master", img: MasterIcon },
+        { path: "/Home/usermaster", title: "User Master", img: MasterIcon },
+        { path: "/Home/checklistCreation", title: "CheckList Creation", img: MasterIcon },
 
-      //Online Test
-      {
-        active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
-        subtree: [
-          { path: "/Home/addquestion", title: "Add Questions", img: MasterIcon },
-          { path: "/Home/testtemplate", title: "Test Template", img: MasterIcon },
-          { path: "/Home/onlinetest", title: "Online Test", img: MasterIcon }
-        ]
-      },
+      ]
+    },
 
-      // //Online Test
-      // { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-      // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
+    //user management
+    {
+      active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
+      subtree: [
+        // { path: "/usergroup", title: "User Group", img: Usergroups },
+        { path: "/Home/usergroups", title: "User Groups", img: Usergroups },
+        { path: "/Home/newusermaster", title: "User Master", img: MasterIcon },
+        { path: "/Home/groupcontrol", title: "Group Control", img: MasterIcon },
+        // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
+        // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
+      ]
+    },
 
-    ]
-  );
+    //Online Test
+    {
+      active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
+      subtree: [
+        { path: "/Home/addquestion", title: "Add Questions", img: MasterIcon },
+        { path: "/Home/testtemplate", title: "Test Template", img: MasterIcon },
+        { path: "/Home/onlinetest", title: "Online Test", img: MasterIcon }
+      ]
+    },
 
+    // //Online Test
+    // { path: "/addquestion", title: "Add Questions", img: MasterIcon },
+    // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
+
+  ]
+); 
   // function handleClicknav() {
   //   setOpen(!open)
   // }
@@ -294,6 +321,7 @@ function Navbar(props) {
   const [masteropen, setMasteropen] = React.useState(false);
   const [userManageopen, setUserManageopen] = React.useState(false);
   const [onlineTestopen, setOnlineTestopen] = React.useState(false);
+  
 
   const handleClick = (data) => {
     setpathname(data.path)
@@ -373,7 +401,177 @@ function Navbar(props) {
 
   }
 }, []);
-console.log("propsload",props.match.path)
+
+useEffect(() => {
+  if (props.UserPermission.length > 0 && props.UserPermission) {
+    props.UserPermission.map((data)=>{
+      if(data.control==='Resume - Go'&&data.display_control==='Y'||data.control==='Resume - Create Resume'&&data.display_control==='Y'
+      ||data.control==='Resume - Interview Details'&&data.display_control==='Y'||data.control==='HR - Go'&&data.display_control==='Y'
+      ||data.control==='Project - Go'&&data.display_control==='Y'||data.control==='Project - Create Project'&&data.display_control==='Y'
+      ||data.control==='Project - Create Adhoc Task'&&data.display_control==='Y'||data.control==='Adhoc Task - Save'&&data.display_control==='Y'){
+        MenuRights.dashboardnew=false;
+      }
+    })
+    setMenuRights((prevState) => ({
+      ...prevState,
+  }));
+  setMenuItems((prevState) => ([
+    ...prevState,
+  ]));
+    setRights(props.UserPermission)
+  }
+ 
+}, [props.UserPermission]); 
+
+
+// console.log("propsload",props.match.path)
+// useEffect(() => {
+//   setMenuItems((prevState) => ([
+//     ...prevState,
+//   ]));
+// }, [menuItems]);
+
+const menuItems1 = useRef( [
+
+  MenuRights.dashboardnew&&{ path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
+  // { path: "/resume", title: "Resume", img: ResumeIcon },
+  { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
+  // {path:"/interview",title:"Interview"},
+  // { path: "/employeeform", title: "Employee Form" },
+  { path: "/Home/search", title: "Search", img: SearchbarIcon },
+  { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
+  { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
+
+  // variable rate master
+  // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+  // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
+  // user groups
+  // { path: "/usergroups", title: "User Groups", img: Usergroups },
+
+  // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
+  // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
+
+  // { path: "/severance", title: "Severance", img: Stagemaster },
+  // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
+  // { path: "/usermaster", title: "User Master", img: Stagemaster },
+  // //User Management
+  // { path: "/usergroup", title: "User Management Group", img: Usergroups },
+  // { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
+  // // group control
+  // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
+
+  // //user rights
+  // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
+
+  //severance
+  {
+    active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
+    subtree: [
+      { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
+      { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
+      { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
+    ]
+  },
+
+  //master
+  {
+    active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
+    subtree: [
+      { path: "/Home/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
+      { path: "/Home/stagesmaster", title: "Stage Template", img: Stagemaster },
+      { path: "/Home/leaveupdate", title: "Leave Master", img: MasterIcon },
+      { path: "/Home/usermaster", title: "User Master", img: MasterIcon },
+      { path: "/Home/checklistCreation", title: "CheckList Creation", img: MasterIcon },
+
+    ]
+  },
+
+  //user management
+  {
+    active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
+    subtree: [
+      // { path: "/usergroup", title: "User Group", img: Usergroups },
+      { path: "/Home/usergroups", title: "User Groups", img: Usergroups },
+      { path: "/Home/newusermaster", title: "User Master", img: MasterIcon },
+      { path: "/Home/groupcontrol", title: "Group Control", img: MasterIcon },
+      // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
+      // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
+    ]
+  },
+
+  //Online Test
+  {
+    active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
+    subtree: [
+      { path: "/Home/addquestion", title: "Add Questions", img: MasterIcon },
+      { path: "/Home/testtemplate", title: "Test Template", img: MasterIcon },
+      { path: "/Home/onlinetest", title: "Online Test", img: MasterIcon }
+    ]
+  },
+
+  // //Online Test
+  // { path: "/addquestion", title: "Add Questions", img: MasterIcon },
+  // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
+
+]);
+console.log(menuItems1,"Rights")
+// const menu=()=>{
+//   return(
+//   menuItems.map((data, index) => {
+//     if(data){
+//     if (!data.submenu) {
+//       return (
+
+//         <Link to={data.path} onClick={() => handleClick(data)}>
+
+//           <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
+
+//             <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
+//             <img src={data.img} className="menuListIcon" />
+//             <div className="SiderResume_Button">{data.title}</div>
+//             {/* {open ? <ExpandMore /> : <ArrowForwardIosIcon style={{ fontSize: 15 }} />} */}
+//           </div>
+
+//         </Link>
+//       )
+//     } 
+//     else {
+
+//       return (
+//         <List component="nav" className={classes1.appMenu} disablePadding>
+//           <ListItem button onClick={() => handleClicksub(data.active)} className={classes1.menuItem}>
+//             <ListItemIcon className={classes1.menuItemIcon}>
+//               {/* <IconLibraryBooks /> */}
+//               <img src={data.img} className="menuListIcon" />
+//             </ListItemIcon>
+//             <ListItemText className={classes1.menuItem} primary={data.title} />
+//             {handlesubopen(data.active) ? <IconExpandLess /> : <IconExpandMore />}
+//           </ListItem>
+//           <Collapse in={handlesubopen(data.active)} timeout="auto" unmountOnExit>
+//             <Divider />
+//             <List component="div" disablePadding>
+//               {data.subtree.map((subdata, index) => {
+//                 return (
+//                   <Link to={subdata.path} onClick={() => handleClick(subdata)}>
+//                     <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
+//                       <ListItem button className={classes1.menuItem} >
+//                         <ListItemText className={classes1.menuItem} inset primary={subdata.title} />
+//                       </ListItem>
+//                     </div>
+//                   </Link>
+//                 )
+//               }
+//               )}
+//             </List>
+//           </Collapse>
+//         </List>)
+//     }
+//   }
+//   })
+//   ) }
+//  useEffect(()=>{
+//  menu()
+//  },[MenuRights])
   return (
     <div className={`navbarContainer ${classes.root}`}>
       <CssBaseline />
@@ -428,55 +626,58 @@ console.log("propsload",props.match.path)
         <div className={classes.drawerContainer}>
 
           <div className="suranaLogo"><img src={logo} /></div>
-          {menuItems.map((data, index) => {
-            if (!data.submenu) {
-              return (
+          {console.log(menuItems,"menuItems")}
+          { menuItems1.current.map((data, index) => {
+          if(data){
+          if (!data.submenu) {
+            return (
 
-                <Link to={data.path} onClick={() => handleClick(data)}>
+              <Link to={data.path} onClick={() => handleClick(data)}>
 
-                  <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
+                <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
 
-                    <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
+                  <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
+                  <img src={data.img} className="menuListIcon" />
+                  <div className="SiderResume_Button">{data.title}</div>
+                  {/* {open ? <ExpandMore /> : <ArrowForwardIosIcon style={{ fontSize: 15 }} />} */}
+                </div>
+
+              </Link>
+            )
+          } 
+          else {
+
+            return (
+              <List component="nav" className={classes1.appMenu} disablePadding>
+                <ListItem button onClick={() => handleClicksub(data.active)} className={classes1.menuItem}>
+                  <ListItemIcon className={classes1.menuItemIcon}>
+                    {/* <IconLibraryBooks /> */}
                     <img src={data.img} className="menuListIcon" />
-                    <div className="SiderResume_Button">{data.title}</div>
-                    {/* {open ? <ExpandMore /> : <ArrowForwardIosIcon style={{ fontSize: 15 }} />} */}
-                  </div>
-
-                </Link>
-              )
-            }
-            else {
-
-              return (
-                <List component="nav" className={classes1.appMenu} disablePadding>
-                  <ListItem button onClick={() => handleClicksub(data.active)} className={classes1.menuItem}>
-                    <ListItemIcon className={classes1.menuItemIcon}>
-                      {/* <IconLibraryBooks /> */}
-                      <img src={data.img} className="menuListIcon" />
-                    </ListItemIcon>
-                    <ListItemText className={classes1.menuItem} primary={data.title} />
-                    {handlesubopen(data.active) ? <IconExpandLess /> : <IconExpandMore />}
-                  </ListItem>
-                  <Collapse in={handlesubopen(data.active)} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                      {data.subtree.map((subdata, index) => {
-                        return (
-                          <Link to={subdata.path} onClick={() => handleClick(subdata)}>
-                            <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
-                              <ListItem button className={classes1.menuItem} >
-                                <ListItemText className={classes1.menuItem} inset primary={subdata.title} />
-                              </ListItem>
-                            </div>
-                          </Link>
-                        )
-                      }
-                      )}
-                    </List>
-                  </Collapse>
-                </List>)
-            }
-          })}
+                  </ListItemIcon>
+                  <ListItemText className={classes1.menuItem} primary={data.title} />
+                  {handlesubopen(data.active) ? <IconExpandLess /> : <IconExpandMore />}
+                </ListItem>
+                <Collapse in={handlesubopen(data.active)} timeout="auto" unmountOnExit>
+                  <Divider />
+                  <List component="div" disablePadding>
+                    {data.subtree.map((subdata, index) => {
+                      return (
+                        <Link to={subdata.path} onClick={() => handleClick(subdata)}>
+                          <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
+                            <ListItem button className={classes1.menuItem} >
+                              <ListItemText className={classes1.menuItem} inset primary={subdata.title} />
+                            </ListItem>
+                          </div>
+                        </Link>
+                      )
+                    }
+                    )}
+                  </List>
+                </Collapse>
+              </List>)
+          }
+        }}
+          )}
 
         </div>
         {/* <Collapse in={open} timeout="auto" unmountOnExit>
@@ -596,4 +797,12 @@ console.log("propsload",props.match.path)
   )
 }
 
-export default Navbar;
+
+const mapStateToProps = (state) => (
+
+  {
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+  }
+);
+
+export default connect(mapStateToProps)(Navbar);

@@ -13,7 +13,6 @@ import {
   getProjectSubType,
   getProcessType,
   getFilingType,
-  getEmployeeList,
   getProjectCostRange,
   getClientlist,
 } from "../../../actions/MasterDropdowns";
@@ -21,7 +20,7 @@ import VariableRate from "../../stages/RateMaster";
 import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from "../../../images/addvardata.svg";
 import SuccessIcon from "../../../images/successicon.svg";
-import { InsertIpProject } from "../../../actions/ProjectformAction";
+import { InsertIpProject,getEmployeeByDepartment } from "../../../actions/ProjectformAction";
 import PlusIcon from "../../../images/plusIcon.svg";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { SearchVariableRate } from "../../../actions/VariableRateMaster"
@@ -222,7 +221,7 @@ function ProjectFormCreate(props) {
   }, []);
 
   useEffect(() => {
-    dispatch(getEmployeeList());
+    dispatch(getEmployeeByDepartment(Number(JSON.parse(localStorage.getItem("token")).department_id)));
     dispatch(getProjectCostRange());
     dispatch(getClientlist());
   }, []);
@@ -507,8 +506,6 @@ function ProjectFormCreate(props) {
       ...prevState,
     }));
   }
-  console.log(projectform, "baseRate")
-
 
   function onsubmit() {
     var mainvalue = {};
@@ -593,6 +590,7 @@ function ProjectFormCreate(props) {
     handleCancel()
   }
 
+ 
   useEffect(() => {
     // Client
     let Client = [];
@@ -629,7 +627,7 @@ function ProjectFormCreate(props) {
 
     //hod/attony, Counsel ,DRA and DDRA
     let EmployeeList = [];
-    props.EmployeeList.map((data) =>
+    props.EmployeeList.length>0&&props.EmployeeList.map((data) =>
       EmployeeList.push({ value: data.name, id: data.emp_id })
 
     );
@@ -651,6 +649,13 @@ function ProjectFormCreate(props) {
     props.EmployeeList,
     props.ProjectCostRange,
   ]);
+
+  // useEffect(()=>{
+  //   projectform.project_type.value=Number(JSON.parse(localStorage.getItem("token")).department_id)
+  //   setprojectform((prevState) => ({
+  //     ...prevState,
+  //   }));
+  // },[localStorage.getItem("token")])
 
   const variablerateModel = () => {
     function onSearch() {
@@ -1188,11 +1193,12 @@ function ProjectFormCreate(props) {
   );
 }
 const mapStateToProps = (state) =>
+
 ({
   ProjectSubType: state.getOptions.getProjectSubType || [],
   ProcessType: state.getOptions.getProcessType || [],
   FilingType: state.getOptions.getFilingType || [],
-  EmployeeList: state.getOptions.getEmployeeList || [],
+  EmployeeList: state.ProjectformReducers.getEmployeeByDepartment || [],
   ProjectCostRange: state.getOptions.getProjectCostRange || [],
   Client: state.getOptions.getClientlist,
   searchVariableRate: state.variableRateMaster.searchVariableRate,
