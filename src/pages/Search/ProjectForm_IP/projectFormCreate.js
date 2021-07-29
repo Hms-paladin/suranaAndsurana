@@ -76,6 +76,7 @@ function ProjectFormCreate(props) {
   const [proj_type_name, setProj_type_name] = useState();
   const [billable, setBillable] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
+  const [projectExists,setProjectExists] = useState(1)
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -236,8 +237,23 @@ function ProjectFormCreate(props) {
     // }
   };
 
+   async function checkProjectNameExists(projectName) {
+    //For client duplication validation 
+   await Axios({
+      method: "POST",
+      url: apiurl + "get_project_name_check",
+      data: {
+        "project_name": projectName,
+      }
+    }).then((response) => {
+      console.log(response.data)
+      setProjectExists(response.data.status)
+    });
+  }
 
-  function checkValidation(data, key, multipleId) {
+
+   function checkValidation(data, key, multipleId) {
+     checkProjectNameExists(projectform.projectname.value)
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
@@ -248,11 +264,38 @@ function ProjectFormCreate(props) {
       errmsg: errorcheck.msg,
       validation: projectform[key].validation,
     };
-
+ 
+    console.log(projectExists,"projectExists")  
+    
+    if(key==="projectname"){
+      if(projectExists===0){
+        dynObj = {
+          value: data,
+          error: !errorcheck.state,
+          errmsg: errorcheck.msg,
+          validation: [{ name: "required" },{name:"checkNameExists",params:0}  ],
+        };
+        setprojectform((prevState) => ({
+          ...prevState,
+          [key]: dynObj
+        }));
+     }else{
+      dynObj = {
+        value: data,
+        error: !errorcheck.state,
+        errmsg: errorcheck.msg,
+        validation: [{ name: "required" },{name:"checkNameExists",params:1}  ],
+      };
+      setprojectform((prevState) => ({
+        ...prevState,
+        [key]: dynObj
+      }));
+    }
+  }
+    console.log(dynObj,"dynObj")
     console.log(key, data, "key")
 
     if (data === 1 && key === "project_type") {
-
       let IP_project_key = [
         "client",
         "project_type",
@@ -266,7 +309,6 @@ function ProjectFormCreate(props) {
         "projectname",
         "process_type",
         "comments",
-
       ];
 
       IP_project_key.map((data) => {
@@ -327,10 +369,6 @@ function ProjectFormCreate(props) {
         }
       });
       hideValidation(["project_Subtype", "process_type"])
-
-
-
-
     }
 
     if (data && key === "project_Subtype") {

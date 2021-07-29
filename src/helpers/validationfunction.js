@@ -12,6 +12,11 @@ class ValidationLibrary extends Component {
           return { msg: "Field required", state: false };//validation occurs break the loop & throw the error
         }
       }
+      else if(validatorsArray[valid].name =='checkNameExists'){
+        if(validatorsArray[valid].params === 0){
+          return { msg: "Name Already Exist", state: false };//validation occurs break the loop & throw the error
+        }
+      }
       else if (validatorsArray[valid].name == 'email') {
         var re = /^(?!.{101})(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(textValue) == false) {

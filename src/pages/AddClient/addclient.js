@@ -27,8 +27,8 @@ function AddClient(props) {
   const [selectedFile, setselectedFile] = useState([]);
   const [uploadList, setUploadFile] = useState(false)
   const [test, setTest] = useState([]);
+  const [clientExists, setClientExists] = useState()
   const [Addclient_Form, setAddclient_Form] = useState({
-
     client_name: {
       value: "",
       validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }],
@@ -236,7 +236,22 @@ function AddClient(props) {
       );
       setcityList({ cityData });
     });
-  }, []);
+
+
+
+    Axios({
+      method: "POST",
+      url: apiurl + "get_client_name_check",
+      data: {
+        "client_name": clientName,
+      }
+    }).then((response) => {
+      console.log(response.data)
+      setClientExists(response.data.status)
+    });
+
+
+  }, [setClientName,setAddclient_Form]);
 
   const handleChange = (info, uploadName) => {
     console.log(info, 'sdfjdfsjklkl')
@@ -259,11 +274,28 @@ function AddClient(props) {
     }
   };
 
-  function checkValidation(data, key, multipleId) {
+
+  async function checkClientNameExists(clientName) {
+    //For client duplication validation 
+    await Axios({
+      method: "POST",
+      url: apiurl + "get_client_name_check",
+      data: {
+        "client_name": clientName,
+      }
+    }).then((response) => {
+      console.log(response.data)
+      setClientExists(response.data.status)
+    });
+  }
+
+   function checkValidation(data, key, multipleId) {
+    //checkClientNameExists(Addclient_Form.client_name.value)
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       Addclient_Form[key].validation
     );
+
     let dynObj = {
       value: data,
       error: !errorcheck.state,
@@ -271,6 +303,37 @@ function AddClient(props) {
       validation: Addclient_Form[key].validation,
     };
 
+    if(key==="client_name"){
+       checkClientNameExists(Addclient_Form.client_name.value)
+      if(clientExists==0){
+        dynObj = {
+          value: data,
+          error: !errorcheck.state,
+          errmsg: errorcheck.msg,
+          validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" },{name:"checkNameExists",params:0}  ],
+        };
+        setAddclient_Form((prevState) => ({
+          ...prevState,
+          [key]: dynObj
+        }));
+     }else if(clientExists == 1){
+      dynObj = {
+        value: data,
+        error: !errorcheck.state,
+        errmsg: errorcheck.msg,
+        validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" },{name:"checkNameExists",params:1}  ],
+      };
+      setAddclient_Form((prevState) => ({
+        ...prevState,
+        [key]: dynObj
+      }));
+    }
+  }else{
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+      [key]: dynObj,
+    }));
+  }
     // only for multi select (start)
 
     let multipleIdList = [];
@@ -287,11 +350,9 @@ function AddClient(props) {
       // console.log(dynObj.valueById,"id")
     }
     // (end)
-
-    setAddclient_Form((prevState) => ({
-      ...prevState,
-      [key]: dynObj,
-    }));
+ 
+    console.log(clientExists,"clientExists")
+    console.log(Addclient_Form.client_name,"clientExists22")
     // var filtererr = targetkeys.filter(
     //     (obj) =>
     //         Addclient_Form[obj].error == true ||
@@ -303,10 +364,12 @@ function AddClient(props) {
     //     setAddclient_Form({ error: false });
     // }
   }
-// console.log(Addclient_Form,"Addclient_Form")
+
+  // console.log(Addclient_Form,"Addclient_Form")
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Addclient_Form);
+
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
         Addclient_Form[targetkeys[i]].value,
@@ -347,12 +410,12 @@ function AddClient(props) {
         error: true,
         errmsg: "Field required",
         validation: [{ "name": "required" }],
-    };
-    // console.log(dynObj,'dynObj')
-    setAddclient_Form((prevState) => ({
+      };
+      // console.log(dynObj,'dynObj')
+      setAddclient_Form((prevState) => ({
         ...prevState,
         ['poa_name']: dynObj,
-    }));
+      }));
     } else {
 
       // let wait=await check()
@@ -392,14 +455,14 @@ function AddClient(props) {
         error: false,
         errmsg: "",
         validation: [],
-    };
-    setAddclient_Form((prevState) => ({
+      };
+      setAddclient_Form((prevState) => ({
         ...prevState,
         ['poa_name']: dynObj,
-    }));
+      }));
     }
 
-  
+
   }
 
 
@@ -574,7 +637,7 @@ function AddClient(props) {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }} >
-                
+
                 <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload}/>
               </div>
 

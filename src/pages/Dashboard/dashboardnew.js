@@ -346,11 +346,11 @@ function DashboardNew() {
                           {data.activity}
                         </a>
                       </div>
-                      <div>{data.subactivity}</div>
-                      <div>{data.dueby}</div>
+                      <div>{data.sub_activity}</div>
+                      <div>{data.due_by}</div>
                       <div>{data.priority}</div>
-                      <div>{data.completed}</div>
-                      <div>{data.assignedby}</div>
+                      <div>{data.perecent_completion ?data.perecent_completion : "--"   }</div>
+                      <div>{data.assigned_by}</div>
                     </div>
                   </>
                 );
