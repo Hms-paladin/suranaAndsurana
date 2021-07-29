@@ -1,4 +1,4 @@
-import { ADD_CLIENT, ADD_CLIENT_DOCUMENT } from "../utils/Constants";
+import { ADD_CLIENT, ADD_CLIENT_DOCUMENT,CLIENT_NAME_CHECK } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import Axios from "axios";
 import moment from 'moment';
@@ -91,3 +91,15 @@ export const InsertClientDocument = (Document_Form, id) => async dispatch => {
     }
   }
 }
+
+
+export const getClientNameCheck = (clientName) => async (dispatch) => {
+  const response = await Axios({
+    method: "post",
+    url: apiurl + "get_client_name_check",
+    data: {
+      "client_name": clientName,
+    },
+  });
+  return dispatch({ type: CLIENT_NAME_CHECK, payload: response.data });
+};

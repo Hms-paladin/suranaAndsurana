@@ -8,7 +8,7 @@ import CustomButton from "../../component/Butttons/button";
 import { Label } from "@material-ui/icons";
 import moment from "moment";
 import { notification } from "antd";
-import { InsertClient } from "../../actions/AddClientAction"
+import { InsertClient, getClientNameCheck } from "../../actions/AddClientAction"
 import PublishIcon from '@material-ui/icons/Publish';
 import { connect, useDispatch } from "react-redux";
 import { Upload, message, Button } from 'antd';
@@ -27,7 +27,7 @@ function AddClient(props) {
   const [selectedFile, setselectedFile] = useState([]);
   const [uploadList, setUploadFile] = useState(false)
   const [test, setTest] = useState([]);
-  const [clientExists, setClientExists] = useState()
+  const [clientExists, setClientExists] = useState(1)
   const [Addclient_Form, setAddclient_Form] = useState({
     client_name: {
       value: "",
@@ -169,6 +169,16 @@ function AddClient(props) {
     console.log(props.getInsertStatus, "getInsertStatus")
   }, [props.getInsertStatus])
 
+
+  useEffect(() => {
+    const clientNameStatus = props.clientNameCheck;
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+      ["client_name"]: {
+        validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }, { name: "checkNameExists", params: clientNameStatus?.status }],
+      }
+    }));
+  }, [props.clientNameCheck])
   useEffect(() => {
 
     // Client
@@ -251,7 +261,7 @@ function AddClient(props) {
     });
 
 
-  }, [setClientName,setAddclient_Form]);
+  }, [setClientName, setAddclient_Form]);
 
   const handleChange = (info, uploadName) => {
     console.log(info, 'sdfjdfsjklkl')
@@ -289,7 +299,7 @@ function AddClient(props) {
     });
   }
 
-   function checkValidation(data, key, multipleId) {
+  function checkValidation(data, key, multipleId) {
     //checkClientNameExists(Addclient_Form.client_name.value)
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -303,37 +313,13 @@ function AddClient(props) {
       validation: Addclient_Form[key].validation,
     };
 
-    if(key==="client_name"){
-       checkClientNameExists(Addclient_Form.client_name.value)
-      if(clientExists==0){
-        dynObj = {
-          value: data,
-          error: !errorcheck.state,
-          errmsg: errorcheck.msg,
-          validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" },{name:"checkNameExists",params:0}  ],
-        };
-        setAddclient_Form((prevState) => ({
-          ...prevState,
-          [key]: dynObj
-        }));
-     }else if(clientExists == 1){
-      dynObj = {
-        value: data,
-        error: !errorcheck.state,
-        errmsg: errorcheck.msg,
-        validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" },{name:"checkNameExists",params:1}  ],
-      };
-      setAddclient_Form((prevState) => ({
-        ...prevState,
-        [key]: dynObj
-      }));
+    if (key === "client_name" && data) {
+      //checkClientNameExists(data )
+      dispatch(getClientNameCheck(data))
     }
-  }else{
-    setAddclient_Form((prevState) => ({
-      ...prevState,
-      [key]: dynObj,
-    }));
-  }
+
+
+
     // only for multi select (start)
 
     let multipleIdList = [];
@@ -350,9 +336,12 @@ function AddClient(props) {
       // console.log(dynObj.valueById,"id")
     }
     // (end)
- 
-    console.log(clientExists,"clientExists")
-    console.log(Addclient_Form.client_name,"clientExists22")
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+      [key]: dynObj,
+    }));
+    console.log(clientExists, "clientExists")
+    console.log(Addclient_Form.client_name, "clientExists22")
     // var filtererr = targetkeys.filter(
     //     (obj) =>
     //         Addclient_Form[obj].error == true ||
@@ -500,6 +489,7 @@ function AddClient(props) {
 
   return (
     <div>
+      {console.log(Addclient_Form.client_name, "Addclient_Form.client_name")}
       <div
         style={{ marginBottom: "10px", fontSize: "16px", fontWeight: "600" }}
       >
@@ -638,7 +628,7 @@ function AddClient(props) {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }} >
 
-                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload}/>
+                <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload} />
               </div>
 
             </div>
@@ -811,7 +801,7 @@ const mapStateToProps = (state) => (
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
     // getInsertStatus: state.AddClientReducer.addClientDocumentStatus ,
     getInsertStatus: state.AddClientReducer.InsertClient,
-
+    clientNameCheck: state.AddClientReducer.clientNameCheck
   }
 );
 

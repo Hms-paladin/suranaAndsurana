@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Radio, Select, Checkbox } from 'antd';
 import { useDispatch, connect } from "react-redux";
-
+import { useLocation } from "react-router-dom"
 import './search.scss'
 import Resumesearch from "./resumesearch";
 import Projectsearch from "./projectsearch";
@@ -13,8 +13,14 @@ import HrSearch from './hrsearch';
 
 function Search(props) {
 
-    const [value, setValue] = React.useState();
+    const location = useLocation()
+    //Usestate used loaction only for redirect from dashboard ...Note: directly injected bcz of too many reRenders
+    const [value, setValue] = React.useState(location.state?.value);
 
+    // if (location.state?.value) {
+    //     setValue(4)
+
+    // }
     const onChange = e => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);

@@ -71,10 +71,10 @@ function DashboardNew() {
   const [menuListItem, setMenuListItem] = useState([]);
   const [arrowHide, setArrowHide] = useState(false);
   const [changedashBoard, setChangedashBoard] = useState(true);
-  const [color,setcolor]=useState("")
-  const [userclr,setuserclr]=useState("customPrimary")
+  const [color, setcolor] = useState("")
+  const [userclr, setuserclr] = useState("customPrimary")
   // const[adhoc,setAdhoc]=useState(false)
-  const [dashboardValues,setDashboardValues]=useState([])
+  const [dashboardValues, setDashboardValues] = useState([])
 
   const [menulist, setMenulist] = useState([
     {
@@ -141,11 +141,11 @@ function DashboardNew() {
   ]);
 
   const Tasks = [
-    { task: "Project", count:dashboardValues[0]?.Tasks[1]?.[0]?.Project_task || 0},
-    { task: "HR", count:dashboardValues[0]?.Tasks[0]?.[0]?.HR_task || 0},
-    { task: "Other", count: dashboardValues[0]?.Tasks[2]?.[0]?.Other_task || 0},
+    { task: "Project", count: dashboardValues[0]?.Tasks[1]?.[0]?.Project_task || 0 },
+    { task: "HR", count: dashboardValues[0]?.Tasks[0]?.[0]?.HR_task || 0 },
+    { task: "Other", count: dashboardValues[0]?.Tasks[2]?.[0]?.Other_task || 0 },
   ];
-  
+
 
   const handleClick = (data) => {
     setpathname(data.path);
@@ -160,20 +160,20 @@ function DashboardNew() {
     Axios({
       method: 'POST',
       url: apiurl + 'get_dashboard_user',
-      data:{
+      data: {
         "emp_id": localStorage.getItem("empId"),
       }
     }).then((response) => {
       let dashboardData = []
       dashboardData.push({
-        Projects:response.data.data[0].Projects,
-        Due_task:response.data.data[0].Due_task,
-        Expense:response.data.data[0].Expense[0],
-        Tasks:response.data.data[0].Task
+        Projects: response.data.data[0].Projects,
+        Due_task: response.data.data[0].Due_task,
+        Expense: response.data.data[0].Expense[0],
+        Tasks: response.data.data[0].Task
       })
       setDashboardValues(dashboardData)
     })
-   
+
   }, [])
 
   function onPanelChange(value, mode) {
@@ -242,13 +242,13 @@ function DashboardNew() {
           btnCustomColor={userclr}
           btnName={"User Overview"}
           custombtnCSS="btncustom_css"
-          onBtnClick={()=>userdashboard("customPrimary")}
+          onBtnClick={() => userdashboard("customPrimary")}
         />
         <CustomButton btnName={"Compliance"}
           btnCustomColor={color}
           onBtnClick={userdashboard}
           custombtnCSS="btncustom_css"
-          onBtnClick={()=>compliancedashboard("customPrimary")}
+          onBtnClick={() => compliancedashboard("customPrimary")}
         />
       </div>
 
@@ -257,7 +257,7 @@ function DashboardNew() {
       {changedashBoard ?
         <>
           <div className="expAdvContainer">
-      <div className="expensePalce">Expenses {dashboardValues[0]?.Expense?.expences}</div>
+            <div className="expensePalce">Expenses {dashboardValues[0]?.Expense?.expences}</div>
             <div className="advancePlace">Advance  {dashboardValues[0]?.Expense?.advance}</div>
 
           </div>
@@ -273,9 +273,7 @@ function DashboardNew() {
                   return (
                     <div className="projecttable">
                       <div>
-                        <a href={"#"} className="linktable">
-                          {data.project_name}
-                        </a>
+                        <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>
                       </div>
                       <div>{data.project_type}</div>
                       <div>{data.client}</div>
@@ -294,9 +292,7 @@ function DashboardNew() {
                   return (
                     <div className="tasktable">
                       <div>
-                        <a href={"#"} className="linktable">
-                          {data.task}
-                        </a>
+                        <Link to={`/Home/todoList`}>{data.task}</Link>
                       </div>
                       <div>{data.count}</div>
                     </div>
@@ -337,24 +333,23 @@ function DashboardNew() {
                 <div>%Completed</div>
                 <div>Assigned By</div>
               </div>
-              {dashboardValues[0]?.Due_task.length ?  dashboardValues[0]?.Due_task?.map((data) => {
+              {dashboardValues[0]?.Due_task.length ? dashboardValues[0]?.Due_task?.map((data) => {
                 return (
                   <>
                     <div className="taskdaystable">
                       <div>
-                        <a href={"#"} className="linktable">
-                          {data.activity}
-                        </a>
+                        <Link to={{ pathname: `/Home/search`, state: {value:4}}}>{data.activity}</Link>
+                       
                       </div>
                       <div>{data.sub_activity}</div>
                       <div>{data.due_by}</div>
                       <div>{data.priority}</div>
-                      <div>{data.perecent_completion ?data.perecent_completion : "--"   }</div>
+                      <div>{data.perecent_completion ? data.perecent_completion : "--"}</div>
                       <div>{data.assigned_by}</div>
                     </div>
                   </>
                 );
-              }): "No Tasks Found" }
+              }) : "No Tasks Found"}
               {}
             </div>
           </div>
