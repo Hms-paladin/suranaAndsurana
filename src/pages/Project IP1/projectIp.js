@@ -12,9 +12,11 @@ import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import DynModel from '../../component/Model/model';
 import Stages from '../stages/stageicon';
 import TimeSheets from '../Search/TimeSheets/timesheetStart';
+import ChangeLogTimeSheet from '../Search/TimeSheets/changeLogTimeSheet';
 import OPEModel from './opemodel';
 import StageMonitor from '../stages/StageMonitering';
-import {getCheckListsAssigned,insertCheckListsAssigned
+import {
+    getCheckListsAssigned, insertCheckListsAssigned
 } from "../../actions/CheckListAction";
 
 // IP Project:
@@ -93,7 +95,7 @@ function ProjectIp(props) {
     const [opeModelOpen, setOpeModelOpen] = useState(false)
     const [idDetails, setidDetails] = useState({})
     const [checklistModelOpen, setChecklistModelOpen] = useState(false)
-
+    const [changeLogTimeSheetModelOpen, setChangeLogTimeSheetModelOpen] = useState(false)
 
     const [variableid, setVariableid] = useState(false);
     const [successmodel, setSuccessmodel] = useState(false);
@@ -260,7 +262,7 @@ function ProjectIp(props) {
 
     }, [])
 
-    
+
 
     useEffect(() => {
         setProjectDetails(props.ProjectDetails);
@@ -269,75 +271,75 @@ function ProjectIp(props) {
             client_id: props.ProjectDetails[0].client_id,
             billable_type_id: props.ProjectDetails[0].billable_type_id
         })
-if(props.ProjectDetails && props.ProjectDetails.length >0){
-        dispatch(getCheckListsAssigned(props.ProjectDetails[0].project_id,props.ProjectDetails[0].project_type_id))
-    }
+        if (props.ProjectDetails && props.ProjectDetails.length > 0) {
+            dispatch(getCheckListsAssigned(props.ProjectDetails[0].project_id, props.ProjectDetails[0].project_type_id))
+        }
     }, [props.ProjectDetails])
     const [checkListsView, setcheckListsView] = useState([])
     const [checkListsToGlobalSave, setcheckListsToGlobalSave] = useState([])
-    function handleCheck(event,data){
+    function handleCheck(event, data) {
         console.log("mapping", data);
-       let oo= checkListsView;
-       let d=[];
-       for(var i=0;i < oo.length; i++){
-         if(oo[i] && oo[i].check_list_id ==data.check_list_id){
-           if(data.check_list_status ==null ||  data.check_list_status == 0){
-            oo[i].check_list_status =1;
-            data.check_list_status =1;
-           }else{
-            oo[i].check_list_status =0;
-            data.check_list_status =0;
-          }
-          d.push(data);
-        }else{
-          d.push(oo[i]);
+        let oo = checkListsView;
+        let d = [];
+        for (var i = 0; i < oo.length; i++) {
+            if (oo[i] && oo[i].check_list_id == data.check_list_id) {
+                if (data.check_list_status == null || data.check_list_status == 0) {
+                    oo[i].check_list_status = 1;
+                    data.check_list_status = 1;
+                } else {
+                    oo[i].check_list_status = 0;
+                    data.check_list_status = 0;
+                }
+                d.push(data);
+            } else {
+                d.push(oo[i]);
+            }
         }
-      }
-    
-      setcheckListsView(
-        prevState => ({
-            ...prevState,
-        })
-    );
-    
-    
-    setcheckListsView(d);
-       }
 
-       function submitCheckList(){
-      
-        let obj={"checklist":[]}; 
-        for(let i=0; i< checkListsView.length; i++ ){
-         let oo=checkListsView[i];
-         let pOb = {
-            "check_list_id":oo.check_list_id,
-            "project_id":rowId,
-            "check_list_status":oo.check_list_status == null || oo.check_list_status == 0 ? 0 : 1
-        }
+        setcheckListsView(
+            prevState => ({
+                ...prevState,
+            })
+        );
+
+
+        setcheckListsView(d);
+    }
+
+    function submitCheckList() {
+
+        let obj = { "checklist": [] };
+        for (let i = 0; i < checkListsView.length; i++) {
+            let oo = checkListsView[i];
+            let pOb = {
+                "check_list_id": oo.check_list_id,
+                "project_id": rowId,
+                "check_list_status": oo.check_list_status == null || oo.check_list_status == 0 ? 0 : 1
+            }
             obj.checklist.push(pOb);
         }
-       
-  
+
+
         dispatch(insertCheckListsAssigned(obj));
         setChecklistModelOpen(false)
-       }
+    }
     useEffect(() => {
-        
-        if(props.getCheckListsAssigned && props.getCheckListsAssigned.length >0){
- var lists=[];
-            for(var i=0; i< props.getCheckListsAssigned.length ;i++){
 
-                if(props.ProjectDetails && props.ProjectDetails[0] && 
-                    props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id 
-                    && props.ProjectDetails[0].sub_project_id == props.getCheckListsAssigned[i].project_sub_type_id ){
-                lists.push(props.getCheckListsAssigned[i]);
-                    } else if(props.ProjectDetails && props.ProjectDetails[0] && 
-                        props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id 
-                        && props.ProjectDetails[0].sub_project_id == 0 ){
-                            lists.push(props.getCheckListsAssigned[i]);   
-                        }
+        if (props.getCheckListsAssigned && props.getCheckListsAssigned.length > 0) {
+            var lists = [];
+            for (var i = 0; i < props.getCheckListsAssigned.length; i++) {
+
+                if (props.ProjectDetails && props.ProjectDetails[0] &&
+                    props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id
+                    && props.ProjectDetails[0].sub_project_id == props.getCheckListsAssigned[i].project_sub_type_id) {
+                    lists.push(props.getCheckListsAssigned[i]);
+                } else if (props.ProjectDetails && props.ProjectDetails[0] &&
+                    props.ProjectDetails[0].project_type_id == props.getCheckListsAssigned[i].project_type_id
+                    && props.ProjectDetails[0].sub_project_id == 0) {
+                    lists.push(props.getCheckListsAssigned[i]);
+                }
             }
-        setcheckListsView(lists )
+            setcheckListsView(lists)
         }
         //setValue(props.rowData.data.priority_id)
     }, [props.getCheckListsAssigned])
@@ -438,17 +440,25 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
         )
     }
 
+    const changeLogTimesheetmodelContent = () => {
+
+        return (
+
+            <ChangeLogTimeSheet projectrow={projectDetails} />
+        )
+    }
+
     const opeModel = () => {
 
         const handleFieldNullExp = (bln) => {
             setOpeModelOpen(bln);
-           
+
         };
         return (
             <OPEModel handleChangeCloseModel={(bln) => handleFieldNullExp(bln)} />
         )
     }
-    const openProjectTask=()=>{
+    const openProjectTask = () => {
         setModelOpen(true)
     }
     function projectTaskModel(boxName) {
@@ -487,6 +497,11 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
             setChecklistModelOpen(true)
         }
 
+        else if (boxName == "CHANGE LOG TIME SHEET") {
+            setChangeLogTimeSheetModelOpen(true)
+            // setChecklistModelOpen(true)
+        }
+        console.log(props.insertChangeLog, "insertChangeLog")
 
     }
 
@@ -496,14 +511,14 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
 
     function onsubmitvariablerate() {
         setVariableid(false)
-        let AddRow =props.searchVariableRate.find((data)=>{
+        let AddRow = props.searchVariableRate.find((data) => {
             return data.stage_list_id
         })
-          dispatch(UpdateVariableRate(sendVariableData,projectSearchCreate,props.searchVariableRate
-            ,applicableamount,props.getProjectVariableRate
-            )).then((response)=>{
-             setDisableCondition(false)
-          })
+        dispatch(UpdateVariableRate(sendVariableData, projectSearchCreate, props.searchVariableRate
+            , applicableamount, props.getProjectVariableRate
+        )).then((response) => {
+            setDisableCondition(false)
+        })
 
 
     }
@@ -563,7 +578,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
 
 
     };
-//applicableamount,props.getProjectVariableRate
+    //applicableamount,props.getProjectVariableRate
     useEffect(() => {
         let searchVariableTableData = [];
         let sendprojVariableTableData = [];
@@ -591,7 +606,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                     changeData={(data) => onchangeapplicableAmount(data, "amt" + index)}
                     //   SubmitData={()=>onsubmitvariablerate(data.rate_master_id)}
                     value={applicableamount["amt" + index]}
-                    
+
                 />,
                 UOM: data.unit_of_measure,
                 del: (
@@ -613,7 +628,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
         setShowVariableTable([...searchVariableTableData]);
         setSendVariableData([...sendprojVariableTableData]);
 
-    }, [props.getProjectVariableRate,applicableamount])
+    }, [props.getProjectVariableRate, applicableamount])
 
     console.log(applicableamount, "applicableamount")
     ///
@@ -751,7 +766,9 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
     };
     console.log()
     return (
+        
         <div>
+            {console.log(props.insertChangeLog, "insertChangeLog")}
             <div className="projectIpContainer">
                 {props.ProjectDetails.map((data) => {
                     return (
@@ -833,10 +850,12 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                         {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
                             props.ProjectDetails[0].project_type} */}
                     </div>
-                    <div className="TabIconsview"><TabIcons variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    <div className="TabIconsview"
+                    ><TabIcons variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
                      */}
 
+                    <DynModel modelTitle={"Change Log Time Sheet"} handleChangeModel={changeLogTimeSheetModelOpen} handleChangeCloseModel={(bln) => setChangeLogTimeSheetModelOpen(bln)} content={changeLogTimesheetmodelContent()} width={800} />
                     <DynModel
                         modelTitle={"Variable Rate"}
                         handleChangeModel={variableid}
@@ -845,34 +864,33 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
-                   
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={
                             <div style={{ textAlign: 'center' }}>
                                 <Grid container spacing={1}>
 
-                                {checkListsView.map((data,index)=>
-                                
-                                <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center">
-                                    
-                                    <Grid item xs={7}>
-                                     <label className="checklist_label">{data.check_list}</label></Grid>
-                                     
-                                     <Grid item xs={2}><Checkbox checked={data.check_list_status == null || data.check_list_status ==0  ? false: true}
-                                      name={data.check_list} value={data.check_list_id}  onClick={(event) => handleCheck(event,data)}
-                                      /></Grid>
+                                    {checkListsView.map((data, index) =>
 
-                                     <Grid item xs={3}>      {<img src={data.check_list_type != 'Simple' ? Tasks : ""} className="tabIconImage"
+                                        <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center">
 
-                                     onClick={data.check_list_type != 'Simple' ? ()=>openProjectTask() : ""}/>}
+                                            <Grid item xs={7}>
+                                                <label className="checklist_label">{data.check_list}</label></Grid>
 
-</Grid>
+                                            <Grid item xs={2}><Checkbox checked={data.check_list_status == null || data.check_list_status == 0 ? false : true}
+                                                name={data.check_list} value={data.check_list_id} onClick={(event) => handleCheck(event, data)}
+                                            /></Grid>
 
-                                     </Grid>
-                                     )}
+                                            <Grid item xs={3}>      {<img src={data.check_list_type != 'Simple' ? Tasks : ""} className="tabIconImage"
+
+                                                onClick={data.check_list_type != 'Simple' ? () => openProjectTask() : ""} />}
+
+                                            </Grid>
+
+                                        </Grid>
+                                    )}
 
 
-<div className="customchecklistbtn">
+                                    <div className="customchecklistbtn">
                                         <CustomButton
                                             btnName={"Save"}
                                             btnCustomColor="customPrimary"
@@ -886,7 +904,7 @@ if(props.ProjectDetails && props.ProjectDetails.length >0){
                         } width={300} />
 
                     {/* TradeMark */}
-                    {stageMonitor && <StageMonitor cancel_btn={(data) => projectTaskModel(data)}/>}
+                    {stageMonitor && <StageMonitor cancel_btn={(data) => projectTaskModel(data)} />}
                     {stage && <Stages projectDetails={props.ProjectDetails} />}
 
                     {projecttypes && <div>{
@@ -1033,7 +1051,8 @@ const mapStateToProps = (state) => (
         getProjectVariableRate: state.variableRateMaster.getProjectVariableRate,
         UpdateProjectVariableRate: state.variableRateMaster.updateProjectVariableRate,
         UpdateVariableRate: state.variableRateMaster.UpdateVariableRate || [],
-        getCheckListsAssigned : state.CheckListReducer.getCheckListsAssigned || [],
+        getCheckListsAssigned: state.CheckListReducer.getCheckListsAssigned || [],
+        insertChangeLog: state.insertTask
     }
 );
 

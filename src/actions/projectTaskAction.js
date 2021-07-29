@@ -1,31 +1,31 @@
 import {
-    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK,GET_TIMESHEET_BY_TASK,
+    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
     GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
-    GET_PROJECT_STAGES_LIST,GET_TASK_LIST,GET_TASK_TIME_SHEET,GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
+    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-import {GetOpeSearch} from './OutofPacketActions'
-export const 
+import { GetOpeSearch } from './OutofPacketActions'
+export const
 
-getActivity = () => async dispatch => {
-    try {
+    getActivity = () => async dispatch => {
+        try {
 
-        axios({
-            method: 'GET',
-            url: apiurl + 'get_activity'
-        })
-            .then((response) => {
-                dispatch({ type: GET_ACTIVITY, payload: response.data.data })
+            axios({
+                method: 'GET',
+                url: apiurl + 'get_activity'
             })
+                .then((response) => {
+                    dispatch({ type: GET_ACTIVITY, payload: response.data.data })
+                })
 
-    } catch (err) {
+        } catch (err) {
 
+        }
     }
-}
 
 export const getTagList = () => async dispatch => {
     try {
@@ -71,20 +71,36 @@ export const inserTask = (params, timeSheetParams) => async dispatch => {
                     message: "Task added Successfully",
                 });
 
-               
+
                 dispatch({ type: INSERT_TASK, payload: response.data.status })
-                if(timeSheetParams && response.data.data&& response.data.data.length>0 && response.data.data[response.data.data.length-1][0]){
-                    let tid= response.data.data[response.data.data.length-1][0]['@tid'];
-                    timeSheetParams.task_id =tid;
+                if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1][0]) {
+                    let tid = response.data.data[response.data.data.length - 1][0]['@tid'];
+                    timeSheetParams.task_id = tid;
                     dispatch(insertTimeSheet(timeSheetParams, 'id'))
-                    }
-              
+                }
+
                 return Promise.resolve();
             }
         });
 
     } catch (err) {
 
+    }
+}
+
+export const insertChangeLog = (params) => async dispatch => {
+    try {
+        axios({
+            method: "POST",
+            url: apiurl + 'update_backlog_timesheet',
+            data: params
+        }).then((response) => {
+            console.log(response)
+            dispatch({ type: INSERT_TASK, payload: response.data })
+        })
+        
+    } catch (err) {
+        console.log(err)
     }
 }
 
@@ -151,30 +167,30 @@ END
 
 export const updateTaskDates = (params) => async dispatch => {
     try {
-        let par={};
-if(params.project_id != null){
-     par={
-        activiity_id:params.activiity_id,
-        task_id:params.task_id,
-        sub_activity_id:params.sub_activity_id,
-        assignee_id:params.assignee_id,
-        actual_start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
-        actual_end_date:params.actual_end_date != null ? params.actual_end_date : null, 
-        priority:params.Priority,
-        description:params.description,
-        tag:params.tag_id,
-    };
-}else{
-    par={
-        task_id:params.task_id,
-        assignee_id:params.assignee_id,
-        actual_start_date:params.actual_start_date!= null ? params.actual_start_date : null, 
-        actual_end_date:params.actual_end_date != null ? params.actual_end_date : null, 
-        description:params.description,
-        tag:params.tag_id,
-    };
-}
-        
+        let par = {};
+        if (params.project_id != null) {
+            par = {
+                activiity_id: params.activiity_id,
+                task_id: params.task_id,
+                sub_activity_id: params.sub_activity_id,
+                assignee_id: params.assignee_id,
+                actual_start_date: params.actual_start_date != null ? params.actual_start_date : null,
+                actual_end_date: params.actual_end_date != null ? params.actual_end_date : null,
+                priority: params.Priority,
+                description: params.description,
+                tag: params.tag_id,
+            };
+        } else {
+            par = {
+                task_id: params.task_id,
+                assignee_id: params.assignee_id,
+                actual_start_date: params.actual_start_date != null ? params.actual_start_date : null,
+                actual_end_date: params.actual_end_date != null ? params.actual_end_date : null,
+                description: params.description,
+                tag: params.tag_id,
+            };
+        }
+
         axios({
             method: 'PUT',
             url: apiurl + 'update_task',
@@ -183,10 +199,10 @@ if(params.project_id != null){
             if (response.data.status === 1) {
                 var msg = response.data.msg;
                 //notification.success({
-                   // message: msg != "" ? msg : "Adhoc Task added Successfully",
+                // message: msg != "" ? msg : "Adhoc Task added Successfully",
                 //});
-               // dispatch({ type: INSERT_ADHOC_TASK, payload: response.data.status })
-               dispatch(getTaskList(params.assignee_id));//localStorage.getItem("empId")));
+                // dispatch({ type: INSERT_ADHOC_TASK, payload: response.data.status })
+                dispatch(getTaskList(params.assignee_id));//localStorage.getItem("empId")));
                 return Promise.resolve();
             }
         });
@@ -196,10 +212,10 @@ if(params.project_id != null){
     }
 }
 
-export const insertTimeSheetbyTime = (params, time,task,timeSheetStartDate) => async dispatch => {
+export const insertTimeSheetbyTime = (params, time, task, timeSheetStartDate) => async dispatch => {
     var url = 'insert_stop_time';
-    if(time == true){
-        url =  'insert_start_time'
+    if (time == true) {
+        url = 'insert_start_time'
     }
     try {
         axios({
@@ -208,15 +224,15 @@ export const insertTimeSheetbyTime = (params, time,task,timeSheetStartDate) => a
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
-                task.Priority=task.priority_id;
-                task.tag =task.tag_id;
-                if(time == true && task && task.actual_start_date == null){
-                    task.actual_start_date=params.start_date;
-                    
-                    
+                task.Priority = task.priority_id;
+                task.tag = task.tag_id;
+                if (time == true && task && task.actual_start_date == null) {
+                    task.actual_start_date = params.start_date;
+
+
                     dispatch(updateTaskDates(task));
-                }else{
-                    task.actual_end_date=params.end_date;
+                } else {
+                    task.actual_end_date = params.end_date;
                     dispatch(updateTaskDates(task));
                 }
 
@@ -361,7 +377,7 @@ export const getStages = () => async dispatch => {
     }
 }
 
-export const getProjectStageList = (project_type_id,sub_proj_type_id,process_id) => async dispatch => {
+export const getProjectStageList = (project_type_id, sub_proj_type_id, process_id) => async dispatch => {
     try {
         axios({
             method: 'POST',
@@ -401,9 +417,9 @@ export const getSubStages = (stageId) => async dispatch => {
 
 export const insertStages = (params, projectId, projectTypeId, subProjectId) => async dispatch => {
     try {
-        if(params.sub_stage_id==="")
-        params.sub_stage_id=0
-        
+        if (params.sub_stage_id === "")
+            params.sub_stage_id = 0
+
         axios({
             method: 'POST',
             url: apiurl + 'insert_project_stage',
@@ -416,15 +432,15 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
                     });
                     dispatch(getStagesByProjectId(projectId, projectTypeId, subProjectId));
                     return Promise.resolve();
-                   
-                }else if(response.data.status === 0){
-                    
+
+                } else if (response.data.status === 0) {
+
                     notification.success({
                         message: response.data.msg,
                     });
                     return Promise.resolve();
                 }
-                
+
             });
 
     } catch (err) {
@@ -442,11 +458,11 @@ export const getTaskList = (empId) => async dispatch => {
             method: 'POST',
             url: apiurl + 'get_task_list',
             data: {
-                "assignee_id":  empId,//localStorage.getItem("empId"),
+                "assignee_id": empId,//localStorage.getItem("empId"),
             }
         })
             .then((response) => {
-             
+
                 dispatch({ type: GET_TASK_LIST, payload: response.data.data })
             })
 
@@ -499,8 +515,8 @@ export const getHearingDetails = (data) => async dispatch => {
             method: 'POST',
             url: apiurl + 'get_hearing_details',
             data: {
-                "project_id":data.project_id,
-                "task_id":data.task_id
+                "project_id": data.project_id,
+                "task_id": data.task_id
             }
         })
             .then((response) => {

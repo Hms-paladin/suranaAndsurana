@@ -10,8 +10,10 @@ import './timesheets.scss'
 import { useDispatch, connect } from "react-redux";
 import { notification } from "antd";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { getEmployeeList, getProjectType, getProjectSubType } from '../../../actions/MasterDropdowns'
+import { getEmployeeList, getProjectType, getProjectSubType, getProjectName } from '../../../actions/MasterDropdowns'
 import { getProjectWise_TimeSheet } from '../../../actions/TimeSheetAction'
+
+
 function ProjectwiseTS(props) {
     const [multiplePanel, setMultiplePanel] = useState([]);
     const [searchRights, setSearchRights] = useState([])
@@ -21,6 +23,12 @@ function ProjectwiseTS(props) {
     const [projectList, setprojectList] = useState([])
     const [openPanel, setopenPanel] = useState(0)
     const [projectSearch, setprojectSearch] = useState({
+        proj_name: {
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
         emp_name: {
             value: "",
             validation: [{ name: "required" }],
@@ -75,6 +83,7 @@ function ProjectwiseTS(props) {
 
     const empname = "Employee Name";
     const headCells = [
+        { id: "empName", label: "Employee Name" },
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub Activity" },
         { id: "startdate", label: "Start date" },
@@ -95,7 +104,7 @@ function ProjectwiseTS(props) {
         dispatch(getEmployeeList())
         dispatch(getProjectType())
         dispatch(getProjectSubType())
-        dispatch(getProjectWise_TimeSheet(projectSearch))
+        dispatch(getProjectName())
     }, [])
     useEffect(() => {
         let ProjectDetails = []
@@ -107,6 +116,7 @@ function ProjectwiseTS(props) {
         let employeeName = []
         let Project_type = []
         let Project_Sub_type = []
+        let project_name = []
         props.EmployeeList.map((data) => {
             employeeName.push({ id: data.emp_id, value: data.name })
         })
@@ -116,8 +126,11 @@ function ProjectwiseTS(props) {
         props.SubProjectType.map((data) => {
             Project_Sub_type.push({ id: data.sub_project_type_id, value: data.sub_project_type })
         })
-        setprojectList({ employeeName, Project_type, Project_Sub_type })
-    }, [props.EmployeeList, props.ProjectType, props.SubProjectType])
+        props.Project_name.map((data) => {
+            project_name.push({ id: data.project_id, value: data.project_name })
+        })
+        setprojectList({ employeeName, Project_type, Project_Sub_type, project_name })
+    }, [props.EmployeeList, props.ProjectType, props.SubProjectType, props.Project_name])
     ///***********user permission**********/
     useEffect(() => {
         if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -132,9 +145,23 @@ function ProjectwiseTS(props) {
 
     }, [props.UserPermission]);
     ////////
+
+
     const SearchData = () => {
-        dispatch(getProjectWise_TimeSheet(projectSearch))
+        console.log(projectSearch.to_date.value, "ps")
+        // check the dates
+        if (new Date(projectSearch.from_date.value) < new Date(projectSearch.to_date.value)) {
+            dispatch(getProjectWise_TimeSheet(projectSearch))
+        } else if (new Date(projectSearch.from_date.value) > new Date(projectSearch.to_date.value)) {
+            notification.error({
+                message: "Invalid From date and To date",
+            });
+        } else {
+            dispatch(getProjectWise_TimeSheet(projectSearch))
+        }
     }
+
+
 
     function callback(key) {
         console.log(key);
@@ -161,7 +188,8 @@ function ProjectwiseTS(props) {
                             }
                             rows={[
                                 {
-                                    "actitvity": <Link to={`/Home/projectIp/${data.project_id}`}>{data.activity}</Link>,
+                                    "empName": data.name,
+                                    "actitvity": data.activity,
                                     "subactivity": data.sub_activity,
                                     "startdate": data.start_date,
                                     "planned_sd": data.process,
@@ -191,6 +219,7 @@ function ProjectwiseTS(props) {
                     {data?.project_details && data?.project_details?.map((data, index) => {
                         var rowdataListobj = {};
                         if (data.project_type_id !== 1) {
+                            rowdataListobj["empName"] = data.name;
                             rowdataListobj["actitvity"] = data.activity;
                             rowdataListobj["subactivity"] = data.sub_activity;
                             rowdataListobj["startdate"] = data.start_date;
@@ -209,7 +238,8 @@ function ProjectwiseTS(props) {
                         }
                         rows={[
                             {
-                                "actitvity": <Link to={`/Home/projectIp/${data.project_id}`}>{data.activity}</Link>,
+                                "empName": data.name,
+                                "actitvity": data.activity,
                                 "subactivity": data.sub_activity,
                                 "startdate": data.start_date,
                                 "planned_sd": data.process,
@@ -234,6 +264,16 @@ function ProjectwiseTS(props) {
             <div className="DRtitle">Project Wise Time Sheet - {empname}</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
+                    <Grid item xs={2} container direction="column" spacing={1}>
+                        <div className="Reporthead">Project Name</div>
+                        <Labelbox type="select"
+                            dropdown={projectList.project_name}
+                            changeData={(data) => checkValidation(data, "proj_name")}
+                            value={projectSearch.proj_name.value}
+                            error={projectSearch.proj_name.error}
+                            errmsg={projectSearch.proj_name.errmsg}
+                        />
+                    </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">Employee Name</div>
                         <Labelbox type="select"
@@ -303,6 +343,8 @@ const mapStateToProps = (state) =>
         EmployeeList: state.getOptions.getEmployeeList,
         ProjectType: state.getOptions.getProjectType,
         SubProjectType: state.getOptions.getProjectSubType,
+        Project_name: state.getOptions.getProjectName,
         Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
+
     });
 export default connect(mapStateToProps)(ProjectwiseTS);
