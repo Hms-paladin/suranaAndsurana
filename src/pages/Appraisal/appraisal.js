@@ -211,8 +211,6 @@ function Appraisal(props) {
         setModelTitle(data)
         setModelCommentID(id)
     }
-    // console.log(rowID, "rowID")
-
 
     ///***********user permission**********/
     useEffect(() => {
@@ -320,7 +318,6 @@ function Appraisal(props) {
                 dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
             } else if (rowID == 2) {
                 dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
-
             }
         }
         else {
@@ -339,8 +336,8 @@ function Appraisal(props) {
                 }
 
             } else if (rowID == 2) {
-    
-                console.log(Manageing,"mmi")
+
+                console.log(Manageing, "mmi")
                 let checkQuestion = Manageing.find((data) => {
                     return data.value == ""
                 })
