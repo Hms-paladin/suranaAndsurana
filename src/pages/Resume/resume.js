@@ -41,7 +41,6 @@ const ResumePage = (props) => {
   const [experienceList, setExperienceList] = useState([]);
   const [employererr, setEmployererr] = useState(false);
   const [educationerr, setEducationerr] = useState(false);
-  const [expReq, setExpReq] = useState(false);
   const [educationid, setEducationid] = useState();
   const [experienceid, setExperienceid] = useState();
   const [educationrow, setEducationrow] = useState([]);
@@ -376,16 +375,9 @@ const ResumePage = (props) => {
   function checkValidation(data, key, multipleId) {
     if (data !== 1 && data !== 10 && key === "candidate") {
       console.log("candidate", experienceList.length);
-     setExpReq(true);
-     experienceList.length ===0&&!employererr && setEmployererr(true);
-     experienceList.length !==0&&employererr && setEmployererr(false);
     } else {
-      setExpReq(false);
       employererr && setEmployererr(false);
     }
-
-    // key === "candidate"&&data!==10&&!employererr && setEmployererr(true)&&setExpReq(true);
-    // key === "candidate"&&data===10&&employererr && setEmployererr(false)&&setExpReq(true);
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -1111,24 +1103,7 @@ const ResumePage = (props) => {
                   errmsg={Resume_Form.capability.errmsg}
                 />
               </Grid>
-              {/* <Grid item xs={6}>
-                <Labelbox
-                  type="select"
-                  mode={"multiple"}
-                  placeholder={"Achievements"}
-                  dropdown={resumeGetList.achivementsList}
-                  changeData={(data) =>
-                    checkValidation(
-                      data,
-                      "achivements",
-                      resumeGetList.achivementsList
-                    )
-                  }
-                  value={Resume_Form.achivements.value}
-                  error={Resume_Form.achivements.error}
-                  errmsg={Resume_Form.achivements.errmsg}
-                />
-              </Grid> */}
+       
               <Grid item xs={6}>
                 <Labelbox
                   type="text"
@@ -1333,8 +1308,8 @@ const ResumePage = (props) => {
                   Please Add Previous Employer
                 </span>
               )}
-              {Resume_Form.candidate.value !== 1 && Resume_Form.candidate.value !== 10 && employererr && <div className="experienceList">
-                <div style={{ fontWeight: 600 }}>Previous Employer Details{expReq && "*"}</div>
+              {Resume_Form.candidate.value !== 1 && Resume_Form.candidate.value !== 10 && <div className="experienceList">
+                <div style={{ fontWeight: 600 }}>Previous Employer Details *</div>
                 <div>
                   <img src={PlusIcon} onClick={showExperienceModel} />
                 </div>

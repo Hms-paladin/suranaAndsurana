@@ -1,7 +1,7 @@
 import {  INSERT_ACTIVITY,COMMON_INSERT_TEXT,GET_TABLE_NAME,INSERT_USER, GET_USER,MASTER_EMPLOYEE_DETAILS, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES ,INSERT_STATUS,INSERT_SUBSTAGE,INSERT_CLASS,INSERT_CHECKLIST} from "../utils/Constants";
 
 import {GET_TABLE_GROUP,GET_USER_CLASS,COMMON_UPDATE_TEXT,UPDATE_SUBSTAGE,UPDATE_SUBACTIVITY,GET_SUBORDINATES} from '../utils/Constants'
-
+import {get_emp_not_in_user} from "./UserGroupAction";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
@@ -65,6 +65,7 @@ export const insertUser = (UserMaster, password, changeActive) => async dispatch
   DocumentData.set("password", password)
   DocumentData.set("username", UserMaster.user_name.value)
   DocumentData.set("employee_id", UserMaster.emp_name.value)
+  DocumentData.set("user_id", 0)
   try {
     axios({
       method: 'POST',
@@ -77,6 +78,7 @@ export const insertUser = (UserMaster, password, changeActive) => async dispatch
         });
         dispatch({ type: INSERT_USER, payload: response.data.status })
         dispatch(getUser())
+        dispatch(get_emp_not_in_user())
         return Promise.resolve();
       }
     });

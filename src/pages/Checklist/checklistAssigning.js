@@ -11,7 +11,7 @@ import { useDispatch, connect } from "react-redux";
 import {getCheckListsNames,insert_check_list_assign,getDaysOfWeek
 } from "../../actions/CheckListAction";
 import {
-    getEmployeeList,getProjectType
+    getEmployeeList,getProjectType,getFrequency
   } from "../../actions/MasterDropdowns";
   import ValidationLibrary from "../../helpers/validationfunction";
 function CheckListAssign(props) {
@@ -121,11 +121,39 @@ function CheckListAssign(props) {
         if (data && key == "checkListNameId") {
           //checkListForm['employeeId'].disabled = false;
           for(var i=0; i< props.getCheckListsNames.length; i++){
-            if(data  == props.getCheckListsNames[i].check_list_id && props.getCheckListsNames[i].frequency != 'On Demand'){
-             // checkListForm['noOfDaysWeeks'].disabled = true;
-              checkListForm['noOfDaysWeeks'].validation =[];
+           
+            if(data  == props.getCheckListsNames[i].check_list_id){
+             checkListForm.frequency.value=props.getCheckListsNames[i].frequency_id
+             checkListForm.frequency.disabled = true;
+           
+             if(props.getCheckListsNames[i].frequency==='On Demand'||props.getCheckListsNames[i].frequency==='Daily'){
+             divShow.start_month=false
+             divShow.end_date=false
+             divShow.days_of_week=false
+            }else if(props.getCheckListsNames[i].frequency==='Alternate Days'||props.getCheckListsNames[i].frequency==='Weekly'){
+              divShow.days_of_week=true
+              divShow.start_month=false
+              divShow.end_date=false
+            }else if(props.getCheckListsNames[i].frequency==='Fortnightly'||props.getCheckListsNames[i].frequency==='Monthly'){
+              divShow.start_month=false
+              divShow.days_of_week=false
+              divShow.end_date=true
+            }else if(props.getCheckListsNames[i].frequency==='Alternate Month'||props.getCheckListsNames[i].frequency==='Quarterly'
+            ||props.getCheckListsNames[i].frequency==='Half Yearly'||props.getCheckListsNames[i].frequency==='Annual'){
+              divShow.start_month=true
+              divShow.end_date=true
+              divShow.days_of_week=false
+              
             }
+            // if(data  == props.getCheckListsNames[i].check_list_id && props.getCheckListsNames[i].frequency != 'On Demand'){
+            //  // checkListForm['noOfDaysWeeks'].disabled = true;
+            //   checkListForm['noOfDaysWeeks'].validation =[];
+            // }
+            setdivShow((prevState) => ({
+              ...prevState,
+          }));
           }
+        }
           
         }
         if (data && key == "employeeId") {
@@ -163,6 +191,8 @@ function CheckListAssign(props) {
           ...prevState,
           [key]: dynObj,
         }));
+
+     
       }
      
     const [checkListForm, setcheckListForm] = useState({
@@ -214,13 +244,21 @@ function CheckListAssign(props) {
           error: null,
           errmsg: null,
           disabled: false
-        } 
+        },
+        frequency: {
+          value: "",
+          valueById: "",
+          validation: [{ name: "required" }],
+          error: null,
+          errmsg: null,
+        }
       });
     useEffect(() => {
         dispatch(getCheckListsNames());
         dispatch(getEmployeeList());
         dispatch(getProjectType());
         dispatch(getDaysOfWeek()); 
+        dispatch(getFrequency());
       }, []);
 
 
@@ -228,9 +266,15 @@ const [projectTypeList, setprojectTypeList] = useState({})
 const [projectSubTypeList, setprojectSubTypeList] = useState({})
 const [employeeList, setemployeeList] = useState({}) 
 const [daysOfWeeksLists, setdaysOfWeeksLists] = useState({})
+const [frequencyList, setfrequencyList] = useState({})
+const [divShow, setdivShow] = useState({
+  start_month:false,
+  end_date:false,
+  days_of_week:false
+})
 const [checkListNames, setcheckListNames] = useState({})
+
 useEffect(() => {
-  
 
   let projectTypeData = []
   props.getProjectType.map((data) =>
@@ -250,6 +294,15 @@ useEffect(() => {
   )
   setemployeeList({ employeeData })
 
+
+  let frequencyTypeData = []
+  props.getFrequency.map((data) =>
+  frequencyTypeData.push({
+      value: data.status,
+      id: data.status_id
+    })
+  )
+  setfrequencyList({ frequencyTypeData })
 
   let checkListnamesdata = []
   props.getCheckListsNames.map((data) =>
@@ -271,8 +324,7 @@ useEffect(() => {
 
   //daysOfWeeksLists.daysofWeeksData
 
-}, [props.getProjectType,props.getEmployeeList,props.getCheckListsNames,props.getDaysofWeeks
-]);
+}, [props.getProjectType,props.getEmployeeList,props.getCheckListsNames,props.getDaysofWeeks,props.getFrequency]);
 
     ///***********user permission**********/
 useEffect(() => {
@@ -287,14 +339,9 @@ useEffect(() => {
   
    }, [props.UserPermission]);
   
+  console.log(divShow,"divShow")
   
-    // console.log(saveRights,"rights")
-  
-   function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
+
   /////////////
 
     return (
@@ -327,6 +374,18 @@ useEffect(() => {
                         ></Labelbox>
                     </Grid>
                     <Grid item xs={3} container direction="column">
+                        <div className="TThead">Project Name</div>
+                        <Labelbox type="select"
+                        dropdown={projectTypeList.projectTypeData}
+                        changeData={(data) => checkValidation(data, "projectId")}
+                        placeholder={"Project "}
+                        value={checkListForm.projectId.value}
+                        error={checkListForm.projectId.error}
+                        errmsg={checkListForm.projectId.errmsg}
+                        disabled={checkListForm.projectId.disabled}></Labelbox>
+
+                    </Grid>
+                    <Grid item xs={3} container direction="column">
                         <div className="TThead">Project Type</div>
                         <Labelbox type="select"
                         dropdown={projectTypeList.projectTypeData}
@@ -350,46 +409,66 @@ useEffect(() => {
                         disabled={checkListForm.subProjectId.disabled}
                         ></Labelbox>
                     </Grid>
+                    {checkListForm.checkListNameId.value!=''&&<>
                     <Grid item xs={3} container direction="column">
-                        <div className="TThead">Start Date</div>
+                    <div className="TThead">Frequency</div>
+                        <Labelbox type="select" 
+                          dropdown={frequencyList.frequencyTypeData}
+                          changeData={(data) => checkValidation(data, "frequency")}
+                          placeholder={"Frequency"}
+                          value={checkListForm.frequency.value}
+                          error={checkListForm.frequency.error}
+                          errmsg={checkListForm.frequency.errmsg} 
+                          disabled={checkListForm.frequency.disabled}
+                          ></Labelbox>
+                    </Grid>
+
+                    <Grid item xs={3} container direction="column">
+                        <div className="TThead">Start Month</div>
                         <Labelbox type="datepicker"
+                          view={["month"]}
                          changeData={(data) => checkValidation(data, "startDate")}
                          placeholder={"Start date "}
                          value={checkListForm.startDate.value}
                          error={checkListForm.startDate.error}
-                         errmsg={checkListForm.startDate.errmsg}></Labelbox>
+                         errmsg={checkListForm.startDate.errmsg}
+                         disabled={!divShow.start_month}
+                         >
+                         </Labelbox>
 
-                    </Grid>
+                    </Grid> 
+
                     <Grid item xs={3} container direction="column">
-                        <div className="TThead">End Date</div>
+                        <div className="TThead"> Date</div>
                         <Labelbox type="datepicker"
+                          view={["date"]}
                         changeData={(data) => checkValidation(data, "endDate")}
                         placeholder={"End date "}
                         value={checkListForm.endDate.value}
                         error={checkListForm.endDate.error}
                         errmsg={checkListForm.endDate.errmsg}
-                        
-                       
-
+                        disabled={!divShow.end_date}
                         ></Labelbox>
                     </Grid>
 
                     <Grid item xs={3} container direction="column">
-                    <div className="TThead">Days of Week</div>
-                <Labelbox
-                  type="select"
-                  mode={"multiple"}
-                  placeholder={"Days of Week"}
-                  dropdown={daysOfWeeksLists.daysofWeeksData}
-                  changeData={(data) =>
-                    checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
-                  }
-                  disabled={checkListForm.noOfDaysWeeks.disabled}
-                  value={checkListForm.noOfDaysWeeks.value}
-                  error={checkListForm.noOfDaysWeeks.error}
-                  errmsg={checkListForm.noOfDaysWeeks.errmsg}
-                />
-              </Grid>
+                      <div className="TThead">Days of Week</div>
+                      <Labelbox
+                        type="select"
+                        mode={"multiple"}
+                        placeholder={"Days of Week"}
+                        dropdown={daysOfWeeksLists.daysofWeeksData}
+                        changeData={(data) =>
+                          checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
+                        }
+                        disabled={checkListForm.noOfDaysWeeks.disabled}
+                        value={checkListForm.noOfDaysWeeks.value}
+                        error={checkListForm.noOfDaysWeeks.error}
+                        errmsg={checkListForm.noOfDaysWeeks.errmsg}
+                        disabled={!divShow.days_of_week}
+                      />
+                  </Grid>
+                  </>}
 
                 </Grid>
 
@@ -409,5 +488,6 @@ const mapStateToProps = (state) =>
         getEmployeeList : state.getOptions.getEmployeeList || [],
         getCheckListsNames : state.CheckListReducer.getCheckListsNames || [],
         getDaysofWeeks: state.CheckListReducer.getDaysofWeeks || [],
+        getFrequency: state.getOptions.getFrequency || [],
     });
 export default connect(mapStateToProps) (CheckListAssign);

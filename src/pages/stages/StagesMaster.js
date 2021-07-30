@@ -5,7 +5,7 @@ import CustomButton from '../../component/Butttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from 'react-redux';
-import { getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
+import {getStageMasterSearch,getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
 import { getProjectType, getProjectSubType, getProcessType, getStageList, getSubStage } from '../../actions/MasterDropdowns';
 import './StagesMaster.scss'
 import { notification } from "antd";
@@ -31,6 +31,7 @@ const StagesMaster = (props) => {
   const [processType, setprocessType] = useState({})
   const [disabled, setEnabled] = useState(true);
   const [stageDisable, setStageEnabled] = useState(true);
+  const [SearchAdd, setSearchAdd] = useState(false);
   const [saveRights, setSaveRights] = useState([])
   const [RateMaster, setRateMaster] = useState({
     project_type: {
@@ -75,6 +76,24 @@ const StagesMaster = (props) => {
       error: null,
       errmsg: null,
     },
+    process_type_search: {
+      value: "",
+      validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+    },
+    sub_project_type_search: {
+      value: "",
+      validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+    },
+    project_type_search: {
+      value: "",
+      validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+    },
   })
 
 
@@ -87,7 +106,7 @@ const StagesMaster = (props) => {
   useEffect(() => {
     //stageTableData
     let stageMasterListData = []
-    props.getTableData.map((data) =>
+    props.getStageMasterSearch.map((data) =>
       stageMasterListData.push(data)
     )
     var rateList = [];
@@ -119,7 +138,7 @@ const StagesMaster = (props) => {
       projectStagedata.push({ value: data.stage, id: data.stage_id })
     )
     setStage({ projectStagedata })
-  }, [props.getTableData, props.ProjectType, props.StageList])
+  }, [props.getStageMasterSearch, props.ProjectType, props.StageList])
 
   useEffect(() => {
     //ProjectSubtype
@@ -143,7 +162,39 @@ const StagesMaster = (props) => {
 
   }, [props.ProcessType, props.ProcessType, props.getSubStage, props.ProjectSubtype])
 
+  const onSearch = () => {
+    let From_key = ["process_type_search", "sub_project_type_search", "project_type_search"]
+    var mainvalue = {};
+    for (var i in From_key) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        RateMaster[From_key[i]].value,
+        RateMaster[From_key[i]].validation
+      );
+      RateMaster[From_key[i]].error = !errorcheck.state;
+      RateMaster[From_key[i]].errmsg = errorcheck.msg;
+      mainvalue[From_key[i]] = RateMaster[From_key[i]].value;
+    }
 
+    let filtererr = From_key.filter(
+      (obj) => RateMaster[obj].error == true
+    );
+
+    console.log(RateMaster,"RateMaster")
+    if (filtererr.length > 0) {
+      // setResumeFrom({ error: true });
+
+    } else {
+      dispatch(getStageMasterSearch(RateMaster)).then(() => {
+        // handleCancel()
+      });
+      // setResumeFrom({ error: false });
+    }
+    setRateMaster(prevState => ({
+      ...prevState
+    }));
+
+
+  };
   const onSubmit = (data) => {
     if (RateMaster.project_type.value !== 1) {
       ValidationHide()
@@ -182,6 +233,9 @@ const StagesMaster = (props) => {
   function checkValidation(data, key, multipleId) {
     //_____________________
 
+    if (data === 1 && key == "project_type_search") {
+      dispatch(getProjectSubType(data))
+    }
     if (data === 1 && key == "project_type") {
       // ValidationHide()
       RateMaster.sub_project_type.validation.push({ name: "required" })
@@ -194,6 +248,14 @@ const StagesMaster = (props) => {
     }
 
     //________________________________________________________________
+
+    if (key == "sub_project_type_search" && data) {
+      //process type
+      dispatch(getProcessType({
+        ProjectType: RateMaster.project_type_search.value, ProjectSubtype: data
+      }))
+    }
+
     if (key == "sub_project_type" && data) {
       //process type
       dispatch(getProcessType({
@@ -245,7 +307,7 @@ const StagesMaster = (props) => {
     }));
   }
   const handleCancel = () => {
-    let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance"]
+    let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance","process_type_search", "sub_project_type_search", "project_type_search"]
     // setStageEnabled(true)
     setEnabled(true)
     From_key.map((data) => {
@@ -254,9 +316,10 @@ const StagesMaster = (props) => {
     setRateMaster(prevState => ({
       ...prevState,
     }));
+    setSearchAdd(false)
   }
   const ValidationHide = () => {
-    let From_key = ["sub_project_type", "process_type", "sub_stages"]
+    let From_key = ["sub_project_type", "process_type", "sub_stages","process_type_search", "sub_project_type_search", "project_type_search"]
 
     From_key.map((data) => {
       RateMaster[data].validation = []
@@ -291,7 +354,43 @@ useEffect(() => {
   return (
     <div>
       <div className="var_rate_master">Stage Template</div>
+     
+      {!SearchAdd&&<>
+        <Grid item xs={12} container spacing={2} direction={"rows"}>
+        <Grid item xs={4} spacing={2} >
+          <Labelbox type="select" placeholder={"Project Type"}
+            dropdown={projectType.projectTypedata}
+            changeData={(data) => checkValidation(data, "project_type_search")}
+            value={RateMaster.project_type_search.value}
+            error={RateMaster.project_type_search.error}
+            errmsg={RateMaster.project_type_search.errmsg}
+          />
+       </Grid>
+        <Grid item xs={4} spacing={2}>
+          <Labelbox type="select" placeholder={"Sub Project Type"}
+            dropdown={projectSubType.projectSubTypedata}
+            changeData={(data) => checkValidation(data, "sub_project_type_search")}
+            value={RateMaster.sub_project_type_search.value}
+            error={RateMaster.sub_project_type_search.error}
+            errmsg={RateMaster.sub_project_type_search.errmsg}
+          />
+        </Grid>
+        <Grid item xs={4} spacing={2}>
+          <Labelbox type="select" placeholder={"Process Type"}
+            dropdown={processType.processTypedata}
+            changeData={(data) => checkValidation(data, "process_type_search")}
+            value={RateMaster.process_type_search.value}
+            error={RateMaster.process_type_search.error}
+            errmsg={RateMaster.process_type_search.errmsg}
+          />
+
+        </Grid>
+        </Grid>
+        </>
+      }
       <Grid container spacing={3} className="stage_firstgrid">
+
+      {SearchAdd&&<>
         <Grid item xs={5} spacing={4} direction={"column"}>
         </Grid>
         <Grid item xs={5} spacing={2}>
@@ -354,19 +453,25 @@ useEffect(() => {
             errmsg={RateMaster.compliance.errmsg}
           />
         </Grid>
+        </>
+      }
         {/* <Grid  item xs={4} spacing={2}>
         
           </Grid>   */}
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
-          <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}  onBtnClick={onSubmit}  />
-          <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
+          {!SearchAdd&&<><CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  onBtnClick={onSearch}  />
+          <CustomButton btnName={"Add"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}  onBtnClick={()=>setSearchAdd(true)}  />
+        </>}
+
+          {SearchAdd&&<><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}  onBtnClick={onSubmit}  />
+          <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} /></> }
         </Grid>
       </Grid>
-      <div className="rate_enhanced_table">
+      {!SearchAdd&&<div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
           rows={StageMasterList.length == 0 ? StageMasterList : StageMasterList.rateList}
         />
-      </div>
+      </div>}
     </div>
   )
 }
@@ -374,6 +479,7 @@ useEffect(() => {
 
 const mapStateToProps = (state) => ({
   getTableData: state.StageMasterReducer.getStageMaster || [],
+  getStageMasterSearch: state.StageMasterReducer.getStageMasterSearch || [],
   ProjectType: state.getOptions.getProjectType || [],
   StageList: state.getOptions.getStageList || [],
   ProcessType: state.getOptions.getProcessType || [],

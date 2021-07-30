@@ -19,7 +19,6 @@ function UserMasterModal(props) {
     const [changeActive, setChangeActive] = useState(true)
     const [errPassword, setErrPassword] = useState(false)
     const [user_Id, setUser_Id] = useState(0)
-    const [groups, setgroups] = useState({})
     // const [disable,setdisable]=useState(false)
     const [UserMaster, setUserMaster] = useState({
         emp_name: {
@@ -58,29 +57,20 @@ function UserMasterModal(props) {
     useEffect(() => {
         dispatch(getGroupList())
         dispatch(get_emp_not_in_user())
-        dispatch(GetEmployeeDetails())
+        // dispatch(GetEmployeeDetails())
     }, [])
     //////
  
 
 
     useEffect(() => {
-        dispatch(get_emp_not_in_user())
-
+            handleCancel()
+            dispatch(get_emp_not_in_user())
     }, [props.user_add])
 
 
     useEffect(() => {
        
-        let groupsData = []
-        props.groupLists.map((data) =>
-        groupsData.push({
-            value: data.group_name,
-            id: data.group_id
-          })
-        )
-        setgroups({ groupsData })
-        
         if(!props.user_data){
         const Employee_List = []
         props.EmployeeList.map((data, index) => {
@@ -226,7 +216,7 @@ function UserMasterModal(props) {
                 }
                 else{
                 dispatch(insertUser(UserMaster,password,changeActive)).then(() => {
-                    dispatch(get_emp_not_in_user())
+                   
                     handleCancel()
                     props.closeModel()
                    

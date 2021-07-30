@@ -222,91 +222,6 @@ function Navbar(props) {
     onlinetest: false,
 })
 
-const [menuItems, setMenuItems] = useState(
-  [
-
-    { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
-    // { path: "/resume", title: "Resume", img: ResumeIcon },
-    { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
-    // {path:"/interview",title:"Interview"},
-    // { path: "/employeeform", title: "Employee Form" },
-    { path: "/Home/search", title: "Search", img: SearchbarIcon },
-    { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
-    { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
-
-    // variable rate master
-    // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-    // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
-    // user groups
-    // { path: "/usergroups", title: "User Groups", img: Usergroups },
-
-    // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
-    // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
-
-    // { path: "/severance", title: "Severance", img: Stagemaster },
-    // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
-    // { path: "/usermaster", title: "User Master", img: Stagemaster },
-    // //User Management
-    // { path: "/usergroup", title: "User Management Group", img: Usergroups },
-    // { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
-    // // group control
-    // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-
-    // //user rights
-    // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
-
-    //severance
-    {
-      active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
-      subtree: [
-        { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
-        { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
-        { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
-      ]
-    },
-
-    //master
-    {
-      active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
-      subtree: [
-        { path: "/Home/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-        { path: "/Home/stagesmaster", title: "Stage Template", img: Stagemaster },
-        { path: "/Home/leaveupdate", title: "Leave Master", img: MasterIcon },
-        { path: "/Home/usermaster", title: "User Master", img: MasterIcon },
-        { path: "/Home/checklistCreation", title: "CheckList Creation", img: MasterIcon },
-
-      ]
-    },
-
-    //user management
-    {
-      active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
-      subtree: [
-        // { path: "/usergroup", title: "User Group", img: Usergroups },
-        { path: "/Home/usergroups", title: "User Groups", img: Usergroups },
-        { path: "/Home/newusermaster", title: "User Master", img: MasterIcon },
-        { path: "/Home/groupcontrol", title: "Group Control", img: MasterIcon },
-        // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-        // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
-      ]
-    },
-
-    //Online Test
-    {
-      active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
-      subtree: [
-        { path: "/Home/addquestion", title: "Add Questions", img: MasterIcon },
-        { path: "/Home/testtemplate", title: "Test Template", img: MasterIcon },
-        { path: "/Home/onlinetest", title: "Online Test", img: MasterIcon }
-      ]
-    },
-
-    // //Online Test
-    // { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-    // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
-
-  ]
-); 
   // function handleClicknav() {
   //   setOpen(!open)
   // }
@@ -407,19 +322,20 @@ useEffect(() => {
   if (props.UserPermission.length > 0 && props.UserPermission) {
     props.UserPermission.map((data)=>{
 
-      if(data.control==='Library - Add Resource'&&data.display_control==='Y'||data.control==='Library - Receive'&&data.display_control==='Y'
-      ||data.control==='Library - Issue'&&data.display_control==='Y'||data.control==='Library - Search'&&data.display_control==='Y'
-      ||data.control==='Appraisal - Save'&&data.display_control==='Y'||data.control==='KRA - Save'&&data.display_control==='Y'
-      ||data.control==='KPI - Save'&&data.display_control==='Y'||data.control==='KRA - View KRA'&&data.display_control==='Y'
-      ||data.control==='KPI - View KPI'&&data.display_control==='Y'||data.control==='Timesheet - Search'&&data.display_control==='Y'
-      ||data.control==='Adhoc Task - Save'&&data.display_control==='Y'||data.control==='Apply Leave - Save'&&data.display_control==='Y'
-      ||data.control==='List of Employees - Go'&&data.display_control==='Y'||data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'
-      ||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'||data.control==='OPA/ Expenses - Search'&&data.display_control==='Y'
-      ||data.control==='OPA/ Expenses- OPE - Save'&&data.display_control==='Y'||data.control==='OPA/ Expenses- OPA - Save'&&data.display_control==='Y'
-      ||data.control==='Day Report - Save'&&data.display_control==='Y'){
+      // if(data.control==='Library - Add Resource'&&data.display_control==='Y'||data.control==='Library - Receive'&&data.display_control==='Y'
+      // ||data.control==='Library - Issue'&&data.display_control==='Y'||data.control==='Library - Search'&&data.display_control==='Y'
+      // ||data.control==='Appraisal - Save'&&data.display_control==='Y'||data.control==='KRA - Save'&&data.display_control==='Y'
+      // ||data.control==='KPI - Save'&&data.display_control==='Y'||data.control==='KRA - View KRA'&&data.display_control==='Y'
+      // ||data.control==='KPI - View KPI'&&data.display_control==='Y'||data.control==='Timesheet - Search'&&data.display_control==='Y'
+      // ||data.control==='Adhoc Task - Save'&&data.display_control==='Y'||data.control==='Apply Leave - Save'&&data.display_control==='Y'
+      // ||data.control==='List of Employees - Go'&&data.display_control==='Y'||data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'
+      // ||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'||data.control==='OPA/ Expenses - Search'&&data.display_control==='Y'
+      // ||data.control==='OPA/ Expenses- OPE - Save'&&data.display_control==='Y'||data.control==='OPA/ Expenses- OPA - Save'&&data.display_control==='Y'
+      // ||data.control==='Day Report - Save'&&data.display_control==='Y'){
 
-        menuItems1.current[0].menu_rights=true;
-      }
+      //   menuItems1.current[0].menu_rights=true;
+      // }
+      menuItems1.current[0].menu_rights=true;
 
       menuItems1.current[1].menu_rights=true;
 

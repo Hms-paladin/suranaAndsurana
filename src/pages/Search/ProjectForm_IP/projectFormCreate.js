@@ -394,7 +394,7 @@ function ProjectFormCreate(props) {
       else if (data === 3) {
         projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly1" }])
+        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value===''?'0':projectform.projectcostrange.value }, { "name": "allowNumaricOnly1" }])
         projectform.unit_measurement.validation = ([{ name: "required" }])
       } else if (data === 2) {
         projectform.limits.validation = []

@@ -209,7 +209,7 @@ function TodoList(props) {
 
         })
         setProjectTodoList(projectTask)
-        console.log(props.getOtherTask, "props.getOtherTask")
+        // console.log(props.getProjectTasks, "getProjectTasks")
 
         //Other Task
         let otherTask = []
@@ -225,14 +225,6 @@ function TodoList(props) {
             else if (data.user_id) {
                 showId = data.user_id
                 showName = "Unblock User"
-                projectTask.push({
-                    id: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
-                    activity: data.activity,
-                    subactivity: data.sub_activity,
-                    startdate: data.start_date,
-                    enddate: data.end_date,
-                })
-                setProjectTodoList(projectTask)
             }
             else if (data.ts_approver_id) {
                 showName = "Timesheet Approval"

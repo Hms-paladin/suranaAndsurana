@@ -52,7 +52,6 @@ function NewUserMaster(props){
             username: userlist[m].user_name,
             mobileno: userlist[m].mobileno===0?'0':userlist[m].mobileno,
             emailid: userlist[m].email===0?'0':userlist[m].email,
-            usergroup: userlist[m].group_name===0?'0':userlist[m].group_name,
             state: userlist[m].active_flag===1?<div><button className="btnActive">Active</button></div>:<div><button className="btnInActive">InActive</button></div>,
             // action: (
             //     <>
@@ -81,7 +80,6 @@ function NewUserMaster(props){
         { id: 'username', label: 'User Name' },
         { id: 'mobileno', label: 'Mobile Number' },
         { id: 'emailid', label: 'E-mail Id' },
-        { id: 'usergroup', label: 'User Group' },
         { id: 'state', label: 'State' },
         { id: 'action', label: 'Action' }
     ];
