@@ -34,7 +34,7 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
-    var TabIcons = [{ img: TimeSheet, title: "CHANGE LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+    var TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
     const HtmlTooltip = withStyles((theme) => ({
         arrow: {
@@ -71,20 +71,20 @@ function TradeMarkTabIcons(props) {
     //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
 
     if (showFromCheckList) {
-        TabIcons = [{ img: TimeSheet, title: "CHANGE LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" },
+        TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" },
         { img: TimeSheet, title: "TIME SHEET" },
         { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
     }
 
     if (showFromSec == 0) {
-        TabIcons = [{ img: TimeSheet, title: "CHANGE LOG TIME SHEET" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" },
+        TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" },
         { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" },
         { img: Tasks, title: "TASKS" },
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
     }
     if (showFromSec == 0 && showFromCheckList) {
-        TabIcons = [{ img: TimeSheet, title: "CHANGE LOG TIME SHEET" }, { img: Rupees, title: "OPE" },
+        TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "OPE" },
         { img: TimeSheet, title: "TIME SHEET" },
         { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]

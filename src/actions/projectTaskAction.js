@@ -1,5 +1,5 @@
 import {
-    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
+    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
     GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
     GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING
@@ -96,9 +96,9 @@ export const insertChangeLog = (params) => async dispatch => {
             data: params
         }).then((response) => {
             console.log(response)
-            dispatch({ type: INSERT_TASK, payload: response.data })
+            dispatch({ type: INSERT_BACK_LOG, payload: response.data })
         })
-        
+
     } catch (err) {
         console.log(err)
     }

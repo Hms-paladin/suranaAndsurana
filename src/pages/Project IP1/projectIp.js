@@ -497,11 +497,11 @@ function ProjectIp(props) {
             setChecklistModelOpen(true)
         }
 
-        else if (boxName == "CHANGE LOG TIME SHEET") {
+        else if (boxName == "BACK LOG TIME SHEET") {
             setChangeLogTimeSheetModelOpen(true)
             // setChecklistModelOpen(true)
         }
-        console.log(props.insertChangeLog, "insertChangeLog")
+        
 
     }
 
@@ -855,7 +855,7 @@ function ProjectIp(props) {
                     {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
                      */}
 
-                    <DynModel modelTitle={"Change Log Time Sheet"} handleChangeModel={changeLogTimeSheetModelOpen} handleChangeCloseModel={(bln) => setChangeLogTimeSheetModelOpen(bln)} content={changeLogTimesheetmodelContent()} width={800} />
+                    <DynModel modelTitle={"BACK LOG TIME SHEET"} handleChangeModel={changeLogTimeSheetModelOpen} handleChangeCloseModel={(bln) => setChangeLogTimeSheetModelOpen(bln)} content={changeLogTimesheetmodelContent()} width={800} />
                     <DynModel
                         modelTitle={"Variable Rate"}
                         handleChangeModel={variableid}
@@ -1052,7 +1052,7 @@ const mapStateToProps = (state) => (
         UpdateProjectVariableRate: state.variableRateMaster.updateProjectVariableRate,
         UpdateVariableRate: state.variableRateMaster.UpdateVariableRate || [],
         getCheckListsAssigned: state.CheckListReducer.getCheckListsAssigned || [],
-        insertChangeLog: state.insertTask
+    
     }
 );
 

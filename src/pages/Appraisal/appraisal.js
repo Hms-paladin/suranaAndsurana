@@ -12,9 +12,11 @@ import RatingModel from './ratingModel';
 import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
 import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal } from '../../actions/AppraisalAction';
 import moment from 'moment';
+import { DoneAll } from '@material-ui/icons';
 
 
 
@@ -335,7 +337,26 @@ function Appraisal(props) {
                 });
             }
             else {
-                dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+                console.log(modelComment?.area_of_speci?.value, "modelComment")
+                if (modelComment?.area_of_speci.value &&
+                    modelComment?.self_work_des.value &&
+                    modelComment?.current_duties.value &&
+                    modelComment?.major_achievement.value &&
+                    modelComment?.urge_to_learn.value &&
+                    modelComment?.enhance_your_productivity.value &&
+                    modelComment?.improvement_ssia.value &&
+                    modelComment?.opinion_remark.value &&
+                    modelComment?.growth_plan_three_yrs.value &&
+                    modelComment?.growth_plan_five_yrs.value) {
+
+                    dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+                } else {
+                    notification.error({
+                        message: 'All Fields Are Required',
+                    })
+                }
+
+
 
             }
 
@@ -585,16 +606,16 @@ function Appraisal(props) {
                 </>
                 : <>
                     <div className="linkingModel">
-                        <div className="linkview" id="areaofspec" onClick={() => appraisalModelOpen("Area of Specialization", "area_of_speci")}>Area of Specialization</div>
+                        <div className="linkview" id="areaofspec" onClick={() => appraisalModelOpen("Area of Specialization", "area_of_speci")}>Area of Specialization{modelComment?.area_of_speci.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)", "self_work_des")}>Self work descripition (List out the details of works carried and the frequency)</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)", "self_work_des")}>Self work descripition (List out the details of works carried and the frequency){modelComment?.self_work_des.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency", "current_duties")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency", "current_duties")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency {modelComment?.current_duties.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period", "major_achievement")}>Major Achievements in the review period</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period", "major_achievement")}>Major Achievements in the review period {modelComment?.major_achievement.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="subheading">In your opinion</div>
                     <div className="linkChoose">
@@ -608,13 +629,13 @@ function Appraisal(props) {
                         <div><Checkbox /> No</div> */}
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn", "urge_to_learn")}>Urge to learn</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn", "urge_to_learn")}>Urge to learn {modelComment?.urge_to_learn.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify", "enhance_your_productivity")}>Do you feel any specific training is required to enhance your productivity? if so, please specify</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify", "enhance_your_productivity")}>Do you feel any specific training is required to enhance your productivity? if so, please specify {modelComment?.enhance_your_productivity.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA", "improvement_ssia")}>Suggestions, If any for improvement at SSIA</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA", "improvement_ssia")}>Suggestions, If any for improvement at SSIA {modelComment?.improvement_ssia.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="chooseleave">
                         <div className="linkChooseOption">
@@ -642,13 +663,13 @@ function Appraisal(props) {
                         }
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks", "opinion_remark")}>Any other specific opinion/remarks</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks", "opinion_remark")}>Any other specific opinion/remarks{"    "}{modelComment?.opinion_remark.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years", "growth_plan_three_yrs")}>Spell out your growth plan for the next three years</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years", "growth_plan_three_yrs")}>Spell out your growth plan for the next three years {modelComment?.growth_plan_three_yrs.value && <DoneAll color="Primary" />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years", "growth_plan_five_yrs")}>Spell out your growth plan for the next five years</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years", "growth_plan_five_yrs")}>Spell out your growth plan for the next five years {modelComment?.growth_plan_five_yrs.value && <DoneAll color="Primary" />}</div>
                     </div>
                 </>}
             <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} />} />
@@ -725,11 +746,11 @@ function Appraisal(props) {
 }
 
 const mapStateToProps = (state) =>
-(
-    console.log(state, "tesdfghjst"),
-    {
-        GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
-        GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],
-        GetEmpAppraisal: state.GetEmpAppraisalDetails.GetEmpAppraisal
-    });
+    (
+        console.log(state, "tesdfghjst"),
+        {
+            GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
+            GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],
+            GetEmpAppraisal: state.GetEmpAppraisalDetails.GetEmpAppraisal
+        });
 export default connect(mapStateToProps)(Appraisal);

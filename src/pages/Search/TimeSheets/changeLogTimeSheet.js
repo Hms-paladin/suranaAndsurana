@@ -24,13 +24,13 @@ function ChangeLogTimeSheet(props) {
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
         endTime: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{}],
             error: null,
             errmsg: null,
         },
@@ -217,20 +217,30 @@ function ChangeLogTimeSheet(props) {
             "start_time": startTime
         }
 
+        console.log(data, "data")
+        if (timeSheetForm.activity.value && timeSheetForm.subActivity.value && timeSheetForm.fromDate.value && timeSheetForm.toDate.value && timeSheetForm.priority.value && timeSheetForm.tag.value) {
 
+            if (new Date(timeSheetForm.fromDate.value) < new Date(timeSheetForm.toDate.value)) {
+                dispatch(insertChangeLog(data))
 
-        dispatch(insertChangeLog(data))
-        console.log(props.insertChangeLog.status);
-        if (props.insertChangeLog.status === 1) {
-            notification.success({
-                message: "Change Log Time Sheet Added",
-            })
-        } else if (props.insertChangeLog.status === 0) {
-            notification.error({
-                message: "Change Log Time Sheet Failed",
-            })
+                console.log(props.insertChangeLog, "status");
+                if (props.insertChangeLog.status === 1) {
+                    notification.success({
+                        message: "Time Sheet Added",
+                    })
+                } else if (props.insertChangeLog.status === 0) {
+                    notification.error({
+                        message: "Time Sheet Failed",
+                    })
+                }
+            } else if (new Date(timeSheetForm.fromDate.value) > new Date(timeSheetForm.toDate.value)) {
+                notification.error({
+                    message: " To date should not be less than from date",
+                });
+            }
+            handleCancel()
+
         }
-
 
     }
 
@@ -383,7 +393,7 @@ function ChangeLogTimeSheet(props) {
                     </Grid>
                     <Grid item xs={3}>
                         <Labelbox type="datepicker"
-                            disablePast={true}
+                            disableFuture={true}
                             changeData={(data) => checkValidation(data, "toDate")}
                             placeholder={" End Date"}
                             value={timeSheetForm.toDate.value}
@@ -435,7 +445,7 @@ const mapStateToProps = (state) =>
         tagsList: state.projectTasksReducer.tagsList || [],
         assignToList: state.projectTasksReducer.assignToLists || [],
         locationList: state.projectTasksReducer.locationLists || [],
-        insertChangeLog: state.projectTasksReducer.insertTask
+        insertChangeLog: state.projectTasksReducer.backLog || []
 
     });
 
