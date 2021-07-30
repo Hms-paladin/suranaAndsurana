@@ -177,7 +177,13 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: " Value allow only two digit ", state: false };
         }
+      }  else if (validatorsArray[valid].name == "allownumspace") {
+        var re = /^[1-9][0-9]{9,14}$/;
+        if (re.test(textValue) == false) {
+          return { msg: " 10-15 space ", state: false };
+        }
       }
+
     }
     return { msg: "", state: true };//if no error throw empty message
   }

@@ -77,7 +77,7 @@ function Appraisal(props) {
         },
         details: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [{ "name": "required" }, { "name": "allownumspace" }],
             error: null,
             errmsg: null,
         },
