@@ -1,5 +1,5 @@
 import {
-    GET_ACTIVITY, GET_PRIORITY, GET_TAG, INSERT_TASK, INSERT_ADHOC_TASK,GET_TIMESHEET_BY_TASK,
+    GET_ACTIVITY, GET_PRIORITY, GET_TAG, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK,GET_TIMESHEET_BY_TASK,
     GET_ASSIGN_TO, GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
      GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,GET_PROJECT_STAGES_LIST,GET_TASK_TIME_SHEET,
      GET_TASK_LIST,GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
@@ -8,7 +8,8 @@ import {
 const intialState = {
     getProjectStageList:[],getActivityList: [], prioritysList: [], tagsList: [], insertTask: [],getTaskLists :[],
     insertAdhocTask: [], assignToLists: [], locationLists: [], stagesList: [], SubStagesList: [], getAllStage: [],
-    getTaskTimeSheet :[],getHearingDets :[],getAdjournDets :[],InsertHearingDets:[],InsertAdjournDets :[],getTaskTimeSheetbyTaskId:[]
+    getTaskTimeSheet :[],getHearingDets :[],getAdjournDets :[],InsertHearingDets:[],InsertAdjournDets :[],getTaskTimeSheetbyTaskId:[],
+    backLog:[]
 }
 
 export default function (state = intialState, action) {
@@ -22,6 +23,8 @@ export default function (state = intialState, action) {
             return { ...state, prioritysList: payload }
         case INSERT_TASK:
             return { ...state, insertTask: payload }
+        case INSERT_BACK_LOG:
+            return { ...state, backLog: payload }
         case INSERT_ADHOC_TASK:
             return { ...state, insertAdhocTask: payload }
         case GET_ASSIGN_TO:

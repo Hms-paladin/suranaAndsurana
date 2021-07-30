@@ -319,8 +319,8 @@ function DashboardNew(props) {
       {changedashBoard ?
         <>
           <div className="expAdvContainer">
-            <div className="expensePalce">Expenses {dashboardValues[0]?.Expense?.expences}</div>
-            <div className="advancePlace">Advance  {dashboardValues[0]?.Expense?.advance}</div>
+            <div className="expensePalce"><b>Expenses</b> {dashboardValues[0]?.Expense?.expences}</div>
+            <div className="advancePlace"><b>Advance</b>  {dashboardValues[0]?.Expense?.advance}</div>
 
           </div>
 
@@ -400,8 +400,8 @@ function DashboardNew(props) {
                   <>
                     <div className="taskdaystable">
                       <div>
-                        <Link to={{ pathname: `/Home/search`, state: {value:4}}}>{data.activity}</Link>
-                       
+                        <Link to={{ pathname: `/Home/search`, state: { value: 4 } }}>{data.activity}</Link>
+
                       </div>
                       <div>{data.sub_activity}</div>
                       <div>{data.due_by}</div>

@@ -98,6 +98,7 @@ export const GET_ACTIVITY = "GET_ACTIVITY";
 export const GET_TAG = "GET_TAG";
 export const GET_PRIORITY = "GET_PRIORITY";
 export const INSERT_TASK = "INSERT_TASK";
+export const INSERT_BACK_LOG = "NSERT_BACK_LOG"
 export const INSERT_ADHOC_TASK = "INSERT_ADHOC_TASK";
 export const GET_LOCATION = "GET_LOCATION";
 export const GET_ASSIGN_TO = "GET_ASSIGN_TO";

@@ -271,7 +271,6 @@ function Projectsearch(props) {
 
         var rowdataListobj = {};
         if (data.project_type_id === 1) {
-          let currentData = {}
           rowdataListobj["ProjectName"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["subprojectype"] = data.sub_project_type;
