@@ -73,13 +73,28 @@ svg.MuiSvgIcon-root{
 }
 
 .educationKeyValue{
+  display: flex;
   >div{
-    display: flex;
-    margin: 2px;
+    // display: flex;
+    // margin: 2px;
+    >div{
+      display: flex;
+      margin: 2px;
+      >div{
+        white-space: nowrap;
+      }
+      .qualheading{
+        width: 55%;
+        
+      }
+
+      .qualdata{
+        margin-left: 20px;
+      }
+
+    }
   }
-  .qualheading{
-    width: 45%;
-  }
+  
 }
 
 .experienceKeyValue {
@@ -143,4 +158,10 @@ svg.MuiSvgIcon-root{
 .errmsgClrResume{
   color: red;
   font-size: 13px;
+}
+
+.education_edit_delete{
+  display: flex;
+  justify-content: flex-end;
+  width: 35%;
 }

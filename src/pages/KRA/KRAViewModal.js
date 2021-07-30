@@ -16,10 +16,12 @@ function KRAModal(props) {
         { id: 'employeename', label: 'Employee Name' },
         { id: 'activity', label: 'Activity' },
         { id: 'target', label: 'Target' },
+        { id:"percentage",label:"Percentage"}
     ];
     const [employeeList, setEmployeeList] = useState({});
     const [rowData, setRowData] = useState([])
     const [empId,setempId]=useState(localStorage.getItem("empId"))
+    const [minDate,setminDate]=useState("")
     const [kra_Model, setkra_Model] = useState({
 
         employee: {
@@ -57,10 +59,10 @@ function KRAModal(props) {
         setEmployeeList({ EmployeeList })
         // GET_KRA:
         let rowDataList = []
-        props.getKra && props.getKra.map((data, index) => {
+        props.getKra.length>0&& props.getKra.map((data, index) => {
             rowDataList.push({
 
-                employeename: data.name, activity: data.activity, target: data.kra_percentage,
+                employeename: data.name, activity: data.activity, target: data.kra_percentage,percentage:data.kra_percentage
             })
         })
 
@@ -71,8 +73,10 @@ function KRAModal(props) {
     }, [props.getSubordinate, props.getKra])
 
     function checkValidation(data, key, multipleId) {
-
-
+         if(data&&key==="fromperiod"){
+            setminDate(data)
+         }
+        
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             kra_Model[key].validation
@@ -109,7 +113,7 @@ function KRAModal(props) {
         if (filtererr.length > 0) {
             // setkra_Model({ error: true });
         } else {
-            dispatch(getKra(kra_Model.employee.value, kra_Model.fromperiod.value, kra_Model.toperiod.value)).then((response) => {
+            dispatch(getKra(kra_Model.fromperiod.value, kra_Model.toperiod.value,kra_Model.employee.value)).then((response) => {
                 handleCancel()
             })
         }
@@ -173,6 +177,7 @@ function KRAModal(props) {
                                     placeholder={"From Period"}
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
+                                    // maxDate={kra_Model.toperiod.value}
                                     changeData={(data) => checkValidation(data, "fromperiod")}
                                     value={kra_Model.fromperiod.value}
                                     error={kra_Model.fromperiod.error}
@@ -186,6 +191,7 @@ function KRAModal(props) {
                                     placeholder={"To Period"}
                                     view={["year", "month"]}
                                     format={"MMM-yyyy"}
+                                    minDate={minDate}
                                     changeData={(data) => checkValidation(data, "toperiod")}
                                     value={kra_Model.toperiod.value}
                                     error={kra_Model.toperiod.error}

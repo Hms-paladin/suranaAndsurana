@@ -381,7 +381,7 @@ const UserMaster = (props) => {
     },
     control:{
       value:"",
-      validation:[{"name":"required"}],
+      validation:[],
       error:null,
       errmsg:null,
   }
@@ -540,6 +540,7 @@ const UserMaster = (props) => {
         
       });
       setStatusvalue(value)
+      console.log("status_type",value.id)
       dispatch(getTableStatus(value))
     }
     
@@ -1055,7 +1056,7 @@ const UserMaster = (props) => {
 
  
   }, [props, table_name_value.table_names]);
-
+console.log(props.stage,"satge")
   function Submit(data) {
     // alert(substageId)
     setStatusvalue((prevState) => ({

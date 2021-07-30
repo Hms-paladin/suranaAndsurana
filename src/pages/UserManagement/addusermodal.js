@@ -56,6 +56,10 @@ function UserMasterModal(props) {
 
     });
 
+    // useEffect(() => {
+     
+    // }, [])    
+
     ////// api dispatch
     useEffect(() => {
         dispatch(getGroupList())
@@ -151,6 +155,7 @@ function UserMasterModal(props) {
     }
 
     const handleCancel = () => {
+        // console.log('tttttt')
         let From_key = [
             "emp_name",
             "user_name",
@@ -172,11 +177,12 @@ function UserMasterModal(props) {
         setUserMaster((prevState) => ({
             ...prevState,
         }));
-        props.closeModel()
+        // props.closeModel()
 
     };
 
     useEffect(() => {
+        handleCancel()
         console.log(props.user_data,"props.user_data")
         if(props.user_data){
             const Employee_List = []
@@ -230,12 +236,14 @@ function UserMasterModal(props) {
                 if(props.user_data){
                     dispatch(editUser(UserMaster,password,changeActive,user_Id)).then(() => {
                         handleCancel()
+                        props.closeModel()
                        
                     })
                 }
                 else{
                 dispatch(insertUser(UserMaster,password,changeActive)).then(() => {
                     handleCancel()
+                    props.closeModel()
                    
                 })
                 }
@@ -323,7 +331,7 @@ function UserMasterModal(props) {
                 </Grid>
             </div>
             <div className="groupbtn">
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={()=>(handleCancel,props.closeModel())} />
                 <CustomButton btnName={props.user_data?"Update":"Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
             </div>
         </div>

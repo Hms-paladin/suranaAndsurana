@@ -118,6 +118,7 @@ function OpeModel(props) {
         } else {
             // setopeModel({ error: false });
             let params = {
+                "emp_id": localStorage.getItem("empId"),
                 "project_id": idDetails.project_id,
                 "expence_type": opeModel.expenseType.value,
                 "mode_of_payment": opeModel.payment.value,

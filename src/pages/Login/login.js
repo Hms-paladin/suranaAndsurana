@@ -22,6 +22,7 @@ import { useAuth } from "../../context/auth";
 import { notification } from 'antd';
 
 import './login.scss';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -77,7 +78,7 @@ const SignInSide = (props) => {
     const [invalidEmail, setInvalidEmail] = useState(false)
     const [isLoggedIn, setLoggedIn] = React.useState(false);
     const { setAuthTokens } = useAuth();
-
+    const history = useHistory();
     const handleSubmit = event => {
         event.preventDefault()
 
@@ -97,7 +98,8 @@ const SignInSide = (props) => {
                     if (res.status === 200) {
                         if(res.data.status===1){
                       setAuthTokens(res.data);
-                      setLoggedIn(true);
+                    //   setLoggedIn(true);
+                    history.push("/Home/dashboardnew");
                        }else{
                         notification.error({
                             message: res.data.msg,
@@ -113,9 +115,9 @@ const SignInSide = (props) => {
 
     }
 
-    if (isLoggedIn) {
-        return <Redirect to="/Home/dashboardnew" />;
-      }
+    // if (isLoggedIn) {
+    //     return <Redirect to="/Home/dashboardnew" />;
+    //   }
 
 
     // const validateEmail = data => {

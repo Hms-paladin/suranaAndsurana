@@ -375,9 +375,10 @@ const ResumePage = (props) => {
 
   function checkValidation(data, key, multipleId) {
     if (data !== 1 && data !== 10 && key === "candidate") {
-      console.log("candidate", data);
-      setExpReq(true);
-      !employererr && setEmployererr(true);
+      console.log("candidate", experienceList.length);
+     setExpReq(true);
+     experienceList.length ===0&&!employererr && setEmployererr(true);
+     experienceList.length !==0&&employererr && setEmployererr(false);
     } else {
       setExpReq(false);
       employererr && setEmployererr(false);
@@ -583,13 +584,13 @@ const ResumePage = (props) => {
       mainvalue[targetkeys[i]] = Resume_Form[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => Resume_Form[obj].error == true);
-    // console.log(filtererr.length);
+    console.log(filtererr.length,"error");
     // console.log(educationList.length, "educationList.length")
-    if (educationList.length === 0 && experienceList.length === 0) {
-      !educationerr && setEducationerr(true);
+    if (educationList.length === 0 || experienceList.length === 0) {
+      educationList.length === 0&& !educationerr && setEducationerr(true);
 
-      Resume_Form.candidate.value !== 10 && !employererr && setEmployererr(true);
-      Resume_Form.candidate.value === 10 && employererr && setEmployererr(false);
+      experienceList.length === 0&&(Resume_Form.candidate.value !== 1||Resume_Form.candidate.value !== 10) && !employererr && setEmployererr(true);
+      experienceList.length === 0&&(Resume_Form.candidate.value === 10 || Resume_Form.candidate.value === 1) && employererr && setEmployererr(false);
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
@@ -607,9 +608,15 @@ const ResumePage = (props) => {
         }
       );
     }
-    else if (text === "UPDATE" && educationList.length !== 0 &&
-      (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
-      filtererr.length === 0) {
+    // else if (text === "UPDATE" && educationList.length !== 0 &&
+    //   (experienceList.length !== 0 || Resume_Form.candidate.value === 1) &&
+    //   filtererr.length === 0) {
+    
+     else if (text === "UPDATE" && educationList.length !== 0 &&
+      (experienceList.length !== 0 || Resume_Form.candidate.value === 1 || Resume_Form.candidate.value === 10) &&
+      filtererr.length === 0
+    ) {    
+        console.log("checkkkk")
         setSaveButton(false)
       dispatch(UpdateResume(Resume_Form, educationList, experienceList, resume_id)).then(
         () => {
@@ -637,7 +644,7 @@ const ResumePage = (props) => {
         }
       );
     }
-
+    console.log(educationList.length,experienceList.length,Resume_Form.candidate.value,filtererr.length,"checkkkk")
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
@@ -681,6 +688,7 @@ const ResumePage = (props) => {
     });
     setEducationList([]);
     setExperienceList([]);
+    setEmployererr(false)
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
@@ -688,17 +696,19 @@ const ResumePage = (props) => {
   };
 
   function showEducationModel() {
+    SetNullFieldValue(!nullFieldValue);
     setEducationModelOpen(true);
   }
 
   const showEditEducationModel = (x) => {
-    setEducationModelOpen(true);
+    SetNullFieldValue(!nullFieldValue);
+    
     setEducationid(x);
     setEducationrow(educationList[x]);
     setOnEdit(true);
+    setEducationModelOpen(true);
   };
   const showDeleteEducationModel = (x) => {
-    alert("test")
     console.log(educationList[x], "educationList");
     if (x > -1) {
       educationList.splice(x, 1);
@@ -733,7 +743,7 @@ const ResumePage = (props) => {
 
   const handleFieldNull = (bln) => {
     setEducationModelOpen(bln);
-    SetNullFieldValue(!nullFieldValue);
+    // SetNullFieldValue(!nullFieldValue);
     setOnEdit(false);
   };
 
@@ -982,32 +992,49 @@ const ResumePage = (props) => {
               <div className="educationOuterBox">
                 {educationList && educationList.map((data, index) => {
                   return (
+                    <>
+                    {index>0&&<><hr/></>}
                     <div className="educationKeyValue">
+                      <div style={{width: 400}}>
                       <div>
                         <div className="qualheading">Qualification</div>
-                        <div>
+                        <div className="qualdata">
                           {resumeGetList.qualificationList.map((getName) => {
                             if (data.qualification === getName.id) {
                               return getName.value || "-";
                             }
                           })}
                         </div>
-
+                     
                       </div>
                       <div>
                         <div className="qualheading">Insitution/University</div>
-                        <div>{data.institution || "-"}</div>
+                        <div className="qualdata">{data.institution || "-"}</div>
                       </div>
                       <div>
                         <div className="qualheading">Year of Passing</div>
-                        <div>{data.year_of_passing || "-"}</div>
+                        <div className="qualdata">{data.year_of_passing || "-"}</div>
                       </div>
                       <div>
                         <div className="qualheading">Percentage</div>
-                        <div>{data.cgpa || "-"}</div>
+                        <div className="qualdata">{data.cgpa || "-"}</div>
                       </div>
                     </div>
+                    <div className="education_edit_delete">
+                    <EditIcon
+                          fontSize="small"
+                          onClick={() => showEditEducationModel(index)}
+                        />
+                        <DeleteIcon
+                          fontSize="small"
+                          onClick={() => showDeleteEducationModel(index)}
+                        />
+                    </div>
+                    </div>
 
+                   
+                    
+                  </>        
                   );
                 })}
               </div>

@@ -31,6 +31,7 @@ function CheckListAssign(props) {
         From_key.map((data) => {
           try {
             checkListForm[data].value = "";
+            checkListForm[data].disabled = false;
             console.log("mapping", checkListForm[data].value);
           } catch (error) {
             throw error;
@@ -116,6 +117,17 @@ function CheckListAssign(props) {
           dynObj.valueById = multipleIdList.toString();
         }
         // (end)
+
+        if (data && key == "checkListNameId") {
+          //checkListForm['employeeId'].disabled = false;
+          for(var i=0; i< props.getCheckListsNames.length; i++){
+            if(data  == props.getCheckListsNames[i].check_list_id && props.getCheckListsNames[i].frequency != 'On Demand'){
+             // checkListForm['noOfDaysWeeks'].disabled = true;
+              checkListForm['noOfDaysWeeks'].validation =[];
+            }
+          }
+          
+        }
         if (data && key == "employeeId") {
           checkListForm['projectId'].disabled = true;
           checkListForm['subProjectId'].disabled = true;
@@ -124,6 +136,7 @@ function CheckListAssign(props) {
         }
        
         if (data && key == "projectId") {
+          
           checkListForm['employeeId'].disabled = true;
           checkListForm['employeeId'].validation =[];
           Axios({
@@ -134,6 +147,9 @@ function CheckListAssign(props) {
             },
           }).then((response) => {
             let projectSuTypeData= [];
+            if(response && response.data && response.data.data.length ==0){
+              checkListForm['subProjectId'].validation =[]; 
+            }
             response.data.data.map((data) =>
             projectSuTypeData.push({
                 value: data.sub_project_type,
@@ -155,6 +171,8 @@ function CheckListAssign(props) {
           validation: [{ name: "required" }],
           error: null,
           errmsg: null,
+          //disabled: true,
+         // hidden :true
         },
         employeeId: {
           value: "",
@@ -195,6 +213,7 @@ function CheckListAssign(props) {
           validation: [{ name: "required" }],
           error: null,
           errmsg: null,
+          disabled: false
         } 
       });
     useEffect(() => {
@@ -287,7 +306,6 @@ useEffect(() => {
                         <div className="TThead">Check List Name</div>
                         <Labelbox type="select"
                         
-                        
                         dropdown={checkListNames.checkListnamesdata}
                         changeData={(data) => checkValidation(data, "checkListNameId")}
                         placeholder={"Check List name"}
@@ -351,6 +369,8 @@ useEffect(() => {
                         error={checkListForm.endDate.error}
                         errmsg={checkListForm.endDate.errmsg}
                         
+                       
+
                         ></Labelbox>
                     </Grid>
 
@@ -364,6 +384,7 @@ useEffect(() => {
                   changeData={(data) =>
                     checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
                   }
+                  disabled={checkListForm.noOfDaysWeeks.disabled}
                   value={checkListForm.noOfDaysWeeks.value}
                   error={checkListForm.noOfDaysWeeks.error}
                   errmsg={checkListForm.noOfDaysWeeks.errmsg}

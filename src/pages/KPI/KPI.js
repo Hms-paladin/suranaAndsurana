@@ -14,6 +14,7 @@ import {GetKpiAchivement,UpdateKpiAchivement,InsertKpi} from '../../actions/KPIA
 import SaveIcon from '@material-ui/icons/Save';
 import moment from 'moment'
 import NoDataFound from '../../images/noDatas.svg';
+import { Keyboard } from '@material-ui/icons';
 const KPI = (props) => {
     let dispatch=useDispatch()
     const header = [
@@ -37,6 +38,8 @@ const KPI = (props) => {
     const [empty,setempty]=useState(true)
     const [achivement,setachivement]=useState({})
     const [percentageTotal,setpercentageTotal]=useState("0")
+    const [datechange,setdatechange]=useState(false)
+    const [minDate,setminDate]=useState("")
     const [DataStorage,setDataStorage]=useState({
         from:sessionStorage.getItem("from"),
         to: sessionStorage.getItem("to")
@@ -45,36 +48,42 @@ const KPI = (props) => {
     const [KpiData,setkpiData]=useState("")
     const [kpi_form, setKpi_form] = useState({
 
-        achivements: {
+        from: {
             value: "",
-            validation: [{ name: "required" }, { name: "allowNumaricOnly1" }],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
-
-       
+        to: {
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },  
     });
 
  
 
     function checkValidation(data, key, multipleId) {
-      
+      if(key==="from"){
+        setminDate(data)
+      }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
-            kpi_form["achivements"].validation
+            kpi_form[key].validation
         );
         let dynObj = {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
-            validation: kpi_form["achivements"].validation,
+            validation: kpi_form[key].validation,
         };
 
 
 
         setKpi_form((prevState) => ({
             ...prevState,
-            ["achivements"]: dynObj,
+            [key]: dynObj,
         }));
     }
 
@@ -102,10 +111,8 @@ useEffect(() => {
   /////////////
 
   useEffect(()=>{
-     dispatch(GetKpiAchivement(DataStorage)).then(()=>{
-        sessionStorage.clear();
-     })
-  },[])
+     dispatch(GetKpiAchivement(kpi_form)) 
+  },[]);
 
   useEffect(()=>{
       let kpiData=[]
@@ -132,13 +139,13 @@ useEffect(() => {
         achive_total+=Achivement[i]
       }
 
-      setachiveTotal(achive_total)
-      setpercentageTotal(total)
-
- },[ props.Kpiachivement,disable,achivement])
+      setachiveTotal(Math.abs(achive_total))
+      setpercentageTotal(Math.abs(total))
+      console.log("edit",achiveTotal)
+    
+ },[ props.Kpiachivement,disable,achivement,datechange])
 
 const AchivementEditable=(data,key)=>{
-    console.log("edit",disable)
     setdisble(false)
     setachivement((prevState) => ({
         ...prevState,
@@ -168,6 +175,34 @@ const Submit =()=>{
     dispatch(InsertKpi(KpiData)).then(()=>{ 
     })
    }
+}
+console.log(kpi_form,"datechange")
+const SearchData=()=>{
+    setdatechange(true)
+    var mainvalue = {};
+    var targetkeys = Object.keys(kpi_form);
+    for (var i in targetkeys) {
+        var errorcheck = ValidationLibrary.checkValidation(
+            kpi_form[targetkeys[i]].value,
+            kpi_form[targetkeys[i]].validation
+        );
+        kpi_form[targetkeys[i]].error = !errorcheck.state;
+        kpi_form[targetkeys[i]].errmsg = errorcheck.msg;
+        mainvalue[targetkeys[i]] = kpi_form[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter(
+        (obj) => kpi_form[obj].error == true
+    );
+
+    if (filtererr.length > 0) {
+        console.log("filtererr",filtererr)
+
+    }else{
+        dispatch(GetKpiAchivement(kpi_form))        
+    }
+    setKpi_form((prevState) => ({
+        ...prevState,
+    }));
 }
 const HandleCancel=()=>{
     setdisble(true)
@@ -206,16 +241,50 @@ const HandleCancel=()=>{
 
                                 /></div>
                             </Grid>
+                                    
+                                     
+                                    
                         </Grid>
 
-
+                                  
                     </Grid>
+                                 <div className="datepicker_kpidiv">
+                                   <div style={{paddingRight:"15px"}}><Labelbox
+                                        type="datepicker"
+                                        view={["year", "month"]}
+                                        format={"MMM-yyyy"}
+                                        changeData={(data) => checkValidation(data, "from")}
+                                        value={kpi_form.from.value}
+                                        error={kpi_form.from.error}
+                                        errmsg={kpi_form.from.errmsg}
+                                    /></div>
+                                    <Labelbox
+                                        type="datepicker"
+                                        view={["year", "month"]}
+                                        format={'MMM-yyyy'}
+                                        minDate={minDate}
+                                        changeData={(data) => checkValidation(data, "to")}
+                                        value={kpi_form.to.value}
+                                        error={kpi_form.to.error}
+                                        errmsg={kpi_form.to.errmsg}
+                                    />
+                                    <div className="GO_btn" style={{ display: 'flex',margin:"0px 10px 25px 10px"}}>
+                                    <CustomButton
+                                        btnName={"GO"}
+                                        btnCustomColor="customPrimary"
+                                        custombtnCSS={"btnUsergroup"}
+                                        onBtnClick={SearchData}
+                                    />
+                                   </div>
+                                    </div>
+
+                                 
                 </div>
                 {/* <div style={{padding:"10px"}} className="kpi_table">
                     <EnhancedTable headCells={header} aligncss="kra_table"
                         rows={rows} />
                 </div> */}
-                <div className="kpi_table">
+                <div className="kpi_table_custom" style={{paddingTop:"20px"}}>
                     <Grid container >
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
                             <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>

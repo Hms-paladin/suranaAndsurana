@@ -85,7 +85,7 @@ export default class Labelbox extends Component {
 						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text"
 							onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
 							onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
-							placeholder={this.props.placeholder} disabled={this.props.disabled} />
+							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden}/>
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>

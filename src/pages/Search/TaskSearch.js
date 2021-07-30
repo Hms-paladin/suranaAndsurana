@@ -60,7 +60,7 @@ const HtmlTooltip = withStyles((theme) => ({
 function Task(props) {
     
     const dispatch = useDispatch();
-    const [page, setPage] = React.useState(2);
+    const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [startModelOpen, setStartModelOpen] = useState(false)
     const [stopModelOpen, setStopModelOpen] = useState(false)
@@ -235,7 +235,8 @@ setStartModelOpen(flg);
         setOpen(false);
     };
     var i= 0;
-    const handleOpen = () => {
+    const handleOpen = (data) => {
+        setTaskData(data);
         setOpen(true);
     };
 //************************* */
@@ -335,7 +336,8 @@ const [orderBy, setOrderBy] = React.useState("calories");
                
                
                 {props.getTaskLists.length > 0 && stableSort(props.getTaskLists, getComparator(order, orderBy))
-                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data) => {
+                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data,index) => {
+                                  const num=index+1
                     if(data.totalHours && data.totalHours.length >0){
                         data.totalHours = data.totalHours.split(":")[0];
                     }
@@ -344,19 +346,19 @@ const [orderBy, setOrderBy] = React.useState("calories");
                         if(fieldVal.taskstatus.value=='Completed'){
                         let datass = data;
                    
-                        i++;
+                        // i++;
                    
                        return (
                         <Card >
                             <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
                                 <div style={{ backgroundColor: '#707070', width: '55px' }}>
-                                    <p className="num_align_side" onClick={stopModel}>{i}</p>
+                                    <p className="num_align_side" onClick={stopModel}>{num}</p>
                                     <Divider />
                                   
 
-                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
-onMouseEnter={() => setOpen(true)}
-onMouseLeave={() => setOpen(false)}
+                                <HtmlTooltip  onClose= {handleClose} onOpen=  {()=>handleOpen(data)} arrow
+                                onMouseEnter={() => setOpen(true)}
+                                onMouseLeave={() => setOpen(false)}
                                     title={<Timesheetmodel rowData={taskData} />}
                                 >
                                       <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
@@ -437,13 +439,13 @@ onMouseLeave={() => setOpen(false)}
                     <Card >
                         <div style={{ display: 'flex', justifyContent: 'space-betwen' }}>
                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
-                                <p className="num_align_side" onClick={stopModel}>{i}</p>
+                                <p className="num_align_side" onClick={stopModel}>{num}</p>
                                 <Divider />
                             
-                                <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
-onMouseEnter={() => setOpen(true)}
-onMouseLeave={() => setOpen(false)}
-                                    title={<Timesheetmodel rowData={taskData} />}
+                                <HtmlTooltip  onClose={handleClose} onOpen={()=>handleOpen(data)} arrow
+                                onMouseEnter={() => setOpen(true)}
+                                onMouseLeave={() => setOpen(false)}
+                                    title={<Timesheetmodel rowData={data} />}
                                 >
                                       <img src={Clock} style={{cursor:"pointer"}} className="img_side_align" onClick={()=>openTimeSheet(true,data)} />
                                 </HtmlTooltip>

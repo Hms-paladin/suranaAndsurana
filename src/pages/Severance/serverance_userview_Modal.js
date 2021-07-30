@@ -29,9 +29,9 @@ function ServeranceModal(props){
                 department:data.department==null?"-":data.department,
                 severanceId:data.severece_id,
                 resignationDate:moment(data.date_of_resignation).format("DD-MMM-YYYY"),
-                res_accepted_on:moment(data.resignation_accepted_on===null?"-":data.resignation_accepted_on).format("DD-MMM-YYYY"),
+                res_accepted_on:(data.resignation_accepted_on===null||data.resignation_accepted_on==='0000-00-00')?"-":moment(data.resignation_accepted_on,"YYYY-MM-DD").format("DD-MMM-YYYY"),
                 res_accepted_by:data.resignation_accepted_by===null?"-":data.resignation_accepted_by,
-                releive_date:moment(data.proposed_date_relieving===null?"-":data.proposed_date_relieving).format("DD-MMM-YYYY"),
+                releive_date:(data.proposed_date_relieving===null||data.proposed_date_relieving==='0000-00-00')?"-":moment(data.proposed_date_relieving,"YYYY-MM-DD").format("DD-MMM-YYYY"),
                 it_noc_date:moment(data.it_noc_date===null?"-":data.it_noc_date).format("DD-MMM-YYYY"),
                 hr_noc_date:moment(data.hr_noc_date===null?"-":data.hr_noc_date).format("DD-MMM-YYYY"),
                 admin_noc_date:moment(data.admin_noc_date===null?"-":data.admin_noc_date).format("DD-MMM-YYYY"),
@@ -71,7 +71,7 @@ function ServeranceModal(props){
                 </div>
                 <div className="container_Date c1">
                     <div>{severanceData.resignationDate}</div>
-                    <div>{severanceData.res_accepted_on + ' - ' +severanceData.res_accepted_by}</div>
+                    <div>{severanceData.res_accepted_on + '   ' +severanceData.res_accepted_by}</div>
                     <div>{severanceData.releive_date}</div>
                 </div>
             </div>
@@ -87,7 +87,7 @@ function ServeranceModal(props){
                 <div className="NOC_values">
                     <div>{severanceData.it_noc_date==="Invalid date"?"-":severanceData.it_noc_date}</div>
                     <div >{severanceData.it_noc_by}</div>
-                    <div className="adminnoc">{severanceData.admin_noc_date==="Invalid date"?"-":severanceData.admin_noc_date}</div>
+                    <div className="adminnoc">{severanceData.admin_noc_date==="Invalid date" ?"-":severanceData.admin_noc_date}</div>
                     <div>{severanceData.admin_noc_by}</div>
                     <div>{severanceData.hr_noc_date==="Invalid date"?"-":severanceData.hr_noc_date}</div>
                     <div>{severanceData.hr_noc_by}</div>

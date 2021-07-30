@@ -38,7 +38,7 @@ function InerviewScreen(props) {
   const [dropDownSel, setdropDownSel] = useState(false);
   const [interviewDetails, setInterviewDetails] = useState({})
   const [testDetails, setTestDetails] = useState({})
-  
+
   const headCells = [
     { id: "testname", label: "Test Name" },
     { id: "testdate", label: "Test Date" },
@@ -79,8 +79,10 @@ function InerviewScreen(props) {
   }, []);
 
   useEffect(() => {
-    dispatch(getOnlineTestDetails(cand_data[0]?.resume_id&&cand_data[0].resume_id));
-  }, [cand_data[0]?.resume_id&&cand_data[0].resume_id]);
+    console.log(selectedCandidateId,"selectedCandidateId")
+    if(selectedCandidateId&&selectedCandidateId!=='')
+    dispatch(getOnlineTestDetails(selectedCandidateId));
+  }, [selectedCandidateId]);
 
   useEffect(() => {
     let interview_status = [];
@@ -100,7 +102,7 @@ function InerviewScreen(props) {
     setgetData(props.getQuestions);
   }, [props.getInterviewStatus, props.getQuestions,props.getOnlineTestDetails]);
 
-  console.log(cand_data[0]?.resume_id&&cand_data[0].resume_id,testDetails,"testDetails")
+  // console.log(cand_data[0]?.resume_id&&cand_data[0].resume_id,testDetails,"testDetails")
   useEffect(() => {
     Axios({
       method: "POST",

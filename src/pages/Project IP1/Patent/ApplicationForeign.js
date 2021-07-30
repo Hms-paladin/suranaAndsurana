@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import {
     getTradeMarkStatus, getCountryDetails,
 } from "../../../actions/tradeMarkAction";
-import { insertPatent } from "../../../actions/PatentAction";
+import { insertPatent ,getPatentDetails} from "../../../actions/PatentAction";
 import moment from 'moment'
 
 function ApplicationForeign(props) {
@@ -105,7 +105,7 @@ function ApplicationForeign(props) {
         dispatch(getProjectDetails(rowId))
         dispatch(getTradeMarkStatus());
         dispatch(getCountryDetails());
-
+        dispatch(getPatentDetails(rowId));
     }, []);
 
     useEffect(() => {
@@ -139,6 +139,31 @@ function ApplicationForeign(props) {
     props.tradeStatusList, props.countriesList
     ]);
 
+    useEffect(() => {
+        if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
+          let indiaFil_key = [ "file_cover", "our_ref", "associate", "title", "client_ref", "app_num","priority_date", "app_date", "comments", "status", "priority_country", "priority_num"]
+    
+          let indiaFil_value = ["file_cover", "our_reference", "associate", "patent_title","client_reference", "application_no","priority_date", "application_date", "comments", "status_id", "priority_country","priority_application_no"]
+    
+          indiaFil_key.map((data, index) => {
+            // console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", props.getPatentDetails[0][indiaFil_value[index]],"indiaFil_value[index]")
+            if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" ) {
+              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]];
+              patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
+            }
+            else {
+                // console.log(props.getPatentDetails[0][indiaFil_value[index]],"rrrrrrrrr")
+              patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : props.getPatentDetails[0][indiaFil_value[index]];
+              patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+    
+            } 
+          });
+          setpatentForm((prevState) => ({
+            ...prevState,
+          }));
+        }
+      }, [props.getPatentDetails])
+
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(patentForm);
@@ -155,17 +180,17 @@ function ApplicationForeign(props) {
             (obj) => patentForm[obj].error == true
         );
         console.log(filtererr.length);
-
+            console.log(patentForm.priority_date.value,"patentForm.priority_date.value")
         let params = {
             "project_id": idDetails.project_id,
             "file_cover": patentForm.file_cover.value,
             "our_reference": patentForm.our_ref.value,
             "client_reference": patentForm.client_ref.value,
             "application_no": patentForm.app_num.value,
-            "application_date": patentForm.app_date.value,
+            "application_date": patentForm.app_date.value===''?'0000-00-00':patentForm.app_date.value,
             "priority_country": patentForm.priority_country.value,
             "priority_application_no": patentForm.priority_num.value,
-            "priority_date": patentForm.priority_date.value,
+            "priority_date": patentForm.priority_date.value===''?'0000-00-00':patentForm.priority_date.value,
             "patent_title": patentForm.title.value,
             "associate": patentForm.associate.value,
             "status_id": patentForm.status.value,
@@ -176,7 +201,9 @@ function ApplicationForeign(props) {
             "updated_by": localStorage.getItem("empId"),
         }
 
-
+        if (props.getPatentDetails[0]?.patent_id != "0") {
+            params["patent_id"] = props.getPatentDetails[0]?.patent_id;
+          }
         if (filtererr.length > 0) {
             // setpatentForm({ error: true });
         } else {
@@ -375,6 +402,7 @@ const mapStateToProps = (state) =>
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    getPatentDetails: state.PatentReducer.getPatentDetails || [],
 });
 
 export default connect(mapStateToProps)(ApplicationForeign);

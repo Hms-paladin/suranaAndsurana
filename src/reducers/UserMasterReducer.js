@@ -102,6 +102,10 @@ export default function (state = intialState, action) {
             return {...state,getEmployeeDetails:payload} 
         case GET_SUBORDINATES:
             return {...state,getSubordinates:payload}  
+        case GET_USER_STAGELIST:
+            return {...state,getStage:payload} 
+        case   GET_COST_RANGE:
+            return {...state,getRange:payload}       
         default:
             return state;
     }

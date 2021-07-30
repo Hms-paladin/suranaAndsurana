@@ -9,7 +9,7 @@ import TimeSheetView from '../../Search/TimeSheets/timesheetview';
 import DynModel from "../../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getProjectTimeSheetList } from "../../../actions/TimeSheetAction";
+import { getProjectTimeSheetList,getProjectTimeSheetListByTaskId } from "../../../actions/TimeSheetAction";
 
 import moment from 'moment';
 
@@ -20,15 +20,19 @@ function Timesheetmodel(props) {
     useEffect(() => {
        
     }, [props.rowData])
+    let task_id ;
 if(rowId == undefined){
-    if(props.rowData && props.rowData.length>0){
-    rowId = props.rowData.project_Id;
+    if(props.rowData && props.rowData != undefined){
+        task_id = props.rowData.task_id;
     }
 }
 
 useEffect(() => {
+    if(rowId && rowId != undefined){
     dispatch(getProjectTimeSheetList(rowId)); 
-    
+    }else if(props.rowData && props.rowData != undefined){
+    dispatch(getProjectTimeSheetListByTaskId(props.rowData.task_id)); 
+    }
   }, [props.rowData]);
 
   
@@ -90,9 +94,12 @@ console.log("propsTImeSheet", props);
                     </Grid>
                     <Grid item xs={9}>
                         <div className="time_doc_values">
-                            <div>{data.start_date} & {data.start_time}</div>
-                            <div>{data.end_date} & {data.end_time}</div>
-                            <div style={{textAlign: "center"}}>{moment.utc(moment(data.start_time,"HH:mm:ss").diff(moment(data.end_time,"HH:mm:ss"))).format("HH:mm:ss")}</div>
+                            <div>{data.start_date} {data.start_time != null ? '&' : ""} {data.start_time}</div>
+                            <div>{data.end_date} {data.end_time != null ? '&' : ""} {data.end_time}</div>
+                            <div style={{textAlign: "center"}}>
+                                {data.start_time == null || data.end_time == null ? '' : moment.utc(moment(data.start_time,"HH:mm:ss").diff(moment(data.end_time,"HH:mm:ss"))).format("HH:mm:ss")}
+                                
+                                </div>
                             {/* <div>
                             <img src={PlusIcon} style={{width:"18px",padding:"2px",cursor:"pointer"}}
                             onClick={()=>setTimeSheetView(true)}></img>

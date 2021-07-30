@@ -312,6 +312,7 @@ function TimeSheetView(props) {
                                         error={timeSheetForm.toDate.error}
                                         errmsg={timeSheetForm.toDate.errmsg}
                                         placeholder={" End date "}
+                                        maxDate={new Date()}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>

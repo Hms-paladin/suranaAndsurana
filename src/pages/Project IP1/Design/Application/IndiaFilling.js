@@ -161,7 +161,7 @@ function IndiaFilling(props) {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
+      dispatch(InsertDesign(IndiaForm, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
         // handleCancel()
       })
     }
@@ -202,20 +202,20 @@ function IndiaFilling(props) {
 
   useEffect(() => {
     if (getDesign.length > 0) {
-      let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
+      let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country","status", "priority_country", "priority_date",  "comments", "renewal_date"]
 
-      let indiaFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant", "title", "class_id", "country_id", "priority_country_id", "priority_date", "status", "comments", "renewal_date"]
+      let indiaFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant","title","class_id", "country_id","status_id", "priority_country_id", "priority_date",  "comments", "renewal_date"]
 
       indiaFil_key.map((data, index) => {
-        console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", "indiaFil_value[index]")
+        console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", getDesign[0][indiaFil_value[index]],"indiaFil_value[index]")
         if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date") {
           IndiaForm[data].value = getDesign[0][indiaFil_value[index]];
-          IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] ? true : false;
+          // IndiaForm[data].disabled = indiaFil_value[index]!=='status_id'&&getDesign[0][indiaFil_value[index]] ? true : false;
         }
         else {
           console.log(getDesign[0][indiaFil_value[index]], "getDesign[0]")
           IndiaForm[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
-          IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+          // IndiaForm[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
 
         }
       });

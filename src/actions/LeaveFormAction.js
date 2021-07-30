@@ -195,7 +195,7 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
         subject_details.push({
             emp_id: localStorage.getItem("empId"),
             subject_id: data.subject_id,
-            subject_date: data.date,
+            subject_date: data.subject_date,
             created_on: moment().format("YYYY-MM-DD"),
             updated_on: moment().format("YYYY-MM-DD "),
             created_by: localStorage.getItem("empId"),

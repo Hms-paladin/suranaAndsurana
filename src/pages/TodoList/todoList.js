@@ -162,10 +162,10 @@ function TodoList(props) {
                 showId = data.ticket_id
                 showName = "Recruitment Request"
             }
-            //  else if (data.kra_id) {
-            //     showId = data.kra_id
-            //     showName = "KRA Approval"
-            // }
+             else if (data.kra_id) {
+                showId = data.kra_id
+                showName = "KRA Approval"
+            }
 
             else {
                 showName = ""
@@ -249,6 +249,10 @@ function TodoList(props) {
             else if (data.emp_appr_id) {
                 showId = data.emp_appr_id
                 showName = "Employee Appraisal"
+            }
+            else if(data.kpi_id){
+                showId = data.kpi_id
+                showName = "KPI Approval"
             }
 
             otherTask.push({
@@ -385,6 +389,15 @@ function TodoList(props) {
             setAppraisalData(Appraisaldata)
 
         }
+        else if (name === "KPI Approval") {
+            setKpiapprovemodel(true)
+            let Kpi = props.getOtherTask.find((val) => {
+                return (
+                    id == val.kpi_id
+                )
+            })
+            setKpiApproval(Kpi)
+        }
     }
 
     // unblockUsers ==>
@@ -487,6 +500,3 @@ const mapStateToProps = state => (
 )
 
 export default connect(mapStateToProps)(TodoList);
-
-
-

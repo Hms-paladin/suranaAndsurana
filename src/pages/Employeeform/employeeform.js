@@ -24,6 +24,7 @@ function Employeeform(props) {
     const [sup_name, setsup_name] = useState({})
     const [file, setfile] = useState("")
     const [fileList, setfileList] = useState("")
+    const [EmpCodeDub, setEmpCodeDub] = useState(false)
     const [EmpForm, setEmpFrom] = useState({
         desgination: {
             value: props.emp_form_id.designation_id,
@@ -300,7 +301,39 @@ function Employeeform(props) {
         setfile(e.target.files[0].name)
     }
 
-
+    function get_employee_code_check(data){
+  if(data!=''){
+            try {
+                Axios({
+                    method: 'POST',
+                    url: apiurl + 'get_employee_code_check',
+                    data: {
+                        employee_code:data
+                    }
+                }).then((response) => {
+                    if(response.data.status !== 1){
+                            let dynObj = {
+                                value: data,
+                                error: true,
+                                errmsg: "Employee Code Already Exits",
+                                validation: [{ "name": "required" }],
+                              };
+                          
+                              setEmpFrom((prevState) => ({
+                                ...prevState,
+                                ['employee_code']: dynObj,
+                              }));
+                            return Promise.resolve();
+                        
+                    }
+                });
+        
+            } catch (err) {
+        
+            }
+        }
+    }
+console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
 
@@ -340,6 +373,9 @@ function Employeeform(props) {
         }
         // (end)
 
+        if (key === "employee_code") {
+            get_employee_code_check(data)
+        }
         setEmpFrom(prevState => ({
             ...prevState,
             [key]: dynObj,

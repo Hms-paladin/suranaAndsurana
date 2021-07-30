@@ -30,10 +30,14 @@ const KRA = (props) => {
     const [viewRights, setViewRights] = useState([])
     const [kraViewModal, setKraViewModal] = useState(false)
     const [disabledate, setDisabledate] = useState(false);
+    const [Todisable,setTodisable]=useState(false)
     const [totalPercentage, setTotalPercentage] = useState(0)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState()
+    const [minDate,setminDate]=useState("")
+    const [datechange,setdatechange]=useState(false)
     const [empId, setEmpId] = useState(localStorage.getItem("empId"))
+    const [EmpIdTrue,setEmpIdTrue]=useState(false)
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -68,7 +72,10 @@ const KRA = (props) => {
     useEffect(() => {
         dispatch(getActivity());
     }, [kpi_form]);
-
+    useEffect(()=>{
+        dispatch(getKra())
+        console.log(props.getKra,"datechange")
+    },[]);
 
     useEffect(() => {
         let Activity = []
@@ -80,33 +87,48 @@ const KRA = (props) => {
         });
         setActivity({ Activity })
         setTestDate(props.getKra[0])
-    }, [props.getActivity, props.getKra, kpi_form])
 
-    useEffect(() => {
-        checking()
-    }, [testDate])
+    }, [props.getActivity, props.getKra, kpi_form,datechange,testDate])
+    // useEffect(() => {
+    //     checking()
+    //     console.log(testDate,"testDate")
+    // }, [testDate])
 
-    const checking = useCallback(() => {
-        let id = testDate && testDate.emp_id
-        if (Number(localStorage.getItem("empId")) === (testDate && testDate.emp_id)) {
-            if (kpi_form.fromperiod.value === moment(testDate.period_from).format("MMM-yyyy") || kpi_form.toperiod.value === moment(testDate.period_to).format("MMM-yyyy")) {
-                notification.error({
-                    message: 'This Period Already Exist. Choose After Date  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
-                });
-            }
-        }
+    // const checking = useCallback(() => {
+    //     let id = testDate && testDate.emp_id
+    //     if (Number(localStorage.getItem("empId")) === (testDate && testDate.emp_id)) {
+    //         if (
+    //           moment(kpi_form.toperiod.value).format("MMM-yyyy") >= moment(testDate.period_to).format("MMM-yyyy")&& 
+    //           moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate.period_from).format("MMM-yyyy")
+    //           ) {
+    //             notification.error({
+    //                 message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
+    //             });
+    //         }
+         
+    //     }
 
-    }, [testDate])
+    // }, [testDate])
 
     function checkValidation(data, key) {
         var startDate = kpi_form.fromperiod.value
         if (data && key === "fromperiod") {
             startDate = moment(data).format("MMM-yyyy");
+            setminDate(data)
         }
         var toDate = kpi_form.toperiod.value
         if (data && key === "toperiod") {
             toDate = moment(data).format("MMM-yyyy");
-            dispatch(getKra(localStorage.getItem("empId"), startDate, toDate))
+            // dispatch(getKra(startDate, toDate))
+            // checking()
+        }
+        if(moment(kpi_form.toperiod.value).format("MMM-yyyy")==moment().format("MMM-yyyy")){
+            setdatechange(false)
+        }
+        if(moment(kpi_form.toperiod.value).format("MMM-yyyy")!=moment().format("MMM-yyyy")){
+            setTodisable(false)
+        }else if(kpi_form.toperiod.value){
+            setTodisable(false)
         }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -156,6 +178,7 @@ const KRA = (props) => {
 
         if (kpi_form.fromperiod.value != "" && kpi_form.toperiod.value != "") {
             setDisabledate(true)
+            setTodisable(true)
         }
 
         if (reference.current && reference.current.length >= 0) {
@@ -178,8 +201,36 @@ const KRA = (props) => {
 
         if (filtererr.length > 0) {
         }
-
+       
         else {
+            if (moment(kpi_form.fromperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&&
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
+
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") < moment(testDate?.period_from).format("MMM-yyyy")&&
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") > moment(testDate?.period_from).format("MMM-yyyy")||
+               
+                
+                // moment(kpi_form.toperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&&
+                // moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
+
+
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") < moment(testDate?.period_to).format("MMM-yyyy")&&
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") < moment(testDate?.period_to).format("MMM-yyyy")||
+                
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate?.period_to).format("MMM-yyyy")||
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate?.period_to).format("MMM-yyyy")||
+                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate?.period_from).format("MMM-yyyy")||
+                moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate?.period_from).format("MMM-yyyy")
+      
+                ) {
+                  setEmpIdTrue(true)
+                  setDisabledate(false)
+      
+                  notification.error({
+                      message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
+                  });
+              }
+            else{
             if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
                 notification.error({
                     message: 'Total Percent Value should be 100 only',
@@ -197,6 +248,7 @@ const KRA = (props) => {
                 kpi_form.percentage.value = "";
             }
         }
+    }
         addpercentage()
     }
 
@@ -289,13 +341,13 @@ const KRA = (props) => {
 
 
     const onsubmit = () => {
+        
         if (totalPercentage > 100 || totalPercentage < 100) {
             notification.error({
                 message: 'Total Percent Value should be 100 only',
             });
         }
         else {
-
             let refLength = reference.current.length
             for (let i = 0; i < refLength; i++) {
                 console.log(reference.current[i].activitys, "length")
@@ -305,8 +357,12 @@ const KRA = (props) => {
                         activityId = data.id
                     }
                 })
+                   
+                
                 dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
+                    setDisabledate(false)
                 })
+               
             }
         }
 
@@ -346,7 +402,7 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={"mm/yyyy"}
+                                        format={"MMM-yyyy"}
                                         changeData={(data) => checkValidation(data, "fromperiod")}
                                         value={kpi_form.fromperiod.value}
                                         error={kpi_form.fromperiod.error}
@@ -356,13 +412,15 @@ const KRA = (props) => {
                                     <Labelbox
                                         type="datepicker"
                                         view={["year", "month"]}
-                                        format={'mm/yyyy'}
+                                        format={'MMM-yyyy'}
                                         changeData={(data) => checkValidation(data, "toperiod")}
                                         value={kpi_form.toperiod.value}
                                         error={kpi_form.toperiod.error}
                                         errmsg={kpi_form.toperiod.errmsg}
                                         disabled={disabledate ? true : false}
-                                    /></div>
+                                        minDate={minDate}
+                                    />
+                                    </div>
                                 {/* <div><label style={{ fontWeight: 'bold' ,paddingTop:"6px"}}>April 2021 to March 2021</label></div> */}
                             </Grid>
                             <Grid item xs={2}>

@@ -46,7 +46,7 @@ function TablePaginationActions(props) {
 
   const handleLastPageButtonClick = (event) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    console.log(Math.max(0, Math.ceil(count / rowsPerPage) - 1), "ddd")
+    
   };
 
   return (
@@ -73,7 +73,7 @@ function TablePaginationActions(props) {
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
-        {console.log(page === 0, "page")}
+        {console.log(page, "page")}
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </div>
@@ -223,8 +223,13 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(() => {
+    if(props.rows){
     setRows(props.rows);
-  }, [props, page]);
+    setPage(0)
+    }
+  console.log("newpage",props.rows)
+  }, [props.rows]);
+
 
   // React.useEffect(() => {
   //   for(let i=0;i<(props.rows.length/rowsPerPage);i++){
@@ -243,7 +248,7 @@ export default function EnhancedTable(props) {
     }
     setSelected([]);
   };
-
+ console.log("selected",selected)
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -266,25 +271,26 @@ export default function EnhancedTable(props) {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-
-
-
   };
 
   const handleChangeRowsPerPage = (event) => {
-
-    setRowsPerPage(event.target.value);
-    setPage(0);
-
+  
+    setRowsPerPage(parseInt(event.target.value));
+    setPage(0)
+   
   };
-
+ 
 
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows && rows.length - page * rowsPerPage);
+  console.log("pagination",emptyRows)
+  
   return (
+   
     <div className={classes.root}>
+     {console.log("perpage",rowsPerPage,page)}
       {/* <Paper className={classes.paper}> */}
       <div className="tableTitle">{props.tabletitle}</div>
       <TableContainer>
