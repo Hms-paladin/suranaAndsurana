@@ -34,7 +34,7 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
-    var TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+    var TabIcons = [{ img: "", title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
 
     const HtmlTooltip = withStyles((theme) => ({
         arrow: {
@@ -71,20 +71,20 @@ function TradeMarkTabIcons(props) {
     //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
 
     if (showFromCheckList) {
-        TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" },
+        TabIcons = [{ img: "", title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" },
         { img: TimeSheet, title: "TIME SHEET" },
         { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
     }
 
     if (showFromSec == 0) {
-        TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" },
+        TabIcons = [{ img: "", title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" },
         { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" },
         { img: Tasks, title: "TASKS" },
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
     }
     if (showFromSec == 0 && showFromCheckList) {
-        TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "OPE" },
+        TabIcons = [{ img: "", title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "OPE" },
         { img: TimeSheet, title: "TIME SHEET" },
         { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" },
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
@@ -112,7 +112,7 @@ function TradeMarkTabIcons(props) {
                                             onMouseLeave={() => setOpen(false)}
                                         >
                                             <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
-                                                <Grid><img src={data.img} className="tabIconImage" /></Grid>
+                                                <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
                                                 <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
                                             </div>
                                         </HtmlTooltip>}
@@ -120,8 +120,8 @@ function TradeMarkTabIcons(props) {
                                 </div>
                                 :
                                 <div className="tabIconsView" onClick={() => tabBox(data.title)}>
-                                    <Grid><img src={data.img} className="tabIconImage" /></Grid>
-                                    <Grid> <div style={{ marginTop: -2 }} className="tabiconTitle">{data.title}</div></Grid>
+                                    {data.img && <Grid><img src={data.img} className="tabIconImage" /></Grid>}
+                                    <Grid> <div style={{ marginTop: 0 }} className="tabiconTitle">{data.title}</div></Grid>
                                 </div>
                             }
 
