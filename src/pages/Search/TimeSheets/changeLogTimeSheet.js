@@ -6,7 +6,7 @@ import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation, insertChangeLog } from "../../../actions/projectTaskAction";
-
+import moment from 'moment';
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
@@ -20,7 +20,7 @@ function ChangeLogTimeSheet(props) {
     const [priorityList, setpriorityList] = useState({})
     const [taggList, settaggList] = useState({})
     const [assignedToLists, setassignedToLists] = useState("")
-    const [projectDetails, setProjectDetails] = useState([{}])
+    const [minDate, setMinDate] = useState(new Date())
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
@@ -36,13 +36,13 @@ function ChangeLogTimeSheet(props) {
         },
         activity: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
         subActivity: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
@@ -55,26 +55,26 @@ function ChangeLogTimeSheet(props) {
         tag: {
             value: "",
             valueById: "",
-            validation: [{ name: "required" }],
+            validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
         priority: {
             value: "",
             valueById: "",
-            validation: [{ name: "required" }],
+            validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
         fromDate: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
         toDate: {
             value: "",
-            validation: [{ name: "required" }],
+            validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
         },
@@ -87,9 +87,6 @@ function ChangeLogTimeSheet(props) {
 
     })
     let { rowId } = useParams()
-    useEffect(() => {
-        setProjectDetails(props.projectrow)
-    }, [props.projectrow])
 
     const handleCancel = () => {
 
@@ -116,7 +113,7 @@ function ChangeLogTimeSheet(props) {
             ...prevState,
         }));
 
-        props.close_model && props.close_model(false)
+        props.close_model && props.close_model(true)
     };
 
     useEffect(() => {
@@ -128,16 +125,6 @@ function ChangeLogTimeSheet(props) {
 
     }, []);
 
-    useEffect(() => {
-        if (props.approve_timesheet && props.approve_timesheet !== '') {
-
-            // timeSheetForm.startTime.value
-            // timeSheetForm.startTime.value
-            // timeSheetForm.startTime.value
-            // timeSheetForm.startTime.value
-        }
-        console.log(props.approve_timesheet, props.projectrow, 'approve_timesheetd')
-    }, [props.approve_timesheet]);
 
     useEffect(() => {
         let activityTypeData = []
@@ -185,11 +172,11 @@ function ChangeLogTimeSheet(props) {
     }, [props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.assignToList])
 
 
-    const submitSave = () => {
+
+    const submitSave = async () => {
 
         var mainvalue = {};
         var targetkeys = Object.keys(timeSheetForm);
-
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
                 timeSheetForm[targetkeys[i]].value,
@@ -199,6 +186,10 @@ function ChangeLogTimeSheet(props) {
             timeSheetForm[targetkeys[i]].errmsg = errorcheck.msg;
             mainvalue[targetkeys[i]] = timeSheetForm[targetkeys[i]].value;
         }
+        var filtererr = targetkeys.filter(
+            (obj) => timeSheetForm[obj].error == true
+        );
+        console.log(filtererr.length, "err len");
         let startTime = dateFormat(timeSheetForm.startTime.value != undefined && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
         let endTime = dateFormat(timeSheetForm.endTime.value != undefined && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss");
 
@@ -217,28 +208,12 @@ function ChangeLogTimeSheet(props) {
             "start_time": startTime
         }
 
-        console.log(data, "data")
+
         if (timeSheetForm.activity.value && timeSheetForm.subActivity.value && timeSheetForm.fromDate.value && timeSheetForm.toDate.value && timeSheetForm.priority.value && timeSheetForm.tag.value) {
+            dispatch(insertChangeLog(data)).then(() => {
+                handleCancel()
 
-            if (new Date(timeSheetForm.fromDate.value) < new Date(timeSheetForm.toDate.value)) {
-                dispatch(insertChangeLog(data))
-
-                console.log(props.insertChangeLog, "status");
-                if (props.insertChangeLog.status === 1) {
-                    notification.success({
-                        message: "Time Sheet Added",
-                    })
-                } else if (props.insertChangeLog.status === 0) {
-                    notification.error({
-                        message: "Time Sheet Failed",
-                    })
-                }
-            } else if (new Date(timeSheetForm.fromDate.value) > new Date(timeSheetForm.toDate.value)) {
-                notification.error({
-                    message: " To date should not be less than from date",
-                });
-            }
-            handleCancel()
+            })
 
         }
 
@@ -259,7 +234,9 @@ function ChangeLogTimeSheet(props) {
         };
 
         //Process type
-
+        if (key === "fromdate") {
+            setMinDate(data)
+        }
         if (key == "activity") {
             // Sub Activity
             Axios({
@@ -292,23 +269,7 @@ function ChangeLogTimeSheet(props) {
 
             <div>
                 <Grid item xs={12} container direction="row" spacing={3}>
-                    {projectDetails && projectDetails.length > 0 && projectDetails.map((data) => {
-                        return (
-                            <>
-                                <Grid item xs={4}>{data.project_type}</Grid>
-                                <Grid item xs={4}>{data.project_name}</Grid>
-                                <Grid item xs={4}>{data.client} </Grid>
 
-                            </>
-
-                        )
-                    })}
-                    {props.approve_timesheet && props.approve_timesheet !== '' && <>
-                        <Grid item xs={4}>{props.approve_timesheet.project_type}</Grid>
-                        <Grid item xs={4}>{props.approve_timesheet.project_name}</Grid>
-                        <Grid item xs={4}>{props.approve_timesheet.client} </Grid>
-
-                    </>}
                     <Grid item xs={4}>
                         <Labelbox type="select"
                             placeholder={"Activity"}
@@ -399,6 +360,7 @@ function ChangeLogTimeSheet(props) {
                             value={timeSheetForm.toDate.value}
                             error={timeSheetForm.toDate.error}
                             errmsg={timeSheetForm.toDate.errmsg}
+                            minDate={moment(`${timeSheetForm?.fromDate.value && timeSheetForm?.fromDate.value} 11: 00: 00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
 
                         />
                     </Grid>
