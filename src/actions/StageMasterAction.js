@@ -94,8 +94,8 @@ export const getStageMasterSearch = (RateMaster) => async dispatch => {
           url: apiurl + 'get_stage_master_search',
           data: {
             "project_type_id": RateMaster.project_type_search.value,
-            "process_id": RateMaster.process_type.value || 0,
-            "sub_proj_type_id": RateMaster.sub_project_type.value || 0,
+            "process_id": RateMaster.process_type_search.value || 0,
+            "sub_project_type_id": RateMaster.sub_project_type_search.value || 0,
           }
         }).then((response) => {
           if (response.data.status === 1) {

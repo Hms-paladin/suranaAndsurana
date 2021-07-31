@@ -1,5 +1,5 @@
 import {
-    INSERT_CHECKLIST_CREATION, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED,GET_CHECK_LIST_VIEW,GET_DAYS_WEEK
+    INSERT_CHECKLIST_CREATION,GET_PROJ_SUBPROJ, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED,GET_CHECK_LIST_VIEW,GET_DAYS_WEEK
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -33,6 +33,7 @@ export const insertCheckList = (data) => async dispatch => {
 }
 
 export const insert_check_list_assign = (data) => async dispatch => {
+    console.log(data,"dataaa")
     try {
         axios({
             method: 'POST',
@@ -115,6 +116,24 @@ export const getCheckListsAssigned = (projectId, projectTypeId) => async dispatc
         })
             .then((response) => {
                 dispatch({ type: GET_CHECK_LIST_ASSIGNED, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const get_projType_subProjType_by_projId = (projectId, projectTypeId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_projType_subProjType_by_projId',
+            data: {
+                "project_id": projectId||0
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_PROJ_SUBPROJ, payload: response.data.data })
             })
 
     } catch (err) {

@@ -10,7 +10,7 @@ import { getProjectType, getProjectSubType, getProcessType, getStageList, getSub
 import './StagesMaster.scss'
 import { notification } from "antd";
 import Usermaster from '../UserMaster/Usermaster';
-
+import { useLocation, Switch } from 'react-router-dom'; 
 
 const StagesMaster = (props) => {
   const header = [
@@ -22,6 +22,7 @@ const StagesMaster = (props) => {
     { id: 'no_days', label: 'Number of Days' },
     { id: 'reminder_days', label: 'Reminder Days' },
   ];
+  const location = useLocation();
   const dispatch = useDispatch()
   const [StageMasterList, setStageMasterList] = useState([])
   const [projectType, setprojectType] = useState({})
@@ -30,9 +31,10 @@ const StagesMaster = (props) => {
   const [subStage, setsubStage] = useState({})
   const [processType, setprocessType] = useState({})
   const [disabled, setEnabled] = useState(true);
-  const [stageDisable, setStageEnabled] = useState(true);
   const [SearchAdd, setSearchAdd] = useState(false);
-  const [saveRights, setSaveRights] = useState([])
+  const [saveRights, setSaveRights] = useState([]) 
+  const [PageLoad, setPageLoad] = useState(false) 
+  
   const [RateMaster, setRateMaster] = useState({
     project_type: {
       value: "",
@@ -81,12 +83,14 @@ const StagesMaster = (props) => {
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
+      disabled:true
     },
     sub_project_type_search: {
       value: "",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
+      disabled:true
     },
     project_type_search: {
       value: "",
@@ -106,7 +110,7 @@ const StagesMaster = (props) => {
   useEffect(() => {
     //stageTableData
     let stageMasterListData = []
-    props.getStageMasterSearch.map((data) =>
+    !PageLoad&&props.getStageMasterSearch.map((data) =>
       stageMasterListData.push(data)
     )
     var rateList = [];
@@ -163,6 +167,7 @@ const StagesMaster = (props) => {
   }, [props.ProcessType, props.ProcessType, props.getSubStage, props.ProjectSubtype])
 
   const onSearch = () => {
+    setPageLoad(false)
     let From_key = ["process_type_search", "sub_project_type_search", "project_type_search"]
     var mainvalue = {};
     for (var i in From_key) {
@@ -196,6 +201,15 @@ const StagesMaster = (props) => {
 
   };
   const onSubmit = (data) => {
+
+    let From_key = ["process_type_search", "sub_project_type_search", "project_type_search"]
+
+    From_key.map((data) => {
+      RateMaster[data].validation = []
+    })
+    setRateMaster(prevState => ({
+      ...prevState,
+    }));
     if (RateMaster.project_type.value !== 1) {
       ValidationHide()
     }
@@ -214,6 +228,7 @@ const StagesMaster = (props) => {
     let filtererr = targetkeys.filter(
       (obj) => RateMaster[obj].error == true
     );
+    console.log(filtererr.length,"filtererr.length")
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
 
@@ -233,9 +248,6 @@ const StagesMaster = (props) => {
   function checkValidation(data, key, multipleId) {
     //_____________________
 
-    if (data === 1 && key == "project_type_search") {
-      dispatch(getProjectSubType(data))
-    }
     if (data === 1 && key == "project_type") {
       // ValidationHide()
       RateMaster.sub_project_type.validation.push({ name: "required" })
@@ -247,6 +259,23 @@ const StagesMaster = (props) => {
       setEnabled(true)
     }
 
+    if (data === 1 && key == "project_type_search") {
+      // ValidationHide()
+      RateMaster.sub_project_type_search.validation=[{ name: "required" }]
+      RateMaster.process_type_search.validation=[{ name: "required" }]
+      dispatch(getProjectSubType(data))
+      RateMaster.sub_project_type_search.disabled=false
+      RateMaster.process_type_search.disabled=false
+    } else if (data !== 1 && key == "project_type_search") {
+      RateMaster.sub_project_type_search.validation=[]
+      RateMaster.process_type_search.validation=[]
+      RateMaster.process_type_search.errmsg=null
+      RateMaster.sub_project_type_search.errmsg=null
+      RateMaster.process_type_search.error=false
+      RateMaster.sub_project_type_search.error=false
+      RateMaster.sub_project_type_search.disabled=true
+      RateMaster.process_type_search.disabled=true
+    }
     //________________________________________________________________
 
     if (key == "sub_project_type_search" && data) {
@@ -305,6 +334,8 @@ const StagesMaster = (props) => {
       [key]: dynObj,
 
     }));
+
+    console.log(RateMaster.sub_project_type_search,"RateMaster.sub_project_type_search.validation")
   }
   const handleCancel = () => {
     let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance","process_type_search", "sub_project_type_search", "project_type_search"]
@@ -317,6 +348,13 @@ const StagesMaster = (props) => {
       ...prevState,
     }));
     setSearchAdd(false)
+    setStageMasterList([])
+
+    let From_key_validate = ["process_type_search", "sub_project_type_search", "project_type_search"]
+
+    From_key_validate.map((data) => {
+      RateMaster[data].validation = [{ "name": "required" }]
+    })
   }
   const ValidationHide = () => {
     let From_key = ["sub_project_type", "process_type", "sub_stages","process_type_search", "sub_project_type_search", "project_type_search"]
@@ -343,12 +381,9 @@ useEffect(() => {
  }, [props.UserPermission]);
 
   //  console.log(rights.display_control,"rigths")
-
- function rightsNotification(){
-  notification.success({
-      message: "You are not Authorized. Please Contact Administrator",
-  });
-}
+  useEffect(() => {
+    setPageLoad(true)
+  }, [location]);
 /////////////
 
   return (
@@ -373,6 +408,7 @@ useEffect(() => {
             value={RateMaster.sub_project_type_search.value}
             error={RateMaster.sub_project_type_search.error}
             errmsg={RateMaster.sub_project_type_search.errmsg}
+            disabled={RateMaster.sub_project_type_search.disabled}
           />
         </Grid>
         <Grid item xs={4} spacing={2}>
@@ -382,6 +418,7 @@ useEffect(() => {
             value={RateMaster.process_type_search.value}
             error={RateMaster.process_type_search.error}
             errmsg={RateMaster.process_type_search.errmsg}
+            disabled={RateMaster.process_type_search.disabled}
           />
 
         </Grid>
