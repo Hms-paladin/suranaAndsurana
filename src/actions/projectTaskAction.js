@@ -90,14 +90,18 @@ export const inserTask = (params, timeSheetParams) => async dispatch => {
 
 export const insertChangeLog = (params) => async dispatch => {
     try {
-        axios({
+        await axios({
             method: "POST",
             url: apiurl + 'update_backlog_timesheet',
             data: params
-        }).then((response) => {
-            console.log(response)
-            dispatch({ type: INSERT_BACK_LOG, payload: response.data })
-        })
+        }).then(function (response) {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: 'Time sheet Added Successfully',
+                });
+                return Promise.resolve();
+            }
+        });
 
     } catch (err) {
         console.log(err)

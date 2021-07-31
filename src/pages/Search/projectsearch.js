@@ -262,11 +262,6 @@ function Projectsearch(props) {
       let ipProjectDataList = [];
 
       data.project_details.map((data, index) => {
-        //   var rowdataListobj = {}
-
-        //   if( data.project_name){
-        //   rowdataListobj["project_name"] = data.project_name
-        // }
 
 
         var rowdataListobj = {};
@@ -320,43 +315,43 @@ function Projectsearch(props) {
   }, [props.TableData]);
 
 
-///*****user permission**********/
+  ///*****user permission**********/
 
-useEffect(() => {
-  if(props.UserPermission.length>0&&props.UserPermission){
-     let data_res_id = props.UserPermission.find((val) => { 
-      return (
-          "Project - Go" == val.control 
-      ) 
-    })
-    setGoRights(data_res_id)
-
-     data_res_id = props.UserPermission.find((val) => { 
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
         return (
-            "Project - Create Project" == val.control 
-        ) 
-    })
-    setCreateProjectRights(data_res_id)
+          "Project - Go" == val.control
+        )
+      })
+      setGoRights(data_res_id)
 
-     data_res_id = props.UserPermission.find((val) => { 
+      data_res_id = props.UserPermission.find((val) => {
         return (
-            "Project - Create Adhoc Task" == val.control 
-        ) 
-    })
-    setCreateAdhocRights(data_res_id)
- }
+          "Project - Create Project" == val.control
+        )
+      })
+      setCreateProjectRights(data_res_id)
 
- }, [props.UserPermission]);
+      data_res_id = props.UserPermission.find((val) => {
+        return (
+          "Project - Create Adhoc Task" == val.control
+        )
+      })
+      setCreateAdhocRights(data_res_id)
+    }
+
+  }, [props.UserPermission]);
 
 
-   console.log(goRights,"rights")
+  console.log(goRights, "rights")
 
- function rightsNotification(){
-  notification.success({
+  function rightsNotification() {
+    notification.success({
       message: "You are not Authorized. Please Contact Administrator",
-  });
-}
-/////////////
+    });
+  }
+  /////////////
   return (
     <div>
       <div className="searchflex1"></div>
@@ -418,8 +413,8 @@ useEffect(() => {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"}  btnDisable={!goRights||goRights.display_control&&goRights.display_control==='N'?true:false} onBtnClick={onSearch} />
-         
+          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
+
         </div>
       </div>
 
@@ -431,8 +426,8 @@ useEffect(() => {
           btnName={"Create Adhoc Task"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          btnDisable={!createAdhocRights||createAdhocRights.display_control&&createAdhocRights.display_control==='N'?true:false}
-          onBtnClick={() =>setModelOpen(true)}
+          btnDisable={!createAdhocRights || createAdhocRights.display_control && createAdhocRights.display_control === 'N' ? true : false}
+          onBtnClick={() => setModelOpen(true)}
         />
         <DynModel
           modelTitle={"Adhoc Task"}
@@ -441,7 +436,7 @@ useEffect(() => {
           content={<AdhocTaskModel />}
         />
 
-    {/* <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
+        {/* <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
           <CustomButton
             btnName={"Create Project "}
             btnCustomColor="customPrimary"
@@ -455,11 +450,11 @@ useEffect(() => {
           btnName={"Create Project "}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
-          btnDisable={!createProjectRights||createProjectRights.display_control&&createProjectRights.display_control==='N'?true:false}
+          btnDisable={!createProjectRights || createProjectRights.display_control && createProjectRights.display_control === 'N' ? true : false}
           onBtnClick={() => setRedirectToProject(true)}
         />
       </div>
-      {redirectToProject && createProjectRights&&createProjectRights.display_control&&createProjectRights.display_control==='Y' &&
+      {redirectToProject && createProjectRights && createProjectRights.display_control && createProjectRights.display_control === 'Y' &&
         <Redirect push to="/Home/projectFormCreate" />
       }
       {/* {console.log(pathname, "projectFormCreate")} */}
@@ -469,15 +464,15 @@ useEffect(() => {
   );
 }
 const mapStateToProps = (state) =>
-// console.log(state,"statestatestate")
-({
-  TableData: state.projectSearchReducer.getProjectSearchTableData,
-  ClientType: state.getOptions.getClientType,
-  Client: state.getOptions.getClientlist,
-  ProjectType: state.getOptions.getProjectType,
-  ProjectName: state.getOptions.getProjectName,
-  BillableType: state.getOptions.getBillableType,
-  UserPermission: state.UserPermissionReducer.getUserPermission,
-});
+  // console.log(state,"statestatestate")
+  ({
+    TableData: state.projectSearchReducer.getProjectSearchTableData,
+    ClientType: state.getOptions.getClientType,
+    Client: state.getOptions.getClientlist,
+    ProjectType: state.getOptions.getProjectType,
+    ProjectName: state.getOptions.getProjectName,
+    BillableType: state.getOptions.getBillableType,
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+  });
 
 export default connect(mapStateToProps)(Projectsearch);

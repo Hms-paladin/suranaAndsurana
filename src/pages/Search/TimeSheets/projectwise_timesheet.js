@@ -12,7 +12,7 @@ import { notification } from "antd";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { getEmployeeList, getProjectType, getProjectSubType, getProjectName } from '../../../actions/MasterDropdowns'
 import { getProjectWise_TimeSheet } from '../../../actions/TimeSheetAction'
-
+import moment from 'moment';
 
 function ProjectwiseTS(props) {
     const [multiplePanel, setMultiplePanel] = useState([]);
@@ -22,6 +22,7 @@ function ProjectwiseTS(props) {
     let dispatch = useDispatch()
     const [projectList, setprojectList] = useState([])
     const [openPanel, setopenPanel] = useState(0)
+    const [minDate, setMinDate] = useState(new Date())
     const [projectSearch, setprojectSearch] = useState({
         proj_name: {
             value: "",
@@ -74,6 +75,10 @@ function ProjectwiseTS(props) {
             errmsg: errorcheck.msg,
             validation: projectSearch[key].validation
         }
+
+        if (key === "fromdate") {
+            setMinDate(data)
+        }
         setprojectSearch(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -86,20 +91,14 @@ function ProjectwiseTS(props) {
         { id: "empName", label: "Employee Name" },
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub Activity" },
-        { id: "startdate", label: "Start date" },
-        { id: "planned_sd", label: "Planned start date" },
-        { id: "planned_ed", label: "Planned end date" },
-        { id: "actualstart", label: "Actual start (date/time)" },
-        { id: "actualend", label: "Actual end (date/time)" },
-        { id: "tothours", label: "Total hours" }
+        { id: "planned_sd", label: "Planned Start Date" },
+        { id: "planned_ed", label: "Planned End Date" },
+        { id: "actualstart", label: "Actual Start (Date/Time)" },
+        { id: "actualend", label: "Actual End (Date/Time)" },
+        { id: "tothours", label: "Total Hours" }
     ];
-    const getRows = [
-        { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "23hr" },
-        { activity: <Link to=""><div className="ProjectTaskId">Hearing</div></Link>, subactivity: "Non-Effective", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "22hr" },
-    ];
-    const getDesignRows = [
-        { activity: <Link to=""><div className="ProjectTaskId">Application Filing</div></Link>, subactivity: "Sub-activity 1", startdate: "11-05-2021", planned_sd: "10-05-2021", planned_ed: "15-05-2021", actualstart: "12-05-2021/9:00", actualend: "13-05-2021/9:00", tothours: "23hr" },
-    ];
+
+
     useEffect(() => {
         dispatch(getEmployeeList())
         dispatch(getProjectType())
@@ -148,17 +147,61 @@ function ProjectwiseTS(props) {
 
 
     const SearchData = () => {
-        console.log(projectSearch.to_date.value, "ps")
-        // check the dates
-        if (new Date(projectSearch.from_date.value) < new Date(projectSearch.to_date.value)) {
-            dispatch(getProjectWise_TimeSheet(projectSearch))
-        } else if (new Date(projectSearch.from_date.value) > new Date(projectSearch.to_date.value)) {
-            notification.error({
-                message: "Invalid From date and To date",
-            });
-        } else {
+        console.log(projectSearch.length, "len")
+        Object.size = function (obj) {
+            var size = 0,
+                key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };
+
+        // Get the size of an object
+        var size = Object.size(projectSearch);
+        console.log(size, "len")
+        if (projectSearch) {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
+
+        setprojectSearch({
+            proj_name: {
+                value: "",
+                validation: [{ name: "required" }],
+                error: null,
+                errmsg: null,
+            },
+            emp_name: {
+                value: "",
+                validation: [{ name: "required" }],
+                error: null,
+                errmsg: null,
+            },
+            project_type: {
+                value: "",
+                validation: [{ name: "required" }],
+                error: null,
+                errmsg: null,
+            },
+            project_subtype: {
+                value: "",
+                validation: [{ name: "required" }],
+                error: null,
+                errmsg: null,
+            },
+            from_date: {
+                value: "",
+                validation: [{ name: "required" }],
+                error: null,
+                errmsg: null,
+            },
+            to_date: {
+                value: "",
+                validation: [{ name: "required" }],
+                error: null,
+                errmsg: null,
+            },
+        })
     }
 
 
@@ -172,88 +215,195 @@ function ProjectwiseTS(props) {
 
         let multipleTab = [];
         let subCollapse = [];
-        let ipProjectDataList = [];
+        let otherDataList = []
 
-        console.log(ipProjectDataList, "ip")
-        props?.Project_TimeSheet?.map((data, index) => {
-            data?.project_details?.map((data, index) => {
-                subCollapse.push(
-                    <Panel
-                        header={`${data?.sub_project_type}-${data?.project_name}`}
-                        key={index + 1}
-                    >
-                        <EnhancedTable
-                            headCells={
-                                headCells
-                            }
-                            rows={[
-                                {
-                                    "empName": data.name,
-                                    "actitvity": data.activity,
-                                    "subactivity": data.sub_activity,
-                                    "startdate": data.start_date,
-                                    "planned_sd": data.process,
-                                    "planned_ed": data.filing_type,
-                                    "actualstart": data.actual_start_date,
-                                    "actualend": data.actual_end_date,
-                                    "tothours": data.no_of_hrs,
+
+        props.Project_TimeSheet.map((data, i) => {
+            let rowDataList = {}
+            let sample = {};
+            let tableRow1 = [];
+            let tableRow = [];
+            let tableRow2 = [];
+            let tableRow3 = [];
+            let tableRow4 = [];
+            let tableRow5 = [];
+            if (data.project_type_id === 1) {
+
+                sample["Design"] = data.project_details.filter((val) => val?.sub_project_id === 2)
+                sample["Patent"] = data.project_details.filter((val) => val?.sub_project_id === 3)
+                sample["Trademark"] = data.project_details.filter((val) => val?.sub_project_id === 1)
+                sample["Copyright"] = data.project_details.filter((val) => val?.sub_project_id === 4)
+                sample["IPABTrademark"] = data.project_details.filter((val) => val?.sub_project_id === 5)
+                sample["IPABDesign"] = data.project_details.filter((val) => val?.sub_project_id === 6)
+
+                if (sample?.Design.length > 0) {
+                    sample?.Design.map((dat, k) => {
+                        let currentData = {}
+                        currentData["empName"] = dat.name;
+                        currentData["actitvity"] = dat.actitvity;
+                        currentData["subactivity"] = dat.sub_activity;
+                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`;
+                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["tothours"] = dat.no_of_hrs;
+                        tableRow1.push(currentData);
+                    })
+
+                }
+                console.log("filtersfilters", tableRow1)
+                sample["Design"] = tableRow1;
+
+                if (sample?.Patent.length > 0) {
+                    let currentData = {}
+                    sample?.Patent.map((dat, k) => {
+                        currentData["empName"] = dat.name;
+                        currentData["actitvity"] = dat.actitvity;
+                        currentData["subactivity"] = dat.sub_activity;
+                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
+                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["tothours"] = dat.no_of_hrs;
+                        tableRow2.push(currentData);
+                    })
+                }
+                console.log("filtersfilters", tableRow2)
+                sample["Patent"] = tableRow2;
+
+                if (sample?.Trademark.length > 0) {
+                    let currentData = {}
+                    sample?.Trademark.map((dat, k) => {
+                        currentData["empName"] = dat.name;
+                        currentData["actitvity"] = dat.activity;
+                        currentData["subactivity"] = dat.sub_activity;
+                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
+                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["tothours"] = dat.no_of_hrs;
+                        tableRow.push(currentData);
+                    })
+                }
+                console.log("filtersfilters", tableRow)
+                sample["Trademark"] = tableRow;
+
+                if (sample?.Copyright.length > 0) {
+                    let currentData = {}
+                    sample?.Copyright.map((dat, k) => {
+                        currentData["empName"] = dat.name;
+                        currentData["actitvity"] = dat.actitvity;
+                        currentData["subactivity"] = dat.sub_activity;
+                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
+                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["tothours"] = dat.no_of_hrs;
+                        tableRow3.push(currentData);
+                    })
+                }
+                console.log("filtersfilters", tableRow3)
+                sample["Copyright"] = tableRow3;
+
+                if (sample?.IPABTrademark.length > 0) {
+                    let currentData = {}
+                    sample?.IPABTrademark.map((dat, k) => {
+                        currentData["empName"] = dat.name;
+                        currentData["actitvity"] = dat.actitvity;
+                        currentData["subactivity"] = dat.sub_activity;
+                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
+                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["tothours"] = dat.no_of_hrs;
+                        tableRow4.push(currentData);
+                    })
+                }
+                console.log("filtersfilters", tableRow4)
+                sample["IPABTrademark"] = tableRow4;
+
+                if (sample?.IPABDesign.length > 0) {
+                    let currentData = {}
+                    sample?.IPABDesign.map((dat, k) => {
+                        currentData["empName"] = dat.name;
+                        currentData["actitvity"] = dat.actitvity;
+                        currentData["subactivity"] = dat.sub_activity;
+                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
+                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["tothours"] = dat.no_of_hrs;
+                        tableRow5.push(currentData);
+                    })
+                }
+                console.log("filtersfilters", tableRow5)
+                sample["IPABDesign"] = tableRow5;
+
+                console.log("filtersfilterssample", sample)
+                for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
+                    console.log("tttttttttttttttttt", key);
+                    subCollapse.push(
+                        <Panel
+                            header={`${key} (${value.length})`}
+                            key={index + 1}
+                        >
+
+                            <EnhancedTable
+                                headCells={
+                                    headCells
                                 }
-                            ]}
+                                rows={value}
+                                tabletitle={""}
+                            />
+                        </Panel>
+                    )
 
-                        />
+                }
+
+                multipleTab.push(
+                    <Panel
+                        header={`${data.project_type} (${data?.project_details?.length})`}
+                        key={i + 1}
+                    >
+                        <Collapse>{subCollapse}</Collapse>
+
                     </Panel>
-                )
 
-            })
+                );
+            } else if (data.project_type_id !== 1) {
+                data.project_details.map((dat, k) => {
+                    console.log(dat, "level2-else")
+                    rowDataList["empName"] = dat.name;
+                    rowDataList["actitvity"] = dat.actitvity;
+                    rowDataList["subactivity"] = dat.sub_activity;
+                    rowDataList["planned_sd"] = `${moment(dat.start_date).format('DD-MMM-YYYY')}`
+                    rowDataList["planned_ed"] = `${moment(dat.end_date).format('DD-MMM-YYYY')}`
+                    rowDataList["actualstart"] = `${moment(dat.actual_start_date).format('DD-MMM-YYYY')} ( ${dat.start_time}) `
+                    rowDataList["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                    rowDataList["tothours"] = dat.no_of_hrs;
+                    otherDataList.push(rowDataList)
+                    multipleTab.push(
+                        <Panel
+                            header={`${data.project_type} (${data?.project_details?.length})`}
+                            key={i + 1}
+                        >
+
+                            <EnhancedTable
+                                headCells={
+                                    headCells
+                                }
+                                rows={otherDataList}
+
+                            />
+                        </Panel>
+
+                    );
+                })
+            }
         })
 
-        props.Project_TimeSheet.map((data, index) => {
-            console.log(props.Project_TimeSheet, "project_detailsproject_details")
-            multipleTab.push(
-                <Panel
-                    header={`${data.project_type} (${data?.project_details?.length})`}
-                    key={index + 1}
-                >
-                    {data?.project_type_id === 1 ? <Collapse>{subCollapse}</Collapse> : ""}
 
-                    {data?.project_details && data?.project_details?.map((data, index) => {
-                        var rowdataListobj = {};
-                        if (data.project_type_id !== 1) {
-                            rowdataListobj["empName"] = data.name;
-                            rowdataListobj["actitvity"] = data.activity;
-                            rowdataListobj["subactivity"] = data.sub_activity;
-                            rowdataListobj["startdate"] = data.start_date;
-                            rowdataListobj["planned_sd"] = data.process;
-                            rowdataListobj["planned_ed"] = data.filing_type;
-                            rowdataListobj["actualstart"] = data.actual_start_date;
-                            rowdataListobj["actualend"] = data.actual_end_date;
-                            rowdataListobj["tothours"] = data.no_of_hrs;
-                        }
-                        ipProjectDataList.push(rowdataListobj);
-                    })}
 
-                    {data?.project_details?.length && data?.project_type_id !== 1 ? <EnhancedTable
-                        headCells={
-                            headCells
-                        }
-                        rows={[
-                            {
-                                "empName": data.name,
-                                "actitvity": data.activity,
-                                "subactivity": data.sub_activity,
-                                "startdate": data.start_date,
-                                "planned_sd": data.process,
-                                "planned_ed": data.filing_type,
-                                "actualstart": data.actual_start_date,
-                                "actualend": data.actual_end_date,
-                                "tothours": data.no_of_hrs,
-                            }
-                        ]}
-                        tabletitle={""}
-                    /> : ""}
-                </Panel>
-            );
-        })
         setMultiplePanel(multipleTab);
     }, [props.Project_TimeSheet]);
 
@@ -261,7 +411,7 @@ function ProjectwiseTS(props) {
     return (
         <div>
 
-            <div className="DRtitle">Project Wise Time Sheet - {empname}</div>
+            <div className="DRtitle">Project Wise Time Sheet</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
                     <Grid item xs={2} container direction="column" spacing={1}>
@@ -274,7 +424,7 @@ function ProjectwiseTS(props) {
                             errmsg={projectSearch.proj_name.errmsg}
                         />
                     </Grid>
-                    <Grid item xs={2} container direction="column" spacing={1}>
+                    {/* <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">Employee Name</div>
                         <Labelbox type="select"
                             dropdown={projectList.employeeName}
@@ -283,7 +433,7 @@ function ProjectwiseTS(props) {
                             error={projectSearch.emp_name.error}
                             errmsg={projectSearch.emp_name.errmsg}
                         />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">Project Type</div>
                         <Labelbox type="select"
@@ -317,6 +467,7 @@ function ProjectwiseTS(props) {
                         <div className="Reporthead">To Date</div>
                         <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "to_date")}
+                            minDate={moment(`${projectSearch.from_date.value && projectSearch.from_date.value} 11: 00: 00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
                             value={projectSearch.to_date.value}
                             error={projectSearch.to_date.error}
                             errmsg={projectSearch.to_date.errmsg}

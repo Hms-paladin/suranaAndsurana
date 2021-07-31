@@ -172,7 +172,7 @@ function AddClient(props) {
 
   useEffect(() => {
     const clientNameStatus = props.clientNameCheck;
-    setAddclient_Form((prevState) => ({
+     setAddclient_Form((prevState) => ({
       ...prevState,
       ["client_name"]: {
         validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }, { name: "checkNameExists", params: clientNameStatus?.status }],
