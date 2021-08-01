@@ -132,6 +132,8 @@ function RatingModel(props) {
     const [showdropdown, setShowdropdown] = useState([])
     const [showdropdownindex, setShowdropdownindex] = useState()
     const [changeeditrate, setChangeeditrate] = useState(true)
+    const [ratingTitle, setRatingTitle] = useState([])
+    const [formValue, setFormValue] = useState({});
 
 
     useEffect(() => {
@@ -150,13 +152,14 @@ function RatingModel(props) {
         setEmpDetails(props.empDetail)
         setShowrowID(props.rowID)
         setShowratingDetails(props.GetEmpAppraisalSupRate)
-
+        setRatingTitle(props.GetDevelopment)
 
 
     }, [props.GetDevelopment, props.GetEmpAppraisalSupRate])
 
 
     useEffect(() => {
+
         if (props.rowID == 2) {
             let arrVal = []
 
@@ -197,7 +200,11 @@ function RatingModel(props) {
         setDevelopmentid(ids)
     }
 
-    const checkVali = (data, index, datas, val) => {
+    useEffect(() => {
+
+    }, [])
+
+    const checkVali = (data, index, datas, val, indexVal, name) => {
         let chooseval = val.value[data - 1]
         let rateval;
         datas[index].value.map((i) => {
@@ -205,32 +212,46 @@ function RatingModel(props) {
                 rateval = i
             }
         })
-        setChooserate(rateval)
+        let getIndex;
+        let formKeys = Object.keys(formValue)
 
-        if (index === 0) {
-            setFirstDropdown(rateval)
-            setSecondDropdown("-")
-            setThirdDropdown("-")
-        } else if (index === 1) {
-            setSecondDropdown(rateval)
-            setFirstDropdown("-")
-            setThirdDropdown("-")
+        formKeys.forEach((li, index) => {
+            if (name.slice(0, name.lastIndexOf("_")) === li.slice(0, li.lastIndexOf("_"))) {
+                getIndex = index + 1
+            }
+        })
+
+        if (!getIndex || getIndex === undefined) {
+            let formvalArr = formValue
+            formvalArr[name] = data
+            setFormValue(formvalArr)
         } else {
-            setThirdDropdown(rateval)
-            setFirstDropdown("-")
-            setSecondDropdown("-")
+            let formSliceArr = formValue
+            delete formSliceArr[formKeys[getIndex - 1]]
+            formSliceArr[name] = data
+            setFormValue(formSliceArr)
         }
 
+        setChooserate(rateval)
         setIndexid(index)
         setAttributeId(data)
     }
 
-    const showaddDetails = (datas) => {
+
+    const showaddDetails = (datas, indexVal) => {
         return (
             datas.map((val, index) => {
+                let formKeys = Object.keys(formValue)
+                let setVal = []
+                formKeys.forEach((ke) => {
+                    console.log(formValue[ke], ke, "key_" + indexVal + "_" + index, ke === "key_" + indexVal + "_" + index && formValue[ke], "test123")
+                    ke === "key_" + indexVal + "_" + index && setVal.push(formValue[ke])
+                })
+
                 return (
                     <div className="attributes">
                         <div className="attributeKey">{val.key}</div>
+                        {console.log(formValue[indexVal] && formValue[indexVal]["key_" + indexVal + "_" + index], "formValue[indexVal]")}
                         <div className="attributeValue">
                             <Labelbox type="select"
                                 dropdown={[
@@ -239,9 +260,9 @@ function RatingModel(props) {
                                     { id: 3, value: val.value[2] },
                                 ]}
                                 changeData={(data) =>
-                                    checkVali(data, index, datas, val)
+                                    checkVali(data, index, datas, val, indexVal, "key_" + indexVal + "_" + index)
                                 }
-                                value={indexid === index ? attributeId : ""}
+                                value={setVal.length > 0 && setVal[0]}
                             />
                         </div>
                     </div>
@@ -267,14 +288,7 @@ function RatingModel(props) {
                 dropdownValue[dropDownID].key3 = rate
             }
             setChangeeditrate(false)
-            setRateList([
-                ...rateList,
-                {
-                    "emp_id": localStorage.getItem("empId"),
-                    "development_id": dropDownID + 1,
-                    "rating": rate
-                },
-            ]);
+
         }
         return (
             data.map((val, index) => {
@@ -308,17 +322,17 @@ function RatingModel(props) {
 
     const showdevelopmentdetails = () => {
 
-        let disabledropdown = []
+        // let disabledropdown = []
 
-        disabledropdown.push(development)
-        if (areDevelopment.AreDevelopment) {
-            if (disabledropdown.length > 0) {
-                disabledropdown.map((data) => {
-                    areDevelopment.AreDevelopment[data - 1].disable = true
-                })
-            }
-            areDevelopment.AreDevelopment[development - 1].disable = true
-        }
+        // disabledropdown.push(development)
+        // if (areDevelopment.AreDevelopment) {
+        //     if (disabledropdown.length > 0) {
+        //         disabledropdown.map((data) => {
+        //             areDevelopment.AreDevelopment[data - 1].disable = true
+        //         })
+        //     }
+        //     areDevelopment.AreDevelopment[development - 1].disable = true
+        // }
 
 
         setCount(count + 1)
@@ -342,8 +356,52 @@ function RatingModel(props) {
             props.changeenable(true)
         }
         else {
-            if (dropdownValue.length === 19) {
-                dispatch(InsertSupervisorRate(rateList))
+            let rateLists = []
+            let allobj = Object.keys(formValue)
+            let allval = Object.values(formValue)
+            console.log(Object.values(formValue), "formValues")
+
+
+            for (let i = 0; i < allobj.length; i++) {
+                console.log(allobj[i].split("_")[2], allobj[i].split("_")[1], "allobj[i]")
+                if (allobj[i].split("_")[2] == 0) {
+                    if (allval[i] == 1) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9 })
+                    }
+                    if (allval[i] == 2) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8 })
+                    }
+                    if (allval[i] == 3) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7 })
+                    }
+                    console.log(allval[i], "allval")
+                } else if (allobj[i].split("_")[2] == 1) {
+                    if (allval[i] == 1) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6 })
+                    }
+                    if (allval[i] == 2) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5 })
+                    }
+                    if (allval[i] == 3) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4 })
+                    }
+                } else if (allobj[i].split("_")[2] == 2) {
+                    if (allval[i] == 1) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3 })
+                    }
+                    if (allval[i] == 2) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2 })
+                    }
+                    if (allval[i] == 3) {
+                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1 })
+                    }
+                }
+            }
+
+            console.log(rateLists, "splitval")
+
+            if (rateLists.length === 18) {
+                dispatch(InsertSupervisorRate(rateLists))
                 props.handleChangeCloseModel()
                 props.changeenable(true)
             } else {
@@ -367,7 +425,7 @@ function RatingModel(props) {
                     <div className="employeeData">{moment(empDetails?.period_from).format("DD-MMM-yyy") + " to " + moment(empDetails?.period_to).format("DD-MMM-yyy")}</div>
                 </div>
             </div>
-            {showrowID != 2 && <div className="areaDevelopment">
+            {/* {showrowID != 2 && <div className="areaDevelopment">
 
                 <Grid item xs={4}>
                     <div className="appraisalFieldheading"> Area of Development</div>
@@ -382,33 +440,42 @@ function RatingModel(props) {
                     </div>
                 </Grid>
                 <img src={PlusIcon} className="plusiconview" onClick={showdevelopmentdetails} />
-            </div>}
-            {development && showaddDetails(rating[development - 1])}
+            </div>} */}
+            <div className="modelcontent">
 
+                {showrowID !== 2 && rating.map((id, index) => {
+                    return (
+                        <div>
+                            <div className="ratingHeading">{ratingTitle && ratingTitle[index]?.area_of_development}</div>
+                            <div>{showaddDetails(rating[index], index)}</div>
+                        </div>
 
-            {showratingdetails && rowid.map((id, index) => {
-                return (
-                    <div>
-                        <div className="ratingHeading">{developmentid[id - 1]}</div>
-                        <div> {listratingDetails(rating[id - 1], index)}</div>
-                    </div>
-                )
-            })}
+                    )
+                })}
+                {/* {showratingdetails && rowid.map((id, index) => {
+                    return (
+                        <div>
+                            <div className="ratingHeading">{developmentid[id - 1]}</div>
+                            <div> {listratingDetails(rating[id - 1], index)}</div>
+                        </div>
+                    )
+                })} */}
 
-            {showrowID == 2 && showratingDetails && showratingDetails.map((val, index) => {
-                return (
-                    <div className="showRateingscontainer">
-                        <div className="ratingHeading">{val.area_of_development}</div>
-                        <div> {listratingDetails(rating[val.development_id - 1], index)}</div>
-                    </div>
-                )
-            })
+                {showrowID == 2 && showratingDetails && showratingDetails.map((val, index) => {
+                    return (
+                        <div className="showRateingscontainer">
+                            <div className="ratingHeading">{val.area_of_development}</div>
+                            <div> {listratingDetails(rating[val.development_id - 1], index)}</div>
+                        </div>
+                    )
+                })
 
-            }
+                }
 
-            <div className="appraisalBtn">
-                <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                <div className="appraisalBtn">
+                    <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
+                </div>
             </div>
         </div>
     )

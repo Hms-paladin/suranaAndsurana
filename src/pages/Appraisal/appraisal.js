@@ -334,7 +334,6 @@ function Appraisal(props) {
                         message: ' Please Answer all the Questions',
                     });
                 }
-
             } else if (rowID == 2) {
 
                 console.log(Manageing, "mmi")
@@ -350,7 +349,6 @@ function Appraisal(props) {
                         message: ' Please Answer all the Questions',
                     });
                 }
-
             }
             else {
                 let checkQuestion = EmpApply.find((data) => {
@@ -363,9 +361,7 @@ function Appraisal(props) {
                         message: ' Please Answer all the Questions',
                     });
                 }
-
             }
-
         }
     }
 

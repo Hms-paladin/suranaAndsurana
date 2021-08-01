@@ -91,6 +91,12 @@
     word-break:break-all;
 }
 
+.modelcontent{
+    height: 430px;
+    overflow: auto;
+    padding: 10px;
+}
+
 .linkChoose {
     width: 100%;
     padding: 10px;
@@ -101,7 +107,8 @@
     > div:first-child {
         width: 40%;
         margin-right: 50px;
-        font-weight: 600;
+        font-weight: 500;
+        margin-left: 31px;
     }
     > div {
         margin-right: 50px;
@@ -109,7 +116,7 @@
 }
 .chooseleave {
     width: 100%;
-    padding: 10px;
+    padding: 10px 10px 10px 42px;
     background-color: white;
     margin: 0px 5px 3px 5px;
     border-radius: 7px;
@@ -120,7 +127,7 @@
         > div:first-child {
             width: 40%;
             margin-right: 50px;
-            font-weight: 600;
+            font-weight: 500;
         }
         > div {
             margin-right: 50px;
