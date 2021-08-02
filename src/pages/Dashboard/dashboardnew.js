@@ -179,8 +179,15 @@ function DashboardNew(props) {
 
   }, [])
   useEffect(() => {
-    let now = moment();
+
+    onPanelChange()
+  }, [])
+
+  function onPanelChange(value, mode) {
+  
+    let now = moment(value?._d);
     now = now.format('YYYY-MM-DD');
+   
     Axios({
       method: 'POST',
       url: apiurl + 'get_dashboard_calendar',
@@ -192,17 +199,11 @@ function DashboardNew(props) {
       let calenderData = []
       calenderData.push({
         Task: response.data.data[0].task,
-        stage: response.data.data[0].stage[0]
+        stage: response.data.data[0].stage,
       })
       setCalenderValues(calenderData)
-      console.log(calenderData, "cv")
+
     })
-
-
-  }, [])
-
-  function onPanelChange(value, mode) {
-    console.log(value, mode);
   }
 
   console.log(projectwise, "projectwise")
@@ -391,45 +392,15 @@ function DashboardNew(props) {
                   })}
                 </div>
               </div>
-
               <Grid item xs={3}>
                 <div className="custom_calender">
-                  <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+                  <Calendar fullscreen={false} onSelect={onPanelChange} />
                 </div>
-                <div className="calender_view">
-                  <div className="taskdaysdatas">
-                    <div className="caltableHeader">
-                      <div>Project Name</div>
-                      <div>Activity</div>
-                      <div>Status</div>
-
-                    </div>
-                    <div className="projectdatas">
-                      {calenderValues[0]?.Task.length ? calenderValues[0]?.Task?.map((data) => {
-                        return (
-                          <>
-                            <div className="caltable">
-                              <div>
-                                {data.project_name}
-
-                              </div>
-                              <div>{data.activity}</div>
-                              <div>{data.status}</div>
-
-                            </div>
-                          </>
-                        );
-                      }) : "No Tasks Found"}
-                    </div>
-                    {}
-                  </div>
-                </div>
-
               </Grid>
 
-
             </div>
-            <div className="taskdaysscroll">
+
+            <div className="taskdaysscroll" >
               <div className="tableHeader">
                 <div className="linkHeader"></div>
                 <div>Tasks due by 5 days</div>
@@ -463,6 +434,68 @@ function DashboardNew(props) {
                 {}
               </div>
             </div>
+
+
+            <section className="sec-section" >
+              <div className="projectscroll-second" >
+                <div className="tableHeader">
+                  <div className="linkHeader"></div>
+                  <div>Tasks Day-Wise</div>
+                </div>
+                <div className="taskdaysdatas">
+                  <div className="taskdaystableHeader">
+                    <div>Project Name</div>
+                    <div>Activity</div>
+                    <div>Start Date</div>
+                    <div>End Date</div>
+                    <div>Priority</div>
+                    <div>Status</div>
+                  </div>
+                  {calenderValues[0]?.Task?.length ? calenderValues[0]?.Task?.map((data) => {
+                    return (
+                      <>
+                        <div className="taskdaystable">
+                          <div>
+                            {data.activity}
+
+                          </div>
+                          <div>{data.project_name}</div>
+                          <div>{moment(data.start_date).format('DD-MMM-YYYY')}</div>
+                          <div>{moment(data.end_date).format('DD-MMM-YYYY')}</div>
+                          <div>{data.priority}</div>
+                          <div>{data.status}</div>
+                        </div>
+                      </>
+                    );
+                  }) : "No Tasks Found"}
+                  {}
+                </div>
+              </div>
+
+              <div className="taskscroll">
+                <div className="tableHeader">
+                  <div className="linkHeader"></div>
+                  <div>Stages</div>
+                </div>
+                <div className="taskdaysdatas">
+                  <div className="taskdaystableHeader">
+                    <div>Project Name</div>
+                    <div>Stage Name</div>
+                  </div>
+                  {calenderValues[0]?.stage?.length ? calenderValues[0]?.stage?.map((data) => {
+                    return (
+                      <>
+                        <div className="taskdaystablecal">
+                          <div>{data.project_name}</div>
+                          <div>{data.stage}</div>
+                        </div>
+                      </>
+                    );
+                  }) : "No Stages Found"}
+                  {}
+                </div>
+              </div>
+            </section>
           </>
           :
           <>
@@ -520,6 +553,7 @@ function DashboardNew(props) {
               </div>
 
             </div>
+
             <div className="overallContainer">
               <div className="overallScroll">
                 <div className="tableHeader">
@@ -588,6 +622,7 @@ function DashboardNew(props) {
               </div>
             </div>
           </>
+
       }
       {/* <div>
             <DynModel modelTitle="Adhoc Task" handleChangeModel={adhoc} handleChangeCloseModel={(bln) => setAdhoc(bln)} width={1000} 
