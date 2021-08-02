@@ -134,12 +134,14 @@ function RatingModel(props) {
     const [changeeditrate, setChangeeditrate] = useState(true)
     const [ratingTitle, setRatingTitle] = useState([])
     const [formValue, setFormValue] = useState({});
+    const [empId,setEmpId]=useState()
 
 
     useEffect(() => {
         dispatch(GetDevelopment())
-        dispatch(GetEmpAppraisalSupRate(9))
-        // console.log(props.employeeID,"props.employeeID")
+        dispatch(GetEmpAppraisalSupRate(props.employeeID))
+        setEmpId(props.employeeID)
+        console.log(localStorage.getItem("designation"),"props.employeeID")
         // employeeID
     }, [])
 
@@ -152,6 +154,7 @@ function RatingModel(props) {
         setEmpDetails(props.empDetail)
         setShowrowID(props.rowID)
         setShowratingDetails(props.GetEmpAppraisalSupRate)
+        console.log(props.GetEmpAppraisalSupRate,props.employeeID,"checkrate")
         setRatingTitle(props.GetDevelopment)
 
 
@@ -366,34 +369,34 @@ function RatingModel(props) {
                 console.log(allobj[i].split("_")[2], allobj[i].split("_")[1], "allobj[i]")
                 if (allobj[i].split("_")[2] == 0) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9 })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8 })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7 })
                     }
                     console.log(allval[i], "allval")
                 } else if (allobj[i].split("_")[2] == 1) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6 })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5 })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4 })
                     }
                 } else if (allobj[i].split("_")[2] == 2) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3 })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2 })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": localStorage.getItem("empId"), "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1 })
                     }
                 }
             }

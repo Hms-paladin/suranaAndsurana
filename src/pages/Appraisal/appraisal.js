@@ -106,12 +106,13 @@ function Appraisal(props) {
         dispatch(GetAreaDevelopment())
         dispatch(GetEmpAppraisal())
         dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
+        console.log(props.GetEmpAppraisalDetails, "props.location.state?.appraisalData.emp_appr_id")
         setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
         if (props.location.state?.appraisalData.task === "Employee Appraisal") {
-            if (Number(localStorage.getItem("empId")) === 1) {
-                setRowID(2)
-            } else {
+            if (localStorage.getItem("designation") === "HOD") {
                 setRowID(1)
+            } else {
+                setRowID(2)
             }
         }
         // setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : 2)
@@ -476,7 +477,7 @@ function Appraisal(props) {
                     </div>}
                     <div>
                         <div>Period</div>
-                        <div>{moment(empDetail?.period_from).format("DD-MMM-yyy") + " to " + moment(empDetail?.period_to).format("DD-MMM-yyy")}</div>
+                        <div>{moment(empDetail?.doj).format("DD-MMM-yyy") + " to " + moment(new Date()).format("DD-MMM-yyy")}</div>
                     </div>
                 </div>
 
