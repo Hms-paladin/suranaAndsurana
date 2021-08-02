@@ -14,6 +14,8 @@ import { getActivity } from '../../actions/MasterDropdowns';
 import { InsertKra, getKra } from '../../actions/KraAction';
 import moment from "moment";
 import { notification } from "antd";
+import { apiurl } from "../../utils/baseUrl.js";
+import axios from "axios";
 
 const KRA = (props) => {
     const dispatch = useDispatch();
@@ -65,13 +67,14 @@ const KRA = (props) => {
             errmsg: null,
         },
     });
-    const reference = useRef([]);
+    const [reference,setReference] = useState([]);
     const [testDate, setTestDate] = useState({})
 
 
     useEffect(() => {
         dispatch(getActivity());
     }, [kpi_form]);
+
     useEffect(()=>{
         dispatch(getKra())
         console.log(props.getKra,"datechange")
@@ -89,26 +92,6 @@ const KRA = (props) => {
         setTestDate(props.getKra[0])
 
     }, [props.getActivity, props.getKra, kpi_form,datechange,testDate])
-    // useEffect(() => {
-    //     checking()
-    //     console.log(testDate,"testDate")
-    // }, [testDate])
-
-    // const checking = useCallback(() => {
-    //     let id = testDate && testDate.emp_id
-    //     if (Number(localStorage.getItem("empId")) === (testDate && testDate.emp_id)) {
-    //         if (
-    //           moment(kpi_form.toperiod.value).format("MMM-yyyy") >= moment(testDate.period_to).format("MMM-yyyy")&& 
-    //           moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate.period_from).format("MMM-yyyy")
-    //           ) {
-    //             notification.error({
-    //                 message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
-    //             });
-    //         }
-         
-    //     }
-
-    // }, [testDate])
 
     function checkValidation(data, key) {
         var startDate = kpi_form.fromperiod.value
@@ -181,7 +164,7 @@ const KRA = (props) => {
             setTodisable(true)
         }
 
-        if (reference.current && reference.current.length >= 0) {
+        if (reference && reference.length >= 0) {
             setCount(count + 1)
         }
         var mainvalue = {};
@@ -203,59 +186,63 @@ const KRA = (props) => {
         }
        
         else {
-            if (moment(kpi_form.fromperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&&
-                moment(kpi_form.toperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
 
-                moment(kpi_form.fromperiod.value).format("MMM-yyyy") < moment(testDate?.period_from).format("MMM-yyyy")&&
-                moment(kpi_form.toperiod.value).format("MMM-yyyy") > moment(testDate?.period_from).format("MMM-yyyy")||
-               
-                
-                // moment(kpi_form.toperiod.value).format("MMM-yyyy") >= moment(testDate?.period_from).format("MMM-yyyy")&&
-                // moment(kpi_form.fromperiod.value).format("MMM-yyyy") <= moment(testDate?.period_to).format("MMM-yyyy")||
+            if(kpi_form.fromperiod.value!=''&&kpi_form.toperiod.value!=''){
 
+                axios({
+                    method: 'POST',
+                    url: apiurl + 'get_kra_check_date',
+                    data: {
+                        "emp_id": localStorage.getItem("empId"),
+                        "period_from": moment(kpi_form.fromperiod.value).format("YYYY-MM") || 0,
+                        "period_to": moment(kpi_form.toperiod.value).format("YYYY-MM") || 0,
+                    }
+                })
+                .then((response) => {
+                        
+                    if(response.data.status===0){
+    
+                        setEmpIdTrue(true)
+                        setDisabledate(false)
+            
+                        notification.error({
+                            message: 'This Period Already Exist.'
+                        });
+                    }else if(response.data.status===1){
 
-                moment(kpi_form.fromperiod.value).format("MMM-yyyy") < moment(testDate?.period_to).format("MMM-yyyy")&&
-                moment(kpi_form.toperiod.value).format("MMM-yyyy") < moment(testDate?.period_to).format("MMM-yyyy")||
-                
-                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate?.period_to).format("MMM-yyyy")||
-                moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate?.period_to).format("MMM-yyyy")||
-                moment(kpi_form.toperiod.value).format("MMM-yyyy") == moment(testDate?.period_from).format("MMM-yyyy")||
-                moment(kpi_form.fromperiod.value).format("MMM-yyyy") == moment(testDate?.period_from).format("MMM-yyyy")
-      
-                ) {
-                  setEmpIdTrue(true)
-                  setDisabledate(false)
-      
-                  notification.error({
-                      message: 'This Period Already Exist. Choose After Month  ' + moment(testDate.period_from).format("MMM-yyyy") + "  to  " + moment(testDate.period_to).format("MMM-yyyy"),
-                  });
-              }
-            else{
-            if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
-                notification.error({
-                    message: 'Total Percent Value should be 100 only',
-                });
-
-            }
-            else {
-                reference.current = ([...reference.current, {
-                    activitys: activityName,
-                    percent: kpi_form.percentage.value,
-                    action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
-                }])
-
-                kpi_form.activity.value = "";
-                kpi_form.percentage.value = "";
-            }
-        }
+                        if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
+                            notification.error({
+                                message: 'Total Percent Value should be 100 only',
+                            });
+            
+                        }
+                        else {
+                            setReference(prevState => ([...prevState, {
+                                activitys: activityName,
+                                percent: kpi_form.percentage.value,
+                                action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
+                            }]))
+            
+                            kpi_form.activity.value = "";
+                            kpi_form.percentage.value = "";
+           
+                        }
+                    }
+    
+                })
+                }
+    
     }
-        addpercentage()
+
+        setKpi_form(prevState => ({
+            ...prevState,
+        }));
     }
 
     const editRows = (data) => {
         setRowUpdate(true)
         setIndex(data)
-        let Activity_Name = reference.current[data].activitys
+        let Activity_Name = reference[data].activitys
         let activityId;
 
         activity.Activity && activity.Activity.filter((data) => {
@@ -267,7 +254,7 @@ const KRA = (props) => {
             ...prevState,
             // kpi_form:{
             percentage: {
-                value: reference.current[data].percent,
+                value: reference[data].percent,
                 validation: [{ name: "required" }],
                 error: null,
                 errmsg: null,
@@ -282,12 +269,14 @@ const KRA = (props) => {
         }));
 
     }
+useEffect(()=>{
+    addpercentage()
+},[reference])
 
     const addpercentage = () => {
-        console.log(reference.current, "dfghjklrtyui")
 
         let Percentage = []
-        reference.current.map((data) => {
+        reference.map((data) => {
             Percentage.push(Number(data.percent))
         })
 
@@ -307,8 +296,8 @@ const KRA = (props) => {
             }
         })
 
-        reference.current[index].activitys = activityName
-        reference.current[index].percent = kpi_form.percentage.value
+        reference[index].activitys = activityName
+        reference[index].percent = kpi_form.percentage.value
         setRowUpdate(false)
         addpercentage()
 
@@ -316,7 +305,7 @@ const KRA = (props) => {
         kpi_form.percentage.value = "";
     }
 
-    // console.log(reference.current.activitys, "percent")
+    // console.log(reference.activitys, "percent")
 
     const handleCancel = () => {
         let From_key = [
@@ -348,18 +337,18 @@ const KRA = (props) => {
             });
         }
         else {
-            let refLength = reference.current.length
+            let refLength = reference.length
             for (let i = 0; i < refLength; i++) {
-                console.log(reference.current[i].activitys, "length")
+                console.log(reference[i].activitys, "length")
                 let activityId;
                 activity.Activity && activity.Activity.filter((data) => {
-                    if (data.value === reference.current[i].activitys) {
+                    if (data.value === reference[i].activitys) {
                         activityId = data.id
                     }
                 })
                    
                 
-                dispatch(InsertKra(kpi_form, activityId, reference.current[i].percent, reference.current.length, i + 1)).then((response) => {
+                dispatch(InsertKra(kpi_form, activityId, reference[i].percent, reference.length, i + 1)).then((response) => {
                     setDisabledate(false)
                 })
                
@@ -509,7 +498,7 @@ const KRA = (props) => {
 
                 <div style={{ padding: "20px 10px 10px 10px" }}>
                     <EnhancedTable headCells={header} aligncss="kra_table"
-                        rows={reference.current} />
+                        rows={reference} />
                 </div>
                 <div className="totalPercentage">
                     <div>Total</div>
