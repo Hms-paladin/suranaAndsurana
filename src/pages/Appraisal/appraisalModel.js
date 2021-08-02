@@ -19,6 +19,25 @@ function AppraisalModel(props) {
         setModelTitle(props.modelTitle)
         setTest(true)
 
+        Object.keys(props.modelComment).map((val) => {
+            if (val === props.modelCommentID) {
+                setAppraisalcmt(props.modelComment[val].value)
+            }
+        })
+
+        Object.keys(props.supmodelComment).map((val) => {
+            if (val === props.modelCommentID) {
+                setAppraisalcmt(props.supmodelComment[val].value)
+            }
+        })
+
+        Object.keys(props.managemodelComment).map((val) => {
+            if (val === props.modelCommentID) {
+                setAppraisalcmt(props.managemodelComment[val].value)
+            }
+        })
+
+
         if (props.modelCommentID === "area_of_speci") {
             setChangeanswer(props.modelComment.area_of_speci.value)
         } else if (props.modelCommentID === "self_work_des") {
@@ -56,18 +75,18 @@ function AppraisalModel(props) {
         }
     }, [props])
 
-    console.log(changeanswer, "fff")
+    console.log(appraisalcmt, "fff")
 
 
     const checkValidation = (data, key) => {
-        setTest(false)
-        setAppraisalcmt(data)
+        setChangeanswer(data)
     }
 
     const onsubmit = () => {
-        props.addAppraisalcmt(appraisalcmt, props.modelCommentID)
+        props.addAppraisalcmt(changeanswer, props.modelCommentID)
         props.handleChangeCloseModel()
-        setAppraisalcmt("")
+        setTest(false)
+
     }
     return (
         <div>
@@ -78,12 +97,12 @@ function AppraisalModel(props) {
                         changeData={(data) =>
                             checkValidation(data, "comment")
                         }
-                        value={test ? changeanswer : appraisalcmt}
+                        value={changeanswer}
                     />
                 </div>
             </div>
             <div className="appraisalBtn">
-                <CustomButton btnName={changeanswer === "" ? "Save" : "Update"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onsubmit} />
+                <CustomButton btnName={appraisalcmt !== "" ? "update" : "save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onsubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={() => setAppraisalcmt("")} />
             </div>
 
