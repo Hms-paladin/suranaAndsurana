@@ -749,7 +749,7 @@ const ResumePage = (props) => {
   const showEditExperienceModel = (y) => {
     setExperienceModelOpen(true);
     setExperienceid(y);
-    setExperiencerow(experienceList[y]);
+    setExperiencerow([experienceList[y]]);
     setOnEdit(true);
   };
 

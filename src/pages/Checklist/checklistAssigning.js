@@ -247,8 +247,10 @@ function CheckListAssign(props) {
           
         }
         if (data && key == "employeeId") {
+          checkListForm['projectname'].disabled = true;
           checkListForm['project_type_id'].disabled = true;
           checkListForm['subProjectId'].disabled = true;
+          checkListForm['projectname'].validation =[];
           checkListForm['project_type_id'].validation =[];
           checkListForm['subProjectId'].validation =[];
         }

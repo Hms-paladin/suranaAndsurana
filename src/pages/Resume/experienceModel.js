@@ -17,7 +17,6 @@ function ExperienceModel(props) {
     const dispatch = useDispatch()
     const [city, setCity] = useState([])
     const [industryOptions, setIndustryOptions] = useState([])
-    const [rowchange, setRowchange] = useState([]);
     const [Experience_Form, setExperienceForm] = useState({
 
         industry: {
@@ -64,7 +63,7 @@ function ExperienceModel(props) {
         },
         responsibilities: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "200"}],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -79,16 +78,17 @@ function ExperienceModel(props) {
         // if(props.nullFieldValueExp){
         //     handleCancel()
         // }
-        // console.log(props.editExperiences,"props.editExperiences")
-        if(props.editExperiences&&props.editExperiences!==''>0){
-        const industry = props.editExperiences?.type_of_industry;
-        const compName = props.editExperiences?.company_name;
-        const city = props.editExperiences?.city_id;
-        const dept = props.editExperiences?.department;
-        const desig = props.editExperiences?.designation;
-        const periodFrm = props.editExperiences?.period_from;
-        const periodTo = props.editExperiences?.period_to;
-        const respons = props.editExperiences?.responsible;
+        console.log(props.editExperiences,"props.editExperiences")
+        if(props.editExperiences&&props.editExperiences.length>0){
+            console.log(props.editExperiences,"Ssssssssssssssssssssssssss")
+        const industry = props.editExperiences[0]?.type_of_industry;
+        const compName = props.editExperiences[0]?.company_name;
+        const city = props.editExperiences[0]?.city_id;
+        const dept = props.editExperiences[0]?.department;
+        const desig = props.editExperiences[0]?.designation;
+        const periodFrm = props.editExperiences[0]?.period_from;
+        const periodTo = props.editExperiences[0]?.period_to;
+        const respons = props.editExperiences[0]?.responsible;
 
         Experience_Form.industry.value = industry;
         Experience_Form.companyname.value = compName;
@@ -107,18 +107,18 @@ function ExperienceModel(props) {
     }, [props.editExperiences, props.editExperienceid]);
 
 
-    function updateExperience() {
+//     function updateExperience() {
 
-        props.EditExperience(Experience_Form, props.editExperienceid);
-        handleCancel()
+//         props.EditExperience(Experience_Form, props.editExperienceid);
+//         handleCancel()
        
-        props.handleChangeCloseModel()
+//         props.handleChangeCloseModel()
     
-}
+// }
 
 
 
-console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
+// console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
 
     useEffect(() => {
         Axios({
@@ -135,7 +135,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
     }, [])
 
     
-    function onSubmit() {
+    function onSubmit(data) {
         var mainvalue = {};
         var targetkeys = Object.keys(Experience_Form);
         for (var i in targetkeys) {
@@ -150,14 +150,19 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
         var filtererr = targetkeys.filter(
             (obj) => Experience_Form[obj].error == true
         );
-        console.log(filtererr.length);
+        console.log(filtererr.length,"ssssssssssssssssss");
         if (filtererr.length > 0) {
             // setExperienceForm({ error: true });
         } else {
             // setExperienceForm({ error: false });
             console.log(Experience_Form,"Experience_Form")
-            props.addExperience(Experience_Form)
+            if(data==='Save'){
+                props.addExperience(Experience_Form)
+            }else{
+                props.EditExperience(Experience_Form, props.editExperienceid);
+            }
             handleCancel()
+            props.handleChangeCloseModel&&props.handleChangeCloseModel()
         }
 
         setExperienceForm(prevState => ({
@@ -176,6 +181,7 @@ console.log(props.editExperiences, props.editExperienceid,"editExperienceid")
         setExperienceForm(prevState => ({
             ...prevState,
         }));
+       
     }
 
     function checkValidation(data, key, multipleId) {
@@ -287,10 +293,10 @@ console.log(data,"dddd")
                 <CustomButton
                     btnName={"Update"}
                     btnCustomColor="customPrimary"
-                    onBtnClick={updateExperience}
+                    onBtnClick={()=>onSubmit('Update')}
                 />
             ) : (
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={()=>onSubmit('Save')} />
             )}
 
         </div>
