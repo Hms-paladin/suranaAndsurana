@@ -16,16 +16,15 @@ import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
 import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal } from '../../actions/AppraisalAction';
 import moment from 'moment';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
+import axios from "axios";
+import { apiurl } from "../../utils/baseUrl";
+
 
 
 const { Panel } = Collapse;
 
 function Appraisal(props) {
     const dispatch = useDispatch();
-
-
-    // const Manageing = ["instruction_to_appraise", "advice_to_hod", "instruction_to_admin_hod", "fb_managing_parter"]
-    // const rowID = ""
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
     const [addemployeeseminar, setAddemployeeSeminar] = useState([])
     const [addemployeeProgram, setAddemployeeProgram] = useState([])
@@ -119,6 +118,13 @@ function Appraisal(props) {
     }, [props.location.state])
 
     useEffect(() => {
+        setEmpDetail(props.GetEmpAppraisal)
+       
+        console.log(props.GetEmpAppraisal?.doj , props.GetEmpAppraisal?.period_from, "props.GetEmpAppraisal")
+        // if()
+    }, [props.GetEmpAppraisal])
+
+    useEffect(() => {
         let AreDevelopment = []
         props.GetAreaDevelopment.map((data) =>
             AreDevelopment.push({ id: data.area_development_id, value: data.area_development })
@@ -148,9 +154,8 @@ function Appraisal(props) {
 
     }, [props.GetAreaDevelopment, props.GetEmpAppraisalDetails])
 
-    useEffect(() => {
-        setEmpDetail(props.GetEmpAppraisal)
-    }, [props.GetEmpAppraisal])
+
+
 
     const AddempDetails = () => {
         dispatch(InsertAreaDevelopment(showKeys, Appraisal.details.value, Appraisal.date.value))
@@ -356,7 +361,7 @@ function Appraisal(props) {
                     return data.value == ""
                 })
                 if (checkQuestion === undefined) {
-                    dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+                        dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
                 } else {
                     notification.error({
                         message: ' Please Answer all the Questions',

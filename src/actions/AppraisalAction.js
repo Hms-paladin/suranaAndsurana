@@ -34,6 +34,12 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
                     });
                     return Promise.resolve();
                 }
+                if (response.data.msg === "Alredy Applied") {
+                    notification.error({
+                        message: 'This Period Already Exist.'
+                    });
+                    return Promise.resolve();
+                }
             });
 
     } catch (err) {
