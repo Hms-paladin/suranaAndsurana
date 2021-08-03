@@ -184,15 +184,16 @@ function DashboardNew(props) {
   }, [])
 
   function onPanelChange(value, mode) {
-  
+
     let now = moment(value?._d);
     now = now.format('YYYY-MM-DD');
-   
+
     Axios({
       method: 'POST',
       url: apiurl + 'get_dashboard_calendar',
       data: {
         "cur_date": `${now}`,
+        "emp_id": localStorage.getItem("empId"),
       }
     }).then((response) => {
       // setCalenderValues(response.data.data)
