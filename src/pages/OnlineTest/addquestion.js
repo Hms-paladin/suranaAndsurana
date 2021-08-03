@@ -112,18 +112,17 @@ function AddQuestion(props) {
 
     }, [props.Category, props.SubCategory, props.Quationtype])
 
-    const viewQuations = (QuesCatId, QuesubcatId, QuesType) => {
+    const viewQuations = (QuesCatId, QuesubcatId, QuesType, QuesID) => {
         setQuescatId(QuesCatId)
         setQuessubId(QuesubcatId)
         setQues_type(QuesType)
         setQuestionView(true)
-
     }
+
 
 
     useEffect(() => {
         console.log(props.getAddQuations, "getAddQuations")
-
         let rowDataList = []
         console.log(props.GetRowData, "GetRowData")
         props.getAddQuations && props.getAddQuations.map((data, index) => {
@@ -132,18 +131,14 @@ function AddQuestion(props) {
                 subcategory: data.QuesubcatName,
                 QType: data.QuesType === 1 ? "Checklist" : "Radiobutton",
                 NOQ: data.no_of_quest,
-                action: <img src={Eyes} className="eyesview" onClick={() => viewQuations(data.QuesCatId, data.QuesubcatId, data.QuesType)}></img>
+                action: <> <img src={Eyes} className="eyesview" onClick={() => viewQuations(data.QuesCatId, data.QuesubcatId, data.QuesType, data.QuesId)}></img> </>,
             })
         })
-
         setRowData(rowDataList)
-
-
-
+        console.log(rowDataList, "RDD")
     }, [props.getAddQuations])
 
     function checkValidation(data, key) {
-
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -155,19 +150,25 @@ function AddQuestion(props) {
             errmsg: errorcheck.msg,
             validation: Add_question[key].validation,
         };
+        if (key == "answer") {
+            dynObj = {
+                value: data,
+                error: !errorcheck.state,
+                errmsg: errorcheck.msg,
+                validation: [{ "name": "required", name: "checkOption", params: Add_question.option.value }],
+            };
+        }
 
         if (key === "category" && data) {
             dispatch(getSubCategory(data));
             Add_question.subcategory.value = ""
             Add_question.ques_type.value = ""
         }
-
-
-
         setAdd_question((prevState) => ({
             ...prevState,
             [key]: dynObj,
         }));
+
     }
 
 
@@ -175,6 +176,7 @@ function AddQuestion(props) {
         var mainvalue = {};
         var targetkeys = Object.keys(Add_question);
         for (var i in targetkeys) {
+
             var errorcheck = ValidationLibrary.checkValidation(
                 Add_question[targetkeys[i]].value,
                 Add_question[targetkeys[i]].validation
@@ -183,10 +185,16 @@ function AddQuestion(props) {
             Add_question[targetkeys[i]].errmsg = errorcheck.msg;
             mainvalue[targetkeys[i]] = Add_question[targetkeys[i]].value;
         }
+        const splitArray = Add_question.option.value.split(",")
+        var check = splitArray.includes(Add_question.answer.value)
+        console.log(check, "Array")
+
 
         var filtererr = targetkeys.filter(
             (obj) => Add_question[obj].error == true
         );
+
+
         // console.log(filtererr.length);
         if (filtererr.length > 0) {
             // setAdd_question({ error: true });
@@ -297,7 +305,7 @@ function AddQuestion(props) {
                     <EnhancedTable headCells={headCells} rows={rowData} aligncss="usergroupcss"></EnhancedTable>
                 </div>
                 <DynModel modelTitle="Questions View" handleChangeModel={questionview} handleChangeCloseModel={(bln) => setQuestionView(bln)} width={1000}
-                    content={<ViewQuestionsModal quescatId={quescatId} quessubcatId={quessubcatId} ques_type={ques_type} />} closeModel={() => setQuestionView(false)} />
+                    content={<ViewQuestionsModal quescatId={quescatId} quessubcatId={quessubcatId} ques_type={ques_type} handleChangeCloseModel={(bln) => setQuestionView(bln)} />} closeModel={() => setQuestionView(false)} />
             </div>
         </div>
     )
@@ -305,7 +313,6 @@ function AddQuestion(props) {
 
 const mapStateToProps = (state) => (
     console.log(state.getAddQuations, "state.getOptions.getCategory"),
-
     {
         Category: state.getOptions.getCategory || [],
         SubCategory: state.getOptions.getSubCategory || [],

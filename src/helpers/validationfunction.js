@@ -12,9 +12,16 @@ class ValidationLibrary extends Component {
           return { msg: "Field required", state: false };//validation occurs break the loop & throw the error
         }
       }
-      else if(validatorsArray[valid].name =='checkNameExists'){
-        if(validatorsArray[valid].params === 0){
+      else if (validatorsArray[valid].name == 'checkNameExists') {
+        if (validatorsArray[valid].params === 0) {
           return { msg: "Name Already Exist", state: false };//validation occurs break the loop & throw the error
+        }
+      }
+      else if (validatorsArray[valid].name == 'checkOption') {
+        const splitArray = validatorsArray[valid].params.split(",")
+        var check = splitArray.includes(textValue)
+        if (!check) {
+          return { msg: "Answers should be  from Options", state: false };//validation occurs break the loop & throw the error
         }
       }
       else if (validatorsArray[valid].name == 'email') {
@@ -184,7 +191,7 @@ class ValidationLibrary extends Component {
         }
       }
       else if (validatorsArray[valid].name == "Allow numeric and special characters") {
-        var re =/^[0-9-+()]*$/;
+        var re = /^[0-9-+()]*$/;
         if (!re.test(textValue) == false) {
           return { msg: " Value allow only two digit ", state: false };
         }
