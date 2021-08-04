@@ -1,4 +1,4 @@
-import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE } from "../utils/Constants";
+import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE ,GET_EMP_APPRAISAL_DETAIL_EMPID } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
@@ -30,7 +30,7 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
             .then((response) => {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Appraisal Apply Successfully',
+                        message: 'Appraisal Applied Successfully',
                     });
                     return Promise.resolve();
                 }
@@ -66,7 +66,7 @@ export const InsertAreaDevelopment = (showKeys, details, date) => async dispatch
             .then((response) => {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Area Development Added Successfully',
+                        message: 'Area of Development Added Successfully',
                     });
                     return Promise.resolve();
                 }
@@ -231,3 +231,20 @@ export const InsertManagingPartnerEmpAppraisal = (managemodelComment, emp_appr_i
     }
 }
 
+export const GetEmpAppraisalDetailbyEmpid = () => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_emp_appra_detail_by_emp_id',
+            data: {
+                "emp_id": localStorage.getItem("empId"),
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_EMP_APPRAISAL_DETAIL_EMPID, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}

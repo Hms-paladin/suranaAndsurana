@@ -102,7 +102,7 @@ function AppraisalModel(props) {
                 </div>
             </div>
             <div className="appraisalBtn">
-                <CustomButton btnName={appraisalcmt !== "" ? "update" : "save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onsubmit} />
+                <CustomButton btnName={appraisalcmt !== "" ? "Update" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onsubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={() => setAppraisalcmt("")} />
             </div>
 
