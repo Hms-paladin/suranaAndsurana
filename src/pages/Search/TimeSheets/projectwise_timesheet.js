@@ -61,6 +61,7 @@ function ProjectwiseTS(props) {
             errmsg: null,
         },
     })
+    
     function checkValidation(data, key) {
         if (key === "project_type") {
             dispatch(getProjectSubType(data))
@@ -204,20 +205,11 @@ function ProjectwiseTS(props) {
         })
     }
 
-
-
-    function callback(key) {
-        console.log(key);
-    }
-
     useEffect(() => {
         console.log(props.Project_TimeSheet, "pD")
-
         let multipleTab = [];
         let subCollapse = [];
         let otherDataList = []
-
-
         props.Project_TimeSheet.map((data, i) => {
             let rowDataList = {}
             let sample = {};
@@ -359,7 +351,6 @@ function ProjectwiseTS(props) {
                     )
 
                 }
-
                 multipleTab.push(
                     <Panel
                         header={`${data.project_type} (${data?.project_details?.length})`}
@@ -368,7 +359,6 @@ function ProjectwiseTS(props) {
                         <Collapse>{subCollapse}</Collapse>
 
                     </Panel>
-
                 );
             } else if (data.project_type_id !== 1) {
                 data.project_details.map((dat, k) => {
@@ -387,7 +377,6 @@ function ProjectwiseTS(props) {
                             header={`${data.project_type} (${data?.project_details?.length})`}
                             key={i + 1}
                         >
-
                             <EnhancedTable
                                 headCells={
                                     headCells
@@ -396,14 +385,10 @@ function ProjectwiseTS(props) {
 
                             />
                         </Panel>
-
                     );
                 })
             }
         })
-
-
-
         setMultiplePanel(multipleTab);
     }, [props.Project_TimeSheet]);
 
@@ -495,7 +480,7 @@ const mapStateToProps = (state) =>
         ProjectType: state.getOptions.getProjectType,
         SubProjectType: state.getOptions.getProjectSubType,
         Project_name: state.getOptions.getProjectName,
-        Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
+        Project_TimeSheet: state.getProjectWise_TimeSheet.ProjectWise_TimeSheet
 
     });
 export default connect(mapStateToProps)(ProjectwiseTS);
