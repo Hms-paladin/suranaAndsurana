@@ -134,14 +134,16 @@ function RatingModel(props) {
     const [changeeditrate, setChangeeditrate] = useState(true)
     const [ratingTitle, setRatingTitle] = useState([])
     const [formValue, setFormValue] = useState({});
-    const [empId,setEmpId]=useState()
+    const [empId, setEmpId] = useState()
+    const [emp_apprid, setEmp_apprid] = useState()
 
 
     useEffect(() => {
         dispatch(GetDevelopment())
         dispatch(GetEmpAppraisalSupRate(props.employeeID))
         setEmpId(props.employeeID)
-        console.log(localStorage.getItem("designation"),"props.employeeID")
+        setEmp_apprid(props.emp_appr_id)
+        console.log(props.employeeID, "props.employeeID")
         // employeeID
     }, [])
 
@@ -154,7 +156,7 @@ function RatingModel(props) {
         setEmpDetails(props.empDetail)
         setShowrowID(props.rowID)
         setShowratingDetails(props.GetEmpAppraisalSupRate)
-        console.log(props.GetEmpAppraisalSupRate,props.employeeID,"checkrate")
+        console.log(props.GetEmpAppraisalSupRate, "checkrate")
         setRatingTitle(props.GetDevelopment)
 
 
@@ -190,6 +192,8 @@ function RatingModel(props) {
 
                 arrVal.push(obj)
             })
+
+            console.log(arrVal, "arrval")
             setDropdownValue(arrVal)
         }
     }, [props.rowID, props.GetEmpAppraisalSupRate, showratingDetails])
@@ -202,10 +206,6 @@ function RatingModel(props) {
         })
         setDevelopmentid(ids)
     }
-
-    useEffect(() => {
-
-    }, [])
 
     const checkVali = (data, index, datas, val, indexVal, name) => {
         let chooseval = val.value[data - 1]
@@ -323,6 +323,9 @@ function RatingModel(props) {
         )
     }
 
+    console.log(dropdownValue, "dropdownValuett")
+
+
     const showdevelopmentdetails = () => {
 
         // let disabledropdown = []
@@ -341,22 +344,35 @@ function RatingModel(props) {
         setCount(count + 1)
         setShowratingdetails(true)
         setRowid([...rowid, development])
-        setDropdownValue([...dropdownValue, { key1: firstDropdown, key2: secondDropdown, key3: thirdDropdown, deve_id: development }])
-        setRateList([
-            ...rateList,
-            {
-                "emp_id": localStorage.getItem("empId"),
-                "development_id": development,
-                "rating": chooserate
-            },
-        ]);
+        setDropdownValue([...dropdownValue, { key1: firstDropdown, key2: secondDropdown, key3: thirdDropdown }])
+        // setRateList([
+        //     ...rateList,
+        //     {
+        //         "emp_id": localStorage.getItem("empId"),
+        //         "development_id": development,
+        //         "rating": chooserate
+        //     },
+        // ]);
     }
 
     const submitrate = () => {
         if (showrowID == 2) {
-            dispatch(InsertManagingPartnerRate(rateList))
-            props.handleChangeCloseModel()
-            props.changeenable(true)
+            let rateLists = []
+
+            for (let i = 0; i < 18; i++) {
+                if (dropdownValue[i].key2 === "-" && dropdownValue[i].key3 === "-") {
+                    rateLists.push({ "emp_id": props.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key1, "emp_appr_id": emp_apprid })
+                } else if (dropdownValue[i].key1 === "-" && dropdownValue[i].key3 === "-") {
+                    rateLists.push({ "emp_id": props.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key2, "emp_appr_id": emp_apprid })
+                } else if (dropdownValue[i].key1 === "-" && dropdownValue[i].key2 === "-") {
+                    rateLists.push({ "emp_id": props.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key3, "emp_appr_id": emp_apprid })
+                }
+            }
+            if (rateLists.length === 18) {
+                dispatch(InsertManagingPartnerRate(rateLists))
+                props.handleChangeCloseModel()
+                props.changeenable(true)
+            }
         }
         else {
             let rateLists = []
@@ -369,34 +385,34 @@ function RatingModel(props) {
                 console.log(allobj[i].split("_")[2], allobj[i].split("_")[1], "allobj[i]")
                 if (allobj[i].split("_")[2] == 0) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7, "emp_appr_id": emp_apprid })
                     }
                     console.log(allval[i], "allval")
                 } else if (allobj[i].split("_")[2] == 1) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4, "emp_appr_id": emp_apprid })
                     }
                 } else if (allobj[i].split("_")[2] == 2) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1 })
+                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1, "emp_appr_id": emp_apprid })
                     }
                 }
             }
@@ -449,6 +465,7 @@ function RatingModel(props) {
                 {showrowID !== 2 && rating.map((id, index) => {
                     return (
                         <div>
+                            {console.log(ratingTitle && ratingTitle[index]?.area_of_development, "ratingTitle")}
                             <div className="ratingHeading">{ratingTitle && ratingTitle[index]?.area_of_development}</div>
                             <div>{showaddDetails(rating[index], index)}</div>
                         </div>
@@ -464,7 +481,8 @@ function RatingModel(props) {
                     )
                 })} */}
 
-                {showrowID == 2 && showratingDetails && showratingDetails.map((val, index) => {
+                {console.log(showratingDetails, "showratingDetails")}
+                {showrowID === 2 && showratingDetails && showratingDetails.map((val, index) => {
                     return (
                         <div className="showRateingscontainer">
                             <div className="ratingHeading">{val.area_of_development}</div>

@@ -1,7 +1,7 @@
-import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE } from '../utils/Constants.js'
+import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE, GET_EMP_APPRAISAL_DETAIL_EMPID } from '../utils/Constants.js'
 
 const intialState = {
-    GetEmpAppraisalDetails: [], GetEmpAppraisal: [], GetEmpAppraisalSupRate: []
+    GetEmpAppraisalDetails: [], GetEmpAppraisal: [], GetEmpAppraisalSupRate: [], GetEmpAppraisalDetailbyEmpid: []
 }
 
 export default function (state = [], action) {
@@ -13,6 +13,8 @@ export default function (state = [], action) {
             return { ...state, GetEmpAppraisal: payload }
         case GET_EMP_APPRAISAL_SUP_RATE:
             return { ...state, GetEmpAppraisalSupRate: payload }
+        case GET_EMP_APPRAISAL_DETAIL_EMPID:
+            return { ...state, GetEmpAppraisalDetailbyEmpid: payload }
         default:
             return state;
     }

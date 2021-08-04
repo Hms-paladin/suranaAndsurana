@@ -87,7 +87,6 @@
     padding: 16px 16px 16px 40px !important;
     // width: 70px !important;
     width:95%;
-    font-size:12px;
     word-break:break-all;
 }
 
@@ -107,7 +106,7 @@
     > div:first-child {
         width: 40%;
         margin-right: 50px;
-        font-weight: 500;
+        font-weight: 600;
         margin-left: 31px;
     }
     > div {
@@ -127,7 +126,7 @@
         > div:first-child {
             width: 40%;
             margin-right: 50px;
-            font-weight: 500;
+            font-weight: 600;
         }
         > div {
             margin-right: 50px;
@@ -206,7 +205,7 @@
     .ant-collapse-arrow svg{
     position: relative;
     // top: 50%  !important;
-    left: 1050px !important;
+    left: 1191px !important;
     // font-size: 16px !important;
     .ant-collapse-header{
         font-weight: 600 !important;
