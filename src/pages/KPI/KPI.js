@@ -10,7 +10,7 @@ import { Checkbox, notification } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import KPIModal from './KPIViewModal'
 import Edit from "../../images/editable.svg";
-import {GetKpiAchivement,UpdateKpiAchivement,InsertKpi} from '../../actions/KPIActions'
+import {GetKpiAchivement,UpdateKpiAchivement,InsertKpi,getKpiDetailsByEmpId} from '../../actions/KPIActions'
 import SaveIcon from '@material-ui/icons/Save';
 import moment from 'moment'
 import NoDataFound from '../../images/noDatas.svg';
@@ -111,7 +111,7 @@ useEffect(() => {
   /////////////
 
   useEffect(()=>{
-     dispatch(GetKpiAchivement(kpi_form)) 
+     dispatch(getKpiDetailsByEmpId()) 
   },[]);
 
   useEffect(()=>{
@@ -138,8 +138,8 @@ useEffect(() => {
       for(let i=0;i<Achivement.length;i++){
         achive_total+=Achivement[i]
       }
-
-      setachiveTotal(Math.abs(achive_total))
+// console.log(isNaN(Math.abs(achive_total)),"achive_total")
+      setachiveTotal(isNaN(Math.abs(achive_total))?'0':Math.abs(achive_total))
       setpercentageTotal(Math.abs(total))
       console.log("edit",achiveTotal)
     
@@ -226,10 +226,10 @@ const HandleCancel=()=>{
                                 <div className="KRAhead"><label onClick={() => setKpimodel(true)}>Employee Name</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>{JSON.parse(localStorage.getItem("user_name"))}</label></div>
                             </Grid>
-                            <Grid item xs={4}>
+                            {/* <Grid item xs={4}>
                                 <div className="KRAhead"><label >Period</label></div>
                                 <div><label style={{ fontWeight: 'bold', paddingTop: "6px" }}>{moment(Achivement[0]?.period_from).format("MMM-YYYY")} to {moment(Achivement[0]?.period_to).format("MMM-YYYY")}</label></div>
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={4}>
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <CustomButton

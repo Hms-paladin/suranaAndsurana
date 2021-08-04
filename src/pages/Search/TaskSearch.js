@@ -280,36 +280,29 @@ const [orderBy, setOrderBy] = React.useState("calories");
                     <div style={{ display: 'flex', }}>
                         <p className="task_head">Tasks</p>
                         <div style={{ width: '200px', }}>
-                            <Grid item xs={8}>
-                                
-                        <Labelbox type="select"
-                        placeholder={" Subordinate"} 
-                        dropdown={subordinates.subOrinateList}  
-                        
-            changeData={(data) => checkValidation(data, "subOrdinateVal")}
-            value={fieldVal.subOrdinateVal.value}
-            error={fieldVal.subOrdinateVal.error}
-            errmsg={fieldVal.subOrdinateVal.errmsg}
-
-                        />
-                                
-                                    </Grid>
+                            <Grid item xs={8}>      
+                                <Labelbox type="select"
+                                placeholder={" Subordinate"} 
+                                dropdown={subordinates.subOrinateList}  
+                                changeData={(data) => checkValidation(data, "subOrdinateVal")}
+                                value={fieldVal.subOrdinateVal.value}
+                                error={fieldVal.subOrdinateVal.error}
+                                errmsg={fieldVal.subOrdinateVal.errmsg}
+                                />
+                            </Grid>
                         </div>
                         <p className="task_head">Tasks Status</p>
                         <div style={{ width: '200px', }}>
                             <Grid item xs={8}>
-                                
-                        <Labelbox type="select"
-                        placeholder={" taskstatus"} 
-                        dropdown={taskstatusLists.taskbyStatus}  
-            changeData={(data) => checkValidation(data, "taskstatus")}
-            value={fieldVal.taskstatus.value}
-            error={fieldVal.taskstatus.error}
-            errmsg={fieldVal.taskstatus.errmsg}
-
-                        />
-                                
-                                    </Grid>
+                                <Labelbox type="select"
+                                placeholder={" taskstatus"} 
+                                dropdown={taskstatusLists.taskbyStatus}  
+                                changeData={(data) => checkValidation(data, "taskstatus")}
+                                value={fieldVal.taskstatus.value}
+                                error={fieldVal.taskstatus.error}
+                                errmsg={fieldVal.taskstatus.errmsg}
+                                />
+                            </Grid>
                         </div>
 
 
@@ -369,7 +362,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
     
                                 <div style={{ width: '36%', padding: '15px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
-                                        <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
+                                        <p>{data.project_id != null ? data.project_name : ''}</p>
                                         <p>{data.project_id != null ? data.project_type : data.description}</p>
                                         <p>{data.client}</p>
                                     </div>
@@ -410,7 +403,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                         <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}</p>
                                     </div>
                                     <div className="images_div">
-                                        <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
+                                    {data.project_name!=='Adhoc Task'&&data.project_name!==null&&<img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>}
                                         <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
                                        
                                         <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>fntaskcompletionstatus({data})}/>
@@ -454,7 +447,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
 
                             <div style={{ width: '36%', padding: '15px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
-                                    <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
+                                    <p>{data.project_id != null ? data.project_name : ''}</p>
                                     <p>{data.project_id != null ? data.project_type : data.description}</p>
                                     <p>{data.client}</p>
                                 </div>
@@ -491,7 +484,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                     <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}</p>
                                 </div>
                                 <div className="images_div">
-                                    <img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>
+                                {data.project_name!=='Adhoc Task'&&data.project_name!==null&&<img src={data.Priority == 'High'?H_icon:data.Priority == 'Low'?L_icon:M_icon} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>fnPeriority({data})}/>}
                                     <img src={File} style={{ marginRight: '5px', width: '18px',cursor:"pointer"}} onClick={()=>taskTagclick({data})}/>
                                    
                                     <img src={Percentage} style={{ marginRight: '5px', width: '18px' }} onClick={()=>fntaskcompletionstatus({data})}/>

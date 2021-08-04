@@ -326,7 +326,7 @@ function OnlineQA(props) {
                         <div>
                             {" "}
                             <label className="notfound_label">
-                                Are You Confirm to Submit this Online Test ?
+                                Are You Sure Want to Submit the Online Test ?
                             </label>
                         </div>
                         <div className="customNotFoundbtn">

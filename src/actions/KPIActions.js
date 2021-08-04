@@ -4,6 +4,7 @@ import {notification} from 'antd'
 import {GET_KPI_ACHIVEMENT,UPDATE_KPI_ACHIVEMENT,GET_KPI_APPROVAL,UPDATE_KPI_APPROVAL,INSERT_KPI} from '../utils/Constants'
 import moment from "moment"
 import {getOtherTask} from './TodoListAction'
+
 export const GetKpiAchivement=(data,empid)=>async (dispatch)=>{
     try{
         const response=await axios({
@@ -22,7 +23,21 @@ export const GetKpiAchivement=(data,empid)=>async (dispatch)=>{
     }
 }
 
+export const getKpiDetailsByEmpId=()=>async (dispatch)=>{
+    try{
+        const response=await axios({
+            method:"post",
+            url:apiurl+"get_kpi_details_by_emp_id",
+            data:{
+                "emp_id":localStorage.getItem("empId"),
+            }
+        });
+        return dispatch({type:GET_KPI_ACHIVEMENT,payload:response.data.data})
+    }
+    catch (err) {
 
+    }
+}
 
 
 export const UpdateKpiAchivement = (data,achivement) => async dispatch => {

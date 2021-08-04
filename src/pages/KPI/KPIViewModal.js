@@ -131,8 +131,8 @@ function KPIModal(props) {
         achive_total+=Achivement[i]
       }
 
-      setachiveTotal(Math.abs(achive_total))
-    console.log("dddd",props.Kpiachivement)
+      setachiveTotal(isNaN(Math.abs(achive_total))?'0':Math.abs(achive_total))
+    // console.log("dddd",props.Kpiachivement)
       setpercentageTotal(total)
     },[ props.Kpiachivement,search])
     return (

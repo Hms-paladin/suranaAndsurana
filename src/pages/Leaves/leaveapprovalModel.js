@@ -165,13 +165,13 @@ function LeaveApproval(props) {
                             <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].balance}</div>
                         </div>
                         <div>
-                            <div>Total No. of Days</div>
+                            <div>Applied  No. of Days</div>
                             <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].num_of_day}</div>
                         </div>
 
                     </>}
                 {ApprovalData[0] && ApprovalData[0].leave_typeId === 40 && <> <div>
-                    <div>Total No. of Days</div>
+                    <div>Applied  No. of Days</div>
                     <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].noofdaysleave}</div>
                 </div>
                     <div>

@@ -77,7 +77,7 @@ const KRA = (props) => {
 
     useEffect(()=>{
         dispatch(getKra())
-        console.log(props.getKra,"datechange")
+        // console.log(props.getKra,"datechange")
     },[]);
 
     useEffect(() => {
@@ -318,7 +318,7 @@ useEffect(()=>{
         From_key.map((data) => {
             try {
                 kpi_form[data].value = "";
-                console.log("mapping", kpi_form[data].value);
+                // console.log("mapping", kpi_form[data].value);
             } catch (error) {
                 throw error;
             }

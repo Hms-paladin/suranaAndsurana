@@ -11,7 +11,8 @@ import { useDispatch, connect } from "react-redux";
 import {getCheckListsNames,insert_check_list_assign,getDaysOfWeek,get_projType_subProjType_by_projId
 } from "../../actions/CheckListAction";
 import { getEmployeeList,getProjectType,getFrequency,getProjectName  } from "../../actions/MasterDropdowns";
-  import ValidationLibrary from "../../helpers/validationfunction";
+import ValidationLibrary from "../../helpers/validationfunction";
+
 function CheckListAssign(props) {
     const [saveRights, setSaveRights] = useState([])
     const dispatch = useDispatch();                  
@@ -140,7 +141,7 @@ function CheckListAssign(props) {
             "project_type_id":checkListForm.project_type_id.value == '' ? 0 : checkListForm.project_type_id.value,
             "project_sub_type_id":(!checkListForm.subProjectId.value||checkListForm.subProjectId.value === "") ? 0 : checkListForm.subProjectId.value ,
             "start_date":checkListForm.startDate.value===""?'0000-00-00':checkListForm.startDate.value,
-            "end_date":checkListForm.endDate.value,
+            "end_date":checkListForm.endDate.value===""?'0000-00-00':checkListForm.startDate.value,
             "days_of_week_id" :checkListForm.noOfDaysWeeks.valueById===""?"0":checkListForm.noOfDaysWeeks.valueById,
             "created_on":moment().format('YYYY-MM-DD HH:m:s'),
             "created_by":localStorage.getItem("empId")

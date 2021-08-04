@@ -61,7 +61,7 @@ export const getEmpAvailableBalance = (employee_id, leave_type_id) => async disp
 
 export const insertLeaveForm = (Leave_Form) => async dispatch => {
 
-    console.log(Leave_Form,"test1")
+    // console.log(Leave_Form,"test1")
     try {
         axios({
             method: 'POST',
@@ -352,6 +352,9 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
             },
         })
             .then((response) => {
+                notification.success({
+                    message: "Leave Approved Successfully",
+                });
                 dispatch(getOtherTask())
                 return Promise.resolve();
             })
@@ -360,21 +363,21 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
     }
 }
 
-export const getUnblockUser = (leaveStatus, leaveId) => async dispatch => {
-    try {
-        axios({
-            method: 'POST',
-            url: apiurl + 'update_leave_approval',
-            data: {
-                "emp_leave_id": leaveId,
-                "approve_status": leaveStatus === true ?1:2
-            },
-        })
-            .then((response) => {
-                dispatch(getUnblockUser(leaveId))
-                return Promise.resolve();
-            })
-    }
-    catch (err) {
-    }
-}
+// export const getUnblockUser = (leaveStatus, leaveId) => async dispatch => {
+//     try {
+//         axios({
+//             method: 'POST',
+//             url: apiurl + 'update_leave_approval',
+//             data: {
+//                 "emp_leave_id": leaveId,
+//                 "approve_status": leaveStatus === true ?1:2
+//             },
+//         })
+//             .then((response) => {
+//                 dispatch(getUnblockUser(leaveId))
+//                 return Promise.resolve();
+//             })
+//     }
+//     catch (err) {
+//     }
+// }
