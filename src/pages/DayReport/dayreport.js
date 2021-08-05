@@ -148,7 +148,7 @@ function DayReport(props) {
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub-Activity" },
         { id: "completion", label: "Completion" },
-        { id: "by", label: "By" },
+        { id: "by", label: " Assigned By" },
         { id: "tag", label: "Tag" }
     ];
     ////Define collapse types based on project types (ID)
@@ -180,9 +180,11 @@ function DayReport(props) {
                 if (sample?.Design.length > 0) {
                     sample?.Design.map((dat, k) => {
                         let currentData = {}
+                        let aEndDate = dat.actual_end_date;
+                        let endDate = dat.end_date;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["completion"] = dat.sub_activity;
+                        currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                         currentData["by"] = dat.assigned_name;;
                         currentData["tag"] = dat.tag
                         tableRow1.push(currentData);
@@ -195,9 +197,11 @@ function DayReport(props) {
                 if (sample?.Patent.length > 0) {
                     let currentData = {}
                     sample?.Patent.map((dat, k) => {
+                        let aEndDate = dat.actual_end_date;
+                        let endDate = dat.end_date;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["completion"] = dat.sub_activity;
+                        currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                         currentData["by"] = dat.assigned_name;;
                         currentData["tag"] = dat.tag
                         tableRow2.push(currentData);
@@ -209,9 +213,11 @@ function DayReport(props) {
                 if (sample?.Trademark.length > 0) {
                     let currentData = {}
                     sample?.Trademark.map((dat, k) => {
+                        let aEndDate = dat.actual_end_date;
+                        let endDate = dat.end_date;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["completion"] = dat.sub_activity;
+                        currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                         currentData["by"] = dat.assigned_name;;
                         currentData["tag"] = dat.tag
                         tableRow.push(currentData);
@@ -223,9 +229,11 @@ function DayReport(props) {
                 if (sample?.Copyright.length > 0) {
                     let currentData = {}
                     sample?.Copyright.map((dat, k) => {
+                        let aEndDate = dat.actual_end_date;
+                        let endDate = dat.end_date;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["completion"] = dat.sub_activity;
+                        currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                         currentData["by"] = dat.assigned_name;;
                         currentData["tag"] = dat.tag
                         tableRow3.push(currentData);
@@ -237,9 +245,11 @@ function DayReport(props) {
                 if (sample?.IPABTrademark.length > 0) {
                     let currentData = {}
                     sample?.IPABTrademark.map((dat, k) => {
+                        let aEndDate = dat.actual_end_date;
+                        let endDate = dat.end_date;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["completion"] = dat.sub_activity;
+                        currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                         currentData["by"] = dat.assigned_name;;
                         currentData["tag"] = dat.tag
                         tableRow4.push(currentData);
@@ -251,9 +261,11 @@ function DayReport(props) {
                 if (sample?.IPABDesign.length > 0) {
                     let currentData = {}
                     sample?.IPABDesign.map((dat, k) => {
+                        let aEndDate = dat.actual_end_date;
+                        let endDate = dat.end_date;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["completion"] = dat.sub_activity;
+                        currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                         currentData["by"] = dat.assigned_name;;
                         currentData["tag"] = dat.tag
                         tableRow5.push(currentData);
@@ -294,9 +306,11 @@ function DayReport(props) {
             } else if (data.project_type_id !== 1) {
                 data.project_details.map((dat, k) => {
                     console.log(dat, "level2-else")
+                    let aEndDate = dat.actual_end_date;
+                    let endDate = dat.end_date;
                     rowDataList["actitvity"] = dat.activity;
                     rowDataList["subactivity"] = dat.sub_activity;
-                    rowDataList["completion"] = dat.sub_activity;
+                    rowDataList["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
                     rowDataList["by"] = dat.assigned_name;;
                     rowDataList["tag"] = dat.tag
                     otherDataList.push(rowDataList)

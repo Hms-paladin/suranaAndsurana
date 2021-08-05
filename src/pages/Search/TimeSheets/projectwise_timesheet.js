@@ -61,7 +61,7 @@ function ProjectwiseTS(props) {
             errmsg: null,
         },
     })
-    
+
     function checkValidation(data, key) {
         if (key === "project_type") {
             dispatch(getProjectSubType(data))
@@ -106,12 +106,12 @@ function ProjectwiseTS(props) {
         dispatch(getProjectSubType())
         dispatch(getProjectName())
     }, [])
-    useEffect(() => {
-        let ProjectDetails = []
-        props.Project_TimeSheet.map((data) => {
+    // useEffect(() => {
+    //     let ProjectDetails = []
+    //     props.Project_TimeSheet.map((data) => {
 
-        })
-    }, [props.Project_TimeSheet])
+    //     })
+    // }, [props.Project_TimeSheet])
     useEffect(() => {
         let employeeName = []
         let Project_type = []
@@ -210,7 +210,7 @@ function ProjectwiseTS(props) {
         let multipleTab = [];
         let subCollapse = [];
         let otherDataList = []
-        props.Project_TimeSheet.map((data, i) => {
+        props?.Project_TimeSheet?.map((data, i) => {
             let rowDataList = {}
             let sample = {};
             let tableRow1 = [];
@@ -473,14 +473,14 @@ function ProjectwiseTS(props) {
     )
 }
 const mapStateToProps = (state) =>
-    ({
-        UserPermission: state.UserPermissionReducer.getUserPermission,
-        GetSeverance: state.ExitSeverance.GetSeverance,
-        EmployeeList: state.getOptions.getEmployeeList,
-        ProjectType: state.getOptions.getProjectType,
-        SubProjectType: state.getOptions.getProjectSubType,
-        Project_name: state.getOptions.getProjectName,
-        Project_TimeSheet: state.getProjectWise_TimeSheet.ProjectWise_TimeSheet
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+    GetSeverance: state.ExitSeverance.GetSeverance,
+    EmployeeList: state.getOptions.getEmployeeList,
+    ProjectType: state.getOptions.getProjectType,
+    SubProjectType: state.getOptions.getProjectSubType,
+    Project_name: state.getOptions.getProjectName,
+    Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
 
-    });
+});
 export default connect(mapStateToProps)(ProjectwiseTS);
