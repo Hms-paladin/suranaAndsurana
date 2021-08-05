@@ -236,8 +236,8 @@ function ProjectwiseTS(props) {
                         currentData["subactivity"] = dat.sub_activity;
                         currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`;
                         currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`;
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow1.push(currentData);
                     })
@@ -254,8 +254,8 @@ function ProjectwiseTS(props) {
                         currentData["subactivity"] = dat.sub_activity;
                         currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
                         currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow2.push(currentData);
                     })
@@ -271,8 +271,8 @@ function ProjectwiseTS(props) {
                         currentData["subactivity"] = dat.sub_activity;
                         currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
                         currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow.push(currentData);
                     })
@@ -288,8 +288,8 @@ function ProjectwiseTS(props) {
                         currentData["subactivity"] = dat.sub_activity;
                         currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
                         currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow3.push(currentData);
                     })
@@ -305,8 +305,8 @@ function ProjectwiseTS(props) {
                         currentData["subactivity"] = dat.sub_activity;
                         currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
                         currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow4.push(currentData);
                     })
@@ -322,8 +322,8 @@ function ProjectwiseTS(props) {
                         currentData["subactivity"] = dat.sub_activity;
                         currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
                         currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} ( ${dat?.start_time}) `
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
+                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow5.push(currentData);
                     })
@@ -368,8 +368,8 @@ function ProjectwiseTS(props) {
                     rowDataList["subactivity"] = dat.sub_activity;
                     rowDataList["planned_sd"] = `${moment(dat.start_date).format('DD-MMM-YYYY')}`
                     rowDataList["planned_ed"] = `${moment(dat.end_date).format('DD-MMM-YYYY')}`
-                    rowDataList["actualstart"] = `${moment(dat.actual_start_date).format('DD-MMM-YYYY')} ( ${dat.start_time}) `
-                    rowDataList["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')} ( ${dat.end_time}) `;
+                    rowDataList["actualstart"] = `${moment(dat.actual_start_date).format('DD-MMM-YYYY')}(${dat.start_time})`
+                    rowDataList["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
                     rowDataList["tothours"] = dat.no_of_hrs;
                     otherDataList.push(rowDataList)
                     multipleTab.push(
