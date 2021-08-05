@@ -36,7 +36,7 @@ useEffect(() => {
   }, [props.rowData]);
 
   
-console.log("propsTImeSheet", props);
+// console.log("propsTImeSheet", props);
 
     return (
         <div className="tabIconsViewtooltip">
@@ -67,12 +67,14 @@ console.log("propsTImeSheet", props);
                             {/* <label className="maintitle">Action</label> */}
                         {/* </div> */}
                     </Grid>
+                    {!props.rowData&&
                     <Grid item xs={3}container direction="row">
                         {/* <div style={{display:"flex",justifyContent:"flex-start"}}> */}
                             <label className="maintitle">Employee</label>
                             {/* <label className="maintitle">Action</label> */}
                         {/* </div> */}
                     </Grid>
+                    }
                    {/* <Grid item xs={3}>
                         <label className="maintitle">Action</label>
                     </Grid>  */}
@@ -122,20 +124,19 @@ console.log("propsTImeSheet", props);
                     <Grid item xs={3}>
                     <div  style={{textAlign:'center'}}>
                                     {/* {data.start_time == null || data.end_time == null ? '' : moment.utc(moment(data.start_time,"HH:mm:ss").diff(moment(data.end_time,"HH:mm:ss"))).format("HH:mm:ss")} */}
-                                    {/* {data.no_hrs} */}12
+                                    {data.no_hrs}
                                 </div>
                        
 
                     </Grid>
-
+                    {!props.rowData&&
                     <Grid item xs={3}>
                     <div  style={{textAlign:'center'}}>
                                     {/* {data.start_time == null || data.end_time == null ? '' : moment.utc(moment(data.start_time,"HH:mm:ss").diff(moment(data.end_time,"HH:mm:ss"))).format("HH:mm:ss")} */}
                          {data.assign_to}
                      </div>
-                       
-
-                    </Grid>
+                    </Grid>}
+                    
                 </Grid>
                 </div> </> ))}
                 {/* <Grid

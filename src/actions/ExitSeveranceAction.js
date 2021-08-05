@@ -65,11 +65,12 @@ export const InsertSeverance = (ExitSeverance,emp_id) => async dispatch => {
         .then((response) => {
             if(response.data.status===1){
                 notification.success({
-                    message: "Resignation applied successfully",
+                    message: "Resignation Applied Successfully",
                 });
             dispatch({type:INSERT_SEVERANCE,payload:response.data.data})
             dispatch(GetEmployeeDetails(emp_id))
             dispatch(getOtherTask())
+            dispatch(GetSeverance(emp_id))
             return Promise.resolve();
             }
         })
@@ -110,12 +111,12 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
                 "employee_id":emp_id,
                 "resignation_accepted_on":data.accept_date.value,
                 "proposed_date_relieving":data.releive_date.value,
-                "approve_status":status===true?1:0,
+                "approve_status":status===true?1:2,
                 "updated_by":localStorage.getItem("empId")
             }
         })
         .then((response) => {
-            // if(response.data.status===1){
+            if(response.data){
             //     notification.success({
             //         message: "Resignation approved successfully",
             //     });
@@ -125,12 +126,16 @@ export const InsertResignation = (status,data,emp_id,sev_Id) => async dispatch =
             //     notification.success({
             //         message: "Resignation Rejected",
             //     });
-                console.log("sss",sev_Id.severanceId)
+                // console.log("sss",sev_Id.severanceId)
             // }
+            notification.success({
+                        message: `Resignation ${status===true?'Approved':'Rejected'} successfully`,
+            });
             dispatch({type:INSERT_RESIGNATION,payload:true})
             // dispatch(GetResignationApproval(sev_Id))
             dispatch(GetSeverance(emp_id))
             dispatch(getOtherTask())
+            }
             return Promise.resolve();
         })
         
@@ -297,7 +302,7 @@ export const UpdateReleiving = (data,emp_id) => async dispatch => {
         .then((response) => {
             if(response.data.status===1){
                 notification.success({
-                message: "Final Relieving Accepted",
+                message: "Final Relieving Approved",
                 });
             dispatch({type:UPDATE_RELIEVING,payload:response.data.status})
             dispatch(GetSeverance(emp_id))

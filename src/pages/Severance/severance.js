@@ -7,11 +7,13 @@ import { notification } from "antd";
 import { useDispatch, connect } from "react-redux";
 import {GetEmployeeDetails,InsertSeverance,ViewSeverance}  from '../../actions/ExitSeveranceAction'
 import ValidationLibrary from "../../helpers/validationfunction";
+import moment from 'moment';
 
 function Severance(props) {
 
     const [SeveranceDetails,setSeveranceDetails]=useState([])
     const [saveRights, setSaveRights] = useState([])
+    const [EmployeeDoj, setEmployeeDoj] = useState(new Date())
     const [ExitSeverance,setExitSeverance]=useState({
         date: {
             value:"",
@@ -33,14 +35,19 @@ function Severance(props) {
     },[])
    
     useEffect(() => {
-        props.EmployeeDetails.map((data)=>{
+        props.EmployeeDetails&&props.EmployeeDetails.length>0&&props.EmployeeDetails.map((data)=>{
             setSeveranceDetails({
                 emp_name:data.name===null?"-":data.name,
                 designation:data.senior_associate===null?"-":data.senior_associate,
                 department:data.department===null?"-":data.department
             })
+            if(props.EmployeeDetails[0].doj<moment().format("YYYY-MM-DD")){
+                setEmployeeDoj(new Date())
+            }else{
+            setEmployeeDoj(moment(`${props.EmployeeDetails[0].doj&&props.EmployeeDetails[0].doj} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format())
+            }
         })
-        console.log( props.EmployeeDetails,"dfghj")
+        // console.log( props.EmployeeDetails,"dfghj")
     },[props.EmployeeDetails])    
 
     function checkValidation(data, key) {
@@ -110,13 +117,9 @@ if(props.UserPermission.length>0&&props.UserPermission){
 }, [props.UserPermission]);
 
 
-console.log(props.ViewSeverance,"ViewSeverance")
+console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status==='Rejected',"ViewSeverance")
 
-function rightsNotification(){
-notification.success({
-    message: "You are not Authorized. Please Contact Administrator",
-});
-}
+
 /////////////
     console.log(props.EmployeeDetails[0]&&props.EmployeeDetails[0].emp_id,"dfghjk")
     return (
@@ -152,7 +155,7 @@ notification.success({
                                 value={ExitSeverance.date.value}
                                 error={ExitSeverance.date.error}
                                 errmsg={ExitSeverance.date.errmsg}
-                                minDate={new Date()}
+                                minDate={EmployeeDoj}
                                 />
                             </div>
                         </Grid>
@@ -175,7 +178,7 @@ notification.success({
 
                         </Grid>
                         <Grid item xs={9}>
-                            {props.ViewSeverance.length===0&&
+                            {((props.ViewSeverance.length===0)||(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status==='Rejected'))&&
                             <div className="appraisalBtn">
                                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onsubmit}/>
                                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={handleCancel}/>

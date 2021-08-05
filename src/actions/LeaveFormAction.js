@@ -353,7 +353,7 @@ export const EmployeeLeaveApprove = (leaveStatus, leaveId) => async dispatch => 
         })
             .then((response) => {
                 notification.success({
-                    message: "Leave Approved Successfully",
+                    message: `Leave ${leaveStatus === true?'Approved':'Rejected'} Successfully`,
                 });
                 dispatch(getOtherTask())
                 return Promise.resolve();

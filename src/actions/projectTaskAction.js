@@ -140,7 +140,7 @@ export const insertTimeSheet = (params, id) => async dispatch => {
             if (response.data.status === 1) {
                 var msg = response.data.msg;
                 notification.success({
-                    message: "Time sheet updated",
+                    message: "Time Sheet Started",
                 });
                 dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
 
@@ -233,7 +233,6 @@ export const insertTimeSheetbyTime = (params, time, task, timeSheetStartDate) =>
                 if (time == true && task && task.actual_start_date == null) {
                     task.actual_start_date = params.start_date;
 
-
                     dispatch(updateTaskDates(task));
                 } else {
                     task.actual_end_date = params.end_date;
@@ -243,7 +242,7 @@ export const insertTimeSheetbyTime = (params, time, task, timeSheetStartDate) =>
                 dispatch(getTaskList(localStorage.getItem("empId")));
                 var msg = response.data.msg;
                 notification.success({
-                    message: "Time sheet updated",
+                    message: `Time Sheet ${time === true?'Started':'Stopped'}`,
                 });
                 dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
 
