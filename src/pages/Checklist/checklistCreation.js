@@ -8,7 +8,7 @@ import Axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment"
 import {
-    getDepartment,getCheckListCategory,getCheckListType,getActivity,getFrequency,
+    getDepartment,getCheckListType,getActivity,getFrequency,
   } from "../../actions/MasterDropdowns";
   import {getCheckLists,insertCheckList
   } from "../../actions/CheckListAction";
@@ -49,7 +49,6 @@ function CheckListCreation(props) {
           var data = {
             
                 "department":checkListForm.department.value,
-                "category_id":checkListForm.checkListCategory.value,
                 "check_list":checkListName,
                 "check_list_type":checkListForm.checkListType.value,
                 "project_type_id":checkListForm.department.value,
@@ -81,7 +80,6 @@ function CheckListCreation(props) {
           "activity",
           "subActivity",
           "department",
-          "checkListCategory",
           "checkListName",
           "checkListType",
           "task",
@@ -121,12 +119,6 @@ function CheckListCreation(props) {
           error: null,
           errmsg: null,
         },
-        checkListCategory: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-        },
         checkListName: {
           value: "",
           validation: [{ name: "required" },{name:"alphabetsandSpecialChar"}],
@@ -158,7 +150,6 @@ function CheckListCreation(props) {
     useEffect(() => {
         dispatch(getDepartment());
         dispatch(getCheckListType());
-        dispatch(getCheckListCategory());
         dispatch(getActivity());
         dispatch(getFrequency());
         dispatch(getCheckLists());
@@ -231,21 +222,8 @@ function CheckListCreation(props) {
           })
         )
         setcheckListType({ checkListTypeData })
-    
-        let checkListcategorydata = []
-        props.getCchecklistcategory.map((data) =>
-        checkListcategorydata.push({
-            value: data.status,
-            id: data.status_id
-          })
-        ) 
-        setcheckListCtegory({ checkListcategorydata })
-    
-    
-    
-    
-    
-      }, [props.getCchecklistcategory,props.getCchecklisttype,props.getFrequency,
+
+      }, [props.getCchecklisttype,props.getFrequency,
         props.getActivity,props.getDepartment,props.getCheckListscreation
       ]);
 
@@ -382,14 +360,7 @@ function CheckListCreation(props) {
                          value={checkListForm.department.value}
                          error={checkListForm.department.error}
                          errmsg={checkListForm.department.errmsg} /></div>
-                    <div>  <div className="TThead">Category</div>
-                        <Labelbox type="select" 
-                          dropdown={checkListCtegory.checkListcategorydata}
-                          changeData={(data) => checkValidation(data, "checkListCategory")}
-                          placeholder={"Check List category"}
-                          value={checkListForm.checkListCategory.value}
-                          error={checkListForm.checkListCategory.error}
-                          errmsg={checkListForm.checkListCategory.errmsg} /></div>
+
                     <div>  <div className="TThead">Check List Name</div>
                         <Labelbox type="text" 
                         changeData={(data) => checkValidation(data, "checkListName")}
@@ -470,12 +441,11 @@ function CheckListCreation(props) {
 
 const mapStateToProps = (state) =>
     ({
-        getCchecklistcategory: state.getOptions.getCchecklistcategory || [],
-getCchecklisttype: state.getOptions.getCchecklisttype || [],
-getFrequency: state.getOptions.getFrequency || [],
-getActivity: state.getOptions.getActivity || [],
-getDepartment: state.getOptions.getDepartment || [],
-getCheckListscreation : state.CheckListReducer.getCheckListscreation || [],
+      getCchecklisttype: state.getOptions.getCchecklisttype || [],
+      getFrequency: state.getOptions.getFrequency || [],
+      getActivity: state.getOptions.getActivity || [],
+      getDepartment: state.getOptions.getDepartment || [],
+      getCheckListscreation : state.CheckListReducer.getCheckListscreation || [],
     });
 export default connect(mapStateToProps) (CheckListCreation);
 

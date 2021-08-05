@@ -79,6 +79,7 @@ export const InsertOpeAdvance = (amt) => async dispatch => {
 
 export const InsertOpeExpenses = (data,file,state) => async dispatch => {
     var fromData=new FormData()
+    fromData.set("date",data.date.value)
     fromData.set("project_id",data.project_name.value)
     fromData.set("project_type_id",data.project_type.value)
     fromData.set("client_id",data.client.id)

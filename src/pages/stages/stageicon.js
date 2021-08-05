@@ -211,17 +211,31 @@ function Stages(props) {
             </Grid>
 
             <Grid item xs={9} container direction="row" spacing={2}>
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <div className="stageHeading" >Stages</div>
                     {stageItem.map((data) => {
                         return <div >{data}</div>
                     })}
                 </Grid>
 
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <div className="stageHeading"> Sub Stages</div>
                     {subStageItem.map((data) => {
                         return <div >{data}</div>
+                    })}
+                </Grid>
+
+                <Grid item xs={2}>
+                    <div className="stageHeading"> No of Days</div>
+                    {props.getAllStages.length>0&&props.getAllStages.map((data) => {
+                        return <div >{data.no_of_compliance_days}</div>
+                    })}
+                </Grid>
+
+                <Grid item xs={2}>
+                    <div className="stageHeading"> Reminder Days</div>
+                    {props.getAllStages.length>0&&props.getAllStages.map((data) => {
+                        return <div >{data.remainder_days}</div>
                     })}
                 </Grid>
             </Grid>

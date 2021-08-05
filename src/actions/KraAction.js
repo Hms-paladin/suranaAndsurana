@@ -112,3 +112,32 @@ export const InsertApproveKra = (approveid, kraList, Active, Percent, refLength,
 
     }
 }
+
+// export const getKraCheckDate = (kpi_form) => async dispatch => {
+
+//     try {
+//         axios({
+//             method: 'POST',
+//             url: apiurl + 'get_kra_check_date',
+//             data: {
+//                 "emp_id": localStorage.getItem("empId"),
+//                 "period_from": moment(kpi_form.fromperiod.value).format("YYYY-MM") || 0,
+//                 "period_to": moment(kpi_form.toperiod.value).format("YYYY-MM") || 0,
+//             }
+//         })
+//             .then((response) => {
+//                 // if (response.data.status === 1) {
+//                 //     if (i === refLength) {
+//                 //         notification.success({
+//                 //             message: 'KRA Approve Successfully',
+//                 //         });
+//                 //     }
+               
+//                     return response;
+//                 // }
+//             })
+
+//     } catch (err) {
+
+//     }
+// }

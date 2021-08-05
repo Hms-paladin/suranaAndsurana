@@ -2,7 +2,7 @@ import {
     GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
     GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
-    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING
+    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING, GET_ADJOURN_TAKEN_BY
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -543,6 +543,44 @@ export const InsertHearingDets = (data) => async dispatch => {
                 if (response.data.status === 1) {
                     notification.success({
                         message: 'Hearing Details Added Successfully',
+                    });
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+        notification.error({
+            message: 'Record Not Added',
+        });
+    }
+}
+
+export const getAdjournTakenBy = () => async dispatch => {
+    try {
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_adjourn_taken_by',
+        })
+            .then((response) => {
+                dispatch({ type: GET_ADJOURN_TAKEN_BY, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const InsertHearingAdjourn = (data) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'insert_hearing_adjourn',
+            data: data
+        })
+            .then(function (response) {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Hearing Adjourn Details Added Successfully',
                     });
                     return Promise.resolve();
                 }

@@ -13,6 +13,7 @@ import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import Labelbox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useParams, useHistory } from "react-router-dom";
+import moment from 'moment'
 
 const StageMonitor = (props) => {
   const history = useHistory();
@@ -34,7 +35,7 @@ const StageMonitor = (props) => {
   const [updateParam, setupdateParam] = useState({
 
     compDate: {
-      value: "2021-04-28",
+      value: moment().format("YYYY-MM-DD"),
       validation: [],
       error: null,
       errmsg: null,

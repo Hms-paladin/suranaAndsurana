@@ -129,8 +129,9 @@ useEffect(() => {
             OpeSearch.total_expense=Number(expense).toLocaleString()
 
             var balance=Math.abs(data.Total_advance-data.total_expense)
-            var result=balance.toString().replace(/\D/g, '')
-            OpeSearch.balance=Number(result).toLocaleString()
+            // var result=balance.toString().replace(/\D/g, '')
+            // OpeSearch.balance=Number(result).toLocaleString()
+            OpeSearch.balance=data.balance
           //  console.log("props",(data.amount)+(data.advance_amount))
 
 
@@ -196,7 +197,8 @@ useEffect(() => {
                     <Grid item xs={12} container direction="row" alignItems="center" spacing={2} className="cont_lib_item_grid">
                         <Grid item xs={3}>
                             <Labelbox type="datepicker" labelname="From Date" 
-                               maxDate={OpeSearch.to_date.value}
+                              //  maxDate={OpeSearch.to_date.value}
+                               maxDate={new Date()}
                               changeData={(data) => checkValidation(data, "from_date")}
                               value={OpeSearch.from_date.value}
                               error={OpeSearch.from_date.error}
@@ -206,6 +208,7 @@ useEffect(() => {
                         <Grid item xs={3}>
                             <Labelbox type="datepicker" labelname="To Date" 
                               minDate={minDate}
+                              maxDate={new Date()}
                              changeData={(data) => checkValidation(data, "to_date")}
                              value={OpeSearch.to_date.value}
                              error={OpeSearch.to_date.error}

@@ -1,4 +1,4 @@
-import react, { useCallback, useEffect, useState } from "react";
+import React, { useCallback,useRef,useEffect, useState } from "react";
 import "./dashboard.scss";
 import Library from "../../images/dashboard/library.svg";
 import appraisal from "../../images/dashboard/appraisal.svg";
@@ -21,6 +21,7 @@ import { Calendar } from 'antd';
 import Grid from "@material-ui/core/Grid";
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
+import { useDispatch, connect } from "react-redux";
 import moment from 'moment';
 
 const Projectbox = [
@@ -66,7 +67,7 @@ const Taskdays = [
   },
 ];
 
-function DashboardNew() {
+function DashboardNew(props) {
   const [pathname, setpathname] = useState(window.location.pathname);
   const [menuListItem, setMenuListItem] = useState([]);
   const [arrowHide, setArrowHide] = useState(false);
@@ -77,7 +78,7 @@ function DashboardNew() {
   const [dashboardValues, setDashboardValues] = useState([])
   const [calenderValues, setCalenderValues] = useState([])
 
-  const [menulist, setMenulist] = useState([
+  const menulist =  useRef( [
     {
       img: <img src={Library} className="imageicons" />,
       title: "Library",
@@ -152,9 +153,9 @@ function DashboardNew() {
     setpathname(data.path);
   };
 
-  useEffect(() => {
-    orderChange();
-  }, []);
+  // useEffect(() => {
+  //   orderChange();
+  // }, []);
 
 
   useEffect(() => {
@@ -207,25 +208,7 @@ function DashboardNew() {
   }
 
   console.log(projectwise, "projectwise")
-  const orderChange = useCallback(
-    (showListStart = 0, showListEnd = 7, arrowshow) => {
-      const menuLists = menulist.map((data, index) => {
-        if (index >= showListStart - 1 && index <= showListEnd - 1) {
-          return (
-            <Link to={data.path} onClick={() => handleClick(data)}>
-              <div>
-                <div className="dashboardmenu">{data.img}</div>
-                <div className="dashboardtitle">{data.title}</div>
-              </div>
-            </Link>
-          );
-        }
-      });
-      setMenuListItem(menuLists);
-      setArrowHide(arrowshow);
-    },
-    []
-  );
+  
 
   const userdashboard = (color) => {
     setChangedashBoard(true)
@@ -241,6 +224,86 @@ function DashboardNew() {
   }
 
   console.log(arrowHide, "arrowHide");
+
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      props.UserPermission.map((data)=>{
+
+      if(data.control==='Library - Add Resource'&&data.display_control==='Y'||data.control==='Library - Receive'&&data.display_control==='Y'
+      ||data.control==='Library - Issue'&&data.display_control==='Y'||data.control==='Library - Search'&&data.display_control==='Y'){
+
+        menulist.current[0].menu_rights=true;
+      }
+
+      if(data.control==='Appraisal - Save'&&data.display_control==='Y'){  
+        menulist.current[1].menu_rights=true;
+      }
+      
+      if(data.control==='KRA - Save'&&data.display_control==='Y'||data.control==='KRA - View KRA'&&data.display_control==='Y'){  
+        menulist.current[2].menu_rights=true;
+      }
+
+      if(data.control==='KPI - Save'&&data.display_control==='Y'||data.control==='KPI - View KPI'&&data.display_control==='Y'){  
+        menulist.current[3].menu_rights=true;
+      }
+
+      menulist.current[4].menu_rights=true;
+
+      if(data.control==='Adhoc Task - Save'&&data.display_control==='Y'){  
+        menulist.current[5].menu_rights=true;
+      }
+
+      if(data.control==='Apply Leave - Save'&&data.display_control==='Y'){  
+        menulist.current[6].menu_rights=true;
+      }
+
+
+      if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
+        menulist.current[7].menu_rights=true;
+      }
+
+      if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
+        menulist.current[8].menu_rights=true;
+      }
+
+      if(data.control==='OPA/ Expenses - Search'&&data.display_control==='Y'||data.control==='OPA/ Expenses- OPE - Save'&&data.display_control==='Y'
+      ||data.control==='OPA/ Expenses- OPA - Save'&&data.display_control==='Y'){  
+        menulist.current[9].menu_rights=true;
+      }
+
+      if(data.control==='Day Report - Save'&&data.display_control==='Y'){  
+        menulist.current[10].menu_rights=true;
+      }
+
+      menulist.current[11].menu_rights=true;
+
+      orderChange()
+    })
+
+    }
+   
+  }, [props.UserPermission]); 
+
+  const orderChange = useCallback(
+    (showListStart = 0, showListEnd = 7, arrowshow) => {
+      const menuLists = menulist.current.map((data, index) => {
+        if (index >= showListStart - 1 && index <= showListEnd - 1) {
+          if(data.menu_rights){
+          return (
+            <Link to={data.path} onClick={() => handleClick(data)}>
+              <div>
+                <div className="dashboardmenu">{data.img}</div>
+                <div className="dashboardtitle">{data.title}</div>
+              </div>
+            </Link>
+          )}
+        }
+      });
+      setMenuListItem(menuLists);
+      setArrowHide(arrowshow);
+    },
+    []
+  );
   return (
 
 
@@ -569,4 +632,10 @@ function DashboardNew() {
   );
 }
 
-export default DashboardNew;
+const mapStateToProps = (state) => (
+
+  {
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+  }
+);
+export default connect(mapStateToProps)(DashboardNew); 

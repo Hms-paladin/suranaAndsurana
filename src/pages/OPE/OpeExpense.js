@@ -12,6 +12,8 @@ import { useDispatch, connect } from "react-redux";
 import { UploadOutlined } from '@ant-design/icons';
 import PublishIcon from '@material-ui/icons/Publish';
 import ValidationLibrary from "../../helpers/validationfunction";
+import moment from 'moment'
+
 function OPE_Expense(props) {
     const [saveRights, setSaveRights] = useState([])
     const [ListItems,setListItems]=useState("")
@@ -19,7 +21,14 @@ function OPE_Expense(props) {
     const [FileList,setFileList]=useState("")
     const [bill,setbill]=useState(false)
     const [disable,setdisable]=useState(false)
+    const [minDate,setminDate]=useState("")
     const [Expenses,setExpenses]=useState({
+        date: {
+            value: moment().format("YYYY-MM-DD"),
+            validation: [{name:"required"}],
+            errmsg: null,
+            error: null,
+          },
         project_type:{
             value:"",
             validation:[{name:"required"}],
@@ -215,6 +224,19 @@ useEffect(() => {
             <div style={{ fontSize: "20px", fontWeight: "600" }}>OP Expenses</div>
             <div className="ope_container">
                 <Grid item xs={12} spacing={2} container direction="row">
+
+                <Grid item xs={4} direction="column">
+                            <Labelbox type="datepicker" labelname="Date" 
+                              //  maxDate={Expenses.to_date.value}
+                               maxDate={new Date()}
+                              changeData={(data) => checkValidation(data, "date")}
+                              value={Expenses.date.value}
+                              error={Expenses.date.error}
+                              errmsg={Expenses.date.errmsg}
+                            />
+                        </Grid>
+
+
                     <Grid item xs={4} container direction="column">
                         <div>Project Type</div>
                         <Labelbox type="select"
@@ -235,6 +257,8 @@ useEffect(() => {
                         errmsg={Expenses.project_name.errmsg}
                         />
                     </Grid>
+                    </Grid>
+                    <Grid item xs={12} spacing={2} container direction="row">
                     <Grid item xs={4} container direction="column">
                         <div>Client Name</div>
                         <Labelbox type="text"

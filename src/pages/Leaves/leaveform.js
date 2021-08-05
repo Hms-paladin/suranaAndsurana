@@ -1011,6 +1011,7 @@ console.log(sub_date,"sub_date")
                                 <div className="leaveFieldheading">No. of Other Days</div>
                                 <div>
                                     <Labelbox type="text"
+                                        disabled={true}
                                         changeData={(data) => checkValidation(data, "other_days")}
                                         value={Leave_Form.other_days.value}
                                         error={Leave_Form.other_days.error}
@@ -1062,7 +1063,9 @@ console.log(sub_date,"sub_date")
                                         <div className="leaveFieldheading">Date</div>
                                         <div>
                                             <Labelbox type="datepicker"
-                                                changeData={(data) => checkValidation(data, "exam_date")}
+                                              minDate={Leave_Form.fromdate.value}
+                                              maxDate={Leave_Form.todate.value}
+                                              changeData={(data) => checkValidation(data, "exam_date")}
                                                 value={Leave_Form.exam_date.value}
                                                 error={Leave_Form.exam_date.error}
                                                 errmsg={Leave_Form.exam_date.errmsg} />

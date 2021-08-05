@@ -52,6 +52,7 @@ function LeaveApproval(props) {
                 noofdaysleave: data.total_days_leave === null ? "-" : data.total_days_leave,
                 examdays: data.no_exam_days == null ? "-" : data.no_exam_days,
                 otherdays: data.no_other_days === null ? "-" : data.no_other_days,
+                refered_by_name: data.refered_by_name === null ? "-" : data.refered_by_name,
                 num_of_hrs: data.num_of_hrs,
                 num_of_day: data.num_of_day,
             })
@@ -120,7 +121,7 @@ function LeaveApproval(props) {
                 {ApprovalData[0] && ApprovalData[0].leave_typeId === 40 &&
                     <> <div>
                         <div>Referred by</div>
-                        <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].assginedby}</div>
+                        <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].refered_by_name}</div>
                     </div>
                         <div>
                             <div>Professional Course</div>

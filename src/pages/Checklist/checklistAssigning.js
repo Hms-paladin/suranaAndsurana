@@ -8,21 +8,92 @@ import Axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment"
 import { useDispatch, connect } from "react-redux";
-import {getCheckListsNames,insert_check_list_assign,getDaysOfWeek
+import {getCheckListsNames,insert_check_list_assign,getDaysOfWeek,get_projType_subProjType_by_projId
 } from "../../actions/CheckListAction";
-import {
-    getEmployeeList,getProjectType
-  } from "../../actions/MasterDropdowns";
+import { getEmployeeList,getProjectType,getFrequency,getProjectName  } from "../../actions/MasterDropdowns";
   import ValidationLibrary from "../../helpers/validationfunction";
 function CheckListAssign(props) {
     const [saveRights, setSaveRights] = useState([])
     const dispatch = useDispatch();                  
     
+    const [checkListForm, setcheckListForm] = useState({
+      checkListNameId: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+        //disabled: true,
+       // hidden :true
+      },
+      employeeId: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+        disabled: false
+      },
+      project_type_id: {
+        value: "",
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false
+      },
+      subProjectId: {
+        value: "",
+        validation: [],
+        error: null,
+        errmsg: null,
+        disabled: false
+      },
+      startDate: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+      },
+      endDate: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+      },
+      noOfDaysWeeks: {
+        value: "",
+        valueById: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+        disabled: false
+      },
+      frequency: {
+        value: "",
+        valueById: "",
+        validation: [],
+        error: null,
+        errmsg: null,
+      },
+      projectname: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+      }
+    });
+  useEffect(() => {
+      dispatch(getCheckListsNames());
+      dispatch(getEmployeeList());
+      dispatch(getProjectType());
+      dispatch(getDaysOfWeek()); 
+      dispatch(getFrequency());
+      dispatch(getProjectName());
+    }, []);
+
     const handleCancel = () => {
         let From_key = [
           "checkListNameId",
           "employeeId",
-          "projectId",
+          "project_type_id",
           "subProjectId",
           "startDate",
           "endDate","noOfDaysWeeks"
@@ -62,27 +133,24 @@ function CheckListAssign(props) {
         if (filtererr.length > 0) {
           // setInsertTaskForm({ error: true });
         } else {
-          // setInsertTaskForm({ error: false });
           var data = {
             "check_list_id":checkListForm.checkListNameId.value,
             "emp_id":checkListForm.employeeId.value == '' ? 0 : checkListForm.employeeId.value,
-            "project_type_id":checkListForm.projectId.value == '' ? 0 : checkListForm.projectId.value,
-            "project_sub_type_id":checkListForm.subProjectId.value == '' ? 0 : checkListForm.subProjectId.value ,
-            "start_date":checkListForm.startDate.value,
+            "project_id":checkListForm.projectname.value == '' ? 0 : checkListForm.projectname.value,
+            "project_type_id":checkListForm.project_type_id.value == '' ? 0 : checkListForm.project_type_id.value,
+            "project_sub_type_id":(!checkListForm.subProjectId.value||checkListForm.subProjectId.value === "") ? 0 : checkListForm.subProjectId.value ,
+            "start_date":checkListForm.startDate.value===""?'0000-00-00':checkListForm.startDate.value,
             "end_date":checkListForm.endDate.value,
-            "days_of_week_id" :checkListForm.noOfDaysWeeks.valueById,
+            "days_of_week_id" :checkListForm.noOfDaysWeeks.valueById===""?"0":checkListForm.noOfDaysWeeks.valueById,
             "created_on":moment().format('YYYY-MM-DD HH:m:s'),
             "created_by":localStorage.getItem("empId")
-             
+
           }
-    
+
           dispatch(insert_check_list_assign(data)).then((response) => {
             handleCancel();
           })
-    
-          // dispatch(InesertResume(InsertTaskForm)).then(() => {
-          //   handleCancel()
-          // })
+
         }
     
         setcheckListForm(prevState => ({
@@ -91,16 +159,7 @@ function CheckListAssign(props) {
       };
 
     function checkValidation(data, key, multipleId) {
-        var errorcheck = ValidationLibrary.checkValidation(
-          data,
-          checkListForm[key].validation
-        );
-        let dynObj = {
-          value: data,
-          error: !errorcheck.state,
-          errmsg: errorcheck.msg,
-          validation: checkListForm[key].validation,
-        };
+    
     
         // only for multi select (start)
     
@@ -118,119 +177,148 @@ function CheckListAssign(props) {
         }
         // (end)
 
+        if (data && key == "projectname") {
+          dispatch(get_projType_subProjType_by_projId(data));
+        } 
         if (data && key == "checkListNameId") {
           //checkListForm['employeeId'].disabled = false;
           for(var i=0; i< props.getCheckListsNames.length; i++){
-            if(data  == props.getCheckListsNames[i].check_list_id && props.getCheckListsNames[i].frequency != 'On Demand'){
-             // checkListForm['noOfDaysWeeks'].disabled = true;
-              checkListForm['noOfDaysWeeks'].validation =[];
+           
+            if(data  == props.getCheckListsNames[i].check_list_id){
+             checkListForm.frequency.value=props.getCheckListsNames[i].frequency_id
+             checkListForm.frequency.disabled = true;
+           
+             if(props.getCheckListsNames[i].frequency==='On Demand'||props.getCheckListsNames[i].frequency==='Daily'){
+             divShow.start_month=false
+             divShow.end_date=false
+             divShow.days_of_week=false
+             checkListForm.startDate.validation =[]
+             checkListForm.endDate.validation =[]
+             checkListForm.noOfDaysWeeks.validation =[]
+
+             checkListForm.startDate.errmsg=null
+             checkListForm.endDate.errmsg=null
+             checkListForm.noOfDaysWeeks.errmsg=null
+             checkListForm.startDate.error=false
+             checkListForm.endDate.error=false
+             checkListForm.noOfDaysWeeks.error=false
+            }else if(props.getCheckListsNames[i].frequency==='Alternate Days'||props.getCheckListsNames[i].frequency==='Weekly'){
+              divShow.days_of_week=true
+              divShow.start_month=false
+              divShow.end_date=false
+              checkListForm.startDate.validation =[]
+              checkListForm.endDate.validation =[]
+              checkListForm.noOfDaysWeeks.validation = [{ name: "required" }]
+
+              checkListForm.startDate.errmsg=null
+              checkListForm.endDate.errmsg=null
+              checkListForm.startDate.error=false
+              checkListForm.endDate.error=false
+            }else if(props.getCheckListsNames[i].frequency==='Fortnightly'||props.getCheckListsNames[i].frequency==='Monthly'){
+              divShow.start_month=false
+              divShow.days_of_week=false
+              divShow.end_date=true
+              checkListForm.startDate.validation =[]
+              checkListForm.noOfDaysWeeks.validation =[]
+              checkListForm.endDate.validation = [{ name: "required" }]
+
+              checkListForm.startDate.errmsg=null
+              checkListForm.noOfDaysWeeks.errmsg=null
+              checkListForm.startDate.error=false
+              checkListForm.noOfDaysWeeks.error=false
+            }else if(props.getCheckListsNames[i].frequency==='Alternate Month'||props.getCheckListsNames[i].frequency==='Quarterly'
+            ||props.getCheckListsNames[i].frequency==='Half Yearly'||props.getCheckListsNames[i].frequency==='Annual'){
+              divShow.start_month=true
+              divShow.end_date=true
+              divShow.days_of_week=false
+              checkListForm.noOfDaysWeeks.validation =[]
+              checkListForm.endDate.validation =[{ name: "required" }]
+              checkListForm.startDate.validation = [{ name: "required" }]
+              checkListForm.noOfDaysWeeks.errmsg=null
+              checkListForm.noOfDaysWeeks.error=false
+              
             }
+     
+            setdivShow((prevState) => ({
+              ...prevState,
+          }));
           }
+        }
           
         }
         if (data && key == "employeeId") {
-          checkListForm['projectId'].disabled = true;
+          checkListForm['projectname'].disabled = true;
+          checkListForm['project_type_id'].disabled = true;
           checkListForm['subProjectId'].disabled = true;
-          checkListForm['projectId'].validation =[];
+          checkListForm['projectname'].validation =[];
+          checkListForm['project_type_id'].validation =[];
           checkListForm['subProjectId'].validation =[];
         }
        
-        if (data && key == "projectId") {
-          
-          checkListForm['employeeId'].disabled = true;
-          checkListForm['employeeId'].validation =[];
-          Axios({
-            method: "POST",
-            url: apiurl + "get_project_sub_type",
-            data: {
-                project_type_id: data,
-            },
-          }).then((response) => {
-            let projectSuTypeData= [];
-            if(response && response.data && response.data.data.length ==0){
-              checkListForm['subProjectId'].validation =[]; 
-            }
-            response.data.data.map((data) =>
-            projectSuTypeData.push({
-                value: data.sub_project_type,
-                id: data.sub_project_type_id,
-              })
-            );
-            setprojectSubTypeList({ projectSuTypeData });  
-          });
-        }
+  
+
+        var errorcheck = ValidationLibrary.checkValidation(
+          data,
+          checkListForm[key].validation
+        );
+        let dynObj = {
+          value: data,
+          error: !errorcheck.state,
+          errmsg: errorcheck.msg,
+          validation: checkListForm[key].validation,
+        };
+
         setcheckListForm((prevState) => ({
           ...prevState,
           [key]: dynObj,
         }));
+
+     
       }
      
-    const [checkListForm, setcheckListForm] = useState({
-        checkListNameId: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          //disabled: true,
-         // hidden :true
-        },
-        employeeId: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          disabled: false
-        },
-        projectId: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          disabled: false
-        },
-        subProjectId: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          disabled: false
-        },
-        startDate: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-        },
-        endDate: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-        },
-        noOfDaysWeeks: {
-          value: "",
-          valueById: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          disabled: false
-        } 
-      });
-    useEffect(() => {
-        dispatch(getCheckListsNames());
-        dispatch(getEmployeeList());
-        dispatch(getProjectType());
-        dispatch(getDaysOfWeek()); 
-      }, []);
+useEffect(()=>{
+
+  if (checkListForm.project_type_id.value!='') {
+       var data=checkListForm.project_type_id.value   
+    checkListForm['employeeId'].disabled = true;
+    checkListForm['employeeId'].validation =[];
+    Axios({
+      method: "POST",
+      url: apiurl + "get_project_sub_type",
+      data: {
+          project_type_id: data,
+      },
+    }).then((response) => {
+      let projectSuTypeData= [];
+      if(response && response.data && response.data.data.length ==0){
+        checkListForm['subProjectId'].validation =[]; 
+      }
+      response.data.data.map((data) =>
+      projectSuTypeData.push({
+          value: data.sub_project_type,
+          id: data.sub_project_type_id,
+        })
+      );
+      setprojectSubTypeList({ projectSuTypeData });  
+    });
+  }
+},[checkListForm.project_type_id.value])  
 
 
 const [projectTypeList, setprojectTypeList] = useState({})
 const [projectSubTypeList, setprojectSubTypeList] = useState({})
 const [employeeList, setemployeeList] = useState({}) 
 const [daysOfWeeksLists, setdaysOfWeeksLists] = useState({})
+const [projectName, setProjectName] = useState({});
+const [frequencyList, setfrequencyList] = useState({})
+const [divShow, setdivShow] = useState({
+  start_month:false,
+  end_date:false,
+  days_of_week:false
+})
 const [checkListNames, setcheckListNames] = useState({})
+
 useEffect(() => {
-  
 
   let projectTypeData = []
   props.getProjectType.map((data) =>
@@ -251,6 +339,15 @@ useEffect(() => {
   setemployeeList({ employeeData })
 
 
+  let frequencyTypeData = []
+  props.getFrequency.map((data) =>
+  frequencyTypeData.push({
+      value: data.status,
+      id: data.status_id
+    })
+  )
+  setfrequencyList({ frequencyTypeData })
+
   let checkListnamesdata = []
   props.getCheckListsNames.map((data) =>
   checkListnamesdata.push({
@@ -269,10 +366,27 @@ useEffect(() => {
   )
   setdaysOfWeeksLists({ daysofWeeksData })
 
+  // Project Name
+
+  let ProjectName = [];
+  props.ProjectName.map((data) =>
+    ProjectName.push({ id: data.project_id, value: data.project_name })
+  );
+  setProjectName({ ProjectName });
   //daysOfWeeksLists.daysofWeeksData
 
-}, [props.getProjectType,props.getEmployeeList,props.getCheckListsNames,props.getDaysofWeeks
-]);
+}, [props.getProjectType,props.getEmployeeList,props.getCheckListsNames,props.getDaysofWeeks,props.getFrequency,props.ProjectName]);
+
+useEffect(() => {
+  if(props.get_projType_subProjType_by_projId.length>0&&props.get_projType_subProjType_by_projId){
+    checkListForm.project_type_id.value=props.get_projType_subProjType_by_projId[0].project_type_id
+    checkListForm.subProjectId.value=props.get_projType_subProjType_by_projId[0].sub_project_type_id
+    setcheckListForm(prevState => ({
+      ...prevState
+    }));
+ }
+
+ }, [props.get_projType_subProjType_by_projId]);
 
     ///***********user permission**********/
 useEffect(() => {
@@ -281,20 +395,15 @@ useEffect(() => {
        return (
            "Check List Assigning" == val.control 
        ) 
-      })
+      }) 
       setSaveRights(data_res_id)
    }
   
    }, [props.UserPermission]);
   
+  console.log(divShow,"divShow")
   
-    // console.log(saveRights,"rights")
-  
-   function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
+
   /////////////
 
     return (
@@ -327,15 +436,27 @@ useEffect(() => {
                         ></Labelbox>
                     </Grid>
                     <Grid item xs={3} container direction="column">
+                        <div className="TThead">Project Name</div>
+                        <Labelbox type="select"
+                        placeholder={"Project "}
+                        dropdown={projectName.ProjectName}
+                        changeData={(data) => checkValidation(data, "projectname")}
+                        value={checkListForm.projectname.value}
+                        error={checkListForm.projectname.error}
+                        errmsg={checkListForm.projectname.errmsg}
+                        disabled={checkListForm.projectname.disabled}></Labelbox>
+
+                    </Grid>
+                    <Grid item xs={3} container direction="column">
                         <div className="TThead">Project Type</div>
                         <Labelbox type="select"
                         dropdown={projectTypeList.projectTypeData}
-                        changeData={(data) => checkValidation(data, "projectId")}
+                        changeData={(data) => checkValidation(data, "project_type_id")}
                         placeholder={"Project "}
-                        value={checkListForm.projectId.value}
-                        error={checkListForm.projectId.error}
-                        errmsg={checkListForm.projectId.errmsg}
-                        disabled={checkListForm.projectId.disabled}></Labelbox>
+                        value={checkListForm.project_type_id.value}
+                        error={checkListForm.project_type_id.error}
+                        errmsg={checkListForm.project_type_id.errmsg}
+                        disabled={checkListForm.project_type_id.disabled}></Labelbox>
 
                     </Grid>
                     <Grid item xs={3} container direction="column">
@@ -350,46 +471,66 @@ useEffect(() => {
                         disabled={checkListForm.subProjectId.disabled}
                         ></Labelbox>
                     </Grid>
+                    {checkListForm.checkListNameId.value!=''&&<>
                     <Grid item xs={3} container direction="column">
-                        <div className="TThead">Start Date</div>
+                    <div className="TThead">Frequency</div>
+                        <Labelbox type="select" 
+                          dropdown={frequencyList.frequencyTypeData}
+                          changeData={(data) => checkValidation(data, "frequency")}
+                          placeholder={"Frequency"}
+                          value={checkListForm.frequency.value}
+                          error={checkListForm.frequency.error}
+                          errmsg={checkListForm.frequency.errmsg} 
+                          disabled={checkListForm.frequency.disabled}
+                          ></Labelbox>
+                    </Grid>
+
+                    <Grid item xs={2} container direction="column">
+                        <div className="TThead">Start Month</div>
                         <Labelbox type="datepicker"
+                          view={["month"]}
                          changeData={(data) => checkValidation(data, "startDate")}
                          placeholder={"Start date "}
                          value={checkListForm.startDate.value}
                          error={checkListForm.startDate.error}
-                         errmsg={checkListForm.startDate.errmsg}></Labelbox>
+                         errmsg={checkListForm.startDate.errmsg}
+                         disabled={!divShow.start_month}
+                         >
+                         </Labelbox>
 
-                    </Grid>
-                    <Grid item xs={3} container direction="column">
-                        <div className="TThead">End Date</div>
+                    </Grid> 
+
+                    <Grid item xs={2} container direction="column">
+                        <div className="TThead"> Date</div>
                         <Labelbox type="datepicker"
+                          view={["date"]}
                         changeData={(data) => checkValidation(data, "endDate")}
-                        placeholder={"End date "}
+                        placeholder={"Date "}
                         value={checkListForm.endDate.value}
                         error={checkListForm.endDate.error}
                         errmsg={checkListForm.endDate.errmsg}
-                        
-                       
-
+                        disabled={!divShow.end_date}
                         ></Labelbox>
                     </Grid>
 
-                    <Grid item xs={3} container direction="column">
-                    <div className="TThead">Days of Week</div>
-                <Labelbox
-                  type="select"
-                  mode={"multiple"}
-                  placeholder={"Days of Week"}
-                  dropdown={daysOfWeeksLists.daysofWeeksData}
-                  changeData={(data) =>
-                    checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
-                  }
-                  disabled={checkListForm.noOfDaysWeeks.disabled}
-                  value={checkListForm.noOfDaysWeeks.value}
-                  error={checkListForm.noOfDaysWeeks.error}
-                  errmsg={checkListForm.noOfDaysWeeks.errmsg}
-                />
-              </Grid>
+                    <Grid item xs={2} container direction="column">
+                      <div className="TThead">Days of Week</div>
+                      <Labelbox
+                        type="select"
+                        mode={"multiple"}
+                        placeholder={"Days of Week"}
+                        dropdown={daysOfWeeksLists.daysofWeeksData}
+                        changeData={(data) =>
+                          checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
+                        }
+                        disabled={checkListForm.noOfDaysWeeks.disabled}
+                        value={checkListForm.noOfDaysWeeks.value}
+                        error={checkListForm.noOfDaysWeeks.error}
+                        errmsg={checkListForm.noOfDaysWeeks.errmsg}
+                        disabled={!divShow.days_of_week}
+                      />
+                  </Grid>
+                  </>}
 
                 </Grid>
 
@@ -409,5 +550,8 @@ const mapStateToProps = (state) =>
         getEmployeeList : state.getOptions.getEmployeeList || [],
         getCheckListsNames : state.CheckListReducer.getCheckListsNames || [],
         getDaysofWeeks: state.CheckListReducer.getDaysofWeeks || [],
+        getFrequency: state.getOptions.getFrequency || [],
+        ProjectName: state.getOptions.getProjectName||[],
+        get_projType_subProjType_by_projId : state.CheckListReducer.get_projType_subProjType_by_projId || [], 
     });
 export default connect(mapStateToProps) (CheckListAssign);

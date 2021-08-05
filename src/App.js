@@ -19,7 +19,7 @@ function App() {
     localStorage.setItem("designation", JSON.stringify(data.data[0].designation));
     setAuthTokens(data);
   }
-  dispatch(get_user_rights());
+ 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Router basename="suranaAndsurana/?/">

@@ -12,11 +12,12 @@ import RatingModel from './ratingModel';
 import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
-import DoneAllIcon from '@material-ui/icons/DoneAll';
 import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
 import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal } from '../../actions/AppraisalAction';
 import moment from 'moment';
-import { DoneAll } from '@material-ui/icons';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import axios from "axios";
+import { apiurl } from "../../utils/baseUrl";
 
 
 
@@ -24,7 +25,6 @@ const { Panel } = Collapse;
 
 function Appraisal(props) {
     const dispatch = useDispatch();
-    // const rowID = ""
     const [addemployeeDetails, setAddemployeeDetails] = useState([])
     const [addemployeeseminar, setAddemployeeSeminar] = useState([])
     const [addemployeeProgram, setAddemployeeProgram] = useState([])
@@ -46,30 +46,33 @@ function Appraisal(props) {
     const [emp_appr_id, setEmp_appr_id] = useState()
     const [enableSave, setEnableSave] = useState(false)
     const [emp_id, setEmp_id] = useState()
-    const [modelComment, setModelComment] = useState({
-        area_of_speci: { value: "" },
-        self_work_des: { value: "" },
-        current_duties: { value: "" },
-        major_achievement: { value: "" },
-        urge_to_learn: { value: "" },
-        enhance_your_productivity: { value: "" },
-        improvement_ssia: { value: "" },
-        opinion_remark: { value: "" },
-        growth_plan_three_yrs: { value: "" },
-        growth_plan_five_yrs: { value: "" },
-    })
-    const [supmodelComment, setSupModelComment] = useState({
-        appraisar_comments: { values: "" },
-        instruction_action: { values: "" },
-        advice_manage_parter: { values: "" },
-    })
-    const [managemodelComment, setManageModelComment] = useState({
-        instruction_to_appraise: { values: "" },
-        advice_to_hod: { values: "" },
-        instruction_to_admin_hod: { values: "" },
-        fb_managing_parter: { values: "" },
 
+    // Appraisal apply
+    const [modelComment, setModelComment] = useState({
+        area_of_speci: { value: "" }, self_work_des: { value: "" }, current_duties: { value: "" }, major_achievement: { value: "" }, urge_to_learn: { value: "" }, enhance_your_productivity: { value: "" }, improvement_ssia: { value: "" }, opinion_remark: { value: "" }, growth_plan_three_yrs: { value: "" }, growth_plan_five_yrs: { value: "" },
     })
+    const { area_of_speci, self_work_des, current_duties, major_achievement, urge_to_learn, enhance_your_productivity, improvement_ssia, opinion_remark, growth_plan_three_yrs, growth_plan_five_yrs } = modelComment
+
+    const EmpApply = [area_of_speci, self_work_des, current_duties, major_achievement, urge_to_learn, enhance_your_productivity, improvement_ssia, opinion_remark, growth_plan_three_yrs, growth_plan_five_yrs]
+
+
+    //Approval
+    const [supmodelComment, setSupModelComment] = useState({
+        appraisar_comments: { values: "" }, instruction_action: { values: "" }, advice_manage_parter: { values: "" },
+    })
+
+    const { appraisar_comments, instruction_action, advice_manage_parter } = supmodelComment
+    const Supervisor = [appraisar_comments, instruction_action, advice_manage_parter]
+
+
+    // Managing
+    const [managemodelComment, setManageModelComment] = useState({
+        instruction_to_appraise: { value: "" }, advice_to_hod: { value: "" }, instruction_to_admin_hod: { value: "" }, fb_managing_parter: { value: "" },
+    })
+
+    const { instruction_to_appraise, advice_to_hod, instruction_to_admin_hod, fb_managing_parter } = managemodelComment
+    const Manageing = [instruction_to_appraise, advice_to_hod, instruction_to_admin_hod, fb_managing_parter]
+
     const [Appraisal, setAppraisal] = useState({
         area_dev: {
             value: "",
@@ -102,18 +105,24 @@ function Appraisal(props) {
         dispatch(GetAreaDevelopment())
         dispatch(GetEmpAppraisal())
         dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
+        console.log(props.GetEmpAppraisalDetails, "props.location.state?.appraisalData.emp_appr_id")
         setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
-
         if (props.location.state?.appraisalData.task === "Employee Appraisal") {
-            if (Number(localStorage.getItem("empId")) === 1) {
-                setRowID(2)
-            } else {
+            if (localStorage.getItem("designation") === "HOD") {
                 setRowID(1)
+            } else {
+                setRowID(2)
             }
         }
         // setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : 2)
     }, [props.location.state])
 
+    useEffect(() => {
+        setEmpDetail(props.GetEmpAppraisal)
+       
+        console.log(props.GetEmpAppraisal?.doj , props.GetEmpAppraisal?.period_from, "props.GetEmpAppraisal")
+        // if()
+    }, [props.GetEmpAppraisal])
 
     useEffect(() => {
         let AreDevelopment = []
@@ -145,9 +154,8 @@ function Appraisal(props) {
 
     }, [props.GetAreaDevelopment, props.GetEmpAppraisalDetails])
 
-    useEffect(() => {
-        setEmpDetail(props.GetEmpAppraisal)
-    }, [props.GetEmpAppraisal])
+
+
 
     const AddempDetails = () => {
         dispatch(InsertAreaDevelopment(showKeys, Appraisal.details.value, Appraisal.date.value))
@@ -169,12 +177,6 @@ function Appraisal(props) {
     function callback(key) {
         console.log(key);
     }
-
-    // useEffect(() => {
-    //     setRowID(rowId)
-
-    // },[])
-
 
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
@@ -215,8 +217,6 @@ function Appraisal(props) {
         setModelTitle(data)
         setModelCommentID(id)
     }
-    // console.log(rowID, "rowID")
-
 
     ///***********user permission**********/
     useEffect(() => {
@@ -328,38 +328,46 @@ function Appraisal(props) {
         }
         else {
             if (rowID === 1) {
-                notification.error({
-                    message: ' Please give a Rating',
-                });
-            } else if (rowID == 2) {
-                notification.error({
-                    message: ' Please approve a Rating',
-                });
-            }
-            else {
-                console.log(modelComment?.area_of_speci?.value, "modelComment")
-                if (modelComment?.area_of_speci.value &&
-                    modelComment?.self_work_des.value &&
-                    modelComment?.current_duties.value &&
-                    modelComment?.major_achievement.value &&
-                    modelComment?.urge_to_learn.value &&
-                    modelComment?.enhance_your_productivity.value &&
-                    modelComment?.improvement_ssia.value &&
-                    modelComment?.opinion_remark.value &&
-                    modelComment?.growth_plan_three_yrs.value &&
-                    modelComment?.growth_plan_five_yrs.value) {
-
-                    dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+                let checkQuestion = Supervisor.find((data) => {
+                    return data.values == ""
+                })
+                if (checkQuestion === undefined) {
+                    notification.error({
+                        message: ' Please give a Rating',
+                    });
                 } else {
                     notification.error({
-                        message: 'All Fields Are Required',
-                    })
+                        message: ' Please Answer all the Questions',
+                    });
                 }
+            } else if (rowID == 2) {
 
-
-
+                console.log(Manageing, "mmi")
+                let checkQuestion = Manageing.find((data) => {
+                    return data.value == ""
+                })
+                if (checkQuestion === undefined) {
+                    notification.error({
+                        message: ' Please approve a Rating',
+                    });
+                } else {
+                    notification.error({
+                        message: ' Please Answer all the Questions',
+                    });
+                }
             }
-
+            else {
+                let checkQuestion = EmpApply.find((data) => {
+                    return data.value == ""
+                })
+                if (checkQuestion === undefined) {
+                        dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+                } else {
+                    notification.error({
+                        message: ' Please Answer all the Questions',
+                    });
+                }
+            }
         }
     }
 
@@ -474,7 +482,7 @@ function Appraisal(props) {
                     </div>}
                     <div>
                         <div>Period</div>
-                        <div>{moment(empDetail?.period_from).format("DD-MMM-yyy") + " to " + moment(empDetail?.period_to).format("DD-MMM-yyy")}</div>
+                        <div>{moment(empDetail?.doj).format("DD-MMM-yyy") + " to " + moment(new Date()).format("DD-MMM-yyy")}</div>
                     </div>
                 </div>
 
@@ -530,7 +538,6 @@ function Appraisal(props) {
                     </Grid>
 
                 </div>
-
                 }
                 <div className="employeeApprisal_Container">
                     {rowID == 1 || rowID == 2 ? addemployeeDetails.length > 0 && qualification() :
@@ -559,7 +566,7 @@ function Appraisal(props) {
                     </div>
                     <div className="linkChoose">
                         <div>Was your comfort level in your current responsibilities was adequate </div>
-                        <div><Radio value={1}>{todoListdata && todoListdata.current_responsibilites}</Radio></div>
+                        <div className="yesorNoView">{todoListdata && todoListdata.current_responsibilites == "No" ? " -  No" : " -  Yes"}</div>
                     </div>
 
                     <div className="appraisal_collapse">
@@ -574,7 +581,7 @@ function Appraisal(props) {
                     <div className="chooseleave">
                         <div className="linkChooseOption">
                             <div>Is your potential utilized fully in the current assignment </div>
-                            <div> <Radio value={1}>{todoListdata && todoListdata.current_assignment}</Radio></div>
+                            <div className="yesorNoView">{todoListdata && todoListdata.current_assignment == "No" ? " -  No" : " -  Yes"}</div>
                         </div>
                         {todoListdata && todoListdata.current_assignment === "No" &&
                             <div className="reasonBox">
@@ -606,16 +613,20 @@ function Appraisal(props) {
                 </>
                 : <>
                     <div className="linkingModel">
-                        <div className="linkview" id="areaofspec" onClick={() => appraisalModelOpen("Area of Specialization", "area_of_speci")}>Area of Specialization{modelComment?.area_of_speci.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" id="areaofspec" onClick={() => appraisalModelOpen("Area of Specialization", "area_of_speci")}>Area of Specialization</div>
+                        <div className="tickIcons">{modelComment.area_of_speci.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)", "self_work_des")}>Self work descripition (List out the details of works carried and the frequency){modelComment?.self_work_des.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)", "self_work_des")}>Self work descripition (List out the details of works carried and the frequency)</div>
+                        <div className="tickIcons">{modelComment.self_work_des.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency", "current_duties")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency {modelComment?.current_duties.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency", "current_duties")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div>
+                        <div className="tickIcons">{modelComment.current_duties.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period", "major_achievement")}>Major Achievements in the review period {modelComment?.major_achievement.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period", "major_achievement")}>Major Achievements in the review period</div>
+                        <div className="tickIcons">{modelComment.major_achievement.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="subheading">In your opinion</div>
                     <div className="linkChoose">
@@ -629,13 +640,16 @@ function Appraisal(props) {
                         <div><Checkbox /> No</div> */}
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn", "urge_to_learn")}>Urge to learn {modelComment?.urge_to_learn.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn", "urge_to_learn")}>Urge to learn</div>
+                        <div className="tickIcons">{modelComment.urge_to_learn.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify", "enhance_your_productivity")}>Do you feel any specific training is required to enhance your productivity? if so, please specify {modelComment?.enhance_your_productivity.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify", "enhance_your_productivity")}>Do you feel any specific training is required to enhance your productivity? if so, please specify</div>
+                        <div className="tickIcons">{modelComment.enhance_your_productivity.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA", "improvement_ssia")}>Suggestions, If any for improvement at SSIA {modelComment?.improvement_ssia.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA", "improvement_ssia")}>Suggestions, If any for improvement at SSIA</div>
+                        <div className="tickIcons">{modelComment.improvement_ssia.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="chooseleave">
                         <div className="linkChooseOption">
@@ -663,16 +677,19 @@ function Appraisal(props) {
                         }
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks", "opinion_remark")}>Any other specific opinion/remarks{"    "}{modelComment?.opinion_remark.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks", "opinion_remark")}>Any other specific opinion/remarks</div>
+                        <div className="tickIcons">{modelComment.opinion_remark.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years", "growth_plan_three_yrs")}>Spell out your growth plan for the next three years {modelComment?.growth_plan_three_yrs.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years", "growth_plan_three_yrs")}>Spell out your growth plan for the next three years</div>
+                        <div className="tickIcons">{modelComment.growth_plan_three_yrs.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years", "growth_plan_five_yrs")}>Spell out your growth plan for the next five years {modelComment?.growth_plan_five_yrs.value && <DoneAll color="Primary" />}</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years", "growth_plan_five_yrs")}>Spell out your growth plan for the next five years</div>
+                        <div className="tickIcons">{modelComment.growth_plan_five_yrs.value && <DoneAllIcon />}</div>
                     </div>
                 </>}
-            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} />} />
+            <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} modelComment={modelComment} supmodelComment={supmodelComment} managemodelComment={managemodelComment} />} />
 
             {(rowID == 1 || rowID == 2) &&
                 <>
@@ -682,12 +699,15 @@ function Appraisal(props) {
                 <>
                     <div className="linkingModel">
                         <div className="linkview" onClick={() => appraisalModelOpen("Appraiser Comments", "appraisar_comments")}>Appraiser Comments</div>
+                        <div className="tickIcons">{supmodelComment.appraisar_comments.values && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
                         <div className="linkview" onClick={() => appraisalModelOpen("Instruction/Advice", "instruction_action")}>Instruction/Advice</div>
+                        <div className="tickIcons">{supmodelComment.instruction_action.values && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
                         <div className="linkview" onClick={() => appraisalModelOpen("Advice to Managing Partner", "advice_manage_parter")}>Advice to Managing Partner</div>
+                        <div className="tickIcons">{supmodelComment.advice_manage_parter.values && <DoneAllIcon />}</div>
                     </div>
                 </>
             }
@@ -714,15 +734,19 @@ function Appraisal(props) {
                 <>
                     <div className="linkingModel">
                         <div className="linkview" onClick={() => appraisalModelOpen("Advice/Instruction to Appraise", "instruction_to_appraise")}>Advice/Instruction to Appraise</div>
+                        <div className="tickIcons">{managemodelComment.instruction_to_appraise.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
                         <div className="linkview" onClick={() => appraisalModelOpen("Advice to HOD", "advice_to_hod")}>Advice to HOD</div>
+                        <div className="tickIcons">{managemodelComment.advice_to_hod.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
                         <div className="linkview" onClick={() => appraisalModelOpen("Instruction to Head Admin/HOD", "instruction_to_admin_hod")}>Instruction to Head Admin/HOD</div>
+                        <div className="tickIcons">{managemodelComment.instruction_to_admin_hod.value && <DoneAllIcon />}</div>
                     </div>
                     <div className="linkingModel">
-                        <div className="linkview" onClick={() => appraisalModelOpen("Feedback of Managing Partner", "instruction_to_appraise")}>Feedback of Managing Partner</div>
+                        <div className="linkview" onClick={() => appraisalModelOpen("Feedback of Managing Partner", "fb_managing_parter")}>Feedback of Managing Partner</div>
+                        <div className="tickIcons">{managemodelComment.fb_managing_parter.value && <DoneAllIcon />}</div>
                     </div>
 
                 </>
@@ -746,11 +770,11 @@ function Appraisal(props) {
 }
 
 const mapStateToProps = (state) =>
-    (
-        console.log(state, "tesdfghjst"),
-        {
-            GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
-            GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],
-            GetEmpAppraisal: state.GetEmpAppraisalDetails.GetEmpAppraisal
-        });
+(
+    console.log(state, "tesdfghjst"),
+    {
+        GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
+        GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],
+        GetEmpAppraisal: state.GetEmpAppraisalDetails.GetEmpAppraisal
+    });
 export default connect(mapStateToProps)(Appraisal);

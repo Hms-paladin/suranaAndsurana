@@ -149,6 +149,9 @@ import axios from "axios";
 import { useDispatch, connect } from "react-redux";
 import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl.js";
+import {get_user_rights} from "../../actions/UserAccessRightsAction";
+
+
 const { Option } = Select
 const { Search } = Input;
 
@@ -192,7 +195,7 @@ function Navbar(props) {
   const history = useHistory();
   const [pathname, setpathname] = useState(window.location.pathname)
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false)
   const [Rights, setRights] = useState([])
   const [MenuRights, setMenuRights] = useState({
@@ -222,99 +225,15 @@ function Navbar(props) {
     onlinetest: false,
 })
 
-const [menuItems, setMenuItems] = useState(
-  [
-
-    { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
-    // { path: "/resume", title: "Resume", img: ResumeIcon },
-    { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
-    // {path:"/interview",title:"Interview"},
-    // { path: "/employeeform", title: "Employee Form" },
-    { path: "/Home/search", title: "Search", img: SearchbarIcon },
-    { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
-    { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
-
-    // variable rate master
-    // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-    // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
-    // user groups
-    // { path: "/usergroups", title: "User Groups", img: Usergroups },
-
-    // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
-    // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
-
-    // { path: "/severance", title: "Severance", img: Stagemaster },
-    // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
-    // { path: "/usermaster", title: "User Master", img: Stagemaster },
-    // //User Management
-    // { path: "/usergroup", title: "User Management Group", img: Usergroups },
-    // { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
-    // // group control
-    // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-
-    // //user rights
-    // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
-
-    //severance
-    {
-      active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
-      subtree: [
-        { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
-        { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
-        { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
-      ]
-    },
-
-    //master
-    {
-      active: "master", path: "", title: "Master", img: MasterIcon, submenu: true,
-      subtree: [
-        { path: "/Home/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-        { path: "/Home/stagesmaster", title: "Stage Template", img: Stagemaster },
-        { path: "/Home/leaveupdate", title: "Leave Master", img: MasterIcon },
-        { path: "/Home/usermaster", title: "User Master", img: MasterIcon },
-        { path: "/Home/checklistCreation", title: "CheckList Creation", img: MasterIcon },
-
-      ]
-    },
-
-    //user management
-    {
-      active: "usermanagement", path: "", title: "User Management", img: Usergroups, submenu: true,
-      subtree: [
-        // { path: "/usergroup", title: "User Group", img: Usergroups },
-        { path: "/Home/usergroups", title: "User Groups", img: Usergroups },
-        { path: "/Home/newusermaster", title: "User Master", img: MasterIcon },
-        { path: "/Home/groupcontrol", title: "Group Control", img: MasterIcon },
-        // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-        // { path: "/userrights", title: "User Access Rights", img: MasterIcon }
-      ]
-    },
-
-    //Online Test
-    {
-      active: "onlinetest", path: "", title: "Online Test", img: MasterIcon, submenu: true,
-      subtree: [
-        { path: "/Home/addquestion", title: "Add Questions", img: MasterIcon },
-        { path: "/Home/testtemplate", title: "Test Template", img: MasterIcon },
-        { path: "/Home/onlinetest", title: "Online Test", img: MasterIcon }
-      ]
-    },
-
-    // //Online Test
-    // { path: "/addquestion", title: "Add Questions", img: MasterIcon },
-    // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
-
-  ]
-); 
   // function handleClicknav() {
   //   setOpen(!open)
   // }
 
   function handleLogout() {
+    // menuItems1.current=[];
     localStorage.clear();
     history.push("/")
-    // window.location.reload()
+    window.location.reload()
   }
   // console.log(pathname,"pathname")
   const [severanceopen, setSeveranceopen] = React.useState(false);
@@ -375,65 +294,148 @@ const [menuItems, setMenuItems] = useState(
     }),
   )
   const classes1 = useStyles1();
-  useEffect(() => {
-   
-    var DocumentData = new FormData();
-    DocumentData.set("user_id",localStorage.getItem("user_id"))
-    try {
-      axios({
-        method: 'POST',
-        url: apiurl + 'login_referesh_page',
-        data: DocumentData
-      })
-        .then((response) => {
-            console.log("resuser",response)
-            if (response.data.status === 0) {
-              localStorage.clear();
-              history.push("/login")
-              notification.success({
-                message: response.data.msg,
-              });
-            }
-    
-        })
 
-  } catch (err) {
-
-  }
-}, []);
 
 useEffect(() => {
   if (props.UserPermission.length > 0 && props.UserPermission) {
     props.UserPermission.map((data)=>{
+
+      // if(data.control==='Library - Add Resource'&&data.display_control==='Y'||data.control==='Library - Receive'&&data.display_control==='Y'
+      // ||data.control==='Library - Issue'&&data.display_control==='Y'||data.control==='Library - Search'&&data.display_control==='Y'
+      // ||data.control==='Appraisal - Save'&&data.display_control==='Y'||data.control==='KRA - Save'&&data.display_control==='Y'
+      // ||data.control==='KPI - Save'&&data.display_control==='Y'||data.control==='KRA - View KRA'&&data.display_control==='Y'
+      // ||data.control==='KPI - View KPI'&&data.display_control==='Y'||data.control==='Timesheet - Search'&&data.display_control==='Y'
+      // ||data.control==='Adhoc Task - Save'&&data.display_control==='Y'||data.control==='Apply Leave - Save'&&data.display_control==='Y'
+      // ||data.control==='List of Employees - Go'&&data.display_control==='Y'||data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'
+      // ||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'||data.control==='OPA/ Expenses - Search'&&data.display_control==='Y'
+      // ||data.control==='OPA/ Expenses- OPE - Save'&&data.display_control==='Y'||data.control==='OPA/ Expenses- OPA - Save'&&data.display_control==='Y'
+      // ||data.control==='Day Report - Save'&&data.display_control==='Y'){
+
+      //   menuItems1.current[0].menu_rights=true;
+      // }
+      menuItems1.current[0].menu_rights=true;
+
+      menuItems1.current[1].menu_rights=true;
+
+
       if(data.control==='Resume - Go'&&data.display_control==='Y'||data.control==='Resume - Create Resume'&&data.display_control==='Y'
       ||data.control==='Resume - Interview Details'&&data.display_control==='Y'||data.control==='HR - Go'&&data.display_control==='Y'
       ||data.control==='Project - Go'&&data.display_control==='Y'||data.control==='Project - Create Project'&&data.display_control==='Y'
       ||data.control==='Project - Create Adhoc Task'&&data.display_control==='Y'||data.control==='Adhoc Task - Save'&&data.display_control==='Y'){
-        MenuRights.dashboardnew=false;
+
+        menuItems1.current[2].menu_rights=true;
       }
+
+      if(data.control==='Generate Invoice - Search'&&data.display_control==='Y'||data.control==='Generate Invoice - Generate'&&data.display_control==='Y'){  
+        menuItems1.current[3].menu_rights=true;
+      }
+      
+      if(data.control==='Check List Assigning'&&data.display_control==='Y'){  
+        menuItems1.current[4].menu_rights=true;
+      }
+
+      if(data.control==='Exit Interview Form - Save'&&data.display_control==='Y'||
+      data.control==='Employee Feedback - Save'&&data.display_control==='Y'){
+
+          if(data.control==='Exit Interview Form - Save'&&data.display_control==='Y'){
+            menuItems1.current[5].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='Employee Feedback - Save'&&data.display_control==='Y'){
+            menuItems1.current[5].subtree[1].sub_menu_rights=true;
+          }
+          menuItems1.current[5].subtree[2].sub_menu_rights=true;    
+        menuItems1.current[5].menu_rights=true;
+
+      }
+
+      if(data.control==='Leave Master - Save'&&data.display_control==='Y'||data.control==='User Masters - Save'&&data.display_control==='Y'
+      ||data.control==='CheckList Creation - Save'&&data.display_control==='Y'||data.control==='CheckList Creation - Add'&&data.display_control==='Y'
+      ||data.control==='Variable Rate Master - Save'&&data.display_control==='Y'||data.control==='Stage Template - Save'&&data.display_control==='Y'){
+
+          if(data.control==='Variable Rate Master - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='Stage Template - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[1].sub_menu_rights=true;
+          }
+
+          if(data.control==='Leave Master - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[2].sub_menu_rights=true;
+          }
+
+          
+          if(data.control==='User Masters - Save'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[3].sub_menu_rights=true;
+          }
+
+          if(data.control==='CheckList Creation - Save'&&data.display_control==='Y'||data.control==='CheckList Creation - Add'&&data.display_control==='Y'){
+            menuItems1.current[6].subtree[4].sub_menu_rights=true;
+          }
+
+        menuItems1.current[6].menu_rights=true;
+
+      }
+
+
+      if(data.control==='User Group - Add'&&data.display_control==='Y'||data.control==='UserMaster - Create User'&&data.display_control==='Y'
+      ||data.control==='Group Control - Add'&&data.display_control==='Y'){
+
+          if(data.control==='User Group - Add'&&data.display_control==='Y'){
+            menuItems1.current[7].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='UserMaster - Create User'&&data.display_control==='Y'){
+            menuItems1.current[7].subtree[1].sub_menu_rights=true;
+          }
+
+          if(data.control==='Group Control - Add'&&data.display_control==='Y'){
+            menuItems1.current[7].subtree[2].sub_menu_rights=true;
+          }
+
+        menuItems1.current[7].menu_rights=true;
+
+      }
+
+
+      if(data.control==='Add Questions - Add'&&data.display_control==='Y'||data.control==='Test - Submit'&&data.display_control==='Y'
+      ||data.control==='Online Test - Submit'&&data.display_control==='Y'){
+
+          if(data.control==='Add Questions - Add'&&data.display_control==='Y'){
+            menuItems1.current[8].subtree[0].sub_menu_rights=true;
+          }
+
+          if(data.control==='Test - Submit'&&data.display_control==='Y'){
+            menuItems1.current[8].subtree[1].sub_menu_rights=true;
+          }
+
+          if(data.control==='Online Test - Submit'&&data.display_control==='Y'){
+            menuItems1.current[8].subtree[2].sub_menu_rights=true;
+          }
+
+        menuItems1.current[8].menu_rights=true;
+
+      }
+ 
+    
     })
     setMenuRights((prevState) => ({
       ...prevState,
   }));
-  setMenuItems((prevState) => ([
-    ...prevState,
-  ]));
+  // setMenuItems((prevState) => ([
+  //   ...prevState,
+  // ]));
     setRights(props.UserPermission)
   }
  
 }, [props.UserPermission]); 
 
 
-// console.log("propsload",props.match.path)
-// useEffect(() => {
-//   setMenuItems((prevState) => ([
-//     ...prevState,
-//   ]));
-// }, [menuItems]);
 
 const menuItems1 = useRef( [
 
-  MenuRights.dashboardnew&&{ path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
+  { path: "/Home/dashboardnew", title: "Dashboard", img: DashboardIcon },
   // { path: "/resume", title: "Resume", img: ResumeIcon },
   { path: "/Home/todoList", title: "To Do List", img: TodoIcon },
   // {path:"/interview",title:"Interview"},
@@ -442,26 +444,6 @@ const menuItems1 = useRef( [
   { path: "/Home/generateinvoice", title: "Generate Invoice", img: Generateinvoice },
   { path: "/Home/checklistAssigning", title: "Check List Assigning", img: Generateinvoice },
 
-  // variable rate master
-  // { path: "/ratemaster", title: "Variable Rate Master", img: Variableratemaster },
-  // { path: "/stagesmaster", title: "Stage Master", img: Stagemaster },
-  // user groups
-  // { path: "/usergroups", title: "User Groups", img: Usergroups },
-
-  // { path: "/groupcontrol", title: "Group Control", img: MasterIcon },
-  // { path: "/leaveupdate", title: "Leave Update", img: MasterIcon },
-
-  // { path: "/severance", title: "Severance", img: Stagemaster },
-  // { path: "/employeeFeedback", title: "Employee Feedback", img: Stagemaster },
-  // { path: "/usermaster", title: "User Master", img: Stagemaster },
-  // //User Management
-  // { path: "/usergroup", title: "User Management Group", img: Usergroups },
-  // { path: "/newusermaster", title: "User Management Master", img: MasterIcon },
-  // // group control
-  // { path: "/groupaccess", title: "Group Access Rights", img: MasterIcon },
-
-  // //user rights
-  // { path: "/userrights", title: "User Access Rights", img: MasterIcon },
 
   //severance
   {
@@ -514,64 +496,37 @@ const menuItems1 = useRef( [
   // { path: "/testtemplate", title: "Test Template", img: MasterIcon }
 
 ]);
-console.log(menuItems1,"Rights")
-// const menu=()=>{
-//   return(
-//   menuItems.map((data, index) => {
-//     if(data){
-//     if (!data.submenu) {
-//       return (
 
-//         <Link to={data.path} onClick={() => handleClick(data)}>
+useEffect(() => {
+dispatch(get_user_rights());
+},[])
 
-//           <div className={`siderOptions ${data.path === pathname && "siderOptionsBg"}`}>
+useEffect(() => {
+   
+  var DocumentData = new FormData();
+  DocumentData.set("user_id",localStorage.getItem("user_id"))
+  try {
+    axios({
+      method: 'POST',
+      url: apiurl + 'login_referesh_page',
+      data: DocumentData
+    })
+      .then((response) => {
+          console.log("resuser",response)
+          if (response.data.status === 0) {
+            localStorage.clear();
+            history.push("/login")
+            notification.success({
+              message: response.data.msg,
+            });
+          }
+  
+      })
 
-//             <div className={`menuItemHighLightDark ${data.path === pathname && "menuItemHighLightDarkBg"}`}></div>
-//             <img src={data.img} className="menuListIcon" />
-//             <div className="SiderResume_Button">{data.title}</div>
-//             {/* {open ? <ExpandMore /> : <ArrowForwardIosIcon style={{ fontSize: 15 }} />} */}
-//           </div>
+} catch (err) {
 
-//         </Link>
-//       )
-//     } 
-//     else {
-
-//       return (
-//         <List component="nav" className={classes1.appMenu} disablePadding>
-//           <ListItem button onClick={() => handleClicksub(data.active)} className={classes1.menuItem}>
-//             <ListItemIcon className={classes1.menuItemIcon}>
-//               {/* <IconLibraryBooks /> */}
-//               <img src={data.img} className="menuListIcon" />
-//             </ListItemIcon>
-//             <ListItemText className={classes1.menuItem} primary={data.title} />
-//             {handlesubopen(data.active) ? <IconExpandLess /> : <IconExpandMore />}
-//           </ListItem>
-//           <Collapse in={handlesubopen(data.active)} timeout="auto" unmountOnExit>
-//             <Divider />
-//             <List component="div" disablePadding>
-//               {data.subtree.map((subdata, index) => {
-//                 return (
-//                   <Link to={subdata.path} onClick={() => handleClick(subdata)}>
-//                     <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
-//                       <ListItem button className={classes1.menuItem} >
-//                         <ListItemText className={classes1.menuItem} inset primary={subdata.title} />
-//                       </ListItem>
-//                     </div>
-//                   </Link>
-//                 )
-//               }
-//               )}
-//             </List>
-//           </Collapse>
-//         </List>)
-//     }
-//   }
-//   })
-//   ) }
-//  useEffect(()=>{
-//  menu()
-//  },[MenuRights])
+}
+}, []);
   return (
     <div className={`navbarContainer ${classes.root}`}>
       <CssBaseline />
@@ -626,9 +581,8 @@ console.log(menuItems1,"Rights")
         <div className={classes.drawerContainer}>
 
           <div className="suranaLogo"><img src={logo} /></div>
-          {console.log(menuItems,"menuItems")}
           { menuItems1.current.map((data, index) => {
-          if(data){
+          if(data.menu_rights){
           if (!data.submenu) {
             return (
 
@@ -661,6 +615,7 @@ console.log(menuItems1,"Rights")
                   <Divider />
                   <List component="div" disablePadding>
                     {data.subtree.map((subdata, index) => {
+                      if(subdata.sub_menu_rights){
                       return (
                         <Link to={subdata.path} onClick={() => handleClick(subdata)}>
                           <div id="submenu_div" className={subdata.path === pathname ? classes1.menuItemActive : classes1.menuItem}> <img src={subdata.img} className="submenuListIcon" />
@@ -670,6 +625,7 @@ console.log(menuItems1,"Rights")
                           </div>
                         </Link>
                       )
+                      }
                     }
                     )}
                   </List>

@@ -79,6 +79,8 @@ function LeaveUpdate(props) {
     const onEditLeaveForm=(val)=>{
         console.log("test,",val)
        Leave_Update.leavetype.value = val.leave_type_id
+       Leave_Update.start_date.value = val.start_date
+       Leave_Update.end_date.value = val.end_date
        setEligible_leave(val.eligible_leave)
     //    setLeaveupdateEdit(true)
        setLeaveEditMasId(val.emp_leave_mas_id)

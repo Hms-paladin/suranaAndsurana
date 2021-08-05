@@ -12,6 +12,8 @@ import { getHearingDetails,InsertHearingDets,inserTask } from "../../actions/pro
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useDispatch, connect } from "react-redux";
 import moment from 'moment'
+import {getSubactivity } from '../../actions/MasterDropdowns';
+
 export function Hearing(props){
   const dispatch = useDispatch();
 // timesheet modal
@@ -23,6 +25,8 @@ const [projectDetails, setProjectDetails] = useState({})
 const [taskDetails, settaskDetails] = useState({})
 const [adjourn,setadjourn]=useState(false)
 const [modelOpen,setModelOpen]=useState(false)
+const [AddAdjourn,setAddAdjourn]=useState(false)
+const [projectSubActivity, setprojectSubActivity] = useState({});
 const [idDetails, setidDetails] = useState({})
 const modelContent = () => {
   return (
@@ -43,7 +47,7 @@ useEffect(() => {
   }
 
 }, []);
-
+console.log(props.rowData.data,"props.rowData.data")
 useEffect(() => {
   setProjectDetails(props.ProjectDetails);
   props.ProjectDetails.length > 0 && setidDetails({
@@ -57,16 +61,40 @@ if(props.getHearingDets && props.getHearingDets.length >0){
   HearingData.hearing_id.value =props.getHearingDets[0].hearing_id;
 }
 
-}, [props.rowData,props.getHearingDets,props.ProjectDetails
-]);
+let projectSubActivitydata = [];
+props.getSubactivity.map((data) =>
+          projectSubActivitydata.push({
+            value: data.sub_activity,
+            id: data.sub_activity_id,
+          })
+        );
+        setprojectSubActivity({ projectSubActivitydata });
+}, [props.rowData,props.getHearingDets,props.ProjectDetails,props.getSubactivity]);
 const [HearingData, setHearingData] = useState({
   hearing_id: {
     value: 0,
     error: null,
     errmsg: null,
     disabled: false,
-
-},
+  },
+  subActivity: {
+    value: "",
+    validation: [{ name: "required" }],
+    error: null,
+    errmsg: null,
+  },
+  reason: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
+    adjournment_taken_by: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
     nexthearing: {
       value: "",
       validation: [{ name: "required" }],
@@ -98,48 +126,33 @@ function onSubmit() {
     console.log(filtererr.length);
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
-    } else {
-      
-    }
+    } else if(!AddAdjourn){
+      setadjourn(true)
+    }else {
+
     var data ={
       "project_id":props.rowData.data.project_id,
+      "sub_activity_id": HearingData.subActivity.value,
       "task_id":props.rowData.data.task_id,
       "hearing_outcome":HearingData.hearingoutcome.value,
       "hearing_date":HearingData.nexthearing.value,
       "next_hearing_date":HearingData.nexthearing.value,
-      "adjournment_taken_by":"1",
+      "adjournment_taken_by":HearingData.adjournment_taken_by.value,
       "created_on":moment().format('YYYY-MM-DD HH:m:s'),
       "created_by":localStorage.getItem("empId"),
-      "reason":"",
+      "reason":HearingData.reason.value,
       "active_status":"1"
       }
       if (HearingData.hearing_id.value != 0) {
         data["hearing_id"] = HearingData.hearing_id.value;
 
-    }else{
-      data["hearing_id"] = 0;
-    }
+      }else{
+        data["hearing_id"] = 0;
+      }
     dispatch(InsertHearingDets(data)).then((response) => {
       handleCancel();
     }) 
-/*
-    var data = {
-      "project_id": idDetails.project_id,
-      "activiity_id": taskDetails.activiity_id,
-      "sub_activity_id": taskDetails.sub_activity_id,
-      "assignee_id": localStorage.getItem("empId"),
-      "start_date": HearingData.nexthearing.value ,
-      "end_date": HearingData.nexthearing.value,
-      "assigned_by": localStorage.getItem("empId"),
-      "priority": '',
-      "description": HearingData.hearingoutcome.value,
-      "tag": ''
     }
-
-    dispatch(inserTask(data)).then((response) => {
-      handleCancel();
-    })
-*/
     setHearingData((prevState) => ({
       ...prevState,
     }));
@@ -153,6 +166,7 @@ function onSubmit() {
     setHearingData((prevState) => ({
       ...prevState,
     }));
+    props.onhearingclose()
   };
  
   function checkValidation(data, key, multipleId) {
@@ -171,7 +185,12 @@ function onSubmit() {
       [key]: dynObj,
     }));
   }
-
+const setadjournDetails=(data)=>{
+  HearingData.adjournment_taken_by.value=data.adjournment_taken_by.value
+  HearingData.reason.value=data.reason.value
+  setadjourn(false)
+  setAddAdjourn(true)
+}
   return(
       <div>
            <div className="var_rate_master">Hearing</div>
@@ -188,6 +207,16 @@ function onSubmit() {
              error={HearingData.nexthearing.error}
              errmsg={HearingData.nexthearing.errmsg}
             /></div>
+
+<div className="ad_journment">
+            <Labelbox type="select"
+              dropdown={projectSubActivity.projectSubActivitydata}
+              changeData={(data) => checkValidation(data, "subActivity")}
+              placeholder={"Sub Activity"}
+              value={HearingData.subActivity.value}
+              error={HearingData.subActivity.error}
+              errmsg={HearingData.subActivity.errmsg} />
+        </div>
               
               <div className="reson_hearing"><Labelbox type="textarea" placeholder={"Hearing Outcome"}
               changeData={(data) => checkValidation(data, "hearingoutcome")}
@@ -207,7 +236,7 @@ function onSubmit() {
         
        
         
-    <DynModel modelTitle={"Adjournment"} handleChangeModel={adjourn} handleChangeCloseModel={(bln) => setadjourn(bln)}  content={<Adjournment />} />
+    <DynModel modelTitle={"Adjournment"} handleChangeModel={adjourn} handleChangeCloseModel={(bln) => setadjourn(bln)}  content={<Adjournment closeModel={() => setadjourn(false)} setadjournDetails={(data) => setadjournDetails(data)} />} />
 
       </div>
   )
@@ -216,5 +245,6 @@ const mapStateToProps = (state) =>
 ({
     getHearingDets: state.projectTasksReducer.getHearingDets,
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    getSubactivity: state.getOptions.getSubactivity || [],
 });
 export default connect(mapStateToProps)(Hearing);

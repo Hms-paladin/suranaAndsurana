@@ -11,9 +11,9 @@ import { Checkbox } from 'antd';
 import ValidationLibrary from "../../helpers/validationfunction";
 import Edit from "../../images/pencil.svg";
 import {
-  getGroupList,getEmployeeGroupDetails,
-  getEmployeeList,InsertUsergroupMaster,editEmployeeGroup,
+  getGroupList,getEmployeeGroupDetails,InsertUsergroupMaster,editEmployeeGroup,
 } from "../../actions/UserGroupAction";
+import {getAssignedTo } from "../../actions/projectTaskAction";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from "antd";
@@ -42,7 +42,7 @@ const UserGroups = (props) => {
   const [rights, setRights] = useState([])
   useEffect(() => {
     dispatch(getGroupList());
-    dispatch(getEmployeeList());
+    dispatch(getAssignedTo());
     dispatch(getEmployeeGroupDetails());
 
   }, []);
@@ -74,7 +74,6 @@ const UserGroups = (props) => {
       })
     )
     setgroups({ groupsData })
-
     let empsData = []
     props.employeeLists.map((data) =>
     empsData.push({
@@ -339,17 +338,17 @@ useEffect(() => {
           content={
             <div className="successModel">
 
-              <div> <label className="usergroup_label">Employee :&nbsp; {empName}</label></div>
-              <div className="usergroupmodelDiv">
-              {checkedGroups.length > 0 && checkedGroups.map((data) => {
-                return (
+            <div> <label className="usergroup_label">Employee :&nbsp; {empName}</label></div>
+            <div className="usergroupmodelDiv">
+            {checkedGroups.length > 0 && checkedGroups.map((data) => {
+              return (
              
                 <div className="usergroupcheckboxDiv"><Checkbox  checked={data.is_checked} onClick={(event) => handelCheck(event,data)} name={data.group_id} /> &nbsp;&nbsp;<label style={{color:'black'}}>{data.group_name}</label> </div>
-            
 
-)
+              )
 
-})}   </div>
+              })} 
+              </div>
               <div className="customUsergroupbtn">
                 <CustomButton
                   btnName={"Save"}
@@ -378,7 +377,7 @@ const mapStateToProps = (state) =>
 ({
 
   groupLists: state.UserGroupReducer.groupLists || [],
-  employeeLists: state.UserGroupReducer.employeeLists || [],
+  employeeLists: state.projectTasksReducer.assignToLists || [],
   employeeGroupDetLists : state.UserGroupReducer.employeeGroupDetLists || [],
   getGroupsForEmp : state.UserGroupReducer.getGroupsForEmp || [],
   UserPermission: state.UserPermissionReducer.getUserPermission || [],
