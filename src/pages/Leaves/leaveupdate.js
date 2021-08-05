@@ -14,6 +14,7 @@ import { updateLeaveBalance,insertLeaveUpdate,getEmployee,getLeaveBalance} from 
 import Delete from "../../images/dashboard/delete.svg";
 import { useLocation, Switch } from 'react-router-dom'; 
 import { notification } from "antd";
+import moment from 'moment';
 
 const { Search } = Input;
 
@@ -43,7 +44,7 @@ function LeaveUpdate(props) {
 
     const [saveRights, setSaveRights] = useState([])
 
-    const [leaveupdateEdit, setLeaveupdateEdit] = useState(false)
+    const [EmployeeDoj, setEmployeeDoj] = useState(new Date())
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
     const [Leave_Update, setleaveUpdate] = useState({
         start_date: {
@@ -141,40 +142,21 @@ function LeaveUpdate(props) {
    
     useEffect(() => {
         //employee name
-        if(employeeCode===""){setEmployeeName({})}
-        else if(props.getEmployee.length>0){setEmployeeName(props.getEmployee)}
+        if(employeeCode===""){
+            setEmployeeName({})
+            setEmployeeDoj(new Date())
+        }
+        else if(props.getEmployee.length>0){
+            setEmployeeName(props.getEmployee)
+            if(props.getEmployee[0].doj<moment().format("YYYY-MM-DD")){
+                setEmployeeDoj(new Date())
+            }else{
+            setEmployeeDoj(moment(`${props.getEmployee[0].doj&&props.getEmployee[0].doj} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format())
+            }
+        }
         else{setEmployeeName("")}
     }, [employeeCode,props.getEmployee])
 
-    /////
-    // useEffect(()=>{
-        
-    //     let leaveUpdateList = [];
-    //     if(props.getUpdateTableData.length>0){
-    //     props.getUpdateTableData.map((data) => leaveUpdateList.push(data));
-
-    //     for (var m = 0; m < leaveUpdateList.length; m++) {
-    //         if(leaveUpdateList[m].leave_type_id===Leave_Update.leavetype.value){
-    //             if(editBtn){
-    //             setLeaveupdateEdit(true);
-    //             }else{
-    //             setLeaveupdateEdit(false);
-    //             }
-    //             return;
-    //         }else if(leaveUpdateList[m].leave_type_id!==Leave_Update.leavetype.value){
-    //             setLeaveupdateEdit(false);
-
-    //         }
-
-    //     }
-    //     setleaveUpdate((prevState) => ({
-    //         ...prevState,
-    //         }));
-        
-    //     }
-        
-    // },[Leave_Update.leavetype.value])
-    /////
  
     useEffect(() => {
 
@@ -323,7 +305,9 @@ function LeaveUpdate(props) {
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">From</div>
                                 <div>
-                                    <Labelbox type="datepicker" disablePast={true}
+                                    <Labelbox type="datepicker" 
+                                        minDate={EmployeeDoj}
+                                        // disablePast={true}
                                         changeData={(data) =>
                                             checkValidation(data, "start_date")
                                         }
@@ -335,7 +319,8 @@ function LeaveUpdate(props) {
                             <Grid item xs={3}>
                                 <div className="leaveFieldheading">To</div>
                                 <div>
-                                    <Labelbox type="datepicker" disablePast={true}
+                                    <Labelbox type="datepicker"
+                                        disablePast={true}
                                         changeData={(data) =>
                                             checkValidation(data, "end_date")
                                         }

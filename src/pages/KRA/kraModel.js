@@ -141,13 +141,13 @@ const KRA = (props) => {
                         custombtnCSS={"btnUsergroup"}
                         onBtnClick={() => approveKra()}
                     />
-                    <CustomButton
+                    {/* <CustomButton
                         btnName={"Return"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
                     // onBtnClick={() => props.handleChangeCloseModel()}
 
-                    />
+                    /> */}
                 </div>
             </div>
 

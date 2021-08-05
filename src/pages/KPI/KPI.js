@@ -136,12 +136,11 @@ useEffect(() => {
          total+=percentage[i]
       }
       for(let i=0;i<Achivement.length;i++){
-        achive_total+=Achivement[i]
+        achive_total+=Number(Achivement[i])
       }
-// console.log(isNaN(Math.abs(achive_total)),"achive_total")
+// console.log(Math.abs(achive_total),"achive_total")
       setachiveTotal(isNaN(Math.abs(achive_total))?'0':Math.abs(achive_total))
       setpercentageTotal(Math.abs(total))
-      console.log("edit",achiveTotal)
     
  },[ props.Kpiachivement,disable,achivement,datechange])
 
@@ -304,7 +303,8 @@ const HandleCancel=()=>{
                        <>
                        {Achivement.length>0&&Achivement.map((data,index)=>{
                            if(disable){
-                            achivement["value"+index]=data.achivement
+                            achivement["value"+index]=data.achivement&&data.achivement!=''?Math.trunc(data.achivement):data.achivement===0?'0':''
+                           
                            }
                            return(
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>

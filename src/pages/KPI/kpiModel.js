@@ -255,13 +255,13 @@ useEffect(()=>{
                     custombtnCSS={"btnUsergroup"}
                     onBtnClick={ApproveData}
                 />
-                <CustomButton
+                {/* <CustomButton
                     btnName={"Return"}
                     btnCustomColor="customPrimary"
                     custombtnCSS={"btnUsergroup"}
                     onBtnClick={() =>props.closemodal()}
 
-                />
+                /> */}
             </div>
         </div>
 

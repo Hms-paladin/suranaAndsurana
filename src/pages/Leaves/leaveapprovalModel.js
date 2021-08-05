@@ -144,7 +144,7 @@ function LeaveApproval(props) {
                             <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].totime !== null ? ApprovalData[0].totime : ''}</div>
                         </div>
                         <div>
-                            <div>Total No. of Hours</div>
+                            <div>Applied No. of Hours</div>
                             <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].num_of_hrs}</div>
                         </div>
                     </>}

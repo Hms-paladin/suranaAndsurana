@@ -84,7 +84,7 @@ const InsertEmployee = (data) => {
                     <Labelbox type="text" placeholder="Employee N" disabled={true} value={data.name} />
                     <Labelbox type="text" placeholder="Designation" disabled={true} value={data.designation} />
                     <div className="employeeform_save">
-                        <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={() => InsertEmployee("reject")} />
+                        {/* <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={() => InsertEmployee("reject")} /> */}
                         <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={() => InsertEmployee("accept")} />
                     </div>
                 </div>

@@ -336,7 +336,7 @@ function Resumesearch(props) {
 
     //     )
     // }
-console.log(props.GetRowData,"GetRowData")
+// console.log(props.GetRowData,"GetRowData")
 
     function onSearch() {
         dispatch(searchRowdata({
@@ -383,15 +383,6 @@ console.log(props.GetRowData,"GetRowData")
 
     }, [props.UserPermission]);
 
-
-
-    console.log(creatRights, "rigths")
-
-    function rightsNotification() {
-        notification.success({
-            message: "You are not Authorized. Please Contact Administrator",
-        });
-    }
     /////////////
     return (
         <div>
@@ -510,10 +501,10 @@ console.log(props.GetRowData,"GetRowData")
                     </Grid>
                 </div>
                 <div className="resume_searchtable">
-                    <EnhancedTable headCells={headCells} rows={rows && rows} hideSortIcon={false} />
+                    <EnhancedTable headCells={headCells} rows={rows && rows} hideSortIcon={false} Resume/>
                 </div>
                 <div className="searchinterviewbtn">
-                    <CustomButton btnName={"Interview Details "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false} onBtnClick={() => setModelOpen(true)} /></div>
+                    <CustomButton btnName={"Schedule Interview "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false} onBtnClick={() => setModelOpen(true)} /></div>
                 <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} selectedId={selectedCandidateId} checkList={checkList} handleUnCheck={handleUnCheck} />
 
             </div>

@@ -341,7 +341,7 @@ function LeaveForm(props) {
             }else{
                 setTimeexceed(false)
             }
-            console.log(startTime,endTime,duration, "ssssssssssssss")
+            // console.log(startTime,endTime,duration, "ssssssssssssss")
 
         }
 
@@ -412,7 +412,7 @@ function LeaveForm(props) {
     }
 
     const viewexamschedule = () => {
-console.log(SubjectIndex,"examSchedule")
+// console.log(SubjectIndex,"examSchedule")
 
         const From_key = ["subject", "exam_date"]
         From_key.map((data) => {
@@ -443,7 +443,7 @@ console.log(SubjectIndex,"examSchedule")
                   });
                   return
                }
-console.log(sub_date,"sub_date")
+// console.log(sub_date,"sub_date")
             if(examSchedule[SubjectIndex]&&SubjectIndex!==''){
                  
                 examSchedule[SubjectIndex].subject=subjectList.SubjectList.map((data) => {
