@@ -47,10 +47,36 @@ function Appraisal(props) {
     const [enableSave, setEnableSave] = useState(false)
     const [emp_id, setEmp_id] = useState()
     const [viewEmployee, setViewEmployee] = useState()
-    const [showRatingDatas, setShowRatingDatas] = useState({})
+    const [showRatingDatas, setShowRatingDatas] = useState([])
     const [showApprovecmd, setShowApprovecmd] = useState()
     const [showmanagecmd, setShowmanagecmd] = useState()
     const [showrating, setShowrating] = useState()
+    const [showratingDetails, setShowratingDetails] = useState([])
+    const [ratingAttribute, setRatingAttribute] = useState({
+        punchuvality: [{ key: "Always on time and completes the task well ahead of time", value: [9, 8, 7] }, { key: "Maintains the time and complete the tasks with few reminders", value: [6, 5, 4] }, { key: "Unable to keep up with time and requires constant reminders to complete the tasks", value: [3, 2, 1] }],
+        communication: [{ key: "Able to express very clearly", value: [9, 8, 7] }, { key: "Able to express with some difficulty", value: [6, 5, 4] }, { key: "Improvement required to express the thoughts", value: [3, 2, 1] }],
+        teamwork: [{ key: "Team Player", value: [9, 8, 7] }, { key: "Contributes, if requested", value: [6, 5, 4] }, { key: "Unable to cope up with team work", value: [3, 2, 1] }],
+        endurance: [{ key: "Quality of work never varies in a stressed environment and ready to put in long hours", value: [9, 8, 7] }, { key: "Encouragement required once in a while", value: [6, 5, 4] }, { key: "Constant encouragement requires and breaks down very easily", value: [3, 2, 1] }],
+        initiative: [{ key: "On Own, takes lot initiative in improving the quality of work", value: [9, 8, 7] }, { key: "With little push, takes initiative to improve the quality of work", value: [6, 5, 4] }, { key: "Carries out the woek only as instructed", value: [3, 2, 1] }],
+        personalhabit: [{ key: "Courteous to superiors and colleagues", value: [9, 8, 7] }, { key: "Respectful and work along with other colleagues", value: [6, 5, 4] }, { key: "Respectful to superiors but doesn't have any concern for sub-ordinates", value: [3, 2, 1] }],
+        commitment: [{ key: "Highly committed to the cause", value: [9, 8, 7] }, { key: "Does the needful", value: [6, 5, 4] }, { key: "Constant monitoring required.", value: [3, 2, 1] }],
+        supervision: [{ key: "No supervision is required", value: [9, 8, 7] }, { key: "Supervision required sometimes", value: [6, 5, 4] },
+        { key: "Supervision required all the times", value: [3, 2, 1] }],
+        presentassignment: [{ key: "Very through in the area", value: [9, 8, 7] }, { key: "Satisfactory", value: [6, 5, 4] }, { key: "Needs lot of improvement", value: [3, 2, 1] }],
+        applicationknowledge: [{ key: "Applies very efficiently", value: [9, 8, 7] }, { key: "Needs guidance sometimes", value: [6, 5, 4] }, { key: "Need to be guided always", value: [3, 2, 1] }],
+        meatingdeadlines: [{ key: "Finishes assignments well ahead of deadlines", value: [9, 8, 7] }, { key: "Finishes in time and some degree of  monitoring required", value: [6, 5, 4] }, { key: "Always lag behind and requires constant prodding", value: [3, 2, 1] }],
+        presentationskills: [{ key: "Excellent", value: [9, 8, 7] }, { key: "Satisfactory", value: [6, 5, 4] }, { key: "Needs lot of improvement", value: [3, 2, 1] }],
+        suitableassignment: [{ key: "High Suitable", value: [9, 8, 7] }, { key: "With some hard work can do better", value: [6, 5, 4] }, { key: "Not suitable", value: [3, 2, 1] }],
+        preparationdocument: [{ key: "Excellent", value: [9, 8, 7] }, { key: "Satisfactory", value: [6, 5, 4] }, { key: "Needs lot of improvements", value: [3, 2, 1] }],
+        additionwork: [{ key: "Adds lot of value to any job", value: [9, 8, 7] }, { key: "Adds value once in a while", value: [6, 5, 4] }, { key: "PErforms a mediocre job", value: [3, 2, 1] }],
+        clientmanagement: [{ key: "Handles client very effeciently", value: [9, 8, 7] }, { key: "Handles Satisfactorily", value: [6, 5, 4] }, { key: "Requires lot of improvement", value: [3, 2, 1] }],
+        practicedevelopment: [{ key: "With own initiative brings in new business", value: [9, 8, 7] }, { key: "Occassionally uses the opportinities to bring in new business", value: [6, 5, 4] }, { key: "Never takes initiative to bring in new business", value: [3, 2, 1] }],
+        prnetworking: [{ key: "Utilizes all the avenues  extensively, to promote the firm", value: [9, 8, 7] }, { key: "Whenever possible promotes the firm", value: [6, 5, 4] }, { key: "Never Utilizes, even the available opportunities to promote the firm.", value: [3, 2, 1] }]
+    })
+    const { punchuvality, communication, teamwork, endurance, initiative, personalhabit, commitment, supervision, presentassignment, applicationknowledge, meatingdeadlines, presentationskills, suitableassignment, preparationdocument, additionwork, clientmanagement, practicedevelopment, prnetworking } = ratingAttribute
+
+    const rating = [punchuvality, communication, teamwork, endurance, initiative, personalhabit, commitment, supervision, presentassignment, applicationknowledge, meatingdeadlines, presentationskills, suitableassignment, preparationdocument, additionwork, clientmanagement, practicedevelopment, prnetworking]
+
 
     // Appraisal apply
     const [modelComment, setModelComment] = useState({
@@ -128,7 +154,7 @@ function Appraisal(props) {
 
 
     useEffect(() => {
-        setEmpDetail(props.GetEmpAppraisal)
+        setEmpDetail(props.GetEmpAppraisal && props.GetEmpAppraisal[0])
         if (props.GetEmpAppraisal?.doj == props.GetEmpAppraisal?.period_from) {
 
         } else {
@@ -144,12 +170,28 @@ function Appraisal(props) {
             if (details?.instruction_to_appraise !== null, details?.advice_to_hod !== null, details?.instruction_to_admin_hod !== null, details?.fb_managing_parter !== null) {
                 setShowmanagecmd(5)
             }
+
+            if (props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.rating.length == 18) {
+                setShowrating(6)
+                setShowratingDetails(props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.rating)
+            }
             let arrVal = []
 
-            props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.rating.map((data, index) => {
-                // let test =
-                console.log(data, "tesing")
+            props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.qualification.forEach((data) => {
+                if (data.area_development_id === 1) {
+                    addemployeeDetails.push({ details: data.details, date: data.details_date })
+                    // setAddemployeeDetails([...addemployeeDetails])
+                } else if (data.area_development_id === 2) {
+                    addemployeeseminar.push({ details: data.details, date: data.details_date })
+                    // setAddemployeeSeminar([...addemployeeseminar])
+                }
+                else {
+                    addemployeeProgram.push({ details: data.details, date: data.details_date })
+                    // setAddemployeeProgram([...addemployeeProgram])
+                }
+            })
 
+            props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.rating.map((data, index) => {
                 let obj = {}
 
                 if (data.rating === 9 || data.rating === 8 || data.rating === 7) {
@@ -213,15 +255,15 @@ function Appraisal(props) {
         dispatch(InsertAreaDevelopment(showKeys, Appraisal.details.value, Appraisal.date.value))
         if (showKeys === 1) {
             addemployeeDetails.push({ details: Appraisal.details.value, date: Appraisal.date.value })
-            setAddemployeeDetails([...addemployeeDetails])
+            // setAddemployeeDetails([...addemployeeDetails])
         }
         else if (showKeys === 3) {
             addemployeeseminar.push({ details: Appraisal.details.value, date: Appraisal.date.value })
-            setAddemployeeSeminar([...addemployeeseminar])
+            // setAddemployeeSeminar([...addemployeeseminar])
         }
         else {
             addemployeeProgram.push({ details: Appraisal.details.value, date: Appraisal.date.value })
-            setAddemployeeProgram([...addemployeeProgram])
+            // setAddemployeeProgram([...addemployeeProgram])
         }
         handleCancel()
     }
@@ -526,6 +568,21 @@ function Appraisal(props) {
     const periodMonth = new Date(moment(empDetail?.period_from).format("yyy-MM-DD")).getMonth()
     const periodYear = new Date(moment(empDetail?.period_from).format("yyy-MM-DD")).getFullYear()
 
+    const listratingDetails = (data, dropDownID) => {
+        return (
+            data.map((val, index) => {
+                return (
+                    <div className="showRatings" >
+                        <div className="showratingContent">{val.key}</div>
+                        <div className="showratingValue" >
+                            {(showRatingDatas[dropDownID] && showRatingDatas[dropDownID]["key" + (index + 1)])}
+                        </div>
+                    </div>
+                )
+            })
+        )
+    }
+
     return (
         <div>
             {<div>
@@ -535,7 +592,7 @@ function Appraisal(props) {
                     <div className="empDetails">
                         <div>
                             <div>Employee Name</div>
-                            {console.log(todoListdata, "empDetail?.name")}
+                            {console.log(empDetail?.period_from, "empDetail?.name")}
                             <div>{(rowID == 1 || rowID == 2) ? todoListdata && todoListdata.employee_name : JSON.parse(localStorage.getItem("token")).user_name}</div>
                         </div>
                         {/* {(rowID == 1 || rowID == 2) && <div>
@@ -840,8 +897,21 @@ function Appraisal(props) {
                         </div>
                     </>}
 
-
-
+                {showrating == 6 &&
+                    <>
+                        <div className="commentLine">---------------------------------------------------------------- Rating  -- ----------------------------------------------------------------</div>
+                        <div className="showRatingtable">
+                            {showratingDetails && showratingDetails.map((val, index) => {
+                                console.log(val, "yyyy")
+                                return (
+                                    <div className="showRateingscontainer">
+                                        <div className="ratingHeading">{val.area_of_development}</div>
+                                        <div> {listratingDetails(rating[val.development_id - 1], index)}</div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </>}
                 <div className="appraisalBtn">
                     {(rowID == 1 || rowID == 2) && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
                     {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />}
@@ -851,10 +921,6 @@ function Appraisal(props) {
 
                     {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />}
                 </div>
-
-
-
-                {/* </div > } */}
             </div>
             }
         </div>
@@ -863,7 +929,6 @@ function Appraisal(props) {
 
 const mapStateToProps = (state) =>
 (
-    console.log(state, "tesdfghjst"),
     {
         GetAreaDevelopment: state.getOptions.GetAreaDevelopment || [],
         GetEmpAppraisalDetails: state.GetEmpAppraisalDetails.GetEmpAppraisalDetails || [],

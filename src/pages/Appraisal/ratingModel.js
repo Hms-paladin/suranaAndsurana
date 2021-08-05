@@ -114,13 +114,9 @@ function RatingModel(props) {
     const [attributeId, setAttributeId] = useState()
     const [indexid, setIndexid] = useState()
     const [showratingdetails, setShowratingdetails] = useState(false)
-    const [rateList, setRateList] = useState([])
     const [developmentid, setDevelopmentid] = useState([])
     const [rowid, setRowid] = useState([])
     const [count, setCount] = useState(0)
-    const [firstDropdown, setFirstDropdown] = useState()
-    const [secondDropdown, setSecondDropdown] = useState()
-    const [thirdDropdown, setThirdDropdown] = useState();
     const [dropdownValue, setDropdownValue] = useState([]);
     const [empDetails, setEmpDetails] = useState({})
     const [chooserate, setChooserate] = useState()
@@ -325,35 +321,6 @@ function RatingModel(props) {
 
     console.log(dropdownValue, "dropdownValuett")
 
-
-    const showdevelopmentdetails = () => {
-
-        // let disabledropdown = []
-
-        // disabledropdown.push(development)
-        // if (areDevelopment.AreDevelopment) {
-        //     if (disabledropdown.length > 0) {
-        //         disabledropdown.map((data) => {
-        //             areDevelopment.AreDevelopment[data - 1].disable = true
-        //         })
-        //     }
-        //     areDevelopment.AreDevelopment[development - 1].disable = true
-        // }
-
-
-        setCount(count + 1)
-        setShowratingdetails(true)
-        setRowid([...rowid, development])
-        setDropdownValue([...dropdownValue, { key1: firstDropdown, key2: secondDropdown, key3: thirdDropdown }])
-        // setRateList([
-        //     ...rateList,
-        //     {
-        //         "emp_id": localStorage.getItem("empId"),
-        //         "development_id": development,
-        //         "rating": chooserate
-        //     },
-        // ]);
-    }
 
     const submitrate = () => {
         if (showrowID == 2) {
