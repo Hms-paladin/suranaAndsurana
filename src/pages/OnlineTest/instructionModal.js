@@ -73,8 +73,6 @@ const mapStateToProps = (state) => (
     console.log(state, "checkscheckstatetates"),
     {
         GettemplateQuetions: state.OnlineTest.GettemplateQuetions || []
-
-
     }
 );
 
