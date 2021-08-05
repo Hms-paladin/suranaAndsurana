@@ -92,8 +92,8 @@ function ProjectwiseTS(props) {
         { id: "empName", label: "Employee Name" },
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub Activity" },
-        { id: "planned_sd", label: "Planned Start Date" },
-        { id: "planned_ed", label: "Planned End Date" },
+        { id: "planned_sd", label: "Planned StartDate" },
+        { id: "planned_ed", label: "Planned EndDate" },
         { id: "actualstart", label: "Actual Start (Date/Time)" },
         { id: "actualend", label: "Actual End (Date/Time)" },
         { id: "tothours", label: "Total Hours" }
