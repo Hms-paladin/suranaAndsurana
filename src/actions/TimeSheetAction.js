@@ -1,7 +1,7 @@
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { GET_TASK_LIST, GET_PROJECT_TIME_SHEET } from '../utils/Constants'
-import { PROJECTWISE_TIME_SHEET_SEARCH } from '../utils/Constants'
+import { PROJECTWISE_TIME_SHEET_SEARCH, DAY_REPORT_SEARCH } from '../utils/Constants'
 import { notification } from "antd";
 
 export const getTaskList = () => async dispatch => {
@@ -90,9 +90,39 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
             })
 
     } catch (err) {
-
+        notification.error({
+            message: "PROJECTWISE TIME SHEET SEARCH FAILED",
+        });
     }
 }
+
+export const getDayReport_TimeSheet = (data) => async dispatch => {
+    let dataObj = {}
+    if (data.emp_name?.value) {
+        dataObj["emp_id"] = data?.emp_name?.value
+    }
+    if (data.curr_date?.value) {
+        dataObj["cur_date"] = data?.curr_date?.value
+    }
+    console.log(dataObj, "dataObj")
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_dashboard_day_report',
+            data: dataObj
+        })
+            .then((response) => {
+
+                dispatch({ type: DAY_REPORT_SEARCH, payload: response.data.data || [] })
+            })
+
+    } catch (err) {
+        notification.error({
+            message: "DAY REPORT SEARCH FAILED",
+        });
+    }
+}
+
 
 export const update_approve_timesheet = (data) => async dispatch => {
 

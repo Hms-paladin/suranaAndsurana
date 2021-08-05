@@ -27,7 +27,7 @@ export const getEmployeeByDepartment = (department) => async dispatch => {
             method: "POST",
             url: apiurl + "get_employee_by_departmentId",
             data: {
-                department: department || 0,
+                department: department || "",
             },
         }).then((response) => {
             if (response.data.status === 1) {

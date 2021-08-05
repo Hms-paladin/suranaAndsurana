@@ -450,7 +450,6 @@ function DashboardNew(props) {
                     <div>Start Date</div>
                     <div>End Date</div>
                     <div>Priority</div>
-                    <div>Status</div>
                   </div>
                   {calenderValues[0]?.Task?.length ? calenderValues[0]?.Task?.map((data) => {
                     return (
@@ -463,7 +462,6 @@ function DashboardNew(props) {
                           <div>{data.project_name}</div>
                           <div>{moment(data.start_date).format('DD-MMM-YYYY')}</div>
                           <div>{moment(data.end_date).format('DD-MMM-YYYY')}</div>
-                          <div>{data.priority}</div>
                           <div>{data.status}</div>
                         </div>
                       </>

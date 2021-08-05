@@ -108,6 +108,9 @@ export const GET_SUBACTIVITY = "GET_SUBACTIVITY";
 // projectwise timesheet list
 export const PROJECTWISE_TIME_SHEET_SEARCH = "PROJECTWISE_TIME_SHEET_SEARCH"
 
+//Day report 
+export const DAY_REPORT_SEARCH = "DAY_REPORT_SEARCH"
+
 //Litigation
 export const GET_LITIGATION = "GET_LITIGATION";
 export const INSERT_LITIGATION = "INSERT_LITIGATION";
