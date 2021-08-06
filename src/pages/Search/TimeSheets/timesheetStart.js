@@ -25,7 +25,7 @@ function TimeSheetStartModel(props) {
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
-            validation: [],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
@@ -269,6 +269,7 @@ useEffect(()=>{
     }));
 
 },[assignedToLists])
+
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(timeSheetForm);
@@ -505,6 +506,12 @@ useEffect(()=>{
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
                                 placeholder={"Start Date"}
+                                changeData={(data) =>
+                                    checkValidation(data, "fromDate")
+                                }
+                                value={timeSheetForm.fromDate.value}
+                                error={timeSheetForm.fromDate.error}
+                                errmsg={timeSheetForm.fromDate.errmsg}
                             />
                         </Grid>
                         <Grid item xs={3}>

@@ -874,30 +874,33 @@ function ProjectIp(props) {
                                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center">
 
                                             <Grid item xs={7}>
-                                                <label className="checklist_label">{data.check_list}</label></Grid>
+                                                <label className="checklist_label">{data.check_list}</label>
+                                            </Grid>
 
                                             <Grid item xs={2}><Checkbox checked={data.check_list_status == null || data.check_list_status == 0 ? false : true}
                                                 name={data.check_list} value={data.check_list_id} onClick={(event) => handleCheck(event, data)}
-                                            /></Grid>
+                                            />
+                                            </Grid>
 
-                                            <Grid item xs={3}>      {<img src={data.check_list_type != 'Simple' ? Tasks : ""} className="tabIconImage"
+                                            {/* <Grid item xs={3}>
+                                                 {<img src={data.check_list_type != 'Simple' ? Tasks : ""} className="tabIconImage"
 
                                                 onClick={data.check_list_type != 'Simple' ? () => openProjectTask() : ""} />}
 
-                                            </Grid>
+                                            </Grid> */}
 
                                         </Grid>
                                     )}
 
 
-                                    <div className="customchecklistbtn">
+                                    {/* <div className="customchecklistbtn">
                                         <CustomButton
                                             btnName={"Save"}
                                             btnCustomColor="customPrimary"
                                             custombtnCSS={"btnchecklist"}
                                             onBtnClick={submitCheckList}
                                         />
-                                    </div>
+                                    </div> */}
                                 </Grid>
                             </div>
 

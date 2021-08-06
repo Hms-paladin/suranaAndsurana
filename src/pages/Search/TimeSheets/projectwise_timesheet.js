@@ -333,7 +333,6 @@ function ProjectwiseTS(props) {
 
                 console.log("filtersfilterssample", sample)
                 for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
-                    console.log("tttttttttttttttttt", key);
                     subCollapse.push(
                         <Panel
                             header={`${key} (${value.length})`}
@@ -396,7 +395,7 @@ function ProjectwiseTS(props) {
     return (
         <div>
 
-            <div className="DRtitle">Project Wise Task or Time Sheet</div>
+            <div className="DRtitle">Project Wise Task / Time Sheet</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
                     <Grid item xs={2} container direction="column" spacing={1}>

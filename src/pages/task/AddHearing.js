@@ -28,48 +28,7 @@ const [modelOpen,setModelOpen]=useState(false)
 const [AddAdjourn,setAddAdjourn]=useState(false)
 const [projectSubActivity, setprojectSubActivity] = useState({});
 const [idDetails, setidDetails] = useState({})
-const modelContent = () => {
-  return (
-      <ProjectTaskModel />
-  )
-}
-const Adjourn_Model=()=>{
-    setadjourn(true)
-}
-const openTaskModel=()=>{
-  setModelOpen(true)
-}
 
-useEffect(() => {
-  if(props.rowData){
-    dispatch(getProjectDetails(props.rowData.data.project_id))
-  dispatch(getHearingDetails(props.rowData.data));
-  }
-
-}, []);
-console.log(props.rowData.data,"props.rowData.data")
-useEffect(() => {
-  setProjectDetails(props.ProjectDetails);
-  props.ProjectDetails.length > 0 && setidDetails({
-    project_id: props.ProjectDetails[0].project_id,
-    client_id: props.ProjectDetails[0].client_id,
-  })
-  settaskDetails(props.rowData.data)
-if(props.getHearingDets && props.getHearingDets.length >0){
-  HearingData.nexthearing.value =props.getHearingDets[0].next_hearing_date;
-  HearingData.hearingoutcome.value =props.getHearingDets[0].hearing_outcome;
-  HearingData.hearing_id.value =props.getHearingDets[0].hearing_id;
-}
-
-let projectSubActivitydata = [];
-props.getSubactivity.map((data) =>
-          projectSubActivitydata.push({
-            value: data.sub_activity,
-            id: data.sub_activity_id,
-          })
-        );
-        setprojectSubActivity({ projectSubActivitydata });
-}, [props.rowData,props.getHearingDets,props.ProjectDetails,props.getSubactivity]);
 const [HearingData, setHearingData] = useState({
   hearing_id: {
     value: 0,
@@ -108,6 +67,53 @@ const [HearingData, setHearingData] = useState({
         errmsg: null,
       },
 })
+
+const modelContent = () => {
+  return (
+      <ProjectTaskModel />
+  )
+}
+const Adjourn_Model=()=>{
+    setadjourn(true)
+}
+const openTaskModel=()=>{
+  setModelOpen(true)
+}
+
+useEffect(() => {
+  if(props.rowData){
+    dispatch(getProjectDetails(props.rowData.data.project_id))
+  dispatch(getHearingDetails(props.rowData.data));
+  dispatch(getSubactivity(props.rowData.data.activiity_id))
+  }
+
+}, []);
+console.log(props.rowData.data.activiity_id,"props.rowData.data")
+
+useEffect(() => {
+  setProjectDetails(props.ProjectDetails);
+  props.ProjectDetails.length > 0 && setidDetails({
+    project_id: props.ProjectDetails[0].project_id,
+    client_id: props.ProjectDetails[0].client_id,
+  })
+  settaskDetails(props.rowData.data)
+if(props.getHearingDets && props.getHearingDets.length >0){
+  HearingData.nexthearing.value =props.getHearingDets[0].next_hearing_date;
+  HearingData.hearingoutcome.value =props.getHearingDets[0].hearing_outcome;
+  HearingData.hearing_id.value =props.getHearingDets[0].hearing_id;
+}
+
+let projectSubActivitydata = [];
+props.getSubactivity.map((data) =>
+          projectSubActivitydata.push({
+            value: data.sub_activity,
+            id: data.sub_activity_id,
+          })
+        );
+        setprojectSubActivity({ projectSubActivitydata });
+}, [props.rowData,props.getHearingDets,props.ProjectDetails,props.getSubactivity]);
+
+
 function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(HearingData);

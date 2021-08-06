@@ -327,7 +327,7 @@ export const getSubactivity = (id) => async (dispatch) => {
     method: "post",
     url: apiurl + "get_sub_activity",
     data: {
-      activity_id: id.Activity,
+      activity_id: id.Activity||id,
     },
   });
   return dispatch({ type: GET_SUBACTIVITY, payload: response.data.data });

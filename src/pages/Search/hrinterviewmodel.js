@@ -8,16 +8,16 @@ import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
 import {getDesignationList } from "../../actions/MasterDropdowns";
-import { GetInterviewers } from "../../actions/GetInterviewersActions";
+import { GetInterviewers,GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 const HrInterviewModel = (props) => {
   const dispatch = useDispatch();
   const [roundDropdownValues, setroundDropdownValues] = useState({})
-  const [interviewerdata, setinterviewerdata] = useState([]);
   const [interviewApprover, setInterviewApprover] = useState([]);
   const [finalRound, setFinalRound] = useState(false);
   const [rounds, setRounds] = useState();
   const [designationdata, setdesignationdata] = useState([]);
   const [finalIntId, setFinalIntId] = useState(0);
+
   const [Interviewschedule, setInterviewschedule] = useState({
     desgination: {
       value: props.selectedDesignationID,
@@ -43,6 +43,7 @@ const HrInterviewModel = (props) => {
       errmsg: null,
     }
   })
+
   useEffect(() => {
     Axios({
       method: 'GET',
@@ -68,16 +69,6 @@ const HrInterviewModel = (props) => {
 
       // setdesignationdata({ Designation })
 
-      Axios({
-        method: "get",
-        url: apiurl + "get_interviewers",
-      }).then((response) => {
-        let Interviewer = []
-        response.data.data.map((data, index) =>
-          Interviewer.push({ id: data.emp_id, value: data.name }))
-        setinterviewerdata({ Interviewer })
-
-      })
     }, [dispatch])
 
   }, [])
@@ -96,32 +87,41 @@ const HrInterviewModel = (props) => {
     setInterviewApprover({ InterviewApprover })
 
     
-    if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
-      let data_res_id = props.GetInterviewers.find((val) => {
-        return (
-          "Venkat" == val.name
-        )
-      })
-      setFinalIntId(data_res_id.emp_id)
-    }
+    // if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+    //   let data_res_id = props.GetInterviewers.find((val) => {
+    //     return (
+    //       "Venkat" == val.name
+    //     )
+    //   })
+    //   setFinalIntId(data_res_id.emp_id)
+    // }
    
     let Designation = []
     props.getDesignationList.map((data, index) =>
       Designation.push({ id: data.designation_id, value: data.designation })
     )
     setdesignationdata({ Designation })
-  }
-    , [props.GetInterviewers, props.getDesignationList])
+  }, [props.GetInterviewers, props.getDesignationList])
+
+    useEffect(() => {
+      let InterviewApprover = []
+      props.GetInterviewersApprFinal.length > 0 && props.GetInterviewersApprFinal.map((data, index) =>
+        InterviewApprover.push({ id: data.emp_id, value: data.name }))
+      setInterviewApprover({ InterviewApprover })
+  
+    }, [props.GetInterviewersApprFinal])
   // ____________________
 
   function checkValidation(data, key, multipleId) {
 
-      if (data === 27 && key === "round") {
-      Interviewschedule.interviewer.value = finalIntId
-      setFinalRound(true)
+    if (data === 27 && key === "round") {
+      // Interviewschedule.interviewer.value = finalIntId
+      dispatch(GetInterviewersApprFinal());
+      // setFinalRound(true)
     } 
     if (data !== 27 && key === "round") {
-      setFinalRound(false)
+      // setFinalRound(false)
+      dispatch(GetInterviewers());
     }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -193,25 +193,20 @@ const HrInterviewModel = (props) => {
     }));
   };
 
-
-  if (rounds === Interviewschedule.round.value) {
-  }
-
   // roundName
   useEffect(() => {
     if (roundDropdownValues.hr_round) {
       const getDisableId = roundDropdownValues.hr_round.filter((data) => {
-
         return (props.roundName === data.value)
       })
       for (let i = 0; i < getDisableId[0].id; i++) {
+        if(roundDropdownValues.hr_round[i])
         roundDropdownValues.hr_round[i].disable = true
       }
     }
     
   }, [props])
 
-// console.log(props,"yyyyyyyyyyyyyyy")
   return (
     <div>
       <Labelbox
@@ -247,8 +242,8 @@ const HrInterviewModel = (props) => {
         type="select"
         placeholder="Interviewer"
         changeData={(data) => checkValidation(data, "interviewer")}
-        disabled={finalRound ? true : false}
-        dropdown={finalRound ? interviewApprover.InterviewApprover : interviewerdata.Interviewer}
+        // disabled={finalRound ? true : false}
+        dropdown={interviewApprover.InterviewApprover}
         value={Interviewschedule.interviewer.value}
         error={Interviewschedule.interviewer.error}
         errmsg={Interviewschedule.interviewer.errmsg}
@@ -270,6 +265,7 @@ const mapStateToProps = (state) => (
   {
     GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
     getDesignationList: state.getOptions.getDesignationList || [],
+    GetInterviewersApprFinal: state.InterviewSchedule.GetInterviewersApprFinal || [],
 
   }
 );

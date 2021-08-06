@@ -54,7 +54,7 @@ const OtherHead = [
   { id: "clientname", label: "Client Name" },
   { id: "hodAttorney", label: "HOD/Attorney" },
   { id: "Counsel", label: "Counsel" },
-  { id: "rangeOfCost", label: "Project Cost Range" },
+  // { id: "rangeOfCost", label: "Project Cost Range" },
   { id: "billabletype", label: "Billable Type" },
 ];
 
@@ -284,7 +284,7 @@ function Projectsearch(props) {
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["hodAttorney"] = data.councel_name;
           rowdataListobj["Counsel"] = data.HR_name;
-          rowdataListobj["rangeOfCost"] = data.filing_type;
+          // rowdataListobj["rangeOfCost"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
         }
         ipProjectDataList.push(rowdataListobj);

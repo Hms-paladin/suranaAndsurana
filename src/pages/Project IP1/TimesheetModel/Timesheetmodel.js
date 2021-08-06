@@ -124,7 +124,7 @@ useEffect(() => {
                     <Grid item xs={3}>
                     <div  style={{textAlign:'center'}}>
                                     {/* {data.start_time == null || data.end_time == null ? '' : moment.utc(moment(data.start_time,"HH:mm:ss").diff(moment(data.end_time,"HH:mm:ss"))).format("HH:mm:ss")} */}
-                                    {data.no_hrs}
+                                    {data.no_hrs||data.total_hours}
                                 </div>
                        
 
