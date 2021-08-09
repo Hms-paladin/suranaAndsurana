@@ -5,12 +5,14 @@ import Grid from '@material-ui/core/Grid';
 import { useDispatch, connect } from "react-redux";
 import { getRecruitmentTicket, updateTicketStatus } from '../../actions/TicketCreationAction';
 import Moment from 'moment';
+import DynModel from "../../component/Model/model";
 
 function RecruitmentModal(props) {
     const dispatch = useDispatch();
     const [ticket_id, setticket_id] = useState();
     const [recruitmentData, setRecruitmentData] = useState({});
     const [process, setProcess] = useState(false);
+    const [ticketConfirmationModal, setTicketConfirmationModal] = useState(false);
 
 
 
@@ -35,6 +37,7 @@ function RecruitmentModal(props) {
         dispatch(updateTicketStatus(ticket_id)).then((response) => {
             props.closemodal()
         })
+        setTicketConfirmationModal(false)
     }
 
     console.log(recruitmentData, "recruitmentData")
@@ -85,9 +88,20 @@ function RecruitmentModal(props) {
                     <div className="status_inner_div"><label>Status :</label><label>Progress</label></div>
                 </div>
                 :
-                <div className="btn_div_close">
-                    <CustomButton btnName={"Close"} btnCustomColor="customPrimary" custombtnCSS="custom_close_re" onBtnClick={closeRecruitmant} />
-                </div>
+                <>
+                    <div className="btn_div_close">
+                        <CustomButton btnName={"Requirement Completed"} btnCustomColor="customPrimary" custombtnCSS="custom_close_re" onBtnClick={(bln) => setTicketConfirmationModal(bln)} />
+                    </div>
+                    <DynModel modelTitle={"ADD USER GROUP"} handleChangeModel={ticketConfirmationModal} handleChangeCloseModel={(bln) => setTicketConfirmationModal(bln)} content={
+                        <div className="deleteBtn">
+                            <div>Are you sure want to complete this Ticket?</div>
+                            <div>
+                                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
+                                <CustomButton btnName={"Ok"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={closeRecruitmant} />
+                            </div>
+                        </div>}
+                    />
+                </>
 
             }
         </div>

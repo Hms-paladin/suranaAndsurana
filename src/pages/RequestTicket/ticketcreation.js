@@ -11,7 +11,7 @@ import {
     getCertification,
     getSpecilization,
     getCapability,
-    getTalents, getEmployeeList
+    getTalents, getEmployeeListForTicket
 } from "../../actions/MasterDropdowns";
 import { InsertTicketTemplate, InsertRecruitmentTicket, getTicketTemplate } from '../../actions/TicketCreationAction';
 import { notification } from "antd";
@@ -152,7 +152,7 @@ function TicketCreation(props) {
         dispatch(getSpecilization());
         dispatch(getCapability());
         dispatch(getTalents());
-        dispatch(getEmployeeList());
+        dispatch(getEmployeeListForTicket());
 
 
     }, []);
@@ -246,7 +246,7 @@ function TicketCreation(props) {
 
         //getEmployeeList
         let EmployeeList = [];
-        props.EmployeeList.map((data) => {
+        props.EmployeeList?.map((data) => {
             EmployeeList.push({
                 value: data.name,
                 id: data.emp_id,
@@ -522,7 +522,7 @@ function TicketCreation(props) {
     }, [props.UserPermission]);
 
 
-    // console.log(saveRights,"rights")
+
 
     function rightsNotification() {
         notification.success({
@@ -531,7 +531,9 @@ function TicketCreation(props) {
     }
     /////////////
     return (
+
         <div>
+           
             {/* { permission.allow_view==='Y'&&<div > */}
             <div className="Titlediv">Recruitment Request Tickets</div>
             <div className="ticketContainer">
@@ -693,6 +695,14 @@ function TicketCreation(props) {
                                 value={TicketCreation.assignedto.value}
                                 error={TicketCreation.assignedto.error}
                                 errmsg={TicketCreation.assignedto.errmsg}></Labelbox>
+                        </Grid>
+                        <Grid item xs={3} >
+                            <div className="TThead">Remarks</div>
+                            <Labelbox type="textarea" placeholder="Tell us your Remarks"
+                                changeData={(data) => checkValidation(data, "position")}
+                                value={TicketCreation.position.value}
+                                error={TicketCreation.position.error}
+                                errmsg={TicketCreation.position.errmsg} />
                         </Grid>
                     </Grid>
                 </div>
