@@ -448,22 +448,23 @@ function TicketCreation(props) {
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
         } else {
-        if (id === 1) {
-            // Save as template
-            dispatch(InsertTicketTemplate(TicketCreation, changemsg)).then(
-                (response) => {
-                    handleCancel();
-                }
-            )
-        } else {
-            // Generate Ticket
-            dispatch(InsertRecruitmentTicket(TicketCreation)).then(
-                (response) => {
-                    handleCancel();
-                }
-            )
+            if (id === 1) {
+                // Save as template
+                dispatch(InsertTicketTemplate(TicketCreation, changemsg)).then(
+                    (response) => {
+                        handleCancel();
+                    }
+                )
+            } else {
+                // Generate Ticket
+                dispatch(InsertRecruitmentTicket(TicketCreation)).then(
+                    (response) => {
+                        handleCancel();
+                    }
+                )
 
-        } }
+            }
+        }
 
         setTicketCreation((prevState) => ({
             ...prevState,
@@ -500,43 +501,44 @@ function TicketCreation(props) {
         }));
     };
 
-  ///***********user permission**********/
-useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission){
-       let data_res_id = props.UserPermission.find((val) => { 
-       return (
-           "Ticket Creation - Save as Template" == val.control 
-       ) 
-      })
-      setSaveRights(data_res_id)
+    ///***********user permission**********/
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Ticket Creation - Save as Template" == val.control
+                )
+            })
+            setSaveRights(data_res_id)
 
-      data_res_id = props.UserPermission.find((val) => { 
-        return (
-            "Ticket Creation - Generate Ticket" == val.control 
-        ) 
-       })
-       setGenerateRights(data_res_id)
-    }
-    
+            data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Ticket Creation - Generate Ticket" == val.control
+                )
+            })
+            setGenerateRights(data_res_id)
+        }
+
     }, [props.UserPermission]);
-    
-    
+
+
     // console.log(saveRights,"rights")
-    
-    function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
+
+    function rightsNotification() {
+        notification.success({
+            message: "You are not Authorized. Please Contact Administrator",
+        });
     }
     /////////////
     return (
-        <div> 
-         {/* { permission.allow_view==='Y'&&<div > */}
+        <div>
+            {/* { permission.allow_view==='Y'&&<div > */}
             <div className="Titlediv">Recruitment Request Tickets</div>
-             <div className="ticketContainer">
+            <div className="ticketContainer">
                 <div className="ticketGrid">
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
+                            <div className="TThead">Department</div>
                             <Labelbox type="select" placeholder="Department"
                                 dropdown={department.Department}
                                 changeData={(data) => checkValidation(data, "department")}
@@ -545,6 +547,7 @@ useEffect(() => {
                                 errmsg={TicketCreation.department.errmsg} />
                         </Grid>
                         <Grid item xs={3}>
+                            <div className="TThead">Designation</div>
                             <Labelbox type="select" placeholder="Designation"
                                 dropdown={designationList.DesignationList}
                                 changeData={(data) => checkValidation(data, "designation")}
@@ -557,6 +560,7 @@ useEffect(() => {
                 <div className="ticketGrid">
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
+                            <div className="TThead">Positions</div>
                             <Labelbox type="text" placeholder="No. of Positions"
                                 changeData={(data) => checkValidation(data, "position")}
                                 value={TicketCreation.position.value}
@@ -564,6 +568,7 @@ useEffect(() => {
                                 errmsg={TicketCreation.position.errmsg} />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Required by</div>
                             <Labelbox type="datepicker" placeholder="Required by" disablePast={true} minDate={tomorrow}
                                 changeData={(data) => checkValidation(data, "req_by")}
                                 value={TicketCreation.req_by.value}
@@ -571,6 +576,7 @@ useEffect(() => {
                                 errmsg={TicketCreation.req_by.errmsg} />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Qualification</div>
                             <Labelbox type="select" placeholder="Qualification"
                                 dropdown={qualificationList.Qualification}
                                 changeData={(data) => checkValidation(data, "qualification", qualificationList.Qualification)}
@@ -580,6 +586,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Experience</div>
                             <Labelbox type="text" placeholder="Experience"
                                 //  dropdown={resumeGetList.cityList}
                                 changeData={(data) => checkValidation(data, "experience")}
@@ -588,6 +595,7 @@ useEffect(() => {
                                 errmsg={TicketCreation.experience.errmsg} />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Language</div>
                             <Labelbox type="select" placeholder="Language"
                                 dropdown={languages.Languages}
                                 changeData={(data) => checkValidation(data, "language", languages.Languages)}
@@ -597,6 +605,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">State</div>
                             <Labelbox type="select" placeholder="State"
                                 dropdown={stateList.stateList}
                                 changeData={(data) => checkValidation(data, "state")}
@@ -605,6 +614,7 @@ useEffect(() => {
                                 errmsg={TicketCreation.state.errmsg} />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Age Limit</div>
                             <Labelbox type="text" placeholder="Age Limit"
                                 changeData={(data) => checkValidation(data, "age_limit")}
                                 value={TicketCreation.age_limit.value}
@@ -614,8 +624,9 @@ useEffect(() => {
                     </Grid>
                 </div>
                 <div className="ticketGrid">
-                    <Grid item xs={12} container direction="column" spacing={1}>
+                    <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
+                            <div className="TThead">Skills</div>
                             <Labelbox type="select" placeholder="Skills"
                                 dropdown={requestGetList.skillsList}
                                 changeData={(data) => checkValidation(data, "skills", requestGetList.skillsList)}
@@ -625,6 +636,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Traits</div>
                             <Labelbox type="select" placeholder="Traits"
                                 dropdown={requestGetList.traitsList}
                                 changeData={(data) => checkValidation(data, "traits", requestGetList.traitsList)}
@@ -634,6 +646,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Certifications</div>
                             <Labelbox type="select" placeholder="Certifications"
                                 dropdown={requestGetList.certificateList}
                                 changeData={(data) => checkValidation(data, "certifications", requestGetList.certificateList)}
@@ -643,6 +656,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Specialization</div>
                             <Labelbox type="select" placeholder="Specialization"
                                 dropdown={requestGetList.specilalizaionsList}
                                 changeData={(data) => checkValidation(data, "specialization", requestGetList.specilalizaionsList)}
@@ -652,6 +666,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Capablities</div>
                             <Labelbox type="select" placeholder="Capablities"
                                 dropdown={requestGetList.capabilityList}
                                 changeData={(data) => checkValidation(data, "capablities", requestGetList.capabilityList)}
@@ -661,6 +676,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3} >
+                            <div className="TThead">Talents</div>
                             <Labelbox type="select" placeholder="Talents"
                                 dropdown={requestGetList.talentList}
                                 changeData={(data) => checkValidation(data, "talents", requestGetList.talentList)}
@@ -670,6 +686,7 @@ useEffect(() => {
                                 mode="multiple" />
                         </Grid>
                         <Grid item xs={3}>
+                            <div className="TThead">Assigned to</div>
                             <Labelbox type="select" placeholder="Assigned to"
                                 dropdown={employeeList.EmployeeList}
                                 changeData={(data) => checkValidation(data, "assignedto")}
@@ -680,8 +697,8 @@ useEffect(() => {
                     </Grid>
                 </div>
                 <div className="ticketbtn">
-                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={()=>onSubmit(1)}  />
-                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" btnDisable={!generateRights||generateRights.display_control&&generateRights.display_control==='N'?true:false} onBtnClick={()=>onSubmit("")}  />
+                    <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => onSubmit(1)} />
+                    <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" btnDisable={!generateRights || generateRights.display_control && generateRights.display_control === 'N' ? true : false} onBtnClick={() => onSubmit("")} />
 
                     {/* <CustomButton btnName={"Save as Template"} btnCustomColor="customPrimary" custombtnCSS="btntemplate" onBtnClick={()=>onSubmit(1)}  />
                     <CustomButton btnName={"Generate Ticket"} custombtnCSS="btntemplate" btnCustomColor="customPrimary" onBtnClick={()=>onSubmit("")}  /> */}
@@ -690,8 +707,8 @@ useEffect(() => {
 
             </div >
             {/* </div > } */}
-     
-    </div>
+
+        </div>
     )
 }
 const mapStateToProps = (state) => ({

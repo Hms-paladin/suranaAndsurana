@@ -279,7 +279,7 @@ export default class Labelbox extends Component {
 						className={`${data.error && "selectbrdred brdnone"} ${this.props.mode !== "multiple" && "selectAdjustHeight"} selectbox`}
 						showSearch
 						mode={this.props.mode ? this.props.mode : false}
-						value={selectValue ? selectValue : this.props.placeholder}
+						value={selectValue ? selectValue : "" }
 						suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
 						placeholder={this.props.placeholder}
 						optionFilterProp="label"
