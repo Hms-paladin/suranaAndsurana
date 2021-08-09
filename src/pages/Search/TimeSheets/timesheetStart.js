@@ -21,10 +21,11 @@ function TimeSheetStartModel(props) {
     const [taggList, settaggList] = useState({})
     const [assignedToLists, setassignedToLists] = useState({})
     const [projectDetails, setProjectDetails] = useState([{}])
+
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
-            validation: [],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
@@ -45,6 +46,7 @@ function TimeSheetStartModel(props) {
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
+            disabled:false
         },
         tag: {
             value: "",
@@ -130,7 +132,7 @@ function TimeSheetStartModel(props) {
             // timeSheetForm.startTime.value
             // timeSheetForm.startTime.value
         }
-        console.log(props.approve_timesheet,props.projectrow,'approve_timesheetd')
+        // console.log(props.approve_timesheet,props.projectrow,'approve_timesheetd')
     }, [props.approve_timesheet]);
 
     useEffect(() => {
@@ -259,7 +261,14 @@ function TimeSheetStartModel(props) {
     }
 
 
+useEffect(()=>{
+    timeSheetForm.assignTo.value=Number(localStorage.getItem("empId"))
+    timeSheetForm.assignTo.disabled=true
+    settimeSheetForm((prevState) => ({
+        ...prevState,
+    }));
 
+},[assignedToLists])
 
     function onSubmit() {
         var mainvalue = {};
@@ -285,7 +294,7 @@ function TimeSheetStartModel(props) {
         }));
     }
 
-    console.log(props,"rowData")
+    // console.log(props,"rowData")
     return (
         <div className="timeSheetStartContainer">
             {changeStop ?
@@ -341,6 +350,7 @@ function TimeSheetStartModel(props) {
                                 errmsg={timeSheetForm.assignTo.errmsg}
                                 dropdown={assignedToLists.assignedToData}
                                 changeData={(data) => checkValidation(data, "assignTo")}
+                                disabled={timeSheetForm.assignTo.disabled}
                             />
                         </Grid>
 
@@ -496,6 +506,12 @@ function TimeSheetStartModel(props) {
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
                                 placeholder={"Start Date"}
+                                changeData={(data) =>
+                                    checkValidation(data, "fromDate")
+                                }
+                                value={timeSheetForm.fromDate.value}
+                                error={timeSheetForm.fromDate.error}
+                                errmsg={timeSheetForm.fromDate.errmsg}
                             />
                         </Grid>
                         <Grid item xs={3}>

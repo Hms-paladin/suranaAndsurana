@@ -198,32 +198,6 @@ function Navbar(props) {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false)
   const [Rights, setRights] = useState([])
-  const [MenuRights, setMenuRights] = useState({
-
-    dashboardnew: false,
-    todoList: false,
-    search: false,
-    generateinvoice: false,
-    checklistAssigning: false,
-    severance: false,
-    exitinterviewform: false,
-    employeeFeedback: false,
-    serverance_userview_Modal: false,
-    master: false,
-    ratemaster: false,
-    stagesmaster: false,
-    leaveupdate: false,
-    usermaster: false,
-    checklistCreation: false,
-    usermanagement: false,
-    usergroups: false,
-    newusermaster: false,
-    groupcontrol: false,
-    onlinetest: false,
-    addquestion: false,
-    testtemplate: false,
-    onlinetest: false,
-})
 
   // function handleClicknav() {
   //   setOpen(!open)
@@ -420,13 +394,13 @@ useEffect(() => {
  
     
     })
-    setMenuRights((prevState) => ({
-      ...prevState,
-  }));
-  // setMenuItems((prevState) => ([
-  //   ...prevState,
-  // ]));
+
     setRights(props.UserPermission)
+  }else{
+    menuItems1.current[0].menu_rights=true;
+
+    menuItems1.current[1].menu_rights=true;
+
   }
  
 }, [props.UserPermission]); 
@@ -449,7 +423,7 @@ const menuItems1 = useRef( [
   {
     active: "severance", path: "", title: "Severance", img: Stagemaster, submenu: true,
     subtree: [
-      { path: "/Home/severance", title: "Exit Interview Form", img: Usergroups },
+      { path: "/Home/severance", title: "Exit Form", img: Usergroups },
       { path: "/Home/employeeFeedback", title: "Employee Feedback Form", img: MasterIcon },
       { path: "/Home/serverance_userview_Modal", title: "View Severance", img: MasterIcon }
     ]

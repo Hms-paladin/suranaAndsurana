@@ -362,7 +362,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
     
                                 <div style={{ width: '36%', padding: '15px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
-                                        <p>{data.project_id != null ? data.project_name : ''}</p>
+                                        <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
                                         <p>{data.project_id != null ? data.project_type : data.description}</p>
                                         <p>{data.client}</p>
                                     </div>
@@ -393,7 +393,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                         <span>End Date :<span>{data.actual_end_date && data.actual_end_date!="" ? moment(data.actual_end_date).format("DD MMM YYYY"):""}</span></span>
                                     </div>
                                     <div>
-                                        <p>Assigned By <a>{data.name}</a>On <a>{data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</a></p>
+                                        <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</a></p>
                                     </div>
                                 </div>
                                 <div className="divider"></div>
@@ -447,7 +447,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
 
                             <div style={{ width: '36%', padding: '15px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
-                                    <p>{data.project_id != null ? data.project_name : ''}</p>
+                                    <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
                                     <p>{data.project_id != null ? data.project_type : data.description}</p>
                                     <p>{data.client}</p>
                                 </div>
@@ -474,7 +474,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
                                     <span>End Date :<span>{data.actual_end_date && data.actual_end_date!="" ? moment(data.actual_end_date).format("DD MMM YYYY"):""}</span></span>
                                 </div>
                                 <div>
-                                    <p>Assigned By <a>{data.name}</a>On <a>{data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</a></p>
+                                    <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date!="" ? moment(data.start_date).format("DD MMM YYYY"):""}</a></p>
                                 </div>
                             </div>
                             <div className="divider"></div>

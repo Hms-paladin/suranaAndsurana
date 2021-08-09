@@ -5,14 +5,12 @@ import { Button } from "@material-ui/core";
 import Axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl';
-import { GetInterviewers } from "../../actions/GetInterviewersActions";
+import { GetInterviewers,GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 import { GetDesignation } from "../../actions/GetDesignationActions";
 import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
 import { getInterviewApprover } from "../../actions/MasterDropdowns";
-
-
 import './search.scss'
 
 
@@ -88,25 +86,35 @@ function DynModel(props) {
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
 
-    if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
-      let data_res_id = props.GetInterviewers.find((val) => {
-        return (
-          "Venkat" == val.name
-        )
-      })
-      setFinalIntId(data_res_id.emp_id)
-    }
+    // if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+    //   let data_res_id = props.GetInterviewers.find((val) => {
+    //     return (
+    //       "Venkat" == val.name
+    //     )
+    //   })
+    //   setFinalIntId(data_res_id.emp_id)
+    // }
   }, [props.GetInterviewers])
 
-  console.log(finalIntId, "GetInterviewers")
+  useEffect(() => {
+    let InterviewApprover = []
+    props.GetInterviewersApprFinal.length > 0 && props.GetInterviewersApprFinal.map((data, index) =>
+      InterviewApprover.push({ id: data.emp_id, value: data.name }))
+    setInterviewApprover({ InterviewApprover })
+
+  }, [props.GetInterviewersApprFinal])
+
+
   function checkValidation(data, key, multipleId) {
 
     if (data === 27 && key === "round") {
-      Interviewschedule.interviewer.value = finalIntId
-      setFinalRound(true)
+      // Interviewschedule.interviewer.value = finalIntId
+      dispatch(GetInterviewersApprFinal());
+      // setFinalRound(true)
     } 
     if (data !== 27 && key === "round") {
-      setFinalRound(false)
+      // setFinalRound(false)
+      dispatch(GetInterviewers());
     }
 
 
@@ -164,18 +172,6 @@ function DynModel(props) {
  
   useEffect(() => {
 
-    // Axios({
-    //   method: "get",
-    //   url: apiurl + "get_interviewers",
-    // }).then((response) => {
-    //   let Interviewer = []
-    //   response.data.data.map((data, index) =>
-    //     Interviewer.push({ id: data.emp_id, value: data.name }))
-
-    //   setinterviewerdata({ Interviewer })
-
-    // })
-
     Axios({
       method: "get",
       url: apiurl + "get_s_tbl_m_designation",
@@ -202,7 +198,6 @@ function DynModel(props) {
         })
       )
       setroundDropdownValues({ hr_round })
-      console.log(roundDropdownValues.hr_round, "hr_round")
     })
 
   }, [dispatch])
@@ -259,7 +254,7 @@ function DynModel(props) {
             type="select"
             placeholder={"Interviewer"}
             // dropdown={interviewerdata.Interviewer}
-            disabled={finalRound ? true : false}
+            // disabled={finalRound ? true : false}
             dropdown={interviewApprover.InterviewApprover}
             changeData={(data) => checkValidation(data, "interviewer")}
             value={Interviewschedule.interviewer.value}
@@ -285,7 +280,7 @@ const mapStateToProps = (state) => (
   // console.log(state.getOptions.getInterviewApprover, "getProcessType")
   {
     GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
-
+    GetInterviewersApprFinal: state.InterviewSchedule.GetInterviewersApprFinal || [],
   }
 );
 

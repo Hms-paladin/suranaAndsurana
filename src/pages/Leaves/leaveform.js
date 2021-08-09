@@ -45,7 +45,7 @@ function LeaveForm(props) {
     const [leaveFormTable, setLeaveFormTable] = useState({});
     const [emp_leave_id, setEmp_leave_id] = useState(0)
     const [availabledates, setAvailableDates] = useState([])
-    
+ 
     const [timeexceed, setTimeexceed] = useState(false)
     const [SubjectIndex, setSubjectIndex] = useState('')
     var duplicateDate = false
@@ -61,12 +61,14 @@ function LeaveForm(props) {
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
+            // minDate:new Date()
         },
         todate: {
             value: "",
             validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
+            minDate:new Date()
         },
         reasoncmt: {
             value: "",
@@ -175,23 +177,26 @@ function LeaveForm(props) {
 
     useEffect(() => {
         dispatch(getEmpAvailableBalance(localStorage.getItem("empId"), Leave_Form.leavetype.value))
-        console.log("testttt")
     }, [Leave_Form.leavetype.value])
 
     useEffect(() => {
         if(props.getEmpLeaveBal&&props.getEmpLeaveBal.length > 0 ){
             setEmpLeaveBal(props.getEmpLeaveBal[0].current_balance)
             setAvailableDates({start_date:props.getEmpLeaveBal[0].start_date,end_date:props.getEmpLeaveBal[0].end_date})
+            Leave_Form.todate.minDate=moment(`${props.getEmpLeaveBal[0].start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()
         }
          else{
           setEmpLeaveBal("")
          }
+         setLeaveForm(prevState => ({
+            ...prevState,
+        }));
     }, [Leave_Form.leavetype.value, props.getEmpLeaveBal])
 
     useEffect(() => {
         var diff = Math.floor((Date.parse(Leave_Form.todate.value) - Date.parse(Leave_Form.fromdate.value)) / 86400000)
         isNaN(diff) ? setNoOfDays(0) : setNoOfDays(diff + 1)
-// 
+
         if(Leave_Form["leavetype"].value===40){
         Leave_Form["tot_leave"].value =isNaN(diff) ? "" : (diff + 1)
         Leave_Form.exam_days.validation=[{ "name": "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly" }]
@@ -345,6 +350,9 @@ function LeaveForm(props) {
 
         }
 
+        if (key === "fromdate"){
+            Leave_Form.todate.minDate=data
+        }
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -734,11 +742,6 @@ function LeaveForm(props) {
         }));
     };
 
-
-    // console.log(moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format(),"examSchedule")
-    // console.log(`${availabledates.start_date} 11:00:00 AM`,availabledates.start_date&&availabledates.start_date,"examSchedule")
-    // console.log(new Date().toLocaleTimeString(), "time")
-
     const [saveRights, setSaveRights] = useState([])
 
     ///***********user permission**********/
@@ -797,8 +800,8 @@ function LeaveForm(props) {
                                 changeData={(data) => checkValidation(data, "todate")}
                                 value={Leave_Form.todate.value}
                                 // minDate={Leave_Form.leavetype.value!==37&&new Date()}
-                                // minDate={Leave_Form.fromdate.value}
-                                minDate={moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
+                                minDate={Leave_Form.todate.minDate}
+                                // minDate={moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
                                 maxDate={moment(`${availabledates.end_date&&availabledates.end_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
                                 disabled={availabledates.start_date&&availabledates.end_date?false:true}
                                 error={Leave_Form.todate.error}
@@ -849,11 +852,12 @@ function LeaveForm(props) {
                     {(Leave_Form.leavetype.value === 38 || Leave_Form.leavetype.value === 39) &&
                         <> <Grid item xs={2}>
                             <div className="leaveFieldheading"> Date</div>
-                            <div> <Labelbox type="datepicker"
+                            <div> 
+                                <Labelbox type="datepicker"
                             //  minDate={new Date()}
-                            minDate={moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
-                            maxDate={moment(`${availabledates.end_date&&availabledates.end_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
-                            disabled={availabledates.start_date&&availabledates.end_date?false:true}
+                                minDate={moment(`${availabledates.start_date&&availabledates.start_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
+                                maxDate={moment(`${availabledates.end_date&&availabledates.end_date} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()}
+                                disabled={availabledates.start_date&&availabledates.end_date?false:true}
                                 changeData={(data) => checkValidation(data, "fromdate")}
                                 value={Leave_Form.fromdate.value}
                                 error={Leave_Form.fromdate.error}

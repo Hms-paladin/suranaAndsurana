@@ -44,7 +44,10 @@ function LeaveUpdate(props) {
 
     const [saveRights, setSaveRights] = useState([])
 
-    const [EmployeeDoj, setEmployeeDoj] = useState(new Date())
+    const [EmployeeDoj, setEmployeeDoj] = useState({
+        start_date_doj:new Date(),
+        end_date_doj:new Date()
+    })
     const [leaveEditMasId, setLeaveEditMasId] = useState("")
     const [Leave_Update, setleaveUpdate] = useState({
         start_date: {
@@ -144,17 +147,23 @@ function LeaveUpdate(props) {
         //employee name
         if(employeeCode===""){
             setEmployeeName({})
-            setEmployeeDoj(new Date())
+            EmployeeDoj.start_date_doj=new Date()
+            EmployeeDoj.end_date_doj=new Date()
         }
         else if(props.getEmployee.length>0){
             setEmployeeName(props.getEmployee)
             if(props.getEmployee[0].doj<moment().format("YYYY-MM-DD")){
-                setEmployeeDoj(new Date())
+                EmployeeDoj.start_date_doj=new Date()
+                EmployeeDoj.end_date_doj=new Date()
             }else{
-            setEmployeeDoj(moment(`${props.getEmployee[0].doj&&props.getEmployee[0].doj} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format())
+                EmployeeDoj.start_date_doj=moment(`${props.getEmployee[0].doj&&props.getEmployee[0].doj} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()
+            EmployeeDoj.end_date_doj=moment(`${props.getEmployee[0].doj&&props.getEmployee[0].doj} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format()
             }
         }
         else{setEmployeeName("")}
+        setleaveUpdate((prevState) => ({
+            ...prevState,
+        }));
     }, [employeeCode,props.getEmployee])
 
  
@@ -198,6 +207,9 @@ function LeaveUpdate(props) {
             validation: Leave_Update[key].validation,
         };
 
+        if(key==='start_date'){
+            EmployeeDoj.end_date_doj=data
+        }
         if(key==='noofdays'){
             setEligible_leave(data)
         }
@@ -306,7 +318,7 @@ function LeaveUpdate(props) {
                                 <div className="leaveFieldheading">From</div>
                                 <div>
                                     <Labelbox type="datepicker" 
-                                        minDate={EmployeeDoj}
+                                        minDate={EmployeeDoj.start_date_doj}
                                         // disablePast={true}
                                         changeData={(data) =>
                                             checkValidation(data, "start_date")
@@ -320,7 +332,8 @@ function LeaveUpdate(props) {
                                 <div className="leaveFieldheading">To</div>
                                 <div>
                                     <Labelbox type="datepicker"
-                                        disablePast={true}
+                                        // disablePast={true}
+                                        minDate={EmployeeDoj.end_date_doj}
                                         changeData={(data) =>
                                             checkValidation(data, "end_date")
                                         }
