@@ -65,7 +65,7 @@ function TradeMarkOposition1(properties) {
             TradeMarkForm.class_id.value = obj.class_id;
             // if (obj.class_id && obj.class_id.length)
             // TradeMarkForm.class_id.disabled = true;
-    
+
             TradeMarkForm.mark_id.value = obj.mark_id;
             // if (obj.mark_id && obj.mark_id.length)
             //     TradeMarkForm.mark_id.disabled = true;
@@ -74,11 +74,11 @@ function TradeMarkOposition1(properties) {
             // if (obj.ourReference && obj.ourReference.length)
             //     TradeMarkForm.ourReference.disabled = true;
 
-            if(obj.deadline!=null&&obj.deadline!="0000-00-00"){    
-            TradeMarkForm.end_date.value = obj.deadline;
-            // if (obj.deadline && obj.deadline.length)
-            //     TradeMarkForm.end_date.disabled = true;
-                }      
+            if (obj.deadline != null && obj.deadline != "0000-00-00") {
+                TradeMarkForm.end_date.value = obj.deadline;
+                // if (obj.deadline && obj.deadline.length)
+                //     TradeMarkForm.end_date.disabled = true;
+            }
             // "upload_image" :selectedFile,
             TradeMarkForm.application_no.value = obj.application_no;
             // if (obj.application_no && obj.application_no.length)
@@ -92,11 +92,11 @@ function TradeMarkOposition1(properties) {
             // if (obj.tmj_number && obj.tmj_number.length)
             //     TradeMarkForm.tmj_number.disabled = true;
 
-            if(obj.tmj_date!="0000-00-00"){
+            if (obj.tmj_date != "0000-00-00") {
                 TradeMarkForm.tmj_date.value = obj.tmj_date;
                 // if (obj.tmj_date && obj.tmj_date.length)
                 //     TradeMarkForm.tmj_date.disabled = true;
-                }
+            }
 
             TradeMarkForm.opositionNumber.value = obj.opposition_no;
             // if (obj.opositionNumber && obj.opositionNumber.length)
@@ -163,7 +163,7 @@ function TradeMarkOposition1(properties) {
 
 
     }, [
-        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList,properties.tradeMark
+        properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList, properties.tradeMark
     ]);
 
     const dispatch = useDispatch()
@@ -263,7 +263,7 @@ function TradeMarkOposition1(properties) {
             disabled: false,
 
         },
-         end_date: {
+        end_date: {
             value: "",
             // validation: [{ "name": "required" },],
             error: null,
@@ -484,57 +484,57 @@ function TradeMarkOposition1(properties) {
 
     function onSubmit() {
         var mainvalue = {};
-          var targetkeys = Object.keys(TradeMarkForm);
-          for (var i in targetkeys) {
-              var errorcheck = ValidationLibrary.checkValidation(
-                  TradeMarkForm[targetkeys[i]].value,
-                  TradeMarkForm[targetkeys[i]].validation
-              );
-              TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-              TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-              mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-          }
-          var filtererr = targetkeys.filter(
-              (obj) => TradeMarkForm[obj].error == true
-          ); 
+        var targetkeys = Object.keys(TradeMarkForm);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                TradeMarkForm[targetkeys[i]].value,
+                TradeMarkForm[targetkeys[i]].validation
+            );
+            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
+            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => TradeMarkForm[obj].error == true
+        );
         //console.log(filtererr.length);
 
         if (filtererr.length > 0) {
-        }else{
-        let params = {
-            "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
-            "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
-            "our_reference": TradeMarkForm.ourReference.value,
-            "mark_id": TradeMarkForm.mark_id.value===''?'0':TradeMarkForm.mark_id.value,
-            "upload_image": selectedFile,
-            "application_no": TradeMarkForm.application_no.value,
-            "application_date": TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value,
-            "tmj_number": TradeMarkForm.tmj_number.value,
-            "tmj_date": TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value,
-            "opposition_no": TradeMarkForm.opositionNumber.value,
-            "applicant": TradeMarkForm.applicant.value,
-            "applicant_agent": TradeMarkForm.applicantAgent.value,
-            "internal_status": TradeMarkForm.internal_status.value,
-            "deadline": TradeMarkForm.end_date.value===''?'0000-00-00':moment(TradeMarkForm.end_date.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
-            "created_by": localStorage.getItem("empId"),
-            "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-            "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-            "updated_by": localStorage.getItem("empId"),
-            "ip_address": "ddf"
-        }
-        if (TradeMarkForm.class_id.value != "") {
-            params["class_id"] = TradeMarkForm.class_id.value;
-        }
+        } else {
+            let params = {
+                "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
+                "status_id": TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value,
+                "our_reference": TradeMarkForm.ourReference.value,
+                "mark_id": TradeMarkForm.mark_id.value === '' ? '0' : TradeMarkForm.mark_id.value,
+                "upload_image": selectedFile,
+                "application_no": TradeMarkForm.application_no.value,
+                "application_date": TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value,
+                "tmj_number": TradeMarkForm.tmj_number.value,
+                "tmj_date": TradeMarkForm.tmj_date.value === '' ? '0000-00-00' : TradeMarkForm.tmj_date.value,
+                "opposition_no": TradeMarkForm.opositionNumber.value,
+                "applicant": TradeMarkForm.applicant.value,
+                "applicant_agent": TradeMarkForm.applicantAgent.value,
+                "internal_status": TradeMarkForm.internal_status.value,
+                "deadline": TradeMarkForm.end_date.value === '' ? '0000-00-00' : moment(TradeMarkForm.end_date.value, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+                "created_by": localStorage.getItem("empId"),
+                "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+                "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+                "updated_by": localStorage.getItem("empId"),
+                "ip_address": "ddf"
+            }
+            if (TradeMarkForm.class_id.value != "") {
+                params["class_id"] = TradeMarkForm.class_id.value;
+            }
 
-        if (TradeMarkForm.trademark_id.value != 0) {
-            params["trademark_id"] = TradeMarkForm.trademark_id.value;
+            if (TradeMarkForm.trademark_id.value != 0) {
+                params["trademark_id"] = TradeMarkForm.trademark_id.value;
+            }
+            dispatch(insertTradeMark(params)).then(() => {
+
+                // dispatch(getTradeMark(rowId))
+                handleCancel()
+            })
         }
-        dispatch(insertTradeMark(params)).then(() => {
-            
-            // dispatch(getTradeMark(rowId))
-            handleCancel()
-        })
-    }
         /* if (filtererr.length > 0) {
              // setResumeFrom({ error: true });
          } else {
@@ -550,7 +550,7 @@ function TradeMarkOposition1(properties) {
     const handleCancel = () => {
         let From_key = [
             "project_id", "associateRefernce", "ourReference", "applicant", "status_id", "class_id", "associate", "userclaim", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
-            "internal_status", "opositionNumber", "end_date", "upload_image", "goods_description", "usage_from_date", "comments","allotment",
+            "internal_status", "opositionNumber", "end_date", "upload_image", "goods_description", "usage_from_date", "comments", "allotment",
             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
             "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
             "ip_address"
@@ -612,7 +612,8 @@ function TradeMarkOposition1(properties) {
                         <Grid item xs={6} >
                             <div className="Fieldheading">Status</div>
                             <Labelbox type="select"
-                                placeholder={" Status"} changeData={(data) => checkValidation(data, "status_id")}
+                                // placeholder={" Status"} 
+                                changeData={(data) => checkValidation(data, "status_id")}
                                 dropdown={tradeStatusList.tradeStatusData}
                                 value={TradeMarkForm.status_id.value}
                                 error={TradeMarkForm.status_id.error}
@@ -624,7 +625,7 @@ function TradeMarkOposition1(properties) {
                         <Grid item xs={6} >
                             <div className="Fieldheading">Our Reference</div>
                             <Labelbox type="text"
-                                placeholder={" Our Reference"}
+                                // placeholder={" Our Reference"}
                                 changeData={(data) => checkValidation(data, "ourReference")}
                                 value={TradeMarkForm.ourReference.value}
                                 error={TradeMarkForm.ourReference.error}
@@ -637,7 +638,7 @@ function TradeMarkOposition1(properties) {
                         <Grid item xs={6} >
                             <div className="Fieldheading">Application Number</div>
                             <Labelbox type="text"
-                                placeholder={" Application Number "}
+                                // placeholder={" Application Number "}
                                 changeData={(data) => checkValidation(data, "application_no")}
                                 value={TradeMarkForm.application_no.value}
                                 error={TradeMarkForm.application_no.error}
@@ -647,7 +648,7 @@ function TradeMarkOposition1(properties) {
                         </Grid>
                         <Grid item xs={6} > <div className="Fieldheading">Application Date</div>
                             <Labelbox type="datepicker"
-                                placeholder={" Application Date "}
+                                // placeholder={" Application Date "}
                                 disableFuture={true}
                                 changeData={(data) => checkValidation(data, "application_date")}
                                 value={TradeMarkForm.application_date.value}
@@ -659,7 +660,7 @@ function TradeMarkOposition1(properties) {
                     </Grid>
                     <Grid item xs={12} > <div className="Fieldheading">Applicant</div>
                         <Labelbox type="text"
-                            placeholder={" Applicant"}
+                            // placeholder={" Applicant"}
                             changeData={(data) => checkValidation(data, "applicant")}
                             value={TradeMarkForm.applicant.value}
                             error={TradeMarkForm.applicant.error}
@@ -673,7 +674,7 @@ function TradeMarkOposition1(properties) {
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={6} > <div className="Fieldheading">Mark</div>
                             <Labelbox type="text"
-                                placeholder={" Mark"}
+                                // placeholder={" Mark"}
                                 changeData={(data) => checkValidation(data, "mark_id")}
                                 value={TradeMarkForm.mark_id.value}
                                 error={TradeMarkForm.mark_id.error}
@@ -688,7 +689,10 @@ function TradeMarkOposition1(properties) {
                                     <Upload {...props} className="uploadbox_tag"
                                         action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
-                                        <div className="upload_file_inside" ><label>Upload</label><PublishIcon /></div>
+                                        <div className="upload_file_inside" style={{ justifyContent:"flex-end"}}>
+                                            {/* <label>Upload</label> */}
+                                            <PublishIcon />
+                                        </div>
                                     </Upload>
                                 </div>
                             </div>
@@ -698,7 +702,7 @@ function TradeMarkOposition1(properties) {
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={6} > <div className="Fieldheading">TMJ Number</div>
                             <Labelbox type="text"
-                                placeholder={" TMJ Number "}
+                                // placeholder={" TMJ Number "}
                                 changeData={(data) => checkValidation(data, "tmj_number")}
                                 value={TradeMarkForm.tmj_number.value}
                                 error={TradeMarkForm.tmj_number.error}
@@ -708,7 +712,7 @@ function TradeMarkOposition1(properties) {
                         </Grid>
                         <Grid item xs={6} > <div className="Fieldheading">TMJ Date</div>
                             <Labelbox type="datepicker"
-                                placeholder={" TMJ Date "}
+                                // placeholder={" TMJ Date "}
                                 changeData={(data) => checkValidation(data, "tmj_date")}
                                 value={TradeMarkForm.tmj_date.value}
                                 error={TradeMarkForm.tmj_date.error}
@@ -721,7 +725,7 @@ function TradeMarkOposition1(properties) {
 
                     <Grid item xs={12} > <div className="Fieldheading">Applicant Agent</div>
                         <Labelbox type="text"
-                            placeholder={" Applicant Agent"}
+                            // placeholder={" Applicant Agent"}
                             changeData={(data) => checkValidation(data, "applicantAgent")}
                             value={TradeMarkForm.applicantAgent.value}
                             error={TradeMarkForm.applicantAgent.error}
@@ -735,7 +739,7 @@ function TradeMarkOposition1(properties) {
 
                     <Grid item xs={12} > <div className="Fieldheading">Class</div>
                         <Labelbox type="select"
-                            placeholder={" Class"}
+                            // placeholder={" Class"}
                             dropdown={classDetList.classDetailsData}
                             changeData={(data) => checkValidation(data, "class_id")}
                             value={TradeMarkForm.class_id.value}
@@ -746,7 +750,7 @@ function TradeMarkOposition1(properties) {
                     </Grid>
                     <Grid item xs={12} > <div className="Fieldheading">Opposition Number</div>
                         <Labelbox type="text"
-                            placeholder={"Opposition Number"}
+                            // placeholder={"Opposition Number"}
                             changeData={(data) => checkValidation(data, "opositionNumber")}
                             value={TradeMarkForm.opositionNumber.value}
                             error={TradeMarkForm.opositionNumber.error}
@@ -757,7 +761,7 @@ function TradeMarkOposition1(properties) {
 
                     <Grid item xs={12} > <div className="Fieldheading">Internal status</div>
                         <Labelbox type="text"
-                            placeholder={" Internal status"}
+                            // placeholder={" Internal status"}
                             changeData={(data) => checkValidation(data, "internal_status")}
                             value={TradeMarkForm.internal_status.value}
                             error={TradeMarkForm.internal_status.error}
@@ -772,7 +776,7 @@ function TradeMarkOposition1(properties) {
                     <Grid item xs={4} container direction="row" spacing={1}>
                         <Grid item xs={6} > <div className="Fieldheading">Deadline</div>
                             <Labelbox type="datepicker"
-                                placeholder={" Deadline"}
+                                // placeholder={" Deadline"}
                                 // disableFuture={true}
                                 changeData={(data) => checkValidation(data, "end_date")}
                                 value={TradeMarkForm.end_date.value}
@@ -787,7 +791,10 @@ function TradeMarkOposition1(properties) {
                                     <Upload {...props} className="uploadbox_tag"
                                         action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
 
-                                        <div className="upload_file_inside"><label>Order</label><PublishIcon /></div>
+                                        <div className="upload_file_inside" style={{ justifyContent:"flex-end"}}>
+                                            {/* <label>Order</label> */}
+                                            <PublishIcon />
+                                        </div>
                                     </Upload>
                                 </div>
                             </div>
