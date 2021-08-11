@@ -151,6 +151,7 @@ function CancelFiled(props) {
     }, [props.projectDetails])
 
     useEffect(() => {
+        handleCancel()
         if (getDesign.length > 0) {
             let cancFil_key = ["client_petition", "des_number", "petitioner", "respondent_rep", "status", "comments"]
 

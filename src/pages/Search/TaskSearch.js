@@ -137,14 +137,14 @@ function Task(props) {
         if (key == "subOrdinateVal") {
             dispatch(getTaskList(data));
           }
-          if (key == "taskstatus") {
-              if(fieldVal.subOrdinateVal.value){
-                dispatch(getTaskList(fieldVal.subOrdinateVal.value));
-              }else{
-                dispatch(getTaskList(empid));
-              }
-            
-          }
+        if (key == "taskstatus") {
+            if(fieldVal.subOrdinateVal.value){
+            dispatch(getTaskList(fieldVal.subOrdinateVal.value));
+            }else{
+            dispatch(getTaskList(empid));
+            }
+        
+        }
         
         setfieldVal((prevState) => ({
           ...prevState,
@@ -224,9 +224,10 @@ setSubordinates({ subOrinateList })
         setChangeModel(false)
     }
     function openTimeSheet(flg,obj){
-var a= obj;
-setTaskData(obj);
-setStartModelOpen(flg);
+        // console.log(obj.perecent_completion,"perecent_completion")
+        if(obj.perecent_completion===100){return}
+        setTaskData(obj);
+        setStartModelOpen(flg);
     }
 
     const [open, setOpen] = useState(false);
@@ -272,7 +273,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
         }
         return 0;
       }
-
+console.log(fieldVal.taskstatus.value,"taskstatus")
     return (
         <div>
             <div className="searchfilterflex">
@@ -334,12 +335,9 @@ const [orderBy, setOrderBy] = React.useState("calories");
                     if(data.totalHours && data.totalHours.length >0){
                         data.totalHours = data.totalHours.split(":")[0];
                     }
-                    if(data.perecent_completion == 100 && data.actual_end_date != null ){
-
-                        if(fieldVal.taskstatus.value=='Completed'){
-                        let datass = data;
-                   
-                        // i++;
+                    console.log(data.perecent_completion,"tsssss")
+                    if(data.perecent_completion === 100 &&fieldVal.taskstatus.value==='Completed'){
+                        
                    
                        return (
                         <Card >
@@ -422,10 +420,8 @@ const [orderBy, setOrderBy] = React.useState("calories");
                             </div>
                         </Card>
                                 )
-                        }
-                    }else{
-                        if(fieldVal.taskstatus.value=='Active'){
-                   let datass = data;
+                        
+                    }else if(fieldVal.taskstatus.value=='Active'){
                    
                     i++;
                 return (
@@ -503,7 +499,7 @@ const [orderBy, setOrderBy] = React.useState("calories");
                         </div>
                     </Card>
                             )
-                            }
+                            
                       }  })} 
                 </div>
                 {/* first card end */}

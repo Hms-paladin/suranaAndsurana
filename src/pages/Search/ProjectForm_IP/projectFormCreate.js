@@ -20,7 +20,7 @@ import VariableRate from "../../stages/RateMaster";
 import EnhancedTable from "../../../component/DynTable/table";
 import AddVarData from "../../../images/addvardata.svg";
 import SuccessIcon from "../../../images/successicon.svg";
-import { InsertIpProject,getEmployeeByDepartment } from "../../../actions/ProjectformAction";
+import { InsertIpProject, getEmployeeByDepartment } from "../../../actions/ProjectformAction";
 import PlusIcon from "../../../images/plusIcon.svg";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { SearchVariableRate } from "../../../actions/VariableRateMaster"
@@ -76,7 +76,7 @@ function ProjectFormCreate(props) {
   const [proj_type_name, setProj_type_name] = useState();
   const [billable, setBillable] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
-  const [projectExists,setProjectExists] = useState(1)
+  const [projectExists, setProjectExists] = useState(1)
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -141,7 +141,8 @@ function ProjectFormCreate(props) {
     },
     projectcostrange: {
       value: "",
-      validation: [{ name: "required" }, { "name": "allowNumaricOnly1" }],
+      // validation: [{ name: "required" }, { "name": "allowNumaricOnly1" }],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -237,9 +238,9 @@ function ProjectFormCreate(props) {
     // }
   };
 
-   async function checkProjectNameExists(projectName) {
+  async function checkProjectNameExists(projectName) {
     //For client duplication validation 
-   await Axios({
+    await Axios({
       method: "POST",
       url: apiurl + "get_project_name_check",
       data: {
@@ -252,8 +253,20 @@ function ProjectFormCreate(props) {
   }
 
 
-   function checkValidation(data, key, multipleId) {
-     checkProjectNameExists(projectform.projectname.value)
+  function handleCost(data,key){
+      let value = data.replace(/,/g, "");
+      var x=value;
+      x=x.toString();
+      var lastThree = x.substring(x.length-3);
+      var otherNumbers = x.substring(0,x.length-3);
+      if(otherNumbers != '')
+          lastThree = ',' + lastThree;
+      var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+      console.log(res,value,"ressssss")
+      checkValidation(res,key)
+  }
+  function checkValidation(data, key, multipleId) {
+    checkProjectNameExists(projectform.projectname.value)
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
@@ -264,35 +277,35 @@ function ProjectFormCreate(props) {
       errmsg: errorcheck.msg,
       validation: projectform[key].validation,
     };
- 
-    console.log(projectExists,"projectExists")  
-    
-    if(key==="projectname"){
-      if(projectExists===0){
+
+    console.log(projectExists, "projectExists")
+
+    if (key === "projectname") {
+      if (projectExists === 0) {
         dynObj = {
           value: data,
           error: !errorcheck.state,
           errmsg: errorcheck.msg,
-          validation: [{ name: "required" },{name:"checkNameExists",params:0}  ],
+          validation: [{ name: "required" }, { name: "checkNameExists", params: 0 }],
         };
         setprojectform((prevState) => ({
           ...prevState,
           [key]: dynObj
         }));
-     }else{
-      dynObj = {
-        value: data,
-        error: !errorcheck.state,
-        errmsg: errorcheck.msg,
-        validation: [{ name: "required" },{name:"checkNameExists",params:1}  ],
-      };
-      setprojectform((prevState) => ({
-        ...prevState,
-        [key]: dynObj
-      }));
+      } else {
+        dynObj = {
+          value: data,
+          error: !errorcheck.state,
+          errmsg: errorcheck.msg,
+          validation: [{ name: "required" }, { name: "checkNameExists", params: 1 }],
+        };
+        setprojectform((prevState) => ({
+          ...prevState,
+          [key]: dynObj
+        }));
+      }
     }
-  }
-    console.log(dynObj,"dynObj")
+    console.log(dynObj, "dynObj")
     console.log(key, data, "key")
 
     if (data === 1 && key === "project_type") {
@@ -313,7 +326,9 @@ function ProjectFormCreate(props) {
 
       IP_project_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }, { "name": "allowNumaricOnly1" }])
+          projectform[data].validation = ([{ name: "required" }
+          // , { "name": "allowNumaricOnly1" }
+        ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -336,7 +351,9 @@ function ProjectFormCreate(props) {
 
       Other_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }, { "name": "allowNumaricOnly1" }])
+          projectform[data].validation = ([{ name: "required" }
+          // , { "name": "allowNumaricOnly1" }
+        ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -363,7 +380,9 @@ function ProjectFormCreate(props) {
 
       Litigation_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }, { "name": "allowNumaricOnly1" }])
+          projectform[data].validation = ([{ name: "required" }
+          // , { "name": "allowNumaricOnly1" }
+        ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -385,8 +404,11 @@ function ProjectFormCreate(props) {
     }
 
     if (data && key === "billable_type") {
+
       if (data === 1 || data === 4 || data === 5) {
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value===''?'0':projectform.projectcostrange.value }, { "name": "allowNumaricOnly1" }])
+        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value === '' ? '0' : projectform.projectcostrange.value }
+        // , { "name": "allowNumaricOnly1" }
+      ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
         projectform.limits.validation = []
         projectform.additionalRate.validation = []
@@ -394,7 +416,9 @@ function ProjectFormCreate(props) {
       else if (data === 3) {
         projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value===''?'0':projectform.projectcostrange.value }, { "name": "allowNumaricOnly1" }])
+        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value === '' ? '0' : projectform.projectcostrange.value }
+        // , { "name": "allowNumaricOnly1" }
+      ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
       } else if (data === 2) {
         projectform.limits.validation = []
@@ -590,7 +614,7 @@ function ProjectFormCreate(props) {
     handleCancel()
   }
 
- 
+
   useEffect(() => {
     // Client
     let Client = [];
@@ -627,7 +651,7 @@ function ProjectFormCreate(props) {
 
     //hod/attony, Counsel ,DRA and DDRA
     let EmployeeList = [];
-    props.EmployeeList.length>0&&props.EmployeeList.map((data) =>
+    props.EmployeeList.length > 0 && props.EmployeeList.map((data) =>
       EmployeeList.push({ value: data.name, id: data.emp_id })
 
     );
@@ -678,6 +702,8 @@ function ProjectFormCreate(props) {
       // setActivityid(id)
 
     }
+
+
 
 
     return (
@@ -915,7 +941,7 @@ function ProjectFormCreate(props) {
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
                 <Labelbox type="text"
-                  changeData={(data) => checkValidation(data, "projectcostrange")}
+                  changeData={(data) => handleCost(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
                   error={projectform.projectcostrange.error}
                   errmsg={projectform.projectcostrange.errmsg} /> </Grid>
@@ -1006,7 +1032,7 @@ function ProjectFormCreate(props) {
 
                 <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
                   <Labelbox type="text"
-                    changeData={(data) => checkValidation(data, "projectcostrange")}
+                    changeData={(data) => handleCost(data, "projectcostrange")}
                     value={projectform.projectcostrange.value}
                     error={projectform.projectcostrange.error}
                     errmsg={projectform.projectcostrange.errmsg} />
@@ -1091,7 +1117,7 @@ function ProjectFormCreate(props) {
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
                 <Labelbox type="text"
-                  changeData={(data) => checkValidation(data, "projectcostrange")}
+                  changeData={(data) => handleCost(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
                   error={projectform.projectcostrange.error}
                   errmsg={projectform.projectcostrange.errmsg} />

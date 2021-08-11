@@ -28,6 +28,7 @@ function AddClient(props) {
   const [uploadList, setUploadFile] = useState(false)
   const [test, setTest] = useState([]);
   const [clientExists, setClientExists] = useState(1)
+
   const [Addclient_Form, setAddclient_Form] = useState({
     client_name: {
       value: "",
@@ -138,47 +139,11 @@ function AddClient(props) {
     }
   });
 
-  // const props = {
-  //   name: 'file',
-  //   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  //   headers: {
-  //     authorization: 'authorization-text',
-  //   },
-  //   onChange(info) {
-  //     console.log(info.file.status, "info.file.status")
-  //     if (info.file.status !== 'uploading') {
-  //       console.log("uploading", info.fileList);
-  //       console.log(info.file, "info.file")
-
-  //     }
-  //     if (info.file.status === 'done') {
-  //       alert("tset")
-  //       message.success(`${info.file.name} file uploaded successfully`);
-  //       setselectedFile([...selectedFile, info.file.originFileObj]);
-  //     } else if (info.file.status === 'error') {
-  //       message.error(`${info.file.name} file upload failed.`);
-  //     }
-  //   },
-  // };
-
-  console.log(selectedFile, "testing")
-
-
-
   useEffect(() => {
     console.log(props.getInsertStatus, "getInsertStatus")
   }, [props.getInsertStatus])
 
 
-  useEffect(() => {
-    const clientNameStatus = props.clientNameCheck;
-     setAddclient_Form((prevState) => ({
-      ...prevState,
-      ["client_name"]: {
-        validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }, { name: "checkNameExists", params: clientNameStatus?.status }],
-      }
-    }));
-  }, [props.clientNameCheck])
   useEffect(() => {
 
     // Client
@@ -247,20 +212,6 @@ function AddClient(props) {
       setcityList({ cityData });
     });
 
-
-
-    Axios({
-      method: "POST",
-      url: apiurl + "get_client_name_check",
-      data: {
-        "client_name": clientName,
-      }
-    }).then((response) => {
-      console.log(response.data)
-      setClientExists(response.data.status)
-    });
-
-
   }, [setClientName, setAddclient_Form]);
 
   const handleChange = (info, uploadName) => {
@@ -284,23 +235,8 @@ function AddClient(props) {
     }
   };
 
+ async function checkValidation(data, key, multipleId) {
 
-  async function checkClientNameExists(clientName) {
-    //For client duplication validation 
-    await Axios({
-      method: "POST",
-      url: apiurl + "get_client_name_check",
-      data: {
-        "client_name": clientName,
-      }
-    }).then((response) => {
-      console.log(response.data)
-      setClientExists(response.data.status)
-    });
-  }
-
-  function checkValidation(data, key, multipleId) {
-    //checkClientNameExists(Addclient_Form.client_name.value)
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       Addclient_Form[key].validation
@@ -312,13 +248,6 @@ function AddClient(props) {
       errmsg: errorcheck.msg,
       validation: Addclient_Form[key].validation,
     };
-
-    if (key === "client_name" && data) {
-      //checkClientNameExists(data )
-      dispatch(getClientNameCheck(data))
-    }
-
-
 
     // only for multi select (start)
 
@@ -336,22 +265,45 @@ function AddClient(props) {
       // console.log(dynObj.valueById,"id")
     }
     // (end)
+
+   
+
+   
+  
+    if (key === "client_name" && data) {
+
+
+      Axios({
+        method: "POST",
+        url: apiurl + "get_client_name_check",
+        data: {
+          "client_name": data,
+        },
+      }).then((response) => {
+        console.log(response.data.status,"response.data.status")
+        if(response.data.status===0){
+          let dynObj = {
+            value: data,
+            error: true,
+            errmsg: "Client Name Already Exits",
+            validation: Addclient_Form[key].validation,
+          };
+      
+          setAddclient_Form((prevState) => ({
+            ...prevState,
+            ['client_name']: dynObj,
+          }));
+        return Promise.resolve();
+        }
+      
+      });
+
+    }
+
     setAddclient_Form((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
-    console.log(clientExists, "clientExists")
-    console.log(Addclient_Form.client_name, "clientExists22")
-    // var filtererr = targetkeys.filter(
-    //     (obj) =>
-    //         Addclient_Form[obj].error == true ||
-    //         Addclient_Form[obj].error == null
-    // );
-    // if (filtererr.length > 0) {
-    //     setAddclient_Form({ error: true, errordummy: false });
-    // } else {
-    //     setAddclient_Form({ error: false });
-    // }
   }
 
   // console.log(Addclient_Form,"Addclient_Form")
@@ -407,30 +359,6 @@ function AddClient(props) {
       }));
     } else {
 
-      // let wait=await check()
-      // function check(){
-
-      //   return new Promise((resolve)=>{
-      //     setFileupload((prevState) => (
-      //       [...prevState, {
-      //         poa_name: Addclient_Form.poa_name.value,
-      //         selectedFile: "",
-      //       }]
-
-      //     ));
-
-
-
-
-      //   })
-      //   Addclient_Form["poa_name"].value=""
-
-      // //  return Promise.resolve(true);
-      // }
-
-
-
-      // }
       setFileupload((prevState) => (
         [...prevState, {
           poa_name: Addclient_Form.poa_name.value,

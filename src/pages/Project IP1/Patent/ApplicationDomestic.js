@@ -125,6 +125,7 @@ function ApplicationDomestic(props) {
   }, [props.ProjectDetails, props.tradeStatusList, props.countriesList]);
 
   useEffect(() => {
+    handleCancel()
     if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
       let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "title","country",  "priority_date", "status", "comments","priority_num"]
 

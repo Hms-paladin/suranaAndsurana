@@ -129,8 +129,20 @@ div.formdiv > div.selectbrdred > div.ant-select-selection{
 }
 .formdiv .ant-select-selection-selected-value {
   margin-left: -3px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   padding-right: 35px !important;
+  font-weight: bold;
+
+}
+.formdiv .ant-select-selection--multiple .ant-select-selection__choice__content {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-transition: margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  font-weight: bold;
 }
 .formdiv .ant-select-search--inline .ant-select-search__field {
   border: none;

@@ -29,6 +29,7 @@ function IPABRectificationDefended(props) {
     }, []);
 
     useEffect(() => {
+        handleCancel()
         let filingTypeData = []
         props.filingTypeList.map((data) =>
             filingTypeData.push({
@@ -412,7 +413,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                        // disablePast={true}
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
                         error={TradeMarkForm.rectification_filing_date.error}
