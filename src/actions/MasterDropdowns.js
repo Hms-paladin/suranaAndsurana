@@ -142,7 +142,7 @@ export const getInterviewStatus = (id) => async (dispatch) => {
   //const response = await axios.get(apiurl + "/get_Interview_Status");
   const response = await axios({
     method: "post",
-    url: apiurl + "get_Interview_Status",
+    url: apiurl + "/get_Interview_Status",
     data: {
       status_id: id,
     },

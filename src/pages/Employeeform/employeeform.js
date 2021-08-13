@@ -98,6 +98,12 @@ function Employeeform(props) {
             error: null,
             errmsg: null,
         },
+        branch_name: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
     })
 
     //Dropdowns
@@ -223,9 +229,10 @@ function Employeeform(props) {
         formData.append("department", EmpForm.department.value);
         formData.append("employee_code", EmpForm.employee_code.value);
         formData.append("upload_document", file);
-        formData.append("account_number", EmpForm.account_no.value);
-        formData.append("ifsc_code", EmpForm.ifsc_code.value);
-        formData.append("bank_id", EmpForm.bank_name.value);
+        formData.append("account_number", EmpForm.account_no.value || "");
+        formData.append("ifsc_code", EmpForm.ifsc_code.value || "");
+        formData.append("bank_id", EmpForm.bank_name.value || 0);
+        formData.append("branch_name", EmpForm.branch_name.value || "");
         formData.append("created_on", moment().format("YYYY-MM-DD HH:m:s"));
         formData.append("created_by", localStorage.getItem("empId"));
         formData.append("task_id", props.emp_form_id && props.emp_form_id.task_id);
@@ -282,7 +289,7 @@ function Employeeform(props) {
 
     const handleCancel = () => {
         let From_key = [
-            "account_no", "ifsc_code", "bank_name", "date_of_birth", "supervisor_name", "supervisor_email", "supervisor_ph", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department"
+            "account_no", "ifsc_code", "bank_name", "date_of_birth", "supervisor_name", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department", "branch_name"
         ]
 
         From_key.map((data) => {
@@ -546,6 +553,12 @@ function Employeeform(props) {
                         error={EmpForm.supervisor_name.error}
                         errmsg={EmpForm.supervisor_name.errmsg}
                     /></div>
+                <div><Labelbox type="text" placeholder="Official Email ID"
+                    changeData={(data) => checkValidation(data, "EmpOfficialEmail")}
+                    value={EmpForm.EmpOfficialEmail.value}
+                    error={EmpForm.EmpOfficialEmail.error}
+                    errmsg={EmpForm.EmpOfficialEmail.errmsg}
+                /></div>
                 {/* <div><Labelbox type="text" placeholder="Supervisor's Email ID"
                     changeData={(data) => checkValidation(data, "supervisor_email")}
                     value={EmpForm.supervisor_email.value}
@@ -565,12 +578,7 @@ function Employeeform(props) {
             </div>}
 
             {!props.emp_list && <div className="employeeform_row8">
-                <div><Labelbox type="text" placeholder="Official Email ID"
-                    changeData={(data) => checkValidation(data, "EmpOfficialEmail")}
-                    value={EmpForm.EmpOfficialEmail.value}
-                    error={EmpForm.EmpOfficialEmail.error}
-                    errmsg={EmpForm.EmpOfficialEmail.errmsg}
-                /></div>
+
                 <div><Labelbox type="text" placeholder="Official Contact No."
                     changeData={(data) => checkValidation(data, "EmpOfficialContact")}
                     value={EmpForm.EmpOfficialContact.value}
@@ -593,6 +601,7 @@ function Employeeform(props) {
                     errmsg={EmpForm.employee_code.errmsg}
                 /></div>
 
+
                 <div className="upload_div">
                     <div>
 
@@ -603,7 +612,7 @@ function Employeeform(props) {
                 </div>
 
             </div>}
-            {!props.emp_list && <div className="employeeform_row9">
+            {!props.emp_list && <div className="employeeform_row8">
                 <div><Labelbox type="text" placeholder="Account Number"
                     changeData={(data) => checkValidation(data, "account_no")}
                     value={EmpForm.account_no.value}
@@ -625,6 +634,12 @@ function Employeeform(props) {
                     value={EmpForm.bank_name.value}
                     error={EmpForm.bank_name.error}
                     errmsg={EmpForm.bank_name.errmsg}
+                /></div>
+                <div><Labelbox type="text" placeholder="Branch Name"
+                    changeData={(data) => checkValidation(data, "branch_name")}
+                    value={EmpForm.branch_name.value}
+                    error={EmpForm.branch_name.error}
+                    errmsg={EmpForm.branch_name.errmsg}
                 /></div>
 
 
