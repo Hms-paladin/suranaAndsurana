@@ -73,15 +73,15 @@ function InerviewScreen(props) {
     },
   });
   useEffect(() => {
-    dispatch(getInterviewStatus());
+    // dispatch(getInterviewStatus());
     dispatch(getInterviewQuestions());
-   
+
   }, []);
 
   useEffect(() => {
-    console.log(selectedCandidateId,"selectedCandidateId")
-    if(selectedCandidateId&&selectedCandidateId!=='')
-    dispatch(getOnlineTestDetails(selectedCandidateId));
+    console.log(selectedCandidateId, "selectedCandidateId")
+    if (selectedCandidateId && selectedCandidateId !== '')
+      dispatch(getOnlineTestDetails(selectedCandidateId));
   }, [selectedCandidateId]);
 
   useEffect(() => {
@@ -93,14 +93,14 @@ function InerviewScreen(props) {
 
     //test details
     let test_details = [];
-    props.getOnlineTestDetails&&props.getOnlineTestDetails.length>0&&props.getOnlineTestDetails.map((data, index) =>
-      test_details.push({ test_name: data.TestTempName,Test_Date: data.Test_Date!==null&&moment(data.Test_Date).format('DD-MMM-YYYY'),score:data.Score_Percentage})
+    props.getOnlineTestDetails && props.getOnlineTestDetails.length > 0 && props.getOnlineTestDetails.map((data, index) =>
+      test_details.push({ test_name: data.TestTempName, Test_Date: data.Test_Date !== null && moment(data.Test_Date).format('DD-MMM-YYYY'), score: data.Score_Percentage })
     );
     setTestDetails({ test_details });
 
     //Questions
     setgetData(props.getQuestions);
-  }, [props.getInterviewStatus, props.getQuestions,props.getOnlineTestDetails]);
+  }, [props.getInterviewStatus, props.getQuestions, props.getOnlineTestDetails]);
 
   // console.log(cand_data[0]?.resume_id&&cand_data[0].resume_id,testDetails,"testDetails")
   useEffect(() => {
@@ -143,8 +143,9 @@ function InerviewScreen(props) {
       //     // propsdata.push(data)
       //     )}))
       setint_details({ Intview_data });
+      dispatch(getInterviewStatus(response.data.data[0].round));
     });
-  }, [props]);
+  }, [props.getOnlineTestDetails, props.getSelectedCandidates, props.getQuestions, props.GetCandiateDetails]);
 
   function ViewCandiate(id) {
     setdata_id(
@@ -347,7 +348,7 @@ function InerviewScreen(props) {
                       justify="center"
                       alignItems="left"
                       display="flex"
-                      style={{cursor:'pointer'}}
+                      style={{ cursor: 'pointer' }}
                       className={`${data &&
                         data.resume_id &&
                         data.resume_id === selectedCandidateId &&
