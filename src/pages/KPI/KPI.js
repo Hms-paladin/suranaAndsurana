@@ -29,23 +29,20 @@ const KPI = (props) => {
     const [saveRights, setSaveRights] = useState([])
     const [viewRights, setViewRights] = useState([])
 
-    const [isLoaded, setIsLoaded] = useState(true);
     const [kpiViewModal, setKpiViewModal] = useState(false)
-    const [Achivement,setAchivement]=useState("")
-    const [KpiId,setKpiId]=useState("")
-    const [EditTrue,setEditTrue]=useState(false)
+    const [KPIData,setKPIData]=useState("")
+
     const [achiveTotal,setachiveTotal]=useState("0")
     const [empty,setempty]=useState(true)
     const [achivement,setachivement]=useState({})
+    const [Variance,setVariance]=useState({})
+    
     const [percentageTotal,setpercentageTotal]=useState("0")
     const [datechange,setdatechange]=useState(false)
     const [minDate,setminDate]=useState("")
-    const [DataStorage,setDataStorage]=useState({
-        from:sessionStorage.getItem("from"),
-        to: sessionStorage.getItem("to")
-    })
+
    const [disable,setdisble]=useState(true)
-    const [KpiData,setkpiData]=useState("")
+   const [VarianceTotal,setVarianceTotal]=useState("0")
     const [kpi_form, setKpi_form] = useState({
 
         from: {
@@ -115,9 +112,11 @@ useEffect(() => {
   },[]);
 
   useEffect(()=>{
+
       let kpiData=[]
       let Achivement=[]
       let percentage=[]
+      let variance=[]
       if(props.Kpiachivement.length>0){
       setempty(false)
       }
@@ -127,45 +126,79 @@ useEffect(() => {
       props.Kpiachivement.length>0&&props.Kpiachivement.map((data)=>{
         kpiData.push(data)
         percentage.push(data.kra_percentage)
-        Achivement.push(data.achivement)
+        Achivement.push(data.achievement)
+        variance.push(data.kra_percentage-data.achievement)
       })
-      setAchivement(kpiData)
+      setKPIData(kpiData)
       let total=0
       let achive_total=0
+      let variance_total=0
       for(let i=0;i<percentage.length;i++){
          total+=percentage[i]
       }
       for(let i=0;i<Achivement.length;i++){
+ 
+        setachivement((prevState) => ({
+            ...prevState,
+            ["value"+i]: Achivement[i],
+        }));
+
+        setVariance((prevState) => ({
+            ...prevState,
+            ["value"+i]:percentage[i]-Achivement[i],
+        }));
+        variance_total+=Number(percentage[i]-Achivement[i])
         achive_total+=Number(Achivement[i])
       }
-// console.log(Math.abs(achive_total),"achive_total")
+      setVarianceTotal(isNaN(Math.abs(variance_total))?'0':Math.abs(variance_total))
       setachiveTotal(isNaN(Math.abs(achive_total))?'0':Math.abs(achive_total))
       setpercentageTotal(Math.abs(total))
     
- },[ props.Kpiachivement,disable,achivement,datechange])
+ },[ props.Kpiachivement,disable,datechange])
 
-const AchivementEditable=(data,key)=>{
-    setdisble(false)
+
+ const AchivementEditable=(data,key,index)=>{
+
+    // setdisble(false)
+
+    setVariance((prevState) => ({
+        ...prevState,
+        [key]:KPIData[index].kra_percentage-data,
+    }));
+
     setachivement((prevState) => ({
         ...prevState,
         [key]: data,
     }));
+
+    let achive_total=0
+    let variance_total=0
+
+    for(let i=0;i<KPIData.length;i++){
+        variance_total+=Number((i===index)?KPIData[index].kra_percentage-data:Variance["value"+i])
+        achive_total+=Number((i===index)?data:achivement["value"+i])
+    }
+    setVarianceTotal(isNaN(Math.abs(variance_total))?'0':Math.abs(variance_total))
+    setachiveTotal(isNaN(Math.abs(achive_total))?'0':Math.abs(achive_total))
+
 }
+
 const Submit =()=>{
     let KpiData=[]
-    for(let i=0;i<Achivement.length;i++){
+    for(let i=0;i<KPIData.length;i++){
         let achive=achivement["value"+i]
        let Data={
-        "kra_id":Achivement[i].kra_id,
-        "emp_id":Achivement[i].emp_id,
-        "achievement":disable===false?achive:Achivement[i].achivement,
+        "kra_id":KPIData[i].kra_id,
+        "emp_id":KPIData[i].emp_id,
+        // "achievement":disable===false?achive:KPIData[i].achivement,
+        "achievement":achivement["value"+i],
         "created_on":moment().format("YYYY-MM-DD"),
         "created_by":localStorage.getItem("empId")
        }
        KpiData.push(Data)
 
     }
-    if(Achivement.length===0){
+    if(KPIData.length===0){
         notification.warning({
             message:"No Data Found"
         })
@@ -175,7 +208,7 @@ const Submit =()=>{
     })
    }
 }
-console.log(kpi_form,"datechange")
+// console.log(achivement,"achivement")
 const SearchData=()=>{
     setdatechange(true)
     var mainvalue = {};
@@ -204,7 +237,7 @@ const SearchData=()=>{
     }));
 }
 const HandleCancel=()=>{
-    setdisble(true)
+    setdisble(!disable)
 }
 
     return (
@@ -285,14 +318,14 @@ const HandleCancel=()=>{
                 </div> */}
                 <div className="kpi_table_custom" style={{paddingTop:"20px"}}>
                     <Grid container >
+
                         <Grid item xs={12} container direction="row" className="spaceBtGrid kpi_table_header" alignItems="center">
                             <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Activity</label></Grid>
-                            <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Target %</label></Grid>
-                            <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}>Achievement</label></Grid>
-                            {/* <Grid item xs={3}><label className="maintitle" style={{ color: "#0f0fab" }}>
-                                Action</label></Grid> */}
-
+                            <Grid item xs={3}> <label className="maintitle" style={{color:"#0f0fab"}}>Target(KRA)</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}> Achievement(KPI)</label></Grid>
+                            <Grid item xs={3}><label className="maintitle" style={{color:"#0f0fab"}}> Variance</label></Grid>
                         </Grid>
+
                         {empty?
                         <div className="nodata_found_div">
                         <div className="nodatafound">
@@ -301,11 +334,11 @@ const HandleCancel=()=>{
                        </div>
                        </div>:
                        <>
-                       {Achivement.length>0&&Achivement.map((data,index)=>{
-                           if(disable){
-                            achivement["value"+index]=data.achivement&&data.achivement!=''?Math.trunc(data.achivement):data.achivement===0?'0':''
+                       {KPIData.length>0&&KPIData.map((data,index)=>{
+                        //    if(disable){
+                        //     achivement["value"+index]=data.achivement&&data.achivement!=''?Math.trunc(data.achivement):data.achivement===0?'0':''
                            
-                           }
+                        //    }
                            return(
                         <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center" style={{ borderBottom: " 1px solid lightgray" }}>
                             <Grid item xs={3}><label className="maintitle">{data.activity}</label></Grid>
@@ -315,19 +348,13 @@ const HandleCancel=()=>{
                                     type="text"
                                     placeholder={""}
                                     value={35}
-                                    changeData={(data) => AchivementEditable(data, "value"+index)}
+                                    changeData={(data) => AchivementEditable(data, "value"+index,index)}
                                     value={achivement["value"+index]}
                                     // error={kpi_form.achivements1.error}
                                     // errmsg={kpi_form.achivements1.errmsg}
                                 /></div>
                             </Grid>
-                             {/* <Grid item xs={3}> <label className="maintitle">{data.achivement===null?"-":data.achivement}</label></Grid>} */}
-                            {/* <Grid item xs={3}>
-                            {KpiId===data.kra_id?
-                                 <SaveIcon onClick={()=>UpdateAchivement(data.kra_id)} className="save_ic"/>:
-                                <img src={Edit} className="editicon" onClick={()=>EditData(data.kra_id)}/>}
-                            </Grid> */}
-
+                            <Grid item xs={3}> <label className="maintitle">{Variance["value"+index]}</label></Grid>
                         </Grid>
                        )})}
                         </>
@@ -338,7 +365,7 @@ const HandleCancel=()=>{
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{percentageTotal}</label> </Grid>
                             <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{achiveTotal}</label></Grid>
-                            {/* <Grid item xs={3}>{achiveTotal}</Grid> */}
+                            <Grid item xs={3}><label className="maintitle" style={{ color: 'black' }}>{VarianceTotal}</label></Grid>
                         </Grid>
                     </Grid>
                 </div>

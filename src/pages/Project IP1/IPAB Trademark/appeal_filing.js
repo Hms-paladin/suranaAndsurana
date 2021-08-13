@@ -144,7 +144,7 @@ function AppealFiling(props) {
             "rectification_filing": null,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.appeal_no.value,
-            "hearing_date": TradeMarkForm.date_of_hearing.value == '' || null,
+            "hearing_date": TradeMarkForm.date_of_hearing.value === ''?'0000-00-00' :TradeMarkForm.date_of_hearing.value,
             "opp_applicant": "",
             "opp_applicant_rep": "",
             "filing_type_id": 0,
@@ -368,7 +368,7 @@ function AppealFiling(props) {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="copyFieldheadings">Serial No</div>
+                    <div className="copyFieldheadings">Class</div>
                     <Labelbox type="select"
                         dropdown={classDetList.classDetailsData}
                         changeData={(data) => checkValidation(data, "class_id")}

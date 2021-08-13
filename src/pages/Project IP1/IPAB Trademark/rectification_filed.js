@@ -136,7 +136,7 @@ function IPABRectificationDefended(props) {
             ProcessType: props.ProjectDetails[0].process_id
         }
         // dispatch(getFilingType(id));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
+    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails,props.tradeMark]);
 
 
     function onSubmit() {

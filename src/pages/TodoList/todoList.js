@@ -342,6 +342,7 @@ function TodoList(props) {
 
         }
         else if (name === "Timesheet Approval") {
+            setTimesheetID(id)
             setTimeSheet_Approval(true)
 
         }

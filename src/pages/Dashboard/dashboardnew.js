@@ -258,8 +258,9 @@ function DashboardNew(props) {
       }
 
 
-      if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
-        menulist.current[7].menu_rights=true;
+      // if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
+      if(localStorage.getItem("designation")==="HoD"){
+      menulist.current[7].menu_rights=true;
       }
 
       if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
