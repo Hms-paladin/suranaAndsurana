@@ -69,7 +69,7 @@ export const InsertIpProject = (projectform, VariableRate, proj_type_name) => as
                 councel_id: projectform.employeelist.value || 0,
                 hod_hr_id: projectform.hod_attorny.value || 0,
                 //
-                range_id: projectform.projectcostrange.value || 0,
+                range_id: projectform.projectcostrange.value.replace(/,/g, "") || 0,
                 ip_address: "1233",
                 comments: projectform.comments.value || 0,
                 base_rate: projectform.baseRate.value || 0,

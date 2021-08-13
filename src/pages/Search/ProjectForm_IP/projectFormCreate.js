@@ -404,9 +404,10 @@ function ProjectFormCreate(props) {
     }
 
     if (data && key === "billable_type") {
-
+      let projectcostrange = projectform.projectcostrange.value.replace(/,/g, "");
+        console.log(projectcostrange,"bill")
       if (data === 1 || data === 4 || data === 5) {
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value === '' ? '0' : projectform.projectcostrange.value }
+        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
         // , { "name": "allowNumaricOnly1" }
       ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
@@ -416,7 +417,8 @@ function ProjectFormCreate(props) {
       else if (data === 3) {
         projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectform.projectcostrange.value === '' ? '0' : projectform.projectcostrange.value }
+        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": 
+        projectcostrange === '' ? '0' : projectcostrange }
         // , { "name": "allowNumaricOnly1" }
       ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
@@ -495,10 +497,12 @@ function ProjectFormCreate(props) {
     // (end)
     // console.log(projectform.baseRate.validation, "projectform.baseRate.validation")
     if (data && key == "projectcostrange") {
+      let projectcostrange=data.replace(/,/g, "")
+      console.log(projectcostrange,"projectcost")
       if (projectform.baseRate.validation[1]) {
-        projectform.baseRate.validation[1].params = data
+        projectform.baseRate.validation[1].params = projectcostrange;
       } else {
-        projectform.baseRate.validation.push({ "params": data })
+        projectform.baseRate.validation.push({ "params": projectcostrange })
       }
     }
     setprojectform((prevState) => ({
