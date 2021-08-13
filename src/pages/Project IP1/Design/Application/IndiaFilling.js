@@ -201,6 +201,7 @@ function IndiaFilling(props) {
   }, [props.projectDetails])
 
   useEffect(() => {
+    handleCancel()
     if (getDesign.length > 0) {
       let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country","status", "priority_country", "priority_date",  "comments", "renewal_date"]
 

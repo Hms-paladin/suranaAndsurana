@@ -49,7 +49,7 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE,GET_AREA_DEVELOPMENT,GET_DEVELOPMENT
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE, GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -247,6 +247,18 @@ export const getEmployeeList = () => async (dispatch) => {
   return dispatch({ type: GET_EMPLOYEE_LIST, payload: response.data.data });
 };
 
+export const getEmployeeListForTicket = () => async (dispatch) => {
+  //const response = await axios.get(apiurl + "/get_assigned_to_emmId_ticket");
+  const response = await axios({
+    method: "POST",
+    url: apiurl + "get_assigned_to_emmId_ticket",
+    data: {
+      emp_id: localStorage.getItem("empId"),
+    },
+  });
+  return dispatch({ type: GET_EMPLOYEE_LIST, payload: response.data.data });
+};
+
 export const getProjectCostRange = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_range");
   return dispatch({
@@ -327,7 +339,7 @@ export const getSubactivity = (id) => async (dispatch) => {
     method: "post",
     url: apiurl + "get_sub_activity",
     data: {
-      activity_id: id.Activity||id,
+      activity_id: id.Activity || id,
     },
   });
   return dispatch({ type: GET_SUBACTIVITY, payload: response.data.data });

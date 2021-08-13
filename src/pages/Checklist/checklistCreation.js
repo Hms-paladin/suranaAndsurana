@@ -14,10 +14,64 @@ import {
   } from "../../actions/CheckListAction";
 import './checklists.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
+import { Collapse } from "antd";
+
+
 function CheckListCreation(props) {
+  const { Panel } = Collapse;
     const dispatch = useDispatch();
     const [saveRights, setSaveRights] = useState([])
     const [addRights, setAddRights] = useState([])
+    const [multiplePanel, setMultiplePanel] = useState([]);
+
+    const [checkListForm, setcheckListForm] = useState({
+      activity: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+        disabled: false
+      },
+      subActivity: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+        disabled: false
+      },
+      department: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+      },
+      checkListName: {
+        value: "",
+        validation: [{ name: "required" },{name:"alphabetsandSpecialChar"}],
+        error: null,
+        errmsg: null,
+      },
+      checkListType: {
+        value: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+      },
+      frequency: {
+        value: "",
+        valueById: "",
+        validation: [{ name: "required" }],
+        error: null,
+        errmsg: null,
+      },
+      task: {
+        value: "",
+        valueById: "",
+        validation: [{ name: "required" },{name:"alphabetsandSpecialChar"}],
+        error: null,
+        errmsg: null,
+      }
+    });
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(checkListForm);
@@ -98,54 +152,7 @@ function CheckListCreation(props) {
           ...prevState,
         }));
       };
-    const [checkListForm, setcheckListForm] = useState({
-        activity: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          disabled: false
-        },
-        subActivity: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-          disabled: false
-        },
-        department: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-        },
-        checkListName: {
-          value: "",
-          validation: [{ name: "required" },{name:"alphabetsandSpecialChar"}],
-          error: null,
-          errmsg: null,
-        },
-        checkListType: {
-          value: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-        },
-        frequency: {
-          value: "",
-          valueById: "",
-          validation: [{ name: "required" }],
-          error: null,
-          errmsg: null,
-        },
-        task: {
-          value: "",
-          valueById: "",
-          validation: [{ name: "required" },{name:"alphabetsandSpecialChar"}],
-          error: null,
-          errmsg: null,
-        }
-      });
+  
       
     useEffect(() => {
         dispatch(getDepartment());
@@ -165,26 +172,26 @@ function CheckListCreation(props) {
   const [checkMasterListsData, setcheckMasterListsData] = useState([])
       useEffect(() => {
     
-        let checkListsData = []
-    props.getCheckListscreation.map((data) =>
-    checkListsData.push(data)
-    )
-    var lists = [];
+    //     let checkListsData = []
+    // props.getCheckListscreation.map((data) =>
+    // checkListsData.push(data)
+    // )
+    // var lists = [];
 
-    for (var m = 0; m < checkListsData.length; m++) {
-      var listarray = {
-        department: checkListsData[m].department, 
-        category: checkListsData[m].category, 
-        listName: checkListsData[m].check_list,
-         listType:checkListsData[m].check_list_type, 
-        taskItem: checkListsData[m].task,
-         activity: checkListsData[m].activity,
-          subactivity: checkListsData[m].sub_activity,
-           frequency: checkListsData[m].frequency
-      }
-      lists.push(listarray);
-    }
-    setcheckMasterListsData({ lists })
+    // for (var m = 0; m < checkListsData.length; m++) {
+    //   var listarray = {
+    //     department: checkListsData[m].department, 
+    //     category: checkListsData[m].category, 
+    //     listName: checkListsData[m].check_list,
+    //      listType:checkListsData[m].check_list_type, 
+    //     taskItem: checkListsData[m].task,
+    //      activity: checkListsData[m].activity,
+    //       subactivity: checkListsData[m].sub_activity,
+    //        frequency: checkListsData[m].frequency
+    //   }
+    //   lists.push(listarray);
+    // }
+    // setcheckMasterListsData({ lists })
 
         let frequencyTypeData = []
         props.getFrequency.map((data) =>
@@ -224,7 +231,7 @@ function CheckListCreation(props) {
         setcheckListType({ checkListTypeData })
 
       }, [props.getCchecklisttype,props.getFrequency,
-        props.getActivity,props.getDepartment,props.getCheckListscreation
+        props.getActivity,props.getDepartment
       ]);
 
       function checkValidation(data, key, multipleId) {
@@ -297,8 +304,8 @@ function CheckListCreation(props) {
 
     const headCells = [
         { id: "department", label: "Department" },
-        { id: "category", label: "Category" },
-        { id: "listName", label: "Check List Name" },
+        // { id: "category", label: "Category" },
+        // { id: "listName", label: "Check List Name" },
         { id: "listType", label: "Check List Type" },
         { id: "taskItem", label: "TaskItem" },
         { id: "activity", label: "Activity" },
@@ -306,14 +313,59 @@ function CheckListCreation(props) {
         { id: "frequency", label: "Frequency" },
     ]
 
-    const rows = [
-        { department: "Research", category: "category1", listName: "listName1", listType: "simple", taskItem: "Book Hall", activity: "", subactivity: "", frequency: "" },
-        { department: "", category: "", listName: "", listType: "simple", taskItem: "But Stationaries", activity: "", subactivity: "", frequency: "" },
-        { department: "", category: "", listName: "", listType: "Task Linked", taskItem: "Documentaion", activity: "Activity", subactivity: "Sub Activity", frequency: "On Demand" },
-        { department: "", category: "", listName: "", listType: "simple", taskItem: "Bio metric", activity: "", subactivity: "", frequency: "" },
-        { department: "", category: "", listName: "", listType: "No Task Linked", taskItem: "Pay Electricaly bill", activity: "", subactivity: "", frequency: "Fortnightly" },
-        { department: "", category: "", listName: "", listType: "Task linked", taskItem: "Monthly Report", activity: "Documentation", subactivity: "", frequency: "Monthly" },
-    ]
+    // const rows = [
+    //     { department: "Research", category: "category1", listName: "listName1", listType: "simple", taskItem: "Book Hall", activity: "", subactivity: "", frequency: "" },
+    //     { department: "", category: "", listName: "", listType: "simple", taskItem: "But Stationaries", activity: "", subactivity: "", frequency: "" },
+    //     { department: "", category: "", listName: "", listType: "Task Linked", taskItem: "Documentaion", activity: "Activity", subactivity: "Sub Activity", frequency: "On Demand" },
+    //     { department: "", category: "", listName: "", listType: "simple", taskItem: "Bio metric", activity: "", subactivity: "", frequency: "" },
+    //     { department: "", category: "", listName: "", listType: "No Task Linked", taskItem: "Pay Electricaly bill", activity: "", subactivity: "", frequency: "Fortnightly" },
+    //     { department: "", category: "", listName: "", listType: "Task linked", taskItem: "Monthly Report", activity: "Documentation", subactivity: "", frequency: "Monthly" },
+    // ]
+
+    
+  useEffect(() => {
+    // console.log(props.getCheckListscreation, "projectLength")
+
+    let multipleTab = [];
+    props.getCheckListscreation.map((data, index) => {
+      let ipProjectDataList = [];
+
+      // data.checklist_details.map((data1, index) => {
+
+
+        var rowdataListobj = {};
+        // if (data.project_type_id === 1) {
+          rowdataListobj["department"] = data.department;
+          rowdataListobj["listType"] = data.check_list_type;
+          rowdataListobj["taskItem"] = data.task;
+          rowdataListobj["activity"] = data.activity;
+          rowdataListobj["subactivity"] = data.sub_activity;
+          rowdataListobj["frequency"] = data.frequency;
+        // } 
+        ipProjectDataList.push(rowdataListobj);
+      // });
+
+      
+      multipleTab.push(
+        <Panel
+          header={`${data.check_list}`}
+          key={index + 1}
+        >
+          <EnhancedTable
+            headCells={
+              headCells
+            }
+            rows={ipProjectDataList}
+            tabletitle={""}
+          />
+        </Panel>
+      );
+     
+
+    });
+
+    setMultiplePanel(multipleTab);
+  }, [props.getCheckListscreation]);
 
     ///***********user permission**********/
     useEffect(() => {
@@ -335,16 +387,7 @@ function CheckListCreation(props) {
     
     }, [props.UserPermission]);
     
-    
-        // console.log(saveRights,"rights")
-        
-         
-        
-    function rightsNotification(){
-        notification.success({
-            message: "You are not Authorized. Please Contact Administrator",
-        });
-    }
+
     /////////////
 
     return (
@@ -429,12 +472,14 @@ function CheckListCreation(props) {
                 </div>
 
             </div>
-            <EnhancedTable
+            {/* <EnhancedTable
                 headCells={headCells}
                 rows={checkMasterListsData.length == 0 ? checkMasterListsData : checkMasterListsData.lists}
                 aligncss="aligncss"
-            />
-           
+            /> */}
+           <div className="checklist_collapse">
+            <Collapse >{multiplePanel}</Collapse>
+          </div>
         </div>
     )
 }

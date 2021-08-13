@@ -145,6 +145,7 @@ function CancelDefended(props) {
 
 
     useEffect(() => {
+        handleCancel()
         if (getDesign.length > 0) {
             let cancDef_key = ["client_respontent", "des_number", "respondent", "petitioner_rep", "status", "comments"]
 

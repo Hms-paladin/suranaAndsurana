@@ -255,7 +255,7 @@ function Projectsearch(props) {
   };
 
   useEffect(() => {
-    console.log(props.TableData, "projectLength")
+    // console.log(props.TableData, "projectLength")
 
     let multipleTab = [];
     props.TableData.map((data, index) => {
@@ -265,21 +265,21 @@ function Projectsearch(props) {
 
 
         var rowdataListobj = {};
-        if (data.project_type_id === 1) {
+        if (data.project_type_id === 1&&JSON.parse(localStorage.getItem("token")).department==='IP') {
           rowdataListobj["ProjectName"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["subprojectype"] = data.sub_project_type;
           rowdataListobj["processtype"] = data.process;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
-        } else if (data.project_type_id === 6) {
+        } else if (data.project_type_id === 6&&JSON.parse(localStorage.getItem("token")).department==='LITIGATION') {
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["DRA"] = data.HR_name;
           rowdataListobj["DDRA"] = data.councel_name;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
-        } else {
+        } else if(JSON.parse(localStorage.getItem("token")).department==='RE & CORPORATE'){
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["hodAttorney"] = data.councel_name;
@@ -290,6 +290,7 @@ function Projectsearch(props) {
         ipProjectDataList.push(rowdataListobj);
       });
 
+      if((data.project_type==='IP Projects'&&JSON.parse(localStorage.getItem("token")).department==='IP')||(data.project_type==='Corporate Compliance Projects'&&JSON.parse(localStorage.getItem("token")).department==='RE & CORPORATE')||(data.project_type==='Litigation Projects'&&JSON.parse(localStorage.getItem("token")).department==='LITIGATION')){
       multipleTab.push(
         <Panel
           header={`${data.project_type} (${data.project_details.length})`}
@@ -308,6 +309,7 @@ function Projectsearch(props) {
           />
         </Panel>
       );
+     }
 
     });
 
@@ -343,14 +345,6 @@ function Projectsearch(props) {
 
   }, [props.UserPermission]);
 
-
-  console.log(goRights, "rights")
-
-  function rightsNotification() {
-    notification.success({
-      message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
   /////////////
   return (
     <div>
@@ -457,7 +451,6 @@ function Projectsearch(props) {
       {redirectToProject && createProjectRights && createProjectRights.display_control && createProjectRights.display_control === 'Y' &&
         <Redirect push to="/Home/projectFormCreate" />
       }
-      {/* {console.log(pathname, "projectFormCreate")} */}
 
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>

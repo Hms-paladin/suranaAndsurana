@@ -53,7 +53,7 @@ function TradeMarkOposition1(properties) {
     }, []);
 
     useEffect(() => {
-
+        handleCancel()
         if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;

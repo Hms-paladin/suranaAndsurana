@@ -42,7 +42,7 @@ function TradeMark(properties) {
     }, []);
 
     useEffect(() => {
-        console.log(properties.tradeMark, "tradeMark")
+        handleCancel()
         if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
             console.log(obj, "objobjobj")

@@ -137,6 +137,7 @@ function PatentRevocationFiled(props) {
     }, []);
 
     useEffect(() => {
+        handleCancel()
         let filingTypeData = []
         props.filingTypeList.map((data) =>
             filingTypeData.push({

@@ -139,7 +139,7 @@ export const unblockUser = (data) =>async dispatch => {
             data:{
                 "emp_id":data.employee_id,
                 "active_flag":"1",
-                "status_change_datetime":"2021-02-01"
+                "status_change_datetime":moment().format('YYYY-MM-DD')
             }
         })
         .then((response) => {
@@ -148,6 +148,7 @@ export const unblockUser = (data) =>async dispatch => {
                     message: "User Unblocked Successfully",
                   });
                 }
+                dispatch(getOtherTask())
         })
     }
     catch(err){

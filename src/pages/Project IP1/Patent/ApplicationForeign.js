@@ -140,6 +140,7 @@ function ApplicationForeign(props) {
     ]);
 
     useEffect(() => {
+        handleCancel()
         if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
           let indiaFil_key = [ "file_cover", "our_ref", "associate", "title", "client_ref", "app_num","priority_date", "app_date", "comments", "status", "priority_country", "priority_num"]
     

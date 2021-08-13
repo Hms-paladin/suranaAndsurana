@@ -142,6 +142,7 @@ function ApplicationPCT(props) {
   ]);
 
   useEffect(() => {
+    handleCancel()
     if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
       let indiaFil_key = ["file_cover", "our_ref", "associate", "deadline", "client_ref", "app_num", "app_date", "comments", "status", "priority_country", "priority_num", "priority_date"]
 

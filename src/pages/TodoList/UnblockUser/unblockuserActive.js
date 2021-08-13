@@ -22,11 +22,10 @@ function UnblockUserActive(props) {
             setUnblockData(props.unblock_user_data)
         }
     },[props.unblock_user_data])
-    console.log(change,"change")
+    console.log(props.unblock_user_data,"props.unblock_user_data")
 
     const unblock=()=>{
         dispatch(unblockUser(props.unblock_user_data)).then(
-            dispatch(getProjectTasks()),
             props.closemodal(false)
         )
     }
@@ -37,7 +36,7 @@ function UnblockUserActive(props) {
                 <div className="empStatus">Status</div>
                 {/* <div className="empActive">ACTIVE</div> */}
                 <div className={change?"useActivechange":"useActives"}>
-                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked  onChange={changeSwitch}/>
+                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked disabled onChange={changeSwitch}/>
                 </div>
             </div>
             <div className="userbtnActive">

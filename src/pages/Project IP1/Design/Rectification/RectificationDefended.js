@@ -103,6 +103,7 @@ function RectificationDefended(props) {
 
 
     useEffect(() => {
+        handleCancel()
         if (getDesign.length > 0) {
           let indiaFil_key = ["des_number", "respondent", "petitioner_rep", "status", "comments"]
     

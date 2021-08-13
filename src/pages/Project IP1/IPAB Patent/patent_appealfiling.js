@@ -29,6 +29,7 @@ function PatentAppealFiling(props) {
     }, []);
 
     useEffect(() => {
+        handleCancel()
         if (props.tradeMark && props.tradeMark[0]) {
             let obj = props.tradeMark[0];
             TradeMarkForm.project_id = obj.project_id;

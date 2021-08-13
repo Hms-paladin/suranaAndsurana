@@ -317,23 +317,17 @@ function TodoList(props) {
             setTicket_id(id)
         }
     }
-    console.log(unblockUser, "unblockUser")
 
     function ProjectTaskFunction(name, id, data) {
-        // setTaskModelTitle(data.task)
-        if (name === "Unblock User") {
-            setUnblockUser(data)
-            setUnblockuserActive(true)
-
-        }
-        else if (name === "Timesheet Approval") {
+        // console.log(data, "unblockUserdata")
+        if (name === "Timesheet Approval") {
             setTimesheetID(id)
             setTimeSheet_Approval(true)
 
         }
     }
     function OtherTaskFunction(name, id, data) {
-        console.log(name, id, "names")
+        // console.log(name, id,data, "names")
         setTaskModelTitle(data.task)
         if (name === "Leave Approval") {
             setLeaveApproval(true)
@@ -343,11 +337,9 @@ function TodoList(props) {
             setLeaveId(leavedata)
         }
         else if (name === "Unblock User") {
+            setUnblockUser(data)
             setUnblockuserActive(true)
-            let leavedata = props.getOtherTask.find((val) => {
-                return id === val.emp_leave_id
-            })
-            setLeaveId(leavedata)
+
         }
         else if (name === "Timesheet Approval") {
             setTimeSheet_Approval(true)

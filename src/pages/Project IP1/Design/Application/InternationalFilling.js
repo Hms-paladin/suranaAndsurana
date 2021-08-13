@@ -203,6 +203,7 @@ function InternationalFilling(props) {
 
 
   useEffect(() => {
+    handleCancel()
     if (getDesign.length > 0) {
       let interFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "applicant", "title", "class", "country", "priority_country", "priority_date", "status", "comments", "renewal_date"]
 

@@ -28,6 +28,7 @@ function PatentRectificationDef(props) {
     }, []);
 
     useEffect(() => {
+        handleCancel()
         let filingTypeData = []
         props.filingTypeList.map((data) =>
             filingTypeData.push({
