@@ -6,7 +6,7 @@ import './ticketcreation.scss';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import {
-    getDepartment, getDesignationList, getQualification, getStates, getLanguages, getSkills,
+    getDepartment, getDesignationList, getLoactionsList, getQualification, getStates, getLanguages, getSkills,
     getTraits,
     getCertification,
     getSpecilization,
@@ -20,6 +20,7 @@ function TicketCreation(props) {
     const dispatch = useDispatch();
     const [department, setDepartment] = useState({})
     const [designationList, setDesignationList] = useState({})
+    const [locationList, setLocationList] = useState({})
     const [qualificationList, setQualificationList] = useState({})
     const [stateList, setStateList] = useState({})
     const [languages, setLanguages] = useState({})
@@ -41,6 +42,12 @@ function TicketCreation(props) {
             errmsg: null,
         },
         designation: {
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
+        location: {
             value: "",
             validation: [{ name: "required" }],
             error: null,
@@ -138,10 +145,17 @@ function TicketCreation(props) {
             error: null,
             errmsg: null,
         },
+        remarks: {
+            value: "",
+            validation: [{ name: "required" }, , { name: "custommaxLength", params: "250" }],
+            error: null,
+            errmsg: null,
+        },
     });
 
     useEffect(() => {
         dispatch(getDepartment());
+        dispatch(getLoactionsList());
         dispatch(getDesignationList());
         dispatch(getQualification());
         dispatch(getStates());
@@ -172,6 +186,13 @@ function TicketCreation(props) {
             DesignationList.push({ id: data.designation_id, value: data.designation })
         );
         setDesignationList({ DesignationList });
+
+        // LocationList
+        let LocationList = [];
+        props.LocationList.map((data) =>
+            LocationList.push({ id: data.status_id, value: data.status })
+        );
+        setLocationList({ LocationList });
 
         // Qualification
         let Qualification = [];
@@ -433,6 +454,7 @@ function TicketCreation(props) {
 
     function onSubmit(id) {
         var mainvalue = {};
+
         var targetkeys = Object.keys(TicketCreation);
         for (var i in targetkeys) {
             var errorcheck = ValidationLibrary.checkValidation(
@@ -457,6 +479,7 @@ function TicketCreation(props) {
                 )
             } else {
                 // Generate Ticket
+                console.log(TicketCreation, "TC")
                 dispatch(InsertRecruitmentTicket(TicketCreation)).then(
                     (response) => {
                         handleCancel();
@@ -475,6 +498,7 @@ function TicketCreation(props) {
         let ResumeFrom_key = [
             "department",
             "designation",
+            "location",
             "position",
             "req_by",
             "experience",
@@ -489,6 +513,7 @@ function TicketCreation(props) {
             "capablities",
             "talents",
             "assignedto",
+            "remarks"
 
         ];
 
@@ -533,8 +558,8 @@ function TicketCreation(props) {
     return (
 
         <div>
-           
-            {/* { permission.allow_view==='Y'&&<div > */}
+
+            {console.log(props.LocationList, "Loactions")}
             <div className="Titlediv">Recruitment Request Tickets</div>
             <div className="ticketContainer">
                 <div className="ticketGrid">
@@ -556,6 +581,15 @@ function TicketCreation(props) {
                                 value={TicketCreation.designation.value}
                                 error={TicketCreation.designation.error}
                                 errmsg={TicketCreation.designation.errmsg} />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <div className="TThead">Location</div>
+                            <Labelbox type="select" placeholder="Location"
+                                dropdown={locationList.LocationList}
+                                changeData={(data) => checkValidation(data, "location")}
+                                value={TicketCreation.location.value}
+                                error={TicketCreation.location.error}
+                                errmsg={TicketCreation.location.errmsg} />
                         </Grid>
                     </Grid>
                 </div>
@@ -699,10 +733,10 @@ function TicketCreation(props) {
                         <Grid item xs={3} >
                             <div className="TThead">Remarks</div>
                             <Labelbox type="textarea" placeholder="Tell us your Remarks"
-                                changeData={(data) => checkValidation(data, "position")}
-                                value={TicketCreation.position.value}
-                                error={TicketCreation.position.error}
-                                errmsg={TicketCreation.position.errmsg} />
+                                changeData={(data) => checkValidation(data, "remarks")}
+                                value={TicketCreation.remarks.value}
+                                error={TicketCreation.remarks.error}
+                                errmsg={TicketCreation.remarks.errmsg} />
                         </Grid>
                     </Grid>
                 </div>
@@ -724,6 +758,7 @@ function TicketCreation(props) {
 const mapStateToProps = (state) => ({
     Department: state.getOptions.getDepartment || [],
     DesignationList: state.getOptions.getDesignationList || [],
+    LocationList: state.getOptions.getLoactionList || [],
     Qualification: state.getOptions.getQualification || [],
     getState: state.getOptions.getState || [],
     Languages: state.getOptions.getLanguages || [],

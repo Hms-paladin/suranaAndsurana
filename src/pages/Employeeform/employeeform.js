@@ -50,18 +50,18 @@ function Employeeform(props) {
             error: null,
             errmsg: null,
         },
-        supervisor_email: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "email" }],
-            error: null,
-            errmsg: null,
-        },
-        supervisor_ph: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "mobile" }],
-            error: null,
-            errmsg: null,
-        },
+        // supervisor_email: {
+        //     value: "",
+        //     validation: [{ "name": "required" }, { "name": "email" }],
+        //     error: null,
+        //     errmsg: null,
+        // },
+        // supervisor_ph: {
+        //     value: "",
+        //     validation: [{ "name": "required" }, { "name": "mobile" }],
+        //     error: null,
+        //     errmsg: null,
+        // },
         EmpOfficialEmail: {
             value: "",
             validation: [{ "name": "required" }, { "name": "email" }],
@@ -82,19 +82,19 @@ function Employeeform(props) {
         },
         account_no: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "16" }, { "name": "allowNumaricOnly1" }],
+            validation: [{ "name": "custommaxLength", "params": "16" }, { "name": "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
         ifsc_code: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "11" }, { "name": "alphaNumaricOnly" }],
+            validation: [{ "name": "custommaxLength", "params": "11" }, { "name": "alphaNumaricOnly" }],
             error: null,
             errmsg: null,
         },
         bank_name: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -229,7 +229,7 @@ function Employeeform(props) {
         formData.append("created_on", moment().format("YYYY-MM-DD HH:m:s"));
         formData.append("created_by", localStorage.getItem("empId"));
         formData.append("task_id", props.emp_form_id && props.emp_form_id.task_id);
-        formData.append("supervisor_email", EmpForm.supervisor_email.value);
+        // formData.append("supervisor_email", EmpForm.supervisor_email.value);
         // console.log(formData,"formData")
         Axios({
             method: "post",
@@ -301,39 +301,39 @@ function Employeeform(props) {
         setfile(e.target.files[0].name)
     }
 
-    function get_employee_code_check(data){
-  if(data!=''){
+    function get_employee_code_check(data) {
+        if (data != '') {
             try {
                 Axios({
                     method: 'POST',
                     url: apiurl + 'get_employee_code_check',
                     data: {
-                        employee_code:data
+                        employee_code: data
                     }
                 }).then((response) => {
-                    if(response.data.status !== 1){
-                            let dynObj = {
-                                value: data,
-                                error: true,
-                                errmsg: "Employee Code Already Exits",
-                                validation: [{ "name": "required" }],
-                              };
-                          
-                              setEmpFrom((prevState) => ({
-                                ...prevState,
-                                ['employee_code']: dynObj,
-                              }));
-                            return Promise.resolve();
-                        
+                    if (response.data.status !== 1) {
+                        let dynObj = {
+                            value: data,
+                            error: true,
+                            errmsg: "Employee Code Already Exits",
+                            validation: [{ "name": "required" }],
+                        };
+
+                        setEmpFrom((prevState) => ({
+                            ...prevState,
+                            ['employee_code']: dynObj,
+                        }));
+                        return Promise.resolve();
+
                     }
                 });
-        
+
             } catch (err) {
-        
+
             }
         }
     }
-console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
+    console.log(EmpForm.employee_code.error, EmpForm.employee_code.errmsg, "dsdsdsds")
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
 
@@ -475,10 +475,10 @@ console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
                                             <div>{values.industry || "-"}</div>
                                             <div>{values.company_name || "-"}</div>
                                             <div>{values.city || "-"}</div>
-                                            <div>{values.department_id ||values.department || "-"}</div>
-                                            <div>{values.designation_id ||values.designation || "-"}</div>
-                                            <div>{values.period_from ? moment(values.period_from,"YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
-                                            <div>{values.period_to ? moment(values.period_to,"YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
+                                            <div>{values.department_id || values.department || "-"}</div>
+                                            <div>{values.designation_id || values.designation || "-"}</div>
+                                            <div>{values.period_from ? moment(values.period_from, "YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
+                                            <div>{values.period_to ? moment(values.period_to, "YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
                                         </div>
 
                                     )
@@ -500,7 +500,7 @@ console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
                             <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no : "-"}</div></div>
                             <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr : "-"}</div></div>
                             {/* {!props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Postel Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>} */}
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.postal_addr ? val.postal_addr :val.address?val.address: "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.postal_addr ? val.postal_addr : val.address ? val.address : "-"}</div></div>
                         </div>
                         {!props.emp_list && <div className="employeeform_row6">
                             <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>
@@ -546,7 +546,7 @@ console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
                         error={EmpForm.supervisor_name.error}
                         errmsg={EmpForm.supervisor_name.errmsg}
                     /></div>
-                <div><Labelbox type="text" placeholder="Supervisor's Email ID"
+                {/* <div><Labelbox type="text" placeholder="Supervisor's Email ID"
                     changeData={(data) => checkValidation(data, "supervisor_email")}
                     value={EmpForm.supervisor_email.value}
                     error={EmpForm.supervisor_email.error}
@@ -559,7 +559,7 @@ console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
                     error={EmpForm.supervisor_ph.error}
                     errmsg={EmpForm.supervisor_ph.errmsg}
                 />
-                </div>
+                </div> */}
 
 
             </div>}
@@ -595,7 +595,7 @@ console.log(EmpForm.employee_code.error,EmpForm.employee_code.errmsg,"dsdsdsds")
 
                 <div className="upload_div">
                     <div>
-                   
+
                         <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
                             onChange={onFileChange} id="pdfupload" /> <PublishIcon />
                     </div>
