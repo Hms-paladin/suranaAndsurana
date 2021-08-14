@@ -13,17 +13,14 @@ import { getFilingTypeIpab } from "../../../actions/MasterDropdowns";
 function PatentRectificationFiled(props) {
 
     const [tradeStatusList, settradeStatusList] = useState({})
-    const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     let { rowId } = useParams()
 
     
     const [TradeMarkForm, setTradeMarkForm] = useState({
         client_applicant: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -38,7 +35,7 @@ function PatentRectificationFiled(props) {
             disabled: false,
         },
         applicant_no: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -46,7 +43,7 @@ function PatentRectificationFiled(props) {
 
         },
         patent_title: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -54,7 +51,7 @@ function PatentRectificationFiled(props) {
 
         },
         recitification_filing_date: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -62,7 +59,7 @@ function PatentRectificationFiled(props) {
 
         },
         serial_no: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -70,7 +67,7 @@ function PatentRectificationFiled(props) {
 
         },
         org_appeal_no: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -78,7 +75,7 @@ function PatentRectificationFiled(props) {
 
         },
         hearing_date: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -86,7 +83,7 @@ function PatentRectificationFiled(props) {
 
         },
         respondent: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -94,7 +91,7 @@ function PatentRectificationFiled(props) {
 
         },
         respondent_rep: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -102,7 +99,7 @@ function PatentRectificationFiled(props) {
 
         },
         filing_type_id: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -110,7 +107,7 @@ function PatentRectificationFiled(props) {
 
         },
         status_id: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -119,7 +116,7 @@ function PatentRectificationFiled(props) {
         },
 
         comments: {
-            value: 0,
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -161,7 +158,7 @@ function PatentRectificationFiled(props) {
             // if(obj.comments && obj.comments.length)
             // TradeMarkForm.comments.disabled = true;
 
-            TradeMarkForm.rectification_filing.value = obj.rectification_filing;
+            TradeMarkForm.recitification_filing_date.value = obj.rectification_filing;
             // if(obj.rectification_filing && obj.rectification_filing.length)
             // TradeMarkForm.rectification_filing.disabled = true;
 
@@ -173,7 +170,7 @@ function PatentRectificationFiled(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.hearing_date.value = obj.hearing_date || moment().format('YYYY-MM-DD');
+            obj.hearing_date&&(TradeMarkForm.hearing_date.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.hearing_date.disabled = true;
 
@@ -210,11 +207,6 @@ function PatentRectificationFiled(props) {
             // TradeMarkForm.patent_title.disabled = true;
         }
 
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id: props.ProjectDetails[0].project_id,
-            client_id: props.ProjectDetails[0].client_id,
-        })
 
         let tradeStatusData = []
         props.tradeStatusList.map((data) =>
@@ -225,22 +217,7 @@ function PatentRectificationFiled(props) {
         )
         settradeStatusList({ tradeStatusData })
 
-        let classDetailsData = []
-        props.classDetailsList.map((data) =>
-            classDetailsData.push({
-                value: data.class,
-                id: data.class_id
-            })
-        )
-        setclassDetList({ classDetailsData })
-
-        const id = {
-            ProjectType: props.ProjectDetails[0].project_type_id,
-            ProjectSubtype: props.ProjectDetails[0].sub_project_id,
-            ProcessType: props.ProjectDetails[0].process_id
-        }
-        //dispatch(getFilingType(id));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
+    }, [props.tradeStatusList, props.filingTypeList,props.tradeMark]);
 
 
     function onSubmit() {
@@ -252,19 +229,19 @@ function PatentRectificationFiled(props) {
 
         console.log(filtererr.length);
         let params = {
-            "ip_type": "ddf",
+            "ip_type": 0,
             "client_status_type": null,
             "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
             "project_id": rowId,
             "trademark_no": "",
             "class_id": 0,
-            "rectification_filing":TradeMarkForm.recitification_filing_date.value===''?'0000-00-00':TradeMarkForm.recitification_filing_date.value,
+            "rectification_filing":TradeMarkForm.recitification_filing_date.value,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date":TradeMarkForm.hearing_date.value===''?'0000-00-00':TradeMarkForm.hearing_date.value,
+            "hearing_date":TradeMarkForm.hearing_date.value,
             "opp_applicant": "",
             "opp_applicant_rep": "",
-            "filing_type_id": TradeMarkForm.filing_type_id.valueById || "",
+            "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
             "status_id": TradeMarkForm.status_id.value,
             "comments": TradeMarkForm.comments.value,
             "created_on": moment().format('YYYY-MM-DD HH:m:s') || "",

@@ -12,172 +12,9 @@ import { getFilingType, getFilingTypeIpab } from "../../../actions/MasterDropdow
 
 function PatentAppealFiling(props) {
     const [tradeStatusList, settradeStatusList] = useState({})
-    const [classDetList, setclassDetList] = useState({})
-    const [filingTypeList, setFilingTypeList] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
+
     const dispatch = useDispatch()
     let { rowId } = useParams()
-
-    useEffect(() => {
-        dispatch(getFilingTypeIpab());
-        dispatch(getIPAP(rowId));
-        dispatch(getTradeMarkStatus());
-        dispatch(getClassDetails());
-
-
-    }, []);
-
-    useEffect(() => {
-        handleCancel()
-        if (props.tradeMark && props.tradeMark[0]) {
-            let obj = props.tradeMark[0];
-            TradeMarkForm.project_id = obj.project_id;
-            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
-            TradeMarkForm.status_id.value = obj.status_id;
-            // if(obj.status_id && obj.status_id.length)
-            // TradeMarkForm.status_id.disabled = true;
-
-            TradeMarkForm.comments.value = obj.comments
-            // if(obj.comments && obj.comments.length)
-            // TradeMarkForm.comments.disabled = true;
-
-            TradeMarkForm.serial_no.value = obj.serial_no;
-            // if(obj.serial_no && obj.serial_no.length)
-            // TradeMarkForm.serial_no.disabled = true;
-
-            TradeMarkForm.org_appeal_no.value = obj.org_appeal_no;
-            // if(obj.org_appeal_no && obj.org_appeal_no.length)
-            // TradeMarkForm.org_appeal_no.disabled = true;
-
-            TradeMarkForm.date_of_hearing.value = obj.hearing_date || moment().format('YYYY-MM-DD');
-            // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.date_of_hearing.disabled = true;
-
-            TradeMarkForm.client_applicant.value = obj.client_applicant;
-            // if(obj.client_applicant && obj.client_applicant.length)
-            // TradeMarkForm.client_applicant.disabled = true;
-
-            TradeMarkForm.applicant_no.value = obj.applicant_no;
-            // if(obj.applicant_no && obj.applicant_no.length)
-            // TradeMarkForm.applicant_no.disabled = true;
-
-            TradeMarkForm.patent_title.value = obj.patent_title;
-            // if(obj.patent_title && obj.patent_title.length)
-            // TradeMarkForm.patent_title.disabled = true;
-
-            TradeMarkForm.appeal_filing_date.value = obj.appeal_filing_date || moment().format('YYYY-MM-DD');
-            // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
-            // TradeMarkForm.appeal_filing_date.disabled = true;
-        }
-
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id: props.ProjectDetails[0].project_id,
-            client_id: props.ProjectDetails[0].client_id,
-        })
-
-        let tradeStatusData = []
-        props.tradeStatusList.map((data) =>
-            tradeStatusData.push({
-                value: data.Status,
-                id: data.status_id
-            })
-        )
-        settradeStatusList({ tradeStatusData })
-
-        let classDetailsData = []
-        props.classDetailsList.map((data) =>
-            classDetailsData.push({
-                value: data.class,
-                id: data.class_id
-            })
-        )
-        setclassDetList({ classDetailsData })
-
-        const id = {
-            ProjectType: props.ProjectDetails[0].project_type_id,
-            ProjectSubtype: props.ProjectDetails[0].sub_project_id,
-            ProcessType: props.ProjectDetails[0].process_id
-        }
-        //dispatch(getFilingType(id));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeData, props.ProjectDetails]);
-
-
-    function onSubmit() {
-        var mainvalue = {};
-        var targetkeys = Object.keys(TradeMarkForm);
-        var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
-
-        console.log(filtererr.length);
-        let params = {
-            "ip_type": 0,
-            "client_status_type": null,
-            "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
-            "project_id": rowId,
-            "trademark_no": "",
-            "class_id": 0,
-            "rectification_filing": "",
-            "serial_no": TradeMarkForm.serial_no.value,
-            "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date": TradeMarkForm.date_of_hearing.value || null,
-            "opp_applicant": "",
-            "opp_applicant_rep": "",
-            "filing_type_id": 0,
-            "status_id": TradeMarkForm.status_id.value,
-            "comments": TradeMarkForm.comments.value,
-            "created_on": moment().format('YYYY-MM-DD HH:m:s') || null,
-            "updated_on": moment().format('YYYY-MM-DD HH:m:s') || null,
-            "created_by": localStorage.getItem("empId"),
-            "updated_by": localStorage.getItem("empId"),
-            "respondent": "",
-            "respondent_rep": "",
-            "client_responent": "",
-            "revocation_filing_date": null,
-            "applicant_no": TradeMarkForm.applicant_no.value,
-            "patent_title": TradeMarkForm.patent_title.value,
-            "appeal_filing_date": TradeMarkForm.appeal_filing_date.value || null,
-            "client_applicant": TradeMarkForm.client_applicant.value,
-            "mark": ""
-        }
-        console.log("paramscheck", params);
-        //if(TradeMarkForm.class_id.value != ""){
-        //    params["class_id"] =TradeMarkForm.class_id.value;
-        //}
-        if (filtererr.length > 0) {
-            // setTradeMarkForm({ error: true });
-        } else {
-            // setTradeMarkForm({ error: false });
-
-            dispatch(insertIPAB(params)).then(() => {
-                handleCancel()
-            })
-        }
-
-        setTradeMarkForm(prevState => ({
-            ...prevState
-        }));
-    };
-
-
-    const handleCancel = () => {
-        let From_key = [
-            "client_applicant", "applicant_no", "patent_title", "appeal_filing_date", "serial_no", "org_appeal_no", "hearing_date", "status_id", "comments"
-        ]
-
-        From_key.map((data) => {
-            try {
-                TradeMarkForm[data].value = "";
-                console.log("appealFiling cancel", TradeMarkForm[data].value);
-            } catch (error) {
-                throw error;
-            }
-        });
-        setTradeMarkForm(prevState => ({
-            ...prevState,
-        }));
-    }
-
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
 
@@ -261,6 +98,146 @@ function PatentAppealFiling(props) {
 
         },
     })
+    useEffect(() => {
+        dispatch(getFilingTypeIpab());
+        dispatch(getIPAP(rowId));
+        dispatch(getTradeMarkStatus());
+        dispatch(getClassDetails());
+
+
+    }, []);
+
+    useEffect(() => {
+        handleCancel()
+        if (props.tradeMark && props.tradeMark[0]) {
+            let obj = props.tradeMark[0];
+            TradeMarkForm.project_id = obj.project_id;
+            TradeMarkForm.trademark_ipab_id.value = obj.trademark_ipab_id;
+            TradeMarkForm.status_id.value = obj.status_id;
+            // if(obj.status_id && obj.status_id.length)
+            // TradeMarkForm.status_id.disabled = true;
+
+            TradeMarkForm.comments.value = obj.comments
+            // if(obj.comments && obj.comments.length)
+            // TradeMarkForm.comments.disabled = true;
+
+            TradeMarkForm.serial_no.value = obj.serial_no;
+            // if(obj.serial_no && obj.serial_no.length)
+            // TradeMarkForm.serial_no.disabled = true;
+
+            TradeMarkForm.org_appeal_no.value = obj.org_appeal_no;
+            // if(obj.org_appeal_no && obj.org_appeal_no.length)
+            // TradeMarkForm.org_appeal_no.disabled = true;
+
+            obj.hearing_date&&(TradeMarkForm.date_of_hearing.value = obj.hearing_date);
+            // if(obj.hearing_date && obj.hearing_date.length)
+            // TradeMarkForm.date_of_hearing.disabled = true;
+
+            TradeMarkForm.client_applicant.value = obj.client_applicant;
+            // if(obj.client_applicant && obj.client_applicant.length)
+            // TradeMarkForm.client_applicant.disabled = true;
+
+            TradeMarkForm.applicant_no.value = obj.applicant_no;
+            // if(obj.applicant_no && obj.applicant_no.length)
+            // TradeMarkForm.applicant_no.disabled = true;
+
+            TradeMarkForm.patent_title.value = obj.patent_title;
+            // if(obj.patent_title && obj.patent_title.length)
+            // TradeMarkForm.patent_title.disabled = true;
+
+            obj.appeal_filing_date&&(TradeMarkForm.appeal_filing_date.value = obj.appeal_filing_date) ;
+            // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
+            // TradeMarkForm.appeal_filing_date.disabled = true;
+        }
+
+        let tradeStatusData = []
+        props.tradeStatusList.map((data) =>
+            tradeStatusData.push({
+                value: data.Status,
+                id: data.status_id
+            })
+        )
+        settradeStatusList({ tradeStatusData })
+
+    }, [props.tradeStatusList,props.tradeMark]);
+
+
+    function onSubmit() {
+        var mainvalue = {};
+        var targetkeys = Object.keys(TradeMarkForm);
+        var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
+
+        console.log(filtererr.length);
+        let params = {
+            "ip_type": 0,
+            "client_status_type": null,
+            "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
+            "project_id": rowId,
+            "trademark_no": "",
+            "class_id": 0,
+            "rectification_filing": "",
+            "serial_no": TradeMarkForm.serial_no.value,
+            "org_appeal_no": TradeMarkForm.org_appeal_no.value,
+            "hearing_date": TradeMarkForm.date_of_hearing.value || null,
+            "opp_applicant": "",
+            "opp_applicant_rep": "",
+            "filing_type_id": 0,
+            "status_id": TradeMarkForm.status_id.value,
+            "comments": TradeMarkForm.comments.value,
+            "created_on": moment().format('YYYY-MM-DD HH:m:s') || null,
+            "updated_on": moment().format('YYYY-MM-DD HH:m:s') || null,
+            "created_by": localStorage.getItem("empId"),
+            "updated_by": localStorage.getItem("empId"),
+            "respondent": "",
+            "respondent_rep": "",
+            "client_responent": "",
+            "revocation_filing_date": null,
+            "applicant_no": TradeMarkForm.applicant_no.value,
+            "patent_title": TradeMarkForm.patent_title.value,
+            "appeal_filing_date": TradeMarkForm.appeal_filing_date.value || null,
+            "client_applicant": TradeMarkForm.client_applicant.value,
+            "mark": ""
+        }
+        console.log("paramscheck", params);
+        //if(TradeMarkForm.class_id.value != ""){
+        //    params["class_id"] =TradeMarkForm.class_id.value;
+        //}
+        if (filtererr.length > 0) {
+            // setTradeMarkForm({ error: true });
+        } else {
+            // setTradeMarkForm({ error: false });
+
+            dispatch(insertIPAB(params)).then(() => {
+                handleCancel()
+            })
+        }
+
+        setTradeMarkForm(prevState => ({
+            ...prevState
+        }));
+    };
+
+
+    const handleCancel = () => {
+        let From_key = [
+            "client_applicant", "applicant_no", "patent_title", "appeal_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "status_id", "comments"
+        ]
+
+        From_key.map((data) => {
+            try {
+                TradeMarkForm[data].value = "";
+                // console.log("appealFiling cancel", !TradeMarkForm[data]?data:'');
+            } catch (error) {
+                throw error;
+            }
+        });
+        setTradeMarkForm(prevState => ({
+            ...prevState,
+        }));
+    }
+
+
+  
     function checkValidation(data, key, multipleId) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -411,9 +388,9 @@ const mapStateToProps = (state) =>
 ({
 
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
-    filingTypeList: state.tradeMarkReducer.getFilingTypeIpab || [],
-    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    // classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
+    // filingTypeList: state.tradeMarkReducer.getFilingTypeIpab || [],
+    // ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 

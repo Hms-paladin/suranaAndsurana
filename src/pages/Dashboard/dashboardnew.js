@@ -263,7 +263,9 @@ function DashboardNew(props) {
       menulist.current[7].menu_rights=true;
       }
 
-      if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
+      // if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
+        if((JSON.parse(localStorage.getItem("token")).department==="Super Admin")||(JSON.parse(localStorage.getItem("token")).department==="HR")||(JSON.parse(localStorage.getItem("token")).department==="IT")){  
+        
         menulist.current[8].menu_rights=true;
       }
 

@@ -15,12 +15,9 @@ function RevocationDefended(props) {
     const [tradeStatusList, settradeStatusList] = useState({})
     const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     let { rowId } = useParams()
     var params = {};
-
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
         client_responent: {
@@ -192,7 +189,7 @@ function RevocationDefended(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.date_of_hearing.value = obj.hearing_date || moment().format('YYYY-MM-DD');
+            obj.hearing_date&&(TradeMarkForm.date_of_hearing.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
 
@@ -225,12 +222,6 @@ function RevocationDefended(props) {
             // TradeMarkForm.client_responent.disabled = true;
         }
 
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id: props.ProjectDetails[0].project_id,
-            client_id: props.ProjectDetails[0].client_id,
-        })
-
         let tradeStatusData = []
         props.tradeStatusList.map((data) =>
             tradeStatusData.push({
@@ -249,16 +240,10 @@ function RevocationDefended(props) {
         )
         setclassDetList({ classDetailsData })
 
-        const id = {
-            ProjectType: props.ProjectDetails[0].project_type_id,
-            ProjectSubtype: props.ProjectDetails[0].sub_project_id,
-            ProcessType: props.ProjectDetails[0].process_id
-        }
-        //dispatch(getFilingType(id));
         setTradeMarkForm(prevState => ({
             ...prevState
         }));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
+    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList,props.tradeMark]);
 
 
     function onSubmit() {
@@ -272,7 +257,7 @@ function RevocationDefended(props) {
             "ip_type": 0,
             "client_status_type": null,
             "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
-            "project_id": props.ProjectDetails[0].project_id,
+            "project_id": rowId,
             "trademark_no": TradeMarkForm.trade_mark_no.value,
             "class_id": TradeMarkForm.class_id.value,
             "rectification_filing": null,
@@ -280,8 +265,8 @@ function RevocationDefended(props) {
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
             "hearing_date": TradeMarkForm.date_of_hearing.value || null,
             "opp_applicant": TradeMarkForm.applicant.value,
-            "opp_applicant_rep": null,
-            "filing_type_id": TradeMarkForm.filing_type_id.valueById,
+            "opp_applicant_rep": TradeMarkForm.Applicant_rep.value,
+            "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
             "status_id": TradeMarkForm.status_id.value,
             "comments": TradeMarkForm.comments.value,
             "created_on": moment().format('YYYY-MM-DD HH:m:s') || "",
@@ -308,7 +293,7 @@ function RevocationDefended(props) {
             // setTradeMarkForm({ error: false });
 
             dispatch(insertIPAB(params)).then(() => {
-                // handleCancel()
+                handleCancel()
             })
         }
 

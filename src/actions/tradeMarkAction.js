@@ -171,6 +171,7 @@ export const insertTradeMark = (params) => async dispatch => {
 }
 
 export const insertIPAB = (params,projectdetails) => async dispatch => {
+    console.log(params.trademark_ipab_id,"params.trademark_ipab_id")
     try {
 
         for (var x in params){
@@ -185,11 +186,11 @@ export const insertIPAB = (params,projectdetails) => async dispatch => {
         }
         var url ='insert_ipab';
         var method = 'POST';
-        var message="IPAB added sucessfully";
+        var message="IPAB added successfully";
         if(params.trademark_ipab_id && params.trademark_ipab_id !=0){
             url = 'update_ipab';
             method ='PUT';
-            message="IPAB updated sucessfully";
+            message="IPAB updated successfully";
         }
         axios({
             method: method,
@@ -200,6 +201,7 @@ export const insertIPAB = (params,projectdetails) => async dispatch => {
                 notification.success({
                     message: message,
                   });
+                 
                   if(params.trademark_ipab_id && params.trademark_ipab_id !=0){
                   }else{
                       if(params.hearing_date != null){
@@ -215,6 +217,7 @@ export const insertIPAB = (params,projectdetails) => async dispatch => {
                         "description": '',
                         "tag": ''
                       }
+                      console.log("ggggggggggggggggggg",projectdetails)
                   dispatch(inserTask(data)).then((response) => {
                   })
                 }

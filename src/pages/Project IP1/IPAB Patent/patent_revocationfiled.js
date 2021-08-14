@@ -13,16 +13,13 @@ import { SignalCellularNullOutlined } from '@material-ui/icons';
 function PatentRevocationFiled(props) {
 
     const [tradeStatusList, settradeStatusList] = useState({})
-    const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     let { rowId } = useParams()
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
         client_applicant: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -30,14 +27,14 @@ function PatentRevocationFiled(props) {
 
         },
         trademark_ipab_id: {
-            value: '',
+            value:0,
             validation: [],
             error: null,
             errmsg: null,
             disabled: false,
         },
         applicant_no: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -45,7 +42,7 @@ function PatentRevocationFiled(props) {
 
         },
         patent_title: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -53,7 +50,7 @@ function PatentRevocationFiled(props) {
 
         },
         revocation_filing_date: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -61,7 +58,7 @@ function PatentRevocationFiled(props) {
 
         },
         serial_no: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -69,7 +66,7 @@ function PatentRevocationFiled(props) {
 
         },
         org_appeal_no: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -77,7 +74,7 @@ function PatentRevocationFiled(props) {
 
         },
         date_of_hearing: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -85,7 +82,7 @@ function PatentRevocationFiled(props) {
 
         },
         respondent: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -93,7 +90,7 @@ function PatentRevocationFiled(props) {
 
         },
         respondent_rep: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -101,7 +98,7 @@ function PatentRevocationFiled(props) {
 
         },
         filing_type_id: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -109,7 +106,7 @@ function PatentRevocationFiled(props) {
 
         },
         status_id: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -118,7 +115,7 @@ function PatentRevocationFiled(props) {
         },
 
         comments: {
-            value: '',
+            value: "",
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -131,7 +128,7 @@ function PatentRevocationFiled(props) {
         dispatch(getFilingTypeIpab());
         dispatch(getIPAP(rowId));
         dispatch(getTradeMarkStatus());
-        dispatch(getClassDetails());
+        // dispatch(getClassDetails());
         // dispatch(getFilingTypeIpab());
 
     }, []);
@@ -163,6 +160,10 @@ function PatentRevocationFiled(props) {
             // if(obj.serial_no && obj.serial_no.length)
             // TradeMarkForm.serial_no.disabled = true;
 
+            TradeMarkForm.org_appeal_no.value = obj.org_appeal_no;
+            // if(obj.org_appeal_no && obj.org_appeal_no.length)
+            // TradeMarkForm.org_appeal_no.disabled = true;
+
             obj.hearing_date&&(TradeMarkForm.date_of_hearing.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
@@ -177,17 +178,11 @@ function PatentRevocationFiled(props) {
 
                 }
             }
-            console.log(arr,"dddddddddd")
             TradeMarkForm.filing_type_id.value = arr;
 
             TradeMarkForm.client_applicant.value = obj.client_applicant;
             // if(obj.client_applicant && obj.client_applicant.length)
             // TradeMarkForm.client_applicant.disabled = true;
-
-            
-            TradeMarkForm.org_appeal_no.value = obj.org_appeal_no;
-            // if(obj.org_appeal_no && obj.org_appeal_no.length)
-            // TradeMarkForm.org_appeal_no.disabled = true;
 
             TradeMarkForm.respondent.value = obj.respondent;
             // if(obj.respondent && obj.respondent.length)
@@ -208,18 +203,7 @@ function PatentRevocationFiled(props) {
             TradeMarkForm.patent_title.value = obj.patent_title;
             // if(obj.patent_title && obj.patent_title.length)
             // TradeMarkForm.patent_title.disabled = true;
-
-            console.log(obj.org_appeal_no,"obj.org_appeal_no")
-          
         }
-    }, [props.filingTypeList,props.tradeMark]);  
-    useEffect(() => {
-       
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id: props.ProjectDetails[0].project_id,
-            client_id: props.ProjectDetails[0].client_id,
-        })
 
         let tradeStatusData = []
         props.tradeStatusList.map((data) =>
@@ -230,26 +214,7 @@ function PatentRevocationFiled(props) {
         )
         settradeStatusList({ tradeStatusData })
 
-        let classDetailsData = []
-        props.classDetailsList.map((data) =>
-            classDetailsData.push({
-                value: data.class,
-                id: data.class_id
-            })
-        )
-        setclassDetList({ classDetailsData })
-
-        const id = {
-            ProjectType: props.ProjectDetails[0].project_type_id,
-            ProjectSubtype: props.ProjectDetails[0].sub_project_id,
-            ProcessType: props.ProjectDetails[0].process_id
-        }
-        //dispatch(getFilingType(id));
-
-        setTradeMarkForm((prevState) => ({
-            ...prevState,
-        }));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails,props.tradeMark]);
+    }, [props.tradeStatusList, props.filingTypeList,props.tradeMark]);
 
     function onSubmit() {
         var mainvalue = {};
@@ -257,18 +222,17 @@ function PatentRevocationFiled(props) {
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
         console.log(filtererr.length);
-
         let params = {
+      
             "ip_type": null,
             "client_status_type": null,
             "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
-
-            "trademark_no": "3",
-            "class_id": 6,
+            "trademark_no": "",
+            "class_id": "",
             "rectification_filing": null,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date": TradeMarkForm.date_of_hearing.value || null,
+            "hearing_date": TradeMarkForm.date_of_hearing.value ,
             "opp_applicant": null,
             "opp_applicant_rep": null,
             "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
@@ -281,13 +245,13 @@ function PatentRevocationFiled(props) {
             "respondent": TradeMarkForm.respondent.value,
             "respondent_rep": TradeMarkForm.respondent_rep.value,
             "client_responent": null,
-            "revocation_filing_date": TradeMarkForm.revocation_filing_date.value || null,
+            "revocation_filing_date": TradeMarkForm.revocation_filing_date.value ,
             "applicant_no": TradeMarkForm.applicant_no.value,
             "patent_title": TradeMarkForm.patent_title.value,
-            "appeal_filing_date": null,
+            "appeal_filing_date": '00-00-0000',
             "client_applicant": TradeMarkForm.client_applicant.value,
-            "mark": null,
-            "project_id": props.ProjectDetails[0].project_id,
+            "mark": "",
+            "project_id":rowId,
         }
         console.log("paramscheck", params);
         // if(TradeMarkForm.class_id.value != ""){
@@ -317,8 +281,8 @@ function PatentRevocationFiled(props) {
 
         From_key.map((data) => {
             try {
-                TradeMarkForm[data]&&(TradeMarkForm[data].value = "");
-                // console.log("appealFiling cancel", TradeMarkForm[data].value);
+                TradeMarkForm[data].value = "";
+                console.log("appealFiling cancel", TradeMarkForm[data].value);
             } catch (error) {
                 throw error;
             }
@@ -327,23 +291,6 @@ function PatentRevocationFiled(props) {
             ...prevState,
         }));
     }
-
-
-    useEffect(() => {
-
-        if (props.tradeMark && props.tradeMark.length > 0) {
-            // TradeMarkForm.class_id.value=props.tradeMark.class_id
-            TradeMarkForm.patent_title.value = props.tradeMark.patent_title
-            TradeMarkForm.serial_no.value = props.tradeMark.serial_no
-            TradeMarkForm.org_appeal_no.value = props.tradeMark.org_appeal_no
-            TradeMarkForm.respondent.value = props.tradeMark.respondent
-            TradeMarkForm.respondent_rep.value = props.tradeMark.respondent_rep
-            TradeMarkForm.filing_type_id.value = props.tradeMark.filing_type_id
-            TradeMarkForm.comments.value = props.tradeMark.comments
-            TradeMarkForm.status_id.value = props.tradeMark.status_id
-        }
-
-    }, [props.tradeMark])
 
     function checkValidation(data, key, multipleId) {
 
@@ -442,7 +389,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Org Appeal No.</div>
                     <Labelbox type="text"
-                        // disableFuture={false}
+                        disableFuture={false}
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -464,7 +411,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
-                        // disableFuture={false}
+                        disableFuture={false}
                         changeData={(data) => checkValidation(data, "respondent")}
                         value={TradeMarkForm.respondent.value}
                         error={TradeMarkForm.respondent.error}
@@ -475,7 +422,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
-                        // disableFuture={false}
+                        disableFuture={false}
                         changeData={(data) => checkValidation(data, "respondent_rep")}
                         value={TradeMarkForm.respondent_rep.value}
                         error={TradeMarkForm.respondent_rep.error}
@@ -531,9 +478,9 @@ const mapStateToProps = (state) =>
 ({
 
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
+    // classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
     filingTypeList: state.tradeMarkReducer.getFilingTypeIpab || [],
-    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    // ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getIPAP || {},
 });
 

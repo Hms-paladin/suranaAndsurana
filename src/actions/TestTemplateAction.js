@@ -21,7 +21,7 @@ export const InsertTestTemplate = (tempname,postarr,maxques,durations) => async 
             if (response.data.status === 0) {
                 dispatch({ type: INSERT_TESTTEMPLATE, payload: response.status.msg })
                 notification.success({
-                    message: "Template Added Sucessfully",
+                    message: "Template Added Successfully",
                 });
                 return Promise.resolve();
             }
