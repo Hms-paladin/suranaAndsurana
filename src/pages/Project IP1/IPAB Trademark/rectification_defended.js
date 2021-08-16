@@ -398,7 +398,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                       
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
                         error={TradeMarkForm.rectification_filing_date.error}
@@ -431,7 +431,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                       
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -487,7 +487,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

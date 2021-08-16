@@ -607,7 +607,9 @@ export const getCandidateName = () => async dispatch => {
 
 
 export const GetEmployeeDetails = (data) => async dispatch => {
+
   try {
+    if(data){
       axios({
           method: "post",
           header: {
@@ -622,7 +624,9 @@ export const GetEmployeeDetails = (data) => async dispatch => {
       .then((response) => {
           dispatch({type:MASTER_EMPLOYEE_DETAILS,payload:response.data.data})
       })
-      
+    }else{
+      dispatch({type:MASTER_EMPLOYEE_DETAILS,payload:[]})
+    }
   } catch (err) {
       
   }

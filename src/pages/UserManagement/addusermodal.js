@@ -8,7 +8,6 @@ import { Switch } from 'antd';
 import './usermanagement.scss';
 import {insertUser,editUser,GetEmployeeDetails} from "../../actions/UserMasterAction";
 import {
-    getGroupList,
     get_emp_not_in_user
   } from "../../actions/UserGroupAction";
 
@@ -54,18 +53,17 @@ function UserMasterModal(props) {
     // }, [])    
 
     ////// api dispatch
-    useEffect(() => {
-        dispatch(getGroupList())
-        dispatch(get_emp_not_in_user())
-        // dispatch(GetEmployeeDetails())
-    }, [])
+    // useEffect(() => {
+    //     dispatch(getGroupList())
+    //     dispatch(get_emp_not_in_user())
+    //     // dispatch(GetEmployeeDetails())
+    // }, [])
     //////
  
-
-
     useEffect(() => {
             handleCancel()
             dispatch(get_emp_not_in_user())
+            dispatch(GetEmployeeDetails())
     }, [props.user_add])
 
 
@@ -79,11 +77,8 @@ function UserMasterModal(props) {
        
         
         setEmployeeList(Employee_List)
-        }
+        
 
-        // employee details
-        let employee_details=[]
-       
         props.GetEmployeeDetails.map((data)=>{
             // setdisable(true)
             setUserMaster((prevState) => ({
@@ -92,7 +87,8 @@ function UserMasterModal(props) {
                 emailid:{value:data.official_email}
             }));
         })
-    }, [props.EmployeeList, props.UserGroup,props.groupLists,props.GetEmployeeDetails])
+        }
+    }, [props.EmployeeList,props.GetEmployeeDetails])
 
       
     // function SwitchChange() {
@@ -121,14 +117,15 @@ function UserMasterModal(props) {
             [key]: dynObj,
         }));
         if(key==="emp_name" && data){
-           
+            const emp_name = employeeList.filter((list) => {
+                return (data === list.id)
+              })
+            //   console.log(emp_name[0].value,"emp_nameemp_name")
+              UserMaster.user_name.value=emp_name[0].value
             dispatch(GetEmployeeDetails(data))
           
         }
-        // variable popup==>
-        if(UserMaster.emp_name.value){
-           
-        }
+
 
     }
 
@@ -193,16 +190,7 @@ function UserMasterModal(props) {
         }
 
         var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-        // if (props.editbtn) {
-        //     dispatch(updateGroupName(UserMaster)).then(
-        //         (response) => {
-        //             handleCancel();
-        //             props.handleChangeCloseModel()
-        //         }
-        //     )
-        // } else {
-            // console.log(filtererr.length,"filtererr.length")
-
+   
         if(filtererr.length>0||password===""){
             console.log(filtererr.length,"filtererr.length")
             if(password===""){setErrPassword(true)}
@@ -248,7 +236,7 @@ function UserMasterModal(props) {
                         <div className="inputModeltitle">User Name</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "user_name")}
-                            // dropdown={industryOptions}
+                            disabled
                             value={UserMaster.user_name.value}
                             error={UserMaster.user_name.error}
                             errmsg={UserMaster.user_name.errmsg} />
@@ -314,8 +302,8 @@ function UserMasterModal(props) {
 const mapStateToProps = (state) =>
 (
     {
-        groupLists: state.UserGroupReducer.groupLists || [],
-        getUserList: state.UserMasterReducer.getUser || [],
+        // groupLists: state.UserGroupReducer.groupLists || [],
+        // getUserList: state.UserMasterReducer.getUser || [],
         EmployeeList: state.UserGroupReducer.get_emp_not_in_user || [],
         GetEmployeeDetails:state.UserMasterReducer.getEmployeeDetails||[]
     }
