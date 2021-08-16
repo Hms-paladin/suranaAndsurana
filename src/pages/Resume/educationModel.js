@@ -37,20 +37,20 @@ function EducationModel(props) {
     },
     percentage: {
       value: "",
-      validation: [{ name: "required" }, { name: "PercentageCGPA" }],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
   });
   useEffect(() => {
-    if(!props.editbtn)
-    handleCancel()
-}, [props.editbtn])
-  
-  
+    if (!props.editbtn)
+      handleCancel()
+  }, [props.editbtn])
 
 
-console.log(props.editbtn,"edittt")
+
+
+  console.log(props.editbtn, "edittt")
   //   useEffect(() => {
   //     setEditbtn(props.editbtn);
   //   }, [props]);
@@ -65,7 +65,7 @@ console.log(props.editbtn,"edittt")
         Education_Form[targetkeys[i]].value,
         Education_Form[targetkeys[i]].validation
       );
-      console.log(Education_Form[targetkeys[i]].validation,"Education_Form[targetkeys[i]].validation")
+      console.log(Education_Form[targetkeys[i]].validation, "Education_Form[targetkeys[i]].validation")
 
       Education_Form[targetkeys[i]].error = !errorcheck.state;
       Education_Form[targetkeys[i]].errmsg = errorcheck.msg;
@@ -78,7 +78,7 @@ console.log(props.editbtn,"edittt")
       // setEducationForm({ error: true });
     } else {
       // setEducationForm({ error: false });
-      
+
       props.addEducations(Education_Form);
       handleCancel();
     }
@@ -100,8 +100,8 @@ console.log(props.editbtn,"edittt")
 
 
 
- 
-    console.log(props.nullFieldValue,props.editEducations,"props.editExperiences")
+
+  console.log(props.nullFieldValue, props.editEducations, "props.editExperiences")
 
   const handleCancel = () => {
     let ResumeFrom_key = [
@@ -157,22 +157,22 @@ console.log(props.editbtn,"edittt")
   }, [props.getOptions]);
 
   useEffect(() => {
-if(props.editbtn){
-    const basicQual = props.editEducations?.qualification;
-    const instution = props.editEducations?.institution;
-    const Passing = props.editEducations?.year_of_passing;
-    const CGPA = props.editEducations?.cgpa;
+    if (props.editbtn) {
+      const basicQual = props.editEducations?.qualification;
+      const instution = props.editEducations?.institution;
+      const Passing = props.editEducations?.year_of_passing;
+      const CGPA = props.editEducations?.cgpa;
 
-    Education_Form.basicQualification.value = basicQual;
-    Education_Form.institution.value = instution;
-    Education_Form.yearpassing.value = Passing;
-    Education_Form.percentage.value = CGPA;
+      Education_Form.basicQualification.value = basicQual;
+      Education_Form.institution.value = instution;
+      Education_Form.yearpassing.value = Passing;
+      Education_Form.percentage.value = CGPA;
 
-    setEducationForm((prevState) => ({
-      ...prevState,
-    }));
-  }
-  }, [props.editEducations, props.editEducationid,props.editbtn]);
+      setEducationForm((prevState) => ({
+        ...prevState,
+      }));
+    }
+  }, [props.editEducations, props.editEducationid, props.editbtn]);
   return (
     <div className="educationModelContainer">
       <Labelbox
@@ -197,8 +197,8 @@ if(props.editbtn){
       <Labelbox
         type="datepicker"
         placeholder="Year of Passing"
-         view ={["year"]}
-         format={'yyyy'}
+        view={["year"]}
+        format={'yyyy'}
         changeData={(data) => checkValidation(data, "yearpassing")}
         value={Education_Form.yearpassing.value}
         error={Education_Form.yearpassing.error}
