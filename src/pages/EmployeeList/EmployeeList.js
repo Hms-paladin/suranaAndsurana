@@ -59,7 +59,7 @@ function EmployeeList(props){
         { id: 'doj', label: 'DOJ' },
         { id: 'exp', label: <div style={{lineHeight:"1.5",marginTop:"15px"}}><div>Experience</div>
         <div style={{fontSize:"10px"}}>(No.of Years)</div></div> },
-        { id: 'sup', label: 'Supervisor' },
+        { id: 'hod', label: 'HoD' },
       ];
             
 //Dropdowns

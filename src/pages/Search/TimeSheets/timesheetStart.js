@@ -396,7 +396,7 @@ useEffect(()=>{
                             />
                         </Grid>
                         <Grid item xs={3}>
-                            <Labelbox type="datepicker"
+                            {/* <Labelbox type="datepicker"
                                 disablePast={true}
                                 changeData={(data) => checkValidation(data, "toDate")}
                                 placeholder={" End Date"}
@@ -404,7 +404,8 @@ useEffect(()=>{
                                 error={timeSheetForm.toDate.error}
                                 errmsg={timeSheetForm.toDate.errmsg}
 
-                            />
+                            /> */}
+                            End Date
                         </Grid>
                         <Grid item xs={3}>
                             End Time

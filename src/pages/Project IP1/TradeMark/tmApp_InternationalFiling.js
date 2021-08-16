@@ -453,7 +453,7 @@ function TradeMarkInternational(properties) {
         if (filtererr.length > 0) {
         }else{
         let params = {
-            "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
+            "project_id": rowId,//radeMarkForm.project_id.value,
             "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
             "associate_reference": TradeMarkForm.associateRefernce.value,
             "our_reference": TradeMarkForm.ourRefernce.value,

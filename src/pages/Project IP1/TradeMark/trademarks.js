@@ -447,7 +447,7 @@ function TradeMark(properties) {
         let params = {
 
             "trademark_id": TradeMarkForm.trademark_id.value,
-            "project_id": idDetails.project_id,//"71",//radeMarkForm.project_id.value,
+            "project_id": rowId,//"71",//radeMarkForm.project_id.value,
             "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
             "mark_id": TradeMarkForm.mark_id.value===''?'0':TradeMarkForm.mark_id.value,
             "upload_image": selectedFile,
