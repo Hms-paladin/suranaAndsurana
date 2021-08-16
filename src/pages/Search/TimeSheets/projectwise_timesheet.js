@@ -371,8 +371,6 @@ function ProjectwiseTS(props) {
 
             else if ((data.project_type_id !== 1) && (checkDupliactesProjectIds[i] == data.project_type_id)) {
 
-                console.log(data.project_type_id, checkDupliactesProjectIds[i], i, data.project_details.length, "projecttypeIds")
-                //checkDupliactesProjectIds.push(data.project_type_id)
                 let otherDataList = []
                 data.project_details.length && data.project_details.map((dat, k) => {
                     console.log(dat, "level2-else")

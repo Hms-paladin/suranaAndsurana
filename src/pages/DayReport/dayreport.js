@@ -157,9 +157,8 @@ function DayReport(props) {
 
         let multipleTab = [];
         let subCollapse = [];
-        let otherDataList = []
-
-        props.dayReport?.map((data, i) => {
+        let checkDupliactesProjectIds = [];
+        props?.dayReport?.map((data, i) => {
             let rowDataList = {}
             let sample = {};
             let tableRow1 = [];
@@ -168,6 +167,7 @@ function DayReport(props) {
             let tableRow3 = [];
             let tableRow4 = [];
             let tableRow5 = [];
+            checkDupliactesProjectIds?.push(data.project_type_id)
             if (data.project_type_id === 1) {
 
                 sample["Design"] = data.project_details.filter((val) => val?.sub_project_id === 2)
@@ -191,8 +191,9 @@ function DayReport(props) {
                     })
 
                 }
-                console.log("filtersfilters", tableRow1)
-                sample["Design"] = tableRow1;
+                if (tableRow1.length) {
+                    sample["Design"] = tableRow1;
+                }
 
                 if (sample?.Patent.length > 0) {
                     let currentData = {}
@@ -207,8 +208,10 @@ function DayReport(props) {
                         tableRow2.push(currentData);
                     })
                 }
-                console.log("filtersfilters", tableRow2)
-                sample["Patent"] = tableRow2;
+                if (tableRow2.length) {
+                    sample["Patent"] = tableRow2;
+                }
+
 
                 if (sample?.Trademark.length > 0) {
                     let currentData = {}
@@ -223,8 +226,9 @@ function DayReport(props) {
                         tableRow.push(currentData);
                     })
                 }
-                console.log("filtersfilters", tableRow)
-                sample["Trademark"] = tableRow;
+                if (tableRow.length) {
+                    sample["Trademark"] = tableRow;
+                }
 
                 if (sample?.Copyright.length > 0) {
                     let currentData = {}
@@ -239,8 +243,10 @@ function DayReport(props) {
                         tableRow3.push(currentData);
                     })
                 }
-                console.log("filtersfilters", tableRow3)
-                sample["Copyright"] = tableRow3;
+                if (tableRow3.length) {
+                    sample["Copyright"] = tableRow3;
+                }
+
 
                 if (sample?.IPABTrademark.length > 0) {
                     let currentData = {}
@@ -255,8 +261,9 @@ function DayReport(props) {
                         tableRow4.push(currentData);
                     })
                 }
-                console.log("filtersfilters", tableRow4)
-                sample["IPABTrademark"] = tableRow4;
+                if (tableRow4.length) {
+                    sample["IPABTrademark"] = tableRow4;
+                }
 
                 if (sample?.IPABDesign.length > 0) {
                     let currentData = {}
@@ -271,13 +278,15 @@ function DayReport(props) {
                         tableRow5.push(currentData);
                     })
                 }
-                console.log("filtersfilters", tableRow5)
-                sample["IPABDesign"] = tableRow5;
+                if (tableRow5.length) {
+                    sample["IPABDesign"] = tableRow5;
 
+                }
                 console.log("filtersfilterssample", sample)
                 for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
                     console.log("tttttttttttttttttt", key);
                     subCollapse.push(
+                        value.length &&
                         <Panel
                             header={`${key} (${value.length})`}
                             key={index + 1}
@@ -303,8 +312,9 @@ function DayReport(props) {
 
                     </Panel>
                 );
-            } else if (data.project_type_id !== 1) {
-                data.project_details.map((dat, k) => {
+            } else if ((data.project_type_id !== 1) && (checkDupliactesProjectIds[i] == data.project_type_id)) {
+                let otherDataList = []
+                data.project_details.length && data.project_details.map((dat, k) => {
                     console.log(dat, "level2-else")
                     let aEndDate = dat.actual_end_date;
                     let endDate = dat.end_date;
@@ -314,24 +324,27 @@ function DayReport(props) {
                     rowDataList["by"] = dat.assigned_name;;
                     rowDataList["tag"] = dat.tag
                     otherDataList.push(rowDataList)
-                    multipleTab.push(
-                        <Panel
-                            header={`${data.project_type} (${data?.project_details?.length})`}
-                            key={i + 1}
-                        >
-                            <EnhancedTable
-                                headCells={
-                                    headCells
-                                }
-                                rows={otherDataList}
 
-                            />
-                        </Panel>
-                    );
                 })
+                multipleTab.push(
+                    data?.project_details?.length &&
+                    <Panel
+                        header={`${data.project_type} (${data?.project_details?.length})`}
+                        key={i + 1}
+                    >
+                        <EnhancedTable
+                            headCells={
+                                headCells
+                            }
+                            rows={otherDataList}
+
+                        />
+                    </Panel>
+                );
             }
+            setMultiplePanel(multipleTab);
         })
-        setMultiplePanel(multipleTab);
+
     }, [props.dayReport]);
 
 

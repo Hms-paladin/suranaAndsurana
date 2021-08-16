@@ -92,7 +92,7 @@ function RecruitmentModal(props) {
                     <div className="btn_div_close">
                         <CustomButton btnName={"Requirement Completed"} btnCustomColor="customPrimary" custombtnCSS="custom_close_re" onBtnClick={(bln) => setTicketConfirmationModal(bln)} />
                     </div>
-                    <DynModel modelTitle={"ADD USER GROUP"} handleChangeModel={ticketConfirmationModal} handleChangeCloseModel={(bln) => setTicketConfirmationModal(bln)} content={
+                    <DynModel modelTitle={"Requirement Request"} handleChangeModel={ticketConfirmationModal} handleChangeCloseModel={(bln) => setTicketConfirmationModal(bln)} content={
                         <div className="deleteBtn">
                             <div>Are you sure want to Close this Ticket?</div>
                             <div>
