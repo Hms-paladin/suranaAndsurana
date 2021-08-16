@@ -37,6 +37,7 @@ function InerviewScreen(props) {
   const [canName, setcanName] = useState("");
   const [dropDownSel, setdropDownSel] = useState(false);
   const [interviewDetails, setInterviewDetails] = useState({})
+  const [interviewStatus, setInterviewStatus] = useState()
   const [testDetails, setTestDetails] = useState({})
 
   const headCells = [
@@ -144,6 +145,7 @@ function InerviewScreen(props) {
       //     )}))
       setint_details({ Intview_data });
       dispatch(getInterviewStatus(response.data.data[0].round));
+      setInterviewStatus(response.data.data[0].round)
     });
   }, [props.getOnlineTestDetails, props.getSelectedCandidates, props.getQuestions, props.GetCandiateDetails]);
 
@@ -452,6 +454,7 @@ function InerviewScreen(props) {
                   int_resume_id={selectedCandidateId}
                   task_id={props.interviewer_id.task_id}
                   sel_appr_drop={dropDownSel}
+                  interviewStatus={interviewStatus}
                   //______________________
                   handleAproverModelClose={(bln) => setAppModelOpen(bln)}
                   handleModelClose={props.handleAproverModelClose}
