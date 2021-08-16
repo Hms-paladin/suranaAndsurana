@@ -47,7 +47,7 @@ function CheckListCreation(props) {
       },
       checkListName: {
         value: "",
-        validation: [{ name: "required" },{name:"alphabetsandSpecialChar"}],
+        validation: [{ name: "required" },{name:"alphabetwithspace"}],
         error: null,
         errmsg: null,
       },

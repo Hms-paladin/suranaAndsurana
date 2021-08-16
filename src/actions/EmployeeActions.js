@@ -18,7 +18,7 @@ export const InsertEmployeeForm = () => async dispatch => {
         formData.append("supervisor", EmpForm.supervisor_name.value)
         formData.append("email", EmpForm.EmpOfficialEmail.value)
         formData.append("supervisor_name", "")
-        formData.append("supervisor_email", EmpForm.supervisor_email.value)
+        // formData.append("supervisor_email", EmpForm.supervisor_email.value)
         formData.append("official_email", EmpForm.EmpOfficialEmail.value)
         formData.append("official_contact", EmpForm.EmpOfficialContact.value)
         formData.append("department", EmpForm.department.value)

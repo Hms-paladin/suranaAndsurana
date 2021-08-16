@@ -10,6 +10,7 @@ import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
   GET_DEPARTMENT,
+  GET_LOCATION_LIST,
   GET_INTERVIEWERS_LIST, GET_FREQUENCY,
   GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES, GET_TEMPLATE_NAME, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT
 } from "../utils/Constants.js";
@@ -83,6 +84,7 @@ const initalState = {
   getClientlist: [],
   getStageList: [],
   getDesignationList: [],
+  getLoactionList: [],
   getDepartment: [],
   getInterviewersList: [],
   getInterviewStatus: [],
@@ -100,7 +102,7 @@ const initalState = {
   getCategory: [],
   getCity_By_Id: [],
   getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
-  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: [], getSubordinate: [], GetAreaDevelopment: [],GetDevelopment:[]
+  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: [], getSubordinate: [], GetAreaDevelopment: [], GetDevelopment: []
 };
 
 export default function (state = initalState, action) {
@@ -164,6 +166,8 @@ export default function (state = initalState, action) {
       return { ...state, getEmployeeList: payload };
     case GET_DESIGNATION_LIST:
       return { ...state, getDesignationList: payload };
+    case GET_LOCATION_LIST:
+      return { ...state, getLoactionList: payload };
     case GET_DEPARTMENT:
       return { ...state, getDepartment: payload };
     case GET_INTERVIEWERS_LIST:
@@ -218,8 +222,8 @@ export default function (state = initalState, action) {
       return { ...state, getSubordinate: payload };
     case GET_AREA_DEVELOPMENT:
       return { ...state, GetAreaDevelopment: payload };
-      case GET_DEVELOPMENT:
-        return { ...state, GetDevelopment: payload };
+    case GET_DEVELOPMENT:
+      return { ...state, GetDevelopment: payload };
     default:
       return state;
   }

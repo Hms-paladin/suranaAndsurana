@@ -48,6 +48,7 @@ import {
   GET_ACTIVITY,
   GET_LITIGATION_COUNSEL,
   GET_SUBACTIVITY,
+  GET_LOCATION_LIST,
   GET_LEAVETYPE,
   GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE, GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
 } from "../utils/Constants.js";
@@ -137,13 +138,24 @@ export const getInterviewers = () => async (dispatch) => {
   return dispatch({ type: GET_INTERVIEWERS_LIST, payload: response.data.data });
 };
 //HR-->ToDoList
-export const getInterviewStatus = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "/get_Interview_Status");
+export const getInterviewStatus = (id) => async (dispatch) => {
+  //const response = await axios.get(apiurl + "/get_Interview_Status");
+  const response = await axios({
+    method: "post",
+    url: apiurl + "/get_Interview_Status",
+    data: {
+      status_id: id,
+    },
+  });
   return dispatch({ type: GET_INTERVIEW_STATUS, payload: response.data.data });
 };
 export const getDesignationList = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_designation");
   return dispatch({ type: GET_DESIGNATION_LIST, payload: response.data.data });
+};
+export const getLoactionsList = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_location_office_ticket");
+  return dispatch({ type: GET_LOCATION_LIST, payload: response.data.data });
 };
 
 // Project Search dropdown
