@@ -257,9 +257,9 @@ function DashboardNew(props) {
         menulist.current[6].menu_rights=true;
       }
 
-
+// console.log(localStorage.getItem("designation"),'"HoD"',"localStorage")
       // if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
-      if(localStorage.getItem("designation")==="HoD"){
+      if(localStorage.getItem("designation")==='"HoD"'){
       menulist.current[7].menu_rights=true;
       }
 
