@@ -154,7 +154,7 @@ function ResignationApproveval(props) {
             })
         }
         if (task === "FINANCE NOC") {
-            dispatch(UpdateFinaceNoc(checked, props.GetSeverance[0] && props.GetSeverance[0].employee_id, task)).then(() => {
+            dispatch(UpdateItNoc(checked, props.GetSeverance[0] && props.GetSeverance[0].employee_id, task)).then(() => {
                 props.closemodal()
                 setChecked(false)
             })

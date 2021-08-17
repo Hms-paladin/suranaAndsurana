@@ -582,7 +582,7 @@ const ResumePage = (props) => {
       educationList.length === 0 && !educationerr && setEducationerr(true);
 
       experienceList.length === 0 && (Resume_Form.candidate.value !== 1 || Resume_Form.candidate.value !== 10) && !employererr && setEmployererr(true);
-      experienceList.length === 0 && (Resume_Form.candidate.value === 10 || Resume_Form.candidate.value === 1) && employererr && setEmployererr(false);
+      experienceList.length === 0 && (Resume_Form.candidate.value === 10 || Resume_Form.candidate.value === 1) && !employererr && setEmployererr(false);
     }
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
