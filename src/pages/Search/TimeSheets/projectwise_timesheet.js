@@ -164,6 +164,13 @@ function ProjectwiseTS(props) {
         if (projectSearch) {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
+        if (props.Project_TimeSheet.length < 0) {
+
+            notification.success({
+                message: " No Data found",
+            })
+
+        }
 
         setprojectSearch({
             proj_name: {
@@ -476,14 +483,19 @@ function ProjectwiseTS(props) {
                     <Grid item xs={2} container direction="row" justify="center" alignItems="center">
                         <CustomButton btnName={"Search"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
                     </Grid>
+                    <>
+
+                    </>
                 </Grid>
             </div>
+
             <div className="DRcollapsecss">
 
                 <Collapse>
                     {multiplePanel}
                 </Collapse>
             </div>
+
         </div>
     )
 }
