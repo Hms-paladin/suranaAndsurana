@@ -40,7 +40,11 @@ function RecruitmentModal(props) {
         setTicketConfirmationModal(false)
     }
 
-    console.log(recruitmentData, "recruitmentData")
+    const cancelRecruitmant = () => {
+        setTicketConfirmationModal(false)
+    }
+
+
 
     return (
         <div>
@@ -92,11 +96,11 @@ function RecruitmentModal(props) {
                     <div className="btn_div_close">
                         <CustomButton btnName={"Requirement Completed"} btnCustomColor="customPrimary" custombtnCSS="custom_close_re" onBtnClick={(bln) => setTicketConfirmationModal(bln)} />
                     </div>
-                    <DynModel modelTitle={"ADD USER GROUP"} handleChangeModel={ticketConfirmationModal} handleChangeCloseModel={(bln) => setTicketConfirmationModal(bln)} content={
+                    <DynModel modelTitle={"REQUIREMENT REQUEST"} handleChangeModel={ticketConfirmationModal} handleChangeCloseModel={(bln) => setTicketConfirmationModal(bln)} content={
                         <div className="deleteBtn">
                             <div>Are you sure want to complete this Ticket?</div>
                             <div>
-                                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />
+                                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={cancelRecruitmant} />
                                 <CustomButton btnName={"Ok"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={closeRecruitmant} />
                             </div>
                         </div>}
