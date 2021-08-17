@@ -211,11 +211,11 @@ function RevocationFiled(props) {
             // if(obj.respondent_rep && obj.respondent_rep.length)
             // TradeMarkForm.respondent_rep.disabled = true;
 
-            // TradeMarkForm.client_responent.value =obj.client_responent;
-            // if(obj.client_responent && obj.client_responent.length)
-            // TradeMarkForm.client_responent.disabled = true;
+            // TradeMarkForm.client_respondent.value =obj.client_respondent;
+            // if(obj.client_respondent && obj.client_respondent.length)
+            // TradeMarkForm.client_respondent.disabled = true;
 
-            obj.rectification_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.rectification_filing_date);
+            obj.revocation_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.revocation_filing_date);
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
         }
@@ -280,7 +280,7 @@ function RevocationFiled(props) {
             "updated_by": localStorage.getItem("empId"),
             "respondent": TradeMarkForm.respondent.value,
             "respondent_rep": TradeMarkForm.respondent_rep.value,
-            "client_responent": "",
+            "client_respondent": "",
             "revocation_filing_date": TradeMarkForm.revocation_filing_date.value,
             "applicant_no": "",
             "patent_title": "",
@@ -370,7 +370,7 @@ function RevocationFiled(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <div className="copyFieldheadings">Client - Respondent</div>
+                    <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
                         
                         changeData={(data) => checkValidation(data, "client_applicant")}

@@ -186,9 +186,9 @@ function PatentRevocationDef(props) {
             }
             TradeMarkForm.filing_type_id.value = arr;
 
-            TradeMarkForm.client_respondent.value = obj.respondent;
-            // if(obj.client_responent && obj.client_responent.length)
-            // TradeMarkForm.client_responent.disabled = true;
+            TradeMarkForm.client_respondent.value = obj.client_respondent;
+            // if(obj.client_respondent && obj.client_respondent.length)
+            // TradeMarkForm.client_respondent.disabled = true;
 
             obj.revocation_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.revocation_filing_date)
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
@@ -246,7 +246,7 @@ function PatentRevocationDef(props) {
             "mark": "",
             "respondent": "",
             "respondent_rep": "",
-            "client_responent": TradeMarkForm.client_respondent.value,
+            "client_respondent": TradeMarkForm.client_respondent.value,
             "revocation_filing_date": TradeMarkForm.revocation_filing_date.value||null,
             "applicant_no": TradeMarkForm.applicant_no.value,
             "patent_title": TradeMarkForm.patent_title.value,

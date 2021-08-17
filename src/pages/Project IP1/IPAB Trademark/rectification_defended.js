@@ -269,7 +269,7 @@ function IPABRectificationDefended(props) {
             "mark": TradeMarkForm.mark.value || null,
             "respondent": null,
             "respondent_rep": null,
-            "client_responent": null,
+            "client_respondent": null,
             "revocation_filing_date": null,
             "applicant_no": null,
             "patent_title": null,

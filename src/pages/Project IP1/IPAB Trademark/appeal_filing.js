@@ -238,7 +238,7 @@ function AppealFiling(props) {
             "updated_by": localStorage.getItem("empId"),
             "respondent": "",
             "respondent_rep": "",
-            "client_responent": "",
+            "client_respondent": "",
             "revocation_filing_date": null,
             "applicant_no": "",
             "patent_title": "",

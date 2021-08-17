@@ -42,6 +42,7 @@ import OutofPacket from './OutofPacketReducers'
 import KpiReducer from './KPIReducers';
 import GetEmpAppraisalDetails from './AppraisalReducer';
 import ProjectformReducers from './ProjectformReducers';
+import GenerateInvoiceReducer from './GenerateInvoiceReducer';
 
 export default combineReducers({
   getInterviewquestions,
@@ -86,7 +87,8 @@ export default combineReducers({
   OutofPacket,
   KpiReducer,
   GetEmpAppraisalDetails,
-  ProjectformReducers
+  ProjectformReducers,
+  GenerateInvoiceReducer
 });
 
 

@@ -252,8 +252,8 @@ function PatentRectificationFiled(props) {
             "mark": "",
             "respondent": TradeMarkForm.respondent.value,
             "respondent_rep": TradeMarkForm.respondent_rep.value,
-            "client_responent": "",
-            "revocation_filing_date": "",
+            "client_respondent": "",
+            "revocation_filing_date": null,
             "applicant_no": TradeMarkForm.applicant_no.value,
             "patent_title": TradeMarkForm.patent_title.value,
             "appeal_filing_date": null

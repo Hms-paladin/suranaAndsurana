@@ -20,7 +20,7 @@ function RevocationDefended(props) {
     var params = {};
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
-        client_responent: {
+        client_respondent: {
             value: '',
             validation: [{ "name": "required" },],
             error: null,
@@ -177,7 +177,7 @@ function RevocationDefended(props) {
             // if(obj.trademark_no && obj.trademark_no.length)
             // TradeMarkForm.trade_mark_no.disabled = true;
 
-            TradeMarkForm.revocation_filing_date.value = obj.rectification_filing;
+            obj.revocation_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.revocation_filing_date);
             // if(obj.rectification_filing && obj.rectification_filing.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
 
@@ -217,9 +217,9 @@ function RevocationDefended(props) {
             // if(obj.mark && obj.mark.length)
             // TradeMarkForm.mark.disabled = true;
 
-            TradeMarkForm.client_responent.value = obj.client_responent;
-            // if(obj.client_responent && obj.client_responent.length)
-            // TradeMarkForm.client_responent.disabled = true;
+            TradeMarkForm.client_respondent.value = obj.client_respondent;
+            // if(obj.client_respondent && obj.client_respondent.length)
+            // TradeMarkForm.client_respondent.disabled = true;
         }
 
         let tradeStatusData = []
@@ -277,8 +277,8 @@ function RevocationDefended(props) {
             "mark": TradeMarkForm.mark.value,
             "respondent": "",
             "respondent_rep": "",
-            "client_responent": TradeMarkForm.client_responent.value,
-            "revocation_filing_date": "",
+            "client_respondent": TradeMarkForm.client_respondent.value,
+            "revocation_filing_date": TradeMarkForm.revocation_filing_date.value || null,
             "applicant_no": "",
             "patent_title": "",
             "appeal_filing_date": null
@@ -305,7 +305,7 @@ function RevocationDefended(props) {
 
     const handleCancel = () => {
         let From_key = [
-            "client_responent", "mark", "trade_mark_no", "class_id", "revocation_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "applicant",
+            "client_respondent", "mark", "trade_mark_no", "class_id", "revocation_filing_date", "serial_no", "org_appeal_no", "date_of_hearing", "applicant",
             "Applicant_rep", "filing_type_id", "status_id", "comments"
         ]
 
@@ -367,11 +367,11 @@ function RevocationDefended(props) {
                     <div className="copyFieldheadings">Client - Respondent</div>
                     <Labelbox type="text"
                         
-                        changeData={(data) => checkValidation(data, "client_responent")}
-                        value={TradeMarkForm.client_responent.value}
-                        error={TradeMarkForm.client_responent.error}
-                        errmsg={TradeMarkForm.client_responent.errmsg}
-                        disabled={TradeMarkForm.client_responent.disabled}
+                        changeData={(data) => checkValidation(data, "client_respondent")}
+                        value={TradeMarkForm.client_respondent.value}
+                        error={TradeMarkForm.client_respondent.error}
+                        errmsg={TradeMarkForm.client_respondent.errmsg}
+                        disabled={TradeMarkForm.client_respondent.disabled}
                     />
                 </Grid>
                 <Grid item xs={2}>
