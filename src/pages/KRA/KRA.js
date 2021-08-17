@@ -151,7 +151,30 @@ const KRA = (props) => {
     }, [props.UserPermission]);
     /////////////
 
-    const addkraDetails = () => {
+    useEffect(() => {
+        axios({
+                method: 'POST',
+                url: apiurl + 'get_period_by_id',
+                data: {
+                    "emp_id": localStorage.getItem("empId"),
+                }
+            })
+            .then((response) => {
+                    
+                if(response.data.status===1){
+
+                    kpi_form.fromperiod.value=response.data.data[0].period_from
+                    kpi_form.toperiod.value=moment(moment(response.data.data[0].period_from,'YYYY-MM-DD').add(6, "months")).format('YYYY-MM-DD')
+                  
+                    setKpi_form(prevState => ({
+                        ...prevState,
+                    }));
+                }  
+            }) 
+    }, []);
+
+    
+    const addkraDetails =async () => {
         let activityName;
         activity.Activity.filter((data) => {
             if (data.id === kpi_form.activity.value) {
@@ -187,51 +210,24 @@ const KRA = (props) => {
        
         else {
 
-            if(kpi_form.fromperiod.value!=''&&kpi_form.toperiod.value!=''){
-
-                axios({
-                    method: 'POST',
-                    url: apiurl + 'get_kra_check_date',
-                    data: {
-                        "emp_id": localStorage.getItem("empId"),
-                        "period_from": moment(kpi_form.fromperiod.value).format("YYYY-MM") || 0,
-                        "period_to": moment(kpi_form.toperiod.value).format("YYYY-MM") || 0,
-                    }
-                })
-                .then((response) => {
-                        
-                    if(response.data.status===0){
+                if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
+                    notification.error({
+                        message: 'Total Percent Value should be 100 only',
+                    });
     
-                        setEmpIdTrue(true)
-                        setDisabledate(false)
-            
-                        notification.error({
-                            message: 'This Period Already Exist.'
-                        });
-                    }else if(response.data.status===1){
-
-                        if (totalPercentage + Number(kpi_form.percentage.value) > 100) {
-                            notification.error({
-                                message: 'Total Percent Value should be 100 only',
-                            });
-            
-                        }
-                        else {
-                            setReference(prevState => ([...prevState, {
-                                activitys: activityName,
-                                percent: kpi_form.percentage.value,
-                                action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
-                            }]))
-            
-                            kpi_form.activity.value = "";
-                            kpi_form.percentage.value = "";
-           
-                        }
-                    }
-    
-                })
                 }
+                else {
+                    await setReference(prevState => ([...prevState, {
+                        activitys: activityName,
+                        percent: kpi_form.percentage.value,
+                        action: <img src={Edit} className="editicon" onClick={() => editRows(count)} />
+                    }]))
     
+                    kpi_form.activity.value = "";
+                    kpi_form.percentage.value = "";
+    
+                }
+
     }
 
         setKpi_form(prevState => ({
@@ -378,13 +374,13 @@ useEffect(()=>{
                             className="spaceBtGrid"
                             alignItems="center"
                             style={{ padding: 10 }}
-                            spacing={2}
+                            spacing={1}
                         >
                             <Grid item xs={2} style={{ padding: 0 }}>
                                 <div className="KRAhead lblemp"><label onClick={() => setKramodel(true)}>Employee Name</label></div>
                                 <div className="lblname"><label style={{ fontWeight: 'bold', paddingTop: "6px", position: "relative", top: "-10px" }}> {JSON.parse(localStorage.getItem("token")).user_name}</label></div>
                             </Grid>
-                            <Grid item xs={4} container direction="row">
+                            <Grid item xs={6} container direction="row">
                                 <div className="KRAhead per_head"><label >From Period</label></div>
                                 <div className="KRAhead per_head"><label >To Period</label></div>
                                 <div className="period_div">
@@ -396,7 +392,7 @@ useEffect(()=>{
                                         value={kpi_form.fromperiod.value}
                                         error={kpi_form.fromperiod.error}
                                         errmsg={kpi_form.fromperiod.errmsg}
-                                        disabled={disabledate ? true : false}
+                                        disabled
                                     />
                                     <Labelbox
                                         type="datepicker"
@@ -406,7 +402,7 @@ useEffect(()=>{
                                         value={kpi_form.toperiod.value}
                                         error={kpi_form.toperiod.error}
                                         errmsg={kpi_form.toperiod.errmsg}
-                                        disabled={disabledate ? true : false}
+                                        disabled
                                         minDate={minDate}
                                     />
                                     </div>
@@ -440,7 +436,7 @@ useEffect(()=>{
                             <Grid item xs={2} style={{ padding: 0 }} >
 
                             </Grid>
-                            <Grid item xs={4} container direction="row" spacing={2}>
+                            <Grid item xs={6} container direction="row" spacing={2}>
                                 <Grid item xs={6}>
                                     <div className="KRAhead"><label style={{ fontSize: 15 }}>Activity</label></div>
                                     <div style={{ width: '100%', display: 'inline-block' }}>

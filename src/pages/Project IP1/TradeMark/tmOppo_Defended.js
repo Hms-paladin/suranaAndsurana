@@ -50,7 +50,7 @@ function TradeMarkOposition2(properties) {
     }, []);
 
     useEffect(() => {
-
+        handleCancel()
         if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
             TradeMarkForm.trademark_id.value = obj.trademark_id;
@@ -325,7 +325,7 @@ function TradeMarkOposition2(properties) {
             "application_no": TradeMarkForm.application_no.value,
             "application_date": TradeMarkForm.application_date.value,
             "tmj_number": TradeMarkForm.tmj_number.value,
-            "tmj_date": TradeMarkForm.tmj_date.value,
+            "tmj_date": TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value, 
             "opposition_no": TradeMarkForm.oppositionNumber.value,
             "applicant": TradeMarkForm.applicant.value,
             "applicant_agent": TradeMarkForm.applicantAgent.value,

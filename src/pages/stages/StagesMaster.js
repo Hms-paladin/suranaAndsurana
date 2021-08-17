@@ -285,6 +285,13 @@ const StagesMaster = (props) => {
       }))
     }
 
+    if (data === 4 && key == "sub_project_type_search") {
+      RateMaster.process_type_search.validation = [{ name: "" }]
+    }
+    else if (data !== 4 && key == "sub_project_type_search") {
+      RateMaster.process_type_search.validation = [{ name: "required" }]
+    }
+
     if (key == "sub_project_type" && data) {
       //process type
       dispatch(getProcessType({

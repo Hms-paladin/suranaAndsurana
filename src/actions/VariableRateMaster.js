@@ -316,7 +316,7 @@ export const deleteVariableRate = (id,project_id) => async dispatch => {
       }).then((response) => {
           if (response.data.status === 1) {
               notification.success({
-                  message: "Variable rate deleted sucessfully",
+                  message: "Variable rate deleted successfully",
               });
               dispatch(getProjectVariableRate(project_id))
               return Promise.resolve();
@@ -351,7 +351,7 @@ if(amount != allrowList[i].Amount){
           if (response.data.status === 1) {
             dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.status})
               notification.success({
-                  message: "Variable rate amount updated sucessfully",
+                  message: "Variable rate amount updated successfully",
               });
               //dispatch(getProjectVariableRate(data[0].project_id))
               return Promise.resolve();
@@ -384,7 +384,7 @@ for(var i=0; i<applicapleRateLists.length;i++){
             if (response.data.status === 1) {
               dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.status})
                 notification.success({
-                    message: "Variable rate amount updated sucessfully",
+                    message: "Variable rate amount updated successfully",
                 });
                 //dispatch(getProjectVariableRate(data[0].project_id))
                 return Promise.resolve();
@@ -415,7 +415,7 @@ for(var i=0; i<applicapleRateLists.length;i++){
           }).then((response) => {
               if (response.data.status === 1) {
                   notification.success({
-                      message: "Variable rate amount updated sucessfully",
+                      message: "Variable rate amount updated successfully",
                   });
                  dispatch({ type: UPDATE_VARIABLE_RATE_FIRST, payload:true})
                   dispatch(getVariableRateTableData())

@@ -253,14 +253,17 @@ function DashboardNew(props) {
           menulist.current[5].menu_rights = true;
         }
 
-        if (data.control === 'Apply Leave - Save' && data.display_control === 'Y') {
-          menulist.current[6].menu_rights = true;
-        }
+// console.log(localStorage.getItem("designation"),'"HoD"',"localStorage")
+      // if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
+      if(localStorage.getItem("designation")==='"HoD"'){
+      menulist.current[7].menu_rights=true;
+      }
 
-
-        if (data.control === 'Ticket Creation - Save as Template' && data.display_control === 'Y' || data.control === 'Ticket Creation - Generate Ticket' && data.display_control === 'Y') {
-          menulist.current[7].menu_rights = true;
-        }
+      // if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
+        if((JSON.parse(localStorage.getItem("token")).department==="Super Admin")||(JSON.parse(localStorage.getItem("token")).department==="HR")||(JSON.parse(localStorage.getItem("token")).department==="IT")){  
+        
+        menulist.current[8].menu_rights=true;
+      }
 
         if (data.control === 'List of Employees - Go' && data.display_control === 'Y') {
           menulist.current[8].menu_rights = true;

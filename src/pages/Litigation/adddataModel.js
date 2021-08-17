@@ -32,7 +32,7 @@ const AddDataModel = (props) => {
     },
     phoneno: {
       value: "",
-      validation: [{ name: "mobileSurana" }],
+      validation: [{name:"mobile"}],
       error: null,
       errmsg: null,
     },
@@ -188,7 +188,15 @@ const AddDataModel = (props) => {
 
       let ResumeFrom_key = ["name", "phoneno", "emailid", "address"];
       ResumeFrom_key.map((data) => {
-        Litigation_Form[data].validation = [{ name: "required" }];
+        if(data=="phoneno"){
+          Litigation_Form[data].validation = [{ name: "required" },{name:"mobile"}];
+        }
+        else if(data=="emailid"){
+          Litigation_Form[data].validation = [{ name: "required" },{name:"email"}];
+        }
+        else{
+          Litigation_Form[data].validation = [{ name: "required" }];
+        }
       });
       setResumeFrom((prevState) => ({
         ...prevState,

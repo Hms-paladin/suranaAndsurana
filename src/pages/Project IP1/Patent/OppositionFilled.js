@@ -112,6 +112,7 @@ function OppositionFilled(props) {
     ]);
 
     useEffect(() => {
+        handleCancel()
         if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
           let indiaFil_key = ["opp_fill_date", "app_agent", "type_grant", "app_num", "opponent", "publicationdate", "title", "applicant"]
     
