@@ -214,13 +214,12 @@ function ProjectwiseTS(props) {
 
     useEffect(() => {
         console.log(props.Project_TimeSheet, "pD")
-
         let subCollapse = [];
         let multipleTab = [];
         let checkDupliactesProjectIds = [];
         props?.Project_TimeSheet?.map((data, i) => {
             let rowDataList = {}
-            let sample = {};
+            let ipCollapse = {};
             let tableRow1 = [];
             let tableRow = [];
             let tableRow2 = [];
@@ -230,15 +229,15 @@ function ProjectwiseTS(props) {
             checkDupliactesProjectIds.push(data.project_type_id)
             if (data.project_type_id === 1) {
 
-                sample["Design"] = data.project_details.filter((val) => val?.sub_project_id === 2)
-                sample["Patent"] = data.project_details.filter((val) => val?.sub_project_id === 3)
-                sample["Trademark"] = data.project_details.filter((val) => val?.sub_project_id === 1)
-                sample["Copyright"] = data.project_details.filter((val) => val?.sub_project_id === 4)
-                sample["IPABTrademark"] = data.project_details.filter((val) => val?.sub_project_id === 5)
-                sample["IPABDesign"] = data.project_details.filter((val) => val?.sub_project_id === 6)
+                ipCollapse["Design"] = data.project_details.filter((val) => val?.sub_project_id === 2)
+                ipCollapse["Patent"] = data.project_details.filter((val) => val?.sub_project_id === 3)
+                ipCollapse["Trademark"] = data.project_details.filter((val) => val?.sub_project_id === 1)
+                ipCollapse["Copyright"] = data.project_details.filter((val) => val?.sub_project_id === 4)
+                ipCollapse["IPABTrademark"] = data.project_details.filter((val) => val?.sub_project_id === 5)
+                ipCollapse["IPABDesign"] = data.project_details.filter((val) => val?.sub_project_id === 6)
 
-                if (sample?.Design.length > 0) {
-                    sample?.Design.map((dat, k) => {
+                if (ipCollapse?.Design.length > 0) {
+                    ipCollapse?.Design.map((dat, k) => {
                         let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
@@ -253,11 +252,11 @@ function ProjectwiseTS(props) {
 
                 }
                 if (tableRow1.length) {
-                    sample["Design"] = tableRow1;
+                    ipCollapse["Design"] = tableRow1;
                 }
-                if (sample?.Patent.length > 0) {
+                if (ipCollapse?.Patent.length > 0) {
                     let currentData = {}
-                    sample?.Patent.map((dat, k) => {
+                    ipCollapse?.Patent.map((dat, k) => {
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
@@ -270,12 +269,12 @@ function ProjectwiseTS(props) {
                     })
                 }
                 if (tableRow2.length) {
-                    sample["Patent"] = tableRow2;
+                    ipCollapse["Patent"] = tableRow2;
                 }
 
-                if (sample?.Trademark.length > 0) {
+                if (ipCollapse?.Trademark.length > 0) {
                     let currentData = {}
-                    sample?.Trademark.map((dat, k) => {
+                    ipCollapse?.Trademark.map((dat, k) => {
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
@@ -288,11 +287,11 @@ function ProjectwiseTS(props) {
                     })
                 }
                 if (tableRow.length) {
-                    sample["Trademark"] = tableRow;
+                    ipCollapse["Trademark"] = tableRow;
                 }
-                if (sample?.Copyright.length > 0) {
+                if (ipCollapse?.Copyright.length > 0) {
                     let currentData = {}
-                    sample?.Copyright.map((dat, k) => {
+                    ipCollapse?.Copyright.map((dat, k) => {
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
@@ -305,12 +304,12 @@ function ProjectwiseTS(props) {
                     })
                 }
                 if (tableRow3.length) {
-                    sample["Copyright"] = tableRow3;
+                    ipCollapse["Copyright"] = tableRow3;
                 }
 
-                if (sample?.IPABTrademark.length > 0) {
+                if (ipCollapse?.IPABTrademark.length > 0) {
                     let currentData = {}
-                    sample?.IPABTrademark.map((dat, k) => {
+                    ipCollapse?.IPABTrademark.map((dat, k) => {
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
@@ -323,11 +322,11 @@ function ProjectwiseTS(props) {
                     })
                 }
                 if (tableRow4.length) {
-                    sample["IPABTrademark"] = tableRow4;
+                    ipCollapse["IPABTrademark"] = tableRow4;
                 }
-                if (sample?.IPABDesign.length > 0) {
+                if (ipCollapse?.IPABDesign.length > 0) {
                     let currentData = {}
-                    sample?.IPABDesign.map((dat, k) => {
+                    ipCollapse?.IPABDesign.map((dat, k) => {
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
@@ -340,18 +339,16 @@ function ProjectwiseTS(props) {
                     })
                 }
                 if (tableRow5.length) {
-                    sample["IPABDesign"] = tableRow5;
+                    ipCollapse["IPABDesign"] = tableRow5;
 
                 }
-
-                for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
-                    subCollapse.push(
+                for (let [index, [key, value]] of Object.entries(Object.entries(ipCollapse))) {
+                    ipCollapse && subCollapse.push(
                         value.length &&
                         <Panel
                             header={`${key} (${value.length})`}
                             key={index + 1}
                         >
-
                             <EnhancedTable
                                 headCells={
                                     headCells
@@ -361,9 +358,8 @@ function ProjectwiseTS(props) {
                             />
                         </Panel>
                     )
-
                 }
-                multipleTab.push(
+                subCollapse.length && multipleTab.push(
                     data?.project_details?.length &&
                     <Panel
                         header={`${data.project_type} (${data?.project_details?.length})`}
@@ -373,9 +369,8 @@ function ProjectwiseTS(props) {
 
                     </Panel>
                 );
-
+                { console.log(subCollapse.length, "length1") }
             }
-
             else if ((data.project_type_id !== 1) && (checkDupliactesProjectIds[i] == data.project_type_id)) {
 
                 let otherDataList = []
@@ -391,7 +386,7 @@ function ProjectwiseTS(props) {
                     rowDataList["tothours"] = dat.no_of_hrs;
                     otherDataList.push(rowDataList)
                 })
-                multipleTab.push(
+                otherDataList.length && multipleTab.push(
                     data?.project_details?.length &&
                     <Panel
                         header={`${data.project_type} (${data?.project_details?.length})`}
@@ -402,10 +397,10 @@ function ProjectwiseTS(props) {
                                 headCells
                             }
                             rows={otherDataList}
-
                         />
                     </Panel>
                 );
+
             }
             setMultiplePanel(multipleTab);
         })
@@ -481,14 +476,10 @@ function ProjectwiseTS(props) {
                     <Grid item xs={2} container direction="row" justify="center" alignItems="center">
                         <CustomButton btnName={"Search"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
                     </Grid>
-                    <>
-
-                    </>
                 </Grid>
             </div>
-
+            {console.log(multiplePanel.length, "length")}
             <div className="DRcollapsecss">
-
                 <Collapse>
                     {multiplePanel}
                 </Collapse>

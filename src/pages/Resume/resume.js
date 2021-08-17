@@ -373,11 +373,11 @@ const ResumePage = (props) => {
   }, [props]);
 
   function checkValidation(data, key, multipleId) {
-    if (data !== 1 && data !== 10 && key === "candidate") {
-      console.log("candidate", experienceList.length);
-    } else {
-      employererr && setEmployererr(false);
-    }
+    // if (data !== 1 && data !== 10 && key === "candidate") {
+    //   console.log("candidate", experienceList.length);
+    // } else {
+    //   employererr && setEmployererr(false);
+    // }
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -1308,7 +1308,7 @@ const ResumePage = (props) => {
                   Please Add Previous Employer
                 </span>
               )}
-              {Resume_Form.candidate.value !== 10 && <div className="experienceList">
+              {<div className="experienceList">
                 <div style={{ fontWeight: 600 }}>Previous Employer Details *</div>
                 <div>
                   <img src={PlusIcon} onClick={showExperienceModel} />

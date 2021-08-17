@@ -190,7 +190,7 @@ function TicketCreation(props) {
         // LocationList
         let LocationList = [];
         props.LocationList.map((data) =>
-            LocationList.push({ id: data.status_id, value: data.status })
+            LocationList.push({ id: data.office_location_id, value: data.office_location })
         );
         setLocationList({ LocationList });
 
@@ -559,14 +559,14 @@ function TicketCreation(props) {
 
         <div>
 
-            {console.log(props.LocationList, "Loactions")}
+
             <div className="Titlediv">Recruitment Request Tickets</div>
             <div className="ticketContainer">
                 <div className="ticketGrid">
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
                             <div className="TThead">Department</div>
-                            <Labelbox type="select" placeholder="Department"
+                            <Labelbox type="select" //placeholder="Department"
                                 dropdown={department.Department}
                                 changeData={(data) => checkValidation(data, "department")}
                                 value={TicketCreation.department.value}
@@ -575,7 +575,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3}>
                             <div className="TThead">Designation</div>
-                            <Labelbox type="select" placeholder="Designation"
+                            <Labelbox type="select" //placeholder="Designation"
                                 dropdown={designationList.DesignationList}
                                 changeData={(data) => checkValidation(data, "designation")}
                                 value={TicketCreation.designation.value}
@@ -584,7 +584,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3}>
                             <div className="TThead">Location</div>
-                            <Labelbox type="select" placeholder="Location"
+                            <Labelbox type="select" //placeholder="Location"
                                 dropdown={locationList.LocationList}
                                 changeData={(data) => checkValidation(data, "location")}
                                 value={TicketCreation.location.value}
@@ -596,8 +596,8 @@ function TicketCreation(props) {
                 <div className="ticketGrid">
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
-                            <div className="TThead">Positions</div>
-                            <Labelbox type="text" placeholder="No. of Positions"
+                            <div className="TThead">No of positions</div>
+                            <Labelbox type="text" //placeholder="No. of Positions"
                                 changeData={(data) => checkValidation(data, "position")}
                                 value={TicketCreation.position.value}
                                 error={TicketCreation.position.error}
@@ -605,7 +605,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Required by</div>
-                            <Labelbox type="datepicker" placeholder="Required by" disablePast={true} minDate={tomorrow}
+                            <Labelbox type="datepicker" //placeholder="Required by" disablePast={true} minDate={tomorrow}
                                 changeData={(data) => checkValidation(data, "req_by")}
                                 value={TicketCreation.req_by.value}
                                 error={TicketCreation.req_by.error}
@@ -613,7 +613,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Qualification</div>
-                            <Labelbox type="select" placeholder="Qualification"
+                            <Labelbox type="select" //placeholder="Qualification"
                                 dropdown={qualificationList.Qualification}
                                 changeData={(data) => checkValidation(data, "qualification", qualificationList.Qualification)}
                                 value={TicketCreation.qualification.value}
@@ -623,7 +623,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Experience</div>
-                            <Labelbox type="text" placeholder="Experience"
+                            <Labelbox type="text" //placeholder="Experience"
                                 //  dropdown={resumeGetList.cityList}
                                 changeData={(data) => checkValidation(data, "experience")}
                                 value={TicketCreation.experience.value}
@@ -632,7 +632,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Language</div>
-                            <Labelbox type="select" placeholder="Language"
+                            <Labelbox type="select" //placeholder="Language"
                                 dropdown={languages.Languages}
                                 changeData={(data) => checkValidation(data, "language", languages.Languages)}
                                 value={TicketCreation.language.value}
@@ -642,7 +642,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">State</div>
-                            <Labelbox type="select" placeholder="State"
+                            <Labelbox type="select" //placeholder="State"
                                 dropdown={stateList.stateList}
                                 changeData={(data) => checkValidation(data, "state")}
                                 value={TicketCreation.state.value}
@@ -651,7 +651,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Age Limit</div>
-                            <Labelbox type="text" placeholder="Age Limit"
+                            <Labelbox type="text" //placeholder="Age Limit"
                                 changeData={(data) => checkValidation(data, "age_limit")}
                                 value={TicketCreation.age_limit.value}
                                 error={TicketCreation.age_limit.error}
@@ -663,7 +663,7 @@ function TicketCreation(props) {
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={3} >
                             <div className="TThead">Skills</div>
-                            <Labelbox type="select" placeholder="Skills"
+                            <Labelbox type="select" //placeholder="Skills"
                                 dropdown={requestGetList.skillsList}
                                 changeData={(data) => checkValidation(data, "skills", requestGetList.skillsList)}
                                 value={TicketCreation.skills.value}
@@ -673,7 +673,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Traits</div>
-                            <Labelbox type="select" placeholder="Traits"
+                            <Labelbox type="select" //placeholder="Traits"
                                 dropdown={requestGetList.traitsList}
                                 changeData={(data) => checkValidation(data, "traits", requestGetList.traitsList)}
                                 value={TicketCreation.traits.value}
@@ -683,7 +683,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Certifications</div>
-                            <Labelbox type="select" placeholder="Certifications"
+                            <Labelbox type="select" //placeholder="Certifications"
                                 dropdown={requestGetList.certificateList}
                                 changeData={(data) => checkValidation(data, "certifications", requestGetList.certificateList)}
                                 value={TicketCreation.certifications.value}
@@ -693,7 +693,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Specialization</div>
-                            <Labelbox type="select" placeholder="Specialization"
+                            <Labelbox type="select" //placeholder="Specialization"
                                 dropdown={requestGetList.specilalizaionsList}
                                 changeData={(data) => checkValidation(data, "specialization", requestGetList.specilalizaionsList)}
                                 value={TicketCreation.specialization.value}
@@ -703,7 +703,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Capablities</div>
-                            <Labelbox type="select" placeholder="Capablities"
+                            <Labelbox type="select" //placeholder="Capablities"
                                 dropdown={requestGetList.capabilityList}
                                 changeData={(data) => checkValidation(data, "capablities", requestGetList.capabilityList)}
                                 value={TicketCreation.capablities.value}
@@ -713,7 +713,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Talents</div>
-                            <Labelbox type="select" placeholder="Talents"
+                            <Labelbox type="select" //placeholder="Talents"
                                 dropdown={requestGetList.talentList}
                                 changeData={(data) => checkValidation(data, "talents", requestGetList.talentList)}
                                 value={TicketCreation.talents.value}
@@ -723,7 +723,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3}>
                             <div className="TThead">Assigned to</div>
-                            <Labelbox type="select" placeholder="Assigned to"
+                            <Labelbox type="select" //placeholder="Assigned to"
                                 dropdown={employeeList.EmployeeList}
                                 changeData={(data) => checkValidation(data, "assignedto")}
                                 value={TicketCreation.assignedto.value}
@@ -732,7 +732,7 @@ function TicketCreation(props) {
                         </Grid>
                         <Grid item xs={3} >
                             <div className="TThead">Remarks</div>
-                            <Labelbox type="textarea" placeholder="Tell us your Remarks"
+                            <Labelbox type="textarea" //placeholder="Tell us your Remarks"
                                 changeData={(data) => checkValidation(data, "remarks")}
                                 value={TicketCreation.remarks.value}
                                 error={TicketCreation.remarks.error}
