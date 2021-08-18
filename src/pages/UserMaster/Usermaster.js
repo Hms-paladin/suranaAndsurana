@@ -20,7 +20,8 @@ import {
   InsertStatus,
   UpdateSubstage,
   UpdateSubActivity,
-  getControls
+  getControls,
+  getLoactionsList
 } from "../../actions/UserMasterAction";
 import {
   getActivity,
@@ -168,6 +169,10 @@ const UserMaster = (props) => {
     { id: "control", label: "Control Name" },
     { id: "", label: "Edit" },
   ];
+  const header27 = [
+    { id: "office_Loaction", label: "Office Location Name" },
+    { id: "", label: "Edit" },
+  ];
   const dispatch = useDispatch();
   const [tableHeaderMaster, setTableHeaderMaster] = useState({
     header1: [
@@ -183,9 +188,9 @@ const UserMaster = (props) => {
   });
   const [userTableHeader, setUserTableHeader] = useState([]);
   const [getTablename, setgetTablename] = useState([]);
-  const [substageId,setsubstageId]=useState([])
+  const [substageId, setsubstageId] = useState([])
   const [tablevalues, settablevalues] = useState([]);
-  const [Statusvalue,setStatusvalue]=useState("")
+  const [Statusvalue, setStatusvalue] = useState("")
   const [UserMaster, setUserMaster] = useState({
     tablename: {
       value: "",
@@ -379,24 +384,30 @@ const UserMaster = (props) => {
       error: null,
       errmsg: null,
     },
-    control:{
-      value:"",
-      validation:[],
-      error:null,
-      errmsg:null,
-  }
+    control: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
+    office_Location: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    }
   });
 
   function checkValidation(data, key) {
 
     if (key === "stage_dropdown") {
       dispatch(getSubStage(data));
-      setsubstageId(data) 
+      setsubstageId(data)
     }
     if (key === "class_type") {
       dispatch(getTableClass(data));
     }
-    if (data&&key === "activity_drop") {
+    if (data && key === "activity_drop") {
       dispatch(getSubActivity(data));
     }
     // if (key === "status_type") {
@@ -406,145 +417,149 @@ const UserMaster = (props) => {
       handleCancel()
       var value = props.table_name.find((item) => {
         return item.table_id == data;
-        
+
       });
       settable_name_value(value);
-    
-      if(data===3){
+
+      if (data === 3) {
         validationHide()
-         UserMaster.groupname.validation=[{name:"required"}]
+        UserMaster.groupname.validation = [{ name: "required" }]
       }
-      else if(data===4){
+      else if (data === 4) {
         validationHide()
-        const From_key=["status_type","status_name"]
-       From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-       
-      
-     }
-      else if(data===5){
-        validationHide()
-        UserMaster.skill_name.validation=[{name:"required"}]
-       
-        
-     }else if(data===6){
-      validationHide()
-      UserMaster.traits_name.validation.push({name:"required"})
-      
-     }
-     else if(data===7){
-      validationHide()
-      UserMaster.certification_name.validation.push({name:"required"})
-     } 
-     else if(data===8){
-      validationHide()
-      UserMaster.specialization_name.validation.push({name:"required"})
-     } 
-     else if(data===9){
-      validationHide()
-      UserMaster.qualification_name.validation.push({name:"required"})
-     } 
-     else if(data===11){
-      validationHide()
-      UserMaster.industry.validation.push({name:"required"})
-     } 
-     else if(data===12){
-      validationHide()
-      UserMaster.institute.validation.push({name:"required"})
-      
-     } 
-     else if(data===13){
-      validationHide()
-      UserMaster.capability.validation.push({name:"required"})
-     }
-     else if(data===14){
-      validationHide()
-      UserMaster.talents.validation.push({name:"required"})
-     } 
-     else if(data===15){
-      validationHide()
-      UserMaster.resourse.validation.push({name:"required"})
-     }
-     else if(data===16){
-      validationHide()
-      UserMaster.designation.validation.push({name:"required"})
-     }
-     else if(data===17){
-      validationHide()
-      UserMaster.question.validation.push({name:"required"})
-     }
-     else if(data===18){
-      validationHide()
-      UserMaster.department.validation.push({name:"required"})
-     }
-     else if(data===19){
-      validationHide()
-      UserMaster.activity.validation.push({name:"required"})
-     }
-     else if(data===20){
-      validationHide()
-       const From_key=["sub_activity","activity_drop"]
-       From_key.map((data) => {
-          UserMaster[data].validation.push({name:"required"})
+        const From_key = ["status_type", "status_name"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
         });
-     } 
-     else if(data===21){
-      validationHide()
-      const From_key=["class_name","class_type","description"]
-      From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-    }   
-     else if(data===23){
-      validationHide()
-      UserMaster.court.validation.push({name:"required"})
-     }
-     else if(data===24){
-      validationHide()
-      UserMaster.range.validation.push({name:"required"})
-     }
-     else if(data===25){
-      validationHide()
-      UserMaster.stage_name.validation.push({name:"required"})
-     } 
-     else if(data===26){
-      validationHide()
-      const From_key=["sub_stage","stage_dropdown"]
-      From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-     }
-     else if(data===28){
-      validationHide()
-      UserMaster.case_type.validation.push({name:"required"})
-     }
-     else if(data===29){
-      validationHide()
-      const From_key=["project_type","checklist_name"]
-      From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-     } 
-     else if(data===30){
-      validationHide()
-      UserMaster.control.validation.push({name:"required"})
-     }         
-      
+
+
+      }
+      else if (data === 5) {
+        validationHide()
+        UserMaster.skill_name.validation = [{ name: "required" }]
+
+
+      } else if (data === 6) {
+        validationHide()
+        UserMaster.traits_name.validation.push({ name: "required" })
+
+      }
+      else if (data === 7) {
+        validationHide()
+        UserMaster.certification_name.validation.push({ name: "required" })
+      }
+      else if (data === 8) {
+        validationHide()
+        UserMaster.specialization_name.validation.push({ name: "required" })
+      }
+      else if (data === 9) {
+        validationHide()
+        UserMaster.qualification_name.validation.push({ name: "required" })
+      }
+      else if (data === 11) {
+        validationHide()
+        UserMaster.industry.validation.push({ name: "required" })
+      }
+      else if (data === 12) {
+        validationHide()
+        UserMaster.institute.validation.push({ name: "required" })
+
+      }
+      else if (data === 13) {
+        validationHide()
+        UserMaster.capability.validation.push({ name: "required" })
+      }
+      else if (data === 14) {
+        validationHide()
+        UserMaster.talents.validation.push({ name: "required" })
+      }
+      else if (data === 15) {
+        validationHide()
+        UserMaster.resourse.validation.push({ name: "required" })
+      }
+      else if (data === 16) {
+        validationHide()
+        UserMaster.designation.validation.push({ name: "required" })
+      }
+      else if (data === 17) {
+        validationHide()
+        UserMaster.question.validation.push({ name: "required" })
+      }
+      else if (data === 18) {
+        validationHide()
+        UserMaster.department.validation.push({ name: "required" })
+      }
+      else if (data === 19) {
+        validationHide()
+        UserMaster.activity.validation.push({ name: "required" })
+      }
+      else if (data === 20) {
+        validationHide()
+        const From_key = ["sub_activity", "activity_drop"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 21) {
+        validationHide()
+        const From_key = ["class_name", "class_type", "description"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 23) {
+        validationHide()
+        UserMaster.court.validation.push({ name: "required" })
+      }
+      else if (data === 24) {
+        validationHide()
+        UserMaster.range.validation.push({ name: "required" })
+      }
+      else if (data === 25) {
+        validationHide()
+        UserMaster.stage_name.validation.push({ name: "required" })
+      }
+      else if (data === 26) {
+        validationHide()
+        const From_key = ["sub_stage", "stage_dropdown"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 28) {
+        validationHide()
+        UserMaster.case_type.validation.push({ name: "required" })
+      }
+      else if (data === 29) {
+        validationHide()
+        const From_key = ["project_type", "checklist_name"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 30) {
+        validationHide()
+        UserMaster.control.validation.push({ name: "required" })
+      }
+      else if (data === 31) {
+        validationHide()
+        UserMaster.office_Location.validation.push({ name: "required" })
+      }
+
     }
-    if(key==="status_type"){
-      UserMaster.status_name.value=""
+    if (key === "status_type") {
+      UserMaster.status_name.value = ""
       var value = tablevalues.get_status_type.find((item) => {
         setEditvisible(false);
         return item.id == data;
-        
+
       });
       setStatusvalue(value)
-      console.log("status_type",value.id)
+      console.log("status_type", value.id)
       dispatch(getTableStatus(value))
     }
-    
- 
+
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       UserMaster[key].validation
@@ -561,7 +576,7 @@ const UserMaster = (props) => {
     }));
   }
 
- 
+
   const [UserGroupsList, setUserGroupsList] = useState([]);
   const [table_name_value, settable_name_value] = useState([]);
   const [TableData, setTableData] = useState([]);
@@ -601,6 +616,7 @@ const UserMaster = (props) => {
     dispatch(getTableGroup(table_name_value.table_names));
     dispatch(getCheckList());
     dispatch(getControls())
+    dispatch(getLoactionsList())
   }, []);
 
   useEffect(() => {
@@ -661,7 +677,7 @@ const UserMaster = (props) => {
       ProjectType.push({ id: data.project_type_id, value: data.project_type });
     });
     props.Status.map((data, index) => {
-      get_status_type.push({ id: index+1, value: data.status_type });
+      get_status_type.push({ id: index + 1, value: data.status_type });
       // setStatusvalue.push(data)
     });
     settablevalues({
@@ -696,7 +712,8 @@ const UserMaster = (props) => {
     let class_data = [];
     let sub_activity = [];
     let checklist_data = [];
-    let control_data=[]
+    let control_data = [];
+    let office_Location_data = [];
     props.GroupData.map((data) => {
       group_data.push({
         groupname: data.group_name,
@@ -1025,6 +1042,18 @@ const UserMaster = (props) => {
         ),
       });
     });
+    props.getLoactionsList.map((data, index) => {
+      office_Location_data.push({
+        officeLocation: data.office_location,
+        edit: (
+          <img
+            src={Edit}
+            className="edit_p"
+            onClick={() => CommonEdit(data.office_location_id, data)}
+          />
+        ),
+      });
+    });
 
     setTableData({
       get_table_status_data,
@@ -1051,12 +1080,14 @@ const UserMaster = (props) => {
       sub_activity,
       group_data,
       checklist_data,
-      control_data
+      control_data,
+      office_Location_data
+
     });
 
- 
+
   }, [props, table_name_value.table_names]);
-console.log(props.stage,"satge")
+  console.log(props.stage, "satge")
   function Submit(data) {
     // alert(substageId)
     setStatusvalue((prevState) => ({
@@ -1065,7 +1096,7 @@ console.log(props.stage,"satge")
     setsubstageId((prevState) => ({
       ...prevState,
     }));
-    
+
     var mainvalue = {};
     var targetkeys = Object.keys(UserMaster);
     for (var i in targetkeys) {
@@ -1078,7 +1109,7 @@ console.log(props.stage,"satge")
       mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-    if (filtererr.length >0) {
+    if (filtererr.length > 0) {
     } else {
       if (data === 21) {
         dispatch(
@@ -1088,25 +1119,25 @@ console.log(props.stage,"satge")
             Editvisible,
             // props.Class_Table_Data.class_id,
             // Statusvalue,
-            props.Class_Table_Data&&props?.Class_Table_Data[0]?.class_type
+            props.Class_Table_Data && props?.Class_Table_Data[0]?.class_type
           )
         ).then(() => {
           setEditvisible(false);
           handleCancel()
         });
       } else if (data === 20) {
-        if(Editvisible){
-        dispatch(UpdateSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
-      else{
-        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
+        if (Editvisible) {
+          dispatch(UpdateSubActivity(UserMaster, EditStoreData.SubActivityEdit, Editvisible, props.SubActivity_Data && props.SubActivity_Data[0].activity_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
+        else {
+          dispatch(InsertSubActivity(UserMaster, EditStoreData.SubActivityEdit, Editvisible, props.SubActivity_Data && props.SubActivity_Data[0].activity_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
       } else if (data === 29) {
         dispatch(
           InsertCheckList(UserMaster, EditStoreData.ChecklistEdit, Editvisible)
@@ -1136,7 +1167,8 @@ console.log(props.stage,"satge")
         data === 25 ||
         data === 27 ||
         data === 28 ||
-        data === 30
+        data === 30 ||
+        data === 31
       ) {
         if (Editvisible) {
           dispatch(
@@ -1159,28 +1191,28 @@ console.log(props.stage,"satge")
           });
         }
       } else if (data === 26) {
-        if(Editvisible){
-        dispatch(UpdateSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
-      else{
-        dispatch(InsertSubstage(UserMaster,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
+        if (Editvisible) {
+          dispatch(UpdateSubstage(UserMaster, EditStoreData.SubStageEdit, Editvisible, props.SubStage_data && props.SubStage_data[0].stage_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
+        else {
+          dispatch(InsertSubstage(UserMaster, props.SubStage_data && props.SubStage_data[0].stage_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
       } else if (data === 4) {
         dispatch(
-          InsertStatus(UserMaster, EditStoreData.StatusEdit, Editvisible,Statusvalue)
+          InsertStatus(UserMaster, EditStoreData.StatusEdit, Editvisible, Statusvalue)
         ).then(() => {
           setEditvisible(false);
           handleCancel()
         });
       }
     }
-  //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
+    //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
     setUserMaster((prevState) => ({
       ...prevState,
     }));
@@ -1223,8 +1255,8 @@ console.log(props.stage,"satge")
     var designation = props.Designation.find((data) => {
       return data.designation_id == id;
     });
-    var question=props.Question.find((data)=>{
-      return data.question_id==id
+    var question = props.Question.find((data) => {
+      return data.question_id == id
     })
     var department = props.Department.find((data) => {
       return data.department_id == id;
@@ -1232,7 +1264,7 @@ console.log(props.stage,"satge")
     var activity = props.Activity.find((data) => {
       return data.activity_id == id;
     });
-   
+
     var court = props.Court.find((data) => {
       return data.location_id == id;
     });
@@ -1245,8 +1277,11 @@ console.log(props.stage,"satge")
     var casetype = props.CaseType.find((data) => {
       return data.case_type_id == id;
     });
-    var control =props.getTableControl.find((data)=>{
-      return data.screen_control_id==id
+    var control = props.getTableControl.find((data) => {
+      return data.screen_control_id == id
+    })
+    var office_Location = props.getLoactionsList.find((data) => {
+      return data.office_location_id == id
     })
     UserMaster.groupname.value = data.group_name;
     UserMaster.skill_name.value = data.skill_name;
@@ -1267,7 +1302,8 @@ console.log(props.stage,"satge")
     UserMaster.range.value = data.range;
     UserMaster.stage_name.value = data.stage;
     UserMaster.case_type.value = data.case_type;
-    UserMaster.control.value=data.control
+    UserMaster.control.value = data.control
+    UserMaster.office_Location.value = data.office_location
     setEditStoreData({
       group,
       traits,
@@ -1288,7 +1324,10 @@ console.log(props.stage,"satge")
       range,
       stage,
       casetype,
-      control
+      control,
+      office_Location
+
+
     });
     setUserMaster((prevState) => ({
       ...prevState,
@@ -1331,7 +1370,7 @@ console.log(props.stage,"satge")
       return data.status_id == id;
     });
     UserMaster.status_name.value = data.status;
-    
+
     setEditvisible(true);
 
     setEditStoreData({ StatusEdit });
@@ -1369,53 +1408,53 @@ console.log(props.stage,"satge")
   };
   const handleCancel = () => {
     let From_key = [
-      "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
-      "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
-      "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage","control"
+      "groupname", "skill_name", "class_name", "class_type", "description", "activity", "activity_drop", "project_type", "checklist_name",
+      "status_type", "status_name", "status_name", "traits_name", "specialization_name", "certification_name", "qualification_name",
+      "industry", "institute", "capability", "talents", "resourse", "designation", "question", "department", "activity", "sub_activity",
+      "court", "range", "stage_dropdown", "stage_name", "case_type", "activity_drop", "sub_stage", "control", "office_Location"
     ];
 
     From_key.map((data) => {
       UserMaster[data].value = "";
     });
-  
-  
+
+
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   };
   const validationHide = () => {
     let From_key = [
-      "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
-      "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
-      "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage","control"
+      "groupname", "skill_name", "class_name", "class_type", "description", "activity", "activity_drop", "project_type", "checklist_name",
+      "status_type", "status_name", "status_name", "traits_name", "specialization_name", "certification_name", "qualification_name",
+      "industry", "institute", "capability", "talents", "resourse", "designation", "question", "department", "activity", "sub_activity",
+      "court", "range", "stage_dropdown", "stage_name", "case_type", "activity_drop", "sub_stage", "control", "office_Location"
     ];
 
     From_key.map((data) => {
-      UserMaster[data].validation =[];
+      UserMaster[data].validation = [];
     });
-  
-  
+
+
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   };
-   ///*****user permission**********/
-   const [saveRights, setSaveRights] = useState([])
-useEffect(() => {
-  if(props.UserPermission.length>0&&props.UserPermission){
-     let data_res_id = props.UserPermission.find((val) => { 
-     return (
-         "User Masters - Save" == val.control
-     ) 
- })
- setSaveRights(data_res_id)
- }
+  ///*****user permission**********/
+  const [saveRights, setSaveRights] = useState([])
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "User Masters - Save" == val.control
+        )
+      })
+      setSaveRights(data_res_id)
+    }
 
- }, [props.UserPermission]);
+  }, [props.UserPermission]);
 
-/////////////
+  /////////////
   return (
     <div className="user_master_parent">
       <div className="user_master_h">User Master</div>
@@ -1802,22 +1841,32 @@ useEffect(() => {
               />
             </div>
           )}
-              {UserMaster.tablename.value === 30 && (
-              <Labelbox
-                type="text"
-                placeholder={"Control Name"}
-                changeData={(data) => checkValidation(data, "control")}
-                value={UserMaster.control.value}
-                error={UserMaster.control.error}
-                errmsg={UserMaster.control.errmsg}
-              />)}
+          {UserMaster.tablename.value === 30 && (
+            <Labelbox
+              type="text"
+              placeholder={"Control Name"}
+              changeData={(data) => checkValidation(data, "control")}
+              value={UserMaster.control.value}
+              error={UserMaster.control.error}
+              errmsg={UserMaster.control.errmsg}
+            />)}
+
+          {UserMaster.tablename.value === 31 && (
+            <Labelbox
+              type="text"
+              placeholder={"Office Location Name"}
+              changeData={(data) => checkValidation(data, "office_Location")}
+              value={UserMaster.office_Location.value}
+              error={UserMaster.office_Location.error}
+              errmsg={UserMaster.office_Location.errmsg}
+            />)}
 
           <div>
             {UserMaster.tablename.value >= 3 && (
               <img
                 src={PlusIcon}
-                onClick={() => saveRights&&saveRights.display_control&&saveRights.display_control==='Y'&&Submit(UserMaster.tablename.value)}
-                style={{cursor:  saveRights&&saveRights.display_control&&saveRights.display_control==="Y"?'pointer':'not-allowed'}}
+                onClick={() => saveRights && saveRights.display_control && saveRights.display_control === 'Y' && Submit(UserMaster.tablename.value)}
+                style={{ cursor: saveRights && saveRights.display_control && saveRights.display_control === "Y" ? 'pointer' : 'not-allowed' }}
                 className="plus_icon_user"
               />
             )}
@@ -2003,9 +2052,16 @@ useEffect(() => {
           />
         )}
 
-        {UserMaster.tablename.value===30&&<EnhancedTable headCells={header26}
-          rows={TableData.control_data}
-           aligncss="aligncss"/>} 
+        {UserMaster.tablename.value === 30 &&
+          <EnhancedTable headCells={header26}
+            rows={TableData.control_data}
+            aligncss="aligncss" />}
+
+        {UserMaster.tablename.value === 31 &&
+          <EnhancedTable headCells={header27}
+            rows={TableData.office_Location_data}
+            aligncss="aligncss" />}
+
       </div>
     </div>
   );
@@ -2044,9 +2100,10 @@ const mapStateToProps = (state) => ({
   CheckList_Data: state.UserMasterReducer.getChecklist,
   ClassDropdown: state.UserMasterReducer.get_user_class,
   Update_text: state.UserMasterReducer.Common_Update_text,
-  UpdateSubstage:state.UserMasterReducer.Update_Substage,
-  UpdateSubActivity:state.UserMasterReducer.Update_subactivity,
-  getTableControl:state.UserMasterReducer.getControls,
+  UpdateSubstage: state.UserMasterReducer.Update_Substage,
+  UpdateSubActivity: state.UserMasterReducer.Update_subactivity,
+  getTableControl: state.UserMasterReducer.getControls,
+  getLoactionsList: state.UserMasterReducer.getLoactionsList,
   UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 

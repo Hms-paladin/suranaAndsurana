@@ -17,6 +17,10 @@ import { apiurl } from "../../utils/baseUrl";
 import moment from 'moment';
 import { roundToNearestMinutes } from 'date-fns/esm';
 import { notification } from "antd";
+import {
+  getInterviewStatus
+} from "../../actions/MasterDropdowns";
+
 
 const headCells = [
   { id: "view", label: "View" },
@@ -47,6 +51,7 @@ function Hrsearch(props) {
   const [roundValue, setRoundValue] = useState()
   const [goRights, setGoRights] = useState([])
   const [interviewScheduleRights, setInterviewScheduleRights] = useState([])
+  const [statusId, setStatusId] = useState()
 
   const [HrSearch_Form, setHrSearchFrom] = useState({
     designation_id: {
@@ -77,13 +82,13 @@ function Hrsearch(props) {
   const handleCheck = (event, resume_id, designation_id, round) => {
     setRoundValue(round)
 
-    if (event.target.checked===true) {
+    if (event.target.checked === true) {
       setSelectedCandidateId([resume_id])
       setDeignationID(designation_id)
     } else {
       setSelectedCandidateId([])
       setDeignationID()
-    } 
+    }
     // if (selectedCandidateId.includes(resume_id)) {
     //   selectedCandidateId.map((data, index) => {
     //     if (data === resume_id) {
@@ -95,7 +100,7 @@ function Hrsearch(props) {
     //   selectedCandidateId.push(resume_id)
     //   setDeignationID(designation_id)
     // }
-// console.log(event.target.checked,"checkList")
+    // console.log(event.target.checked,"checkList")
     setCheckedList(
       prevState => ({
         // ...prevState,
@@ -136,53 +141,51 @@ function Hrsearch(props) {
 
       setdesignationdata({ Designation })
 
-      Axios({
-        method: "get",
-        url: apiurl + "get_Interview_Status",
-      }).then((response) => {
-        let interview_status = [];
-        response.data.data.map((data, index) =>
-          interview_status.push({ value: data.status, id: data.status_id })
-        );
-        setinterviewStatus({ interview_status });
-      });
-
     }, [dispatch])
 
   }, [])
+
   useEffect(() => {
     let multipleTable = []
     console.log(props.GetRowData, "GetRowData")
     props.GetRowData.map((data) => {
       let rowDataList = []
-if(data.result.length>0){
-      data.result.length>0&&data.result.map((data, index) => {
+      if (data.result.length > 0) {
+        data.result.length > 0 && data.result.map((data, index) => {
 
-        rowDataList.push({
-          view: <img
-            src={Eyes}
-            className="viewCandidatesList"
-            onClick={() => viewCandidate(data.resume_id)}
-          />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-          basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: moment(data.interviewed_date).format('DD-MM-YYYY'),
-          score: data.score, round: data.round, result: data.status,
-          box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id, data.designation_id, data.round)} name={"checked" + data.resume_id+data.designation_id}
-            checked={checkList["checked" + data.resume_id+data.designation_id]} value={checkList["checked" + data.resume_id]} />
+          rowDataList.push({
+            view: <img
+              src={Eyes}
+              className="viewCandidatesList"
+              onClick={() => viewCandidate(data.resume_id)}
+            />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+            basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: moment(data.interviewed_date).format('DD-MM-YYYY'),
+            score: data.score, round: data.round, result: data.status,
+            box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id, data.designation_id, data.round)} name={"checked" + data.resume_id + data.designation_id}
+              checked={checkList["checked" + data.resume_id + data.designation_id]} value={checkList["checked" + data.resume_id]} />
+          })
         })
-      })
-      multipleTable.push(
-        <EnhancedTable
-          headCells={headCells}
-          rows={rowDataList}
-          tabletitle={data.designation}
-        />
-      )
-}
+        multipleTable.push(
+          <EnhancedTable
+            headCells={headCells}
+            rows={rowDataList}
+            tabletitle={data.designation}
+          />
+        )
+      }
     })
     setMultipleTable(multipleTable)
 
   }, [props.GetRowData, test])
+
+
   function checkValidation(data, key) {
+
+    if (key == "round") {
+      dispatch(getInterviewStatus(data))
+      setStatusId(true)
+    }
+
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -260,8 +263,15 @@ if(data.result.length>0){
 
   }, [props.UserPermission]);
 
+  //For page render dropdowns
+  useEffect(() => {
+    let statusList = []
+    props.getInterviewStatus.map((data) => {
+      statusList.push({ id: data.status_id, value: data.status })
+    })
+    setinterviewStatus({ statusList })
+  }, [props.getInterviewStatus])
 
-  //    console.log(rights,"rigths")
 
   function rightsNotification() {
     notification.success({
@@ -269,8 +279,12 @@ if(data.result.length>0){
     });
   }
   /////////////
+
   return (
-    <div className="hrContainer">
+
+    < div className="hrContainer" >
+
+
       <div className="hrHeader">
         <Grid item xs={12} container direction="row" spacing={1}>
           <Grid item xs={3}>
@@ -292,15 +306,17 @@ if(data.result.length>0){
               value={HrSearch_Form.round.value}
             />
           </Grid>
-          <Grid item xs={3}>
-            <Labelbox
-              type="select"
-              placeholder="Status"
-              dropdown={interviewStatus.interview_status}
-              changeData={(data) => checkValidation(data, "status_id")}
-              value={HrSearch_Form.status_id.value}
-            />
-          </Grid>
+          <>
+            { statusId && <Grid item xs={3}>
+              <Labelbox
+                type="select"
+                placeholder="Status"
+                dropdown={interviewStatus.statusList}
+                changeData={(data) => checkValidation(data, "status_id")}
+                value={HrSearch_Form.status_id.value}
+              />
+            </Grid>}
+          </>
           <Grid item xs={3}>
             <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
           </Grid>
@@ -336,7 +352,7 @@ if(data.result.length>0){
         handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
         res_data_id={viewId}
       />
-    </div>
+    </div >
   );
 }
 
@@ -345,6 +361,7 @@ const mapStateToProps = state => (
   {
     GetRowData: state.HrSearchRowData,
     UserPermission: state.UserPermissionReducer.getUserPermission,
+    getInterviewStatus: state.getOptions.getInterviewStatus || [],
   }
 )
 
