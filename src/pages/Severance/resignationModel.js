@@ -135,7 +135,7 @@ function ResignationApproveval(props) {
     }
     function Update_Noc(task) {
 
-        if (task === "It_NOC") {
+        if (task === "IT_NOC") {
             dispatch(UpdateItNoc(checked, props.GetSeverance[0] && props.GetSeverance[0].employee_id, task)).then(() => {
                 props.closemodal()
                 setChecked(false)
@@ -190,7 +190,7 @@ function ResignationApproveval(props) {
                         <div className="severanceData">{severanceData.resignationDate}</div>
                     </div>
                 }
-                {(props.TaskModelTitle === "Hr_NOC" || props.TaskModelTitle === "It_NOC" || props.TaskModelTitle === "Admin_NOC" || props.TaskModelTitle === "Finance_NOC") &&
+                {(props.TaskModelTitle === "Hr_NOC" || props.TaskModelTitle === "IT_NOC" || props.TaskModelTitle === "Admin_NOC" || props.TaskModelTitle === "Finance_NOC") &&
                     <div>
                         <div>Noc</div>
                         <div><Checkbox onChange={HandleChange} checked={checked} /></div>
@@ -237,7 +237,7 @@ function ResignationApproveval(props) {
                 </div>
 
             </div>}
-            {(props.TaskModelTitle === "Hr_NOC" || props.TaskModelTitle === "It_NOC" || props.TaskModelTitle === "Admin_NOC" || props.TaskModelTitle === "Finance_NOC") && <div className="appraisalBtn">
+            {(props.TaskModelTitle === "Hr_NOC" || props.TaskModelTitle === "IT_NOC" || props.TaskModelTitle === "Admin_NOC" || props.TaskModelTitle === "Finance_NOC") && <div className="appraisalBtn">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => Update_Noc(props.TaskModelTitle)} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={() => props.closemodal()} />
             </div>}
