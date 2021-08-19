@@ -286,7 +286,9 @@ export default class Labelbox extends Component {
 						filterOption={(input, option) =>
 							option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 						}
-						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
+						onChange={(value) => this.props.changeData && this.props.changeData(value)}
+						onSearch={(value) => this.props.searchData && this.props.searchData(value)}
+						onBlur={()=>this.props.blurData && this.props.blurData()}>
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
 							if (item.value) {
 								if (this.props.mode === "multiple") {

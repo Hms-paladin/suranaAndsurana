@@ -16,6 +16,7 @@ export const insertCheckList = (data) => async dispatch => {
         })
             .then(function (response) {
                 if (response.data.status === 1) {
+                    dispatch(getCheckListsNames())
                     dispatch(getCheckLists());
                     notification.success({
                         message: 'Checklist created Successfully',

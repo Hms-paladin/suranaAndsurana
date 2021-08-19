@@ -40,6 +40,10 @@ const KRA = (props) => {
     const [datechange,setdatechange]=useState(false)
     const [empId, setEmpId] = useState(localStorage.getItem("empId"))
     const [EmpIdTrue,setEmpIdTrue]=useState(false)
+    const [reference,setReference] = useState([]);
+    const [testDate, setTestDate] = useState({})
+
+
     const [kpi_form, setKpi_form] = useState({
 
         activity: {
@@ -67,9 +71,7 @@ const KRA = (props) => {
             errmsg: null,
         },
     });
-    const [reference,setReference] = useState([]);
-    const [testDate, setTestDate] = useState({})
-
+  
 
     useEffect(() => {
         dispatch(getActivity());
@@ -150,27 +152,29 @@ const KRA = (props) => {
 
     }, [props.UserPermission]);
     /////////////
+const get_period_by_id=()=>{
+    axios({
+        method: 'POST',
+        url: apiurl + 'get_period_by_id',
+        data: {
+            "emp_id": localStorage.getItem("empId"),
+        }
+    })
+    .then((response) => {
+            
+        if(response.data.status===1){
 
+            kpi_form.fromperiod.value=response.data.data[0].period_from
+            kpi_form.toperiod.value=moment(moment(response.data.data[0].period_from,'YYYY-MM-DD').add(5, "months")).format('YYYY-MM-DD')
+          
+            setKpi_form(prevState => ({
+                ...prevState,
+            }));
+        }  
+    }) 
+}
     useEffect(() => {
-        axios({
-                method: 'POST',
-                url: apiurl + 'get_period_by_id',
-                data: {
-                    "emp_id": localStorage.getItem("empId"),
-                }
-            })
-            .then((response) => {
-                    
-                if(response.data.status===1){
-
-                    kpi_form.fromperiod.value=response.data.data[0].period_from
-                    kpi_form.toperiod.value=moment(moment(response.data.data[0].period_from,'YYYY-MM-DD').add(6, "months")).format('YYYY-MM-DD')
-                  
-                    setKpi_form(prevState => ({
-                        ...prevState,
-                    }));
-                }  
-            }) 
+        get_period_by_id()
     }, []);
 
     
@@ -183,7 +187,6 @@ const KRA = (props) => {
         })
 
         if (kpi_form.fromperiod.value != "" && kpi_form.toperiod.value != "") {
-            setDisabledate(true)
             setTodisable(true)
         }
 
@@ -238,31 +241,32 @@ const KRA = (props) => {
     const editRows = (data) => {
         setRowUpdate(true)
         setIndex(data)
-        let Activity_Name = reference[data].activitys
-        let activityId;
+        console.log(reference,"referencereference")
+        // let Activity_Name = reference[data].activitys
+        // let activityId;
 
-        activity.Activity && activity.Activity.filter((data) => {
-            if (data.value === Activity_Name) {
-                activityId = data.id
-            }
-        })
-        setKpi_form((prevState) => ({
-            ...prevState,
-            // kpi_form:{
-            percentage: {
-                value: reference[data].percent,
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            activity: {
-                value: activityId,
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            // }
-        }));
+        // activity.Activity && activity.Activity.filter((data) => {
+        //     if (data.value === Activity_Name) {
+        //         activityId = data.id
+        //     }
+        // })
+        // setKpi_form((prevState) => ({
+        //     ...prevState,
+        //     // kpi_form:{
+        //     percentage: {
+        //         value: reference[data].percent,
+        //         validation: [{ name: "required" }],
+        //         error: null,
+        //         errmsg: null,
+        //     },
+        //     activity: {
+        //         value: activityId,
+        //         validation: [{ name: "required" }],
+        //         error: null,
+        //         errmsg: null,
+        //     },
+        //     // }
+        // }));
 
     }
 useEffect(()=>{
@@ -306,8 +310,6 @@ useEffect(()=>{
     const handleCancel = () => {
         let From_key = [
             "activity",
-            "toperiod",
-            "fromperiod",
             "percentage",
         ];
 
@@ -319,6 +321,7 @@ useEffect(()=>{
                 throw error;
             }
         });
+        setReference([]);
         setKpi_form((prevState) => ({
             ...prevState,
         }));
@@ -345,7 +348,8 @@ useEffect(()=>{
                    
                 
                 dispatch(InsertKra(kpi_form, activityId, reference[i].percent, reference.length, i + 1)).then((response) => {
-                    setDisabledate(false)
+                    get_period_by_id()
+                    handleCancel()
                 })
                
             }

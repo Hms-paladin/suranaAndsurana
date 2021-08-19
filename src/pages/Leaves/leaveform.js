@@ -140,7 +140,7 @@ function LeaveForm(props) {
         },
         other_days: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "allowNumaricOnly" }],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -274,7 +274,7 @@ function LeaveForm(props) {
         Leave_Form.reasoncmt.value = val.leave_reason || ""
         Leave_Form.remarks.value = val.remarks || ""
         setFileData(val.hall_ticket)
-        val.subject_details != "" ? setExamSchedule(val.subject_details) : setExamSchedule([])
+        val.subject_details&&val.subject_details != "" ? setExamSchedule(val.subject_details) : setExamSchedule([])
 
         // setEmp_leave_cep_sub_id(val.emp_leave_cep_sub_id)
         setEmp_leave_id(val.emp_leave_id)
@@ -283,8 +283,6 @@ function LeaveForm(props) {
             ...prevState,
         }));
 
-
-        console.log(val.leave_type_id, "leave_type_id")
     }
 
     useEffect(() => {
@@ -346,8 +344,7 @@ function LeaveForm(props) {
             }else{
                 setTimeexceed(false)
             }
-            // console.log(startTime,endTime,duration, "ssssssssssssss")
-
+  
         }
 
         if (key === "fromdate"){
@@ -764,6 +761,7 @@ function LeaveForm(props) {
        console.log("data Handle change", data);
         // setFromDate(data);
    }
+   console.log(filedata,"filedata")
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>
@@ -1077,8 +1075,8 @@ function LeaveForm(props) {
                                     </Grid>
                                     <Grid item xs={2}>
                                         <br />
-                                        {editBtn && (((examSchedule.length < Leave_Form.exam_days.value) || plusicon === 1) ? <img src={PlusIcon} className="plusicon" onClick={viewexamschedule} /> : '')}
-                                        {!editBtn && (examSchedule.length == Leave_Form.exam_days.value ? "" : <img src={PlusIcon} className="plusicon" onClick={viewexamschedule} />)}
+                                        {editBtn && (((examSchedule&&examSchedule.length < Leave_Form.exam_days.value) || plusicon === 1) ? <img src={PlusIcon} className="plusicon" onClick={viewexamschedule} /> : '')}
+                                        {!editBtn && (examSchedule&&examSchedule.length == Leave_Form.exam_days.value ? "" : <img src={PlusIcon} className="plusicon" onClick={viewexamschedule} />)}
                                     </Grid>
 
                                     <Grid item xs={10}>
@@ -1094,14 +1092,14 @@ function LeaveForm(props) {
                                     
                                 <Grid item xs={6} container direction="row" spacing={2}>
 
-                                    {(examSchedule.length > 0 || examSchedule[0] && examSchedule[0].length > 0) && <div className="examinfotable">
+                                    {(examSchedule&&examSchedule.length > 0 || examSchedule&&examSchedule[0] && examSchedule[0].length > 0) && <div className="examinfotable">
                                         <div>
                                             <div className="examfieldSubject">Subject</div>
                                             <div className="examfieldDate">Date</div>
                                             <div className="examfieldDate">Action</div>
                                         </div>
 
-                                        {examSchedule.length > 0 && examSchedule.map((data, index) => {
+                                        {examSchedule&&examSchedule.length > 0 && examSchedule.map((data, index) => {
 
                                             return (
                                                 <div className="examdate">
