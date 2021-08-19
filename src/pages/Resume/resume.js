@@ -373,11 +373,11 @@ const ResumePage = (props) => {
   }, [props]);
 
   function checkValidation(data, key, multipleId) {
-    if (data !== 1 && data !== 10 && key === "candidate") {
-      console.log("candidate", experienceList.length);
-    } else {
-      employererr && setEmployererr(false);
-    }
+    // if (data !== 1 && data !== 10 && key === "candidate") {
+    //   console.log("candidate", experienceList.length);
+    // } else {
+    //   employererr && setEmployererr(false);
+    // }
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
