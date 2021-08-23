@@ -29,6 +29,12 @@ function TimeSheetStartModel(props) {
             error: null,
             errmsg: null,
         },
+        endTime: {
+            value: "",
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
         activity: {
             value: "",
             validation: [],
@@ -46,7 +52,7 @@ function TimeSheetStartModel(props) {
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
-            disabled:false
+            disabled: false
         },
         tag: {
             value: "",
@@ -112,7 +118,7 @@ function TimeSheetStartModel(props) {
             ...prevState,
         }));
 
-        props.close_model&&props.close_model(false)
+        props.close_model && props.close_model(false)
     };
 
     useEffect(() => {
@@ -125,7 +131,7 @@ function TimeSheetStartModel(props) {
     }, []);
 
     useEffect(() => {
-        if(props.approve_timesheet&&props.approve_timesheet!==''){
+        if (props.approve_timesheet && props.approve_timesheet !== '') {
 
             // timeSheetForm.startTime.value
             // timeSheetForm.startTime.value
@@ -179,15 +185,15 @@ function TimeSheetStartModel(props) {
 
 
     const submitstop = () => {
-        let tim= dateFormat(timeSheetForm.startTime.value != undefined &&  timeSheetForm.startTime.value !=''? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
-       
+        let startTime = dateFormat(timeSheetForm.startTime.value != undefined && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
+
         var data = {
-            "project_id": props.approve_timesheet&&props.approve_timesheet!=''&&props.approve_timesheet.project_id||rowId,
+            "project_id": props.approve_timesheet && props.approve_timesheet != '' && props.approve_timesheet.project_id || rowId,
             "activiity_id": timeSheetForm.activity.value,
             "sub_activity_id": timeSheetForm.subActivity.value,
             "assignee_id": timeSheetForm.assignTo.value,
             "start_date": timeSheetForm.fromDate.value,
-            "end_date": timeSheetForm.toDate.value && timeSheetForm.toDate.value !=''?timeSheetForm.toDate.value:timeSheetForm.fromDate.value,
+            "end_date": timeSheetForm.toDate.value && timeSheetForm.toDate.value != '' ? timeSheetForm.toDate.value : timeSheetForm.fromDate.value,
             "assigned_by": localStorage.getItem("empId"),
             "priority": timeSheetForm.priority.value,
             "description": timeSheetForm.description.value,
@@ -197,7 +203,7 @@ function TimeSheetStartModel(props) {
             "emp_id": localStorage.getItem("empId"),
             "task_id": "111",
             "start_date": timeSheetForm.fromDate.value,
-            "start_time": tim,//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+            "start_time": startTime,//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
@@ -206,11 +212,20 @@ function TimeSheetStartModel(props) {
             handleCancel();
             setChangeStop(false)
         })
- 
+
 
     }
     const submitstart = () => {
-
+        // let end_time = dateFormat(timeSheetForm.endTime.value != undefined && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss");
+        // var timesheetData = {
+        //     "emp_id": localStorage.getItem("empId"),
+        //     "task_id": "111",
+        //     "end_date": timeSheetForm.fromDate.value,
+        //     "end_time": end_time,//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
+        //     "comment": timeSheetForm.description.value,
+        //     "created_by": localStorage.getItem("empId"),
+        // }
+        
         setChangeStop(true)
 
 
@@ -261,14 +276,14 @@ function TimeSheetStartModel(props) {
     }
 
 
-useEffect(()=>{
-    timeSheetForm.assignTo.value=Number(localStorage.getItem("empId"))
-    timeSheetForm.assignTo.disabled=true
-    settimeSheetForm((prevState) => ({
-        ...prevState,
-    }));
+    useEffect(() => {
+        timeSheetForm.assignTo.value = Number(localStorage.getItem("empId"))
+        timeSheetForm.assignTo.disabled = true
+        settimeSheetForm((prevState) => ({
+            ...prevState,
+        }));
 
-},[assignedToLists])
+    }, [assignedToLists])
 
     function onSubmit() {
         var mainvalue = {};
@@ -311,12 +326,12 @@ useEffect(()=>{
 
                             )
                         })}
-                        {props.approve_timesheet&&props.approve_timesheet!==''&&<>
-                                    <Grid item xs={4}>{props.approve_timesheet.project_type}</Grid>
-                                    <Grid item xs={4}>{props.approve_timesheet.project_name}</Grid>
-                                    <Grid item xs={4}>{props.approve_timesheet.client} </Grid>
+                        {props.approve_timesheet && props.approve_timesheet !== '' && <>
+                            <Grid item xs={4}>{props.approve_timesheet.project_type}</Grid>
+                            <Grid item xs={4}>{props.approve_timesheet.project_name}</Grid>
+                            <Grid item xs={4}>{props.approve_timesheet.client} </Grid>
 
-                                </>}
+                        </>}
                         <Grid item xs={4}>
                             <Labelbox type="select"
                                 placeholder={"Activity"}
@@ -409,7 +424,7 @@ useEffect(()=>{
                         </Grid>
                         <Grid item xs={3}>
                             End Time
-                            </Grid>
+                        </Grid>
 
                     </Grid>
                     <div className="timeSheetComments">
@@ -488,12 +503,15 @@ useEffect(()=>{
                                 dropdown={taggList.tagTypeData}
                             /></Grid>
                         <Grid item xs={4}></Grid>
-                        <Grid item xs={3}>
+                        {/* <Grid item xs={3}>
                             <Labelbox type="datepicker"
                                 placeholder={"Start Date"}
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={3}>
+                            Start Date
+                        </Grid>
+                        {/* <Grid item xs={3}>
                             <Labelbox type="timepicker"
                                 placeholder={"Deadline"}
                                 changeData={(data) =>
@@ -503,21 +521,31 @@ useEffect(()=>{
                                 error={timeSheetForm.startTime.error}
                                 errmsg={timeSheetForm.startTime.errmsg}
                             />
+                        </Grid> */}
+                        <Grid item xs={3}>
+                            Start Time
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
-                                placeholder={"Start Date"}
-                                changeData={(data) =>
-                                    checkValidation(data, "fromDate")
-                                }
-                                value={timeSheetForm.fromDate.value}
-                                error={timeSheetForm.fromDate.error}
-                                errmsg={timeSheetForm.fromDate.errmsg}
+                                changeData={(data) => checkValidation(data, "toDate")}
+                                value={timeSheetForm.toDate.value}
+                                error={timeSheetForm.toDate.error}
+                                errmsg={timeSheetForm.toDate.errmsg}
+                                placeholder={" End date "}
+                                maxDate={new Date()}
                             />
                         </Grid>
                         <Grid item xs={3}>
-                            End Time
-                            </Grid>
+                            <Labelbox type="timepicker"
+                                placeholder={"End Time"}
+                                changeData={(data) =>
+                                    checkValidation(data, "endTime")
+                                }
+                                value={timeSheetForm.endTime.value}
+                                error={timeSheetForm.endTime.error}
+                                errmsg={timeSheetForm.endTime.errmsg}
+                            />
+                        </Grid>
 
                     </Grid>
                     <div className="timeSheetComments">

@@ -205,7 +205,7 @@ useEffect(() => {
         }));
     }
     const handleCancel=()=>{
-        let Key=["project_type","project_name","client","expense","amount","modeofpayment","description"]
+        let Key=["date","project_type","project_name","client","expense","amount","modeofpayment","description"]
         Key.map((data)=>{
             Expenses[data].value=""
         })

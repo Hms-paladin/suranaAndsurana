@@ -136,7 +136,15 @@ function AddClient(props) {
       validation: [],
       error: null,
       errmsg: null,
-    }
+    },
+    upload: {
+      value: null,
+      validation: [],
+      error: null,
+      errmsg: null,
+      disabled: false,
+      view_file: null
+    },
   });
 
   useEffect(() => {
@@ -235,8 +243,7 @@ function AddClient(props) {
     }
   };
 
- async function checkValidation(data, key, multipleId) {
-
+  async function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       Addclient_Form[key].validation
@@ -266,10 +273,10 @@ function AddClient(props) {
     }
     // (end)
 
-   
 
-   
-  
+
+
+
     if (key === "client_name" && data) {
 
 
@@ -280,22 +287,22 @@ function AddClient(props) {
           "client_name": data,
         },
       }).then((response) => {
-        console.log(response.data.status,"response.data.status")
-        if(response.data.status===0){
+        console.log(response.data.status, "response.data.status")
+        if (response.data.status === 0) {
           let dynObj = {
             value: data,
             error: true,
             errmsg: "Client Name Already Exits",
             validation: Addclient_Form[key].validation,
           };
-      
+
           setAddclient_Form((prevState) => ({
             ...prevState,
             ['client_name']: dynObj,
           }));
-        return Promise.resolve();
+          return Promise.resolve();
         }
-      
+
       });
 
     }
@@ -341,49 +348,56 @@ function AddClient(props) {
   }
 
   async function onfileupload() {
+    const From_key = ['poa_name', 'upload'];
+    // console.log("1111111111111111111111111111111",Array.isArray('Addclient_Form.upload.value'))
+    if (!Addclient_Form.upload.value||Addclient_Form.upload.value==='' || Addclient_Form.poa_name.value === '') {
+      console.log("111111111111111111111112222222222")
+      From_key.map((data) => {
+        // if (Addclient_Form[data].value === ""||Addclient_Form[data].value=== []) {
+          console.log("Addclient_Form.upload.value",data)
+          let dynObj = {
+            value: Addclient_Form[data].value,
+            error: true,
+            errmsg: "Field required",
+            validation: [{ "name": "required" }],
+          };
+          setAddclient_Form((prevState) => ({
+            ...prevState,
+            [data]: dynObj,
+          }));
+        // }
+      });
 
-    if (Addclient_Form.poa_name.value === '') {
-      // notification.success({
-      //   message: 'Please Select Document',
-      // });
-      let dynObj = {
-        value: Addclient_Form['poa_name'].value,
-        error: true,
-        errmsg: "Field required",
-        validation: [{ "name": "required" }],
-      };
-      // console.log(dynObj,'dynObj')
-      setAddclient_Form((prevState) => ({
-        ...prevState,
-        ['poa_name']: dynObj,
-      }));
     } else {
-
+      console.log(Addclient_Form.upload.value,"1111111111111111111111144444444444")
       setFileupload((prevState) => (
         [...prevState, {
           poa_name: Addclient_Form.poa_name.value,
-          selectedFile: "",
+          selectedFile: Addclient_Form.upload.value,
         }]
 
       ));
 
-      let dynObj = {
-        value: '',
-        error: false,
-        errmsg: "",
-        validation: [],
-      };
+      // From_key.map((data) => {
+
+      //   try {
+      //     data!=='upload'?(Addclient_Form[data].value = ""):(Addclient_Form[data].value = []);
+      //     console.log("mapping", Addclient_Form[data].value)
+      //   } catch (error) {
+      //     throw (error)
+      //   }
+      // });
       setAddclient_Form((prevState) => ({
         ...prevState,
-        ['poa_name']: dynObj,
       }));
+
     }
 
 
   }
 
 
-  console.log(test, "filetest");
+  console.log(fileupload, "filetest");
 
   const onStateClear = () => {
     let From_key = [
@@ -542,7 +556,7 @@ function AddClient(props) {
               <div className="uploadfileSpace">
                 {" "}
                 {console.log(props, selectedFile, "selectedFileprops")}
-                <Upload
+                {/* <Upload
                   action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
                   onChange={(info) => handleChange(info, "examScheduleUpload")}
                   fileList={selectedFile}
@@ -551,7 +565,23 @@ function AddClient(props) {
                   <Button>
                     <UploadOutlined />Click to upload
                   </Button>
-                </Upload>
+                </Upload> */}
+                {/* <div className="Tradeheadings">Upload</div> */}
+                <Labelbox type="upload"
+                  changeData={(data) => checkValidation(data, "upload")}
+                  view_file={Addclient_Form.upload.view_file}
+                  // remove_file={() => (setAddclient_Form(prevState => ({
+                  //   ...prevState,
+                  //   upload: {
+                  //     value: [], error: Addclient_Form.upload.error, errmsg: Addclient_Form.upload.errmsg, disabled: Addclient_Form.upload.disabled, view_file: null
+                  //   },
+                  // })))}
+                  value={Addclient_Form.upload.value}
+                  error={Addclient_Form.upload.error}
+                  errmsg={Addclient_Form.upload.errmsg}
+                  disabled={Addclient_Form.upload.disabled}
+                />
+
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }} >
@@ -566,7 +596,7 @@ function AddClient(props) {
 
                 <div className="doc_upload_items">
                   <div style={{ width: '50%' }}>{data.poa_name}</div>
-                  <div>{""}</div>
+                  <div>{data.selectedFile.name}</div>
                 </div></>
               )
             })}

@@ -53,7 +53,7 @@ export const getProjectVariableRate = (project_id) => async dispatch => {
 }
 
 
-export const InsertProjectVariableRate = (data,DataId) => async dispatch => {
+export const InsertProjectVariableRate = (data) => async dispatch => {
 
  
     console.log("checkid", data.range_id)
@@ -72,7 +72,7 @@ export const InsertProjectVariableRate = (data,DataId) => async dispatch => {
         
           api = "insert_project_variable_rate"
           method = "POST"
-          DocumentData.set("project_id", DataId[0].project_id || 0)
+          DocumentData.set("project_id", data.project_id || 0)
           DocumentData.set("range_id", data.range_id||0)
           DocumentData.set("court_id", data.location_id || 0)
           DocumentData.set("designation_id", data.designation_id || 0)
@@ -104,7 +104,7 @@ export const InsertProjectVariableRate = (data,DataId) => async dispatch => {
               });
               dispatch({type:INSERT_VARIABLERATE,payload:response.data.status})
             
-            dispatch(getProjectVariableRate(DataId[0].project_id))
+            dispatch(getProjectVariableRate( data.project_id || 0))
 
             return Promise.resolve();
           }else{
@@ -265,6 +265,10 @@ export const InsertVariableRate = (RateMaster) => async dispatch => {
         });
         dispatch(getVariableRateTableData())
         return Promise.resolve();
+      }else{
+        notification.success({
+          message: response.data.msg,
+        });
       }
     });
 
@@ -335,8 +339,9 @@ export const deleteVariableRate = (id,project_id) => async dispatch => {
 
 export const UpdateVariableRate = (data,allRowAmount, allrowList,applicapleRatesAmount,applicapleRateLists) => async dispatch => {
   // console.log(projectSearchCreate,"projectSearchCreate")
-
+  var allrowIndex=false
   for(var i=0; i<allrowList.length;i++){
+    allrowIndex=((i+1)===allrowList.length?true:false);
 var amount = allRowAmount["amountSearch"+i];
 var ratMasterId = allrowList[i].stage_list_id
 if(amount != allrowList[i].Amount){
@@ -354,9 +359,12 @@ if(amount != allrowList[i].Amount){
       }).then((response) => {
           if (response.data.status === 1) {
             dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.status})
+            if(allrowIndex){
               notification.success({
                   message: "Variable rate amount updated successfully",
               });
+              allrowIndex=false
+            }
               //dispatch(getProjectVariableRate(data[0].project_id))
               return Promise.resolve();
           }
@@ -368,8 +376,11 @@ if(amount != allrowList[i].Amount){
 
   }
 }
-
+var appIndex=false
 for(var i=0; i<applicapleRateLists.length;i++){
+  
+  appIndex=((i+1)===applicapleRateLists.length?true:false);
+
   var amount = applicapleRatesAmount["amt"+i];
   var ratMasterId = applicapleRateLists[i].rate_master_id
   if(amount != applicapleRateLists[i].amount){
@@ -387,9 +398,13 @@ for(var i=0; i<applicapleRateLists.length;i++){
         }).then((response) => {
             if (response.data.status === 1) {
               dispatch({ type: UPDATE_VARIABLERATE, payload: response.data.status})
+
+              if(appIndex){
                 notification.success({
                     message: "Variable rate amount updated successfully",
                 });
+                appIndex=false
+              }
                 //dispatch(getProjectVariableRate(data[0].project_id))
                 return Promise.resolve();
             }

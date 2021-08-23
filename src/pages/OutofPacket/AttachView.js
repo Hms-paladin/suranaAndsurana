@@ -43,10 +43,10 @@ const settings = {
 function AttachView (props) {
  const download=(file)=>{
 
-        const url = window.URL.createObjectURL(new Blob([file]));
+        // const url = window.URL.createObjectURL(new Blob([file]));
         const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "image.png"); //or any other extension
+        link.href = file;
+        link.setAttribute("download", file); //or any other extension
         document.body.appendChild(link);
         link.click();
 
@@ -64,9 +64,9 @@ console.log("ViewData",file)
                 </div>
                 
           </Carousel> */}
-          <div><img src={props.ViewData.bill} style={{width:"100%",height:"100%"}}/></div>
+          <div><img src={props.ViewData} style={{width:"100%",height:"100%"}}/></div>
           <div style={{textAlign:"center",marginTop:"10px"}}>
-           <CustomButton btnName={"Download"} custombtnCSS={"attch_btn_css"} onBtnClick={()=>download(props.ViewData.bill) } btnCustomColor="customPrimary"/>
+           <CustomButton btnName={"Download"} custombtnCSS={"attch_btn_css"} onBtnClick={()=>download(props.ViewData) } btnCustomColor="customPrimary"/>
         </div>
       
     </div>

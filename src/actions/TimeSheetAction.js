@@ -135,7 +135,7 @@ export const update_approve_timesheet = (data) => async dispatch => {
                 approved_start_time: data.start_time === null ? '-' : data.start_time,
                 approved_end_date: data.end_date === null ? '-' : data.end_date,
                 approved_end_time: data.end_time === null ? '-' : data.end_time,
-                approved_by: 1
+                approved_by:localStorage.getItem("empId"),
             };
             updatelist.push(listarray);
         }

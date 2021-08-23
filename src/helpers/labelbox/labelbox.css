@@ -263,3 +263,8 @@ div.formdiv > div.selectbrdred > div.ant-select-selection{
 .ant-select-dropdown-menu-item {
   color: rgb(102, 98, 98);
 }
+
+.inputID::placeholder {
+  color: black !important;
+  opacity: 1;
+}

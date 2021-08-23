@@ -1,10 +1,8 @@
 import react, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
-import { Upload, message, Button, Icon } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import PublishIcon from '@material-ui/icons/Publish';
 import CustomButton from '../../../component/Butttons/button';
 import moment from 'moment'
 import {
@@ -15,30 +13,8 @@ import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 function TradeMarkOposition2(properties) {
 
-    const props = {
-        name: 'file',
-
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                setselectedFile(info.file.originFileObj);
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
     const [tradeStatusList, settradeStatusList] = useState({})
     const [classDetList, setclassDetList] = useState({})
-    const [poaList, setpoaList] = useState({})
-    const [usageDetList, setusageDetList] = useState({})
-    const [countryDetList, setcountryDetList] = useState({})
-    const [selectedFile, setselectedFile] = useState([]);
-    const [selectedFile1, setselectedFile1] = useState([]);
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
     useEffect(() => {
         dispatch(getTradeMark(rowId));
         dispatch(getTradeMarkStatus());
@@ -130,6 +106,9 @@ function TradeMarkOposition2(properties) {
             TradeMarkForm.internal_status.value = obj.internal_status;
             // if (obj.internal_status && obj.internal_status.length)
             //     TradeMarkForm.internal_status.disabled = true;
+
+            obj.upload_image && (obj.upload_image != '') && (TradeMarkForm.upload.view_file = obj.upload_image);
+            obj.orders && (obj.orders != '') && (TradeMarkForm.orders.view_file = obj.orders);
         }
 
 
@@ -151,51 +130,14 @@ function TradeMarkOposition2(properties) {
         )
         setclassDetList({ classDetailsData })
 
-        let POADetailsData = []
-        properties.POAList.map((data) =>
-            POADetailsData.push({
-                value: data.POA,
-                id: data.client_id
-            })
-        )
-        setpoaList({ POADetailsData })
-
-        let tmUsageDetailsData = []
-        properties.tmUsageDetailsList.map((data) =>
-            tmUsageDetailsData.push({
-                value: data.status,
-                id: data.status_id
-            })
-        )
-        setusageDetList({ tmUsageDetailsData })
-
-        let countryListsData = []
-        properties.countriesList.map((data) =>
-            countryListsData.push({
-                value: data.country,
-                id: data.country_id
-            })
-        )
-        setcountryDetList({ countryListsData })
-
-
-
-    }, [properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList,properties.tradeMark  ]);
+    }, [properties.tradeStatusList, properties.classDetailsList,properties.tradeMark  ]);
 
     const dispatch = useDispatch()
     let { rowId } = useParams()
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
-    useEffect(() => {
-        setProjectDetails(properties.ProjectDetails);
-        properties.ProjectDetails.length > 0 && setidDetails({
-            project_id: properties.ProjectDetails[0].project_id,
-            client_id: properties.ProjectDetails[0].client_id,
-        })
-    }, [properties.ProjectDetails])
-
-
+  
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
             value: 0,
@@ -294,7 +236,21 @@ function TradeMarkOposition2(properties) {
             error: null,
             errmsg: null,
             disabled: false,
-        }
+        },
+        upload: {
+            value: null,
+            error: null,
+            errmsg: null,
+            disabled: false,
+            view_file: null
+        },
+        orders: {
+            value: null,
+            error: null,
+            errmsg: null,
+            disabled: false,
+            view_file: null
+        },
 
 
     })
@@ -316,39 +272,67 @@ function TradeMarkOposition2(properties) {
               (obj) => TradeMarkForm[obj].error == true
           ); 
         console.log(filtererr.length);
-        let params = {
-            "project_id": rowId,//radeMarkForm.project_id.value,
-            "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
-            "our_reference": TradeMarkForm.ourReference.value,
-            "mark_id": TradeMarkForm.mark_id.value===''?'0':TradeMarkForm.mark_id.value,
-            "upload_image": selectedFile,
-            "application_no": TradeMarkForm.application_no.value,
-            "application_date": TradeMarkForm.application_date.value,
-            "tmj_number": TradeMarkForm.tmj_number.value,
-            "tmj_date": TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value, 
-            "opposition_no": TradeMarkForm.oppositionNumber.value,
-            "applicant": TradeMarkForm.applicant.value,
-            "applicant_agent": TradeMarkForm.applicantAgent.value,
-            "internal_status": TradeMarkForm.internal_status.value,
-            "deadline":TradeMarkForm.end_date.value===''?'0000-00-00':TradeMarkForm.end_date.value,
-            "created_by": localStorage.getItem("empId"),
-            "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-            "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-            "updated_by": localStorage.getItem("empId"),
-            "ip_address": "ddf"
-        }
-        if (TradeMarkForm.class_id.value != "") {
-            params["class_id"] = TradeMarkForm.class_id.value;
-        }
         
+        // let params = {
+        //     "project_id": rowId,//radeMarkForm.project_id.value,
+        //     "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
+        //     "our_reference": TradeMarkForm.ourReference.value,
+        //     "mark_id": TradeMarkForm.mark_id.value===''?'0':TradeMarkForm.mark_id.value,
+        //     "upload_image": selectedFile,
+        //     "application_no": TradeMarkForm.application_no.value,
+        //     "application_date": TradeMarkForm.application_date.value,
+        //     "tmj_number": TradeMarkForm.tmj_number.value,
+        //     "tmj_date": TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value, 
+        //     "opposition_no": TradeMarkForm.oppositionNumber.value,
+        //     "applicant": TradeMarkForm.applicant.value,
+        //     "applicant_agent": TradeMarkForm.applicantAgent.value,
+        //     "internal_status": TradeMarkForm.internal_status.value,
+        //     "deadline":TradeMarkForm.end_date.value===''?'0000-00-00':TradeMarkForm.end_date.value,
+        //     "created_by": localStorage.getItem("empId"),
+        //     "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+        //     "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+        //     "updated_by": localStorage.getItem("empId"),
+        //     "ip_address": "ddf"
+        // }
+// console.log(TradeMarkForm.orders.value,"TradeMarkForm.orders.value")
+        let formData = new FormData();
+        formData.append("project_id",rowId)
+        formData.append("status_id",TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value)
+        formData.append("our_reference",TradeMarkForm.ourReference.value||'')
+        formData.append("mark_id",TradeMarkForm.mark_id.value)
+        formData.append("upload_image",(!TradeMarkForm.upload.view_file&&!TradeMarkForm.upload.value)?[]:(TradeMarkForm.upload.value?TradeMarkForm.upload.value:TradeMarkForm.upload.view_file.substr(35) ))
+        formData.append("orders", (!TradeMarkForm.orders.view_file&&!TradeMarkForm.orders.value)?[]:(TradeMarkForm.orders.value?TradeMarkForm.orders.value:TradeMarkForm.orders.view_file.substr(35) ))
+        formData.append("application_no",TradeMarkForm.application_no.value||'')
+        formData.append("application_date",TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value)
+        formData.append("tmj_number",TradeMarkForm.tmj_number.value||'')
+        formData.append("tmj_date",TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value)
+
+        formData.append("opposition_no",TradeMarkForm.oppositionNumber.value||'')
+        formData.append("applicant",TradeMarkForm.applicant.value||'')
+        formData.append("applicant_agent",TradeMarkForm.applicantAgent.value||'')
+        
+        formData.append("deadline",TradeMarkForm.end_date.value===''?'0000-00-00':TradeMarkForm.end_date.value)
+        formData.append("internal_status",TradeMarkForm.internal_status.value)
+
+        formData.append("created_by",localStorage.getItem("empId"))
+        formData.append("created_on",moment().format('YYYY-MM-DD HH:m:s'))
+        formData.append("updated_on",moment().format('YYYY-MM-DD HH:m:s'))
+        formData.append("updated_by",localStorage.getItem("empId"))
+        formData.append("ip_address","ddf")
+
+        if (TradeMarkForm.class_id.value&&TradeMarkForm.class_id.value != "") {
+            formData.set("class_id",TradeMarkForm.class_id.value)
+            // params["class_id"] = TradeMarkForm.class_id.value;
+        }
+
         if (TradeMarkForm.trademark_id.value != 0) {
-            params["trademark_id"] = TradeMarkForm.trademark_id.value;
+            formData.set("trademark_id",TradeMarkForm.trademark_id.value)
         }
 
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
         } else {
-        dispatch(insertTradeMark(params)).then(() => {
+        dispatch(insertTradeMark(formData,TradeMarkForm,rowId)).then(() => {
             handleCancel()
         })
     }
@@ -366,13 +350,17 @@ function TradeMarkOposition2(properties) {
 
     const handleCancel = () => {
         let From_key = ["ourReference", "status_id", "class_id", "applicant", "applicantAgent", "mark_id", "application_no", "application_date",
-            "end_date","oppositionNumber", "internal_status", "tmj_number", "tmj_date"
+            "end_date","oppositionNumber", "internal_status", "tmj_number", "tmj_date","upload","orders"
         ]
 
         From_key.map((data) => {
             try {
-                TradeMarkForm[data].value = "";
-                console.log("mapping", TradeMarkForm[data].value);
+                if (data != "upload"||data != "orders") {
+                    TradeMarkForm[data].value = ""
+                } else {
+                    TradeMarkForm[data].view_file = ""
+                    TradeMarkForm[data].value = null;
+                }
             } catch (error) {
                 throw error;
             }
@@ -392,6 +380,7 @@ function TradeMarkOposition2(properties) {
             value: data,
             error: !errorcheck.state,
             errmsg: errorcheck.msg,
+            view_file: TradeMarkForm[key].view_file && TradeMarkForm[key].view_file,
             validation: TradeMarkForm[key].validation
         }
 
@@ -417,6 +406,7 @@ function TradeMarkOposition2(properties) {
         }));
 
     };
+
     return (
         <div className="trademarkOpsosotionContainer">
             <Grid container direction={"column"}>
@@ -455,15 +445,21 @@ function TradeMarkOposition2(properties) {
                     </Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Upload</div>
-                        <div className="uploadbox_div" >
-                            <div>
-                                <Upload {...props} className="uploadbox_tag"
-                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+                        <Labelbox type="upload"
+                            changeData={(data) => checkValidation(data, "upload")}
+                            view_file={TradeMarkForm.upload.view_file}
+                            remove_file={() => (setTradeMarkForm(prevState => ({
+                                ...prevState,
+                                upload: {
+                                    value: null, error: TradeMarkForm.upload.error, errmsg: TradeMarkForm.upload.errmsg, disabled: TradeMarkForm.upload.disabled, view_file: null
+                                },
+                            })))}
+                            value={TradeMarkForm.upload.value}
+                            error={TradeMarkForm.upload.error}
+                            errmsg={TradeMarkForm.upload.errmsg}
+                            disabled={TradeMarkForm.upload.disabled}
+                        />
 
-                                    <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>
-                            </div>
-                        </div>
                     </Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Class</div>
@@ -571,14 +567,21 @@ function TradeMarkOposition2(properties) {
                     </Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Order</div>
-                        <div className="uploadbox_div" >
-                            <div>
-                                <Upload {...props} className="uploadbox_tag"
-                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
-                                    <div className="upload_file_inside"><PublishIcon /></div>
-                                </Upload>
-                            </div>
-                        </div>
+                        <Labelbox type="upload"
+                            changeData={(data) => checkValidation(data, "orders")}
+                            view_file={TradeMarkForm.orders.view_file}
+                            remove_file={() => (setTradeMarkForm(prevState => ({
+                                ...prevState,
+                                orders: {
+                                    value: null, error: TradeMarkForm.orders.error, errmsg: TradeMarkForm.orders.errmsg, disabled: TradeMarkForm.orders.disabled, view_file: null
+                                },
+                            })))}
+                            value={TradeMarkForm.orders.value}
+                            error={TradeMarkForm.orders.error}
+                            errmsg={TradeMarkForm.orders.errmsg}
+                            disabled={TradeMarkForm.orders.disabled}
+                        />
+
                     </Grid>
                 </Grid>
             </Grid>
@@ -646,9 +649,6 @@ const mapStateToProps = (state) =>
 
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
     classDetailsList: state.tradeMarkReducer.getClassDetailsList || [],
-    POAList: state.tradeMarkReducer.getPOAList || [],
-    tmUsageDetailsList: state.tradeMarkReducer.gettradeMarkUsageList || [],
-    countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     tradeMark: state.tradeMarkReducer.getTrademark || {},
 });

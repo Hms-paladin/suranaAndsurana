@@ -58,12 +58,12 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
 export const InsertClientDocument = (Document_Form, id) => async dispatch => {
 
   for (var i = 0; i < Document_Form.length; i++) {
-    var fileObject = Document_Form[i].originFileObj;
+    var fileObject = Document_Form[i].selectedFile;
     var poa_name = Document_Form[i].poa_name;
 
     var DocumentData = new FormData();
     DocumentData.set("client_id", id)
-    DocumentData.set("POA", poa_name || "TEST")
+    DocumentData.set("POA", poa_name || "")
     DocumentData.append("file_name_upload", fileObject)
     DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
     DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))

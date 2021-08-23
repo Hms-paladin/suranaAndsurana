@@ -139,13 +139,13 @@ export const getCountryDetails= () => async dispatch => {
     }
 }
 
-export const insertTradeMark = (params) => async dispatch => {
-    // console.log(params.trademark_id,"trademark_id")
+export const insertTradeMark = (formData,params,project_id) => async dispatch => {
+    console.log(params.trademark_id.value,"trademark_id")
     try {
         var url ='insert_trade_mark';
         var method = 'POST';
         var message="Trade Mark Added Successfully";
-        if(params.trademark_id&&params.trademark_id!==0){
+        if(params.trademark_id.value&&params.trademark_id.value!==0){
             url = 'update_trade_mark';
             method ='PUT';
             message="Trade Mark Updated Successfully";
@@ -153,14 +153,14 @@ export const insertTradeMark = (params) => async dispatch => {
         axios({
             method: method,
             url: apiurl + url,
-            data: params
+            data: formData, headers: { "Content-Type": "multipart/form-data" },
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
                     message: message,
                   });
                 dispatch({type:INSERT_TRADE_MARK,payload:response.data.status})
-                dispatch(getTradeMark(params.project_id))
+                dispatch(getTradeMark(project_id))
               return Promise.resolve();
             }
           });

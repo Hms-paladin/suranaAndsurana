@@ -216,7 +216,7 @@ export const updateTaskDates = (params) => async dispatch => {
     }
 }
 
-export const insertTimeSheetbyTime = (params, time, task, timeSheetStartDate) => async dispatch => {
+export const insertTimeSheetbyTime = (params, time, task) => async dispatch => {
     var url = 'insert_stop_time';
     if (time == true) {
         url = 'insert_start_time'
@@ -239,7 +239,7 @@ export const insertTimeSheetbyTime = (params, time, task, timeSheetStartDate) =>
                     dispatch(updateTaskDates(task));
                 }
 
-                dispatch(getTaskList(localStorage.getItem("empId")));
+                dispatch(getTaskList(localStorage.getItem("empId"),"Active"));
                 var msg = response.data.msg;
                 notification.success({
                     message: `Time Sheet ${time === true?'Started':'Stopped'}`,
@@ -454,14 +454,15 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
 }
 
 
-export const getTaskList = (empId) => async dispatch => {
+export const getTaskList = (empId,status) => async dispatch => {
     try {
         var a = localStorage.getItem("empId");
         axios({
             method: 'POST',
             url: apiurl + 'get_task_list',
             data: {
-                "assignee_id": empId,//localStorage.getItem("empId"),
+                "assignee_id": empId,
+                "status":status||'Active'//localStorage.getItem("empId"),
             }
         })
             .then((response) => {

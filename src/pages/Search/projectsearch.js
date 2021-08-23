@@ -407,8 +407,9 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
+          <div style={{marginTop: 10}}>
           <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
-
+          </div>
         </div>
       </div>
 
