@@ -49,6 +49,7 @@ function TicketCreation(props) {
         },
         location: {
             value: "",
+            valueById: "",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -67,7 +68,7 @@ function TicketCreation(props) {
         },
         experience: {
             value: "",
-            validation: [{ name: "required" }, { name: "allowNumaricOnly" }],
+            validation: [{ name: "required" }, { name: "allowNumaricOnlyWithZero" }],
             error: null,
             errmsg: null,
         },
@@ -399,6 +400,13 @@ function TicketCreation(props) {
             TicketCreation.talents.valueById = props.TicketTemplate[0]?.talent_id;
 
             TicketCreation.assignedto.value = props.TicketTemplate[0]?.assigned_to;
+
+            TicketCreation.location.value = props.TicketTemplate[0]?.location_office_id;
+
+            TicketCreation.location.valueById = props.TicketTemplate[0]?.location_office_id;
+            TicketCreation.remarks.value = props.TicketTemplate[0]?.remarks;
+
+
         }
 
         setTicketCreation((prevState) => ({
