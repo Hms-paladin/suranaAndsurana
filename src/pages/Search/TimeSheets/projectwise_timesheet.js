@@ -148,7 +148,7 @@ function ProjectwiseTS(props) {
 
 
     const SearchData = () => {
-        console.log(projectSearch.length, "len")
+
         Object.size = function (obj) {
             var size = 0,
                 key;
@@ -160,7 +160,7 @@ function ProjectwiseTS(props) {
 
         // Get the size of an object
         var size = Object.size(projectSearch);
-        console.log(size, "len")
+
         if (projectSearch) {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
@@ -213,19 +213,12 @@ function ProjectwiseTS(props) {
     }
 
     useEffect(() => {
-        console.log(props.Project_TimeSheet, "pD")
+
         let subCollapse = [];
         let multipleTab = [];
         let checkDupliactesProjectIds = [];
         props?.Project_TimeSheet?.map((data, i) => {
-            let rowDataList = {}
             let ipCollapse = {};
-            let tableRow1 = [];
-            let tableRow = [];
-            let tableRow2 = [];
-            let tableRow3 = [];
-            let tableRow4 = [];
-            let tableRow5 = [];
             checkDupliactesProjectIds.push(data.project_type_id)
             if (data.project_type_id === 1) {
 
@@ -237,111 +230,122 @@ function ProjectwiseTS(props) {
                 ipCollapse["IPABDesign"] = data.project_details.filter((val) => val?.sub_project_id === 6)
 
                 if (ipCollapse?.Design.length > 0) {
+                    let tableRow1 = [];
                     ipCollapse?.Design.map((dat, k) => {
                         let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`;
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`;
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
+                        currentData["planned_sd"] = dat?.start_date ? `${moment(dat?.start_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["planned_ed"] = dat?.end_date ? `${moment(dat?.end_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["actualstart"] = dat?.actual_start_date ? `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} (${dat?.start_time ? dat?.start_time : "--"})` : "---"
+                        currentData["actualend"] = dat?.actual_end_date ? `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}  (${dat?.end_time ? dat?.end_time : "--"})` : "---"
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow1.push(currentData);
                     })
+                    if (tableRow1.length) {
+                        ipCollapse["Design"] = tableRow1;
+                    }
+                }
 
-                }
-                if (tableRow1.length) {
-                    ipCollapse["Design"] = tableRow1;
-                }
                 if (ipCollapse?.Patent.length > 0) {
-                    let currentData = {}
+                    let tableRow2 = [];
                     ipCollapse?.Patent.map((dat, k) => {
+                        let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
+                        currentData["planned_sd"] = dat?.start_date ? `${moment(dat?.start_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["planned_ed"] = dat?.end_date ? `${moment(dat?.end_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["actualstart"] = dat?.actual_start_date ? `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} (${dat?.start_time ? dat?.start_time : "--"})` : "---"
+                        currentData["actualend"] = dat?.actual_end_date ? `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}  (${dat?.end_time ? dat?.end_time : "--"})` : "---"
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow2.push(currentData);
                     })
-                }
-                if (tableRow2.length) {
-                    ipCollapse["Patent"] = tableRow2;
+                    if (tableRow2.length) {
+                        ipCollapse["Patent"] = tableRow2;
+                    }
                 }
 
+
                 if (ipCollapse?.Trademark.length > 0) {
-                    let currentData = {}
+                    let tableRow = [];
                     ipCollapse?.Trademark.map((dat, k) => {
+                        let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.activity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
+                        currentData["planned_sd"] = dat?.start_date ? `${moment(dat?.start_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["planned_ed"] = dat?.end_date ? `${moment(dat?.end_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["actualstart"] = dat?.actual_start_date ? `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} (${dat?.start_time ? dat?.start_time : "--"})` : "---"
+                        currentData["actualend"] = dat?.actual_end_date ? `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}  (${dat?.end_time ? dat?.end_time : "--"})` : "---"
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow.push(currentData);
+                        console.log(tableRow, "Trademark")
                     })
+                    console.log(tableRow, "Trademark")
+                    if (tableRow.length) {
+                        ipCollapse["Trademark"] = tableRow;
+                    }
                 }
-                if (tableRow.length) {
-                    ipCollapse["Trademark"] = tableRow;
-                }
+
                 if (ipCollapse?.Copyright.length > 0) {
-                    let currentData = {}
+                    let tableRow3 = [];
                     ipCollapse?.Copyright.map((dat, k) => {
+                        let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
+                        currentData["planned_sd"] = dat?.start_date ? `${moment(dat?.start_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["planned_ed"] = dat?.end_date ? `${moment(dat?.end_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["actualstart"] = dat?.actual_start_date ? `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} (${dat?.start_time ? dat?.start_time : "--"})` : "---"
+                        currentData["actualend"] = dat?.actual_end_date ? `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}  (${dat?.end_time ? dat?.end_time : "--"})` : "---"
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow3.push(currentData);
                     })
-                }
-                if (tableRow3.length) {
-                    ipCollapse["Copyright"] = tableRow3;
+                    if (tableRow3.length) {
+                        ipCollapse["Copyright"] = tableRow3;
+                    }
                 }
 
                 if (ipCollapse?.IPABTrademark.length > 0) {
-                    let currentData = {}
+                    let tableRow4 = [];
                     ipCollapse?.IPABTrademark.map((dat, k) => {
+                        let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
+                        currentData["planned_sd"] = dat?.start_date ? `${moment(dat?.start_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["planned_ed"] = dat?.end_date ? `${moment(dat?.end_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["actualstart"] = dat?.actual_start_date ? `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} (${dat?.start_time ? dat?.start_time : "--"})` : "---"
+                        currentData["actualend"] = dat?.actual_end_date ? `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}  (${dat?.end_time ? dat?.end_time : "--"})` : "---"
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow4.push(currentData);
                     })
+                    if (tableRow4.length) {
+                        ipCollapse["IPABTrademark"] = tableRow4;
+                    }
                 }
-                if (tableRow4.length) {
-                    ipCollapse["IPABTrademark"] = tableRow4;
-                }
+
                 if (ipCollapse?.IPABDesign.length > 0) {
-                    let currentData = {}
+                    let tableRow5 = [];
                     ipCollapse?.IPABDesign.map((dat, k) => {
+                        let currentData = {}
                         currentData["empName"] = dat.name;
                         currentData["actitvity"] = dat.actitvity;
                         currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
+                        currentData["planned_sd"] = dat?.start_date ? `${moment(dat?.start_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["planned_ed"] = dat?.end_date ? `${moment(dat?.end_date).format('DD-MMM-YYYY')}` : "---"
+                        currentData["actualstart"] = dat?.actual_start_date ? `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')} (${dat?.start_time ? dat?.start_time : "--"})` : "---"
+                        currentData["actualend"] = dat?.actual_end_date ? `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}  (${dat?.end_time ? dat?.end_time : "--"})` : "---"
                         currentData["tothours"] = dat.no_of_hrs;
                         tableRow5.push(currentData);
                     })
+                    if (tableRow5.length) {
+                        ipCollapse["IPABDesign"] = tableRow5;
+                    }
                 }
-                if (tableRow5.length) {
-                    ipCollapse["IPABDesign"] = tableRow5;
 
-                }
                 for (let [index, [key, value]] of Object.entries(Object.entries(ipCollapse))) {
                     ipCollapse && subCollapse.push(
                         value.length &&
@@ -369,13 +373,12 @@ function ProjectwiseTS(props) {
 
                     </Panel>
                 );
-                { console.log(subCollapse.length, "length1") }
+
             }
             else if ((data.project_type_id !== 1) && (checkDupliactesProjectIds[i] == data.project_type_id)) {
-
                 let otherDataList = []
                 data.project_details.length && data.project_details.map((dat, k) => {
-                    console.log(dat, "level2-else")
+                    let rowDataList = {}
                     rowDataList["empName"] = dat.name;
                     rowDataList["actitvity"] = dat.actitvity;
                     rowDataList["subactivity"] = dat.sub_activity;
@@ -407,10 +410,9 @@ function ProjectwiseTS(props) {
 
     }, [props.Project_TimeSheet]);
 
-    console.log(props.Project_TimeSheet, "PD")
+
     return (
         <div>
-
             <div className="DRtitle">Project Wise Task / Time Sheet</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
@@ -478,7 +480,7 @@ function ProjectwiseTS(props) {
                     </Grid>
                 </Grid>
             </div>
-            {console.log(multiplePanel.length, "length")}
+
             <div className="DRcollapsecss">
                 <Collapse>
                     {multiplePanel}
