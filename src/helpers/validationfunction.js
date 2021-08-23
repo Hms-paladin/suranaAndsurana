@@ -112,6 +112,12 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: "Please Enter Numeric Value only", state: false };
         }
+      }
+      else if (validatorsArray[valid].name == "allowNumaricOnlyWithZero") {
+        var re = /^(0+|[1-9]\d*)$/;
+        if (re.test(textValue) == false) {
+          return { msg: "Please Enter Numeric Value only", state: false };
+        }
       } else if (validatorsArray[valid].name == "alphabetsOnly") {
         var re = /^[A-Za-z]+$/;
         if (re.test(textValue) == false) {
@@ -189,7 +195,7 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: " Value allow only two digit ", state: false };
         }
-      } 
+      }
       //  else if (validatorsArray[valid].name == "allownumspace") {
       //   var re = /^[1-9][0-9]{9,14}$/;
       //   if (re.test(textValue) == false) {

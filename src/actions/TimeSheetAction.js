@@ -85,8 +85,13 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
             data: dataObj
         })
             .then((response) => {
-
-                dispatch({ type: PROJECTWISE_TIME_SHEET_SEARCH, payload: response.data.data || [] })
+                if (response.data.data[0].project_details.length || response.data.data[1].project_details.length || response.data.data[2].project_details.length || response.data.data[3].project_details.length || response.data.data[4].project_details.length || response.data.data[5].project_details.length) {
+                    dispatch({ type: PROJECTWISE_TIME_SHEET_SEARCH, payload: response.data.data || [] })
+                } else {
+                    notification.error({
+                        message: "No Data Found",
+                    });
+                }
             })
 
     } catch (err) {
