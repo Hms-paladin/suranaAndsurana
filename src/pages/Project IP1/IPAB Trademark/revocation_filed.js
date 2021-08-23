@@ -211,11 +211,11 @@ function RevocationFiled(props) {
             // if(obj.respondent_rep && obj.respondent_rep.length)
             // TradeMarkForm.respondent_rep.disabled = true;
 
-            // TradeMarkForm.client_responent.value =obj.client_responent;
-            // if(obj.client_responent && obj.client_responent.length)
-            // TradeMarkForm.client_responent.disabled = true;
+            // TradeMarkForm.client_respondent.value =obj.client_respondent;
+            // if(obj.client_respondent && obj.client_respondent.length)
+            // TradeMarkForm.client_respondent.disabled = true;
 
-            obj.rectification_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.rectification_filing_date);
+            obj.revocation_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.revocation_filing_date);
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
         }
@@ -280,7 +280,7 @@ function RevocationFiled(props) {
             "updated_by": localStorage.getItem("empId"),
             "respondent": TradeMarkForm.respondent.value,
             "respondent_rep": TradeMarkForm.respondent_rep.value,
-            "client_responent": "",
+            "client_respondent": "",
             "revocation_filing_date": TradeMarkForm.revocation_filing_date.value,
             "applicant_no": "",
             "patent_title": "",
@@ -370,9 +370,9 @@ function RevocationFiled(props) {
             <Grid item xs={12} container direction="row" spacing={2}>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
-                    <div className="copyFieldheadings">Client - Respondent</div>
+                    <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
                         error={TradeMarkForm.client_applicant.error}
@@ -383,7 +383,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Mark</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "mark")}
                         value={TradeMarkForm.mark.value}
                         error={TradeMarkForm.mark.error}
@@ -394,7 +394,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Trade Mark No</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "trade_mark_no")}
                         value={TradeMarkForm.trade_mark_no.value}
                         error={TradeMarkForm.trade_mark_no.error}
@@ -416,7 +416,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Revocation Filing Date</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                       
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -429,7 +429,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -440,7 +440,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -451,7 +451,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing </div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                       
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -462,7 +462,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "respondent")}
                         value={TradeMarkForm.respondent.value}
                         error={TradeMarkForm.respondent.error}
@@ -473,7 +473,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "respondent_rep")}
                         value={TradeMarkForm.respondent_rep.value}
                         error={TradeMarkForm.respondent_rep.error}
@@ -509,7 +509,7 @@ function RevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

@@ -190,7 +190,7 @@ function PatentAppealFiling(props) {
             "updated_by": localStorage.getItem("empId"),
             "respondent": "",
             "respondent_rep": "",
-            "client_responent": "",
+            "client_respondent": "",
             "revocation_filing_date": null,
             "applicant_no": TradeMarkForm.applicant_no.value,
             "patent_title": TradeMarkForm.patent_title.value,
@@ -311,7 +311,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Appeal Filing Date</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                       
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
                         error={TradeMarkForm.appeal_filing_date.error}
@@ -344,7 +344,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                       
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -366,7 +366,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

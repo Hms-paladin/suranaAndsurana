@@ -266,7 +266,7 @@ function IPABRectificationDefended(props) {
             "updated_by": localStorage.getItem("empId"),
             "respondent": "",
             "respondent_rep": "",
-            "client_responent": "",
+            "client_respondent": "",
             "revocation_filing_date": null,
             "applicant_no": "",
             "patent_title": "",
@@ -399,7 +399,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        //
+                   
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
                         error={TradeMarkForm.rectification_filing_date.error}
@@ -489,7 +489,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

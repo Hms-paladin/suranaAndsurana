@@ -40,6 +40,9 @@ function TradeMarkOposition1(properties) {
     const [selectedFile1, setselectedFile1] = useState([]);
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
+    let { rowId } = useParams()
+    const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(getTradeMark(rowId))
         dispatch(getTradeMarkStatus());
@@ -47,9 +50,6 @@ function TradeMarkOposition1(properties) {
         dispatch(getPoaDetails());
         dispatch(getUsageDetails());
         dispatch(getCountryDetails());
-
-
-
     }, []);
 
     useEffect(() => {
@@ -166,8 +166,7 @@ function TradeMarkOposition1(properties) {
         properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList, properties.countriesList, properties.tradeMark
     ]);
 
-    const dispatch = useDispatch()
-    let { rowId } = useParams()
+  
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
@@ -188,13 +187,7 @@ function TradeMarkOposition1(properties) {
             errmsg: null,
             disabled: false,
         },
-        project_id: {
-            value: "",
-            // validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        }, associateRefernce: {
+        associateRefernce: {
             value: "",
             // validation: [{ "name": "required" },],
             error: null,
@@ -502,10 +495,10 @@ function TradeMarkOposition1(properties) {
         if (filtererr.length > 0) {
         } else {
             let params = {
-                "project_id": idDetails.project_id,//radeMarkForm.project_id.value,
+                "project_id":rowId,//radeMarkForm.project_id.value,
                 "status_id": TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value,
                 "our_reference": TradeMarkForm.ourReference.value,
-                "mark_id": TradeMarkForm.mark_id.value === '' ? '0' : TradeMarkForm.mark_id.value,
+                "mark_id": TradeMarkForm.mark_id.value,
                 "upload_image": selectedFile,
                 "application_no": TradeMarkForm.application_no.value,
                 "application_date": TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value,
@@ -549,7 +542,7 @@ function TradeMarkOposition1(properties) {
 
     const handleCancel = () => {
         let From_key = [
-            "project_id", "associateRefernce", "ourReference", "applicant", "status_id", "class_id", "associate", "userclaim", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
+            "associateRefernce", "ourReference", "applicant", "status_id", "class_id", "associate", "userclaim", "applicantAgent", "usage_details_id", "mark_id", "application_no", "application_date",
             "internal_status", "opositionNumber", "end_date", "upload_image", "goods_description", "usage_from_date", "comments", "allotment",
             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
             "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",

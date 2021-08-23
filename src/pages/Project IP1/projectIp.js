@@ -565,8 +565,12 @@ function ProjectIp(props) {
     };
 
     const onchangeapplicableAmount = (data, key) => {
+
+        if(data===''){
+            data=0
+        }
         setAmountChange(true)
-        console.log(parseInt(data), key, "onchangeAmountappli")
+        // console.log(parseInt(data), key, "onchangeAmountappli")
         setDisableCondition(false)
         // if (key === "amt" && data) {
         setApplicableamount((prevState) => ({
@@ -750,7 +754,7 @@ function ProjectIp(props) {
                             <div>
                                 {" "}
                                 <label className="notfound_label">
-                                    Do You Want To Continue ?
+                                Do You Want to Add this Item ?
                                 </label>
                             </div>
                             <div className="customNotFoundbtn">

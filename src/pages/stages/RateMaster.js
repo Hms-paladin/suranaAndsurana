@@ -311,8 +311,8 @@ const RateMaster = (props) => {
       "sub_activity",
       "upper_limit",
       "amount",
-      "court"
-      , "unit_measurement"];
+      "court",
+      "unit_measurement"];
 
     From_key.map((data) => {
 
@@ -662,7 +662,7 @@ useEffect(() => {
             <div>
               {" "}
               <label className="notfound_label">
-                Do You Want To Continue ?
+                Do You Want to Add this Item ?
                 </label>
             </div>
             <div className="customNotFoundbtn">

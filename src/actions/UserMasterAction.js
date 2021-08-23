@@ -61,7 +61,7 @@ export const insertUser = (UserMaster, password, changeActive) => async dispatch
   var DocumentData = new FormData();
   DocumentData.set("active_flag", changeActive === true ? 1 : 0)
   DocumentData.set("created_by", localStorage.getItem("empId"))
-  DocumentData.set("email", UserMaster.emailid.value)
+  DocumentData.set("email", UserMaster.emailid.value.trim())
   DocumentData.set("mobileno", UserMaster.mobilenumber.value)
   DocumentData.set("password", password)
   DocumentData.set("username", UserMaster.user_name.value)
@@ -610,22 +610,26 @@ export const getCandidateName = () => async dispatch => {
 
 
 export const GetEmployeeDetails = (data) => async dispatch => {
+
   try {
-    axios({
-      method: "post",
-      header: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      url: apiurl + "get_employee_by_id",
-      data: {
-        "emp_id": data
-      }
-    })
+    if(data){
+      axios({
+          method: "post",
+          header: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+          },
+          url: apiurl + "get_employee_by_id",
+          data: {
+              "emp_id": data
+          }
+      })
       .then((response) => {
         dispatch({ type: MASTER_EMPLOYEE_DETAILS, payload: response.data.data })
       })
-
+    }else{
+      dispatch({type:MASTER_EMPLOYEE_DETAILS,payload:[]})
+    }
   } catch (err) {
 
   }

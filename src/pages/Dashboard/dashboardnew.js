@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect, useState } from "react";
+import React, { useCallback,useRef,useEffect, useState } from "react";
 import "./dashboard.scss";
 import Library from "../../images/dashboard/library.svg";
 import appraisal from "../../images/dashboard/appraisal.svg";
@@ -78,7 +78,7 @@ function DashboardNew(props) {
   const [dashboardValues, setDashboardValues] = useState([])
   const [calenderValues, setCalenderValues] = useState([])
 
-  const menulist = useRef([
+  const menulist =  useRef( [
     {
       img: <img src={Library} className="imageicons" />,
       title: "Library",
@@ -208,7 +208,7 @@ function DashboardNew(props) {
   }
 
   console.log(projectwise, "projectwise")
-
+  
 
   const userdashboard = (color) => {
     setChangedashBoard(true)
@@ -227,33 +227,37 @@ function DashboardNew(props) {
 
   useEffect(() => {
     if (props.UserPermission.length > 0 && props.UserPermission) {
-      props.UserPermission.map((data) => {
+      props.UserPermission.map((data)=>{
 
-        if (data.control === 'Library - Add Resource' && data.display_control === 'Y' || data.control === 'Library - Receive' && data.display_control === 'Y'
-          || data.control === 'Library - Issue' && data.display_control === 'Y' || data.control === 'Library - Search' && data.display_control === 'Y') {
+      if(data.control==='Library - Add Resource'&&data.display_control==='Y'||data.control==='Library - Receive'&&data.display_control==='Y'
+      ||data.control==='Library - Issue'&&data.display_control==='Y'||data.control==='Library - Search'&&data.display_control==='Y'){
 
-          menulist.current[0].menu_rights = true;
-        }
+        menulist.current[0].menu_rights=true;
+      }
 
-        if (data.control === 'Appraisal - Save' && data.display_control === 'Y') {
-          menulist.current[1].menu_rights = true;
-        }
+      if(data.control==='Appraisal - Save'&&data.display_control==='Y'){  
+        menulist.current[1].menu_rights=true;
+      }
+      
+      if(data.control==='KRA - Save'&&data.display_control==='Y'||data.control==='KRA - View KRA'&&data.display_control==='Y'){  
+        menulist.current[2].menu_rights=true;
+      }
 
-        if (data.control === 'KRA - Save' && data.display_control === 'Y' || data.control === 'KRA - View KRA' && data.display_control === 'Y') {
-          menulist.current[2].menu_rights = true;
-        }
+      if(data.control==='KPI - Save'&&data.display_control==='Y'||data.control==='KPI - View KPI'&&data.display_control==='Y'){  
+        menulist.current[3].menu_rights=true;
+      }
 
-        if (data.control === 'KPI - Save' && data.display_control === 'Y' || data.control === 'KPI - View KPI' && data.display_control === 'Y') {
-          menulist.current[3].menu_rights = true;
-        }
+      menulist.current[4].menu_rights=true;
 
-        menulist.current[4].menu_rights = true;
+      if(data.control==='Adhoc Task - Save'&&data.display_control==='Y'){  
+        menulist.current[5].menu_rights=true;
+      }
 
-        if (data.control === 'Adhoc Task - Save' && data.display_control === 'Y') {
-          menulist.current[5].menu_rights = true;
-        }
+      if(data.control==='Apply Leave - Save'&&data.display_control==='Y'){  
+        menulist.current[6].menu_rights=true;
+      }
 
-// console.log(localStorage.getItem("designation"),'"HoD"',"localStorage")
+
       // if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
       if(localStorage.getItem("designation")==='"HoD"'){
       menulist.current[7].menu_rights=true;
@@ -265,42 +269,37 @@ function DashboardNew(props) {
         menulist.current[8].menu_rights=true;
       }
 
-        if (data.control === 'List of Employees - Go' && data.display_control === 'Y') {
-          menulist.current[8].menu_rights = true;
-        }
+      if(data.control==='OPA/ Expenses - Search'&&data.display_control==='Y'||data.control==='OPA/ Expenses- OPE - Save'&&data.display_control==='Y'
+      ||data.control==='OPA/ Expenses- OPA - Save'&&data.display_control==='Y'){  
+        menulist.current[9].menu_rights=true;
+      }
 
-        if (data.control === 'OPA/ Expenses - Search' && data.display_control === 'Y' || data.control === 'OPA/ Expenses- OPE - Save' && data.display_control === 'Y'
-          || data.control === 'OPA/ Expenses- OPA - Save' && data.display_control === 'Y') {
-          menulist.current[9].menu_rights = true;
-        }
+      if(data.control==='Day Report - Save'&&data.display_control==='Y'){  
+        menulist.current[10].menu_rights=true;
+      }
 
-        if (data.control === 'Day Report - Save' && data.display_control === 'Y') {
-          menulist.current[10].menu_rights = true;
-        }
+      menulist.current[11].menu_rights=true;
 
-        menulist.current[11].menu_rights = true;
-
-        orderChange()
-      })
+      orderChange()
+    })
 
     }
-
-  }, [props.UserPermission]);
+   
+  }, [props.UserPermission]); 
 
   const orderChange = useCallback(
     (showListStart = 0, showListEnd = 7, arrowshow) => {
       const menuLists = menulist.current.map((data, index) => {
         if (index >= showListStart - 1 && index <= showListEnd - 1) {
-          if (data.menu_rights) {
-            return (
-              <Link to={data.path} onClick={() => handleClick(data)}>
-                <div>
-                  <div className="dashboardmenu">{data.img}</div>
-                  <div className="dashboardtitle">{data.title}</div>
-                </div>
-              </Link>
-            )
-          }
+          if(data.menu_rights){
+          return (
+            <Link to={data.path} onClick={() => handleClick(data)}>
+              <div>
+                <div className="dashboardmenu">{data.img}</div>
+                <div className="dashboardtitle">{data.title}</div>
+              </div>
+            </Link>
+          )}
         }
       });
       setMenuListItem(menuLists);
@@ -436,7 +435,7 @@ function DashboardNew(props) {
                     </>
                   );
                 }) : "No Tasks Found"}
-                { }
+                {}
               </div>
             </div>
 
@@ -459,14 +458,11 @@ function DashboardNew(props) {
                     return (
                       <>
                         <div className="taskdaystable">
-
-                          <div>
-                            <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>
-                          </div>
                           <div>
                             {data.activity}
 
                           </div>
+                          <div>{data.project_name}</div>
                           <div>{moment(data.start_date).format('DD-MMM-YYYY')}</div>
                           <div>{moment(data.end_date).format('DD-MMM-YYYY')}</div>
                           <div>{data.status}</div>
@@ -474,7 +470,7 @@ function DashboardNew(props) {
                       </>
                     );
                   }) : "No Tasks Found"}
-                  { }
+                  {}
                 </div>
               </div>
 
@@ -492,15 +488,13 @@ function DashboardNew(props) {
                     return (
                       <>
                         <div className="taskdaystablecal">
-                          <div>
-                            <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>
-                          </div>
+                          <div>{data.project_name}</div>
                           <div>{data.stage}</div>
                         </div>
                       </>
                     );
                   }) : "No Stages Found"}
-                  { }
+                  {}
                 </div>
               </div>
             </section>
@@ -647,4 +641,4 @@ const mapStateToProps = (state) => (
     UserPermission: state.UserPermissionReducer.getUserPermission,
   }
 );
-export default connect(mapStateToProps)(DashboardNew);
+export default connect(mapStateToProps)(DashboardNew); 

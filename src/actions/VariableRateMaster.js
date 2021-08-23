@@ -107,6 +107,10 @@ export const InsertProjectVariableRate = (data,DataId) => async dispatch => {
             dispatch(getProjectVariableRate(DataId[0].project_id))
 
             return Promise.resolve();
+          }else{
+            notification.success({
+              message: response.data.msg,
+            });
           }
         });
 
