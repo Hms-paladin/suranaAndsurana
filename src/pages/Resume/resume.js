@@ -12,6 +12,9 @@ import DynModel from "../../component/Model/model";
 import moment from "moment";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import PublishIcon from '@material-ui/icons/Publish';
+import Delete from '../../images/dashboard/delete.svg';
+
 import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
 import {
   getResourceType,
@@ -50,9 +53,10 @@ const ResumePage = (props) => {
   const [nullFieldValueExp, SetNullFieldValueExp] = useState(false);
   const [editResume, setEditResume] = useState(false)
   const [resume_id, setResume_id] = useState()
+  const [filedata, setFileData] = useState({})
   const [editcity, setEditcity] = useState(false)
   const [expCity, setExpCity] = useState([])
-
+  const [editBtn, setEditBtn] = useState(false)
   const [saveButton, setSaveButton] = useState(true)
 
   const [Resume_Form, setResumeFrom] = useState({
@@ -799,6 +803,17 @@ const ResumePage = (props) => {
     setOnEdit(false);
   };
 
+  const onFileChange = (event) => {
+    setFileData(event.target.files[0])
+    setEditBtn(true)
+    console.log(event, "filedata")
+  }
+  const onFileDelete = () => {
+    setFileData({})
+    setEditBtn(false)
+    console.log(filedata, "filedata")
+  }
+
   return (
     <div>
       <Grid item xs={12} className="ContentTitle">
@@ -1292,6 +1307,26 @@ const ResumePage = (props) => {
                   error={Resume_Form.phone2.error}
                   errmsg={Resume_Form.phone2.errmsg}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <div>
+                    <div className="leaveFieldheading">Upload resume</div>
+                    <div className="uploadleave_form">
+                      <div>
+                        <input type="file"
+                          onChange={(data) => onFileChange(data)} id="pdfupload" /> <PublishIcon />
+                        {editBtn &&
+                          <div><img src={Delete} onClick={onFileDelete} style={{ width: '20px', cursor: 'pointer' }} /> </div>
+                        }
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
               </Grid>
             </Grid>
 

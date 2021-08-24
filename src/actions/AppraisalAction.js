@@ -1,4 +1,4 @@
-import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE ,GET_EMP_APPRAISAL_DETAIL_EMPID } from "../utils/Constants";
+import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE, GET_EMP_APPRAISAL_DETAIL_EMPID } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
@@ -103,7 +103,17 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
                 "emp_appr_id": emp_appr_id,
                 "appraisar_comments": supmodelComment.advice_manage_parter.values,
                 "instruction_action": supmodelComment.instruction_action.values,
-                "advice_manage_parter": supmodelComment.advice_manage_parter.values
+                "advice_manage_parter": supmodelComment.advice_manage_parter.values,
+                "area_of_speci_remarks": supmodelComment.area_of_speci_remarks.values,
+                "self_work_des_remarks": supmodelComment.self_work_des_remarks.values,
+                "current_duties_remarks": supmodelComment.current_duties_remarks.values,
+                "major_achievement_remarks": supmodelComment.major_achievement_remarks.values,
+                "urge_to_learn_remarks": supmodelComment.urge_to_learn_remarks.values,
+                "enhance_your_productivity_remarks": supmodelComment.enhance_your_productivity_remarks.values,
+                "improvement_ssia_remarks": supmodelComment.improvement_ssia_remarks.values,
+                "opinion_remark_remarks": supmodelComment.opinion_remark_remarks.values,
+                "growth_plan_three_yrs_remarks": supmodelComment.growth_plan_three_yrs_remarks.values,
+                "growth_plan_five_yrs_remarks": supmodelComment.growth_plan_five_yrs_remarks.values,
             }
         })
             .then((response) => {
