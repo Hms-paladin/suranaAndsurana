@@ -333,15 +333,18 @@ function ProjectIp(props) {
                     header={`${data.check_list}`}
                     key={index + 1}
                 >
-                 <div>
-                { data.details.map((data1, index) => {
-                    return(<div className="taskitem_div">
-                     <div style={{whiteSpace:'nowrap'}} >{data1.task}</div> {" "}
-                     <div className="status_btn">{data1.status}</div>
-                     </div>
-                    )
-                    })}
-                 </div>
+                    <div>
+                        {data.details.map((data1, index) => {
+                            return (<>
+                                <div className="taskitem_div">
+                                    <div style={{ whiteSpace: 'nowrap' }} >{data1.task}</div>
+                                    <div className="status_btn">{data1.status}</div>
+                                </div>
+                                {/* <hr /> */}
+                            </>
+                            )
+                        })}
+                    </div>
                 </Panel>
             );
 
@@ -879,9 +882,9 @@ function ProjectIp(props) {
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={
-                                <div className="checklist_collapse">
-                                    <Collapse >{multiplePanel}</Collapse>
-                                </div>
+                            <div className="checklist_collapse">
+                                <Collapse >{multiplePanel}</Collapse>
+                            </div>
 
                         } width={1000} />
 

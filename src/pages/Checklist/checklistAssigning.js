@@ -28,6 +28,7 @@ function CheckListAssign(props) {
   const [start_date, setStart_date] = useState({});
   const [end_date, setEnd_date] = useState({});
   const [days_of_week, setDays_of_week] = useState({});
+  const [days_of_week_id, setDays_of_week_id] = useState({});
 
   const [disableCondition, setDisableCondition] = useState(true);
 
@@ -334,9 +335,6 @@ function CheckListAssign(props) {
 
   }, [props.UserPermission]);
 
-  // console.log(divShow, "divShow")
-
-
   /////////////
 
   const headers = [
@@ -349,7 +347,6 @@ function CheckListAssign(props) {
 
   const onchangeTaskDetails = (data, key, name) => {
     setDisableCondition(false)
-    console.log(data, "yyyyyyyyyyyyyyyyy")
     if (name === "start_date") {
       setStart_date((prevState) => ({
         ...prevState,
@@ -379,30 +376,34 @@ function CheckListAssign(props) {
         ...prevState,
         [key]: data,
       }));
+      setDays_of_week_id((prevState) => ({
+        ...prevState,
+        [key]: valueByIdDays,
+      }));
       // }
     }
 
 
   };
-  console.log(valueByIdDays, "valueByIdDays")
+
   useEffect(() => {
     if (checkListForm.checkListNameId.value != '' && checkListForm.startDate.value != '' && checkListForm.endDate.value != '') {
       let searchVariableTableData = [];
       let sendChecklistTableData = [];
       let tableData = [];
-      const TabLen = props.getFrequencyByCheckListId.length;
-      console.log("ddddd", props.getFrequencyByCheckListId)
+
       let start_date_disable = true;
       let end_date_disable = true;
       let days_of_week_disable = true;
       props.getFrequencyByCheckListId.length > 0 && props.getFrequencyByCheckListId.map((data, index) => {
-        // setApplicableamount({});
+
         tableData.push(data)
-        const Index = index
+
         if (disableCondition) {
           start_date["start_date" + index] = checkListForm.startDate.value;
           end_date["end_date" + index] = checkListForm.endDate.value;
           days_of_week["days_of_week" + index] = '';
+          days_of_week_id["days_of_week" + index] = '';
         }
 
         if (data.frequency === 'On Demand') {
@@ -459,7 +460,7 @@ function CheckListAssign(props) {
           frequency_id: data.frequency_id,
           task_start_date: start_date["start_date" + index],
           task_end_date: end_date["end_date" + index],
-          days_of_week_id: days_of_week["days_of_week" + index] === "" ? 0 : days_of_week["days_of_week" + index]
+          days_of_week_id: days_of_week_id["days_of_week" + index] === "" ? 0 : days_of_week_id["days_of_week" + index]
         });
 
       })
@@ -468,6 +469,7 @@ function CheckListAssign(props) {
     }
   }, [props.getFrequencyByCheckListId, start_date, end_date, days_of_week, checkListForm.startDate.value, checkListForm.endDate.value])
 
+  console.log(sendVariableData, "sendVariableData")
   return (
     <div>
       <div className="mainHeading">Check List Assigning</div>
