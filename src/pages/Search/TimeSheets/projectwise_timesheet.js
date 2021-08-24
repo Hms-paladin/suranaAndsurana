@@ -148,7 +148,7 @@ function ProjectwiseTS(props) {
 
 
     const SearchData = () => {
-
+        setMultiplePanel()
         Object.size = function (obj) {
             var size = 0,
                 key;
@@ -164,14 +164,7 @@ function ProjectwiseTS(props) {
         if (projectSearch) {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
-        if (props.Project_TimeSheet.length < 0) {
-
-            notification.success({
-                message: " No Data found",
-            })
-
-        }
-
+      
         setprojectSearch({
             proj_name: {
                 value: "",
