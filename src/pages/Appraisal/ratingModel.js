@@ -459,11 +459,10 @@ function RatingModel(props) {
                 })
 
                 }
-
-                <div className="appraisalBtn">
-                    <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
-                </div>
+            </div>
+            <div className="appraisalBtn">
+                <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
         </div>
     )
