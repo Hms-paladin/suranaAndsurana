@@ -211,3 +211,18 @@
     margin-left: 15px !important;
     }
 }
+.status_btn{
+    white-space: nowrap;
+    background-color: orange;
+    border: 1px solid burlywood;
+    border-radius: 9px;
+    padding: 3px;
+    color: white;
+}
+
+.taskitem_div {
+    display: flex;
+    width: 35%;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}

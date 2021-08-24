@@ -12,7 +12,7 @@ import {update_approve_timesheet } from "../../../actions/TimeSheetAction";
 import { useDispatch, connect } from "react-redux";
 import TimeSheetStart from '../../Search/TimeSheets/timesheetStart';
 import { notification } from "antd";
-import {getProjectTasks } from "../../../actions/TodoListAction";
+import {getOtherTask } from "../../../actions/TodoListAction";
 
  function TimeSheetApproval(props){
 
@@ -103,7 +103,7 @@ function edittimesheetResult(data){
                 });
             }else{
                 dispatch(update_approve_timesheet(TimeSheetArr)).then(() => {
-                    dispatch(getProjectTasks())
+                    dispatch(getOtherTask())
                     props.closemodal(false)
                 })
             }

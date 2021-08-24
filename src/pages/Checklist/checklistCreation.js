@@ -64,7 +64,7 @@ function CheckListCreation(props) {
     frequency: {
       value: "",
       valueById: "",
-      validation: [],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -299,7 +299,7 @@ function CheckListCreation(props) {
         "project_sub_type_id": checkListForm.department.value,
         "activity_id": checkListForm.activity.value != '' ? checkListForm.activity.value : 0,
         "sub_activity_id": checkListForm.subActivity.value != '' ? checkListForm.subActivity.value : 0,
-        "frequency_id": 0,
+        "frequency_id": checkListForm.frequency.value ? checkListForm.frequency.value : 0,
         "task": taskDesc,
         "created_on": moment().format('YYYY-MM-DD HH:m:s'),
         "created_by": localStorage.getItem("empId")
@@ -327,7 +327,7 @@ function CheckListCreation(props) {
     { id: "taskItem", label: "TaskItem" },
     { id: "activity", label: "Activity" },
     { id: "subactivity", label: "Sub Activity" },
-    // { id: "frequency", label: "Frequency" },
+    { id: "frequency", label: "Frequency" },
   ]
 
   // const rows = [
@@ -357,7 +357,7 @@ function CheckListCreation(props) {
       rowdataListobj["taskItem"] = data1.task;
       rowdataListobj["activity"] = data1.activity;
       rowdataListobj["subactivity"] = data1.sub_activity;
-      // rowdataListobj["frequency"] = data.frequency;
+      rowdataListobj["frequency"] = data1.frequency;
       // } 
       ipProjectDataList.push(rowdataListobj);
       });
@@ -494,7 +494,7 @@ function CheckListCreation(props) {
               errmsg={checkListForm.subActivity.errmsg}
               disabled={checkListForm.subActivity.disabled}
             /></div>
-          {/* <div>  <div className="TThead">Frequency</div>
+          <div>  <div className="TThead">Frequency</div>
             <Labelbox type="select"
               dropdown={frequencyList.frequencyTypeData}
               changeData={(data) => checkValidation(data, "frequency")}
@@ -502,7 +502,7 @@ function CheckListCreation(props) {
               value={checkListForm.frequency.value}
               error={checkListForm.frequency.error}
               errmsg={checkListForm.frequency.errmsg}
-            /></div> */}
+            /></div>
           <div className="taskfield">  <div className="TThead">Task Item</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "task")}
