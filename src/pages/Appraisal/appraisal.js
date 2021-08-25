@@ -160,7 +160,7 @@ function Appraisal(props) {
         dispatch(GetAreaDevelopment())
         dispatch(GetEmpAppraisal())
         dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
-        console.log(props.location.state?.appraisalData.emp_appr_id, "empappid")
+        console.log(props.location.state, "empappid")
         setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
         dispatch(GetEmpAppraisalDetailbyEmpid())
         let designation = test.substring(1, 5 - 1)
@@ -465,59 +465,59 @@ function Appraisal(props) {
 
 
     const onsubmit = () => {
-        if (enableSave === true) {
-            if (rowID === 1) {
-                dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
-            } else if (rowID == 2) {
-                dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
-            }
-        }
-        else {
-            if (rowID === 1) {
-                let checkQuestion = Supervisor.find((data) => {
-                    return data.values == ""
-                })
-                if (checkQuestion === undefined) {
+        if (rowID === 1) {
+            let checkQuestion = Supervisor.find((data) => {
+                return data.values == ""
+            })
+            console.log(props.GetEmpAppraisalDetails[0][0]?.rating.length, "len")
+            if (checkQuestion === undefined) {
+                if (props.GetEmpAppraisalDetails[0][0]?.rating.length === 0) {
                     notification.error({
                         message: ' Please give a Rating',
                     });
                 } else {
-                    notification.error({
-                        message: ' Please Answer all the Questions',
-                    });
+                    dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
                 }
-            } else if (rowID == 2) {
 
-                console.log(Manageing, "mmi")
-                let checkQuestion = Manageing.find((data) => {
-                    return data.value == ""
-                })
-                if (checkQuestion === undefined) {
-                    notification.error({
-                        message: ' Please approve a Rating',
-                    });
-                } else {
-                    notification.error({
-                        message: ' Please Answer all the Questions',
-                    });
-                }
+            } else if (checkQuestion !== undefined) {
+                notification.error({
+                    message: ' Please Answer all the Questions',
+                });
+            } else {
+                dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
             }
-            else {
-                let checkQuestion = EmpApply.find((data) => {
-                    return data.value == ""
-                })
-                if (checkQuestion === undefined) {
-                    dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
-                } else {
-                    notification.error({
-                        message: ' Please Answer all the Questions',
-                    });
-                }
+        } else if (rowID == 2) {
+
+            console.log(Manageing, "mmi")
+            let checkQuestion = Manageing.find((data) => {
+                return data.value == ""
+            })
+            if (checkQuestion === undefined) {
+                notification.error({
+                    message: ' Please approve a Rating',
+                });
+            } else {
+                notification.error({
+                    message: ' Please Answer all the Questions',
+                });
             }
         }
+        else {
+            let checkQuestion = EmpApply.find((data) => {
+                return data.value == ""
+            })
+            if (checkQuestion === undefined) {
+                dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+            } else if (checkQuestion !== undefined) {
+                notification.error({
+                    message: ' Please Answer all the Questions',
+                });
+            } else {
+                dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+            }
+        }
+
     }
-
-
     const handleCancel = () => {
         let From_key = [
             "area_dev",
@@ -537,7 +537,6 @@ function Appraisal(props) {
             ...prevState,
         }));
     };
-
 
     const qualification = () => {
         return (
@@ -772,7 +771,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "area_of_speci_remarks")
                                         }
-                                        value={supmodelComment.area_of_speci_remarks.values}
+                                        value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : supmodelComment.area_of_speci_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -795,7 +794,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "self_work_des_remarks")
                                         }
-                                        value={supmodelComment.self_work_des_remarks.values}
+                                        value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : supmodelComment.self_work_des_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -818,7 +817,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "current_duties_remarks")
                                         }
-                                        value={supmodelComment.current_duties_remarks.values}
+                                        value={todoListdata?.current_duties_remarks ? todoListdata?.current_duties_remarks : supmodelComment.current_duties_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -840,7 +839,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "major_achievement_remarks")
                                         }
-                                        value={supmodelComment.major_achievement_remarks.values}
+                                        value={todoListdata?.major_achievement_remarks ? todoListdata?.major_achievement_remarks : supmodelComment.major_achievement_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -859,7 +858,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "comment")
                                         }
-                                        value={todoListdata && todoListdata.self_work_des}
+                                        value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : supmodelComment.major_achievement_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -882,7 +881,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "urge_to_learn_remarks")
                                         }
-                                        value={supmodelComment.urge_to_learn_remarks.values}
+                                        value={todoListdata?.urge_to_learn_remarks ? todoListdata?.urge_to_learn_remarks : supmodelComment.urge_to_learn_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -906,7 +905,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "enhance_your_productivity_remarks")
                                         }
-                                        value={supmodelComment.enhance_your_productivity_remarks.values}
+                                        value={todoListdata?.enhance_your_productivity_remarks ? todoListdata?.enhance_your_productivity_remarks : supmodelComment.enhance_your_productivity_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -929,7 +928,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "improvement_ssia_remarks")
                                         }
-                                        value={supmodelComment.improvement_ssia_remarks.values}
+                                        value={todoListdata?.improvement_ssia_remarks ? todoListdata?.improvement_ssia_remarksS : supmodelComment.improvement_ssia_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -952,7 +951,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "opinion_remark_remarks")
                                         }
-                                        value={supmodelComment.opinion_remark_remarks.values}
+                                        value={todoListdata?.opinion_remark_remarks ? todoListdata?.opinion_remark_remarks : supmodelComment.opinion_remark_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -975,7 +974,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "growth_plan_three_yrs_remarks")
                                         }
-                                        value={supmodelComment.growth_plan_three_yrs_remarks.values}
+                                        value={todoListdata?.growth_plan_five_yrs_remarks ? todoListdata?.growth_plan_five_yrs_remarks : supmodelComment.growth_plan_three_yrs_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -998,7 +997,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "growth_plan_five_yrs_remarks")
                                         }
-                                        value={supmodelComment.growth_plan_five_yrs_remarks.values}
+                                        value={todoListdata?.growth_plan_three_yrs_remarks ? todoListdata?.growth_plan_three_yrs_remarks : supmodelComment.growth_plan_five_yrs_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -1036,7 +1035,7 @@ function Appraisal(props) {
                                             changeData={(data) =>
                                                 addAppraisalcmt(data, "comment")
                                             }
-                                            value={todoListdata && todoListdata.self_work_des}
+                                            value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : todoListdata && todoListdata.self_work_des}
                                             error={Appraisal.comment.error}
                                             errmsg={Appraisal.comment.errmsg}
                                         />
@@ -1778,9 +1777,15 @@ function Appraisal(props) {
                     </>}
                 <div className="appraisalBtn">
                     {(rowID == 1 || rowID == 2) && <>
-                        <Link to='/Home/ratingModel'>
-                            <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" />
-                        </Link></>}
+
+                        {props.GetEmpAppraisalDetails[0][0]?.rating?.length === 0 ?
+                            <Link to={{
+                                pathname: '/Home/ratingModel',
+                                ids: { emp_appr_id: emp_appr_id, employeeID: emp_id, rowID: rowID, empDetail: empDetail },
+                                state: props.location.state
+                            }}>
+                                <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" btnDisable={props.GetEmpAppraisalDetails[0][0]?.rating.length === 0 ? false : true} custombtnCSS="custom_save" />
+                            </Link> : <CustomButton btnName={"Rating"} btnDisable={true} custombtnCSS="custom_save" />}</>}
                     {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />}
 
                     {/* <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel employeeID={emp_id} rowID={rowID} empDetail={empDetail} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} changeenable={(data) => changeenable(data)} emp_appr_id={emp_appr_id} />} width={700} /> */}

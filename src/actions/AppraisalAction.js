@@ -1,8 +1,11 @@
 import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE, GET_EMP_APPRAISAL_DETAIL_EMPID } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { notification } from 'antd';
 
+
+// const history = useHistory();
 export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => async dispatch => {
     console.log(modelComment, respbtn, assignbtn, "Add_question")
     try {
@@ -131,6 +134,7 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
 }
 
 export const InsertSupervisorRate = (rateList) => async dispatch => {
+
     try {
         axios({
             method: 'POST',
@@ -140,11 +144,11 @@ export const InsertSupervisorRate = (rateList) => async dispatch => {
             }
         })
             .then((response) => {
-                if (response.data.status === 1) {
+                 if (response.data.status === 1) {
                     notification.success({
                         message: ' Rating Added Successfully',
                     });
-                    return Promise.resolve();
+                    return window.history.back()
                 }
             });
 
