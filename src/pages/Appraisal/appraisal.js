@@ -14,7 +14,7 @@ import './appraisal.scss';
 import { notification } from "antd";
 import { Redirect, Link } from 'react-router-dom';
 import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
-import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal, GetEmpAppraisalDetailbyEmpid } from '../../actions/AppraisalAction';
+import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, UpdateApplyAppraisal, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal, GetEmpAppraisalDetailbyEmpid } from '../../actions/AppraisalAction';
 import moment from 'moment';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import EnhancedTable from '../../component/DynTable/table'
@@ -44,7 +44,7 @@ function Appraisal(props) {
     const [modelCommentID, setModelCommentID] = useState()
     const [respbtn, setRespbtn] = useState()
     const [assignbtn, setAssignbtn] = useState()
-    const [rowID, setRowID] = useState()
+    const [rowID, setRowID] = useState("")
     const [todoListdata, setTodoListdata] = useState([])
     const [emp_appr_id, setEmp_appr_id] = useState()
     const [enableSave, setEnableSave] = useState(false)
@@ -159,12 +159,28 @@ function Appraisal(props) {
     useEffect(() => {
         dispatch(GetAreaDevelopment())
         dispatch(GetEmpAppraisal())
-        dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
-        console.log(props.location.state, "empappid")
-        setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
+        dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData?.emp_appr_id))
         dispatch(GetEmpAppraisalDetailbyEmpid())
+        console.log(props.location.state, "empappid");
+        setEmp_appr_id(props.location.state?.appraisalData?.emp_appr_id);
+        // setSupModelComment(props.location.state);
+        console.log(props.location.state, "state loc")
+        setSupModelComment(props.location?.prevState?.supmodelComment !== undefined ? props.location?.prevState?.supmodelComment : {
+            appraisar_comments: { values: "" }, instruction_action: { values: "" }, advice_manage_parter: { values: "" },
+            area_of_speci_remarks: { values: "" },
+            self_work_des_remarks: { values: "" },
+            current_duties_remarks: { values: "" },
+            major_achievement_remarks: { values: "" },
+            urge_to_learn_remarks: { values: "" },
+            enhance_your_productivity_remarks: { values: "" },
+            improvement_ssia_remarks: { values: "" },
+            opinion_remark_remarks: { values: "" },
+            growth_plan_three_yrs_remarks: { values: "" },
+            growth_plan_five_yrs_remarks: { values: "" },
+        })
+
         let designation = test.substring(1, 5 - 1)
-        if (props.location.state?.appraisalData.task === "Employee Appraisal") {
+        if (props.location.state?.appraisalData?.task === "Employee Appraisal") {
             if (designation === "HoD") {
                 setRowID(1)
             } else {
@@ -172,7 +188,7 @@ function Appraisal(props) {
             }
         }
         // setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : 2)
-    }, [props.location.state])
+    }, [props.location.state, props.location.prevState])
 
 
     useEffect(() => {
@@ -249,7 +265,7 @@ function Appraisal(props) {
 
 
         if (props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails.length > 0) {
-            props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.area_development.map((val) => {
+            props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.area_development?.map((val) => {
                 if (val.area_development_id === 1) {
                     addemployeeDetails.push({ details: val.details, date: val.details_date })
                     setAddemployeeDetails([...addemployeeDetails])
@@ -262,10 +278,10 @@ function Appraisal(props) {
                 }
             })
 
-            Appraisal.comment.value = props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.current_assignment_command
-            setEmp_id(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.emp_id)
-            console.log(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.emp_id, "emp")
-            setTodoListdata(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0])
+            Appraisal.comment.value = props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.current_assignment_command
+            setEmp_id(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.emp_id)
+            console.log(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.emp_id, "emp")
+            setTodoListdata(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0])
         }
 
 
@@ -464,14 +480,13 @@ function Appraisal(props) {
     }
 
 
-    const onsubmit = () => {
+    const onsubmit = (key) => {
         if (rowID === 1) {
             let checkQuestion = Supervisor.find((data) => {
                 return data.values == ""
             })
-            console.log(props.GetEmpAppraisalDetails[0][0]?.rating.length, "len")
             if (checkQuestion === undefined) {
-                if (props.GetEmpAppraisalDetails[0][0]?.rating.length === 0) {
+                if (props.GetEmpAppraisalDetails[0]?.rating.length === 0) {
                     notification.error({
                         message: ' Please give a Rating',
                     });
@@ -503,18 +518,36 @@ function Appraisal(props) {
             }
         }
         else {
-            let checkQuestion = EmpApply.find((data) => {
-                return data.value == ""
-            })
-            if (checkQuestion === undefined) {
-                dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
-            } else if (checkQuestion !== undefined) {
-                notification.error({
-                    message: ' Please Answer all the Questions',
-                });
-            } else {
-                dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+            if (key === 1) {
+                let checkQuestion = EmpApply.find((data) => {
+                    return data.value == ""
+                })
+                if (checkQuestion === undefined) {
+                    dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
+                    dispatch(GetAreaDevelopment())
+                    dispatch(GetEmpAppraisal())
+                    dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData?.emp_appr_id))
+                    dispatch(GetEmpAppraisalDetailbyEmpid())
+                } else if (checkQuestion !== undefined) {
+                    notification.error({
+                        message: ' Please Answer all the Questions',
+                    });
+                } else {
+                    dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+                }
+            } else if (key === 2) {
+                if (props.GetEmpAppraisalDetailbyEmpid[0]?.details?.length) {
+                    dispatch(UpdateApplyAppraisal(props.GetEmpAppraisalDetailbyEmpid[0]?.details[0]?.emp_appr_id))
+                    dispatch(GetAreaDevelopment())
+                    dispatch(GetEmpAppraisal())
+                    dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData?.emp_appr_id))
+                    dispatch(GetEmpAppraisalDetailbyEmpid())
+                }
+                else {
+                    dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+                }
             }
+
         }
 
     }
@@ -1776,21 +1809,24 @@ function Appraisal(props) {
                         </div>
                     </>}
                 <div className="appraisalBtn">
-                    {(rowID == 1 || rowID == 2) && <>
-
-                        {props.GetEmpAppraisalDetails[0][0]?.rating?.length === 0 ?
+                    {rowID && (rowID == 1 || rowID == 2) && <>
+                        {props.GetEmpAppraisalDetails[0]?.rating?.length === 0 ?
                             <Link to={{
                                 pathname: '/Home/ratingModel',
                                 ids: { emp_appr_id: emp_appr_id, employeeID: emp_id, rowID: rowID, empDetail: empDetail },
-                                state: props.location.state
+                                state: props.location?.state,
+                                prevState: { supmodelComment }
                             }}>
-                                <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" btnDisable={props.GetEmpAppraisalDetails[0][0]?.rating.length === 0 ? false : true} custombtnCSS="custom_save" />
-                            </Link> : <CustomButton btnName={"Rating"} btnDisable={true} custombtnCSS="custom_save" />}</>}
-                    {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />}
-
-                    {/* <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel employeeID={emp_id} rowID={rowID} empDetail={empDetail} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} changeenable={(data) => changeenable(data)} emp_appr_id={emp_appr_id} />} width={700} /> */}
-
-
+                                <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" btnDisable={props.GetEmpAppraisalDetails[0]?.rating.length === 0 ? false : true} custombtnCSS="custom_save" />
+                            </Link>
+                            : <CustomButton btnName={"Rating"} btnDisable={true} custombtnCSS="custom_save" />}</>}
+                    {(rowID == 1 || rowID == 2 || viewEmployee !== 3) &&
+                        <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => onsubmit(1)} />
+                    }
+                    {
+                        (rowID == 1 || (viewEmployee === 3)) &&
+                        <CustomButton btnName={"Submit"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={(props.GetEmpAppraisalDetailbyEmpid[0]?.details?.length === 1) ? false : true} onBtnClick={() => onsubmit(2)} />
+                    }
                     {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />}
                 </div>
             </div>

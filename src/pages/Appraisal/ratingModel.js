@@ -130,7 +130,7 @@ function RatingModel(props) {
     const [showdropdownindex, setShowdropdownindex] = useState()
     const [changeeditrate, setChangeeditrate] = useState(true)
     const [ratingTitle, setRatingTitle] = useState([])
-    const [formValue, setFormValue] = useState({});
+    const [formValue, setFormValue] = useState([]);
     const [empId, setEmpId] = useState()
     const [emp_apprid, setEmp_apprid] = useState()
     const [appraisalData, setApraisalData] = useState()
@@ -143,6 +143,7 @@ function RatingModel(props) {
         setEmpId(props.location.ids?.employeeID)
         setEmp_apprid(props.location.ids?.emp_appr_id)
         console.log(props.location.ids?.empDetail, "props.location.ids?.employeeID")
+        console.log(props.location.state, "state loc")
         // employeeID
     }, [])
 
@@ -327,8 +328,8 @@ function RatingModel(props) {
 
     const submitrate = () => {
         if (showrowID == 2) {
-            let rateLists = []
 
+            let rateLists = []
             for (let i = 0; i < 18; i++) {
                 if (dropdownValue[i].key2 === "-" && dropdownValue[i].key3 === "-") {
                     rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key1, "emp_appr_id": emp_apprid })
@@ -388,10 +389,12 @@ function RatingModel(props) {
             }
 
             console.log(rateLists, "splitval")
-
+            console.log(Object.keys(formValue).length, "formValue") 
             if (rateLists.length === 18) {
+
                 dispatch(InsertSupervisorRate(rateLists));
-            
+
+
             } else {
                 notification.error({
                     message: 'Please Rate All Options',
@@ -463,10 +466,23 @@ function RatingModel(props) {
                 }
             </div>
             <div className="appraisalBtn">
-                <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                {Object.keys(formValue).length === 18 ?
+                    <Link push to={{
+                        pathname: "/Home/appraisal/",
+                        state: props.location?.state,
+                        prevState: props.location?.prevState
+                    }} >
+                        <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                    </Link>
+                    : <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                }
+
+
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
+            {console.log(Object.keys(formValue).length, "formValue")}
         </div>
+
     )
 }
 const mapStateToProps = (state) =>

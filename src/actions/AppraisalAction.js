@@ -3,6 +3,7 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { notification } from 'antd';
+import { Redirect, Link } from "react-router-dom";
 
 
 // const history = useHistory();
@@ -33,14 +34,18 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
             .then((response) => {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Appraisal Applied Successfully',
+                        message: 'Appraisal Saved Successfully ',
                     });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAIL_EMPID, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL, payload: response.data.data })
                     return Promise.resolve();
                 }
                 if (response.data.msg === "Alredy Applied") {
                     notification.error({
                         message: 'This Period Already Exist.'
                     });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
                     return Promise.resolve();
                 }
             });
@@ -52,6 +57,41 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
     }
 }
 
+export const UpdateApplyAppraisal = (emp_appr_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'update_emp_appraisal',
+            data: {
+                "emp_id": localStorage.getItem("empId"),
+                "emp_appr_id": emp_appr_id
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Appraisal Applied Successfully',
+                    });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    return Promise.resolve();
+                }
+                if (response.data.msg === "Alredy Applied") {
+                    notification.error({
+                        message: 'This Period Already Exist.'
+                    });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAIL_EMPID, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL, payload: response.data.data })
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+        notification.error({
+            message: 'Something Went Wrong,Record Not Added',
+        });
+    }
+}
 
 export const InsertAreaDevelopment = (showKeys, details, date) => async dispatch => {
     try {
@@ -89,7 +129,7 @@ export const GetEmpAppraisalDetails = (tempid) => async dispatch => {
             }
         })
             .then((response) => {
-                dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data[0] })
             })
 
     } catch (err) {
@@ -124,7 +164,8 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
                     notification.success({
                         message: 'Appraisal Supervisor Added Successfully',
                     });
-                    return Promise.resolve();
+
+                    return <Link to="/Home/todoList" />
                 }
             });
 
@@ -144,11 +185,10 @@ export const InsertSupervisorRate = (rateList) => async dispatch => {
             }
         })
             .then((response) => {
-                 if (response.data.status === 1) {
+                if (response.data.status === 1) {
                     notification.success({
                         message: ' Rating Added Successfully',
                     });
-                    return window.history.back()
                 }
             });
 
@@ -244,6 +284,8 @@ export const InsertManagingPartnerEmpAppraisal = (managemodelComment, emp_appr_i
 
     }
 }
+
+
 
 export const GetEmpAppraisalDetailbyEmpid = () => async dispatch => {
     try {
