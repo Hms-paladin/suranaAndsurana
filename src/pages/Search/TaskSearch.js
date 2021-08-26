@@ -44,6 +44,7 @@ import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
 import { getSubordinate } from "../../actions/UserMasterAction";
 import moment from "moment";
+import { useLocation, useParams } from "react-router-dom"
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -58,20 +59,17 @@ const HtmlTooltip = withStyles((theme) => ({
     },
 }))(Tooltip);
 function Task(props) {
-
+    let { task_id } = useParams()
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [startModelOpen, setStartModelOpen] = useState(false)
-    const [stopModelOpen, setStopModelOpen] = useState(false)
-    const [timesheetmodal, setTimesheetmodal] = useState(false)
     const [task_pri_modal, setTaskPrioriyModal] = useState(false)
     const [task_tag, setTaskTag] = useState(false)
     const [task_status, setTaskStatus] = useState(false)
     const [subordinates, setSubordinates] = useState(false)
     const [taskstatusLists, settaskstatusLists] = useState({})
     const [taskData, setTaskData] = useState({})
-    const [subId, setSubId] = useState(false)
     const [fieldVal, setfieldVal] = useState({
         subOrdinateVal: {
             value: "",
@@ -154,9 +152,8 @@ function Task(props) {
     }
 
     useEffect(() => {
-        dispatch(getTaskList(empid,"Active"));
+        dispatch(getTaskList(empid,"Active",task_id));
         dispatch(getSubordinate(empid));
-
     }, []);
     useEffect(() => {
 

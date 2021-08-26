@@ -150,7 +150,7 @@ import { useDispatch, connect } from "react-redux";
 import { notification } from "antd";
 import { apiurl } from "../../utils/baseUrl.js";
 import {get_user_rights} from "../../actions/UserAccessRightsAction";
-
+import TaskSearch from "../../pages/Search/TaskSearch";
 
 const { Option } = Select
 const { Search } = Input;
@@ -631,6 +631,7 @@ useEffect(() => {
         <Route path={`${props.match.path}/employeeform`} component={Employeeform}/>
         <Route path={`${props.match.path}/todolist`} component={TodoList}/>
         <Route path={`${props.match.path}/search`} component={SearchProject} exact />
+        <Route path={`${props.match.path}/search/task/:task_id`} component={TaskSearch} exact />
         <Route path={`${props.match.path}/task`} component={Task} exact />
         <Route path={`${props.match.path}/addclient`} component={AddClient} exact />
         <Route path={`${props.match.path}/generateinvoice`} component={GenerateInvoice} exact />

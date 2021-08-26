@@ -4,24 +4,6 @@ import { GET_TASK_LIST, GET_PROJECT_TIME_SHEET } from '../utils/Constants'
 import { PROJECTWISE_TIME_SHEET_SEARCH, DAY_REPORT_SEARCH } from '../utils/Constants'
 import { notification } from "antd";
 
-export const getTaskList = () => async dispatch => {
-    try {
-        axios({
-            method: 'POST',
-            url: apiurl + 'get_task_list',
-            data: {
-                "assignee_id": localStorage.getItem("empId"),
-            }
-        })
-            .then((response) => {
-
-                dispatch({ type: GET_TASK_LIST, payload: response.data.data || [] })
-            })
-
-    } catch (err) {
-
-    }
-}
 export const getProjectTimeSheetList = (project_id) => async dispatch => {
     try {
         axios({

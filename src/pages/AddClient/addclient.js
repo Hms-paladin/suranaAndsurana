@@ -349,12 +349,9 @@ function AddClient(props) {
 
   async function onfileupload() {
     const From_key = ['poa_name', 'upload'];
-    // console.log("1111111111111111111111111111111",Array.isArray('Addclient_Form.upload.value'))
-    if (!Addclient_Form.upload.value||Addclient_Form.upload.value==='' || Addclient_Form.poa_name.value === '') {
-      console.log("111111111111111111111112222222222")
+    if (!Addclient_Form.upload.value || Addclient_Form.upload.value === '' || Addclient_Form.poa_name.value === '') {
       From_key.map((data) => {
-        // if (Addclient_Form[data].value === ""||Addclient_Form[data].value=== []) {
-          console.log("Addclient_Form.upload.value",data)
+        if (!Addclient_Form[data].value || Addclient_Form[data].value === '') {
           let dynObj = {
             value: Addclient_Form[data].value,
             error: true,
@@ -365,11 +362,10 @@ function AddClient(props) {
             ...prevState,
             [data]: dynObj,
           }));
-        // }
+        }
       });
 
     } else {
-      console.log(Addclient_Form.upload.value,"1111111111111111111111144444444444")
       setFileupload((prevState) => (
         [...prevState, {
           poa_name: Addclient_Form.poa_name.value,
@@ -387,6 +383,8 @@ function AddClient(props) {
       //     throw (error)
       //   }
       // });
+      // Addclient_Form.upload.value=null;
+      // Addclient_Form.poa_name.value='';
       setAddclient_Form((prevState) => ({
         ...prevState,
       }));

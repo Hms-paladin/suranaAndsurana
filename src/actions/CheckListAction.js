@@ -195,7 +195,7 @@ export const getEmpSupervisor = () => async dispatch => {
             }
         })
             .then((response) => {
-                dispatch({ type: GET_FREQUENCY_BY_CHECKLIST, GET_EMP_SUPERVISOR, payload: response.data.data })
+                dispatch({ type:GET_EMP_SUPERVISOR, payload: response.data.data })
             })
 
     } catch (err) {

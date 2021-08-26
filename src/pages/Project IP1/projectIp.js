@@ -338,7 +338,7 @@ function ProjectIp(props) {
                             return (<>
                                 <div className="taskitem_div">
                                     <div style={{ whiteSpace: 'nowrap' }} >{data1.task}</div>
-                                    <div className="status_btn">{data1.status}</div>
+                                    <div className="status_Btn">{data1.status}</div>
                                 </div>
                                 {/* <hr /> */}
                             </>
@@ -446,7 +446,7 @@ function ProjectIp(props) {
 
         return (
 
-            <TimeSheets projectrow={projectDetails} />
+            <TimeSheets close_model={() => setTimesheetModelOpen(false)} projectrow={projectDetails} />
         )
     }
 
@@ -878,7 +878,7 @@ function ProjectIp(props) {
                         handleChangeCloseModel={(bln) => setVariableid(bln)}
                         content={variablerateModel()} width={1300} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={ timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={

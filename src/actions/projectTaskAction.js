@@ -9,23 +9,22 @@ import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
 import { GetOpeSearch } from './OutofPacketActions'
-export const
 
-    getActivity = () => async dispatch => {
-        try {
+export const getActivity = () => async dispatch => {
+    try {
 
-            axios({
-                method: 'GET',
-                url: apiurl + 'get_activity'
+        axios({
+            method: 'GET',
+            url: apiurl + 'get_activity'
+        })
+            .then((response) => {
+                dispatch({ type: GET_ACTIVITY, payload: response.data.data })
             })
-                .then((response) => {
-                    dispatch({ type: GET_ACTIVITY, payload: response.data.data })
-                })
 
-        } catch (err) {
+    } catch (err) {
 
-        }
     }
+}
 
 export const getTagList = () => async dispatch => {
     try {
@@ -73,8 +72,8 @@ export const inserTask = (params, timeSheetParams) => async dispatch => {
 
 
                 dispatch({ type: INSERT_TASK, payload: response.data.status })
-                if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1][0]) {
-                    let tid = response.data.data[response.data.data.length - 1][0]['@tid'];
+                if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
+                    let tid = response.data.data[response.data.data.length - 1].task_id;
                     timeSheetParams.task_id = tid;
                     dispatch(insertTimeSheet(timeSheetParams, 'id'))
                 }
@@ -131,6 +130,7 @@ export const insertAdhocTask = (params) => async dispatch => {
 }
 
 export const insertTimeSheet = (params, id) => async dispatch => {
+    console.log(params, "testttttttttttttttttttt")
     try {
         axios({
             method: 'POST',
@@ -153,21 +153,6 @@ export const insertTimeSheet = (params, id) => async dispatch => {
     }
 }
 
-
-/*
-BEGIN
-IF (project_id= 0) THEN
-UPDATE s_tbl_pm_task SET s_tbl_pm_task.actual_start_date=start_date, s_tbl_pm_task.actual_end_date=end_date, 
-s_tbl_pm_task.tag=tag, s_tbl_pm_task.assignee_id=assignee_id, s_tbl_pm_task.description=description 
-where  s_tbl_pm_task.task_id = task_id ;
-ELSE
-UPDATE `s_tbl_pm_task` SET s_tbl_pm_task.activiity_id = activiity_id,s_tbl_pm_task.sub_activity_id= sub_activity_id ,
- s_tbl_pm_task.assignee_id=assignee_id,s_tbl_pm_task.actual_start_date=start_date , 
- s_tbl_pm_task.actual_end_date= end_date ,s_tbl_pm_task.priority=priority,s_tbl_pm_task.description=description,s_tbl_pm_task.tag=tag where  s_tbl_pm_task.task_id = task_id ;
-END IF;
-END
-
-*/
 
 export const updateTaskDates = (params) => async dispatch => {
     try {
@@ -239,10 +224,10 @@ export const insertTimeSheetbyTime = (params, time, task) => async dispatch => {
                     dispatch(updateTaskDates(task));
                 }
 
-                dispatch(getTaskList(localStorage.getItem("empId"),"Active"));
+                dispatch(getTaskList(localStorage.getItem("empId"), "Active"));
                 var msg = response.data.msg;
                 notification.success({
-                    message: `Time Sheet ${time === true?'Started':'Stopped'}`,
+                    message: `Time Sheet ${time === true ? 'Started' : 'Stopped'}`,
                 });
                 dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
 
@@ -454,15 +439,15 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
 }
 
 
-export const getTaskList = (empId,status) => async dispatch => {
+export const getTaskList = (empId, status,task_id) => async dispatch => {
     try {
-        var a = localStorage.getItem("empId");
         axios({
             method: 'POST',
             url: apiurl + 'get_task_list',
             data: {
-                "assignee_id": empId,
-                "status":status||'Active'//localStorage.getItem("empId"),
+                "assignee_id": empId || localStorage.getItem("empId"),
+                "status": status || 'Active',
+                "task_id": task_id || "0",
             }
         })
             .then((response) => {

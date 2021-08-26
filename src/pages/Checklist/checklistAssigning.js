@@ -460,7 +460,10 @@ function CheckListAssign(props) {
           frequency_id: data.frequency_id,
           task_start_date: start_date["start_date" + index],
           task_end_date: end_date["end_date" + index],
-          days_of_week_id: days_of_week_id["days_of_week" + index] === "" ? 0 : days_of_week_id["days_of_week" + index]
+          days_of_week_id: days_of_week_id["days_of_week" + index] === "" ? 0 : days_of_week_id["days_of_week" + index],
+          activity_id :data.activity_id ,
+          sub_activity_id:data.sub_activity_id
+
         });
 
       })
