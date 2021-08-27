@@ -891,7 +891,7 @@ function Appraisal(props) {
                                         changeData={(data) =>
                                             addAppraisalcmt(data, "comment")
                                         }
-                                        value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : supmodelComment.major_achievement_remarks.values}
+                                        value={todoListdata?.current_responsibilites_remarks ? todoListdata?.current_responsibilites_remarks : supmodelComment.current_responsibilites_remarks.values}
                                         error={Appraisal.comment.error}
                                         errmsg={Appraisal.comment.errmsg}
                                     />
@@ -1068,7 +1068,7 @@ function Appraisal(props) {
                                             changeData={(data) =>
                                                 addAppraisalcmt(data, "comment")
                                             }
-                                            value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : todoListdata && todoListdata.self_work_des}
+                                            value={todoListdata?.current_assignment_remarks ? todoListdata?.current_assignment_remarks : todoListdata && todoListdata.current_assignment_remarks}
                                             error={Appraisal.comment.error}
                                             errmsg={Appraisal.comment.errmsg}
                                         />
