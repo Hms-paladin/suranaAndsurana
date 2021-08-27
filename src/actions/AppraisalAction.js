@@ -164,8 +164,7 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
                     notification.success({
                         message: 'Appraisal Supervisor Added Successfully',
                     });
-
-                    return <Link to="/Home/todoList" />
+                    return window.location = "/Home/todoList";
                 }
             });
 
