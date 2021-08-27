@@ -103,6 +103,8 @@ function Appraisal(props) {
         opinion_remark_remarks: { values: "" },
         growth_plan_three_yrs_remarks: { values: "" },
         growth_plan_five_yrs_remarks: { values: "" },
+        current_responsibilites_remarks: { values: "" }
+
     })
 
     const { appraisar_comments, instruction_action, advice_manage_parter, area_of_speci_remarks, self_work_des_remarks, current_duties_remarks,
@@ -177,6 +179,7 @@ function Appraisal(props) {
             opinion_remark_remarks: { values: "" },
             growth_plan_three_yrs_remarks: { values: "" },
             growth_plan_five_yrs_remarks: { values: "" },
+            current_responsibilites_remarks: { values: "" }
         })
 
         let designation = test.substring(1, 5 - 1)
@@ -433,6 +436,9 @@ function Appraisal(props) {
             }
             else if (value === "growth_plan_five_yrs_remarks") {
                 supmodelComment.growth_plan_five_yrs_remarks.values = data
+            }
+            else if (value === "current_responsibilites_remarks") {
+                supmodelComment.current_responsibilites_remarks.values = data
             }
             setSupModelComment((prevState) => ({
                 ...prevState,
@@ -889,7 +895,7 @@ function Appraisal(props) {
                                 <Grid item xs={4} >
                                     <Labelbox type="text"
                                         changeData={(data) =>
-                                            addAppraisalcmt(data, "comment")
+                                            addAppraisalcmt(data, "current_responsibilites_remarks")
                                         }
                                         value={todoListdata?.current_responsibilites_remarks ? todoListdata?.current_responsibilites_remarks : supmodelComment.current_responsibilites_remarks.values}
                                         error={Appraisal.comment.error}

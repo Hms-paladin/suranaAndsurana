@@ -43,7 +43,7 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
                 }
                 if (response.data.msg === "Alredy Applied") {
                     notification.error({
-                        message: 'This Period Already Exist.'
+                        message: 'Appraisal Already Saved '
                     });
                     dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
                     return Promise.resolve();
@@ -77,7 +77,7 @@ export const UpdateApplyAppraisal = (emp_appr_id) => async dispatch => {
                 }
                 if (response.data.msg === "Alredy Applied") {
                     notification.error({
-                        message: 'This Period Already Exist.'
+                        message: 'Appraisal Already Applied'
                     });
                     dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
                     dispatch({ type: GET_EMP_APPRAISAL_DETAIL_EMPID, payload: response.data.data })
@@ -164,7 +164,7 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
                     notification.success({
                         message: 'Appraisal Supervisor Added Successfully',
                     });
-                    return window.location = "/Home/todoList";
+                    window.location = "/Home/todoList"
                 }
             });
 
