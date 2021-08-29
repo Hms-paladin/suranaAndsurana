@@ -545,6 +545,7 @@ function CheckListAssign(props) {
             <div className="TThead">Start Date</div>
             <Labelbox type="datepicker"
               // view={["month"]}
+              minDate={new Date()}
               changeData={(data) => checkValidation(data, "startDate")}
               placeholder={"Start date "}
               value={checkListForm.startDate.value}
@@ -560,6 +561,7 @@ function CheckListAssign(props) {
             <div className="TThead">End Date</div>
             <Labelbox type="datepicker"
               // view={["date"]}
+              minDate={new Date()}
               changeData={(data) => checkValidation(data, "endDate")}
               placeholder={"End Date "}
               value={checkListForm.endDate.value}
