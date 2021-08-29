@@ -461,8 +461,8 @@ function CheckListAssign(props) {
           task_start_date: start_date["start_date" + index],
           task_end_date: end_date["end_date" + index],
           days_of_week_id: days_of_week_id["days_of_week" + index] === "" ? 0 : days_of_week_id["days_of_week" + index],
-          activity_id :data.activity_id ,
-          sub_activity_id:data.sub_activity_id
+          activity_id: data.activity_id,
+          sub_activity_id: data.sub_activity_id
 
         });
 
@@ -540,19 +540,6 @@ function CheckListAssign(props) {
               disabled
             ></Labelbox>
           </Grid>
-          {/* {checkListForm.checkListNameId.value != '' && <> */}
-          {/* <Grid item xs={3} container direction="column">
-              <div className="TThead">Frequency</div>
-              <Labelbox type="select"
-                dropdown={frequencyList.frequencyTypeData}
-                changeData={(data) => checkValidation(data, "frequency")}
-                placeholder={"Frequency"}
-                value={checkListForm.frequency.value}
-                error={checkListForm.frequency.error}
-                errmsg={checkListForm.frequency.errmsg}
-              // disabled={checkListForm.frequency.disabled}
-              ></Labelbox>
-            </Grid> */}
 
           <Grid item xs={2} container direction="column">
             <div className="TThead">Start Date</div>
@@ -582,33 +569,15 @@ function CheckListAssign(props) {
             ></Labelbox>
           </Grid>
 
-          {/* <Grid item xs={2} container direction="column">
-              <div className="TThead">Days of Week</div>
-              <Labelbox
-                type="select"
-                mode={"multiple"}
-                placeholder={"Days of Week"}
-                dropdown={daysOfWeeksLists.daysofWeeksData}
-                changeData={(data) =>
-                  checkValidation(data, "noOfDaysWeeks", daysOfWeeksLists.daysofWeeksData)
-                }
-                disabled={checkListForm.noOfDaysWeeks.disabled}
-                value={checkListForm.noOfDaysWeeks.value}
-                error={checkListForm.noOfDaysWeeks.error}
-                errmsg={checkListForm.noOfDaysWeeks.errmsg}
-                disabled={!divShow.days_of_week}
-              />
-            </Grid> */}
-          {/* </>} */}
-
         </Grid>
-        {/* {showVariableTable.length !== 0 && */}
-        <div>
-          <div style={{ fontSize: 16, fontWeight: 'bold' }}> Checklist Details</div>
-          <EnhancedTable headCells={headers}
-            rows={showVariableTable || []} />
-        </div>
-        {/* } */}
+        {showVariableTable.length === 0 &&<div className="taskDetailsCheck"> Select Checklist ,Start date and End date to see task details</div>}
+        {showVariableTable.length !== 0 &&
+          <div>
+            <div style={{ fontSize: 16, fontWeight: 'bold' }}> Checklist Details</div>
+            <EnhancedTable headCells={headers}
+              rows={showVariableTable || []} />
+          </div>
+        }
         <div className="checklistAssignBtn">
           <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onSubmit} />
           <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} custombtnCSS="custombtn" />

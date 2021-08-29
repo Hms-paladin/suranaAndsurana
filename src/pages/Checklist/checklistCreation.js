@@ -18,7 +18,8 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { Collapse } from "antd";
 import { Select, Divider, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
+import PlusIcon from "../../images/plusIcon.svg";
+import Delete from '../../images/dashboard/delete.svg';
 
 function CheckListCreation(props) {
   const { Panel } = Collapse;
@@ -27,7 +28,17 @@ function CheckListCreation(props) {
   const [addRights, setAddRights] = useState([])
   const [multiplePanel, setMultiplePanel] = useState([]);
   const [tempname, setTempName] = useState()
-
+  const [activityList, setactivityList] = useState({})
+  const [departmentList, setdepartmentList] = useState({})
+  const [checkListType, setcheckListType] = useState({})
+  // const [checkListCtegory, setcheckListCtegory] = useState({})
+  const [subActivity, setsubActivity] = useState({})
+  const [frequencyList, setfrequencyList] = useState({})
+  const [checkListNames, setcheckListNames] = useState({})
+  const [updateList, setUpdatelist] = useState([])
+  const [dummy, setDummy] = useState([])
+  const [val, setVal] = useState('')
+  // const [checkMasterListsData, setcheckMasterListsData] = useState([])
   const [checkListForm, setcheckListForm] = useState({
     activity: {
       value: "",
@@ -48,18 +59,21 @@ function CheckListCreation(props) {
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     checkListName: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     checkListType: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
+      disabled: false
     },
     frequency: {
       value: "",
@@ -76,6 +90,29 @@ function CheckListCreation(props) {
       errmsg: null,
     }
   });
+
+  const hideValidation = (From_key) => {
+    if (updateList.length > 0) {
+      let From_key = [
+        "activity",
+        "subActivity",
+        "task",
+        "frequency"
+      ];
+      From_key.map((data) => {
+        try {
+          checkListForm[data].validation = [];
+        } catch (error) {
+          throw error;
+        }
+      });
+
+      setcheckListForm((prevState) => ({
+        ...prevState,
+      }));
+    } 
+   
+  }
 
   const handleCancel = () => {
     let From_key = [
@@ -99,9 +136,29 @@ function CheckListCreation(props) {
     setcheckListForm((prevState) => ({
       ...prevState,
     }));
+    setUpdatelist([])
   };
 
+  const handleCancelTask = () => {
+    let From_key = [
+      "activity",
+      "subActivity",
+      "task",
+      "frequency"
+    ];
 
+    From_key.map((data) => {
+      try {
+        checkListForm[data].value = "";
+        console.log("mapping", checkListForm[data].value);
+      } catch (error) {
+        throw error;
+      }
+    });
+    setcheckListForm((prevState) => ({
+      ...prevState,
+    }));
+  };
   useEffect(() => {
     dispatch(getDepartment());
     dispatch(getCheckListType());
@@ -110,37 +167,8 @@ function CheckListCreation(props) {
     dispatch(getCheckLists());
     dispatch(getCheckListsNames());
   }, []);
-  const [activityList, setactivityList] = useState({})
-  const [departmentList, setdepartmentList] = useState({})
-  const [checkListType, setcheckListType] = useState({})
-  const [checkListCtegory, setcheckListCtegory] = useState({})
-  const [subActivity, setsubActivity] = useState({})
-  const [frequencyList, setfrequencyList] = useState({})
-  const [checkListNames, setcheckListNames] = useState({})
 
-  const [checkMasterListsData, setcheckMasterListsData] = useState([])
   useEffect(() => {
-
-    //     let checkListsData = []
-    // props.getCheckListscreation.map((data) =>
-    // checkListsData.push(data)
-    // )
-    // var lists = [];
-
-    // for (var m = 0; m < checkListsData.length; m++) {
-    //   var listarray = {
-    //     department: checkListsData[m].department, 
-    //     category: checkListsData[m].category, 
-    //     listName: checkListsData[m].check_list,
-    //      listType:checkListsData[m].check_list_type, 
-    //     taskItem: checkListsData[m].task,
-    //      activity: checkListsData[m].activity,
-    //       subactivity: checkListsData[m].sub_activity,
-    //        frequency: checkListsData[m].frequency
-    //   }
-    //   lists.push(listarray);
-    // }
-    // setcheckMasterListsData({ lists })
 
     let frequencyTypeData = []
     props.getFrequency.map((data) =>
@@ -263,6 +291,7 @@ function CheckListCreation(props) {
   }
 
   function onSubmit() {
+    hideValidation()
     var mainvalue = {};
     var targetkeys = Object.keys(checkListForm);
 
@@ -294,13 +323,10 @@ function CheckListCreation(props) {
 
         "department": checkListForm.department.value,
         "check_list": checkListName,
+        "check_list_id": 0,
         "check_list_type": checkListForm.checkListType.value,
-        "project_type_id": checkListForm.department.value,
-        "project_sub_type_id": checkListForm.department.value,
-        "activity_id": checkListForm.activity.value != '' ? checkListForm.activity.value : 0,
-        "sub_activity_id": checkListForm.subActivity.value != '' ? checkListForm.subActivity.value : 0,
-        "frequency_id": checkListForm.frequency.value ? checkListForm.frequency.value : 0,
-        "task": taskDesc,
+        "emp_id": localStorage.getItem("empId"),
+        "details": updateList,
         "created_on": moment().format('YYYY-MM-DD HH:m:s'),
         "created_by": localStorage.getItem("empId")
 
@@ -321,45 +347,38 @@ function CheckListCreation(props) {
   };
   const headCells = [
     { id: "department", label: "Department" },
-    // { id: "category", label: "Category" },
-    // { id: "listName", label: "Check List Name" },
     { id: "listType", label: "Check List Type" },
-    { id: "taskItem", label: "TaskItem" },
+    { id: "taskdescription", label: "Task Description" },
     { id: "activity", label: "Activity" },
     { id: "subactivity", label: "Sub Activity" },
     { id: "frequency", label: "Frequency" },
   ]
-
-  // const rows = [
-  //     { department: "Research", category: "category1", listName: "listName1", listType: "simple", taskItem: "Book Hall", activity: "", subactivity: "", frequency: "" },
-  //     { department: "", category: "", listName: "", listType: "simple", taskItem: "But Stationaries", activity: "", subactivity: "", frequency: "" },
-  //     { department: "", category: "", listName: "", listType: "Task Linked", taskItem: "Documentaion", activity: "Activity", subactivity: "Sub Activity", frequency: "On Demand" },
-  //     { department: "", category: "", listName: "", listType: "simple", taskItem: "Bio metric", activity: "", subactivity: "", frequency: "" },
-  //     { department: "", category: "", listName: "", listType: "No Task Linked", taskItem: "Pay Electricaly bill", activity: "", subactivity: "", frequency: "Fortnightly" },
-  //     { department: "", category: "", listName: "", listType: "Task linked", taskItem: "Monthly Report", activity: "Documentation", subactivity: "", frequency: "Monthly" },
-  // ]
-
-
+  const AddheadCells = [
+    { id: "taskdescription", label: "Task Description" },
+    { id: "activity", label: "Activity" },
+    { id: "subactivity", label: "Sub Activity" },
+    { id: "frequency", label: "Frequency" },
+    { id: "remove", label: "Remove" },
+  ]
   useEffect(() => {
-    // console.log(props.getCheckListscreation, "projectLength")
 
     let multipleTab = [];
-    props.getCheckListscreation.map((data, index) => {
+    props.getCheckListscreation && props.getCheckListscreation.length > 0 && props.getCheckListscreation.map((data, index) => {
       let ipProjectDataList = [];
 
       data.details.map((data1, index) => {
 
 
-      var rowdataListobj = {};
-      // if (data.project_type_id === 1) {
-      rowdataListobj["department"] = data1.department;
-      rowdataListobj["listType"] = data1.check_list_type;
-      rowdataListobj["taskItem"] = data1.task;
-      rowdataListobj["activity"] = data1.activity;
-      rowdataListobj["subactivity"] = data1.sub_activity;
-      rowdataListobj["frequency"] = data1.frequency;
-      // } 
-      ipProjectDataList.push(rowdataListobj);
+        var rowdataListobj = {};
+        // if (data.project_type_id === 1) {
+        rowdataListobj["department"] = data.department;
+        rowdataListobj["listType"] = data.check_list_type;
+        rowdataListobj["taskItem"] = data1.task;
+        rowdataListobj["activity"] = data1.activity;
+        rowdataListobj["subactivity"] = data1.sub_activity;
+        rowdataListobj["frequency"] = data1.frequency;
+        // } 
+        ipProjectDataList.push(rowdataListobj);
       });
 
 
@@ -409,39 +428,109 @@ function CheckListCreation(props) {
   }
 
   const onblurEvent = () => {
-
-    let data_res_id = checkListNames.checkListNameData.find((val) => {
-      return (
-        tempname == val.id
-      )
-    })
-    // console.log(data_res_id, "jjjj")
-    if (!data_res_id) {
-      checkListNames.checkListNameData.push({ value: tempname, id: tempname })
-      setcheckListNames((prevState) => ({
-        ...prevState,
-        // checkListNames.checkListNameData:[checkListNames.checkListNameData.length+1]:{value: tempname,id: tempname}
-      }))
-      checkListForm.checkListName.value = tempname
-      setcheckListNames((prevState) => ({
-        ...prevState,
-      }))
+    if (tempname) {
+      let data_res_id = checkListNames.checkListNameData.find((val) => {
+        return (
+          tempname == val.id
+        )
+      })
+      if (!data_res_id) {
+        checkListNames.checkListNameData.push({ value: tempname, id: tempname })
+        setcheckListNames((prevState) => ({
+          ...prevState,
+        }))
+        checkListForm.checkListName.value = tempname
+        setcheckListNames((prevState) => ({
+          ...prevState,
+        }))
+      }
     }
-    // {   checkListNameData.push({
-    //     value: data.check_list,
-    //     id: data.check_list
-    //   }) }) 
+
   }
 
+  // const getRowId = (id) => {
+  //   setVal(id)
+  // }
 
   /////////////
+  const onDelete = (index) => {
 
-  console.log(checkListNames, "tempname")
+    updateList.splice(index, 1);
+
+    setUpdatelist(prevState => ([
+      ...prevState
+    ]));
+  }
+
+  const AddTaskDetails = () => {
+
+    var mainvalue = {};
+    var targetkeys = Object.keys(checkListForm);
+    for (var i in targetkeys) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        checkListForm[targetkeys[i]].value,
+        checkListForm[targetkeys[i]].validation
+      );
+      checkListForm[targetkeys[i]].error = !errorcheck.state;
+      checkListForm[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = checkListForm[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter((obj) => checkListForm[obj].error == true);
+
+    if (filtererr.length === 0) {
+
+      var listarray = {
+        task: checkListForm.task.value,
+        activity_id: checkListForm.activity.value === "" ? 0 : checkListForm.activity.value,
+        sub_activity_id: checkListForm.subActivity.value === "" ? 0 : checkListForm.subActivity.value,
+        frequency_id: checkListForm.frequency.value,
+      };
+      updateList.push(listarray);
+
+    }
+
+    setcheckListForm(prevState => ({
+      ...prevState
+    }));
+
+    handleCancelTask()
+  }
+
+  useEffect(() => {
+    if (updateList && updateList.length > 0) {
+      checkListForm['checkListName'].disabled = true;
+      checkListForm['department'].disabled = true;
+      checkListForm['checkListType'].disabled = true;
+    }
+    else {
+      checkListForm['checkListName'].disabled = false;
+      checkListForm['department'].disabled = false;
+      checkListForm['checkListType'].disabled = false;
+    }
+    setcheckListForm((prevState) => ({
+      ...prevState
+    }));
+  }, [updateList && updateList.length])
+  console.log(updateList, val, "updateList")
   return (
     <div>
       <div className="mainHeading">Check List Creation</div>
       <div className="chechlistFields">
         <div className="firstrowFields">
+
+          <div>  <div className="TThead">Check List Name</div>
+            <Labelbox type="text"
+              // dropdown={checkListNames.checkListNameData}
+              changeData={(data) => checkValidation(data, "checkListName")}
+              // searchData={val => onSearch(val)}
+              // blurData={() => onblurEvent()}
+              value={checkListForm.checkListName.value}
+              error={checkListForm.checkListName.error}
+              errmsg={checkListForm.checkListName.errmsg}
+              disabled={checkListForm.checkListName.disabled}
+            />
+
+          </div>
           <div>  <div className="TThead">Department</div>
             <Labelbox type="select"
               dropdown={departmentList.departmentTypeData}
@@ -449,21 +538,10 @@ function CheckListCreation(props) {
               placeholder={"Department"}
               value={checkListForm.department.value}
               error={checkListForm.department.error}
-              errmsg={checkListForm.department.errmsg} /></div>
+              errmsg={checkListForm.department.errmsg}
+              disabled={checkListForm.department.disabled}
+            /></div>
 
-          <div>  <div className="TThead">Check List Name</div>
-            <Labelbox type="select"
-              dropdown={checkListNames.checkListNameData}
-              changeData={(data) => checkValidation(data, "checkListName")}
-              searchData={val => onSearch(val)}
-              blurData={() => onblurEvent()}
-              value={checkListForm.checkListName.value}
-              error={checkListForm.checkListName.error}
-              errmsg={checkListForm.checkListName.errmsg}
-
-            />
-
-          </div>
           <div>  <div className="TThead">Check List Type</div>
             <Labelbox type="select"
               dropdown={checkListType.checkListTypeData}
@@ -472,9 +550,23 @@ function CheckListCreation(props) {
               value={checkListForm.checkListType.value}
               error={checkListForm.checkListType.error}
               errmsg={checkListForm.checkListType.errmsg}
+              disabled={checkListForm.checkListType.disabled}
             /></div>
+
+        </div>
+        <div className="firstrowFields">
+          <div className="taskfield">  <div className="TThead">Task Description</div>
+            <Labelbox type="text"
+              changeData={(data) => checkValidation(data, "task")}
+              value={checkListForm.task.value}
+              error={checkListForm.task.error}
+              errmsg={checkListForm.task.errmsg}
+
+            /></div>
+
           <div>  <div className="TThead">Activity</div>
-            <Labelbox type="select" dropdown={activityList.activityTypeData}
+            <Labelbox type="select"
+              dropdown={activityList.activityTypeData}
               changeData={(data) => checkValidation(data, "activity")}
               placeholder={"Activity"}
               value={checkListForm.activity.value}
@@ -482,8 +574,7 @@ function CheckListCreation(props) {
               errmsg={checkListForm.activity.errmsg}
               disabled={checkListForm.activity.disabled}
             /></div>
-        </div>
-        <div className="firstrowFields">
+
           <div>  <div className="TThead">Sub Activity</div>
             <Labelbox type="select"
               dropdown={subActivity.projectSubActivitydata}
@@ -503,32 +594,58 @@ function CheckListCreation(props) {
               error={checkListForm.frequency.error}
               errmsg={checkListForm.frequency.errmsg}
             /></div>
-          <div className="taskfield">  <div className="TThead">Task Item</div>
-            <Labelbox type="text"
-              changeData={(data) => checkValidation(data, "task")}
-              value={checkListForm.task.value}
-              error={checkListForm.task.error}
-              errmsg={checkListForm.task.errmsg}
 
-            /></div>
-          <div className="checklistBtn">
-
-            <div >
-
-              {/* <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  onBtnClick={onSubmit}/> */}
-              <CustomButton btnName={"Save"} custombtnCSS="custombtn Btn_change" btnCustomColor="customPrimary" btnDisable={!addRights || addRights.display_control && addRights.display_control === 'N' ? true : false} onBtnClick={onSubmit} />
-              <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} custombtnCSS="custombtn Btn_change" />
-            </div>
-          </div>
-
+          {/* <div> <div className="TThead">{""}</div> */}
+          <img src={PlusIcon} onClick={() => AddTaskDetails()} className="editImage" style={{ cursor: 'pointer' }} />
+          {/* </div> */}
         </div>
+        <div className="checklistBtn">
+
+          {(updateList && updateList.length > 0) &&
+            <div className="DataTableDiv">
+              <div className="DataNameDiv">
+                <div className="DataName">Task Item</div>
+                <div className="DataName">Activity</div>
+                <div className="DataName">Sub Activity</div>
+                <div className="DataName">Frequency</div>
+                <div className="DataName">Action</div>
+              </div>
+
+              {updateList && updateList.length > 0 && updateList.map((data, index) => {
+                var activity_name = activityList.activityTypeData.filter((obj) => obj.id === data.activity_id);
+                var sub_activity_name = subActivity.projectSubActivitydata && subActivity.projectSubActivitydata.length > 0 && subActivity.projectSubActivitydata.filter((obj) => obj.id === data.sub_activity_id);
+                var frequency_name = frequencyList.frequencyTypeData.filter((obj) => obj.id === data.frequency_id);
+                console.log(sub_activity_name, "sub_activity_name")
+                return (
+                  <div className="DataValueDiv">
+                    <div className="DataName">{data.task}</div>
+                    <div className="DataName">{activity_name && activity_name[0] && activity_name[0].value || '-'}</div>
+                    <div className="DataName">{sub_activity_name && sub_activity_name[0] && sub_activity_name[0].value || '-'}</div>
+                    <div className="DataName">{frequency_name[0].value}</div>
+
+                    {/* <img src={Edit} className="editImage" style={{ cursor: 'pointer' }}  /> */}
+                    <div className="DataName"><img src={Delete} className="editImage" onClick={() => onDelete(index)} style={{ cursor: 'pointer' }} /></div>
+
+
+                  </div>
+                )
+              })
+              }
+
+            </div>}
+          {/* </Grid> */}
+          <div className="checklist_Btn">
+
+            {/* <CustomButton btnName={"Save"} custombtnCSS="custombtn" btnCustomColor="customPrimary"  onBtnClick={onSubmit}/> */}
+            <CustomButton btnName={"Save"} custombtnCSS="custombtn Btn_change" btnCustomColor="customPrimary" btnDisable={!addRights || addRights.display_control && addRights.display_control === 'N' ? true : false} onBtnClick={onSubmit} />
+            <CustomButton btnName={"Cancel"} onBtnClick={handleCancel} custombtnCSS="custombtn Btn_change" />
+          </div>
+        </div>
+        {/* 
+        </div> */}
 
       </div>
-      {/* <EnhancedTable
-                headCells={headCells}
-                rows={checkMasterListsData.length == 0 ? checkMasterListsData : checkMasterListsData.lists}
-                aligncss="aligncss"
-            /> */}
+
       <div className="checklist_collapse">
         <Collapse >{multiplePanel}</Collapse>
       </div>

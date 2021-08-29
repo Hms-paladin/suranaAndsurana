@@ -62,8 +62,8 @@ export const getCheckLists = () => async dispatch => {
 
         axios({
             method: 'GET',
-            // url: apiurl + 'get_check_list_creation'
-            url: apiurl + 'get_checklist_search'
+            url: apiurl + 'get_check_list_creation'
+            // url: apiurl + 'get_checklist_search'
         })
             .then((response) => {
                 dispatch({ type: GET_CHECKLIST_LISTS, payload: response.data.data })
