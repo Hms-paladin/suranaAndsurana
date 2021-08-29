@@ -11,6 +11,7 @@ import { InsertSupervisorRate, GetEmpAppraisalSupRate, InsertManagingPartnerRate
 import moment from 'moment';
 import { notification } from 'antd';
 import Edit from "../../images/editable.svg";
+import { Redirect, Link } from "react-router-dom";
 
 
 
@@ -129,17 +130,20 @@ function RatingModel(props) {
     const [showdropdownindex, setShowdropdownindex] = useState()
     const [changeeditrate, setChangeeditrate] = useState(true)
     const [ratingTitle, setRatingTitle] = useState([])
-    const [formValue, setFormValue] = useState({});
+    const [formValue, setFormValue] = useState([]);
     const [empId, setEmpId] = useState()
     const [emp_apprid, setEmp_apprid] = useState()
+    const [appraisalData, setApraisalData] = useState()
 
 
     useEffect(() => {
+        setApraisalData(props.location.state);
         dispatch(GetDevelopment())
-        dispatch(GetEmpAppraisalSupRate(props.employeeID))
-        setEmpId(props.employeeID)
-        setEmp_apprid(props.emp_appr_id)
-        console.log(props.employeeID, "props.employeeID")
+        dispatch(GetEmpAppraisalSupRate(props.location.ids?.employeeID))
+        setEmpId(props.location.ids?.employeeID)
+        setEmp_apprid(props.location.ids?.emp_appr_id)
+        console.log(props.location.ids?.empDetail, "props.location.ids?.employeeID")
+        console.log(props.location.state, "state loc")
         // employeeID
     }, [])
 
@@ -149,8 +153,8 @@ function RatingModel(props) {
             AreDevelopment.push({ id: data.area_of_development_id, value: data.area_of_development })
         );
         setAreDevelopment({ AreDevelopment });
-        setEmpDetails(props.empDetail)
-        setShowrowID(props.rowID)
+        setEmpDetails(props.location.ids?.empDetail)
+        setShowrowID(props.location.ids?.rowID)
         setShowratingDetails(props.GetEmpAppraisalSupRate)
         console.log(props.GetEmpAppraisalSupRate, "checkrate")
         setRatingTitle(props.GetDevelopment)
@@ -161,7 +165,7 @@ function RatingModel(props) {
 
     useEffect(() => {
 
-        if (props.rowID == 2) {
+        if (props.location.ids?.rowID == 2) {
             let arrVal = []
 
             showratingDetails && showratingDetails.map((data, index) => {
@@ -192,7 +196,7 @@ function RatingModel(props) {
             console.log(arrVal, "arrval")
             setDropdownValue(arrVal)
         }
-    }, [props.rowID, props.GetEmpAppraisalSupRate, showratingDetails])
+    }, [props?.rowID, props.GetEmpAppraisalSupRate, showratingDetails])
 
     function checkValidation(data, key) {
         setAttributeId()
@@ -324,21 +328,21 @@ function RatingModel(props) {
 
     const submitrate = () => {
         if (showrowID == 2) {
-            let rateLists = []
 
+            let rateLists = []
             for (let i = 0; i < 18; i++) {
                 if (dropdownValue[i].key2 === "-" && dropdownValue[i].key3 === "-") {
-                    rateLists.push({ "emp_id": props.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key1, "emp_appr_id": emp_apprid })
+                    rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key1, "emp_appr_id": emp_apprid })
                 } else if (dropdownValue[i].key1 === "-" && dropdownValue[i].key3 === "-") {
-                    rateLists.push({ "emp_id": props.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key2, "emp_appr_id": emp_apprid })
+                    rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key2, "emp_appr_id": emp_apprid })
                 } else if (dropdownValue[i].key1 === "-" && dropdownValue[i].key2 === "-") {
-                    rateLists.push({ "emp_id": props.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key3, "emp_appr_id": emp_apprid })
+                    rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": i + 1, "rating": dropdownValue[i].key3, "emp_appr_id": emp_apprid })
                 }
             }
             if (rateLists.length === 18) {
                 dispatch(InsertManagingPartnerRate(rateLists))
-                props.handleChangeCloseModel()
-                props.changeenable(true)
+                //props.handleChangeCloseModel()
+                //props.changeenable(true)
             }
         }
         else {
@@ -352,44 +356,45 @@ function RatingModel(props) {
                 console.log(allobj[i].split("_")[2], allobj[i].split("_")[1], "allobj[i]")
                 if (allobj[i].split("_")[2] == 0) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 8, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7, "emp_appr_id": emp_apprid })
                     }
                     console.log(allval[i], "allval")
                 } else if (allobj[i].split("_")[2] == 1) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 5, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 4, "emp_appr_id": emp_apprid })
                     }
                 } else if (allobj[i].split("_")[2] == 2) {
                     if (allval[i] == 1) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 3, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 2) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 2, "emp_appr_id": emp_apprid })
                     }
                     if (allval[i] == 3) {
-                        rateLists.push({ "emp_id": props.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1, "emp_appr_id": emp_apprid })
+                        rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 1, "emp_appr_id": emp_apprid })
                     }
                 }
             }
 
             console.log(rateLists, "splitval")
-
+            console.log(Object.keys(formValue).length, "formValue") 
             if (rateLists.length === 18) {
-                dispatch(InsertSupervisorRate(rateLists))
-                props.handleChangeCloseModel()
-                props.changeenable(true)
+
+                dispatch(InsertSupervisorRate(rateLists));
+
+
             } else {
                 notification.error({
                     message: 'Please Rate All Options',
@@ -461,10 +466,23 @@ function RatingModel(props) {
                 }
             </div>
             <div className="appraisalBtn">
-                <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                {Object.keys(formValue).length === 18 ?
+                    <Link push to={{
+                        pathname: "/Home/appraisal/",
+                        state: props.location?.state,
+                        prevState: props.location?.prevState
+                    }} >
+                        <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                    </Link>
+                    : <CustomButton btnName={showrowID == 2 ? "Approve" : "Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={submitrate} />
+                }
+
+
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
+            {console.log(Object.keys(formValue).length, "formValue")}
         </div>
+
     )
 }
 const mapStateToProps = (state) =>
