@@ -338,7 +338,7 @@ function CheckListAssign(props) {
   /////////////
 
   const headers = [
-    { id: "task", label: "Task" },
+    { id: "task", label: "Task Description" },
     { id: "frequency", label: "Frequency" },
     { id: "start_date", label: "Start Date" },
     { id: "end_date", label: "End Date" },
