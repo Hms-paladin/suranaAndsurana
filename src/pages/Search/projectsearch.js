@@ -442,7 +442,7 @@ function Projectsearch(props) {
         </Link> */}
 
         <CustomButton
-          btnName={"Create Project "}
+          btnName={"Create Project / Case"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
           btnDisable={!createProjectRights || createProjectRights.display_control && createProjectRights.display_control === 'N' ? true : false}

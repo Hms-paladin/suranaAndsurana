@@ -32,7 +32,7 @@ export default function (state = intialState, action) {
         case GET_LOCATION:
             return { ...state, locationLists: payload }
         case INSERT_TIME_SHEET:
-            return { ...state, insertTask: payload }
+            return { ...state, insertTimeSheetbyTime: payload }
         case GET_EXPENSE_TYPE:
             return { ...state, expenseType: payload }
         case GET_PAYMENT_MODE:

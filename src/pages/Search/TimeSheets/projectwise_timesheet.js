@@ -13,7 +13,8 @@ import ValidationLibrary from "../../../helpers/validationfunction";
 import { getEmployeeList, getProjectType, getProjectSubType, getProjectName } from '../../../actions/MasterDropdowns'
 import { getProjectWise_TimeSheet } from '../../../actions/TimeSheetAction'
 import moment from 'moment';
-
+import TimeSheets from './timesheetStart';
+import DynModel from '../../../component/Model/model';
 function ProjectwiseTS(props) {
     const [multiplePanel, setMultiplePanel] = useState([]);
     const [searchRights, setSearchRights] = useState([])
@@ -23,6 +24,7 @@ function ProjectwiseTS(props) {
     const [projectList, setprojectList] = useState([])
     const [openPanel, setopenPanel] = useState(0)
     const [minDate, setMinDate] = useState(new Date())
+    const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
     const [projectSearch, setprojectSearch] = useState({
         proj_name: {
             value: "",
@@ -164,7 +166,7 @@ function ProjectwiseTS(props) {
         if (projectSearch) {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
-      
+
         setprojectSearch({
             proj_name: {
                 value: "",
@@ -468,10 +470,14 @@ function ProjectwiseTS(props) {
                             errmsg={projectSearch.to_date.errmsg}
                         />
                     </Grid>
-                    <Grid item xs={2} container direction="row" justify="center" alignItems="center">
-                        <CustomButton btnName={"Search"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
-                    </Grid>
+
                 </Grid>
+
+                <div className="projectwise_Btn_div">
+                    <CustomButton btnName={"Search"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SearchData} />
+                    <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
+                </div>
+
             </div>
 
             <div className="DRcollapsecss">
@@ -479,8 +485,9 @@ function ProjectwiseTS(props) {
                     {multiplePanel}
                 </Collapse>
             </div>
-
+            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise close_model={() => setTimesheetModelOpen(false)} />} width={1000} />
         </div>
+
     )
 }
 const mapStateToProps = (state) =>

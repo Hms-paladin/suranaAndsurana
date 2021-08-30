@@ -71,7 +71,7 @@ export const inserTask = (params, timeSheetParams) => async dispatch => {
                 });
 
 
-                dispatch({ type: INSERT_TASK, payload: response.data.status })
+                dispatch({ type: INSERT_TASK, payload: response.data.data })
                 if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
                     let tid = response.data.data[response.data.data.length - 1].task_id;
                     timeSheetParams.task_id = tid;
@@ -130,7 +130,6 @@ export const insertAdhocTask = (params) => async dispatch => {
 }
 
 export const insertTimeSheet = (params, id) => async dispatch => {
-    console.log(params, "testttttttttttttttttttt")
     try {
         axios({
             method: 'POST',
@@ -488,6 +487,7 @@ export const getTaskTimeSheet = (taskId) => async dispatch => {
             url: apiurl + 'get_task_timesheet',
             data: {
                 "task_id": taskId,
+                "project_id":0
             }
         })
             .then((response) => {
