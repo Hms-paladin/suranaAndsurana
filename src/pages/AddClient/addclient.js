@@ -48,15 +48,9 @@ function AddClient(props) {
       error: null,
       errmsg: null,
     },
-    gender_1: {
+    designation_1: {
       value: "",
       validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    },
-    DOB_1: {
-      value: "",
-      validation: [],
       error: null,
       errmsg: null,
     },
@@ -95,13 +89,7 @@ function AddClient(props) {
       error: null,
       errmsg: null,
     },
-    gender_2: {
-      value: "",
-      validation: [],
-      error: null,
-      errmsg: null,
-    },
-    DOB_2: {
+    designation_2: {
       value: "",
       validation: [],
       error: null,
@@ -131,7 +119,7 @@ function AddClient(props) {
       error: null,
       errmsg: null,
     },
-    poa_name: {
+    document_upload_name: {
       value: "",
       validation: [],
       error: null,
@@ -144,6 +132,18 @@ function AddClient(props) {
       errmsg: null,
       disabled: false,
       view_file: null
+    },
+    gst_no: {
+      value: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
+    pan_no: {
+      value: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
     },
   });
 
@@ -348,8 +348,8 @@ function AddClient(props) {
   }
 
   async function onfileupload() {
-    const From_key = ['poa_name', 'upload'];
-    if (!Addclient_Form.upload.value || Addclient_Form.upload.value === '' || Addclient_Form.poa_name.value === '') {
+    const From_key = ['document_upload_name', 'upload'];
+    if (!Addclient_Form.upload.value || Addclient_Form.upload.value === '' || Addclient_Form.document_upload_name.value === '') {
       From_key.map((data) => {
         if (!Addclient_Form[data].value || Addclient_Form[data].value === '') {
           let dynObj = {
@@ -368,7 +368,7 @@ function AddClient(props) {
     } else {
       setFileupload((prevState) => (
         [...prevState, {
-          poa_name: Addclient_Form.poa_name.value,
+          document_upload_name: Addclient_Form.document_upload_name.value,
           selectedFile: Addclient_Form.upload.value,
         }]
 
@@ -384,7 +384,7 @@ function AddClient(props) {
       //   }
       // });
       // Addclient_Form.upload.value=null;
-      // Addclient_Form.poa_name.value='';
+      // Addclient_Form.document_upload_name.value='';
       setAddclient_Form((prevState) => ({
         ...prevState,
       }));
@@ -399,13 +399,13 @@ function AddClient(props) {
 
   const onStateClear = () => {
     let From_key = [
-      "poa_name",
+      "document_upload_name",
       "city",
       "state",
       "emai_id_2",
       "con_ph_2",
-      "DOB_2", "gender_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "DOB_1", "gender_1", "con_per_1", "industrty", "client_name"]
+      "designation_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
+      "designation_1", "con_per_1", "industrty", "client_name", "gst_no", "pan_no"]
 
 
     From_key.map((data) => {
@@ -438,30 +438,63 @@ function AddClient(props) {
       <div className="Container">
         <div className="leftContainer">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Labelbox
-                type="text"
-                placeholder={"Client Name"}
-                changeData={(data) => checkValidation(data, "client_name")}
-                value={Addclient_Form.client_name.value}
-                error={Addclient_Form.client_name.error}
-                errmsg={Addclient_Form.client_name.errmsg}
-              />
+            <Grid item xs={12} container direction="row" alignItems="center" >
+              <Grid item xs={6}>
+                <div className="AddClientHead">Client Name</div>
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    placeholder={"Client Name"}
+                    changeData={(data) => checkValidation(data, "client_name")}
+                    value={Addclient_Form.client_name.value}
+                    error={Addclient_Form.client_name.error}
+                    errmsg={Addclient_Form.client_name.errmsg}
+                  /></div>
+              </Grid>
+
+              <Grid item xs={6}>
+                <div className="AddClientHead">Industry</div>
+                <Labelbox
+                  type="select"
+                  placeholder={"Industry"}
+                  dropdown={Industry.industryData}
+                  // dropdown={resumeGetList.candidateList}
+                  changeData={(data) => checkValidation(data, "industrty")}
+                  value={Addclient_Form.industrty.value}
+                  error={Addclient_Form.industrty.error}
+                  errmsg={Addclient_Form.industrty.errmsg}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                placeholder={"Industry"}
-                dropdown={Industry.industryData}
-                // dropdown={resumeGetList.candidateList}
-                changeData={(data) => checkValidation(data, "industrty")}
-                value={Addclient_Form.industrty.value}
-                error={Addclient_Form.industrty.error}
-                errmsg={Addclient_Form.industrty.errmsg}
-              />
+            <Grid item xs={12} container direction="row" alignItems="center" >
+              <Grid item xs={6}>
+                <div className="AddClientHead">GST No.</div>
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    placeholder={"GST No."}
+                    changeData={(data) => checkValidation(data, "gst_no")}
+                    value={Addclient_Form.gst_no.value}
+                    error={Addclient_Form.gst_no.error}
+                    errmsg={Addclient_Form.gst_no.errmsg}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <div className="AddClientHead">PAN No.</div>
+                <Labelbox
+                  type="text"
+                  placeholder={"PAN No."}
+                  changeData={(data) => checkValidation(data, "pan_no")}
+                  value={Addclient_Form.pan_no.value}
+                  error={Addclient_Form.pan_no.error}
+                  errmsg={Addclient_Form.pan_no.errmsg}
+                />
+              </Grid>
             </Grid>
             <Grid container spacing={2} className="dashed_div_client">
               <Grid item xs={12}>
+                <div className="AddClientHead">Contact Person 1</div>
                 <Labelbox
                   type="text"
                   placeholder={"Contact Person 1"}
@@ -474,48 +507,39 @@ function AddClient(props) {
               </Grid>
               <Grid item xs={12} container direction="row" alignItems="center">
                 <Grid item xs={6}>
+                  <div className="AddClientHead">Designation</div>
                   <div className="genderDobFlex">
                     <Labelbox
                       type="select"
-                      placeholder={"Gender"}
+                      placeholder={"Designation"}
                       dropdown={[
                         { id: "M", value: "Male" },
                         { id: "F", value: "Female" },
                       ]}
-                      changeData={(data) => checkValidation(data, "gender_1")}
-                      value={Addclient_Form.gender_1.value}
-                      error={Addclient_Form.gender_1.error}
-                      errmsg={Addclient_Form.gender_1.errmsg}
+                      changeData={(data) => checkValidation(data, "designation_1")}
+                      value={Addclient_Form.designation_1.value}
+                      error={Addclient_Form.designation_1.error}
+                      errmsg={Addclient_Form.designation_1.errmsg}
                     />
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="genderDobFlex">
-                    <Labelbox
-                      type="datepicker"
-                      placeholder={"Date of Birth"}
-                      disableFuture={true}
-                      changeData={(data) => checkValidation(data, "DOB_1")}
-                      value={Addclient_Form.DOB_1.value}
-                      error={Addclient_Form.DOB_1.error}
-                      errmsg={Addclient_Form.DOB_1.errmsg}
-                    />
-                  </div>
+                  <div className="AddClientHead">Contact Phone</div>
+                  <Labelbox
+                    type="text"
+                    placeholder={"Contact Phone"}
+                    // dropdown={resumeGetList.qualificationList}
+                    changeData={(data) => checkValidation(data, "con_ph_1")}
+                    value={Addclient_Form.con_ph_1.value}
+                    error={Addclient_Form.con_ph_1.error}
+                    errmsg={Addclient_Form.con_ph_1.errmsg}
+                  />
                 </Grid>
               </Grid>
 
-              <Grid item xs={7}>
-                <Labelbox
-                  type="text"
-                  placeholder={"Contact Phone"}
-                  // dropdown={resumeGetList.qualificationList}
-                  changeData={(data) => checkValidation(data, "con_ph_1")}
-                  value={Addclient_Form.con_ph_1.value}
-                  error={Addclient_Form.con_ph_1.error}
-                  errmsg={Addclient_Form.con_ph_1.errmsg}
-                />
-              </Grid>
+
               <Grid item xs={12}>
+                <div className="AddClientHead">Email ID</div>
                 <Labelbox
                   type="text"
                   placeholder={"Email ID"}
@@ -528,6 +552,7 @@ function AddClient(props) {
               </Grid>
             </Grid>
             <Grid item xs={12} className="textarea_height">
+              <div className="AddClientHead">Postal Address</div>
               <Labelbox
                 type="textarea"
                 placeholder={"Postal Address"}
@@ -542,29 +567,18 @@ function AddClient(props) {
                 <Grid md={12}>
                   <Labelbox
                     type="text"
-                    placeholder="Name of Power Attorney"
-                    changeData={(data) => checkValidation(data, "poa_name")}
-                    value={Addclient_Form.poa_name.value}
-                    error={Addclient_Form.poa_name.error}
-                    errmsg={Addclient_Form.poa_name.errmsg}
+                    placeholder="Document Upload"
+                    changeData={(data) => checkValidation(data, "document_upload_name")}
+                    value={Addclient_Form.document_upload_name.value}
+                    error={Addclient_Form.document_upload_name.error}
+                    errmsg={Addclient_Form.document_upload_name.errmsg}
                   ></Labelbox>
                 </Grid>
               </div>
 
               <div className="uploadfileSpace">
                 {" "}
-                {console.log(props, selectedFile, "selectedFileprops")}
-                {/* <Upload
-                  action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                  onChange={(info) => handleChange(info, "examScheduleUpload")}
-                  fileList={selectedFile}
-                  accept={'jpg'}
-                >
-                  <Button>
-                    <UploadOutlined />Click to upload
-                  </Button>
-                </Upload> */}
-                {/* <div className="Tradeheadings">Upload</div> */}
+
                 <Labelbox type="upload"
                   changeData={(data) => checkValidation(data, "upload")}
                   view_file={Addclient_Form.upload.view_file}
@@ -588,38 +602,23 @@ function AddClient(props) {
               </div>
 
             </div>
-            <div className="doc_upload_div"><div style={{ width: '50%' }}>POA</div>  <div>File Name</div></div>
+            <div className="doc_upload_div"><div style={{ width: '50%' }}>Document Name</div>  <div>File Name</div></div>
             {fileupload.map((data) => {
               return (<>
 
                 <div className="doc_upload_items">
-                  <div style={{ width: '50%' }}>{data.poa_name}</div>
+                  <div style={{ width: '50%' }}>{data.document_upload_name}</div>
                   <div>{data.selectedFile.name}</div>
                 </div></>
               )
             })}
-            {/* <Grid container spacing={2} md={12}>
-              <Grid md={2} style={{ color: "#023e7d" }}>
-                POA{" "}
-              </Grid>
-              <Grid md={2} style={{ color: "#023e7d" }}>
-                File Name{" "}
-              </Grid>
-            </Grid>
 
-            <Grid container spacing={2} md={12}>
-              <Grid md={2}>Field 1 </Grid>
-              <Grid md={2}>Field 1 </Grid>
-            </Grid>
-            <Grid container spacing={2} md={12}>
-              <Grid md={2}>Field 2 </Grid>
-              <Grid md={2}>Field 2 </Grid>
-            </Grid> */}
           </Grid>
         </div>
         <div className="rightContainer_client">
           <Grid container spacing={2}>
             <Grid item xs={12}>
+              <div className="AddClientHead">Client Type</div>
               <Labelbox
                 type="select"
                 placeholder={"Client Type"}
@@ -632,6 +631,7 @@ function AddClient(props) {
             </Grid>
             <Grid container spacing={2} className="dashed_div_client">
               <Grid item xs={12}>
+                <div className="AddClientHead">Contact Person 2</div>
                 <Labelbox
                   type="text"
                   placeholder={"Contact Person 2"}
@@ -644,46 +644,37 @@ function AddClient(props) {
               </Grid>
               <Grid item xs={12} container direction="row" alignItems="center">
                 <Grid item xs={6}>
+                  <div className="AddClientHead">Designation</div>
                   <div className="genderDobFlex">
                     <Labelbox
                       type="select"
-                      placeholder={"Gender"}
+                      placeholder={"Designation"}
                       dropdown={[
                         { id: "M", value: "Male" },
                         { id: "F", value: "Female" },
                       ]}
-                      changeData={(data) => checkValidation(data, "gender_2")}
-                      value={Addclient_Form.gender_2.value}
-                      error={Addclient_Form.gender_2.error}
-                      errmsg={Addclient_Form.gender_2.errmsg}
+                      changeData={(data) => checkValidation(data, "designation_2")}
+                      value={Addclient_Form.designation_2.value}
+                      error={Addclient_Form.designation_2.error}
+                      errmsg={Addclient_Form.designation_2.errmsg}
                     />
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="genderDobFlex">
-                    <Labelbox
-                      type="datepicker"
-                      placeholder={"Date of Birth"}
-                      disableFuture={true}
-                      changeData={(data) => checkValidation(data, "DOB_2")}
-                      value={Addclient_Form.DOB_2.value}
-                      error={Addclient_Form.DOB_2.error}
-                      errmsg={Addclient_Form.DOB_2.errmsg}
-                    />
-                  </div>
+                  <div className="AddClientHead">Contact Phone</div>
+                  <Labelbox
+                    type="text"
+                    placeholder={"Contact Phone "}
+                    changeData={(data) => checkValidation(data, "con_ph_2")}
+                    value={Addclient_Form.con_ph_2.value}
+                    error={Addclient_Form.con_ph_2.error}
+                    errmsg={Addclient_Form.con_ph_2.errmsg}
+                  />
                 </Grid>
               </Grid>
-              <Grid item xs={7}>
-                <Labelbox
-                  type="text"
-                  placeholder={"Contact Phone "}
-                  changeData={(data) => checkValidation(data, "con_ph_2")}
-                  value={Addclient_Form.con_ph_2.value}
-                  error={Addclient_Form.con_ph_2.error}
-                  errmsg={Addclient_Form.con_ph_2.errmsg}
-                />
-              </Grid>
+
               <Grid item xs={12}>
+                <div className="AddClientHead">Email ID</div>
                 <Labelbox
                   type="text"
                   placeholder={"Email ID"}
@@ -695,6 +686,7 @@ function AddClient(props) {
               </Grid>
             </Grid>
             <Grid item xs={12}>
+              <div className="AddClientHead">State</div>
               <Labelbox
                 type="select"
                 placeholder={"State"}
@@ -705,18 +697,9 @@ function AddClient(props) {
                 errmsg={Addclient_Form.state.errmsg}
               />
             </Grid>
-            {/* <Upload
-              accept="jpg"
-              showUploadList={test === "" ? false : true}
-              beforeUpload={(e) => uploadcheck(e)}
-
-            >
-              <Button>
-                Click to Upload
-              </Button> </Upload> */}
-
 
             <Grid item xs={12}>
+              <div className="AddClientHead">City</div>
               <Labelbox
                 type="select"
                 placeholder={"City"}

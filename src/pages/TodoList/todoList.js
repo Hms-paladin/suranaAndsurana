@@ -18,12 +18,9 @@ import Employeeform from '../Employeeform/employeeform';
 import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
-import Appraisal from '../Appraisal/appraisal';
-import AppraisalView from '../Appraisal/appraisalView';
-import MPAppraisal from '../Appraisal/MP_Appraisal'
+
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
-import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
 import { getTaskList } from "../../actions/projectTaskAction";
 import { getProjectTasks } from "../../actions/TodoListAction";
@@ -193,7 +190,7 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        props.getProjectTasks.map((data) => {
+        props.getProjectTasks.length>0&&props.getProjectTasks.map((data) => {
             let showId = null
             let showName = null
 

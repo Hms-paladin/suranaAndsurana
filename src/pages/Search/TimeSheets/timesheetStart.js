@@ -24,7 +24,7 @@ function TimeSheetStartModel(props) {
     const [activityList, setactivityList] = useState({})
     const [priorityList, setpriorityList] = useState({})
     const [taggList, settaggList] = useState({})
-    const [assignedToLists, setassignedToLists] = useState({})
+    // const [assignedToLists, setassignedToLists] = useState({})
     const [projectDetails, setProjectDetails] = useState([{}])
     const [projectName, setProjectName] = useState({});
     const [timeSheetForm, settimeSheetForm] = useState({
@@ -52,13 +52,13 @@ function TimeSheetStartModel(props) {
             error: null,
             errmsg: null,
         },
-        assignTo: {
-            value: "",
-            validation: [],
-            error: null,
-            errmsg: null,
-            disabled: false
-        },
+        // assignTo: {
+        //     value: "",
+        //     validation: [],
+        //     error: null,
+        //     errmsg: null,
+        //     disabled: false
+        // },
         tag: {
             value: "",
             valueById: "",
@@ -191,24 +191,13 @@ function TimeSheetStartModel(props) {
         )
         settaggList({ tagTypeData })
 
-
-        let assignedToData = []
-        props.assignToList.map((data) =>
-            assignedToData.push({
-                value: data.name,
-                id: data.emp_id
-            })
-        )
-        setassignedToLists({ assignedToData })
-
-
         let ProjectName = [];
         props.ProjectName.map((data) =>
             ProjectName.push({ id: data.project_id, value: data.project_name })
         );
         setProjectName({ ProjectName });
 
-    }, [props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.assignToList, props.ProjectName])
+    }, [props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.ProjectName])
 
 
     const submitStartTimeSheet = () => {
@@ -228,7 +217,7 @@ function TimeSheetStartModel(props) {
         var filtererr = targetkeys.filter(
             (obj) => timeSheetForm[obj].error == true
         );
-        console.log(filtererr, "dddddddddddddddddd")
+
         if (filtererr.length > 0) {
         } else {
             let startTime = dateFormat(timeSheetForm.startTime.value != undefined && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
@@ -257,8 +246,8 @@ function TimeSheetStartModel(props) {
             dispatch(inserTask(data, timesheetData)).then((response) => {
                 handleCancel();
                 setChangeStop(false)
-                if(!props.project_wise){
-                dispatch(getProjectTimeSheetList(rowId));
+                if (!props.project_wise) {
+                    dispatch(getProjectTimeSheetList(rowId));
                 }
                 props.close_model && props.close_model()
             })
@@ -292,8 +281,8 @@ function TimeSheetStartModel(props) {
                     });
                     // dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
                     handleCancel();
-                    if(!props.project_wise){
-                    dispatch(getProjectTimeSheetList(rowId));
+                    if (!props.project_wise) {
+                        dispatch(getProjectTimeSheetList(rowId));
                     }
                     setChangeStop(true)
                     props.close_model && props.close_model()
@@ -357,31 +346,33 @@ function TimeSheetStartModel(props) {
     }
 
     useEffect(() => {
-        if(props.project_wise&&props.insertTask&&props.insertTask.length>0){
-            dispatch(getTaskTimeSheet(props.insertTask[0].task_id)); 
+        if (props.project_wise && props.insertTask && props.insertTask.length > 0) {
+            dispatch(getTaskTimeSheet(props.insertTask[0].task_id));
         }
     }, [props.insertTask])
 
-    console.log(props.insertTask,"props.insertTask")
-
     useEffect(() => {
-        timeSheetForm.assignTo.value = Number(localStorage.getItem("empId"))
-        timeSheetForm.assignTo.disabled = true
-        settimeSheetForm((prevState) => ({
-            ...prevState,
-        }));
-
-    }, [assignedToLists])
-
-    useEffect(() => {
-        if (props.timeSheetProject.length > 0) {
+        if (props.timeSheetProject.length > 0 || props.getTaskTimeSheet.length > 0) {
             handleCancel();
-            if (!props.timeSheetProject[props.timeSheetProject.length - 1].end_date && !props.timeSheetProject[props.timeSheetProject.length - 1].end_time) {
-                let data = props.timeSheetProject[props.timeSheetProject.length - 1]
+            let response;
+            let data;
+            if (props.project_wise && props.getTaskTimeSheet.length > 0) {
+                response = props.getTaskTimeSheet
+                data = response[response.length - 1].timesheet[0]
+            } else if (!props.project_wise && props.timeSheetProject.length > 0) {
+                response = props.timeSheetProject
+                data = response[response.length - 1]
+            }
+
+            if (!data.end_date && !data.end_time) {
+                if (data.project_id && data.project_id != 0) {
+                    timeSheetForm.projectname.value = data.project_id
+                    console.log(data.project_id,"data.project_id")
+                }
+                console.log(data.project_id,"data.project_id")
                 timeSheetForm.timesheet_id.value = data.timesheet_id
-                timeSheetForm.activity.value = data.activiity_id
+                timeSheetForm.activity.value = data.activity_id
                 timeSheetForm.subActivity.value = data.sub_activity_id
-                timeSheetForm.assignTo.value = data.assignee_id
                 timeSheetForm.priority.value = data.priority_id
                 timeSheetForm.tag.value = data.tag_id
                 timeSheetForm.startTime.value = data.start_time
@@ -396,33 +387,8 @@ function TimeSheetStartModel(props) {
 
         }
 
-    }, [props.timeSheetProject])
+    }, [props.timeSheetProject, props.getTaskTimeSheet])
 
-    // function onSubmit() {
-    //     var mainvalue = {};
-    //     var targetkeys = Object.keys(timeSheetForm);
-    //     for (var i in targetkeys) {
-    //         var errorcheck = ValidationLibrary.checkValidation(
-    //             timeSheetForm[targetkeys[i]].value,
-    //             timeSheetForm[targetkeys[i]].validation
-    //         );
-    //         timeSheetForm[targetkeys[i]].error = !errorcheck.state;
-    //         timeSheetForm[targetkeys[i]].errmsg = errorcheck.msg;
-    //         mainvalue[targetkeys[i]] = timeSheetForm[targetkeys[i]].value;
-    //     }
-    //     var filtererr = targetkeys.filter((obj) => timeSheetForm[obj].error == true);
-
-
-    //     if (filtererr.length > 0) {
-    //     } else {
-    //     }
-
-    //     settimeSheetForm((prevState) => ({
-    //         ...prevState,
-    //     }));
-    // }
-
-    // console.log(props,"rowData")
     return (
         <div className="timeSheetStartContainer">
             {changeStop ?
@@ -492,19 +458,7 @@ function TimeSheetStartModel(props) {
                                 errmsg={timeSheetForm.subActivity.errmsg}
                             />
                         </Grid>
-                        {/* {!props.project_wise && <Grid item xs={3}>
-                            <Labelbox type="select"
-                                placeholder={"Assign To"}
-                                value={timeSheetForm.assignTo.value}
-                                error={timeSheetForm.assignTo.error}
-                                errmsg={timeSheetForm.assignTo.errmsg}
-                                dropdown={assignedToLists.assignedToData}
-                                changeData={(data) => checkValidation(data, "assignTo")}
-                                disabled={timeSheetForm.assignTo.disabled}
-                            />
-                        </Grid>} */}
-                        {/* </Grid>
-                    <Grid item xs={12} container direction="row" spacing={3}> */}
+
                         <Grid item xs={3}>
                             <Labelbox type="select"
                                 placeholder={"Priority"}
@@ -575,9 +529,29 @@ function TimeSheetStartModel(props) {
                 :
                 <div>
                     <Grid item xs={12} container direction="row" spacing={3}>
-                        <Grid item xs={4}>{projectDetails && projectDetails.length > 0 && projectDetails[0].project_type}</Grid>
-                        <Grid item xs={4}>{projectDetails && projectDetails.length > 0 && projectDetails[0].project_name}</Grid>
-                        <Grid item xs={4}>{projectDetails && projectDetails.length > 0 && projectDetails[0].client} </Grid>
+                        {!props.project_wise && <> <Grid item xs={4}>{projectDetails && projectDetails.length > 0 && projectDetails[0].project_type}</Grid>
+                            <Grid item xs={4}>{projectDetails && projectDetails.length > 0 && projectDetails[0].project_name}</Grid>
+                            <Grid item xs={4}>{projectDetails && projectDetails.length > 0 && projectDetails[0].client} </Grid></>}
+
+                        {props.project_wise &&props.getTaskTimeSheet.length>0&&props.getTaskTimeSheet[0].timesheet[0].project_id!==0&& <> <Grid item xs={4} container direction="column">
+                            <div className="TThead">Project Name</div>
+                            <Labelbox type="select"
+                                placeholder={"Project "}
+                                dropdown={projectName.ProjectName}
+                                changeData={(data) => checkValidation(data, "projectname")}
+                                value={timeSheetForm.projectname.value}
+                                error={timeSheetForm.projectname.error}
+                                errmsg={timeSheetForm.projectname.errmsg}
+                                disabled={timeSheetForm.projectname.disabled}></Labelbox>
+
+                        </Grid>
+                            {props.ProjectDetails.length > 0 && <Grid item xs={4}>
+                                <div className="TThead">Client Name</div>
+                                <Labelbox type="text"
+                                    value={props.ProjectDetails.length > 0 && props.ProjectDetails[0].client}
+                                    disabled>
+                                </Labelbox>
+                            </Grid>}</>}
                     </Grid>
                     <Grid item xs={12} container direction="row" spacing={3}>
                         <Grid item xs={3}>
@@ -605,17 +579,6 @@ function TimeSheetStartModel(props) {
                                 errmsg={timeSheetForm.subActivity.errmsg}
                             />
                         </Grid>
-                        {/* <Grid item xs={3}>
-                            <Labelbox type="select"
-                                placeholder={"Assign To"}
-                                value={timeSheetForm.assignTo.value}
-                                error={timeSheetForm.assignTo.error}
-                                errmsg={timeSheetForm.assignTo.errmsg}
-                                dropdown={assignedToLists.assignedToData}
-                                changeData={(data) => checkValidation(data, "assignTo")}
-                            />
-                        </Grid> */}
-
                         <Grid item xs={3}>
                             <Labelbox type="select"
                                 placeholder={"Priority"}
@@ -699,6 +662,7 @@ const mapStateToProps = (state) =>
     ProjectName: state.getOptions.getProjectName || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     insertTask: state.projectTasksReducer.insertTask || [],
+    getTaskTimeSheet: state.projectTasksReducer.getTaskTimeSheet,
 });
 
 export default connect(mapStateToProps)(TimeSheetStartModel);

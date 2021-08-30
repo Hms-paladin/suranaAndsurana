@@ -6,7 +6,6 @@ import Axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl';
 import { GetInterviewers,GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
-import { GetDesignation } from "../../actions/GetDesignationActions";
 import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
