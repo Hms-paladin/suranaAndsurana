@@ -225,7 +225,7 @@ export default function EnhancedTable(props) {
   React.useEffect(() => {
     if(props.rows){
     setRows(props.rows);
-    if(!props.Resume&&!props.var_rate)
+    if(!props.Resume&&!props.var_rate&&!props.projectwise)
     setPage(0)
     }
   console.log("newpage",props.rows)

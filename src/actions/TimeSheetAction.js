@@ -44,18 +44,23 @@ export const getProjectTimeSheetListByTaskId = (taskId) => async dispatch => {
 
 
 
-export const getProjectWise_TimeSheet = (data) => async dispatch => {
+export const getProjectWise_TimeSheet = (data, emp_id) => async dispatch => {
+    console.log(data.emp_name.value === "", "data.emp_name.value")
     let dataObj = {}
-    if (data.emp_name.value) {
-        dataObj["emp_id"] = data.emp_name.value
+    dataObj["status"] = 0
+    if (emp_id) {
+        dataObj["emp_id"] = emp_id
+        dataObj["status"] = 1
     }
-    if (data.project_type.value) {
-        dataObj["project_type_id"] = data.project_type.value
-    } if (data.project_subtype.value) {
-        dataObj["sub_project_id"] = data.project_subtype.value
-    } if (data.proj_name.value) {
-        dataObj["project_id"] = data.proj_name.value
-    } if (data.from_date.value) {
+    else if (!data.emp_name.value || data.emp_name.value === "") {
+        dataObj["emp_id"] = localStorage.getItem("empId");
+    } else if (data.emp_name.value && data.emp_name.value !== "") {
+        dataObj["emp_id"] = data.emp_name.value
+        dataObj["status"] = 1
+    }
+
+
+    if (data.from_date.value) {
         dataObj["start_date"] = data.from_date.value
     } if (data.to_date.value) {
         dataObj["end_date"] = data.to_date.value
@@ -67,12 +72,13 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
             data: dataObj
         })
             .then((response) => {
-                if (response.data.data[0].project_details.length || response.data.data[1].project_details.length || response.data.data[2].project_details.length || response.data.data[3].project_details.length || response.data.data[4].project_details.length || response.data.data[5].project_details.length) {
+                if (response.data.status === 1) {
                     dispatch({ type: PROJECTWISE_TIME_SHEET_SEARCH, payload: response.data.data || [] })
-                } else {
-                    notification.error({
-                        message: "No Data Found",
-                    });
+                    if (response.data.data.length === 0) {
+                        notification.error({
+                            message: "No Data Found",
+                        });
+                    }
                 }
             })
 
@@ -117,24 +123,24 @@ export const update_approve_timesheet = (data) => async dispatch => {
     data && data.length > 0 && data.map((data) => {
         if (data.editicon) {
             var listarray = {
-                timesheet_id: data.timesheet_id === null ? '-' : data.timesheet_id,
-                approve_start_date: data.start_date === null ? '-' : data.start_date,
-                approved_start_time: data.start_time === null ? '-' : data.start_time,
-                approved_end_date: data.end_date === null ? '-' : data.end_date,
-                approved_end_time: data.end_time === null ? '-' : data.end_time,
-                approved_by:localStorage.getItem("empId"),
+                timesheet_id: data.timesheet_id === null ? '0' : data.timesheet_id,
+                approve_start_date: data.start_date === null ? '0000-00-00' : data.start_date,
+                approved_start_time: data.start_time === null ? '00:00' : data.start_time,
+                approved_end_date: data.end_date === null ? '0000-00-00' : data.end_date,
+                approved_end_time: data.end_time === null ? '00:00' : data.end_time,
+                approved_by: localStorage.getItem("empId"),
             };
             updatelist.push(listarray);
         }
     })
-    console.log(updatelist, "update_approve_timesheet")
+
     if (updatelist.length > 0) {
         try {
             axios({
                 method: 'PUT',
                 url: apiurl + 'update_approve_timesheet',
                 data: {
-                    "timesheet": [updatelist]
+                    "timesheet": updatelist
                 }
             })
                 .then((response) => {
@@ -149,5 +155,3 @@ export const update_approve_timesheet = (data) => async dispatch => {
         }
     }
 }
-//select SEC_TO_TIME(sum(time_to_sec(TIMEDIFF(CONCAT(end_date,' ',end_time),CONCAT(start_date,' ',start_time)))))
-//FROM `s_tbl_pm_timesheet` where task_id=1092

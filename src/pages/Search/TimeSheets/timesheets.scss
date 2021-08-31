@@ -46,6 +46,7 @@
     padding-bottom:8px;
 }
 .DRcollapsecss{
+    margin-top: 40px;
     .ant-collapse-header {
         padding: 6px 35px !important;
     }
@@ -69,4 +70,9 @@
 .projectwise_btn{
     height: 40px;
     width: 20%;
+}
+.projectwise_search_div{
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
 }

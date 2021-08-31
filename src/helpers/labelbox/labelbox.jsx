@@ -325,7 +325,10 @@ export default class Labelbox extends Component {
 			function onFileView(url) {
 				window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
 			}
-			// console.log(this.props.value && (this.props.value === []) && this.props.value,"ggggggggggggggggggg")
+			if (!this.props.value && document.getElementById("myFile")) {
+				document.getElementById("myFile").value = "";
+			}
+			// console.log(this.props.value && this.props.value.name ,"ggggggggggggggggggg")
 			return (<>
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
@@ -337,8 +340,9 @@ export default class Labelbox extends Component {
 						{/* <div className="upload" style={{ margin: "7px 20px 15px 7px" }}> */}
 						<div style={{ width: "100%", display: "flex" }}>
 							<input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
-								style={{fontSize: 12}}
-								value={(this.props.value && (this.props.value === []) && this.props.value) ? this.props.value : ''}
+								style={{ fontSize: 12 }}
+								id={"myFile"}
+								// value={(!this.props.value)&& []}
 								onChange={(e) => this.props.changeData && this.props.changeData(e.target.files[0])}
 								disabled={this.props.disabled}
 								hidden={this.props.hidden} />

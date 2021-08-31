@@ -15,7 +15,7 @@ import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
-
+import { getDesignationList } from '../../actions/MasterDropdowns'
 
 function AddClient(props) {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function AddClient(props) {
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
-  const [uploadList, setUploadFile] = useState(false)
+  const [getdata, setgetData] = useState([])
   const [test, setTest] = useState([]);
   const [clientExists, setClientExists] = useState(1)
 
@@ -48,7 +48,7 @@ function AddClient(props) {
       error: null,
       errmsg: null,
     },
-    designation_1: {
+    designation_id_1: {
       value: "",
       validation: [{ name: "required" }],
       error: null,
@@ -89,7 +89,7 @@ function AddClient(props) {
       error: null,
       errmsg: null,
     },
-    designation_2: {
+    designation_id_2: {
       value: "",
       validation: [],
       error: null,
@@ -153,7 +153,7 @@ function AddClient(props) {
 
 
   useEffect(() => {
-
+    dispatch(getDesignationList());
     // Client
     Axios({
       method: "GET",
@@ -222,6 +222,14 @@ function AddClient(props) {
 
   }, [setClientName, setAddclient_Form]);
 
+  useEffect(() => {
+    let Designation = [];
+    props.getDesignationList.map((data, index) =>
+      Designation.push({ id: data.designation_id, value: data.designation })
+    );
+    setgetData({ Designation });
+  }, [props.getDesignationList]);
+
   const handleChange = (info, uploadName) => {
     console.log(info, 'sdfjdfsjklkl')
 
@@ -274,7 +282,7 @@ function AddClient(props) {
     // (end)
 
 
-
+// console.log(data,"gggggggggggggggggggggggggggg")
 
 
     if (key === "client_name" && data) {
@@ -404,8 +412,8 @@ function AddClient(props) {
       "state",
       "emai_id_2",
       "con_ph_2",
-      "designation_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "designation_1", "con_per_1", "industrty", "client_name", "gst_no", "pan_no"]
+      "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
+      "designation_id_1", "con_per_1", "industrty", "client_name", "gst_no", "pan_no"]
 
 
     From_key.map((data) => {
@@ -512,14 +520,11 @@ function AddClient(props) {
                     <Labelbox
                       type="select"
                       placeholder={"Designation"}
-                      dropdown={[
-                        { id: "M", value: "Male" },
-                        { id: "F", value: "Female" },
-                      ]}
-                      changeData={(data) => checkValidation(data, "designation_1")}
-                      value={Addclient_Form.designation_1.value}
-                      error={Addclient_Form.designation_1.error}
-                      errmsg={Addclient_Form.designation_1.errmsg}
+                      dropdown={getdata.Designation}
+                      changeData={(data) => checkValidation(data, "designation_id_1")}
+                      value={Addclient_Form.designation_id_1.value}
+                      error={Addclient_Form.designation_id_1.error}
+                      errmsg={Addclient_Form.designation_id_1.errmsg}
                     />
                   </div>
                 </Grid>
@@ -649,14 +654,11 @@ function AddClient(props) {
                     <Labelbox
                       type="select"
                       placeholder={"Designation"}
-                      dropdown={[
-                        { id: "M", value: "Male" },
-                        { id: "F", value: "Female" },
-                      ]}
-                      changeData={(data) => checkValidation(data, "designation_2")}
-                      value={Addclient_Form.designation_2.value}
-                      error={Addclient_Form.designation_2.error}
-                      errmsg={Addclient_Form.designation_2.errmsg}
+                      dropdown={getdata.Designation}
+                      changeData={(data) => checkValidation(data, "designation_id_2")}
+                      value={Addclient_Form.designation_id_2.value}
+                      error={Addclient_Form.designation_id_2.error}
+                      errmsg={Addclient_Form.designation_id_2.errmsg}
                     />
                   </div>
                 </Grid>
@@ -738,7 +740,7 @@ function AddClient(props) {
 const mapStateToProps = (state) => (
   {
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
-    // getInsertStatus: state.AddClientReducer.addClientDocumentStatus ,
+    getDesignationList: state.getOptions.getDesignationList || [],
     getInsertStatus: state.AddClientReducer.InsertClient,
     clientNameCheck: state.AddClientReducer.clientNameCheck
   }
