@@ -1,6 +1,6 @@
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
-import { GET_TASK_LIST, GET_PROJECT_TIME_SHEET } from '../utils/Constants'
+import { GET_PROJECT_TIME_SHEET } from '../utils/Constants'
 import { PROJECTWISE_TIME_SHEET_SEARCH, DAY_REPORT_SEARCH } from '../utils/Constants'
 import { notification } from "antd";
 
@@ -45,20 +45,21 @@ export const getProjectTimeSheetListByTaskId = (taskId) => async dispatch => {
 
 
 export const getProjectWise_TimeSheet = (data, emp_id) => async dispatch => {
-    console.log(data.emp_name.value === "", "data.emp_name.value")
+
     let dataObj = {}
     dataObj["status"] = 0
-    if (emp_id) {
-        dataObj["emp_id"] = emp_id
-        dataObj["status"] = 1
-    }
-    else if (!data.emp_name.value || data.emp_name.value === "") {
+
+    if (!data.emp_name.value || data.emp_name.value === "") {
         dataObj["emp_id"] = localStorage.getItem("empId");
     } else if (data.emp_name.value && data.emp_name.value !== "") {
-        dataObj["emp_id"] = data.emp_name.value
-        dataObj["status"] = 1
-    }
+        if (Number(localStorage.getItem("empId")) === data.emp_name.value) {
+            dataObj["emp_id"] = localStorage.getItem("empId");
+        } else {
+            dataObj["emp_id"] = data.emp_name.value
+            dataObj["status"] = 1
+        }
 
+    }
 
     if (data.from_date.value) {
         dataObj["start_date"] = data.from_date.value
@@ -97,7 +98,7 @@ export const getDayReport_TimeSheet = (data) => async dispatch => {
     if (data.curr_date?.value) {
         dataObj["cur_date"] = data?.curr_date?.value
     }
-    console.log(dataObj, "dataObj")
+
     try {
         axios({
             method: 'POST',
@@ -117,7 +118,7 @@ export const getDayReport_TimeSheet = (data) => async dispatch => {
 }
 
 
-export const update_approve_timesheet = (data) => async dispatch => {
+export const update_approve_timesheet = (data, status) => async dispatch => {
 
     var updatelist = [];
     data && data.length > 0 && data.map((data) => {
@@ -129,6 +130,7 @@ export const update_approve_timesheet = (data) => async dispatch => {
                 approved_end_date: data.end_date === null ? '0000-00-00' : data.end_date,
                 approved_end_time: data.end_time === null ? '00:00' : data.end_time,
                 approved_by: localStorage.getItem("empId"),
+                status: status,
             };
             updatelist.push(listarray);
         }
@@ -144,10 +146,48 @@ export const update_approve_timesheet = (data) => async dispatch => {
                 }
             })
                 .then((response) => {
+                    if (response.data.status === 1) {
+                        notification.success({
+                            message: `Timesheet ${status === 1 ? 'Approved' : 'Rejected'} Successfully`,
+                        });
+                        return Promise.resolve();
+                    }
+                })
 
-                    notification.success({
-                        message: 'Timesheet Approved Successfully',
-                    });
+        } catch (err) {
+
+        }
+    }
+}
+
+export const update_submit_timesheet = (data) => async dispatch => {
+
+    var updatelist = [];
+    data && data.length > 0 && data.map((data) => {
+        if (data.editicon) {
+            var listarray = {
+                timesheet_id: data.timesheet_id === null ? '0' : data.timesheet_id,
+            };
+            updatelist.push(listarray);
+        }
+    })
+
+    if (updatelist.length > 0) {
+        try {
+            axios({
+                method: 'PUT',
+                url: apiurl + 'update_submit_timesheet',
+                data: {
+                    "timesheet": updatelist
+                }
+            })
+                .then((response) => {
+                    if (response.data.status === 1) {
+                        notification.success({
+                            message: 'Timesheet Submitted Successfully',
+                        });
+                        return Promise.resolve();
+                    }
                 })
 
         } catch (err) {

@@ -3,48 +3,46 @@ import CustomButton from "../../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import EnhancedTable from '../../../component/DynTable/table';
-import { useParams, Link } from 'react-router-dom';
-import { Collapse } from 'antd';
-import { Select } from 'antd';
+
 import './timesheets.scss'
 import { useDispatch, connect } from "react-redux";
 import { notification } from "antd";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { getEmployeeList, getProjectType, getProjectSubType, getProjectName } from '../../../actions/MasterDropdowns'
+import { getProjectSubType } from '../../../actions/MasterDropdowns'
 import { getProjectWise_TimeSheet } from '../../../actions/TimeSheetAction'
 import moment from 'moment';
 import TimeSheets from './timesheetStart';
 import DynModel from '../../../component/Model/model';
 import { Checkbox } from 'antd'
-import { update_approve_timesheet } from "../../../actions/TimeSheetAction";
+import { update_approve_timesheet, update_submit_timesheet } from "../../../actions/TimeSheetAction";
+import { getEmpSupervisor } from '../../../actions/CheckListAction';
 
 function ProjectwiseTS(props) {
-    const [multiplePanel, setMultiplePanel] = useState([]);
-    const [searchRights, setSearchRights] = useState([])
-    const { Panel } = Collapse;
-    const { Option } = Select;
+
     let dispatch = useDispatch()
+    const [searchRights, setSearchRights] = useState([])
     const [projectList, setprojectList] = useState([])
-    const [TimesheetTable, setTimesheetTable] = useState({});
-    const [SendTimesheet, setSendTimesheet] = useState({});
+    const [TimeSheetTable, setTimeSheetTable] = useState([])
     const [minDate, setMinDate] = useState(new Date())
     const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
-    const [checked, setchecked] = useState({})
+    const [TimeSheetArr, setTimeSheetArr] = useState([])
+    const [trigger, setTrigger] = useState(false)
+    const [OnRejectData, setOnRejectData] = useState([])
     const [projectSearch, setprojectSearch] = useState({
         emp_name: {
-            value: "",
+            value: Number(localStorage.getItem("empId")),
             validation: [],
             error: null,
             errmsg: null,
         },
         from_date: {
-            value: "",
+            value: moment().format('YYYY-MM-DD'),
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
         to_date: {
-            value: "",
+            value: moment().format('YYYY-MM-DD'),
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -66,10 +64,6 @@ function ProjectwiseTS(props) {
             validation: projectSearch[key].validation
         }
 
-        if (key === "emp_name"&&projectSearch.from_date.value!=""&&projectSearch.to_date.value!="") {
-            dispatch(getProjectWise_TimeSheet(projectSearch,data))
-        }
-
         if (key === "start_date") {
             setMinDate(data)
         }
@@ -80,7 +74,25 @@ function ProjectwiseTS(props) {
 
     };
 
+    useEffect(() => {
+        if (projectSearch.emp_name.value != "" && projectSearch.from_date.value != "" && projectSearch.to_date.value != "") {
+            dispatch(getProjectWise_TimeSheet(projectSearch))
+        }
+    }, [projectSearch.emp_name.value])
 
+    function selectAll(e) {
+        if (e.target.checked === true) {
+            TimeSheetArr.map((data, index) => {
+                TimeSheetArr[index].editicon = true
+            })
+        } else {
+            TimeSheetArr.map((data, index) => {
+                TimeSheetArr[index].editicon = false
+            })
+        }
+        setTrigger(!trigger)
+
+    }
 
     const headCells = [
         { id: "start_date", label: "Start Date" },
@@ -93,23 +105,20 @@ function ProjectwiseTS(props) {
         { id: "project_name", label: "project Name" },
         { id: "project_type", label: "Project Type" },
         { id: "client", label: "Client" },
-        { id: "status", label: "Status" }]
+        { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
 
     useEffect(() => {
-        dispatch(getEmployeeList())
+        dispatch(getEmpSupervisor())
     }, [])
 
     useEffect(() => {
         let employeeName = []
-        let Project_type = []
-        let Project_Sub_type = []
-        let project_name = []
         props.EmployeeList.map((data) => {
             employeeName.push({ id: data.emp_id, value: data.name })
         })
 
         setprojectList({ employeeName })
-    }, [props.EmployeeList, props.ProjectType, props.SubProjectType, props.Project_name])
+    }, [props.EmployeeList])
     ///***********user permission**********/
     useEffect(() => {
         if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -125,20 +134,8 @@ function ProjectwiseTS(props) {
     }, [props.UserPermission]);
     ////////
 
-
     const SearchData = () => {
-        setMultiplePanel()
-        // Object.size = function (obj) {
-        //     var size = 0,
-        //         key;
-        //     for (key in obj) {
-        //         if (obj.hasOwnProperty(key)) size++;
-        //     }
-        //     return size;
-        // };
 
-        // // Get the size of an object
-        // var size = Object.size(projectSearch);
         var mainvalue = {};
         var targetkeys = Object.keys(projectSearch);
 
@@ -162,78 +159,98 @@ function ProjectwiseTS(props) {
 
     }
 
-    const handlecheck = (e) => {
+    const checkboxClick = (e, index) => {
 
-        setchecked({ ...checked, [e.target.name]: e.target.checked })
-
-        setchecked(prevState => ({
-            ...prevState,
-        }))
-
+        if (e.target.checked === true) {
+            TimeSheetArr[index].editicon = true
+        }
+        else {
+            TimeSheetArr[index].editicon = false
+        }
+        setTrigger(!trigger)
     }
 
+    const onReject = (data) => {
+        setTimesheetModelOpen(true)
+        setOnRejectData([data])
+    }
     useEffect(() => {
         var updatelist = [];
-        var updatelist1 = [];
-        props.Project_TimeSheet && props.Project_TimeSheet.length > 0 && props.Project_TimeSheet.map((data, index) => {
-            // checked['time_' + data.timesheet_id];
-            // setchecked({ ...checked, ['time_' + data.timesheet_id]: data.timesheet_id })
-            var listarray = {};
-            // if (localStorage.getItem("designation") === '"HoD"')
-            //     listarray.emp_name = data.name
-
-            listarray.start_date = (data.start_date === "0000-00-00" || data.start_date === null) ? 0 : moment(data.start_date).format("DD-MM-YYYY");
-            listarray.start_time = (data.start_time === "00:00:00" || data.start_time === null) ? 0 : moment(data.start_time, "HH:mm:ss").format("hh:mm A");
-            listarray.to_date = (data.end_date === "0000-00-00" || data.end_date === null) ? 0 : moment(data.end_date).format("DD-MM-YYYY");
-            listarray.end_time = (data.end_time === "00:00:00" || data.end_time === null) ? 0 : moment(data.end_time, "HH:mm:ss").format("hh:mm A");
-            listarray.no_of_hrs = data.no_of_hrs;
-            listarray.activity = data.activity;
-            listarray.sub_activity = data.sub_activity;
-            listarray.project_name = data.project_name;
-            listarray.project_type = data.project_type;
-            listarray.client = data.client;
-            listarray.status = data.status === "Not Approved" ? (
-                <>
-                    <Checkbox checked={checked['time_' + data.timesheet_id]} onChange={handlecheck} name={'time_' + data.timesheet_id} value={data.timesheet_id} />
-                </>
-            ) : data.status;
+        TimeSheetArr && TimeSheetArr.length > 0 && TimeSheetArr.map((data, index) => {
+            let hrs_arr = data.no_of_hrs.split(':')
+            var listarray = {
+                start_date: (data.start_date === "0000-00-00" || data.start_date === null) ? 0 : moment(data.start_date).format("DD-MM-YYYY"),
+                start_time: (data.start_time === "00:00:00" || data.start_time === null) ? 0 : moment(data.start_time, "HH:mm:ss").format("hh:mm A"),
+                to_date: (data.end_date === "0000-00-00" || data.end_date === null) ? 0 : moment(data.end_date).format("DD-MM-YYYY"),
+                end_time: (data.end_time === "00:00:00" || data.end_time === null) ? 0 : moment(data.end_time, "HH:mm:ss").format("hh:mm A"),
+                no_of_hrs: (hrs_arr[0] + ' Hours ' + (hrs_arr[1]?(','+hrs_arr[1] + ' minutes'):'')),
+                activity: data.activity,
+                sub_activity: data.sub_activity,
+                project_name: data.project_name,
+                project_type: data.project_type,
+                client: data.client,
+                status: (data.status_submit ? (data.status_submit === "Not Approved" ? (
+                    <>
+                        <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
+                    </>
+                ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
+                    data.status_appprove && data.status_appprove === "Not Approved" && (
+                        <>
+                            <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
+                        </>
+                    )),
+            }
 
             updatelist.push(listarray);
-            if (checked['time_' + data.timesheet_id]) {
-                var listarray1 = {};
-                listarray1.timesheet_id = data.timesheet_id
-                listarray1.start_date = data.start_date;
-                listarray1.start_time = data.start_time;
-                listarray1.end_date = data.end_date;
-                listarray1.end_time = data.end_time;
-                listarray1.editicon = true
-                updatelist1.push(listarray1);
-            }
         })
-        setTimesheetTable(updatelist);
-        setSendTimesheet(updatelist1);
+        setTimeSheetTable({ updatelist });
 
-    }, [props.Project_TimeSheet, checked])
+    }, [TimeSheetArr, trigger])
 
-    console.log(TimesheetTable,SendTimesheet, "SendTimesheet")
+    useEffect(() => {
+        setTimeSheetArr(props.Project_TimeSheet)
+    }, [props.Project_TimeSheet]);
 
-    const Approve = () => {
-        if (TimesheetTable && TimesheetTable.length > 0) {
-            // let data_res_id = [checked].find((val) => {
-            //     return (
-            //         val
-            //     )
-            // })
-            // console.log(data_res_id, "data_res_id")
+    const Approve = async (data) => {
 
-            if (SendTimesheet && SendTimesheet.length === 0) {
+        if (TimeSheetArr && TimeSheetArr.length > 0) {
+
+            let data_res_id = TimeSheetArr.find((val) => {
+                return (
+                    val.editicon && val.editicon === true
+                )
+            })
+
+            if (!data_res_id) {
                 notification.success({
                     message: 'Please select atleast one timesheet',
                 });
             } else {
-                dispatch(update_approve_timesheet(SendTimesheet)).then(() => {
-                    dispatch(getProjectWise_TimeSheet(projectSearch))
-                })
+                await dispatch(update_approve_timesheet(TimeSheetArr, data))
+                await dispatch(getProjectWise_TimeSheet(projectSearch))
+
+            }
+        }
+    }
+
+    const SubmitApprove = async () => {
+        if (TimeSheetArr && TimeSheetArr.length > 0) {
+
+            let data_res_id = TimeSheetArr.find((val) => {
+                return (
+                    val.editicon && val.editicon === true
+                )
+            })
+            // console.log(data_res_id,"data_res_id")
+
+            if (!data_res_id) {
+                notification.success({
+                    message: 'Please select atleast one timesheet',
+                });
+            } else {
+                await dispatch(update_submit_timesheet(TimeSheetArr))
+                await dispatch(getProjectWise_TimeSheet(projectSearch))
+
             }
         }
     }
@@ -286,16 +303,17 @@ function ProjectwiseTS(props) {
 
             {/* <div className="DRcollapsecss"> */}
             <div className="leavetableformat">
-                <EnhancedTable headCells={headCells} projectwise tabletitle={""} rows={TimesheetTable.length == 0 ? TimesheetTable : TimesheetTable} />
+                <EnhancedTable headCells={headCells} projectwise tabletitle={""} rows={TimeSheetTable.length == 0 ? TimeSheetTable : TimeSheetTable.updatelist} />
             </div>
             {/* </div> */}
             <div className="projectwise_Btn_div">
-
-                {localStorage.getItem("designation") === '"HoD"' && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "" )&& <CustomButton btnName={"Approve"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={Approve} />}
-                {(!projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SearchData} />}
+                {localStorage.getItem("designation") === '"HoD"' && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Reject"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(2)} />}
+                {localStorage.getItem("designation") === '"HoD"' && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Approve"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(1)} />}
+                {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
-            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise close_model={() => setTimesheetModelOpen(false)} />} width={1000} />
+            {OnRejectData.length === 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise={projectSearch} close_model={() => setTimesheetModelOpen(false)} />} width={1000} />}
+            {OnRejectData.length > 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise_edit={OnRejectData} close_model={() => setTimesheetModelOpen(false)} />} width={1000} />}
         </div>
 
     )
@@ -304,7 +322,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     GetSeverance: state.ExitSeverance.GetSeverance,
-    EmployeeList: state.getOptions.getEmployeeList,
+    EmployeeList: state.CheckListReducer.getEmpSupervisor,
     Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
 
 });

@@ -281,10 +281,6 @@ function AddClient(props) {
     }
     // (end)
 
-
-// console.log(data,"gggggggggggggggggggggggggggg")
-
-
     if (key === "client_name" && data) {
 
 
@@ -447,9 +443,8 @@ function AddClient(props) {
         <div className="leftContainer">
           <Grid container spacing={2}>
             <Grid item xs={12} container direction="row" alignItems="center" >
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <div className="AddClientHead">Client Name</div>
-                <div className="genderDobFlex">
                   <Labelbox
                     type="text"
                     placeholder={"Client Name"}
@@ -457,22 +452,10 @@ function AddClient(props) {
                     value={Addclient_Form.client_name.value}
                     error={Addclient_Form.client_name.error}
                     errmsg={Addclient_Form.client_name.errmsg}
-                  /></div>
+                  />
               </Grid>
 
-              <Grid item xs={6}>
-                <div className="AddClientHead">Industry</div>
-                <Labelbox
-                  type="select"
-                  placeholder={"Industry"}
-                  dropdown={Industry.industryData}
-                  // dropdown={resumeGetList.candidateList}
-                  changeData={(data) => checkValidation(data, "industrty")}
-                  value={Addclient_Form.industrty.value}
-                  error={Addclient_Form.industrty.error}
-                  errmsg={Addclient_Form.industrty.errmsg}
-                />
-              </Grid>
+          
             </Grid>
             <Grid item xs={12} container direction="row" alignItems="center" >
               <Grid item xs={6}>
@@ -518,9 +501,9 @@ function AddClient(props) {
                   <div className="AddClientHead">Designation</div>
                   <div className="genderDobFlex">
                     <Labelbox
-                      type="select"
+                      type="text"
                       placeholder={"Designation"}
-                      dropdown={getdata.Designation}
+                      // dropdown={getdata.Designation}
                       changeData={(data) => checkValidation(data, "designation_id_1")}
                       value={Addclient_Form.designation_id_1.value}
                       error={Addclient_Form.designation_id_1.error}
@@ -607,7 +590,7 @@ function AddClient(props) {
               </div>
 
             </div>
-            <div className="doc_upload_div"><div style={{ width: '50%' }}>Document Name</div>  <div>File Name</div></div>
+            <div className="doc_upload_div"><div style={{ width: '50%' }}>Document Title</div>  <div>File Name</div></div>
             {fileupload.map((data) => {
               return (<>
 
@@ -622,6 +605,19 @@ function AddClient(props) {
         </div>
         <div className="rightContainer_client">
           <Grid container spacing={2}>
+          <Grid item xs={12}>
+                <div className="AddClientHead">Industry</div>
+                <Labelbox
+                  type="select"
+                  placeholder={"Industry"}
+                  dropdown={Industry.industryData}
+                  // dropdown={resumeGetList.candidateList}
+                  changeData={(data) => checkValidation(data, "industrty")}
+                  value={Addclient_Form.industrty.value}
+                  error={Addclient_Form.industrty.error}
+                  errmsg={Addclient_Form.industrty.errmsg}
+                />
+              </Grid>
             <Grid item xs={12}>
               <div className="AddClientHead">Client Type</div>
               <Labelbox
@@ -652,9 +648,9 @@ function AddClient(props) {
                   <div className="AddClientHead">Designation</div>
                   <div className="genderDobFlex">
                     <Labelbox
-                      type="select"
+                      type="text"
                       placeholder={"Designation"}
-                      dropdown={getdata.Designation}
+                      // dropdown={getdata.Designation}
                       changeData={(data) => checkValidation(data, "designation_id_2")}
                       value={Addclient_Form.designation_id_2.value}
                       error={Addclient_Form.designation_id_2.error}

@@ -16,8 +16,7 @@ import {
 import './checklists.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 import { Collapse } from "antd";
-import { Select, Divider, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import Edit from "../../images/editable.svg";
 import PlusIcon from "../../images/plusIcon.svg";
 import Delete from '../../images/dashboard/delete.svg';
 
@@ -110,8 +109,8 @@ function CheckListCreation(props) {
       setcheckListForm((prevState) => ({
         ...prevState,
       }));
-    } 
-   
+    }
+
   }
 
   const handleCancel = () => {
@@ -336,9 +335,6 @@ function CheckListCreation(props) {
         handleCancel();
       })
 
-      // dispatch(InesertResume(InsertTaskForm)).then(() => {
-      //   handleCancel()
-      // })
     }
 
     setcheckListForm(prevState => ({
@@ -448,10 +444,6 @@ function CheckListCreation(props) {
 
   }
 
-  // const getRowId = (id) => {
-  //   setVal(id)
-  // }
-
   /////////////
   const onDelete = (index) => {
 
@@ -461,11 +453,29 @@ function CheckListCreation(props) {
       ...prevState
     ]));
   }
+  const onEdit = (index) => {
+
+    checkListForm.task.value = updateList[index].task;
+    checkListForm.subActivity.value = updateList[index].sub_activity_id;
+    checkListForm.activity.value = updateList[index].activity_id;
+    checkListForm.frequency.value = updateList[index].frequency_id;
+    setcheckListForm(prevState => ({
+      ...prevState
+    }));
+
+    updateList.splice(index, 1);
+
+    setUpdatelist(prevState => ([
+      ...prevState
+    ]));
+  }
+
 
   const AddTaskDetails = () => {
 
     var mainvalue = {};
     var targetkeys = Object.keys(checkListForm);
+
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
         checkListForm[targetkeys[i]].value,
@@ -475,9 +485,13 @@ function CheckListCreation(props) {
       checkListForm[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = checkListForm[targetkeys[i]].value;
     }
-    var filtererr = targetkeys.filter((obj) => checkListForm[obj].error == true);
+    var filtererr = targetkeys.filter(
+      (obj) => checkListForm[obj].error == true
+    );
 
-    if (filtererr.length === 0) {
+    if (filtererr.length > 0) {
+      // setInsertTaskForm({ error: true });
+    } else {
 
       var listarray = {
         task: checkListForm.task.value,
@@ -486,14 +500,14 @@ function CheckListCreation(props) {
         frequency_id: checkListForm.frequency.value,
       };
       updateList.push(listarray);
-
+      handleCancelTask()
     }
 
     setcheckListForm(prevState => ({
       ...prevState
     }));
 
-    handleCancelTask()
+
   }
 
   useEffect(() => {
@@ -511,7 +525,7 @@ function CheckListCreation(props) {
       ...prevState
     }));
   }, [updateList && updateList.length])
-  console.log(updateList, val, "updateList")
+  console.log(subActivity.projectSubActivitydata, "updateList")
   return (
     <div>
       <div className="mainHeading">Check List Creation</div>
@@ -623,8 +637,10 @@ function CheckListCreation(props) {
                     <div className="DataName">{sub_activity_name && sub_activity_name[0] && sub_activity_name[0].value || '-'}</div>
                     <div className="DataName">{frequency_name[0].value}</div>
 
-                    {/* <img src={Edit} className="editImage" style={{ cursor: 'pointer' }}  /> */}
-                    <div className="DataName"><img src={Delete} className="editImage" onClick={() => onDelete(index)} style={{ cursor: 'pointer' }} /></div>
+                    <div className="DataName">
+                      <img src={Edit} className="editImage" onClick={() => onEdit(index)} style={{ cursor: 'pointer' }} />
+                      <img src={Delete} className="editImage" onClick={() => onDelete(index)} style={{ cursor: 'pointer' }} />
+                    </div>
 
 
                   </div>

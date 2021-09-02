@@ -468,19 +468,17 @@ function ProjectIp(props) {
             <OPEModel handleChangeCloseModel={(bln) => handleFieldNullExp(bln)} />
         )
     }
-    const openProjectTask = () => {
-        setModelOpen(true)
-    }
+
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
             setModelOpen(true)
         }
-        else if (boxName === "STAGE") {
+        else if (boxName === "STAGE"||boxName === "CASE TYPE") {
             setStage(true)
             setProjecttypes(false)
             setStageMonitor(false)
         }
-        else if (boxName === "STAGE  MONITOR") {
+        else if (boxName === "STAGE  MONITOR"||boxName === "CASE LIFE CYCLE") {
             setStageMonitor(true)
             setStage(false)
             setProjecttypes(false)
@@ -867,7 +865,7 @@ function ProjectIp(props) {
                             props.ProjectDetails[0].project_type} */}
                     </div>
                     <div className="TabIconsview"
-                    ><TabIcons variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    ><TabIcons litigation={props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type === "Litigation Projects" ? 1 : undefined} variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
                     {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
                      */}
 
@@ -878,7 +876,7 @@ function ProjectIp(props) {
                         handleChangeCloseModel={(bln) => setVariableid(bln)}
                         content={variablerateModel()} width={1300} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={ timesheetmodelContent()} width={1000} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={

@@ -280,7 +280,7 @@ function OpeModel(props) {
                             <div className="rightitems">
                                 <div>
                                     <div id="bill">BILL</div>
-                                    <Checkbox />
+                                    {/* <Checkbox /> */}
                                 </div>
                                 <div className="uploadbtn" >
                                     <Labelbox type="upload"

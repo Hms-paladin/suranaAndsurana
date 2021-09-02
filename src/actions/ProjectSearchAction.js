@@ -11,6 +11,7 @@ export const getProjectSearchTableData = (data) => async dispatch => {
             method: 'POST',
             url: apiurl + 'get_resume_project_search',
             data: {
+                emp_id: localStorage.getItem("empId"),
                 client_type_id: data.clienttype.value,
                 client_id: data.client.value,
                 project_type_id: data.projecttype.value,

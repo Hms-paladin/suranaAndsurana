@@ -662,7 +662,7 @@ function ProjectFormCreate(props) {
     setEmployeeList({ EmployeeList });
 
 
-    // Project Value
+    // Project / Transaction Value
 
     let ProjectCostRange = [];
     props.ProjectCostRange.map((data) =>
@@ -943,7 +943,7 @@ function ProjectFormCreate(props) {
                   <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
                 {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""}
               </Grid>
-              <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
+              <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                 <Labelbox type="text"
                   changeData={(data) => handleCost(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
@@ -1034,7 +1034,7 @@ function ProjectFormCreate(props) {
                     <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
                   {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""} </Grid>
 
-                <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
+                <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                   <Labelbox type="text"
                     changeData={(data) => handleCost(data, "projectcostrange")}
                     value={projectform.projectcostrange.value}
@@ -1119,7 +1119,7 @@ function ProjectFormCreate(props) {
                   errmsg={projectform.hod_attorny.errmsg}
                 />
               </Grid>
-              <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
+              <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                 <Labelbox type="text"
                   changeData={(data) => handleCost(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}

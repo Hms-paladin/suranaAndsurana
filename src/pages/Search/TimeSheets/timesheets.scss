@@ -13,6 +13,11 @@
     text-align: right;
 }
 
+.project_wise_div{
+    display: flex;
+    width: 100%;
+}
+
 .timeSheetButtons{
     width: 10%;
 
@@ -75,4 +80,21 @@
     height: 100%;
     display: inline-flex;
     align-items: center;
+}
+.project_wise_checkbox{
+    width: 50%;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.project_wise_save{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+.RejectLabel{
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
 }

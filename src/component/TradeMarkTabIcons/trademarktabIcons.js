@@ -34,8 +34,8 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
-    var TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
-
+    var TabIcons = [{ img: TimeSheet, title: "BACK LOG TIME SHEET" }, { img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title:`${props.litigation ? 'CASE TYPE':'STAGE'}` }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE ' : 'STAGE  MONITOR'}` }]
+    console.log(props.litigation ? '1' : 2, "qqqqqqqqqqqqqqqqqq")
     const HtmlTooltip = withStyles((theme) => ({
         arrow: {
             color: theme.palette.common.white,
@@ -55,7 +55,7 @@ function TradeMarkTabIcons(props) {
     const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
     //const showFromCheckList = props  && props.checkListsAssigned && props.checkListsAssigned.length >0 ? null : 3
     var showFromCheckList = true;
-    if(props.checkListsAssigned.length>0){
+    if (props.checkListsAssigned.length > 0) {
         showFromCheckList = false;
     }
     // for (var i = 0; i < props.checkListsAssigned.length; i++) {
