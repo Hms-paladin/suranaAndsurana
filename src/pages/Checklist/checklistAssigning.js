@@ -3,7 +3,7 @@ import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
 import Grid from "@material-ui/core/Grid";
 import './checklists.scss'
-import { notification } from "antd";
+
 import Axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment"
@@ -208,8 +208,6 @@ function CheckListAssign(props) {
       checkListForm['subProjectId'].validation = [];
     }
 
-
-
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       checkListForm[key].validation
@@ -256,11 +254,6 @@ function CheckListAssign(props) {
       });
     }
   }, [checkListForm.project_type_id.value])
-
-
-  useEffect(() => {
-
-  }, [])
 
   useEffect(() => {
 
@@ -472,7 +465,6 @@ function CheckListAssign(props) {
     }
   }, [props.getFrequencyByCheckListId, start_date, end_date, days_of_week, checkListForm.startDate.value, checkListForm.endDate.value])
 
-  console.log(sendVariableData, "sendVariableData")
   return (
     <div>
       <div className="mainHeading">Check List Assigning</div>
@@ -561,7 +553,7 @@ function CheckListAssign(props) {
             <div className="TThead">End Date</div>
             <Labelbox type="datepicker"
               // view={["date"]}
-              minDate={new Date()}
+              minDate={checkListForm.startDate.value}
               changeData={(data) => checkValidation(data, "endDate")}
               placeholder={"End Date "}
               value={checkListForm.endDate.value}

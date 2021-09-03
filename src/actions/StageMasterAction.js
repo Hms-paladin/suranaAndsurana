@@ -1,30 +1,8 @@
-import { GET_STAGEMASTER_TABLEDATA, INSERT_STAGEMASTER,GET_STAGEMASTER,GET_STAGEMASTER_SEARCH } from "../utils/Constants";
+import { GET_STAGEMASTER,GET_STAGEMASTER_SEARCH } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-
-
-export const getStageMasterTableData = () => async dispatch => {
-  try {
-
-    axios({
-      method: 'GET',
-      url: apiurl + 'get_project_stage',
-    })
-      .then((response) => {
-        dispatch(
-          {
-            type: GET_STAGEMASTER_TABLEDATA,
-            payload: response.data.data
-          }
-        )
-      })
-
-  } catch (err) {
-
-  }
-}
 
 export const getStageMaster = () => async dispatch => {
   try {

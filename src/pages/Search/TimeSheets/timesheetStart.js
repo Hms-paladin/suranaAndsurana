@@ -279,8 +279,8 @@ function TimeSheetStartModel(props) {
             if (!props.project_wise) {
                 await dispatch(getProjectTimeSheetList(rowId));
             }
-             handleCancel();
-             props.close_model && props.close_model()
+            handleCancel();
+            props.close_model && props.close_model()
 
 
         }
@@ -298,7 +298,7 @@ function TimeSheetStartModel(props) {
             "end_date": timeSheetForm.fromDate.value,
             "end_time": end_time,
             "comment": timeSheetForm.description.value,
-            "created_by": localStorage.getItem("empId"),
+            "created_by": localStorage.getItem("empId")
         }
 
         try {
@@ -313,10 +313,10 @@ function TimeSheetStartModel(props) {
                     });
 
                     handleCancel();
-                    if (!props.project_wise) {
+                    if (!props.project_wise && !props.project_wise_edit) {
                         dispatch(getProjectTimeSheetList(rowId));
-                    } else if (props.project_wise) {
-                        dispatch(getProjectWise_TimeSheet(props.project_wise))
+                    } else if (props.project_wise || props.project_wise_edit) {
+                        dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1]))
                     }
                     setChangeStop(true)
                     props.close_model && props.close_model()
@@ -327,8 +327,6 @@ function TimeSheetStartModel(props) {
         } catch (err) {
 
         }
-
-
     }
 
     function checkValidation(data, key) {
@@ -389,7 +387,7 @@ function TimeSheetStartModel(props) {
             } else if (props.project_wise_edit) {
                 data = props.project_wise_edit[0]
             }
-            
+
             if (props.project_wise_edit || (!data.end_date && !data.end_time)) {
 
                 if (data.project_id && data.project_id != 0) {
@@ -520,7 +518,7 @@ function TimeSheetStartModel(props) {
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="timepicker"
-                                placeholder={"Start Date"}
+                                placeholder={"Start Time"}
                                 changeData={(data) =>
                                     checkValidation(data, "startTime")
                                 }
@@ -659,11 +657,12 @@ function TimeSheetStartModel(props) {
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "toDate")}
-                                value={timeSheetForm.toDate.value}
+                                value={timeSheetForm.fromDate.value}
                                 error={timeSheetForm.toDate.error}
                                 errmsg={timeSheetForm.toDate.errmsg}
                                 placeholder={" End date "}
-                                maxDate={new Date()}
+                                disabled
+                            // minDate={timeSheetForm.fromDate.value}
                             />
                         </Grid>
                         <Grid item xs={3}>

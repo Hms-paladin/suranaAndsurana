@@ -446,7 +446,7 @@ export const insertStages = (params, projectId, projectTypeId, subProjectId) => 
             .then(function (response) {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Stages Added Successfully',
+                        message: `${params.project_type_id === 6 ? 'Case' : 'Stage'} Added Successfully`,
                     });
                     dispatch(getStagesByProjectId(projectId, projectTypeId, subProjectId));
                     return Promise.resolve();
@@ -606,5 +606,31 @@ export const InsertHearingAdjourn = (data) => async dispatch => {
         notification.error({
             message: 'Record Not Added',
         });
+    }
+}
+
+export const insert_reassign_task_assignee = (empId, task_id) => async dispatch => {
+    try {
+        await axios({
+            method: 'POST',
+            url: apiurl + 'insert_reassign_task_assignee',
+            data: {
+                "assignee_id": empId || localStorage.getItem("empId"),
+                "task_id": task_id || "0",
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Employee ReAssigned Successfully',
+                    });
+                    dispatch(getTaskList(localStorage.getItem("empId"), "Active", 0));
+                    return Promise.resolve();
+                }
+
+            })
+
+    } catch (err) {
+
     }
 }

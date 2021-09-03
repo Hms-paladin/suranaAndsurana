@@ -493,10 +493,17 @@ function CheckListCreation(props) {
       // setInsertTaskForm({ error: true });
     } else {
 
+      var activity_name = activityList.activityTypeData.filter((obj) => Number(obj.id) === Number(checkListForm.activity.value));
+      var sub_activity_name = subActivity.projectSubActivitydata && subActivity.projectSubActivitydata.length > 0 && subActivity.projectSubActivitydata.filter((obj) => obj.id === checkListForm.subActivity.value);
+      var frequency_name = frequencyList.frequencyTypeData.filter((obj) => obj.id === checkListForm.frequency.value);
+  
       var listarray = {
         task: checkListForm.task.value,
+        activity: activity_name[0].value,
         activity_id: checkListForm.activity.value === "" ? 0 : checkListForm.activity.value,
+        sub_activity: sub_activity_name[0].value,
         sub_activity_id: checkListForm.subActivity.value === "" ? 0 : checkListForm.subActivity.value,
+        frequency: frequency_name[0].value,
         frequency_id: checkListForm.frequency.value,
       };
       updateList.push(listarray);
@@ -626,16 +633,13 @@ function CheckListCreation(props) {
               </div>
 
               {updateList && updateList.length > 0 && updateList.map((data, index) => {
-                var activity_name = activityList.activityTypeData.filter((obj) => obj.id === data.activity_id);
-                var sub_activity_name = subActivity.projectSubActivitydata && subActivity.projectSubActivitydata.length > 0 && subActivity.projectSubActivitydata.filter((obj) => obj.id === data.sub_activity_id);
-                var frequency_name = frequencyList.frequencyTypeData.filter((obj) => obj.id === data.frequency_id);
-                console.log(sub_activity_name, "sub_activity_name")
+               
                 return (
                   <div className="DataValueDiv">
                     <div className="DataName">{data.task}</div>
-                    <div className="DataName">{activity_name && activity_name[0] && activity_name[0].value || '-'}</div>
-                    <div className="DataName">{sub_activity_name && sub_activity_name[0] && sub_activity_name[0].value || '-'}</div>
-                    <div className="DataName">{frequency_name[0].value}</div>
+                    <div className="DataName">{data.activity||'-'}</div>
+                    <div className="DataName">{data.sub_activity|| '-'}</div>
+                    <div className="DataName">{data.frequency||'-'}</div>
 
                     <div className="DataName">
                       <img src={Edit} className="editImage" onClick={() => onEdit(index)} style={{ cursor: 'pointer' }} />

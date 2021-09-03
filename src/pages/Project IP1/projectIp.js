@@ -16,7 +16,7 @@ import ChangeLogTimeSheet from '../Search/TimeSheets/changeLogTimeSheet';
 import OPEModel from './opemodel';
 import StageMonitor from '../stages/StageMonitering';
 import {
-    getCheckListsAssigned, insertCheckListsAssigned
+    getCheckListsAssigned
 } from "../../actions/CheckListAction";
 
 // IP Project:
@@ -68,9 +68,7 @@ import PatentRevocationDef from './IPAB Patent/patent_revocationdef'
 // Variable Rate master  ==>
 import VariableRate from "../stages/RateMaster";
 
-import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
-import Tasks from '../../images/menuicon.svg';
 import EnhancedTable from "../../component/DynTable/table";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SuccessIcon from "../../images/successicon.svg";
@@ -276,53 +274,7 @@ function ProjectIp(props) {
             dispatch(getCheckListsAssigned(props.ProjectDetails[0].project_id))
         }
     }, [props.ProjectDetails])
-    const [checkListsView, setcheckListsView] = useState([])
-    // function handleCheck(event, data) {
-    //     console.log("mapping", data);
-    //     let oo = checkListsView;
-    //     let d = [];
-    //     for (var i = 0; i < oo.length; i++) {
-    //         if (oo[i] && oo[i].check_list_id == data.check_list_id) {
-    //             if (data.check_list_status == null || data.check_list_status == 0) {
-    //                 oo[i].check_list_status = 1;
-    //                 data.check_list_status = 1;
-    //             } else {
-    //                 oo[i].check_list_status = 0;
-    //                 data.check_list_status = 0;
-    //             }
-    //             d.push(data);
-    //         } else {
-    //             d.push(oo[i]);
-    //         }
-    //     }
 
-    //     setcheckListsView(
-    //         prevState => ({
-    //             ...prevState,
-    //         })
-    //     );
-
-
-    //     setcheckListsView(d);
-    // }
-
-    // function submitCheckList() {
-
-    //     let obj = { "checklist": [] };
-    //     for (let i = 0; i < checkListsView.length; i++) {
-    //         let oo = checkListsView[i];
-    //         let pOb = {
-    //             "check_list_id": oo.check_list_id,
-    //             "project_id": rowId,
-    //             "check_list_status": oo.check_list_status == null || oo.check_list_status == 0 ? 0 : 1
-    //         }
-    //         obj.checklist.push(pOb);
-    //     }
-
-
-    //     dispatch(insertCheckListsAssigned(obj));
-    //     setChecklistModelOpen(false)
-    // }
     useEffect(() => {
 
         let multipleTab = [];
@@ -473,12 +425,12 @@ function ProjectIp(props) {
         if (boxName === "TASKS") {
             setModelOpen(true)
         }
-        else if (boxName === "STAGE"||boxName === "CASE TYPE") {
+        else if (boxName === "STAGE" || boxName === "CASE TYPE") {
             setStage(true)
             setProjecttypes(false)
             setStageMonitor(false)
         }
-        else if (boxName === "STAGE  MONITOR"||boxName === "CASE LIFE CYCLE") {
+        else if (boxName === "STAGE  MONITOR" || boxName === "CASE LIFE CYCLE") {
             setStageMonitor(true)
             setStage(false)
             setProjecttypes(false)
@@ -513,8 +465,6 @@ function ProjectIp(props) {
 
     }
 
-    // console.log(props.ProjectDetails[0].sub_project_type, "props.ProjectDetails[0].sub_project_type")
-    // console.log(projectSearchCreate.amountSearch0, "projectSearchCreate")
     //----------
 
     function onsubmitvariablerate() {
@@ -559,14 +509,14 @@ function ProjectIp(props) {
 
     const onchangeAmount = (data, key) => {
         setAmountChange(true)
-        console.log(parseInt(data), key, "onchangeAmount")
+     
         // if (key && data) {
         setDisableCondition(false)
         setPrpjectSearchCreate((prevState) => ({
             ...prevState,
             [key]: data,
         }));
-        console.log(disableCondition, "console")
+      
 
         // }
     };
@@ -596,11 +546,11 @@ function ProjectIp(props) {
         let sendprojVariableTableData = [];
         let tableData = [];
         const TabLen = props.getProjectVariableRate.length;
-        console.log("ddddd", props.getProjectVariableRate)
+        
         props.getProjectVariableRate.length > 0 && props.getProjectVariableRate.map((data, index) => {
             // setApplicableamount({});
             tableData.push(data)
-            const Index = index
+            
             if (disableCondition) {
                 applicableamount["amt" + index] = data.amount;
             }
@@ -643,16 +593,15 @@ function ProjectIp(props) {
 
     }, [props.getProjectVariableRate, applicableamount])
 
-    console.log(applicableamount, "applicableamount")
     ///
     useEffect(() => {
         if (props.lenghtData !== 0) {
             let searchVariableTableData = [];
             setNotfoundmodel(false);
-            console.log("sho", props.searchVariableRate)
+            
             props.searchVariableRate.map((data, index) => {
                 if (disableCondition) {
-                    console.log(disableCondition, "disblecondit")
+                   
                     projectSearchCreate['amountSearch' + index] = data.Amount;
 
                 }
@@ -689,7 +638,7 @@ function ProjectIp(props) {
         }
 
     }, [props.getProjectVariableRate, props.searchVariableRate, props.lenghtData, projectSearchCreate, disableCondition]);
-    console.log(projectSearchCreate, disableCondition, "projectSearchCreate")
+
 
     const variablerateModel = () => {
         function onSearch() {
@@ -861,13 +810,9 @@ function ProjectIp(props) {
                             </div>
                         }
 
-                        {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
-                            props.ProjectDetails[0].project_type} */}
                     </div>
                     <div className="TabIconsview"
                     ><TabIcons litigation={props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type === "Litigation Projects" ? 1 : undefined} variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
-                    {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
-                     */}
 
                     <DynModel modelTitle={"BACK LOG TIME SHEET"} handleChangeModel={changeLogTimeSheetModelOpen} handleChangeCloseModel={(bln) => setChangeLogTimeSheetModelOpen(bln)} content={changeLogTimesheetmodelContent()} width={800} />
                     <DynModel

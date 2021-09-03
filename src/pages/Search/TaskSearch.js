@@ -34,7 +34,7 @@ import TimeSheetView from '../Search/TimeSheets/timesheetview';
 import TaskPriority from '../Search/task_priority'
 import TaskTag from '../Search/tasktag'
 import TaskStatus from '../Search/taskstatus'
-import { getTaskList } from "../../actions/projectTaskAction";
+import { getTaskList, insert_reassign_task_assignee } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
@@ -45,6 +45,8 @@ import { useDispatch, connect } from "react-redux";
 import { getSubordinate } from "../../actions/UserMasterAction";
 import moment from "moment";
 import { useLocation, useParams } from "react-router-dom"
+import { getEmployeeList } from "../../actions/MasterDropdowns";
+import CustomButton from '../../component/Butttons/button';
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {
@@ -58,6 +60,7 @@ const HtmlTooltip = withStyles((theme) => ({
         border: '1px solid #dadde9',
     },
 }))(Tooltip);
+
 function Task(props) {
     let { task_id } = useParams()
     const dispatch = useDispatch();
@@ -70,6 +73,8 @@ function Task(props) {
     const [subordinates, setSubordinates] = useState(false)
     const [taskstatusLists, settaskstatusLists] = useState({})
     const [taskData, setTaskData] = useState({})
+    const [confirmmodel, setConfirmModel] = useState(false);
+    const [employeeList, setemployeeList] = useState({})
     const [fieldVal, setfieldVal] = useState({
         subOrdinateVal: {
             value: "",
@@ -82,9 +87,21 @@ function Task(props) {
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
-        }
+        },
+        employeeId: {
+            value: "",
+            validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+            disabled: false
+        },
+        select_task_id: {
+            value: 0,
+
+        },
 
     });
+
     function fnPeriority(data) {
         setTaskData(data);
         setTaskPrioriyModal(true);
@@ -133,14 +150,14 @@ function Task(props) {
             dynObj.valueById = multipleIdList.toString();
         }
         if (key == "subOrdinateVal") {
-            dispatch(getTaskList(data,fieldVal.taskstatus.value));
+            dispatch(getTaskList(data, fieldVal.taskstatus.value));
         }
         if (key == "taskstatus") {
             if (fieldVal.subOrdinateVal.value) {
-                
-                dispatch(getTaskList(fieldVal.subOrdinateVal.value,data));
+
+                dispatch(getTaskList(fieldVal.subOrdinateVal.value, data));
             } else {
-                dispatch(getTaskList(empid,data));
+                dispatch(getTaskList(empid, data));
             }
 
         }
@@ -152,9 +169,23 @@ function Task(props) {
     }
 
     useEffect(() => {
-        dispatch(getTaskList(empid,"Active",task_id));
+        dispatch(getTaskList(empid, "Active", task_id));
         dispatch(getSubordinate(empid));
+        dispatch(getEmployeeList());
     }, []);
+
+    useEffect(() => {
+
+        let employeeData = []
+        props.getEmployeeList.map((data) =>
+            employeeData.push({
+                value: data.name,
+                id: data.emp_id
+            })
+        )
+        setemployeeList({ employeeData })
+    }, [props.getEmployeeList]);
+
     useEffect(() => {
 
         let taskbyStatus = []
@@ -178,26 +209,8 @@ function Task(props) {
             })
         )
         setSubordinates({ subOrinateList })
-    }, [props.getTaskLists, props.subordinateslis
-    ]);
+    }, [props.getTaskLists, props.subordinateslis]);
 
-    function getTaskTimeSheetbyTaskIdsss(taskId) {
-        try {
-            axios({
-                method: 'POST',
-                url: apiurl + 'get_time_sheet',
-                data: {
-                    "task_id": taskId,
-                }
-            })
-                .then((response) => {
-                    return response.data.data;
-                })
-
-        } catch (err) {
-
-        }
-    }
     // Change start,stop Model
 
     const [changeModel, setChangeModel] = useState(true)
@@ -273,7 +286,16 @@ function Task(props) {
         }
         return 0;
     }
-    console.log(fieldVal.taskstatus.value, "taskstatus")
+    const reassign_model_open = (data) => {
+        fieldVal.select_task_id.value = data.task_id
+        setConfirmModel(true)
+    }
+
+    const reassign_task_assignee = async () => {
+        await dispatch(insert_reassign_task_assignee(fieldVal.employeeId.value, fieldVal.select_task_id.value))
+        setConfirmModel(false)
+    }
+    console.log(fieldVal.employeeId.value, fieldVal.select_task_id.value, "ddddddddddddddddddddd")
     return (
         <div>
             <div className="searchfilterflex">
@@ -305,15 +327,9 @@ function Task(props) {
                                 />
                             </Grid>
                         </div>
-
-
                     </div>
 
-
-
                 </div>
-
-
 
                 {/* first card */}
 
@@ -383,8 +399,9 @@ function Task(props) {
                                             <div className="divider"></div>
                                             <div style={{ width: '37%' }}>
                                                 <div className="start_date_yellow">
-                                                    <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
-                                                    <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p>
+                                                    <p>&nbsp;</p>
+                                                    {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
+                                                    <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p> */}
                                                 </div>
                                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date != "" ? moment(data.actual_start_date).format("DD MMM YYYY") : ""}</span></span>
@@ -462,8 +479,9 @@ function Task(props) {
                                             <div className="divider"></div>
                                             <div style={{ width: '37%' }}>
                                                 <div className="start_date_yellow">
-                                                    <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
-                                                    <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p>
+                                                    <p>&nbsp;</p>
+                                                    {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
+                                                    <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p> */}
                                                 </div>
                                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date != "" ? moment(data.actual_start_date).format("DD MMM YYYY") : ""}</span></span>
@@ -494,7 +512,7 @@ function Task(props) {
                                             <div style={{ backgroundColor: '#707070', width: '55px' }}>
                                                 <img src={Tick} style={{ margin: '12px' }} />
                                                 <Divider />
-
+                                                <img src={Tick} onClick={() => reassign_model_open(data)} style={{ margin: '12px' }} />
                                             </div>
                                         </div>
                                     </Card>
@@ -522,16 +540,7 @@ function Task(props) {
                         </div>
                     </div>
                     <div>
-                        {/* <TablePagination
-                            rowsPerPageOptions={[5, 10, 25]}
-                            component="div"
-                            count={props.getTaskLists&&props.getTaskLists.length}
-                            page={page}
-                            onChangePage={handleChangePage}
-                            rowsPerPage={rowsPerPage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
 
-                        /> */}
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
@@ -571,7 +580,34 @@ function Task(props) {
 
 
 
-
+            <DynModel
+                modelTitle={"Assigned To (Reassign)"}
+                handleChangeModel={confirmmodel}
+                handleChangeCloseModel={(bln) => setConfirmModel(bln)}
+                content={
+                    <div style={{ textAlign: '-webkit-center' }}>
+                        <div>
+                            <Grid item xs={10} container direction="column">
+                                <div className="TThead">Employee</div>
+                                <Labelbox type="select"
+                                    dropdown={employeeList.employeeData}
+                                    changeData={(data) => checkValidation(data, "employeeId")}
+                                    placeholder={"Employee"}
+                                    value={fieldVal.employeeId.value}
+                                    error={fieldVal.employeeId.error}
+                                    errmsg={fieldVal.employeeId.errmsg}
+                                    disabled={fieldVal.employeeId.disabled}
+                                ></Labelbox>
+                            </Grid>
+                        </div>
+                        <div className="customNotFoundbtn">
+                            <CustomButton btnName={"YES"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={reassign_task_assignee} />
+                            <CustomButton btnName={"NO "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setConfirmModel(false)} />
+                        </div>
+                    </div>
+                }
+                width={500}
+            />
         </div>
     )
 }
@@ -581,5 +617,6 @@ const mapStateToProps = (state) =>
     UserPermission: state.UserPermissionReducer.getUserPermission,
     getTaskLists: state.projectTasksReducer.getTaskLists,
     subordinateslis: state.UserMasterReducer.getSubordinates,
+    getEmployeeList: state.getOptions.getEmployeeList || [],
 });
 export default connect(mapStateToProps)(Task);

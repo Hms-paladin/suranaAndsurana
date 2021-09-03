@@ -172,7 +172,7 @@ function ProjectwiseTS(props) {
 
     const onReject = (data) => {
         setTimesheetModelOpen(true)
-        setOnRejectData([data])
+        setOnRejectData([data,projectSearch])
     }
     useEffect(() => {
         var updatelist = [];
@@ -313,7 +313,7 @@ function ProjectwiseTS(props) {
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
             {OnRejectData.length === 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise={projectSearch} close_model={() => setTimesheetModelOpen(false)} />} width={1000} />}
-            {OnRejectData.length > 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise_edit={OnRejectData} close_model={() => setTimesheetModelOpen(false)} />} width={1000} />}
+            {OnRejectData.length > 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise_edit={OnRejectData} close_model={() => (setTimesheetModelOpen(false),setOnRejectData([]))} />} width={1000} />}
         </div>
 
     )

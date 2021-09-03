@@ -120,40 +120,10 @@ function ProjectTaskModel(props) {
 
   }, []);
 
-
-  // const [InsertTaskForm, setInsertTaskForm] = useState({
-
-  //   startdate: {
-  //     value: "",
-  //     validation: [{ "name": "required" },],
-  //     error: null,
-  //     errmsg: null,
-  //   },
-  //   enddate: {
-  //     value: "",
-  //     validation: [{ "name": "required" },],
-  //     error: null,
-  //     errmsg: null,
-  //   },
-  //   description: {
-  //     value: "",
-  //     validation: [{ "name": "required" },],
-  //     error: null,
-  //     errmsg: null,
-  //   },
-
-
-
-
-  // })
-
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(InsertTaskForm);
 
-
-    // InsertTaskForm["startdate"].value = InsertTaskForm['fromDate'].value;
-    // InsertTaskForm["enddate"].value = InsertTaskForm['toDate'].value;
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
         InsertTaskForm[targetkeys[i]].value,
@@ -189,9 +159,6 @@ function ProjectTaskModel(props) {
         handleCancel();
       })
 
-      // dispatch(InesertResume(InsertTaskForm)).then(() => {
-      //   handleCancel()
-      // })
     }
 
     setInsertTaskForm(prevState => ({
@@ -199,45 +166,6 @@ function ProjectTaskModel(props) {
     }));
   };
 
-
-  // function checkValidation(data, key, multipleId) {
-  //   alert("tset")
-  //   var errorcheck = ValidationLibrary.checkValidation(
-  //     data,
-  //     InsertTaskForm[key].validation
-  //   );
-  //   let dynObj = {
-  //     value: data,
-  //     error: !errorcheck.state,
-  //     errmsg: errorcheck.msg,
-  //     validation: InsertTaskForm[key].validation
-  //   }
-
-  //   console.log(data, key, "oiuytre")
-
-
-
-  //   // only for multi select (start)
-
-  //   let multipleIdList = []
-
-  //   if (multipleId) {
-  //     multipleId.map((item) => {
-  //       for (let i = 0; i < data.length; i++) {
-  //         if (data[i] === item.value) {
-  //           multipleIdList.push(item.id)
-  //         }
-  //       }
-  //     })
-  //     dynObj.valueById = multipleIdList.toString()
-  //   }
-  //   // (end)
-  //   setInsertTaskForm(prevState => ({
-  //     ...prevState,
-  //     [key]: dynObj,
-  //   }));
-
-  // };
 
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
@@ -435,9 +363,12 @@ function ProjectTaskModel(props) {
         <Grid container spacing={3}>
           <Grid item xs={4} >
             <Labelbox type="datepicker"
+              // minDate={new Date()}
               placeholder={"Start Date"}
               changeData={(data) => checkValidation(data, "fromDate")}
               value={InsertTaskForm.fromDate.value}
+              disablePast={true}
+              // disableFuture={true}
               error={InsertTaskForm.fromDate.error}
               errmsg={InsertTaskForm.fromDate.errmsg}
 
@@ -445,6 +376,8 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="datepicker"
+              minDate={InsertTaskForm.fromDate.value}
+              // disableFuture={true}
               changeData={(data) => checkValidation(data, "toDate")}
               placeholder={" End Date"}
               value={InsertTaskForm.toDate.value}
@@ -508,8 +441,6 @@ function ProjectTaskModel(props) {
         <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"projectTaskGo"} />
 
       </div>
-
-
 
     </div>
   )

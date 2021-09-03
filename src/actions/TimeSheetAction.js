@@ -138,7 +138,7 @@ export const update_approve_timesheet = (data, status) => async dispatch => {
 
     if (updatelist.length > 0) {
         try {
-            axios({
+          await axios({
                 method: 'PUT',
                 url: apiurl + 'update_approve_timesheet',
                 data: {
