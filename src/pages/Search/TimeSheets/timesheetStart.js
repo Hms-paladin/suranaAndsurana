@@ -5,7 +5,7 @@ import Labelbox from '../../../helpers/labelbox/labelbox';
 import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";
 import moment from 'moment';
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { getProjectTimeSheetList, getProjectWise_TimeSheet } from "../../../actions/TimeSheetAction";
 import axios from "axios";
 import { notification } from "antd";
-import { getProjectName, getSubactivity } from "../../../actions/MasterDropdowns";
+import { getProjectName, getSubactivity, getEmpListDesignation } from "../../../actions/MasterDropdowns";
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { getTaskTimeSheet } from "../../../actions/projectTaskAction";
 import { Checkbox } from 'antd'
@@ -57,7 +57,7 @@ function TimeSheetStartModel(props) {
         tag: {
             value: "",
             valueById: "",
-            validation: [{ name: "required" }],
+            // validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
@@ -123,7 +123,8 @@ function TimeSheetStartModel(props) {
             "startTime",
             "endTime",
             "description",
-            "task_status"
+            "task_status",
+            "projectname"
         ];
 
         From_key.map((data) => {
@@ -144,13 +145,18 @@ function TimeSheetStartModel(props) {
         dispatch(getActivity());
         dispatch(getTagList());
         dispatch(getPriorityList());
-        dispatch(getAssignedTo());
+        dispatch(getEmpListDesignation());
         dispatch(getLocation());
         dispatch(getProjectName());
 
         !props.project_wise_edit && dispatch(getProjectTimeSheetList(rowId));
 
     }, []);
+
+    useEffect(() => {
+        if (props.model_clear)
+            handleCancel()
+    }, [props.model_clear]);
 
     useEffect(() => {
         if (props.approve_timesheet && props.approve_timesheet !== '') {
@@ -243,11 +249,11 @@ function TimeSheetStartModel(props) {
                 "sub_activity_id": timeSheetForm.subActivity.value,
                 "assignee_id": localStorage.getItem("empId"),
                 "start_date": timeSheetForm.fromDate.value,
-                "end_date": timeSheetForm.toDate.value && timeSheetForm.toDate.value != '' ? timeSheetForm.toDate.value : timeSheetForm.fromDate.value,
+                "end_date": timeSheetForm.fromDate.value && timeSheetForm.fromDate.value != '' ? timeSheetForm.fromDate.value : timeSheetForm.fromDate.value,
                 "assigned_by": localStorage.getItem("empId"),
                 "priority": timeSheetForm.priority.value,
                 "description": timeSheetForm.description.value,
-                "tag": timeSheetForm.tag.value
+                "tag": timeSheetForm.tag.value === "" ? 0 : timeSheetForm.tag.value
             }
             var timesheetData = {
                 "emp_id": localStorage.getItem("empId"),
@@ -264,7 +270,7 @@ function TimeSheetStartModel(props) {
                     "emp_id": localStorage.getItem("empId"),
                     "timesheet_id": 0,
                     "end_date": timeSheetForm.fromDate.value,
-                    "end_time": end_time,
+                    "end_time": startTime,
                     "comment": timeSheetForm.description.value,
                     "created_by": localStorage.getItem("empId"),
                     "task_status": timeSheetForm.task_status.value ? timeSheetForm.task_status.value : 0,
@@ -290,13 +296,13 @@ function TimeSheetStartModel(props) {
     }
 
     const submitStopTimesheet = async () => {
-
-        let end_time = dateFormat(timeSheetForm.endTime.value != undefined && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss");
+        let startTime = dateFormat(timeSheetForm.startTime.value != undefined && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
+        // let end_time = dateFormat(timeSheetForm.endTime.value != undefined && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss");
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "timesheet_id": timeSheetForm.timesheet_id.value,
             "end_date": timeSheetForm.fromDate.value,
-            "end_time": end_time,
+            "end_time": startTime,
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId")
         }
@@ -388,7 +394,7 @@ function TimeSheetStartModel(props) {
                 data = props.project_wise_edit[0]
             }
 
-            if (props.project_wise_edit || (!data.end_date && !data.end_time)) {
+            if (props.project_wise_edit || (data && (!data.end_date && !data.end_time))) {
 
                 if (data.project_id && data.project_id != 0) {
                     timeSheetForm.projectname.value = data.project_id
@@ -413,6 +419,7 @@ function TimeSheetStartModel(props) {
 
     }, [props.timeSheetProject, props.getTaskTimeSheet, props.project_wise_edit])
 
+    console.log(props.project_wise_edit,props.project_wise,"rrrrrrrrrrrrrrrrrrrrr")
     return (
         <div className="timeSheetStartContainer">
             {changeStop ?
@@ -448,7 +455,7 @@ function TimeSheetStartModel(props) {
                                 disabled={timeSheetForm.projectname.disabled}></Labelbox>
 
                         </Grid>
-                            {props.ProjectDetails.length > 0 && <Grid item xs={4}>
+                            {props.ProjectDetails.length > 0 && timeSheetForm.projectname.value !== "" && <Grid item xs={4}>
                                 <div className="TThead">Client Name</div>
                                 <Labelbox type="text"
                                     value={props.ProjectDetails.length > 0 && props.ProjectDetails[0].client}
@@ -539,11 +546,12 @@ function TimeSheetStartModel(props) {
                         {SaveBtnProcess && <><Grid item xs={3}>
                             <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "toDate")}
-                                value={timeSheetForm.toDate.value}
+                                value={timeSheetForm.fromDate.value}
                                 error={timeSheetForm.toDate.error}
                                 errmsg={timeSheetForm.toDate.errmsg}
                                 placeholder={" End date "}
-                                minDate={timeSheetForm.fromDate.value}
+                                disabled
+                            // minDate={timeSheetForm.fromDate.value}
                             />
                         </Grid>
                             <Grid item xs={3}>
@@ -592,7 +600,7 @@ function TimeSheetStartModel(props) {
                                 disabled={timeSheetForm.projectname.disabled}></Labelbox>
 
                         </Grid>
-                            {props.ProjectDetails.length > 0 && <Grid item xs={4}>
+                            {props.ProjectDetails.length > 0 && timeSheetForm.projectname.value != "" && <Grid item xs={4}>
                                 <div className="TThead">Client Name</div>
                                 <Labelbox type="text"
                                     value={props.ProjectDetails.length > 0 && props.ProjectDetails[0].client}
@@ -704,7 +712,7 @@ const mapStateToProps = (state) =>
     activitysList: state.projectTasksReducer.getActivityList || [],
     prioritysList: state.projectTasksReducer.prioritysList || [],
     tagsList: state.projectTasksReducer.tagsList || [],
-    assignToList: state.projectTasksReducer.assignToLists || [],
+    assignToList: state.getOptions.getEmpListDesignation || [],
     locationList: state.projectTasksReducer.locationLists || [],
     timeSheetProject: state.getTaskList.getTimeSheetProject || [],
     ProjectName: state.getOptions.getProjectName || [],

@@ -268,3 +268,7 @@ div.formdiv > div.selectbrdred > div.ant-select-selection{
   color: black !important;
   opacity: 1;
 }
+
+input:disabled{
+background-color: #c9c8c8 !important;
+}

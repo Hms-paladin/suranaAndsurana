@@ -266,7 +266,7 @@ function TicketCreation(props) {
 
         setGetList({ skillsList, traitsList, certificateList, specilalizaionsList, talentList, capabilityList })
 
-        //getEmployeeList
+        //getEmpListDesignation
         let EmployeeList = [];
         props.EmployeeList?.map((data) => {
             EmployeeList.push({
@@ -776,7 +776,7 @@ const mapStateToProps = (state) => ({
     getSpecilization: state.getOptions.getSpecilization || [],
     getCapability: state.getOptions.getCapability || [],
     getTalents: state.getOptions.getTalents || [],
-    EmployeeList: state.getOptions.getEmployeeList || [],
+    EmployeeList: state.getOptions.getEmpListDesignation || [],
     TicketTemplate: state.TicketCreationReducer.getTicketTemplate || [],
     UserPermission: state.UserPermissionReducer.getUserPermission,
 });

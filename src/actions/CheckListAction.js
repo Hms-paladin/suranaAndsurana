@@ -1,5 +1,5 @@
 import {
-    GET_FREQUENCY_BY_CHECKLIST, GET_EMP_SUPERVISOR, INSERT_CHECKLIST_CREATION, GET_PROJ_SUBPROJ, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED, GET_CHECK_LIST_VIEW, GET_DAYS_WEEK, GET_FREQUENCY
+    GET_FREQUENCY_BY_CHECKLIST, GET_EMP_ALL, INSERT_CHECKLIST_CREATION, GET_PROJ_SUBPROJ, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED, GET_CHECK_LIST_VIEW, GET_DAYS_WEEK, GET_FREQUENCY
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -178,24 +178,6 @@ export const getCheckListsView = (emp_id) => async dispatch => {
         })
             .then((response) => {
                 dispatch({ type: GET_CHECK_LIST_VIEW, payload: response.data.data })
-            })
-
-    } catch (err) {
-
-    }
-}
-
-export const getEmpSupervisor = () => async dispatch => {
-    try {
-        axios({
-            method: 'POST',
-            url: apiurl + 'get_emp_supervisor ',
-            data: {
-                "emp_id": localStorage.getItem("empId"),
-            }
-        })
-            .then((response) => {
-                dispatch({ type:GET_EMP_SUPERVISOR, payload: response.data.data })
             })
 
     } catch (err) {

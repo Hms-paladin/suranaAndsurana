@@ -1,6 +1,6 @@
 import {
     GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
-    GET_LOCATION, GET_ASSIGN_TO, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
+    GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
     GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING, GET_ADJOURN_TAKEN_BY
 } from "../utils/Constants";
@@ -264,22 +264,6 @@ export const insertTimeSheetbyTime = (params, time, task) => async dispatch => {
                 return Promise.resolve();
             }
         });
-
-    } catch (err) {
-
-    }
-}
-
-export const getAssignedTo = () => async dispatch => {
-    try {
-
-        axios({
-            method: 'GET',
-            url: apiurl + 'get_employee_list'
-        })
-            .then((response) => {
-                dispatch({ type: GET_ASSIGN_TO, payload: response.data.data })
-            })
 
     } catch (err) {
 

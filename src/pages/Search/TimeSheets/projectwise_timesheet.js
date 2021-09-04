@@ -15,7 +15,8 @@ import TimeSheets from './timesheetStart';
 import DynModel from '../../../component/Model/model';
 import { Checkbox } from 'antd'
 import { update_approve_timesheet, update_submit_timesheet } from "../../../actions/TimeSheetAction";
-import { getEmpSupervisor } from '../../../actions/CheckListAction';
+import { getEmpListDesignation } from '../../../actions/MasterDropdowns';
+import Edit from "../../../images/editable.svg";
 
 function ProjectwiseTS(props) {
 
@@ -23,11 +24,13 @@ function ProjectwiseTS(props) {
     const [searchRights, setSearchRights] = useState([])
     const [projectList, setprojectList] = useState([])
     const [TimeSheetTable, setTimeSheetTable] = useState([])
-    const [minDate, setMinDate] = useState(new Date())
     const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
     const [TimeSheetArr, setTimeSheetArr] = useState([])
     const [trigger, setTrigger] = useState(false)
     const [OnRejectData, setOnRejectData] = useState([])
+
+    const [ModelClear, setModelClear] = useState(0)
+
     const [projectSearch, setprojectSearch] = useState({
         emp_name: {
             value: Number(localStorage.getItem("empId")),
@@ -64,9 +67,6 @@ function ProjectwiseTS(props) {
             validation: projectSearch[key].validation
         }
 
-        if (key === "start_date") {
-            setMinDate(data)
-        }
         setprojectSearch(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -108,7 +108,7 @@ function ProjectwiseTS(props) {
         { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
 
     useEffect(() => {
-        dispatch(getEmpSupervisor())
+        dispatch(getEmpListDesignation())
     }, [])
 
     useEffect(() => {
@@ -174,6 +174,12 @@ function ProjectwiseTS(props) {
         setTimesheetModelOpen(true)
         setOnRejectData([data,projectSearch])
     }
+
+    const onEdit = (data) => {
+        setTimesheetModelOpen(true)
+        // setOnRejectData([data,projectSearch])
+    }
+
     useEffect(() => {
         var updatelist = [];
         TimeSheetArr && TimeSheetArr.length > 0 && TimeSheetArr.map((data, index) => {
@@ -190,7 +196,7 @@ function ProjectwiseTS(props) {
                 project_type: data.project_type,
                 client: data.client,
                 status: (data.status_submit ? (data.status_submit === "Not Approved" ? (
-                    <>
+                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(index)} style={{ cursor: 'pointer' }} />
                         <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
                     </>
                 ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
@@ -232,7 +238,7 @@ function ProjectwiseTS(props) {
             }
         }
     }
-
+console.log(ModelClear,"ModelClear")
     const SubmitApprove = async () => {
         if (TimeSheetArr && TimeSheetArr.length > 0) {
 
@@ -312,8 +318,8 @@ function ProjectwiseTS(props) {
                 {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
-            {OnRejectData.length === 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise={projectSearch} close_model={() => setTimesheetModelOpen(false)} />} width={1000} />}
-            {OnRejectData.length > 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={<TimeSheets project_wise_edit={OnRejectData} close_model={() => (setTimesheetModelOpen(false),setOnRejectData([]))} />} width={1000} />}
+            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => (setTimesheetModelOpen(bln),setModelClear(ModelClear+1))} content={<TimeSheets project_wise_edit={OnRejectData.length > 0?OnRejectData:undefined} project_wise={OnRejectData.length===0?projectSearch:undefined}  model_clear={ModelClear} close_model={() => (setTimesheetModelOpen(false),setModelClear(ModelClear+1))} />} width={1000} />
+            {/* {OnRejectData.length > 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => (setTimesheetModelOpen(bln),setModelClear(ModelClear+1))} content={<TimeSheets project_wise_edit={OnRejectData}  model_clear={ModelClear} close_model={() => (setTimesheetModelOpen(false),setModelClear(ModelClear+1),setOnRejectData([]))} />} width={1000} />} */}
         </div>
 
     )
@@ -322,7 +328,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     GetSeverance: state.ExitSeverance.GetSeverance,
-    EmployeeList: state.CheckListReducer.getEmpSupervisor,
+    EmployeeList: state.getOptions.getEmpListDesignation,
     Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
 
 });

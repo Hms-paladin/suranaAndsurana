@@ -25,7 +25,7 @@ import {
     GET_USER_STAGELIST,
     COMMON_UPDATE_TEXT,
     GET_CONTROLS,
-    MASTER_EMPLOYEE_DETAILS, GET_SUBORDINATES,
+    MASTER_EMPLOYEE_DETAILS,
     GET_LOCATION_LIST
 } from "../utils/Constants";
 const intialState = {
@@ -33,7 +33,7 @@ const intialState = {
     getTableCertification: [], getTableSpecification: [], getTableQualification: [], getTableLanguage: [], getTableIndustry: [], getTableInsitute: [],
     getTableCapability: [], getTableTalents: [], getTableResource: [], getTableDesgination: [], getTableQuestion: [], getTableDepartment: [],
     getTableActivity: [], getTableCourt: [], getSubStage: [], getClass: [], getSubActivity: [], getChecklist: [], get_user_class: [], Common_Update_text: [],
-    getRange: [], getStage: [], Update_Substage: [], Update_subactivity: [], getControls: [], getEmployeeDetails: [], getSubordinates: [], getLoactionsList: []
+    getRange: [], getStage: [], Update_Substage: [], Update_subactivity: [], getControls: [], getEmployeeDetails: [], getLoactionsList: []
 }
 
 export default function (state = intialState, action) {
@@ -103,8 +103,6 @@ export default function (state = intialState, action) {
             return { ...state, getLoactionsList: payload }
         case MASTER_EMPLOYEE_DETAILS:
             return { ...state, getEmployeeDetails: payload }
-        case GET_SUBORDINATES:
-            return { ...state, getSubordinates: payload }
         case GET_USER_STAGELIST:
             return { ...state, getStage: payload }
         case GET_COST_RANGE:

@@ -1,6 +1,6 @@
 import { INSERT_ACTIVITY, COMMON_INSERT_TEXT, GET_TABLE_NAME, INSERT_USER, GET_USER, MASTER_EMPLOYEE_DETAILS, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES, INSERT_STATUS, INSERT_SUBSTAGE, INSERT_CLASS, INSERT_CHECKLIST } from "../utils/Constants";
 
-import { GET_TABLE_GROUP, GET_USER_CLASS, COMMON_UPDATE_TEXT, UPDATE_SUBSTAGE, UPDATE_SUBACTIVITY, GET_SUBORDINATES } from '../utils/Constants'
+import { GET_TABLE_GROUP, GET_USER_CLASS, COMMON_UPDATE_TEXT, UPDATE_SUBSTAGE, UPDATE_SUBACTIVITY} from '../utils/Constants'
 import { get_emp_not_in_user } from "./UserGroupAction";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -798,15 +798,3 @@ export const getLoactionsList = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_location_office_ticket");
   return dispatch({ type: GET_LOCATION_LIST, payload: response.data.data });
 };
-
-
-export const getSubordinate = (id) => async (dispatch) => {
-  const response = await axios({
-    method: "post",
-    url: apiurl + "get_subordinate",
-    data: {
-      "emp_id": localStorage.getItem("empId")
-    },
-  });
-  return dispatch({ type: GET_SUBORDINATES, payload: response.data.data });
-}

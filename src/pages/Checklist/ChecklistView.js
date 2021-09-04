@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import EnhancedTable from '../../component/DynTable/table'
 import Labelbox from '../../helpers/labelbox/labelbox';
 import { useDispatch, connect } from "react-redux";
-// import { getEmpSupervisor } from '../../actions/MasterDropdowns';
-import { getCheckListsView, getEmpSupervisor } from '../../actions/CheckListAction';
+import { getEmployeeList } from '../../actions/MasterDropdowns';
+import { getCheckListsView } from '../../actions/CheckListAction';
 import moment from 'moment';
 
 function CheckListView(props) {
@@ -20,7 +20,7 @@ function CheckListView(props) {
     ];
 
     useEffect(() => {
-        dispatch(getEmpSupervisor())
+        dispatch(getEmployeeList())
     }, [])
 
     useEffect(() => {
@@ -87,7 +87,7 @@ function CheckListView(props) {
 const mapStateToProps = (state) =>
 (
     {
-        getEmployeeList: state.CheckListReducer.getEmpSupervisor,
+        getEmployeeList: state.getOptions.getEmployeeList,
         getCheckListsView: state.CheckListReducer.getCheckListsView
     });
 export default connect(mapStateToProps)(CheckListView);

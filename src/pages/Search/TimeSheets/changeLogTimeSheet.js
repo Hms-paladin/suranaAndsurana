@@ -5,14 +5,14 @@ import Labelbox from '../../../helpers/labelbox/labelbox';
 import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation, insertChangeLog } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, inserTask, getLocation, insertChangeLog } from "../../../actions/projectTaskAction";
 import moment from 'moment';
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
 import { useParams } from "react-router-dom";
 import { notification } from "antd";
-
+import { getEmpListDesignation } from '../../../actions/MasterDropdowns';
 function ChangeLogTimeSheet(props) {
     const dispatch = useDispatch();
     const [projectSubActivity, setprojectSubActivity] = useState({});
@@ -120,7 +120,7 @@ function ChangeLogTimeSheet(props) {
         dispatch(getActivity());
         dispatch(getTagList());
         dispatch(getPriorityList());
-        dispatch(getAssignedTo());
+        dispatch(getEmpListDesignation());
         dispatch(getLocation());
 
     }, []);
@@ -405,7 +405,7 @@ const mapStateToProps = (state) =>
         activitysList: state.projectTasksReducer.getActivityList || [],
         prioritysList: state.projectTasksReducer.prioritysList || [],
         tagsList: state.projectTasksReducer.tagsList || [],
-        assignToList: state.projectTasksReducer.assignToLists || [],
+        assignToList: state.getOptions.getEmpListDesignation || [],
         locationList: state.projectTasksReducer.locationLists || [],
         insertChangeLog: state.projectTasksReducer.backLog || []
 

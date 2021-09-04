@@ -18,7 +18,7 @@ import M_icon from "../../images/Medium_priority.svg";
 import L_icon from "../../images/Low_priority.svg";
 import Delete from "../../images/delete.png";
 import Plus from "../../images/plus.png";
-import Edit from "../../images/edit.svg";
+import Reassign from "../../images/Reassign.svg";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import TablePagination from '@material-ui/core/TablePagination';
 import Blue from "../../images/blue_round.png";
@@ -42,10 +42,10 @@ import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmode
 
 import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
-import { getSubordinate } from "../../actions/UserMasterAction";
+// import { getEmpListDesignation } from "../../actions/UserMasterAction";
 import moment from "moment";
 import { useLocation, useParams } from "react-router-dom"
-import { getEmployeeList } from "../../actions/MasterDropdowns";
+import { getEmpListDesignation } from "../../actions/MasterDropdowns";
 import CustomButton from '../../component/Butttons/button';
 
 const HtmlTooltip = withStyles((theme) => ({
@@ -170,22 +170,23 @@ function Task(props) {
 
     useEffect(() => {
         dispatch(getTaskList(empid, "Active", task_id));
-        dispatch(getSubordinate(empid));
-        dispatch(getEmployeeList());
+        // dispatch(getEmpListDesignation(empid));
+        dispatch(getEmpListDesignation());
     }, []);
 
     useEffect(() => {
 
         let employeeData = []
-        props.getEmployeeList.map((data) =>
+        props.getEmpListDesignation.map((data) =>
             employeeData.push({
                 value: data.name,
                 id: data.emp_id
             })
         )
         setemployeeList({ employeeData })
-    }, [props.getEmployeeList]);
+    }, [props.getEmpListDesignation]);
 
+    console.log(props.getEmpListDesignation,"props.getEmpListDesignation")
     useEffect(() => {
 
         let taskbyStatus = []
@@ -201,14 +202,14 @@ function Task(props) {
         settaskstatusLists({ taskbyStatus })
 
 
-        let subOrinateList = []
-        props.subordinateslis.map((data) =>
-            subOrinateList.push({
-                value: data.name,
-                id: data.emp_id
-            })
-        )
-        setSubordinates({ subOrinateList })
+        // let subOrinateList = []
+        // props.subordinateslis.map((data) =>
+        //     subOrinateList.push({
+        //         value: data.name,
+        //         id: data.emp_id
+        //     })
+        // )
+        // setSubordinates({ subOrinateList })
     }, [props.getTaskLists, props.subordinateslis]);
 
     // Change start,stop Model
@@ -295,7 +296,7 @@ function Task(props) {
         await dispatch(insert_reassign_task_assignee(fieldVal.employeeId.value, fieldVal.select_task_id.value))
         setConfirmModel(false)
     }
-    console.log(fieldVal.employeeId.value, fieldVal.select_task_id.value, "ddddddddddddddddddddd")
+
     return (
         <div>
             <div className="searchfilterflex">
@@ -306,7 +307,7 @@ function Task(props) {
                             <Grid item xs={8}>
                                 <Labelbox type="select"
                                     placeholder={" Subordinate"}
-                                    dropdown={subordinates.subOrinateList}
+                                    dropdown={employeeList.employeeData}
                                     changeData={(data) => checkValidation(data, "subOrdinateVal")}
                                     value={fieldVal.subOrdinateVal.value}
                                     error={fieldVal.subOrdinateVal.error}
@@ -509,10 +510,10 @@ function Task(props) {
 
                                                 </div>
                                             </div>
-                                            <div style={{ backgroundColor: '#707070', width: '55px' }}>
+                                            <div className="Reassign_Div">
                                                 <img src={Tick} style={{ margin: '12px' }} />
                                                 <Divider />
-                                                <img src={Tick} onClick={() => reassign_model_open(data)} style={{ margin: '12px' }} />
+                                                <img src={Reassign} onClick={() => reassign_model_open(data)} className="Reassign_Img" />
                                             </div>
                                         </div>
                                     </Card>
@@ -616,7 +617,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     getTaskLists: state.projectTasksReducer.getTaskLists,
-    subordinateslis: state.UserMasterReducer.getSubordinates,
-    getEmployeeList: state.getOptions.getEmployeeList || [],
+    // subordinateslis: state.UserMasterReducer.getEmployeeLists,
+    getEmpListDesignation: state.getOptions.getEmpListDesignation || [],
 });
 export default connect(mapStateToProps)(Task);

@@ -9,7 +9,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
 import { useDispatch,connect } from 'react-redux';
 import {GetKpiAchivement} from '../../actions/KPIActions'
-import {getEmployeeList,getSubordinate} from '../../actions/MasterDropdowns'
+import {getEmployeeList} from '../../actions/MasterDropdowns'
 import NoDataFound from '../../images/noDatas.svg';
 function KPIModal(props) {
     let dispatch=useDispatch()
@@ -69,7 +69,7 @@ function KPIModal(props) {
         }));
     }
     useEffect(()=>{
-        dispatch(getSubordinate(empId))
+        dispatch(getEmployeeList(empId))
     },[empId])
     useEffect(()=>{
         let Employee=[]
@@ -269,7 +269,7 @@ function KPIModal(props) {
     )
 }
 const mapStateToProps=(state)=>({
-    EmployeeList: state.getOptions.getSubordinate,
+    EmployeeList: state.getOptions.getEmployeeList,
     Kpiachivement:state.KpiReducer.GetKpi_Achivement
 })
 export default connect(mapStateToProps)(KPIModal);

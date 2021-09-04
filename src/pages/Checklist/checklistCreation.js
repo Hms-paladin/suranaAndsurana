@@ -492,16 +492,15 @@ function CheckListCreation(props) {
     if (filtererr.length > 0) {
       // setInsertTaskForm({ error: true });
     } else {
-
-      var activity_name = activityList.activityTypeData.filter((obj) => Number(obj.id) === Number(checkListForm.activity.value));
+      var activity_name = activityList.activityTypeData.filter((obj) => obj.id === checkListForm.activity.value);
       var sub_activity_name = subActivity.projectSubActivitydata && subActivity.projectSubActivitydata.length > 0 && subActivity.projectSubActivitydata.filter((obj) => obj.id === checkListForm.subActivity.value);
       var frequency_name = frequencyList.frequencyTypeData.filter((obj) => obj.id === checkListForm.frequency.value);
-  
+
       var listarray = {
         task: checkListForm.task.value,
-        activity: activity_name[0].value,
+        activity: activity_name&&activity_name.length>0&&activity_name[0].value||'-',
         activity_id: checkListForm.activity.value === "" ? 0 : checkListForm.activity.value,
-        sub_activity: sub_activity_name[0].value,
+        sub_activity: sub_activity_name&&sub_activity_name.length>0&&sub_activity_name[0]?.value||'-',
         sub_activity_id: checkListForm.subActivity.value === "" ? 0 : checkListForm.subActivity.value,
         frequency: frequency_name[0].value,
         frequency_id: checkListForm.frequency.value,

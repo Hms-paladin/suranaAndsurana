@@ -107,7 +107,7 @@ function OutofPacket(props) {
   useEffect(() => {
     let employeeName = []
     let PacketList = []
-    props.EmployeeList.map((data) => {
+    props.getEmployeeList.map((data) => {
       employeeName.push({ id: data.emp_id, value: data.name })
     })
     props.OutOfPacket.length > 0 && props.OutOfPacket.map((data) => {
@@ -141,7 +141,7 @@ function OutofPacket(props) {
     setOpeList({ employeeName })
     setPacketList(PacketList)
 
-  }, [props.EmployeeList, props.OutOfPacket])
+  }, [props.getEmployeeList, props.OutOfPacket])
 
   const OpeSearchData = () => {
 
@@ -177,13 +177,7 @@ function OutofPacket(props) {
       ...prevState,
     }));
   }
-  // console.log(searchRights,"rights")
-
-  function rightsNotification() {
-    notification.success({
-      message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
+ 
   /////////////
 
   return (
@@ -261,7 +255,7 @@ function OutofPacket(props) {
 const mapStateToProps = (state) =>
 ({
   UserPermission: state.UserPermissionReducer.getUserPermission,
-  EmployeeList: state.getOptions.getEmployeeList,
+  getEmployeeList: state.getOptions.getEmployeeList,
   OutOfPacket: state.OutofPacket.OutofPacketList || []
 });
 export default connect(mapStateToProps)(OutofPacket);

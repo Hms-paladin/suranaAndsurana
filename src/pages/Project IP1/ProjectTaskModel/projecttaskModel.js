@@ -5,10 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import CustomButton from '../../../component/Butttons/button';
 import { apiurl } from "../../../utils/baseUrl";
 import { connect, useDispatch } from "react-redux";
-import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
+import { getEmpListDesignation } from '../../../actions/MasterDropdowns';
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 function ProjectTaskModel(props) {
@@ -115,7 +115,7 @@ function ProjectTaskModel(props) {
     dispatch(getActivity());
     dispatch(getTagList());
     dispatch(getPriorityList());
-    dispatch(getAssignedTo());
+    dispatch(getEmpListDesignation());
     dispatch(getLocation());
 
   }, []);
@@ -453,7 +453,7 @@ const mapStateToProps = (state) =>
   activitysList: state.projectTasksReducer.getActivityList || [],
   prioritysList: state.projectTasksReducer.prioritysList || [],
   tagsList: state.projectTasksReducer.tagsList || [],
-  assignToList: state.projectTasksReducer.assignToLists || [],
+  assignToList: state.getOptions.getEmpListDesignation || [],
   locationList: state.projectTasksReducer.locationLists || [],
   ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });

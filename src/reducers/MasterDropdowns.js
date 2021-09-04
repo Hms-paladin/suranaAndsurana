@@ -35,7 +35,8 @@ import {
   GET_COURT_LOCATION,
   GET_TRADE_MARK_STATUS,
   GET_CASE_TYPE,
-  GET_SUB_CASE_TYPE, GET_QUATIONTYPE
+  GET_SUB_CASE_TYPE, GET_QUATIONTYPE,
+  GET_EMP_LIST_DESIGNATION
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -48,7 +49,7 @@ import {
   GET_SUBACTIVITY,
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
-  GET_CITY_BY_ID, GET_SUBORDINATE,
+  GET_CITY_BY_ID,
   GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
 } from "../utils/Constants.js";
 
@@ -79,7 +80,7 @@ const initalState = {
   getProjectName: [],
   getBillableType: [],
   getFilingType: [],
-  getEmployeeList: [],
+  getEmpListDesignation: [],
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
@@ -101,8 +102,16 @@ const initalState = {
   getUserGroup: [],
   getCategory: [],
   getCity_By_Id: [],
-  getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
-  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: [], getSubordinate: [], GetAreaDevelopment: [], GetDevelopment: []
+  getSubCategory: [],
+  getQuestionType: [],
+  getCandidateName: [],
+  GetTemplateName: [],
+  getCchecklistcategory: [],
+  getCchecklisttype: [],
+  getFrequency: [],
+  GetAreaDevelopment: [],
+  GetDevelopment: [],
+  getEmployeeList:[]
 };
 
 export default function (state = initalState, action) {
@@ -218,12 +227,12 @@ export default function (state = initalState, action) {
       return { ...state, getCchecklistcategory: payload };
     case GET_FREQUENCY:
       return { ...state, getFrequency: payload };
-    case GET_SUBORDINATE:
-      return { ...state, getSubordinate: payload };
     case GET_AREA_DEVELOPMENT:
       return { ...state, GetAreaDevelopment: payload };
     case GET_DEVELOPMENT:
       return { ...state, GetDevelopment: payload };
+    case GET_EMP_LIST_DESIGNATION:
+      return { ...state, getEmpListDesignation: payload };
     default:
       return state;
   }

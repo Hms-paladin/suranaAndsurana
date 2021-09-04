@@ -8,7 +8,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import DynModel from "../../component/Model/model";
 import './KPI.scss'
 import { Checkbox } from 'antd';
-import { getEmployeeList} from '../../actions/MasterDropdowns'
+import { getEmpListDesignation} from '../../actions/MasterDropdowns'
 import { connect,useDispatch} from 'react-redux';
 import {GetKpiApproval,ApproveKpi} from '../../actions/KPIActions'
 import moment from 'moment'
@@ -269,7 +269,7 @@ useEffect(()=>{
 }
 
 const mapStateToProps=(state)=>({
-    EmployeeList: state.getOptions.getEmployeeList,
+    EmployeeList: state.getOptions.getEmpListDesignation,
     KpiApproval:state.KpiReducer.ApprovalData,
     ApproveKpi:state.KpiReducer.kpiApproval
 })

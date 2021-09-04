@@ -48,18 +48,6 @@ function UserMasterModal(props) {
 
     });
 
-    // useEffect(() => {
-     
-    // }, [])    
-
-    ////// api dispatch
-    // useEffect(() => {
-    //     dispatch(getGroupList())
-    //     dispatch(get_emp_not_in_user())
-    //     // dispatch(GetEmployeeDetails())
-    // }, [])
-    //////
- 
     useEffect(() => {
             handleCancel()
             dispatch(get_emp_not_in_user())

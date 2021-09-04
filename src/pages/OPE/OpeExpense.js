@@ -79,14 +79,14 @@ function OPE_Expense(props) {
 
     }
     const Notification = () => {
-        if (bill) {
+        // if (bill) {
             onFileChange()
-        }
-        else {
-            notification.warning({
-                message: "Please check the bill then upload"
-            })
-        }
+        // }
+        // else {
+        //     notification.warning({
+        //         message: "Please check the bill then upload"
+        //     })
+        // }
     }
     // console.log("files",FileList)
 
@@ -304,7 +304,7 @@ function OPE_Expense(props) {
                     <div>BILL
                         {/* <Checkbox checked={bill} onChange={() => setbill(!bill)} /> */}
                     </div>
-                    {bill ?
+                    {/* {bill ? */}
                         <div className="upload_div">
                             <div style={{ width: "70%", backgroundColor: "#023e7d" }}>
 
@@ -312,9 +312,10 @@ function OPE_Expense(props) {
                                     onChange={onFileChange} id="img" /> <PublishIcon className="publish_ic" />
                             </div>
 
-                        </div> :
+                        </div>
+                         {/* :
                         <CustomButton btnName={"Upload"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={Notification} />
-                    }
+                    } */}
                 </div>
                 <div className="des_grid">
                     <Grid item xs={6} spacing={2}>
@@ -338,7 +339,6 @@ function OPE_Expense(props) {
 const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
-    EmployeeList: state.getOptions.getEmployeeList || [],
     ProjectName: state.OutofPacket.projectTypebase_projectName || [],
     ProjectType: state.getOptions.getProjectType || [],
     ClientName: state.OutofPacket.projectNameBased_ClientName || [],

@@ -24,8 +24,9 @@ import {
   GET_INTERVIEW_STATUS,
   GET_CASE_TYPE,
   GET_SUB_CASE_TYPE,
-  GET_CITY_BY_ID, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT, GET_FREQUENCY
-
+  GET_CITY_BY_ID, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT, GET_FREQUENCY,
+  GET_EMP_ALL,
+  GET_EMP_LIST_DESIGNATION
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -50,7 +51,7 @@ import {
   GET_SUBACTIVITY,
   GET_LOCATION_LIST,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_SUBORDINATE, GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
+  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -254,9 +255,9 @@ export const getFilingTypeIpab = () => async (dispatch) => {
 
 // get_employee_list (API) ==> Hod/Attony,Counsel,DRA and DDRA using with one api
 
-export const getEmployeeList = () => async (dispatch) => {
+export const getEmpListAll = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_employee_list");
-  return dispatch({ type: GET_EMPLOYEE_LIST, payload: response.data.data });
+  return dispatch({ type: GET_EMP_ALL, payload: response.data.data });
 };
 
 export const getEmployeeListForTicket = () => async (dispatch) => {
@@ -480,23 +481,6 @@ export const GetTemplateName = () => async (dispatch) => {
   return dispatch({ type: GET_TEMPLATE_NAME, payload: response.data.data });
 };
 
-//get_subordinate
-
-export const getSubordinate = (id) => async (dispatch) => {
-  try {
-    const response = await axios({
-      method: 'POST',
-      url: apiurl + "get_subordinate",
-      data: {
-        "emp_id": id
-      }
-    });
-    return dispatch({ type: GET_SUBORDINATE, payload: response.data.data });
-  }
-  catch (err) { }
-}
-
-
 // Appraisal 
 export const GetAreaDevelopment = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_area_development");
@@ -507,4 +491,36 @@ export const GetDevelopment = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_development");
   return dispatch({ type: GET_DEVELOPMENT, payload: response.data.data });
 };
+
+export const getEmployeeList = () => async dispatch => {
+
+  await axios({
+    method: 'POST',
+    url: apiurl + 'get_emp_supervisor',
+    data: {
+      "emp_id": localStorage.getItem("empId"),
+    }
+  })
+    .then((response) => {
+      dispatch({ type: GET_EMPLOYEE_LIST, payload: response.data.data })
+    })
+
+}
+
+export const getEmpListDesignation = () => async dispatch => {
+
+  await axios({
+    method: 'POST',
+    url: apiurl + 'get_emplist_designation',
+    data: {
+      "emp_id": localStorage.getItem("empId"),
+    }
+  })
+    .then((response) => {
+      console.log(response,"GET_EMP_LIST_DESIGNATION")
+      dispatch({ type: GET_EMP_LIST_DESIGNATION, payload: response.data.data })
+    })
+
+
+}
 

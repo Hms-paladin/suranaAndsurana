@@ -146,7 +146,7 @@ function CheckListAssign(props) {
     if (filtererr.length > 0) {
       // setInsertTaskForm({ error: true });
     } else {
-      console.log(sendVariableData, "sendVariableData")
+
       var data = {
         "check_list_id": checkListForm.checkListNameId.value,
         "emp_id": checkListForm.employeeId.value == '' ? 0 : checkListForm.employeeId.value,
@@ -400,7 +400,7 @@ function CheckListAssign(props) {
         }
 
         if (data.frequency === 'On Demand') {
-          start_date_disable = true;
+          start_date_disable = false;
           end_date_disable = true;
           days_of_week_disable = true;
         } else if (data.frequency === 'Alternate Days' || data.frequency === 'Weekly') {
