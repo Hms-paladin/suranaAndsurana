@@ -94,7 +94,7 @@ function Timesheetmodel(props) {
                                     </Grid>
 
                                     <Grid item xs={3}>
-                                        <div style={{ textAlign: 'center' }}>{data.end_date ? (moment(data.end_date).format("DD-MMM-YYYY")):''} {data.end_time != null ? '&' : ""} {data.end_time}</div>
+                                        <div style={{ textAlign: 'center' }}>{(data.end_date && data.end_date !== "0000-00-00") ? (moment(data.end_date).format("DD-MMM-YYYY")) : ''} {(data.end_time && data.end_time != "00:00:00") ? '&' + data.end_time : ""} </div>
                                     </Grid>
 
                                     <Grid item xs={3}>

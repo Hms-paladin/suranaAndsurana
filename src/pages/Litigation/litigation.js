@@ -12,7 +12,7 @@ import DynModel from "../../component/Model/model";
 import AddDataModel from "./adddataModel";
 import {
   getCaseType,
-  getEmpListDesignation,
+  getEmpListDepartment,
   getLocation,
   getSubCaseType,
   getTradeMarkStatus,
@@ -98,7 +98,7 @@ const Litigation = (props) => {
   });
   useEffect(() => {
     handleCancel();
-    dispatch(getEmpListDesignation());
+    dispatch(getEmpListDepartment());
     dispatch(getLocation());
     dispatch(getTradeMarkStatus());
     dispatch(getCaseType());
@@ -530,7 +530,7 @@ const Litigation = (props) => {
   );
 };
 const mapStateToProps = (state) => ({
-  EmployeeList: state.getOptions.getEmpListDesignation || [],
+  EmployeeList: state.getOptions.getEmpListDepartment || [],
   getCourtLocation: state.getOptions.getCourtLocation || [],
   getTradeMarkStatus: state.getOptions.getTradeMarkStatus || [],
   getCaseType: state.getOptions.getCaseType || [],

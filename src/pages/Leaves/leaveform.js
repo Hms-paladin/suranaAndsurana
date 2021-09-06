@@ -8,7 +8,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
 import { insertLeaveForm, getProfessionalCourse, SubjectList, getEmpAvailableBalance, getLeaveForm, deleteLeaveForm, updateLeaveFrom, insertLeaveCep, updateLeaveCep } from '../../actions/LeaveFormAction';
 import { useDispatch, connect } from "react-redux";
-import { getEmpListDesignation, getClientlist } from '../../actions/MasterDropdowns';
+import { getEmpListDepartment, getClientlist } from '../../actions/MasterDropdowns';
 import PlusIcon from "../../images/plusIcon.svg";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
@@ -169,7 +169,7 @@ function LeaveForm(props) {
     useEffect(() => {
         dispatch(getLeaveType());
         dispatch(getProfessionalCourse());
-        dispatch(getEmpListDesignation());
+        dispatch(getEmpListDepartment());
         dispatch(getLeaveForm());
         dispatch(SubjectList());
         dispatch(getClientlist())
@@ -1153,7 +1153,7 @@ const mapStateToProps = (state) =>
     LeaveType: state.getOptions.getLeaveType,
     ProfessoionalCourse: state.LeaveFormReducer.leaveformstatus,
     SubjectList: state.LeaveFormReducer.leavefromsubject || [],
-    EmployeeList: state.getOptions.getEmpListDesignation || [],
+    EmployeeList: state.getOptions.getEmpListDepartment || [],
     getEmpLeaveBal: state.LeaveFormReducer.getEmpAvailableBalance || [],
     getLeaveForm: state.LeaveFormReducer.getLeaveForm || [],
     getClientlist: state.getOptions.getClientlist || [],

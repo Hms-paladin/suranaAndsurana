@@ -8,7 +8,7 @@ import { connect, useDispatch } from "react-redux";
 import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { getEmpListDesignation } from '../../../actions/MasterDropdowns';
+import { getEmpListDepartment } from '../../../actions/MasterDropdowns';
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 function ProjectTaskModel(props) {
@@ -115,7 +115,7 @@ function ProjectTaskModel(props) {
     dispatch(getActivity());
     dispatch(getTagList());
     dispatch(getPriorityList());
-    dispatch(getEmpListDesignation());
+    dispatch(getEmpListDepartment());
     dispatch(getLocation());
 
   }, []);
@@ -453,7 +453,7 @@ const mapStateToProps = (state) =>
   activitysList: state.projectTasksReducer.getActivityList || [],
   prioritysList: state.projectTasksReducer.prioritysList || [],
   tagsList: state.projectTasksReducer.tagsList || [],
-  assignToList: state.getOptions.getEmpListDesignation || [],
+  assignToList: state.getOptions.getEmpListDepartment || [],
   locationList: state.projectTasksReducer.locationLists || [],
   ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });

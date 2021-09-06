@@ -63,7 +63,7 @@ function DayReport(props) {
 
     useEffect(() => {
         dispatch(getDepartment());
-        //dispatch(getEmpListDesignation())
+        //dispatch(getEmpListDepartment())
     }, [])
 
     //Check validation

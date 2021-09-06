@@ -12,7 +12,7 @@ import { apiurl } from "../../../utils/baseUrl";
 import dateFormat from 'dateformat';
 import { useParams } from "react-router-dom";
 import { notification } from "antd";
-import { getEmpListDesignation } from '../../../actions/MasterDropdowns';
+import { getEmpListDepartment } from '../../../actions/MasterDropdowns';
 function ChangeLogTimeSheet(props) {
     const dispatch = useDispatch();
     const [projectSubActivity, setprojectSubActivity] = useState({});
@@ -120,7 +120,7 @@ function ChangeLogTimeSheet(props) {
         dispatch(getActivity());
         dispatch(getTagList());
         dispatch(getPriorityList());
-        dispatch(getEmpListDesignation());
+        dispatch(getEmpListDepartment());
         dispatch(getLocation());
 
     }, []);
@@ -405,7 +405,7 @@ const mapStateToProps = (state) =>
         activitysList: state.projectTasksReducer.getActivityList || [],
         prioritysList: state.projectTasksReducer.prioritysList || [],
         tagsList: state.projectTasksReducer.tagsList || [],
-        assignToList: state.getOptions.getEmpListDesignation || [],
+        assignToList: state.getOptions.getEmpListDepartment || [],
         locationList: state.projectTasksReducer.locationLists || [],
         insertChangeLog: state.projectTasksReducer.backLog || []
 

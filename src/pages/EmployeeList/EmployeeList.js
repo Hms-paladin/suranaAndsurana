@@ -6,7 +6,7 @@ import './EmployeeList.scss'
 import EnhancedTable from '../../component/DynTable/table'
 import { useDispatch, connect } from "react-redux";
 import { getDesignationList, getDepartment} from '../../actions/MasterDropdowns'
-import { getEmpListDesignationSearch,getEmployeeCode} from '../../actions/EmployeeListAction'
+import { getEmpListDepartmentSearch,getEmployeeCode} from '../../actions/EmployeeListAction'
 import ValidationLibrary from "../../helpers/validationfunction";
 import moment from 'moment'
 import DynModel from "../../component/Model/model";
@@ -199,7 +199,7 @@ const onNewPageClear = (bln) => {
 }
 
 function onSubmit() {
-dispatch(getEmpListDesignationSearch(empCodeName,EmpList)).then(() => {
+dispatch(getEmpListDepartmentSearch(empCodeName,EmpList)).then(() => {
 
 })
    
@@ -285,7 +285,7 @@ const mapStateToProps = (state) => (
         getDesignationList: state.getOptions.getDesignationList || [],
         getDepartment: state.getOptions.getDepartment || [],
         getEmployeeCode: state.EmployeeListReducer.getEmployeeCode || [],
-        getEmployee_List_Data: state.EmployeeListReducer.getEmpListDesignationSearch || [],
+        getEmployee_List_Data: state.EmployeeListReducer.getEmpListDepartmentSearch || [],
         UserPermission: state.UserPermissionReducer.getUserPermission,
         // getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
     }

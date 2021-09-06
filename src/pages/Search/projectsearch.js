@@ -9,7 +9,7 @@ import {
   getClientType,
   getClient,
   getProjectType,
-  getProjectName,
+  get_projectName_by_Desig,
   getBillableType,
   getClientlist,
 } from "../../actions/MasterDropdowns";
@@ -118,7 +118,7 @@ function Projectsearch(props) {
     dispatch(getClientType());
     dispatch(getClientlist());
     dispatch(getProjectType());
-    dispatch(getProjectName());
+    dispatch(get_projectName_by_Desig());
     dispatch(getBillableType());
   }, []);
 
@@ -464,7 +464,7 @@ const mapStateToProps = (state) =>
     ClientType: state.getOptions.getClientType,
     Client: state.getOptions.getClientlist,
     ProjectType: state.getOptions.getProjectType,
-    ProjectName: state.getOptions.getProjectName,
+    ProjectName: state.getOptions.get_projectName_by_Desig,
     BillableType: state.getOptions.getBillableType,
     UserPermission: state.UserPermissionReducer.getUserPermission,
   });

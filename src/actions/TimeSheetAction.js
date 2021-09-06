@@ -44,7 +44,7 @@ export const getProjectTimeSheetListByTaskId = (taskId) => async dispatch => {
 
 
 
-export const getProjectWise_TimeSheet = (data, emp_id) => async dispatch => {
+export const getProjectWise_TimeSheet = (data) => async dispatch => {
 
     let dataObj = {}
     dataObj["status"] = 0
@@ -67,7 +67,7 @@ export const getProjectWise_TimeSheet = (data, emp_id) => async dispatch => {
         dataObj["end_date"] = data.to_date.value
     }
     try {
-        axios({
+      await axios({
             method: 'POST',
             url: apiurl + 'get_project_wise_timesheet_search',
             data: dataObj
@@ -138,7 +138,7 @@ export const update_approve_timesheet = (data, status) => async dispatch => {
 
     if (updatelist.length > 0) {
         try {
-          await axios({
+            await axios({
                 method: 'PUT',
                 url: apiurl + 'update_approve_timesheet',
                 data: {
@@ -195,3 +195,27 @@ export const update_submit_timesheet = (data) => async dispatch => {
         }
     }
 }
+
+export const EditProjectwiseTimesheet = (data,project_wise) => async dispatch => {
+
+    try {
+      await axios({
+            method: 'POST',
+            url: apiurl + 'update_project_timesheet',
+            data: data
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Timesheet Updated Successfully',
+                    });
+                    dispatch(getProjectWise_TimeSheet(project_wise))
+                    return Promise.resolve();
+                }
+            })
+
+    } catch (err) {
+
+    }
+}
+

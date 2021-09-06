@@ -26,7 +26,7 @@ import {
   GET_SUB_CASE_TYPE,
   GET_CITY_BY_ID, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT, GET_FREQUENCY,
   GET_EMP_ALL,
-  GET_EMP_LIST_DESIGNATION
+  GET_EMP_LIST_DEPARTMENT
 } from "../utils/Constants.js";
 import {
   GET_STATUS,
@@ -51,7 +51,15 @@ import {
   GET_SUBACTIVITY,
   GET_LOCATION_LIST,
   GET_LEAVETYPE,
-  GET_USERGROUP, GET_CATEGORY, GET_SUBCATEGORY, GET_QUATIONTYPE, GET_TEMPLATE_NAME, GET_FILING_TYPE_IPAB, GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
+  GET_USERGROUP,
+  GET_CATEGORY,
+  GET_SUBCATEGORY,
+  GET_QUATIONTYPE,
+  GET_TEMPLATE_NAME,
+  GET_FILING_TYPE_IPAB,
+  GET_AREA_DEVELOPMENT,
+  GET_DEVELOPMENT,
+  GET_PROJECT_NAME_BY_DESIG
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -185,6 +193,17 @@ export const getProjectType = () => async (dispatch) => {
 export const getProjectName = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_project_name");
   return dispatch({ type: GET_PROJECT_NAME, payload: response.data.data });
+};
+
+export const get_projectName_by_Desig = () => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_projectName_by_empIdandDesig",
+    data: {
+      emp_id: localStorage.getItem("empId"),
+    },
+  });
+  return dispatch({ type: GET_PROJECT_NAME_BY_DESIG, payload: response.data.data });
 };
 
 export const getBillableType = () => async (dispatch) => {
@@ -507,18 +526,18 @@ export const getEmployeeList = () => async dispatch => {
 
 }
 
-export const getEmpListDesignation = () => async dispatch => {
+export const getEmpListDepartment = () => async dispatch => {
 
   await axios({
     method: 'POST',
-    url: apiurl + 'get_emplist_designation',
+    url: apiurl + 'get_emplist_department',
     data: {
       "emp_id": localStorage.getItem("empId"),
     }
   })
     .then((response) => {
-      console.log(response,"GET_EMP_LIST_DESIGNATION")
-      dispatch({ type: GET_EMP_LIST_DESIGNATION, payload: response.data.data })
+      console.log(response, "GET_EMP_LIST_DEPARTMENT")
+      dispatch({ type: GET_EMP_LIST_DEPARTMENT, payload: response.data.data })
     })
 
 

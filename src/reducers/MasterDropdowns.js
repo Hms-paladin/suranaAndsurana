@@ -36,7 +36,8 @@ import {
   GET_TRADE_MARK_STATUS,
   GET_CASE_TYPE,
   GET_SUB_CASE_TYPE, GET_QUATIONTYPE,
-  GET_EMP_LIST_DESIGNATION
+  GET_EMP_LIST_DEPARTMENT,
+  GET_PROJECT_NAME_BY_DESIG
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -80,7 +81,7 @@ const initalState = {
   getProjectName: [],
   getBillableType: [],
   getFilingType: [],
-  getEmpListDesignation: [],
+  getEmpListDepartment: [],
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
@@ -111,7 +112,8 @@ const initalState = {
   getFrequency: [],
   GetAreaDevelopment: [],
   GetDevelopment: [],
-  getEmployeeList:[]
+  getEmployeeList:[],
+  get_projectName_by_Desig:[]
 };
 
 export default function (state = initalState, action) {
@@ -231,8 +233,10 @@ export default function (state = initalState, action) {
       return { ...state, GetAreaDevelopment: payload };
     case GET_DEVELOPMENT:
       return { ...state, GetDevelopment: payload };
-    case GET_EMP_LIST_DESIGNATION:
-      return { ...state, getEmpListDesignation: payload };
+    case GET_EMP_LIST_DEPARTMENT:
+      return { ...state, getEmpListDepartment: payload };
+      case GET_PROJECT_NAME_BY_DESIG:
+        return { ...state, get_projectName_by_Desig: payload }; 
     default:
       return state;
   }

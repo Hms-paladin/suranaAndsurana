@@ -11,7 +11,7 @@ import { useDispatch, connect } from "react-redux";
 import {
   getCheckListsNames, insert_check_list_assign, getDaysOfWeek, get_projType_subProjType_by_projId, getFrequencyByCheckListId
 } from "../../actions/CheckListAction";
-import { getEmployeeList, getProjectType, getFrequency, getProjectName } from "../../actions/MasterDropdowns";
+import { getEmployeeList, getProjectType, getFrequency, get_projectName_by_Desig } from "../../actions/MasterDropdowns";
 import ValidationLibrary from "../../helpers/validationfunction";
 import EnhancedTable from "../../component/DynTable/table";
 
@@ -91,7 +91,7 @@ function CheckListAssign(props) {
     dispatch(getEmployeeList());
     dispatch(getProjectType());
     dispatch(getDaysOfWeek());
-    dispatch(getProjectName());
+    dispatch(get_projectName_by_Desig());
   }, []);
 
   const handleCancel = () => {
@@ -588,7 +588,7 @@ const mapStateToProps = (state) =>
   getEmployeeList: state.getOptions.getEmployeeList || [],
   getCheckListsNames: state.CheckListReducer.getCheckListsNames || [],
   getDaysofWeeks: state.CheckListReducer.getDaysofWeeks || [],
-  ProjectName: state.getOptions.getProjectName || [],
+  ProjectName: state.getOptions.get_projectName_by_Desig || [],
   get_projType_subProjType_by_projId: state.CheckListReducer.get_projType_subProjType_by_projId || [],
   getFrequencyByCheckListId: state.CheckListReducer.getFrequencyByCheckListId || [],
 });

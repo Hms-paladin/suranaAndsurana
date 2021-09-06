@@ -42,10 +42,9 @@ import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmode
 
 import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
-// import { getEmpListDesignation } from "../../actions/UserMasterAction";
 import moment from "moment";
 import { useLocation, useParams } from "react-router-dom"
-import { getEmpListDesignation } from "../../actions/MasterDropdowns";
+import { getEmpListDepartment, getEmployeeList } from "../../actions/MasterDropdowns";
 import CustomButton from '../../component/Butttons/button';
 
 const HtmlTooltip = withStyles((theme) => ({
@@ -170,23 +169,23 @@ function Task(props) {
 
     useEffect(() => {
         dispatch(getTaskList(empid, "Active", task_id));
-        // dispatch(getEmpListDesignation(empid));
-        dispatch(getEmpListDesignation());
+        dispatch(getEmployeeList());
+        dispatch(getEmpListDepartment());
     }, []);
 
     useEffect(() => {
 
         let employeeData = []
-        props.getEmpListDesignation.map((data) =>
+        props.getEmpListDepartment.map((data) =>
             employeeData.push({
                 value: data.name,
                 id: data.emp_id
             })
         )
         setemployeeList({ employeeData })
-    }, [props.getEmpListDesignation]);
+    }, [props.getEmpListDepartment]);
 
-    console.log(props.getEmpListDesignation,"props.getEmpListDesignation")
+    console.log(props.getEmpListDepartment, "props.getEmpListDepartment")
     useEffect(() => {
 
         let taskbyStatus = []
@@ -202,14 +201,14 @@ function Task(props) {
         settaskstatusLists({ taskbyStatus })
 
 
-        // let subOrinateList = []
-        // props.subordinateslis.map((data) =>
-        //     subOrinateList.push({
-        //         value: data.name,
-        //         id: data.emp_id
-        //     })
-        // )
-        // setSubordinates({ subOrinateList })
+        let subOrinateList = []
+        props.subordinateslis.map((data) =>
+            subOrinateList.push({
+                value: data.name,
+                id: data.emp_id
+            })
+        )
+        setSubordinates({ subOrinateList })
     }, [props.getTaskLists, props.subordinateslis]);
 
     // Change start,stop Model
@@ -238,10 +237,13 @@ function Task(props) {
         setChangeModel(false)
     }
     function openTimeSheet(flg, obj) {
-        // console.log(obj.perecent_completion,"perecent_completion")
-        if (obj.perecent_completion === 100) { return }
-        setTaskData(obj);
-        setStartModelOpen(flg);
+        console.log(fieldVal.subOrdinateVal.value, localStorage.getItem("empId"), "fffffffffffffffffffff")
+        if (!fieldVal.subOrdinateVal.value || fieldVal.subOrdinateVal.value === "" || (fieldVal.subOrdinateVal.value === Number(localStorage.getItem("empId")))) {
+            // console.log(obj.perecent_completion,"perecent_completion")
+            if (obj.perecent_completion === 100) { return }
+            setTaskData(obj);
+            setStartModelOpen(flg);
+        }
     }
 
     const [open, setOpen] = useState(false);
@@ -307,7 +309,7 @@ function Task(props) {
                             <Grid item xs={8}>
                                 <Labelbox type="select"
                                     placeholder={" Subordinate"}
-                                    dropdown={employeeList.employeeData}
+                                    dropdown={subordinates.subOrinateList}
                                     changeData={(data) => checkValidation(data, "subOrdinateVal")}
                                     value={fieldVal.subOrdinateVal.value}
                                     error={fieldVal.subOrdinateVal.error}
@@ -617,7 +619,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     getTaskLists: state.projectTasksReducer.getTaskLists,
-    // subordinateslis: state.UserMasterReducer.getEmployeeLists,
-    getEmpListDesignation: state.getOptions.getEmpListDesignation || [],
+    subordinateslis: state.getOptions.getEmployeeList,
+    getEmpListDepartment: state.getOptions.getEmpListDepartment || [],
 });
 export default connect(mapStateToProps)(Task);

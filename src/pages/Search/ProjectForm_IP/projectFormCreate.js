@@ -123,6 +123,7 @@ function ProjectFormCreate(props) {
     },
     employeelist: {
       value: "",
+      valueById: "",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
@@ -253,18 +254,19 @@ function ProjectFormCreate(props) {
   }
 
 
-  function handleCost(data,key){
-      let value = data.replace(/,/g, "");
-      var x=value;
-      x=x.toString();
-      var lastThree = x.substring(x.length-3);
-      var otherNumbers = x.substring(0,x.length-3);
-      if(otherNumbers != '')
-          lastThree = ',' + lastThree;
-      var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      console.log(res,value,"ressssss")
-      checkValidation(res,key)
+  function handleCost(data, key) {
+    let value = data.replace(/,/g, "");
+    var x = value;
+    x = x.toString();
+    var lastThree = x.substring(x.length - 3);
+    var otherNumbers = x.substring(0, x.length - 3);
+    if (otherNumbers != '')
+      lastThree = ',' + lastThree;
+    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+    console.log(res, value, "ressssss")
+    checkValidation(res, key)
   }
+
   function checkValidation(data, key, multipleId) {
     checkProjectNameExists(projectform.projectname.value)
     var errorcheck = ValidationLibrary.checkValidation(
@@ -327,8 +329,8 @@ function ProjectFormCreate(props) {
       IP_project_key.map((data) => {
         if (data === "projectcostrange") {
           projectform[data].validation = ([{ name: "required" }
-          // , { "name": "allowNumaricOnly1" }
-        ])
+            // , { "name": "allowNumaricOnly1" }
+          ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -352,8 +354,8 @@ function ProjectFormCreate(props) {
       Other_key.map((data) => {
         if (data === "projectcostrange") {
           projectform[data].validation = ([{ name: "required" }
-          // , { "name": "allowNumaricOnly1" }
-        ])
+            // , { "name": "allowNumaricOnly1" }
+          ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -381,8 +383,8 @@ function ProjectFormCreate(props) {
       Litigation_key.map((data) => {
         if (data === "projectcostrange") {
           projectform[data].validation = ([{ name: "required" }
-          // , { "name": "allowNumaricOnly1" }
-        ])
+            // , { "name": "allowNumaricOnly1" }
+          ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -405,11 +407,11 @@ function ProjectFormCreate(props) {
 
     if (data && key === "billable_type") {
       let projectcostrange = projectform.projectcostrange.value.replace(/,/g, "");
-        console.log(projectcostrange,"bill")
+      console.log(projectcostrange, "bill")
       if (data === 1 || data === 4 || data === 5) {
         projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
-        // , { "name": "allowNumaricOnly1" }
-      ])
+          // , { "name": "allowNumaricOnly1" }
+        ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
         projectform.limits.validation = []
         projectform.additionalRate.validation = []
@@ -417,10 +419,12 @@ function ProjectFormCreate(props) {
       else if (data === 3) {
         projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": 
-        projectcostrange === '' ? '0' : projectcostrange }
-        // , { "name": "allowNumaricOnly1" }
-      ])
+        projectform.baseRate.validation = ([{ name: "required" }, {
+          "name": "custommaxValue", "params":
+            projectcostrange === '' ? '0' : projectcostrange
+        }
+          // , { "name": "allowNumaricOnly1" }
+        ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
       } else if (data === 2) {
         projectform.limits.validation = []
@@ -497,8 +501,8 @@ function ProjectFormCreate(props) {
     // (end)
     // console.log(projectform.baseRate.validation, "projectform.baseRate.validation")
     if (data && key == "projectcostrange") {
-      let projectcostrange=data.replace(/,/g, "")
-      console.log(projectcostrange,"projectcost")
+      let projectcostrange = data.replace(/,/g, "")
+      console.log(projectcostrange, "projectcost")
       if (projectform.baseRate.validation[1]) {
         projectform.baseRate.validation[1].params = projectcostrange;
       } else {
@@ -846,6 +850,7 @@ function ProjectFormCreate(props) {
     setSendVariableData([...sendVariableData]);
   };
 
+  console.log(projectform.employeelist.valueById,"projectform.employeelist.value")
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -927,8 +932,9 @@ function ProjectFormCreate(props) {
                   errmsg={projectform.hod_attorny.errmsg} /> </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
                 <Labelbox type="select"
+                  mode={"multiple"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist")}
+                  changeData={(data) => checkValidation(data, "employeelist",employeeList.EmployeeList)}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} /></Grid>
@@ -1017,8 +1023,9 @@ function ProjectFormCreate(props) {
                     errmsg={projectform.hod_attorny.errmsg} /></Grid>
                 <Grid item xs={6}> <div className="Fieldheading">Deputy Direct Responsible Attorney</div>
                   <Labelbox type="select"
+                    mode={"multiple"}
                     dropdown={employeeList.EmployeeList}
-                    changeData={(data) => checkValidation(data, "employeelist")}
+                    changeData={(data) => checkValidation(data, "employeelist",employeeList.EmployeeList)}
                     value={projectform.employeelist.value}
                     error={projectform.employeelist.error}
                     errmsg={projectform.employeelist.errmsg} /></Grid>
@@ -1104,8 +1111,9 @@ function ProjectFormCreate(props) {
             ) : projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5 ? (<>
               <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
                 <Labelbox type="select"
+                  mode={"multiple"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist")}
+                  changeData={(data) => checkValidation(data, "employeelist",employeeList.EmployeeList)}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} />

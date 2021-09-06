@@ -11,7 +11,7 @@ import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getTagList, insertAdhocTask} from "../../actions/projectTaskAction";
 import { connect, useDispatch } from "react-redux";
-import { getEmpListDesignation } from '../../actions/MasterDropdowns';
+import { getEmpListDepartment } from '../../actions/MasterDropdowns';
 
 function AdhocTaskModal(props) {
     const dispatch = useDispatch();
@@ -53,7 +53,7 @@ function AdhocTaskModal(props) {
 
     useEffect(() => {
         dispatch(getTagList());
-        dispatch(getEmpListDesignation());
+        dispatch(getEmpListDepartment());
 
     }, []);
 
@@ -282,7 +282,7 @@ const mapStateToProps = (state) =>
 ({
 
     tagsList: state.projectTasksReducer.tagsList || [],
-    assignToList: state.getOptions.getEmpListDesignation || [],
+    assignToList: state.getOptions.getEmpListDepartment || [],
     UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 

@@ -66,7 +66,7 @@ export const InsertIpProject = (projectform, VariableRate, proj_type_name) => as
                 unit_of_measure: projectform.unit_measurement.value || 0,
                 project_name: projectform.projectname.value || 0,
                 //
-                councel_id: projectform.employeelist.value || 0,
+                councel_id: projectform.employeelist.valueById || 0,
                 hod_hr_id: projectform.hod_attorny.value || 0,
                 //
                 range_id: projectform.projectcostrange.value.replace(/,/g, "") || 0,

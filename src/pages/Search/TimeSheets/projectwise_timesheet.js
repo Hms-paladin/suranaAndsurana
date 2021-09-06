@@ -15,7 +15,7 @@ import TimeSheets from './timesheetStart';
 import DynModel from '../../../component/Model/model';
 import { Checkbox } from 'antd'
 import { update_approve_timesheet, update_submit_timesheet } from "../../../actions/TimeSheetAction";
-import { getEmpListDesignation } from '../../../actions/MasterDropdowns';
+import { getEmpListDepartment } from '../../../actions/MasterDropdowns';
 import Edit from "../../../images/editable.svg";
 
 function ProjectwiseTS(props) {
@@ -28,7 +28,7 @@ function ProjectwiseTS(props) {
     const [TimeSheetArr, setTimeSheetArr] = useState([])
     const [trigger, setTrigger] = useState(false)
     const [OnRejectData, setOnRejectData] = useState([])
-
+    const [OnEditData, setOnEditData] = useState([])
     const [ModelClear, setModelClear] = useState(0)
 
     const [projectSearch, setprojectSearch] = useState({
@@ -108,7 +108,7 @@ function ProjectwiseTS(props) {
         { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
 
     useEffect(() => {
-        dispatch(getEmpListDesignation())
+        dispatch(getEmpListDepartment())
     }, [])
 
     useEffect(() => {
@@ -172,12 +172,13 @@ function ProjectwiseTS(props) {
 
     const onReject = (data) => {
         setTimesheetModelOpen(true)
-        setOnRejectData([data,projectSearch])
+        setOnRejectData([data, projectSearch])
     }
 
     const onEdit = (data) => {
+
         setTimesheetModelOpen(true)
-        // setOnRejectData([data,projectSearch])
+        setOnEditData([data, projectSearch])
     }
 
     useEffect(() => {
@@ -189,14 +190,14 @@ function ProjectwiseTS(props) {
                 start_time: (data.start_time === "00:00:00" || data.start_time === null) ? 0 : moment(data.start_time, "HH:mm:ss").format("hh:mm A"),
                 to_date: (data.end_date === "0000-00-00" || data.end_date === null) ? 0 : moment(data.end_date).format("DD-MM-YYYY"),
                 end_time: (data.end_time === "00:00:00" || data.end_time === null) ? 0 : moment(data.end_time, "HH:mm:ss").format("hh:mm A"),
-                no_of_hrs: (hrs_arr[0] + ' Hours ' + (hrs_arr[1]?(','+hrs_arr[1] + ' minutes'):'')),
+                no_of_hrs: (hrs_arr[0] + ' Hours ' + (hrs_arr[1] ? (',' + hrs_arr[1] + ' minutes') : '')),
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 project_name: data.project_name,
                 project_type: data.project_type,
                 client: data.client,
                 status: (data.status_submit ? (data.status_submit === "Not Approved" ? (
-                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(index)} style={{ cursor: 'pointer' }} />
+                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} />
                         <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
                     </>
                 ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
@@ -238,7 +239,7 @@ function ProjectwiseTS(props) {
             }
         }
     }
-console.log(ModelClear,"ModelClear")
+    console.log(ModelClear, "ModelClear")
     const SubmitApprove = async () => {
         if (TimeSheetArr && TimeSheetArr.length > 0) {
 
@@ -259,6 +260,12 @@ console.log(ModelClear,"ModelClear")
 
             }
         }
+    }
+    const closeModel = () => {
+        setTimesheetModelOpen(false)
+        setModelClear(ModelClear + 1)
+        setOnRejectData([])
+        setOnEditData([])
     }
     return (
         <div>
@@ -318,7 +325,7 @@ console.log(ModelClear,"ModelClear")
                 {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
-            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => (setTimesheetModelOpen(bln),setModelClear(ModelClear+1))} content={<TimeSheets project_wise_edit={OnRejectData.length > 0?OnRejectData:undefined} project_wise={OnRejectData.length===0?projectSearch:undefined}  model_clear={ModelClear} close_model={() => (setTimesheetModelOpen(false),setModelClear(ModelClear+1))} />} width={1000} />
+            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
             {/* {OnRejectData.length > 0 && <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => (setTimesheetModelOpen(bln),setModelClear(ModelClear+1))} content={<TimeSheets project_wise_edit={OnRejectData}  model_clear={ModelClear} close_model={() => (setTimesheetModelOpen(false),setModelClear(ModelClear+1),setOnRejectData([]))} />} width={1000} />} */}
         </div>
 
@@ -328,7 +335,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     GetSeverance: state.ExitSeverance.GetSeverance,
-    EmployeeList: state.getOptions.getEmpListDesignation,
+    EmployeeList: state.getOptions.getEmpListDepartment,
     Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
 
 });
