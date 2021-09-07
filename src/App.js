@@ -17,7 +17,9 @@ function App() {
     localStorage.setItem("user_id", JSON.stringify(data.data[0].user_id));
     localStorage.setItem("user_name", JSON.stringify(data.data[0].user_name));
     localStorage.setItem("designation", JSON.stringify(data.data[0].designation));
+    localStorage.setItem("designation_id", JSON.stringify(data.data[0].designation_id));
     localStorage.setItem("department_id", data.data[0].department_id);
+    localStorage.setItem("department", data.data[0].department);
     setAuthTokens(data);
   }
 

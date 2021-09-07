@@ -3,7 +3,6 @@ import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
 import Grid from "@material-ui/core/Grid";
 import './checklists.scss'
-
 import Axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 import moment from "moment"
@@ -11,7 +10,7 @@ import { useDispatch, connect } from "react-redux";
 import {
   getCheckListsNames, insert_check_list_assign, getDaysOfWeek, get_projType_subProjType_by_projId, getFrequencyByCheckListId
 } from "../../actions/CheckListAction";
-import { getEmployeeList, getProjectType, getFrequency, get_projectName_by_Desig } from "../../actions/MasterDropdowns";
+import { getEmployeeList, getProjectType, get_projectName_by_Desig } from "../../actions/MasterDropdowns";
 import ValidationLibrary from "../../helpers/validationfunction";
 import EnhancedTable from "../../component/DynTable/table";
 

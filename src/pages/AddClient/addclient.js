@@ -447,7 +447,6 @@ function AddClient(props) {
                 <div className="AddClientHead">Client Name</div>
                   <Labelbox
                     type="text"
-                    placeholder={"Client Name"}
                     changeData={(data) => checkValidation(data, "client_name")}
                     value={Addclient_Form.client_name.value}
                     error={Addclient_Form.client_name.error}
@@ -463,7 +462,6 @@ function AddClient(props) {
                 <div className="genderDobFlex">
                   <Labelbox
                     type="text"
-                    placeholder={"GST No."}
                     changeData={(data) => checkValidation(data, "gst_no")}
                     value={Addclient_Form.gst_no.value}
                     error={Addclient_Form.gst_no.error}
@@ -475,7 +473,6 @@ function AddClient(props) {
                 <div className="AddClientHead">PAN No.</div>
                 <Labelbox
                   type="text"
-                  placeholder={"PAN No."}
                   changeData={(data) => checkValidation(data, "pan_no")}
                   value={Addclient_Form.pan_no.value}
                   error={Addclient_Form.pan_no.error}
@@ -488,8 +485,6 @@ function AddClient(props) {
                 <div className="AddClientHead">Contact Person 1</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Contact Person 1"}
-                  // dropdown={resumeGetList.qualificationList}
                   changeData={(data) => checkValidation(data, "con_per_1")}
                   value={Addclient_Form.con_per_1.value}
                   error={Addclient_Form.con_per_1.error}
@@ -502,8 +497,6 @@ function AddClient(props) {
                   <div className="genderDobFlex">
                     <Labelbox
                       type="text"
-                      placeholder={"Designation"}
-                      // dropdown={getdata.Designation}
                       changeData={(data) => checkValidation(data, "designation_id_1")}
                       value={Addclient_Form.designation_id_1.value}
                       error={Addclient_Form.designation_id_1.error}
@@ -515,8 +508,6 @@ function AddClient(props) {
                   <div className="AddClientHead">Contact Phone</div>
                   <Labelbox
                     type="text"
-                    placeholder={"Contact Phone"}
-                    // dropdown={resumeGetList.qualificationList}
                     changeData={(data) => checkValidation(data, "con_ph_1")}
                     value={Addclient_Form.con_ph_1.value}
                     error={Addclient_Form.con_ph_1.error}
@@ -530,8 +521,6 @@ function AddClient(props) {
                 <div className="AddClientHead">Email ID</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Email ID"}
-                  // dropdown={resumeGetList.qualificationList}
                   changeData={(data) => checkValidation(data, "email_id_1")}
                   value={Addclient_Form.email_id_1.value}
                   error={Addclient_Form.email_id_1.error}
@@ -543,7 +532,6 @@ function AddClient(props) {
               <div className="AddClientHead">Postal Address</div>
               <Labelbox
                 type="textarea"
-                placeholder={"Postal Address"}
                 changeData={(data) => checkValidation(data, "postal_address")}
                 value={Addclient_Form.postal_address.value}
                 error={Addclient_Form.postal_address.error}
@@ -609,9 +597,7 @@ function AddClient(props) {
                 <div className="AddClientHead">Industry</div>
                 <Labelbox
                   type="select"
-                  placeholder={"Industry"}
                   dropdown={Industry.industryData}
-                  // dropdown={resumeGetList.candidateList}
                   changeData={(data) => checkValidation(data, "industrty")}
                   value={Addclient_Form.industrty.value}
                   error={Addclient_Form.industrty.error}
@@ -622,7 +608,6 @@ function AddClient(props) {
               <div className="AddClientHead">Client Type</div>
               <Labelbox
                 type="select"
-                placeholder={"Client Type"}
                 dropdown={clientName.clientData}
                 changeData={(data) => checkValidation(data, "client_type")}
                 value={Addclient_Form.client_type.value}
@@ -635,8 +620,6 @@ function AddClient(props) {
                 <div className="AddClientHead">Contact Person 2</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Contact Person 2"}
-                  // dropdown={resumeGetList.certificateList}
                   changeData={(data) => checkValidation(data, "cont_per_2")}
                   value={Addclient_Form.cont_per_2.value}
                   error={Addclient_Form.cont_per_2.error}
@@ -649,8 +632,6 @@ function AddClient(props) {
                   <div className="genderDobFlex">
                     <Labelbox
                       type="text"
-                      placeholder={"Designation"}
-                      // dropdown={getdata.Designation}
                       changeData={(data) => checkValidation(data, "designation_id_2")}
                       value={Addclient_Form.designation_id_2.value}
                       error={Addclient_Form.designation_id_2.error}
@@ -662,7 +643,6 @@ function AddClient(props) {
                   <div className="AddClientHead">Contact Phone</div>
                   <Labelbox
                     type="text"
-                    placeholder={"Contact Phone "}
                     changeData={(data) => checkValidation(data, "con_ph_2")}
                     value={Addclient_Form.con_ph_2.value}
                     error={Addclient_Form.con_ph_2.error}
@@ -675,7 +655,6 @@ function AddClient(props) {
                 <div className="AddClientHead">Email ID</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Email ID"}
                   changeData={(data) => checkValidation(data, "emai_id_2")}
                   value={Addclient_Form.emai_id_2.value}
                   error={Addclient_Form.emai_id_2.error}
@@ -687,7 +666,6 @@ function AddClient(props) {
               <div className="AddClientHead">State</div>
               <Labelbox
                 type="select"
-                placeholder={"State"}
                 dropdown={stateList.stateData}
                 changeData={(data) => checkValidation(data, "state")}
                 value={Addclient_Form.state.value}
@@ -700,7 +678,6 @@ function AddClient(props) {
               <div className="AddClientHead">City</div>
               <Labelbox
                 type="select"
-                placeholder={"City"}
                 dropdown={cityList.cityData}
                 changeData={(data) => checkValidation(data, "city")}
                 value={Addclient_Form.city.value}

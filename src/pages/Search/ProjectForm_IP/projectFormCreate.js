@@ -850,7 +850,7 @@ function ProjectFormCreate(props) {
     setSendVariableData([...sendVariableData]);
   };
 
-  console.log(projectform.employeelist.valueById,"projectform.employeelist.value")
+  console.log(projectform.employeelist.valueById, "projectform.employeelist.value")
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -934,7 +934,7 @@ function ProjectFormCreate(props) {
                 <Labelbox type="select"
                   mode={"multiple"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist",employeeList.EmployeeList)}
+                  changeData={(data) => checkValidation(data, "employeelist", employeeList.EmployeeList)}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} /></Grid>
@@ -980,7 +980,7 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.additionalRate.errmsg} /></Grid> </Grid>
               ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
-                  <Grid item xs={6}> <div className="Fieldheading">Base Rate</div>
+                  <Grid item xs={6}> <div className="Fieldheading">{projectform.billable_type.value == 5 ? 'Base / Professional Fee' : 'Base Rate'}</div>
                     <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
@@ -1025,7 +1025,7 @@ function ProjectFormCreate(props) {
                   <Labelbox type="select"
                     mode={"multiple"}
                     dropdown={employeeList.EmployeeList}
-                    changeData={(data) => checkValidation(data, "employeelist",employeeList.EmployeeList)}
+                    changeData={(data) => checkValidation(data, "employeelist", employeeList.EmployeeList)}
                     value={projectform.employeelist.value}
                     error={projectform.employeelist.error}
                     errmsg={projectform.employeelist.errmsg} /></Grid>
@@ -1113,7 +1113,7 @@ function ProjectFormCreate(props) {
                 <Labelbox type="select"
                   mode={"multiple"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist",employeeList.EmployeeList)}
+                  changeData={(data) => checkValidation(data, "employeelist", employeeList.EmployeeList)}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} />

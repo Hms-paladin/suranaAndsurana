@@ -265,21 +265,21 @@ function Projectsearch(props) {
 
 
         var rowdataListobj = {};
-        if (data.project_type_id === 1&&JSON.parse(localStorage.getItem("token")).department==='IP') {
+        if (data.project_type_id === 1&&localStorage.getItem("department_id")==='2') {
           rowdataListobj["ProjectName"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["subprojectype"] = data.sub_project_type;
           rowdataListobj["processtype"] = data.process;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
-        } else if (data.project_type_id === 6&&JSON.parse(localStorage.getItem("token")).department==='LITIGATION') {
+        } else if (data.project_type_id === 6&&localStorage.getItem("department_id")==='1') {
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["DRA"] = data.HR_name;
           rowdataListobj["DDRA"] = data.councel_name;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
-        } else if(JSON.parse(localStorage.getItem("token")).department==='RE & CORPORATE'){
+        } else if(localStorage.getItem("department_id")==='3'||localStorage.getItem("department_id")==='9'||localStorage.getItem("department_id")==='8'||localStorage.getItem("department_id")==='4'||localStorage.getItem("department_id")==='7'){
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["hodAttorney"] = data.councel_name;
@@ -290,7 +290,7 @@ function Projectsearch(props) {
         ipProjectDataList.push(rowdataListobj);
       });
 
-      if((data.project_type==='IP Projects'&&JSON.parse(localStorage.getItem("token")).department==='IP')||(data.project_type==='Corporate Compliance Projects'&&JSON.parse(localStorage.getItem("token")).department==='RE & CORPORATE')||(data.project_type==='Litigation Projects'&&JSON.parse(localStorage.getItem("token")).department==='LITIGATION')){
+      if((data.project_type_id===1&&localStorage.getItem("department_id")==='2')||(data.project_type_id===2&&(localStorage.getItem("department_id")==='3'||localStorage.getItem("department_id")==='9'||localStorage.getItem("department_id")==='8'||localStorage.getItem("department_id")==='4'||localStorage.getItem("department_id")==='7'))||(data.project_type_id===6&&localStorage.getItem("department_id")==='1')){
       multipleTab.push(
         <Panel
           header={`${data.project_type} (${data.project_details.length})`}

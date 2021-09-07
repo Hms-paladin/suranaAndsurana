@@ -77,9 +77,12 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";
 import {
     InsertProjectVariableRate, getProjectVariableRate, deleteVariableRate,
-    UpdateVariableRate, Update_Variable_Rate, InsertVariableRate
+    UpdateVariableRate, Update_Variable_Rate, InsertVariableRate, UpdateCheckListNoTaskLink
 } from "../../actions/VariableRateMaster"
 import { Collapse } from "antd";
+import { Checkbox } from 'antd'
+
+
 const { TabPane } = Tabs;
 
 function ProjectIp(props) {
@@ -111,6 +114,8 @@ function ProjectIp(props) {
     const [applicableamount, setApplicableamount] = useState({});
 
     const [AmountChange, setAmountChange] = useState(false)
+    const [TaskItemModel, setTaskItemModel] = useState(false);
+    const [TaskItemModelID, setTaskItemModelID] = useState(0);
     const [multiplePanel, setMultiplePanel] = useState([]);
     function callback(key) {
         console.log(key);
@@ -282,17 +287,24 @@ function ProjectIp(props) {
 
             multipleTab.push(
                 <Panel
-                    header={`${data.check_list}`}
+                    header={`${data.check_list} ( ${data.check_list_type} )`}
                     key={index + 1}
                 >
                     <div>
+                        <div className="taskitem_heading">
+                            <div style={{ whiteSpace: 'nowrap' }} >Task Item</div>
+                            <div >status</div>
+                            <div >Assigned To</div>
+                            <div >Task End Date</div>
+                        </div>
                         {data.details.map((data1, index) => {
                             return (<>
                                 <div className="taskitem_div">
-                                    <div style={{ whiteSpace: 'nowrap' }} >{data1.task}</div>
-                                    <div className="status_Btn">{data1.status}</div>
+                                    <div >{data1.task}</div>
+                                    <div >{(data.check_list_type === "No Task Linked" && data1.status === "In Progress") ? <Checkbox onClick={(e) => onTaskItemClick(e, data1.check_list_details_id)} /> : <div className="status_Btn">{data1.status}</div>} </div>
+                                    <div >{data1.name}</div>
+                                    <div >{data1.end_date}</div>
                                 </div>
-                                {/* <hr /> */}
                             </>
                             )
                         })}
@@ -306,38 +318,55 @@ function ProjectIp(props) {
         setMultiplePanel(multipleTab);
     }, [props.getCheckListsAssigned])
 
-    console.log(props.ProjectDetails, "props.ProjectDetails")
+    const onTaskItemClick = (e, data) => {
 
-    function onSubmit() {
-        var mainvalue = {};
-        var targetkeys = Object.keys(Trade_Mark);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                Trade_Mark[targetkeys[i]].value,
-                Trade_Mark[targetkeys[i]].validation
-            );
-            Trade_Mark[targetkeys[i]].error = !errorcheck.state;
-            Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
-        }
-        var filtererr = targetkeys.filter(
-            (obj) => Trade_Mark[obj].error == true
-        );
-        console.log(filtererr.length);
-        if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
-        } else {
-            // setResumeFrom({ error: false });
+        setTaskItemModel(true)
+        setTaskItemModelID(data)
+    }
 
-            dispatch(InesertResume(Trade_Mark)).then(() => {
-                handleCancel()
-            })
-        }
+    const onTaskItemComplete = async () => {
+        await dispatch(UpdateCheckListNoTaskLink(TaskItemModelID, rowId))
+        setTaskItemModel(false)
+    }
 
-        setResumeFrom(prevState => ({
-            ...prevState
-        }));
-    };
+    const onTaskItemCancel = async () => {
+        // console.log(TaskItemModelID[0],"TaskItemModelID")
+        // TaskItemModelID[0].target.checked = false
+        setTaskItemModel(false)
+    }
+
+    // console.log(props.ProjectDetails, "props.ProjectDetails")
+
+    // function onSubmit() {
+    //     var mainvalue = {};
+    //     var targetkeys = Object.keys(Trade_Mark);
+    //     for (var i in targetkeys) {
+    //         var errorcheck = ValidationLibrary.checkValidation(
+    //             Trade_Mark[targetkeys[i]].value,
+    //             Trade_Mark[targetkeys[i]].validation
+    //         );
+    //         Trade_Mark[targetkeys[i]].error = !errorcheck.state;
+    //         Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
+    //         mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
+    //     }
+    //     var filtererr = targetkeys.filter(
+    //         (obj) => Trade_Mark[obj].error == true
+    //     );
+    //     console.log(filtererr.length);
+    //     if (filtererr.length > 0) {
+    //         // setResumeFrom({ error: true });
+    //     } else {
+    //         // setResumeFrom({ error: false });
+
+    //         dispatch(InesertResume(Trade_Mark)).then(() => {
+    //             handleCancel()
+    //         })
+    //     }
+
+    //     setResumeFrom(prevState => ({
+    //         ...prevState
+    //     }));
+    // };
 
     const handleCancel = () => {
         let ResumeFrom_key = [
@@ -352,45 +381,45 @@ function ProjectIp(props) {
         }));
     }
 
-    function checkValidation(data, key, multipleId) {
+    // function checkValidation(data, key, multipleId) {
 
-        var errorcheck = ValidationLibrary.checkValidation(
-            data,
-            Trade_Mark[key].validation
-        );
-        let dynObj = {
-            value: data,
-            error: !errorcheck.state,
-            errmsg: errorcheck.msg,
-            validation: Trade_Mark[key].validation
-        }
+    //     var errorcheck = ValidationLibrary.checkValidation(
+    //         data,
+    //         Trade_Mark[key].validation
+    //     );
+    //     let dynObj = {
+    //         value: data,
+    //         error: !errorcheck.state,
+    //         errmsg: errorcheck.msg,
+    //         validation: Trade_Mark[key].validation
+    //     }
 
-        // only for multi select (start)
+    //     // only for multi select (start)
 
-        let multipleIdList = []
+    //     let multipleIdList = []
 
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
+    //     if (multipleId) {
+    //         multipleId.map((item) => {
+    //             for (let i = 0; i < data.length; i++) {
+    //                 if (data[i] === item.value) {
+    //                     multipleIdList.push(item.id)
+    //                 }
+    //             }
+    //         })
+    //         dynObj.valueById = multipleIdList.toString()
+    //     }
+    //     // (end)
 
-        setResumeFrom(prevState => ({
-            ...prevState,
-            [key]: dynObj,
-        }));
+    //     setResumeFrom(prevState => ({
+    //         ...prevState,
+    //         [key]: dynObj,
+    //     }));
 
-    };
+    // };
 
     const modelContent = () => {
         return (
-            <ProjectTaskModel />
+            <ProjectTaskModel model_close={() => setModelOpen(false)} />
         )
     }
 
@@ -509,14 +538,14 @@ function ProjectIp(props) {
 
     const onchangeAmount = (data, key) => {
         setAmountChange(true)
-     
+
         // if (key && data) {
         setDisableCondition(false)
         setPrpjectSearchCreate((prevState) => ({
             ...prevState,
             [key]: data,
         }));
-      
+
 
         // }
     };
@@ -546,11 +575,11 @@ function ProjectIp(props) {
         let sendprojVariableTableData = [];
         let tableData = [];
         const TabLen = props.getProjectVariableRate.length;
-        
+
         props.getProjectVariableRate.length > 0 && props.getProjectVariableRate.map((data, index) => {
             // setApplicableamount({});
             tableData.push(data)
-            
+
             if (disableCondition) {
                 applicableamount["amt" + index] = data.amount;
             }
@@ -598,10 +627,10 @@ function ProjectIp(props) {
         if (props.lenghtData !== 0) {
             let searchVariableTableData = [];
             setNotfoundmodel(false);
-            
+
             props.searchVariableRate.map((data, index) => {
                 if (disableCondition) {
-                   
+
                     projectSearchCreate['amountSearch' + index] = data.Amount;
 
                 }
@@ -724,6 +753,7 @@ function ProjectIp(props) {
                     }
                     width={400}
                 />
+
             </div>
         );
     };
@@ -830,6 +860,26 @@ function ProjectIp(props) {
                             </div>
 
                         } width={1000} />
+                    <DynModel
+                        modelTitle={"TaskItem Completion"}
+                        handleChangeModel={TaskItemModel}
+                        handleChangeCloseModel={(bln) => setTaskItemModel(bln)}
+                        content={
+                            <div className="successModel">
+                                <div>
+                                    {" "}
+                                    <label className="notfound_label">
+                                        Do You Want Complete This Item ?
+                                    </label>
+                                </div>
+                                <div className="customNotFoundbtn">
+                                    <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onTaskItemComplete} />
+                                    <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onTaskItemCancel} />
+                                </div>
+                            </div>
+                        }
+                        width={400}
+                    />
 
                     {/* TradeMark */}
                     {stageMonitor && <StageMonitor cancel_btn={(data) => projectTaskModel(data)} />}

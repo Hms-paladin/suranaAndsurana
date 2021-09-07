@@ -259,12 +259,12 @@ function DashboardNew(props) {
 
 
       // if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
-      if(localStorage.getItem("designation")==='"HoD"'){
+      if(localStorage.getItem("designation_id")==='6'){
       menulist.current[7].menu_rights=true;
       }
 
       // if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
-        if((JSON.parse(localStorage.getItem("token")).department==="Super Admin")||(JSON.parse(localStorage.getItem("token")).department==="HR")||(JSON.parse(localStorage.getItem("token")).department==="IT")){  
+        if((localStorage.getItem("department_id")==='6')||(localStorage.getItem("department_id")==='11')){  
         
         menulist.current[8].menu_rights=true;
       }

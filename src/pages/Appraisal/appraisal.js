@@ -148,7 +148,7 @@ function Appraisal(props) {
         },
     })
     const [empDetail, setEmpDetail] = useState({})
-    const test = localStorage.getItem("designation").toString()
+    // const test = localStorage.getItem("designation").toString()
 
     const header = [
         { label: 'Area of Assessment' },
@@ -179,9 +179,9 @@ function Appraisal(props) {
             current_responsibilites_remarks: { values: "" }
         })
 
-        let designation = test.substring(1, 5 - 1)
+        // let designation = test.substring(1, 5 - 1)
         if (props.location.state?.appraisalData?.task === "Employee Appraisal") {
-            if (designation === "HoD") {
+            if (Number(localStorage.getItem("designation_id") )=== 6) {
                 setRowID(1)
             } else {
                 setRowID(2)

@@ -157,6 +157,7 @@ function ProjectTaskModel(props) {
 
       dispatch(inserTask(data)).then((response) => {
         handleCancel();
+        props.model_close&&props.model_close()
       })
 
     }

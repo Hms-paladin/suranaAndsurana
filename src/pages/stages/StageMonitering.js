@@ -7,7 +7,7 @@ import EnhancedTable from '../../component/DynTable/table';
 import Calender from "../../images/calender.svg";
 import Like from "../../images/like.svg";
 import Unlike from "../../images/unlike.svg";
-import More from "../../images/more.svg";
+import More from "../../images/Check.svg";
 import { getStageMonitor, insertStageMaonitor } from "../../actions/StageMonotorrAction";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import Labelbox from '../../helpers/labelbox/labelbox';

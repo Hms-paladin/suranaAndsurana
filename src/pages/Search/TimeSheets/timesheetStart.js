@@ -14,10 +14,13 @@ import { useParams } from "react-router-dom";
 import { getProjectTimeSheetList, getProjectWise_TimeSheet, EditProjectwiseTimesheet } from "../../../actions/TimeSheetAction";
 import axios from "axios";
 import { notification } from "antd";
-import { get_projectName_by_Desig, getSubactivity, getEmpListDepartment } from "../../../actions/MasterDropdowns";
+import { get_projectName_by_Desig, getSubactivity } from "../../../actions/MasterDropdowns";
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { getTaskTimeSheet } from "../../../actions/projectTaskAction";
 import { Checkbox } from 'antd'
+import Order from "../../../images/order.png";
+import AddHearing from '../../task/AddHearing';
+import DynModel from '../../../component/Model/model';
 
 function TimeSheetStartModel(props) {
     const [changeStop, setChangeStop] = useState(true)
@@ -29,6 +32,8 @@ function TimeSheetStartModel(props) {
     const [projectDetails, setProjectDetails] = useState([{}])
     const [projectName, setProjectName] = useState({});
     const [SaveBtnProcess, setSaveBtnProcess] = useState(false);
+    const [AddHearing_Data, setAddHearing_Data] = useState([]);
+
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: new Date("12-30-2017 " + moment().format('HH:mm:ss')),
@@ -145,11 +150,10 @@ function TimeSheetStartModel(props) {
         dispatch(getActivity());
         dispatch(getTagList());
         dispatch(getPriorityList());
-        dispatch(getEmpListDepartment());
         dispatch(getLocation());
         dispatch(get_projectName_by_Desig());
 
-        !props.project_wise_reject && dispatch(getProjectTimeSheetList(rowId));
+        !props.project_wise_reject && !props.project_wise_edit && !props.project_wise && dispatch(getProjectTimeSheetList(rowId));
 
     }, []);
 
@@ -177,11 +181,17 @@ function TimeSheetStartModel(props) {
 
     useEffect(() => {
         let activityTypeData = []
-        props.activitysList.map((data) =>
+        props.activitysList.map((data) => {
+            if (timeSheetForm.projectname.value === "" && data.activity_id === 6) {
+                return
+            }
             activityTypeData.push({
                 value: data.activity,
                 id: data.activity_id
             })
+
+        }
+
         )
         setactivityList({ activityTypeData })
 
@@ -218,10 +228,10 @@ function TimeSheetStartModel(props) {
         );
         setProjectName({ ProjectName });
 
-    }, [props.activitysList, props.getSubactivity, props.prioritysList, props.tagsList, props.locationList, props.ProjectName])
+    }, [timeSheetForm.projectname.value, props.activitysList, props.getSubactivity, props.prioritysList, props.tagsList, props.locationList, props.ProjectName])
 
     const dateFormat = (data) => {
-       return moment(data, "HH:mm:ss").format("HH:mm:ss")
+        return moment(data, "HH:mm:ss").format("HH:mm:ss")
     }
     const submitStartTimeSheet = async () => {
 
@@ -242,8 +252,12 @@ function TimeSheetStartModel(props) {
         );
 
         if (filtererr.length > 0) {
+        } else if (timeSheetForm.activity.value === 6 && AddHearing_Data.length === 0) {
+            notification.success({
+                message: "Please Add Hearing Details",
+            });
         } else {
-            let startTime = dateFormat(timeSheetForm.startTime.value&& timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
+            let startTime = dateFormat(timeSheetForm.startTime.value && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
 
             var data = {
                 "project_id": props.approve_timesheet && props.approve_timesheet != '' && props.approve_timesheet.project_id || rowId || timeSheetForm.projectname.value != '' && timeSheetForm.projectname.value || 0,
@@ -267,7 +281,7 @@ function TimeSheetStartModel(props) {
             }
             var stopData;
             if (SaveBtnProcess) {
-                let end_time = dateFormat(timeSheetForm.endTime.value&&timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
+                let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
                 stopData = {
                     "emp_id": localStorage.getItem("empId"),
                     "timesheet_id": 0,
@@ -281,7 +295,7 @@ function TimeSheetStartModel(props) {
                 stopData = undefined;
             }
 
-            await dispatch(inserTask(data, timesheetData, stopData, props.project_wise))
+            await dispatch(inserTask(data, timesheetData, stopData, props.project_wise, AddHearing_Data))
 
             //  !SaveBtnProcess && setChangeStop(false)
             if (!props.project_wise) {
@@ -299,7 +313,7 @@ function TimeSheetStartModel(props) {
 
     const submitStopTimesheet = async () => {
 
-        let end_time = dateFormat(timeSheetForm.endTime.value&&timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
+        let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "timesheet_id": timeSheetForm.timesheet_id.value,
@@ -337,8 +351,8 @@ function TimeSheetStartModel(props) {
         }
     }
     const onEditTimesheet = async () => {
-        let startTime = dateFormat(timeSheetForm.startTime.value&& timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
-        let end_time = dateFormat(timeSheetForm.endTime.value&& timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
+        let startTime = dateFormat(timeSheetForm.startTime.value && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
+        let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
 
         var timesheetData = {
             "timesheet_id": props.project_wise_edit && props.project_wise_edit[0].timesheet_id,
@@ -385,7 +399,7 @@ function TimeSheetStartModel(props) {
     }
 
     useEffect(() => {
-        if (props.project_wise && props.insertTask && props.insertTask.length > 0 && !SaveBtnProcess && !props.project_wise_reject) {
+        if (props.project_wise && props.insertTask && props.insertTask.length > 0 && !SaveBtnProcess && !props.project_wise && !props.project_wise_reject) {
             dispatch(getTaskTimeSheet(props.insertTask[0].task_id));
         }
     }, [props.insertTask])
@@ -419,8 +433,11 @@ function TimeSheetStartModel(props) {
                 data = props.project_wise_reject[0]
             } else if (props.project_wise_edit) {
                 data = props.project_wise_edit[0]
+            } else if (props.timeSheetProject) {
+                response = props.timeSheetProject
+                data = response[response.length - 1]
             }
-
+           
             if (props.project_wise_reject || props.project_wise_edit || (data && (!data.end_date && !data.end_time))) {
 
                 if (data.project_id && data.project_id != 0) {
@@ -435,14 +452,14 @@ function TimeSheetStartModel(props) {
                 timeSheetForm.fromDate.value = data.start_date
                 // timeSheetForm.description.value=data.start_date
                 if (props.project_wise_edit) {
-                    timeSheetForm.endTime.value && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
+                    data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
                     data.end_date && (timeSheetForm.fromDate.value = data.end_date)
                 }
                 settimeSheetForm((prevState) => ({
                     ...prevState,
                 }));
 
-                if (!props.project_wise_edit) {
+                if (!data.end_date && !data.end_time) {
                     setChangeStop(false)
                 }
             }
@@ -452,8 +469,13 @@ function TimeSheetStartModel(props) {
 
     }, [props.timeSheetProject, props.getTaskTimeSheet, props.project_wise_reject, props.project_wise_edit])
 
-    console.log(props.project_wise_edit, props.project_wise_reject, props.project_wise, "rrrrrrrrrrrrrrrrrrrrr")
-    // console.log(timeSheetForm.endTime.value, "rrrrrrrrrrrrrrrrrrrrr")
+    const [taskData, setTaskData] = useState([])
+    const [hearing, setHearing] = useState(false)
+    function fntaskHearingDetails() {
+        setTaskData([timeSheetForm, props.ProjectDetails]);
+        setHearing(true)
+    }
+
     return (
         <div className="timeSheetStartContainer">
             {changeStop ?
@@ -610,6 +632,7 @@ function TimeSheetStartModel(props) {
                     </div>
                     <div className="project_wise_div">
                         <div className="project_wise_checkbox"> {SaveBtnProcess && <><Checkbox onClick={(data) => checkValidation(data, "task_status")} />&nbsp;<label>Task Completed</label></>}</div>
+                        <div className="project_wise_checkbox"> {timeSheetForm.activity.value === 6 && <><img src={Order} style={{ marginRight: '5px', width: '25px', cursor: 'pointer' }} onClick={() => fntaskHearingDetails()} />&nbsp;<label>{props.project_wise_edit ? 'Edit' : 'Add'} Hearing</label></>}</div>
                         <div className="project_wise_save"> <CustomButton btnName={"CANCEL"} onBtnClick={() => (handleCancel(), props.close_model && props.close_model(false))} />
                             {!props.project_wise_edit && <CustomButton btnName={`${!SaveBtnProcess ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" onBtnClick={submitStartTimeSheet} />}
                             {props.project_wise_edit && <CustomButton btnName={'UPDATE'} btnCustomColor="customPrimary" onBtnClick={onEditTimesheet} />}
@@ -695,7 +718,7 @@ function TimeSheetStartModel(props) {
 
                         <Grid item xs={3}>
                             {/* Start Time */}
-                            {timeSheetForm.startTime.value}
+                            { moment(timeSheetForm.startTime.value).format('hh:mm:ss')}
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
@@ -735,7 +758,7 @@ function TimeSheetStartModel(props) {
 
                 </div>
             }
-
+            <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)} content={<AddHearing project_wise={taskData} AddHearing_output={(data) => setAddHearing_Data([data])} onhearingclose={() => setHearing(false)} />} width={1000} />
         </div>
 
     )
@@ -747,7 +770,6 @@ const mapStateToProps = (state) =>
     activitysList: state.projectTasksReducer.getActivityList || [],
     prioritysList: state.projectTasksReducer.prioritysList || [],
     tagsList: state.projectTasksReducer.tagsList || [],
-    assignToList: state.getOptions.getEmpListDepartment || [],
     locationList: state.projectTasksReducer.locationLists || [],
     timeSheetProject: state.getTaskList.getTimeSheetProject || [],
     ProjectName: state.getOptions.get_projectName_by_Desig || [],

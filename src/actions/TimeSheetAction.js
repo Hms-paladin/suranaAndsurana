@@ -75,11 +75,11 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
             .then((response) => {
                 if (response.data.status === 1) {
                     dispatch({ type: PROJECTWISE_TIME_SHEET_SEARCH, payload: response.data.data || [] })
-                    if (response.data.data.length === 0) {
-                        notification.error({
-                            message: "No Data Found",
-                        });
-                    }
+                    // if (response.data.data.length === 0) {
+                    //     notification.error({
+                    //         message: "No Data Found",
+                    //     });
+                    // }
                 }
             })
 

@@ -59,7 +59,8 @@ export const getPriorityList = () => async dispatch => {
     }
 }
 
-export const inserTask = (params, timeSheetParams, stopData, project_wise) => async dispatch => {
+export const inserTask = (params, timeSheetParams, stopData, project_wise, AddHearing_Data) => async dispatch => {
+   
     try {
         await axios({
             method: 'POST',
@@ -75,7 +76,11 @@ export const inserTask = (params, timeSheetParams, stopData, project_wise) => as
                 if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
                     let tid = response.data.data[response.data.data.length - 1].task_id;
                     timeSheetParams.task_id = tid;
-                    await dispatch(insertTimeSheet(timeSheetParams, stopData, project_wise))
+                    if (AddHearing_Data&&AddHearing_Data.length>0&&params.activiity_id === 6) {
+                        AddHearing_Data[0].activity_id = params.activiity_id;
+                        AddHearing_Data[0].task_id =tid;
+                    }
+                    await dispatch(insertTimeSheet(timeSheetParams, stopData, project_wise, AddHearing_Data))
                 }
 
                 return Promise.resolve();
@@ -129,7 +134,8 @@ export const insertAdhocTask = (params) => async dispatch => {
     }
 }
 
-export const insertTimeSheet = (params, stopdetails, project_wise) => async dispatch => {
+export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Data) => async dispatch => {
+
     try {
         await axios({
             method: 'POST',
@@ -137,6 +143,11 @@ export const insertTimeSheet = (params, stopdetails, project_wise) => async disp
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
+             
+                if (AddHearing_Data&&AddHearing_Data.length>0&&AddHearing_Data[0].activity_id === 6) {
+                    dispatch(InsertHearingDets(AddHearing_Data[0]))
+                }
+
                 if (!stopdetails) {
                     notification.success({
                         message: "Time Sheet Started Successfully",
@@ -145,11 +156,10 @@ export const insertTimeSheet = (params, stopdetails, project_wise) => async disp
 
                     return Promise.resolve();
                 } else {
-
                     if (response.data.data && response.data.data.length > 0 && response.data.data[0]) {
                         let tid = response.data.data[0].timesheet_id;
                         stopdetails.timesheet_id = tid;
-
+                       
                         axios({
                             method: 'POST',
                             url: apiurl + 'insert_stop_time',
@@ -166,6 +176,7 @@ export const insertTimeSheet = (params, stopdetails, project_wise) => async disp
                                         message: "Time Sheet Saved and Task Completed Successfully",
                                     });
                                 }
+
                                 if (project_wise) {
                                     dispatch(getProjectWise_TimeSheet(project_wise))
                                 }
@@ -530,11 +541,11 @@ export const getHearingDetails = (data) => async dispatch => {
     } catch (err) {
 
     }
-}//GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
+}
 
 export const InsertHearingDets = (data) => async dispatch => {
     try {
-        axios({
+        await axios({
             method: 'POST',
             url: apiurl + 'insert_hearing',
             data: data
