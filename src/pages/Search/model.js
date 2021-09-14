@@ -177,7 +177,8 @@ function DynModel(props) {
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data.designation }))
+        Designation.push({ value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{'  - '+data.designation}</div>,
+        id: data.designation_id }))
 
       setdesignationdata({ Designation })
 

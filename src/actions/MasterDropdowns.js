@@ -11,6 +11,7 @@ import { GET_TALENTS } from "../utils/Constants.js";
 import { GET_QUALIFICATION } from '../utils/Constants.js'
 import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants'
 import {
+  GET_PROJECT_TYPE_ALL,
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
   GET_SPECIAL_INTEREST,
@@ -59,7 +60,8 @@ import {
   GET_FILING_TYPE_IPAB,
   GET_AREA_DEVELOPMENT,
   GET_DEVELOPMENT,
-  GET_PROJECT_NAME_BY_DESIG
+  GET_PROJECT_NAME_BY_DESIG,
+  GET_SUPERVISOR_BY_DEPT
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -147,6 +149,19 @@ export const getInterviewers = () => async (dispatch) => {
   return dispatch({ type: GET_INTERVIEWERS_LIST, payload: response.data.data });
 };
 //HR-->ToDoList
+
+export const getSupervisorByDepartment = (id) => async (dispatch) => {
+ 
+  const response = await axios({
+    method: "post",
+    url: apiurl + "/get_supervisor_by_departmentId",
+    data: {
+      department_id: id,
+    },
+  });
+  return dispatch({ type: GET_SUPERVISOR_BY_DEPT, payload: response.data.data });
+};
+
 export const getInterviewStatus = (id) => async (dispatch) => {
   //const response = await axios.get(apiurl + "/get_Interview_Status");
   const response = await axios({
@@ -185,8 +200,19 @@ export const getClient = (id) => async (dispatch) => {
   return dispatch({ type: GET_CLIENT, payload: response.data.data });
 };
 
-export const getProjectType = () => async (dispatch) => {
+export const getProjectTypeAll = () => async (dispatch) => {
   const response = await axios.get(apiurl + "get_project_type");
+  return dispatch({ type: GET_PROJECT_TYPE_ALL, payload: response.data.data });
+};
+
+export const getProjectType = () => async (dispatch) => {
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_project_type_department",
+    data: {
+      emp_id: localStorage.getItem("empId"),
+    },
+  });
   return dispatch({ type: GET_PROJECT_TYPE, payload: response.data.data });
 };
 

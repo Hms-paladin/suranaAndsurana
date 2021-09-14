@@ -51,7 +51,10 @@ import {
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
   GET_CITY_BY_ID,
-  GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
+  GET_AREA_DEVELOPMENT,
+  GET_DEVELOPMENT,
+  GET_PROJECT_TYPE_ALL,
+  GET_SUPERVISOR_BY_DEPT
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -112,8 +115,10 @@ const initalState = {
   getFrequency: [],
   GetAreaDevelopment: [],
   GetDevelopment: [],
-  getEmployeeList:[],
-  get_projectName_by_Desig:[]
+  getEmployeeList: [],
+  get_projectName_by_Desig: [],
+  getProjectTypeAll: [],
+  getSupervisorByDepartment: []
 };
 
 export default function (state = initalState, action) {
@@ -167,6 +172,8 @@ export default function (state = initalState, action) {
       return { ...state, getClient: payload };
     case GET_PROJECT_TYPE:
       return { ...state, getProjectType: payload };
+    case GET_PROJECT_TYPE_ALL:
+      return { ...state, getProjectTypeAll: payload };
     case GET_PROJECT_NAME:
       return { ...state, getProjectName: payload };
     case GET_BILLABLE_TYPE:
@@ -235,8 +242,10 @@ export default function (state = initalState, action) {
       return { ...state, GetDevelopment: payload };
     case GET_EMP_LIST_DEPARTMENT:
       return { ...state, getEmpListDepartment: payload };
-      case GET_PROJECT_NAME_BY_DESIG:
-        return { ...state, get_projectName_by_Desig: payload }; 
+    case GET_PROJECT_NAME_BY_DESIG:
+      return { ...state, get_projectName_by_Desig: payload };
+    case GET_SUPERVISOR_BY_DEPT:
+      return { ...state, getSupervisorByDepartment: payload };
     default:
       return state;
   }

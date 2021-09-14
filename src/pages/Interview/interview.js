@@ -163,8 +163,9 @@ function InerviewScreen(props) {
       dispatch(getInterviewStatus(response.data.data[0].round));
       setInterviewStatus(response.data.data[0].round)
     });
-  }, [props.getOnlineTestDetails, props.getSelectedCandidates, props.getQuestions, props.GetCandiateDetails]);
+  }, [props.getOnlineTestDetails, props.getSelectedCandidates,props.interviewer_id, props.getQuestions, props.GetCandiateDetails]);
 
+  console.log(props.getOnlineTestDetails, props.getSelectedCandidates,props.interviewer_id, props.getQuestions, props.GetCandiateDetails,"gggggggggggggggg")
   function ViewCandiate(id) {
     setdata_id(
       cand_data.find((data) => {

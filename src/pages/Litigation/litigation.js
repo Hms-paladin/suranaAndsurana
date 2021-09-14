@@ -18,6 +18,8 @@ import {
   getTradeMarkStatus,
 } from "../../actions/MasterDropdowns";
 import { GetLitigation, InsertLitigation } from "../../actions/Litigation";
+import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
+
 
 const { TabPane } = Tabs;
 
@@ -33,6 +35,8 @@ const Litigation = (props) => {
   const [LitigationCaseDetails, setLitigationCaseDetails] = useState([]);
   const [LitigationCase, setLitigationCase] = useState();
   const [confirmmodel, setConfirmModel] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false)
+
   const [Litigation_Form, setLitigationForm] = useState({
     internalcaseno: {
       value: "",
@@ -104,7 +108,7 @@ const Litigation = (props) => {
     dispatch(getCaseType());
   }, []);
   useEffect(() => {
-   
+
     if (props.id_Props && props.id_Props.project_id) {
       console.log([props.id_Props].length, "props.id_Props")
       handleCancel();
@@ -144,17 +148,22 @@ const Litigation = (props) => {
                   <div className="mailFields">{val.interim_application_date}</div>
                   <div className="addressFields">{val.interim_details}</div>
                 </>
-              ) : (
+              ) : data.liti_councel === "Adjournment" ? (<>
+                <div className="adjournFields">{val.adjournment_taken_by}</div>
+                <div className="adjournFields">{val.reason}</div>
+              </>) : (
                 <>
                   <div className="nameFields">{val.name}</div>
                   <div className="phoneFields">{val.phone_no}</div>
                   <div className="mailFields">{val.email_id}</div>
                   <div className="addressFields">{val.address}</div>
                 </>
-              )}
-            </div>
+              )
+              }
+            </div >
           );
         });
+       
         return (
           <>
             {rowDataList && props.getLitigationDetails[0].case.length > 0 && (
@@ -170,10 +179,16 @@ const Litigation = (props) => {
                 </div>
                 <div className="ourCounselFieldsHeading">
                   {" "}
-                  <div className="nameFields">Name</div>
-                  <div className="phoneFields">Phone No</div>
-                  <div className="mailFields">Email</div>
-                  <div className="addressFields">Address</div>
+                  {data.liti_councel === "Adjournment" ? (
+                    <> <div className="adjournFields" style={{ whiteSpace: 'nowrap' }}>Adjournment Taken By</div>
+                      <div className="adjournFields">Reason</div></>
+                  ) : (<>
+                    <div className="nameFields">Name</div>
+                    <div className="phoneFields">Phone No</div>
+                    <div className="mailFields">Email</div>
+                    <div className="addressFields">Address</div></>
+                  )}
+
                 </div>
                 <div >{rowDataList}</div>
               </div>
@@ -220,8 +235,7 @@ const Litigation = (props) => {
       // _________________________
       Litigation_Form["ddra"].value = MultipleCouncelValue || "";
       Litigation_Form["ddra"].valueById = caseDetails.responsible_attorney;
-      // TicketCreation.language.value = languageValue;
-      // TicketCreation.language.valueById = props.TicketTemplate[0]?.language_id;
+
       // __________________________________________________
       caseDetails.next_hearing_date && caseDetails.next_hearing_date != "0000-00-00" && (Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date);
       caseDetails.due_date && caseDetails.due_date != "0000-00-00" && (Litigation_Form["duedate"].value = caseDetails.due_date);
@@ -290,7 +304,7 @@ const Litigation = (props) => {
       // setResumeFrom({ error: false });
 
       dispatch(InsertLitigation(Litigation_Form, IdDetails))
-      
+
     }
     setConfirmModel(false)
     setLitigationForm((prevState) => ({
@@ -332,9 +346,9 @@ const Litigation = (props) => {
       validation: Litigation_Form[key].validation,
     };
 
-    // if (data && key === "hearingdate") {
-
-    // }
+    if (data && key === "hearingdate") {
+      setModelOpen(true)
+    }
 
     // only for multi select (start)
 
@@ -526,6 +540,7 @@ const Litigation = (props) => {
         }
         width={500}
       />
+         <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={  <ProjectTaskModel model_close={() => setModelOpen(false)} />} width={800} />
     </div>
   );
 };

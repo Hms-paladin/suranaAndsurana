@@ -66,8 +66,9 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
     } if (data.to_date.value) {
         dataObj["end_date"] = data.to_date.value
     }
+
     try {
-      await axios({
+        await axios({
             method: 'POST',
             url: apiurl + 'get_project_wise_timesheet_search',
             data: dataObj
@@ -91,19 +92,23 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
 }
 
 export const getDayReport_TimeSheet = (data) => async dispatch => {
-    let dataObj = {}
-    if (data.emp_name?.value) {
-        dataObj["emp_id"] = data?.emp_name?.value
-    }
-    if (data.curr_date?.value) {
-        dataObj["cur_date"] = data?.curr_date?.value
-    }
+    // let dataObj = {}
+    // if (data.emp_name?.value) {
+    //     dataObj["emp_id"] = data?.emp_name?.value
+    // }
+    // if (data.curr_date?.value) {
+    //     dataObj["cur_date"] = data?.curr_date?.value
+    // }
 
     try {
         axios({
             method: 'POST',
-            url: apiurl + 'get_dashboard_day_report',
-            data: dataObj
+            // url: apiurl + 'get_dashboard_day_report',
+            url: apiurl + 'get_day_report',
+            data: {
+                "start_date": data.from_date.value,
+                "end_date": data.to_date.value,
+            }
         })
             .then((response) => {
 
@@ -174,7 +179,7 @@ export const update_submit_timesheet = (data) => async dispatch => {
 
     if (updatelist.length > 0) {
         try {
-            axios({
+            await axios({
                 method: 'PUT',
                 url: apiurl + 'update_submit_timesheet',
                 data: {
@@ -196,10 +201,10 @@ export const update_submit_timesheet = (data) => async dispatch => {
     }
 }
 
-export const EditProjectwiseTimesheet = (data,project_wise) => async dispatch => {
+export const EditProjectwiseTimesheet = (data, project_wise) => async dispatch => {
 
     try {
-      await axios({
+        await axios({
             method: 'POST',
             url: apiurl + 'update_project_timesheet',
             data: data
@@ -212,6 +217,32 @@ export const EditProjectwiseTimesheet = (data,project_wise) => async dispatch =>
                     dispatch(getProjectWise_TimeSheet(project_wise))
                     return Promise.resolve();
                 }
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const insert_day_report_reassign = (data) => async dispatch => {
+    try {
+        await axios({
+            method: 'POST',
+            url: apiurl + 'day_report_reassign',
+            data: {
+                "assignee_id": data.emp_name.value,
+                "task_id": data.select_task_id.value || "0",
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Employee ReAssigned Successfully',
+                    });
+                    dispatch(getDayReport_TimeSheet(data));
+                    return Promise.resolve();
+                }
+
             })
 
     } catch (err) {

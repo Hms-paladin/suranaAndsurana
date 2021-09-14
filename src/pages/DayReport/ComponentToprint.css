@@ -1,0 +1,151 @@
+.printContainer {
+    /* padding: 100px 280px 0px 280px; */
+    padding: 0;
+    /* height: 100%; */
+  }
+  .printContainer div{
+    font-family: 'Courier New';
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid
+  }
+  
+  .canteenDetails {
+    /* display: flex;
+    justify-content: center; */
+  
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  .canteenDetails div{
+      /* width:80%; */
+      text-align: center;}
+  .canteenDetails .printtable table {
+    display: flex;
+    justify-content: left;
+  }
+  
+  .printtable {
+    display: flex;
+    justify-content: left;
+    padding-bottom: 30px;
+    border-bottom: 0.5px solid black;
+    width:40%;
+    /* font-size: 20px; */
+  }
+  
+  .printtable thead tr th{text-align: center; }
+  .printtable tr td{text-align: center;}
+  
+  
+  .printtable tr:first-child {
+    border: 2px dotted black;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .printBtn {
+    display: flex;
+    justify-content: flex-end;
+    height: 30px;
+  }
+  
+  .liquorHeader {
+    padding-top: 120px;
+  }
+  
+  .orderDetailsContainer {
+    display: flex;
+    /* justify-content: space-between; */
+    width: 55%;
+  }
+  
+  .orderValues {
+    /* display: flex; */
+    width:100%; 
+  }
+  
+  
+  .orderKey {
+    width: 100%;
+    display: inline-flex;
+  }
+  .orderValue{
+      
+    display: flex;
+  }
+  .orderValue div{
+      white-space: nowrap;
+  width: 40%;
+      }
+  .orderValuesCol {
+    margin-right: 4px;
+  }
+  
+  /* pickList printTable css  */
+  
+  .pickListTableContainer .table td,
+  .table th,
+  .pickListTableContainer tbody th,
+  .pickListTableContainer tbody td {
+    padding: 0px !important;
+    vertical-align: middle;
+  }
+  
+  .pickListTableContainer .tableWrapper {
+    min-height: fit-content;
+  }
+  
+  .pickListTableContainer .table > tbody > tr > th:first-child {
+    padding-left: 20px !important;
+  }
+  
+  .pickListTableContainer tbody tr {
+    height: 10px;
+  }
+  
+  .pickListTableRowCss td:nth-child(5) {
+    text-align: right;
+    padding-right: 5% !important;
+    width: 20%;
+  }
+  
+  .PLTableRowCss td:nth-child(4) {
+      text-align: left;
+      padding-left: 15px !important;
+  }
+  .PLTableRowCss td:nth-child(2) {
+    padding-left: 3px;
+  }
+  .PLTableRowCss td:nth-child(3) {
+    padding-left: 7%;
+  }
+  .ProductTableRowCss td:nth-child(2){
+    padding-left: 5px !important;
+  }
+  .ProductTableRowCss td:nth-child(6){
+    padding-left: 2px !important;
+  }
+  .ProductTableRowCss td:nth-child(7){
+    padding-left: 25px !important;
+  }
+  .ProductTableRowCss td:nth-child(3){
+    padding-left: 0px;
+  }
+  .ProductTableRowCss td:nth-child(4){
+    padding-left: 0px;
+    padding-right: 35px;
+  }
+  .ProductTableRowCss td:nth-child(5){
+    padding-left: 0px;
+  }
+  .table>tbody>tr>th:first-child {
+    padding-left: 20px !important;
+  }
+.TableBorder>th{
+    border:2px dotted #8a8a8a;
+}
+
+.TableBorder>td{
+    border:2px dotted #8a8a8a;
+}

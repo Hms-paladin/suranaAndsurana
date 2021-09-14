@@ -10,7 +10,6 @@ import moment from 'moment';
 import { notification } from "antd";
 import { GetOpeSearch } from './OutofPacketActions'
 import { getProjectWise_TimeSheet } from "./TimeSheetAction";
-
 export const getActivity = () => async dispatch => {
     try {
 
@@ -60,7 +59,7 @@ export const getPriorityList = () => async dispatch => {
 }
 
 export const inserTask = (params, timeSheetParams, stopData, project_wise, AddHearing_Data) => async dispatch => {
-   
+
     try {
         await axios({
             method: 'POST',
@@ -76,9 +75,9 @@ export const inserTask = (params, timeSheetParams, stopData, project_wise, AddHe
                 if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
                     let tid = response.data.data[response.data.data.length - 1].task_id;
                     timeSheetParams.task_id = tid;
-                    if (AddHearing_Data&&AddHearing_Data.length>0&&params.activiity_id === 6) {
+                    if (AddHearing_Data && AddHearing_Data.length > 0 && params.activiity_id === 6) {
                         AddHearing_Data[0].activity_id = params.activiity_id;
-                        AddHearing_Data[0].task_id =tid;
+                        AddHearing_Data[0].task_id = tid;
                     }
                     await dispatch(insertTimeSheet(timeSheetParams, stopData, project_wise, AddHearing_Data))
                 }
@@ -143,8 +142,8 @@ export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Da
             data: params
         }).then((response) => {
             if (response.data.status === 1) {
-             
-                if (AddHearing_Data&&AddHearing_Data.length>0&&AddHearing_Data[0].activity_id === 6) {
+
+                if (AddHearing_Data && AddHearing_Data.length > 0 && AddHearing_Data[0].activity_id === 6) {
                     dispatch(InsertHearingDets(AddHearing_Data[0]))
                 }
 
@@ -152,6 +151,7 @@ export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Da
                     notification.success({
                         message: "Time Sheet Started Successfully",
                     });
+                    project_wise&&(dispatch(getProjectWise_TimeSheet(project_wise)));
                     dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
 
                     return Promise.resolve();
@@ -159,7 +159,7 @@ export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Da
                     if (response.data.data && response.data.data.length > 0 && response.data.data[0]) {
                         let tid = response.data.data[0].timesheet_id;
                         stopdetails.timesheet_id = tid;
-                       
+
                         axios({
                             method: 'POST',
                             url: apiurl + 'insert_stop_time',
@@ -221,7 +221,7 @@ export const updateTaskDates = (params) => async dispatch => {
             };
         }
 
-        axios({
+        await axios({
             method: 'PUT',
             url: apiurl + 'update_task',
             data: par
@@ -242,18 +242,38 @@ export const updateTaskDates = (params) => async dispatch => {
     }
 }
 
-export const insertTimeSheetbyTime = (params, time, task) => async dispatch => {
+export const insertTimeSheetbyTime = (params, time, task, timesheetStopData) => async dispatch => {
+
     var url = 'insert_stop_time';
     if (time == true) {
         url = 'insert_start_time'
     }
     try {
-        axios({
+        await axios({
             method: 'POST',
             url: apiurl + url,
             data: params
-        }).then((response) => {
+        }).then(async (response) => {
             if (response.data.status === 1) {
+                if (timesheetStopData) {
+                    let tid = response.data.data[0].timesheet_id;
+                    timesheetStopData.timesheet_id = tid;
+                    console.log(timesheetStopData, "timesheetStopData")
+                    await axios({
+                        method: 'POST',
+                        url: apiurl + 'insert_stop_time',
+                        data: timesheetStopData
+                    }).then((response) => {
+                        if (response.data.status === 1) {
+
+                            notification.success({
+                                message: "Time Sheet Saved Successfully",
+                            });
+
+                        }
+                    });
+                }
+
                 task.Priority = task.priority_id;
                 task.tag = task.tag_id;
                 if (time == true && task && task.actual_start_date == null) {
@@ -266,10 +286,12 @@ export const insertTimeSheetbyTime = (params, time, task) => async dispatch => {
                 }
 
                 dispatch(getTaskList(localStorage.getItem("empId"), "Active"));
+                if (!timesheetStopData) {
+                    notification.success({
+                        message: `Time Sheet ${time === true ? 'Started' : 'Stopped'}`,
+                    });
+                }
 
-                notification.success({
-                    message: `Time Sheet ${time === true ? 'Started' : 'Stopped'}`,
-                });
                 dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
 
                 return Promise.resolve();

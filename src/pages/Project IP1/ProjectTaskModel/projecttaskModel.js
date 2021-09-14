@@ -156,8 +156,9 @@ function ProjectTaskModel(props) {
       }
 
       dispatch(inserTask(data)).then((response) => {
+        dispatch(getProjectDetails(rowId))
         handleCancel();
-        props.model_close&&props.model_close()
+        props.model_close && props.model_close()
       })
 
     }
@@ -309,6 +310,11 @@ function ProjectTaskModel(props) {
       [key]: dynObj,
     }));
   }
+
+  const onCancel = () => {
+    handleCancel()
+    props.model_close && props.model_close()
+  }
   return (
     <div className="projectTaskModel">
 
@@ -438,7 +444,7 @@ function ProjectTaskModel(props) {
         </Grid>
       </div>
       <div className="projectTaskModelButtons">
-        <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={handleCancel} />
+        <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={onCancel} />
         <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"projectTaskGo"} />
 
       </div>

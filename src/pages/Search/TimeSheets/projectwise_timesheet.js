@@ -15,7 +15,7 @@ import TimeSheets from './timesheetStart';
 import DynModel from '../../../component/Model/model';
 import { Checkbox } from 'antd'
 import { update_approve_timesheet, update_submit_timesheet } from "../../../actions/TimeSheetAction";
-import { getEmpListDepartment } from '../../../actions/MasterDropdowns';
+import { getEmployeeList } from '../../../actions/MasterDropdowns';
 import Edit from "../../../images/editable.svg";
 
 function ProjectwiseTS(props) {
@@ -78,7 +78,7 @@ function ProjectwiseTS(props) {
         if (projectSearch.emp_name.value != "" && projectSearch.from_date.value != "" && projectSearch.to_date.value != "") {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
-    }, [projectSearch.emp_name.value])
+    }, [projectSearch.emp_name.value,projectSearch.from_date.value,projectSearch.to_date.value])
 
     function selectAll(e) {
         if (e.target.checked === true) {
@@ -108,7 +108,7 @@ function ProjectwiseTS(props) {
         { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
 
     useEffect(() => {
-        dispatch(getEmpListDepartment())
+        dispatch(getEmployeeList())
     }, [])
 
     useEffect(() => {
@@ -200,7 +200,8 @@ function ProjectwiseTS(props) {
                     <>    <img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} />
                         <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
                     </>
-                ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
+                    // ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
+                ) : data.status_submit) :
                     data.status_appprove && data.status_appprove === "Not Approved" && (
                         <>
                             <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
@@ -255,8 +256,10 @@ function ProjectwiseTS(props) {
                     message: 'Please select atleast one timesheet',
                 });
             } else {
-                await dispatch(update_submit_timesheet(TimeSheetArr))
-                await dispatch(getProjectWise_TimeSheet(projectSearch))
+                dispatch(update_submit_timesheet(TimeSheetArr)).then(() => {
+                    dispatch(getProjectWise_TimeSheet(projectSearch))
+                })
+
 
             }
         }
@@ -273,7 +276,7 @@ function ProjectwiseTS(props) {
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
 
-                    {Number(localStorage.getItem("designation_id") )=== 6 && <Grid item xs={2} container direction="column" spacing={1}>
+                    {Number(localStorage.getItem("designation_id")) === 6 && <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">Employee Name</div>
                         <Labelbox type="select"
                             dropdown={projectList.employeeName}
@@ -320,13 +323,13 @@ function ProjectwiseTS(props) {
             </div>
             {/* </div> */}
             <div className="projectwise_Btn_div">
-                {Number(localStorage.getItem("designation_id") )=== 6 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Reject"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(2)} />}
-                {Number(localStorage.getItem("designation_id") )=== 6 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Approve"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(1)} />}
+                {props.EmployeeList && props.EmployeeList.length > 1 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Reject"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(2)} />}
+                {props.EmployeeList && props.EmployeeList.length > 1 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Approve"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(1)} />}
                 {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
             <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
-         
+
         </div>
 
     )
@@ -335,7 +338,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     GetSeverance: state.ExitSeverance.GetSeverance,
-    EmployeeList: state.getOptions.getEmpListDepartment,
+    EmployeeList: state.getOptions.getEmployeeList,
     Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
 
 });

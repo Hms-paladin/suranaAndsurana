@@ -21,7 +21,7 @@ import { getDesignationList } from '../../actions/MasterDropdowns'
 const UserGroups = (props) => {
   const dispatch = useDispatch();
   const header = [
-    { id: 'designation', label: 'Designation' },
+    { id: 'designation', label: 'Department - Designation' },
     { id: 'group', label: 'Group' },
     { id: 'edit', label: 'Edit' },
   ];
@@ -73,7 +73,7 @@ const UserGroups = (props) => {
     let DesigData = []
     props.getDesignationList.map((data) => {
       DesigData.push({
-        value: data.designation,
+        value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{' - '+data.designation}</div>,
         id: data.designation_id
       })
     }
@@ -88,7 +88,7 @@ const UserGroups = (props) => {
 
       let a = <img src={Edit} style={{ cursor: rights && rights.display_control && rights.display_control === "Y" ? 'pointer' : 'not-allowed', width: 19 }} onClick={() => (rights && rights.display_control && rights.display_control === "Y" && onModealOpen(true, o))} />
       let listarray = {
-        "designation": dets[i].designation,
+        "department_designation": dets[i].department+' - '+dets[i].designation,
         "group": dets[i].group_name,
         "process_type": a,
       }
@@ -277,14 +277,14 @@ const UserGroups = (props) => {
       <Grid container spacing={2} className="ratemaster_firstgrid">
         <Grid
           item
-          xs={7}
+          xs={8}
           container
           direction="row"
           className="spaceBtGrid"
           alignItems="center"
         >
           <Grid item xs={6}>
-            <Labelbox type="select" placeholder={"Designation"}
+            <Labelbox type="select" placeholder={"Department - Designation"}
               dropdown={designation.DesigData}
               changeData={(data) => checkValidation(data, "designation")}
               value={userForm.designation.value}

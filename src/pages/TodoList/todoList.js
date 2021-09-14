@@ -302,6 +302,7 @@ function TodoList(props) {
                 )
             })
             setEmployee_Data(checkData)
+            console.log(checkData,"checkData")
         }
         else if (name === "Recruitment Request") {
             setrecruitmodal(true)

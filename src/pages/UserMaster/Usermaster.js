@@ -8,7 +8,7 @@ import Edit from "../../images/pencil.svg";
 import "./Usermaster.scss";
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
 import {
   get_Tablenames,
   getClass,
@@ -54,7 +54,7 @@ import {
   getCheckList,
   Common_Update_text,
   getProjectCostRange,
-
+  insertDesignationMaster
 } from "../../actions/UserMasterAction";
 
 const UserMaster = (props) => {
@@ -110,6 +110,7 @@ const UserMaster = (props) => {
   ];
   const header13 = [
     { id: "desgination", label: "Designation Name" },
+    { id: "department", label: "Department Name" },
     { id: "", label: "Edit" },
   ];
   const header14 = [
@@ -186,8 +187,7 @@ const UserMaster = (props) => {
       { id: " ", label: "Edit" },
     ],
   });
-  const [userTableHeader, setUserTableHeader] = useState([]);
-  const [getTablename, setgetTablename] = useState([]);
+  const [DepartmentList, setDepartmentList] = useState({})
   const [substageId, setsubstageId] = useState([])
   const [tablevalues, settablevalues] = useState([]);
   const [Statusvalue, setStatusvalue] = useState("")
@@ -480,6 +480,7 @@ const UserMaster = (props) => {
       else if (data === 16) {
         validationHide()
         UserMaster.designation.validation.push({ name: "required" })
+        UserMaster.department.validation.push({ name: "required" })
       }
       else if (data === 17) {
         validationHide()
@@ -873,11 +874,12 @@ const UserMaster = (props) => {
     props.Designation.map((data, index) => {
       desgination_data.push({
         designation: data.designation,
+        department: data.department,
         edit: (
           <img
             src={Edit}
             className="edit_p"
-            onClick={() => CommonEdit(data.designation_id, data)}
+            onClick={() => EditDesignation(data)}
           />
         ),
       });
@@ -896,7 +898,14 @@ const UserMaster = (props) => {
       });
     });
 
+    let departmentData = []
+
     props.Department.map((data, index) => {
+
+      departmentData.push({
+        value: data.department,
+        id: data.department_id
+      })
       department_data.push({
         department: data.department,
         edit: (
@@ -908,7 +917,7 @@ const UserMaster = (props) => {
         ),
       });
     });
-
+    setDepartmentList({ departmentData })
     props.Activity.map((data, index) => {
       activity_data.push({
         activity: data.activity,
@@ -1157,7 +1166,6 @@ const UserMaster = (props) => {
         data === 13 ||
         data === 14 ||
         data === 15 ||
-        data === 16 ||
         data === 17 ||
         data === 18 ||
         data === 19 ||
@@ -1190,6 +1198,24 @@ const UserMaster = (props) => {
             handleCancel()
           });
         }
+      } else if (data === 16) {
+
+        let DesignationMaster = {
+          "designation_id": Editvisible?EditStoreData.DesignationEdit.designation_id:0,
+          "department_id": UserMaster.department.value,
+          "designation": UserMaster.designation.value,
+          "created_by": localStorage.getItem("empId"),
+          "updated_by": localStorage.getItem("empId"),
+          "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+          "updated_on": moment().format('YYYY-MM-DD HH:m:s')
+
+        }
+        console.log(EditStoreData,"EditStoreData")
+        dispatch(insertDesignationMaster(DesignationMaster)).then(() => {
+          setEditvisible(false);
+          handleCancel()
+        });
+
       } else if (data === 26) {
         if (Editvisible) {
           dispatch(UpdateSubstage(UserMaster, EditStoreData.SubStageEdit, Editvisible, props.SubStage_data && props.SubStage_data[0].stage_id)).then(() => {
@@ -1252,9 +1278,9 @@ const UserMaster = (props) => {
     var resource = props.Resource.find((data) => {
       return data.resource_type_id == id;
     });
-    var designation = props.Designation.find((data) => {
-      return data.designation_id == id;
-    });
+    // var designation = props.Designation.find((data) => {
+    //   return data.designation_id == id;
+    // });
     var question = props.Question.find((data) => {
       return data.question_id == id
     })
@@ -1294,7 +1320,7 @@ const UserMaster = (props) => {
     UserMaster.capability.value = data.capability;
     UserMaster.talents.value = data.talent;
     UserMaster.resourse.value = data.resource_type;
-    UserMaster.designation.value = data.designation;
+    // UserMaster.designation.value = data.designation;
     UserMaster.question.value = data.questions;
     UserMaster.department.value = data.department;
     UserMaster.activity.value = data.activity;
@@ -1317,7 +1343,7 @@ const UserMaster = (props) => {
       talents,
       resource,
       department,
-      designation,
+      // designation,
       question,
       activity,
       court,
@@ -1349,6 +1375,22 @@ const UserMaster = (props) => {
     //   ...prevState,
     // }))
   };
+
+  const EditDesignation = (data) => {
+    UserMaster.department.value = data.department_id;
+    UserMaster.designation.value = data.designation;
+
+    var DesignationEdit = props.Designation.find((data1) => {
+      return data1.designation_id == data.designation_id;
+    });
+    setEditvisible(true);
+
+    setEditStoreData({ DesignationEdit });
+    setUserMaster((prevState) => ({
+      ...prevState,
+    }));
+  };
+
   const EditClass = (id, data) => {
     UserMaster.class_type.value = data.sub_project_type_id;
     UserMaster.class_name.value = data.class;
@@ -1363,7 +1405,7 @@ const UserMaster = (props) => {
       ...prevState,
     }));
   };
-
+  console.log(DepartmentList, "DepartmentList")
   const EditStatus = (id, data) => {
     UserMaster.status_type.value = data.status_id.toString();
     var StatusEdit = props.StatusTableData.find((data) => {
@@ -1631,7 +1673,16 @@ const UserMaster = (props) => {
           )}
 
           {/* Designation  */}
-          {UserMaster.tablename.value === 16 && (
+          {UserMaster.tablename.value === 16 && (<>
+            <Labelbox
+              type="select"
+              dropdown={DepartmentList.departmentData}
+              placeholder={"Department"}
+              changeData={(data) => checkValidation(data, "department")}
+              value={UserMaster.department.value}
+              error={UserMaster.department.error}
+              errmsg={UserMaster.department.errmsg}
+            />
             <Labelbox
               type="text"
               placeholder={"Enter Designation  Name"}
@@ -1640,6 +1691,7 @@ const UserMaster = (props) => {
               error={UserMaster.designation.error}
               errmsg={UserMaster.designation.errmsg}
             />
+          </>
           )}
 
           {/* Question  */}

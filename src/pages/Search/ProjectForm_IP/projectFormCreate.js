@@ -1195,7 +1195,7 @@ function ProjectFormCreate(props) {
               ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <div className="Fieldheading">Base Rate</div> <Labelbox type="text"
+                    <div className="Fieldheading">{projectform.billable_type.value == 5 ? 'Base / Professional Fee' : 'Base Rate'}</div> <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}

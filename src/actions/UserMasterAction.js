@@ -1,6 +1,6 @@
 import { INSERT_ACTIVITY, COMMON_INSERT_TEXT, GET_TABLE_NAME, INSERT_USER, GET_USER, MASTER_EMPLOYEE_DETAILS, EDIT_USER, DELETE_USER, GET_CANDIDATES_NAMES, INSERT_STATUS, INSERT_SUBSTAGE, INSERT_CLASS, INSERT_CHECKLIST } from "../utils/Constants";
 
-import { GET_TABLE_GROUP, GET_USER_CLASS, COMMON_UPDATE_TEXT, UPDATE_SUBSTAGE, UPDATE_SUBACTIVITY} from '../utils/Constants'
+import { GET_TABLE_GROUP, GET_USER_CLASS, COMMON_UPDATE_TEXT, UPDATE_SUBSTAGE, UPDATE_SUBACTIVITY } from '../utils/Constants'
 import { get_emp_not_in_user } from "./UserGroupAction";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -612,23 +612,23 @@ export const getCandidateName = () => async dispatch => {
 export const GetEmployeeDetails = (data) => async dispatch => {
 
   try {
-    if(data){
+    if (data) {
       axios({
-          method: "post",
-          header: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-          },
-          url: apiurl + "get_employee_by_id",
-          data: {
-              "emp_id": data
-          }
+        method: "post",
+        header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        url: apiurl + "get_employee_by_id",
+        data: {
+          "emp_id": data
+        }
       })
-      .then((response) => {
-        dispatch({ type: MASTER_EMPLOYEE_DETAILS, payload: response.data.data })
-      })
-    }else{
-      dispatch({type:MASTER_EMPLOYEE_DETAILS,payload:[]})
+        .then((response) => {
+          dispatch({ type: MASTER_EMPLOYEE_DETAILS, payload: response.data.data })
+        })
+    } else {
+      dispatch({ type: MASTER_EMPLOYEE_DETAILS, payload: [] })
     }
   } catch (err) {
 
@@ -798,3 +798,30 @@ export const getLoactionsList = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_location_office_ticket");
   return dispatch({ type: GET_LOCATION_LIST, payload: response.data.data });
 };
+
+export const insertDesignationMaster = (data) => async dispatch => {
+
+  try {
+    await axios({
+      method: 'POST',
+      url: apiurl + 'insert_designation_master',
+      data: data
+    }).then((response) => {
+      if (response.data.status === 1) {
+        notification.success({
+          message: `Designation ${data.designation_id === 0 ? 'Inserted' : 'Updated'} Successfully`,
+        });
+        dispatch(getTableDesgination())
+        // dispatch({ type: DESIGNATION, payload: response.data.status })
+        return Promise.resolve();
+      }else if (response.data.status === 0){
+        notification.success({
+          message: response.data.msg,
+        });
+      }
+    });
+
+  } catch (err) {
+
+  }
+}

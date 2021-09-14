@@ -81,7 +81,7 @@ import {
 } from "../../actions/VariableRateMaster"
 import { Collapse } from "antd";
 import { Checkbox } from 'antd'
-
+import moment from 'moment';
 
 const { TabPane } = Tabs;
 
@@ -303,7 +303,7 @@ function ProjectIp(props) {
                                     <div >{data1.task}</div>
                                     <div >{(data.check_list_type === "No Task Linked" && data1.status === "In Progress") ? <Checkbox onClick={(e) => onTaskItemClick(e, data1.check_list_details_id)} /> : <div className="status_Btn">{data1.status}</div>} </div>
                                     <div >{data1.name}</div>
-                                    <div >{data1.end_date}</div>
+                                    <div >{moment(data1.end_date).format("DD-MMM-YYYY")}</div>
                                 </div>
                             </>
                             )
@@ -803,11 +803,11 @@ function ProjectIp(props) {
                                         <div>{data.billable_type}</div>
                                     </div>
                                     <div className="projectIpdata">
-                                        <div className="projectTitle">HOD / Attorney</div>
+                                        <div className="projectTitle">{props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? "DDA" : "HOD / Attorney"}</div>
                                         <div>{data.HR}</div>
                                     </div>
                                     <div className="projectIpdata">
-                                        <div className="projectTitle">Counsel</div>
+                                        <div className="projectTitle">{props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? "DDRA" : "Counsel"}</div>
                                         <div>{data.councel}</div>
                                     </div>
 
@@ -815,10 +815,30 @@ function ProjectIp(props) {
                             </Grid>
                             <Grid item xs={12}>
                                 <div className="projectIpFields">
-                                    <div className="data">
+                                    <div className="projectIpdata">
                                         <div className="projectTitle">Comments</div>
                                         <div>{data.comments}</div>
                                     </div>
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].base_rate != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Base Rate</div>
+                                        <div>{data.details[0].base_rate}</div>
+                                    </div>}
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].unit != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Unit of Measure</div>
+                                        <div>{data.details[0].unit}</div>
+                                    </div>}
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].limit_in_hours != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Limit</div>
+                                        <div>{data.details[0].limit_in_hours}</div>
+                                    </div>}
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].additional_rate != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Additional Rate Hourly</div>
+                                        <div>{data.details[0].additional_rate}</div>
+                                    </div>}
                                 </div>
 
                             </Grid>
@@ -842,7 +862,7 @@ function ProjectIp(props) {
 
                     </div>
                     <div className="TabIconsview"
-                    ><TabIcons litigation={props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type === "Litigation Projects" ? 1 : undefined} variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
+                    ><TabIcons litigation={props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? 1 : undefined} variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
 
                     <DynModel modelTitle={"BACK LOG TIME SHEET"} handleChangeModel={changeLogTimeSheetModelOpen} handleChangeCloseModel={(bln) => setChangeLogTimeSheetModelOpen(bln)} content={changeLogTimesheetmodelContent()} width={800} />
                     <DynModel

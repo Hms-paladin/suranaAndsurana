@@ -15,7 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PublishIcon from '@material-ui/icons/Publish';
 import Delete from '../../images/dashboard/delete.svg';
 
-import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
+import { searchRowdata } from "../../actions/ResumeSearchAction";
 import {
   getResourceType,
   getInstitute,
@@ -416,7 +416,7 @@ const ResumePage = (props) => {
     }));
   }
 
-  useEffect(() => {
+  useEffect(async() => {
     console.log(props.resumeEditrow && props.resumeEditrow[0]?.experience, "Resume_Form")
 
 
@@ -434,17 +434,16 @@ const ResumePage = (props) => {
       setEditcity(true)
       setEditResume(true)
       setResume_id(props.resumeEditrow[0].resume_id)
-
       let languageValue = [];
-      JSON.parse("[" + props.resumeEditrow[0]?.language_id + "]").map((data) => {
+     await JSON.parse("[" + props.resumeEditrow[0]?.language_id + "]").map((data) => {
         resumeGetList && resumeGetList?.languagesList?.map((list) => {
           if (data === list.id) {
-            console.log(data, list.value, "testinglan")
+
             languageValue.push(list.value)
           }
         })
       })
-
+      console.log(languageValue,resumeGetList?.languagesList, "testinglan")
 
       // skills
       let skillsValue = [];
@@ -562,7 +561,7 @@ const ResumePage = (props) => {
 
     }
 
-  }, [props.resumeEditrow])
+  }, [props.resumeEditrow,resumeGetList?.languagesList])
 
 
 

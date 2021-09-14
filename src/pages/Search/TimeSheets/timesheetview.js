@@ -8,6 +8,8 @@ import ValidationLibrary from "../../../helpers/validationfunction";
 import { getTaskTimeSheet, insertTimeSheetbyTime } from "../../../actions/projectTaskAction";
 import dateFormat from 'dateformat';
 import moment from 'moment';
+import { notification } from "antd";
+
 function TimeSheetView(props) {
     const [timesheetStart, setTimesheetStart] = useState(true)
     const [isLoaded, setisLoaded] = useState(true)
@@ -15,7 +17,7 @@ function TimeSheetView(props) {
     const [startTimeDisplay, setstartTimeDisplay] = useState("")
     const [timeSheetID, settimeSheetID] = useState("")
     const dispatch = useDispatch();
-    console.log(timesheetStart, "timesheetStart")
+    const [SaveBtnProcess, setSaveBtnProcess] = useState(false);
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
@@ -50,12 +52,12 @@ function TimeSheetView(props) {
 
     })
     //dispatch(getTaskTimeSheet(props.rowData.task_id));
-    console.log('1')
-    //var paramVal =props.rowData;
-    console.log('2')
+    // console.log('1')
+    // //var paramVal =props.rowData;
+    // console.log('2')
+
     useEffect(() => {
         dispatch(getTaskTimeSheet(props.rowData.task_id));
-
     }, []);
 
     useEffect(() => {
@@ -132,9 +134,8 @@ function TimeSheetView(props) {
 
         props.handleChangeCloseModel(false);
     }
-    function changestart() {
+    function submitStopTimesheet() {
         setTimesheetStart(true);
-        var a = props;
         var timesheetData = {
             "end_date": timeSheetForm.toDate.value,
             "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm:ss') : moment(new Date()).format("HH:mm:ss"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
@@ -148,16 +149,42 @@ function TimeSheetView(props) {
             // handleCancel();
             // dispatch(getTaskTimeSheet(props.rowData.task_id));
             dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
+                setSaveBtnProcess(false);
                 props.handleChangeCloseModel(false);
             })
             //})
             // props.handleChangeCloseModel(false);  
         })
     }
+    useEffect(() => {
+        if ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value < moment().format("YYYY-MM-DD")) || ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value === moment().format("YYYY-MM-DD")) && (moment(timeSheetForm.startTime.value).format('HH:mm:ss') < moment().subtract(5, "minutes").format('HH:mm:ss')))) {
+            setSaveBtnProcess(true)
+            timeSheetForm.toDate.value=timeSheetForm.fromDate.value
+        } else {
+            setSaveBtnProcess(false)
+        }
+    }, [timeSheetForm.fromDate.value, timeSheetForm.startTime.value])
 
-    function changeStop() {
+    useEffect(() => {
+        let starttime = moment(timeSheetForm.startTime.value, "HH:mm:ss").format("hh:mm:ss A")
+        let endtime = moment(timeSheetForm.endTime.value, "HH:mm:ss").format("hh:mm:ss A")
+
+        if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
+            timeSheetForm.endTime.value = timeSheetForm.startTime.value
+
+            notification.success({
+                message: "End Time Should not less than from time",
+            });
+
+            settimeSheetForm((prevState) => ({
+                ...prevState
+            }));
+        }
+    }, [timeSheetForm.startTime.value, timeSheetForm.endTime.value])
+
+    function submitStartTimeSheet() {
         setTimesheetStart(false);
-
+        var timesheetStopData;
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "task_id": props.rowData.task_id,
@@ -166,8 +193,20 @@ function TimeSheetView(props) {
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
-        dispatch(insertTimeSheetbyTime(timesheetData, true, props.rowData, startDateDisplay)).then((response) => {
+        if (SaveBtnProcess) {
+            timesheetStopData = {
+                "end_date": timeSheetForm.toDate.value,
+                "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm:ss') : moment(new Date()).format("HH:mm:ss"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
+                "comment": timeSheetForm.description.value,
+                "updated_by": localStorage.getItem("empId"),
+                "timesheet_id": timeSheetID
+            }
+        } else {
+            timesheetStopData = undefined
+        }
+        dispatch(insertTimeSheetbyTime(timesheetData, true, props.rowData, timesheetStopData)).then((response) => {
             // handleCancel();
+
             dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
                 props.handleChangeCloseModel(false);
             })
@@ -185,7 +224,11 @@ function TimeSheetView(props) {
 
         From_key.map((data) => {
             try {
-                timeSheetForm[data].value = "";
+                if (data !== "startTime" && data !== "endTime") {
+                    timeSheetForm[data].value = "";
+                } else {
+                    timeSheetForm[data].value = new Date("12-30-2017 " + moment().format('HH:mm:ss'));
+                }
                 console.log("mapping", timeSheetForm[data].value);
             } catch (error) {
                 throw error;
@@ -249,10 +292,30 @@ function TimeSheetView(props) {
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid item xs={5} container direction="row" justify="center" spacing={4}>
-                                <Grid item xs={6}>End Date</Grid>
-                                <Grid item xs={6}>End Time</Grid>
-
+                            <Grid item xs={5} container direction="row" justify="center" spacing={5}>
+                                {!SaveBtnProcess && <><Grid item xs={6}>End Date</Grid>
+                                    <Grid item xs={6}>End Time</Grid></>}
+                                {SaveBtnProcess && <><Grid item xs={6}>
+                                    <Labelbox type="datepicker"
+                                        changeData={(data) => checkValidation(data, "toDate")}
+                                        value={timeSheetForm.toDate.value}
+                                        error={timeSheetForm.toDate.error}
+                                        errmsg={timeSheetForm.toDate.errmsg}
+                                        placeholder={" End date "}
+                                        maxDate={new Date()}
+                                    />
+                                </Grid>
+                                    <Grid item xs={6}>
+                                        <Labelbox type="timepicker"
+                                            placeholder={"End Time"}
+                                            changeData={(data) =>
+                                                checkValidation(data, "endTime")
+                                            }
+                                            value={timeSheetForm.endTime.value}
+                                            error={timeSheetForm.endTime.error}
+                                            errmsg={timeSheetForm.endTime.errmsg}
+                                        />
+                                    </Grid>  </>}
                             </Grid>
                         </Grid>
                     </div>
@@ -265,9 +328,7 @@ function TimeSheetView(props) {
                     </div>
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel} />
-                        <CustomButton btnName={"START"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={changeStop} />
-
-
+                        <CustomButton btnName={`${!SaveBtnProcess ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={submitStartTimeSheet} />
                     </div>
 
                 </>
@@ -338,7 +399,7 @@ function TimeSheetView(props) {
                     </div>
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel} />
-                        <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={changestart} />
+                        <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={submitStopTimesheet} />
 
 
 
@@ -349,7 +410,7 @@ function TimeSheetView(props) {
                 </>
             }
 
-        </div>
+        </div >
 
     )
 }

@@ -10,9 +10,9 @@ import { notification } from 'antd';
 import moment from "moment";
 import { getHrTaskList } from "../../actions/TodoListAction";
 import { connect, useDispatch } from "react-redux";
-import { getDesignationList, getDepartment, getInterviewers } from '../../actions/MasterDropdowns'
+import { getDesignationList, getDepartment, getInterviewers, getSupervisorByDepartment } from '../../actions/MasterDropdowns'
 import { GetCandiateDetails, GetEmployeeDetails, getBankName } from '../../actions/CandidateAndEmployeeDetails';
-import DynModelView from '../Interview/model';
+
 import './employeeform.scss'
 function Employeeform(props) {
     const dispatch = useDispatch();
@@ -50,18 +50,6 @@ function Employeeform(props) {
             error: null,
             errmsg: null,
         },
-        // supervisor_email: {
-        //     value: "",
-        //     validation: [{ "name": "required" }, { "name": "email" }],
-        //     error: null,
-        //     errmsg: null,
-        // },
-        // supervisor_ph: {
-        //     value: "",
-        //     validation: [{ "name": "required" }, { "name": "mobile" }],
-        //     error: null,
-        //     errmsg: null,
-        // },
         EmpOfficialEmail: {
             value: "",
             validation: [{ "name": "required" }, { "name": "email" }],
@@ -120,6 +108,15 @@ function Employeeform(props) {
     useEffect(() => {
         if (!props.emp_list) {
             EmpForm.desgination.value = props.emp_form_id.designation_id
+            // EmpForm.desgination.value = Number(localStorage.getItem("designation_id"))
+           
+            let data_res_id = props.getDesignationList.find((val) => {
+                return (
+                    props.emp_form_id.designation_id == val.designation_id
+                )
+            })
+             EmpForm.department.value = data_res_id
+            dispatch(getSupervisorByDepartment(data_res_id))
             dispatch(GetCandiateDetails(props.emp_form_id.int_status_id));
         } else {
             dispatch(GetEmployeeDetails(props.emp_form_id.int_status_id));
@@ -160,7 +157,10 @@ function Employeeform(props) {
     useEffect(() => {
         let Designation = [];
         props.getDesignationList.map((data, index) =>
-            Designation.push({ id: data.designation_id, value: data.designation })
+            Designation.push({
+                value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
+                id: data.designation_id
+            })
         );
         setgetData({ Designation });
 
@@ -340,7 +340,7 @@ function Employeeform(props) {
             }
         }
     }
-    console.log(EmpForm.employee_code.error, EmpForm.employee_code.errmsg, "dsdsdsds")
+
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
 
@@ -462,7 +462,7 @@ function Employeeform(props) {
                             </div>
                         </div>}
 
-                        {val.type_of_resource !== 'Intern' && <div className="expDetailes">
+                        {val.experience.length > 0 && <div className="expDetailes">
                             <div className="tableHeading">Previous Employer Details</div>
                             <div className="educationtable">
                                 <div className="EmployeeHeader">
@@ -559,21 +559,6 @@ function Employeeform(props) {
                     error={EmpForm.EmpOfficialEmail.error}
                     errmsg={EmpForm.EmpOfficialEmail.errmsg}
                 /></div>
-                {/* <div><Labelbox type="text" placeholder="Supervisor's Email ID"
-                    changeData={(data) => checkValidation(data, "supervisor_email")}
-                    value={EmpForm.supervisor_email.value}
-                    error={EmpForm.supervisor_email.error}
-                    errmsg={EmpForm.supervisor_email.errmsg}
-                />
-                </div>
-                <div><Labelbox type="text" placeholder="Supervisor's Phone No."
-                    changeData={(data) => checkValidation(data, "supervisor_ph")}
-                    value={EmpForm.supervisor_ph.value}
-                    error={EmpForm.supervisor_ph.error}
-                    errmsg={EmpForm.supervisor_ph.errmsg}
-                />
-                </div> */}
-
 
             </div>}
 
@@ -587,6 +572,7 @@ function Employeeform(props) {
                 /></div>
                 <div>
                     <Labelbox type="select" placeholder="Department"
+                        disabled={true}
                         dropdown={dept.Department}
                         changeData={(data) => checkValidation(data, "department")}
                         value={EmpForm.department.value}
@@ -657,7 +643,7 @@ const mapStateToProps = (state) => (
     {
         getDesignationList: state.getOptions.getDesignationList || [],
         getDepartment: state.getOptions.getDepartment || [],
-        getInterviewersList: state.getOptions.getInterviewersList || [],
+        getInterviewersList: state.getOptions.getSupervisorByDepartment || [],
         getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails || [],
         getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
         getBankNameDetails: state.CandidateAndEmployeeDetails.getBankName || [],
