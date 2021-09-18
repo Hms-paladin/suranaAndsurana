@@ -162,6 +162,7 @@ function TimeSheetStartModel(props) {
     }, []);
 
     useEffect(() => {
+        console.log(props.model_clear,"props.model_clear")
         if (props.model_clear)
             handleCancel()
     }, [props.model_clear]);
@@ -347,6 +348,10 @@ function TimeSheetStartModel(props) {
                     setChangeStop(true)
                     props.close_model && props.close_model()
                     return Promise.resolve();
+                }else if (response.data.status === 0) {
+                    notification.success({
+                        message: "Stop Time " +response.data.msg,
+                    });
                 }
             });
 
@@ -421,7 +426,7 @@ function TimeSheetStartModel(props) {
     }, [timeSheetForm.startTime.value, timeSheetForm.endTime.value])
 
     useEffect(() => {
-        if (props.project_wise && props.insertTask && props.insertTask.length > 0 && !SaveBtnProcess && !props.project_wise && !props.project_wise_reject) {
+        if (props.insertTask && props.insertTask.length > 0 && !SaveBtnProcess && !props.project_wise && !props.project_wise_reject) {
             dispatch(getTaskTimeSheet(props.insertTask[0].task_id));
         }
     }, [props.insertTask])
@@ -450,53 +455,58 @@ function TimeSheetStartModel(props) {
             handleCancel();
             let response;
             let data;
-            // if (props.project_wise && props.getTaskTimeSheet.length > 0) {
-            //     response = props.getTaskTimeSheet
-            //     data = response[response.length - 1].timesheet[0]
+            if (props.project_wise && props.getTaskTimeSheet.length > 0) {
+                response = props.getTaskTimeSheet
+                data = response[response.length - 1].timesheet[0]
+            }
+            // if (!props.project_wise) {
+            // else if (props.project_wise && props.TimeSheetArr && props.TimeSheetArr.length > 0) {
+            //     console.log(props.TimeSheetArr[0], data, "gggggggggggggggggggggggg")
+            //     data = props.TimeSheetArr[props.TimeSheetArr.length - 1]
             // }
-            if (!props.project_wise) {
-                if (!props.project_wise && props.timeSheetProject.length > 0) {
-                    response = props.timeSheetProject
-                    data = response[response.length - 1]
-                } else if (props.project_wise_reject) {
-                    data = props.project_wise_reject[0]
-                } else if (props.project_wise_edit) {
-                    data = props.project_wise_edit[0]
-                } else if (props.timeSheetProject) {
-                    response = props.timeSheetProject
-                    data = response[response.length - 1]
+            else if (props.timeSheetProject.length > 0) {
+                response = props.timeSheetProject
+                data = response[response.length - 1]
+            } else if (props.project_wise_reject) {
+                data = props.project_wise_reject[0]
+            } else if (props.project_wise_edit) {
+                data = props.project_wise_edit[0]
+            } else if (props.timeSheetProject) {
+                response = props.timeSheetProject
+                data = response[response.length - 1]
+            }
+
+
+            if (data) {
+
+                if (data.project_id && data.project_id != 0) {
+                    timeSheetForm.projectname.value = data.project_id
                 }
+                timeSheetForm.timesheet_id.value = data.timesheet_id
+                timeSheetForm.activity.value = data.activity_id || data.activiity_id
+                timeSheetForm.subActivity.value = data.sub_activity_id
+                timeSheetForm.priority.value = data.priority_id
+                timeSheetForm.tag.value = data.tag_id
+                timeSheetForm.startTime.value = new Date("12-30-2017 " + data.start_time)
+                timeSheetForm.fromDate.value = data.start_date
+                // timeSheetForm.description.value=data.start_date
+                data.task_status && data.task_status === "Completed" ? (timeSheetForm.task_status.value = 1) : (timeSheetForm.task_status.value = 0)
+                if (props.project_wise_edit) {
+                    data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
+                    data.end_date && (timeSheetForm.fromDate.value = data.end_date)
+                }
+                settimeSheetForm((prevState) => ({
+                    ...prevState,
+                }));
 
-                if (props.project_wise_reject || props.project_wise_edit || (data && (!data.end_date && !data.end_time))) {
-
-                    if (data.project_id && data.project_id != 0) {
-                        timeSheetForm.projectname.value = data.project_id
-                    }
-                    timeSheetForm.timesheet_id.value = data.timesheet_id
-                    timeSheetForm.activity.value = data.activity_id || data.activiity_id
-                    timeSheetForm.subActivity.value = data.sub_activity_id
-                    timeSheetForm.priority.value = data.priority_id
-                    timeSheetForm.tag.value = data.tag_id
-                    timeSheetForm.startTime.value = new Date("12-30-2017 " + data.start_time)
-                    timeSheetForm.fromDate.value = data.start_date
-                    // timeSheetForm.description.value=data.start_date
-                    data.task_status && data.task_status === "Completed" ? (timeSheetForm.task_status.value = 1) : (timeSheetForm.task_status.value = 0)
-                    if (props.project_wise_edit) {
-                        data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
-                        data.end_date && (timeSheetForm.fromDate.value = data.end_date)
-                    }
-                    settimeSheetForm((prevState) => ({
-                        ...prevState,
-                    }));
-
-                    if (!data.end_date && !data.end_time && !props.project_wise_edit) {
-                        setChangeStop(false)
-                    }
-                    else {
-                        setChangeStop(true)
-                    }
+                if (!data.end_date && !data.end_time && !props.project_wise_edit) {
+                    setChangeStop(false)
+                }
+                else {
+                    setChangeStop(true)
                 }
             }
+            // }
 
         }
 
@@ -508,7 +518,7 @@ function TimeSheetStartModel(props) {
         setTaskData([timeSheetForm, props.ProjectDetails]);
         setHearing(true)
     }
-
+    console.log(props.project_wise, "props.project_wise")
 
     return (
         <div className="timeSheetStartContainer">

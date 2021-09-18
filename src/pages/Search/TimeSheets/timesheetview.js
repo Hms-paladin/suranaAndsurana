@@ -94,9 +94,15 @@ function TimeSheetView(props) {
                         setTimesheetStart(false);
 
                         setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
+
+                        timeSheetForm.fromDate.value = props.getTaskTimeSheet[0].timesheet[tsSize].start_date
                         var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
                         setstartTimeDisplay(startttime);
                         settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+
+                        settimeSheetForm((prevState) => ({
+                            ...prevState,
+                        }));
                     }
                 }
             } else {
@@ -107,7 +113,7 @@ function TimeSheetView(props) {
         }
         //var a =props.rowData
     }, [props.getTaskTimeSheet, props.rowData])
-
+    console.log(timeSheetForm.fromDate.value, "yyyyyyyyyyy")
     function checkValidation(data, key) {
         console.log(data, key, "dataValue")
 
@@ -137,7 +143,7 @@ function TimeSheetView(props) {
     function submitStopTimesheet() {
         setTimesheetStart(true);
         var timesheetData = {
-            "end_date": timeSheetForm.toDate.value,
+            "end_date": timeSheetForm.fromDate.value,
             "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm:ss') : moment(new Date()).format("HH:mm:ss"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "updated_by": localStorage.getItem("empId"),
@@ -159,7 +165,7 @@ function TimeSheetView(props) {
     useEffect(() => {
         if ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value < moment().format("YYYY-MM-DD")) || ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value === moment().format("YYYY-MM-DD")) && (moment(timeSheetForm.startTime.value).format('HH:mm:ss') < moment().subtract(5, "minutes").format('HH:mm:ss')))) {
             setSaveBtnProcess(true)
-            timeSheetForm.toDate.value=timeSheetForm.fromDate.value
+            timeSheetForm.toDate.value = timeSheetForm.fromDate.value
         } else {
             setSaveBtnProcess(false)
         }
@@ -195,7 +201,7 @@ function TimeSheetView(props) {
         }
         if (SaveBtnProcess) {
             timesheetStopData = {
-                "end_date": timeSheetForm.toDate.value,
+                "end_date": timeSheetForm.fromDate.value,
                 "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm:ss') : moment(new Date()).format("HH:mm:ss"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
                 "comment": timeSheetForm.description.value,
                 "updated_by": localStorage.getItem("empId"),
@@ -265,60 +271,57 @@ function TimeSheetView(props) {
 
 
                     </Grid>
-                    <div className="timeSheetDatesFormat">
-                        <Grid item xs={12} container direction="row" spacing={5}>
-
-
-                            <Grid item xs={7} container direction="row" spacing={5}>
-
-                                <Grid item xs={6}>
-                                    <Labelbox type="datepicker"
-                                        changeData={(data) => checkValidation(data, "fromDate")}
-                                        value={timeSheetForm.fromDate.value}
-                                        error={timeSheetForm.fromDate.error}
-                                        errmsg={timeSheetForm.fromDate.errmsg}
-                                        placeholder={" Start Date "}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Labelbox type="timepicker"
-                                        placeholder={"Start Time"}
-                                        changeData={(data) =>
-                                            checkValidation(data, "startTime")
-                                        }
-                                        value={timeSheetForm.startTime.value}
-                                        error={timeSheetForm.startTime.error}
-                                        errmsg={timeSheetForm.startTime.errmsg}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={5} container direction="row" justify="center" spacing={5}>
-                                {!SaveBtnProcess && <><Grid item xs={6}>End Date</Grid>
-                                    <Grid item xs={6}>End Time</Grid></>}
-                                {SaveBtnProcess && <><Grid item xs={6}>
-                                    <Labelbox type="datepicker"
-                                        changeData={(data) => checkValidation(data, "toDate")}
-                                        value={timeSheetForm.toDate.value}
-                                        error={timeSheetForm.toDate.error}
-                                        errmsg={timeSheetForm.toDate.errmsg}
-                                        placeholder={" End date "}
-                                        maxDate={new Date()}
-                                    />
-                                </Grid>
-                                    <Grid item xs={6}>
-                                        <Labelbox type="timepicker"
-                                            placeholder={"End Time"}
-                                            changeData={(data) =>
-                                                checkValidation(data, "endTime")
-                                            }
-                                            value={timeSheetForm.endTime.value}
-                                            error={timeSheetForm.endTime.error}
-                                            errmsg={timeSheetForm.endTime.errmsg}
-                                        />
-                                    </Grid>  </>}
-                            </Grid>
+                    <Grid item xs={12} container direction="row" spacing={3}>
+                        <Grid item xs={3}>
+                            <Labelbox type="datepicker"
+                                disableFuture={true}
+                                changeData={(data) => checkValidation(data, "fromDate")}
+                                value={timeSheetForm.fromDate.value}
+                                error={timeSheetForm.fromDate.error}
+                                errmsg={timeSheetForm.fromDate.errmsg}
+                                placeholder={" Start Date "}
+                            />
                         </Grid>
-                    </div>
+                        <Grid item xs={3}>
+                            <Labelbox type="timepicker"
+                                placeholder={"Start Time"}
+                                changeData={(data) =>
+                                    checkValidation(data, "startTime")
+                                }
+                                value={timeSheetForm.startTime.value}
+                                error={timeSheetForm.startTime.error}
+                                errmsg={timeSheetForm.startTime.errmsg}
+                            />
+                        </Grid>
+                        {!SaveBtnProcess && <>
+                            <Grid item xs={3}>End Date</Grid>
+                            <Grid item xs={3}>End Time</Grid></>}
+
+                        {SaveBtnProcess && <>
+                            <Grid item xs={3}>
+                                <Labelbox type="datepicker"
+                                    disableFuture={true}
+                                    changeData={(data) => checkValidation(data, "toDate")}
+                                    value={timeSheetForm.fromDate.value}
+                                    error={timeSheetForm.toDate.error}
+                                    errmsg={timeSheetForm.toDate.errmsg}
+                                    placeholder={" End date "}
+                                    maxDate={new Date()}
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Labelbox type="timepicker"
+                                    placeholder={"End Time"}
+                                    changeData={(data) =>
+                                        checkValidation(data, "endTime")
+                                    }
+                                    value={timeSheetForm.endTime.value}
+                                    error={timeSheetForm.endTime.error}
+                                    errmsg={timeSheetForm.endTime.errmsg}
+                                />
+                            </Grid> </>}
+                    </Grid>
+
                     <div className="timeSheetComments">
                         <Labelbox type="textarea" placeholder={"comments"}
                             changeData={(data) => checkValidation(data, "description")}
@@ -354,42 +357,37 @@ function TimeSheetView(props) {
 
                         </Grid>
 
-
                     </Grid>
-                    <div className="timeSheetDatesFormat">
-                        <Grid item xs={12} container direction="row" spacing={5}>
 
-                            <Grid item xs={5} container direction="row" justify="center" spacing={4}>
-                                <Grid item xs={6}>{startDateDisplay}</Grid>
-                                <Grid item xs={6}>{startTimeDisplay}</Grid>
+                    <Grid item xs={12} container direction="row" spacing={3}>
 
-                            </Grid>
-                            <Grid item xs={7} container direction="row" spacing={5}>
+                        <Grid item xs={3}>{startDateDisplay}</Grid>
+                        <Grid item xs={3}>{startTimeDisplay}</Grid>
 
-                                <Grid item xs={6}>
-                                    <Labelbox type="datepicker"
-                                        changeData={(data) => checkValidation(data, "toDate")}
-                                        value={timeSheetForm.toDate.value}
-                                        error={timeSheetForm.toDate.error}
-                                        errmsg={timeSheetForm.toDate.errmsg}
-                                        placeholder={" End date "}
-                                        maxDate={new Date()}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Labelbox type="timepicker"
-                                        placeholder={"End Time"}
-                                        changeData={(data) =>
-                                            checkValidation(data, "endTime")
-                                        }
-                                        value={timeSheetForm.endTime.value}
-                                        error={timeSheetForm.endTime.error}
-                                        errmsg={timeSheetForm.endTime.errmsg}
-                                    />
-                                </Grid>
-                            </Grid>
+
+                        <Grid item xs={3}>
+                            <Labelbox type="datepicker"
+                                disableFuture={true}
+                                changeData={(data) => checkValidation(data, "toDate")}
+                                value={timeSheetForm.fromDate.value}
+                                error={timeSheetForm.toDate.error}
+                                errmsg={timeSheetForm.toDate.errmsg}
+                                placeholder={" End date "}
+                                maxDate={new Date()}
+                            />
                         </Grid>
-                    </div>
+                        <Grid item xs={3}>
+                            <Labelbox type="timepicker"
+                                placeholder={"End Time"}
+                                changeData={(data) =>
+                                    checkValidation(data, "endTime")
+                                }
+                                value={timeSheetForm.endTime.value}
+                                error={timeSheetForm.endTime.error}
+                                errmsg={timeSheetForm.endTime.errmsg}
+                            />
+                        </Grid>
+                    </Grid>
                     <div className="timeSheetComments">
                         <Labelbox type="textarea" placeholder={"comments"}
                             changeData={(data) => checkValidation(data, "description")}
@@ -400,11 +398,6 @@ function TimeSheetView(props) {
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel} />
                         <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={submitStopTimesheet} />
-
-
-
-
-
                     </div>
 
                 </>

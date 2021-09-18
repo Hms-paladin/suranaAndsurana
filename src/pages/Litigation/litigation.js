@@ -35,7 +35,6 @@ const Litigation = (props) => {
   const [LitigationCaseDetails, setLitigationCaseDetails] = useState([]);
   const [LitigationCase, setLitigationCase] = useState();
   const [confirmmodel, setConfirmModel] = useState(false);
-  const [modelOpen, setModelOpen] = useState(false)
 
   const [Litigation_Form, setLitigationForm] = useState({
     internalcaseno: {
@@ -163,7 +162,7 @@ const Litigation = (props) => {
             </div >
           );
         });
-       
+
         return (
           <>
             {rowDataList && props.getLitigationDetails[0].case.length > 0 && (
@@ -347,7 +346,10 @@ const Litigation = (props) => {
     };
 
     if (data && key === "hearingdate") {
-      setModelOpen(true)
+      props.TaskModel&&props.TaskModel(true);
+    }
+    else{
+      props.TaskModel&&props.TaskModel(false);
     }
 
     // only for multi select (start)
@@ -540,7 +542,6 @@ const Litigation = (props) => {
         }
         width={500}
       />
-         <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={  <ProjectTaskModel model_close={() => setModelOpen(false)} />} width={800} />
     </div>
   );
 };

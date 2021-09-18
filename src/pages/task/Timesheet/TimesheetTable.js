@@ -103,7 +103,7 @@ function TimeSheetApproval(props) {
                     message: 'Please select atleast one timesheet',
                 });
             } else {
-                dispatch(update_approve_timesheet(TimeSheetArr)).then(() => {
+                dispatch(update_approve_timesheet(TimeSheetArr,1)).then(() => {
                     dispatch(getOtherTask())
                     props.closemodal(false)
                 })

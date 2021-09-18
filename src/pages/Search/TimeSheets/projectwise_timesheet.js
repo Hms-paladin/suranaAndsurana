@@ -102,7 +102,7 @@ function ProjectwiseTS(props) {
         { id: "hours", label: "Hours" },
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub Activity" },
-        { id: "project_name", label: "project Name" },
+        { id: "project_name", label: "Project Name" },
         { id: "project_type", label: "Project Type" },
         { id: "client", label: "Client" },
         { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
@@ -184,20 +184,22 @@ function ProjectwiseTS(props) {
     useEffect(() => {
         var updatelist = [];
         TimeSheetArr && TimeSheetArr.length > 0 && TimeSheetArr.map((data, index) => {
+            let start_time=data.approved_start_time?data.approved_start_time:data.start_time
+            let end_time=data.approved_end_time?data.approved_end_time:data.end_time
             let hrs_arr = data.no_of_hrs.split(':')
             var listarray = {
                 start_date: (data.start_date === "0000-00-00" || data.start_date === null) ? 0 : moment(data.start_date).format("DD-MM-YYYY"),
-                start_time: (data.start_time === "00:00:00" || data.start_time === null) ? 0 : moment(data.start_time, "HH:mm:ss").format("hh:mm A"),
+                start_time: (start_time === "00:00:00" || start_time === null) ? 0 : moment(start_time, "HH:mm:ss").format("hh:mm A"),
                 to_date: (data.end_date === "0000-00-00" || data.end_date === null) ? 0 : moment(data.end_date).format("DD-MM-YYYY"),
-                end_time: (data.end_time === "00:00:00" || data.end_time === null) ? 0 : moment(data.end_time, "HH:mm:ss").format("hh:mm A"),
-                no_of_hrs: (hrs_arr[0] + ' Hours ' + (hrs_arr[1] ? (',' + hrs_arr[1] + ' minutes') : '')),
+                end_time: (end_time === "00:00:00" || end_time === null) ? 0 : moment(end_time, "HH:mm:ss").format("hh:mm A"),
+                no_of_hrs: (hrs_arr[0] + ` Hour${hrs_arr[0]!=='01'?'s':''} ` + (hrs_arr[1] ? (' ' + hrs_arr[1] + ' minutes') : '')),
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 project_name: data.project_name,
                 project_type: data.project_type,
                 client: data.client,
                 status: (data.status_submit ? (data.status_submit === "Not Approved" ? (
-                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} />
+                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} />&nbsp;&nbsp;
                         <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
                     </>
                     // ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
@@ -276,7 +278,7 @@ function ProjectwiseTS(props) {
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
 
-                    {Number(localStorage.getItem("designation_id")) === 6 && <Grid item xs={2} container direction="column" spacing={1}>
+                    {props.EmployeeList && props.EmployeeList.length > 1 && <Grid item xs={3} container direction="column" spacing={1}>
                         <div className="Reporthead">Employee Name</div>
                         <Labelbox type="select"
                             dropdown={projectList.employeeName}
@@ -328,7 +330,7 @@ function ProjectwiseTS(props) {
                 {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
-            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
+            <DynModel modelTitle={"Time Sheet"}  handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
 
         </div>
 

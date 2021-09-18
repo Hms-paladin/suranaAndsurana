@@ -82,6 +82,7 @@ import {
 import { Collapse } from "antd";
 import { Checkbox } from 'antd'
 import moment from 'moment';
+import litigation from '../Litigation/litigation';
 
 const { TabPane } = Tabs;
 
@@ -117,6 +118,7 @@ function ProjectIp(props) {
     const [TaskItemModel, setTaskItemModel] = useState(false);
     const [TaskItemModelID, setTaskItemModelID] = useState(0);
     const [multiplePanel, setMultiplePanel] = useState([]);
+    const [ProjectTaskOpen_Hearing, setProjectTaskOpen_Hearing] = useState(false)
     function callback(key) {
         console.log(key);
     }
@@ -335,91 +337,24 @@ function ProjectIp(props) {
         setTaskItemModel(false)
     }
 
-    // console.log(props.ProjectDetails, "props.ProjectDetails")
 
-    // function onSubmit() {
-    //     var mainvalue = {};
-    //     var targetkeys = Object.keys(Trade_Mark);
-    //     for (var i in targetkeys) {
-    //         var errorcheck = ValidationLibrary.checkValidation(
-    //             Trade_Mark[targetkeys[i]].value,
-    //             Trade_Mark[targetkeys[i]].validation
-    //         );
-    //         Trade_Mark[targetkeys[i]].error = !errorcheck.state;
-    //         Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
-    //         mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
-    //     }
-    //     var filtererr = targetkeys.filter(
-    //         (obj) => Trade_Mark[obj].error == true
-    //     );
-    //     console.log(filtererr.length);
-    //     if (filtererr.length > 0) {
-    //         // setResumeFrom({ error: true });
-    //     } else {
-    //         // setResumeFrom({ error: false });
+    // const handleCancel = () => {
+    //     let ResumeFrom_key = [
+    //         "mark", "projecttype", "goodsdescription", "internalstutus", "basicQualification", "additionalQualification1", "additionalQualification2", "institution", "lastEmployer", "startDate", "endDate", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "industry"
+    //     ]
 
-    //         dispatch(InesertResume(Trade_Mark)).then(() => {
-    //             handleCancel()
-    //         })
-    //     }
-
-    //     setResumeFrom(prevState => ({
-    //         ...prevState
-    //     }));
-    // };
-
-    const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype", "goodsdescription", "internalstutus", "basicQualification", "additionalQualification1", "additionalQualification2", "institution", "lastEmployer", "startDate", "endDate", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "industry"
-        ]
-
-        ResumeFrom_key.map((data) => {
-            Trade_Mark[data].value = ""
-        })
-        setResumeFrom(prevState => ({
-            ...prevState,
-        }));
-    }
-
-    // function checkValidation(data, key, multipleId) {
-
-    //     var errorcheck = ValidationLibrary.checkValidation(
-    //         data,
-    //         Trade_Mark[key].validation
-    //     );
-    //     let dynObj = {
-    //         value: data,
-    //         error: !errorcheck.state,
-    //         errmsg: errorcheck.msg,
-    //         validation: Trade_Mark[key].validation
-    //     }
-
-    //     // only for multi select (start)
-
-    //     let multipleIdList = []
-
-    //     if (multipleId) {
-    //         multipleId.map((item) => {
-    //             for (let i = 0; i < data.length; i++) {
-    //                 if (data[i] === item.value) {
-    //                     multipleIdList.push(item.id)
-    //                 }
-    //             }
-    //         })
-    //         dynObj.valueById = multipleIdList.toString()
-    //     }
-    //     // (end)
-
+    //     ResumeFrom_key.map((data) => {
+    //         Trade_Mark[data].value = ""
+    //     })
     //     setResumeFrom(prevState => ({
     //         ...prevState,
-    //         [key]: dynObj,
     //     }));
+    // }
 
-    // };
 
     const modelContent = () => {
         return (
-            <ProjectTaskModel model_close={() => setModelOpen(false)} />
+            <ProjectTaskModel ProjectTaskOpen_Hearing={ProjectTaskOpen_Hearing} model_close={() => setModelOpen(false)} />
         )
     }
 
@@ -452,6 +387,7 @@ function ProjectIp(props) {
 
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
+            setProjectTaskOpen_Hearing(false)
             setModelOpen(true)
         }
         else if (boxName === "STAGE" || boxName === "CASE TYPE") {
@@ -757,7 +693,11 @@ function ProjectIp(props) {
             </div>
         );
     };
-    console.log()
+
+    function litigationHearingModel(data) {
+        setModelOpen(data)
+        setProjectTaskOpen_Hearing(data)
+    }
     return (
 
         <div>
@@ -967,7 +907,7 @@ function ProjectIp(props) {
                         {/*  */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase id_Props={idDetails} />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase TaskModel={(data) => litigationHearingModel(data)} id_Props={idDetails} />
                         }
 
                         {/* IPAB Trademark */}

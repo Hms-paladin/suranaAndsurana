@@ -325,24 +325,20 @@ export default class Labelbox extends Component {
 			function onFileView(url) {
 				window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
 			}
-			if (!this.props.value && document.getElementById("myFile")) {
-				document.getElementById("myFile").value = "";
+			if (this.props.empty && this.props.upload_id&&document.getElementById(this.props.upload_id)) {
+				document.getElementById(this.props.upload_id).value = "";
 			}
-			// console.log(this.props.value && this.props.value.name ,"ggggggggggggggggggg")
+			console.log(this.props.empty,this.props.upload_id && this.props.upload_id ,"ggggggggggggggggggg")
 			return (<>
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div className={`${data.error && "brdred"} upload`}>
-						{/* <input className={`${data.error && "brdred"} brdrcls inputID`} value={this.props.value} maxLength={this.props.maxlength} type="text"
-							onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
-							onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
-							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden} /> */}
-						{/* <div className="upload" style={{ margin: "7px 20px 15px 7px" }}> */}
+			
 						<div style={{ width: "100%", display: "flex" }}>
-							<input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+							<input type="file"
+							//  accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
 								style={{ fontSize: 12 }}
-								id={"myFile"}
-								// value={(!this.props.value)&& []}
+								id={this.props.upload_id}
 								onChange={(e) => this.props.changeData && this.props.changeData(e.target.files[0])}
 								disabled={this.props.disabled}
 								hidden={this.props.hidden} />

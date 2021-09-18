@@ -151,8 +151,11 @@ export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Da
                     notification.success({
                         message: "Time Sheet Started Successfully",
                     });
-                    project_wise&&(dispatch(getProjectWise_TimeSheet(project_wise)));
-                    dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
+                    if (project_wise) {
+                        dispatch(getProjectWise_TimeSheet(project_wise));
+                        dispatch(getTaskTimeSheet(params.task_id));
+                    }
+                    !project_wise && (dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status }))
 
                     return Promise.resolve();
                 } else {
@@ -181,11 +184,19 @@ export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Da
                                     dispatch(getProjectWise_TimeSheet(project_wise))
                                 }
                                 return Promise.resolve();
+                            } else if (response.data.status === 0) {
+                                notification.success({
+                                    message: response.data.msg,
+                                });
                             }
                         });
                     }
 
                 }
+            } else if (response.data.status === 0) {
+                notification.success({
+                    message: response.data.msg,
+                });
             }
         });
 
@@ -270,6 +281,10 @@ export const insertTimeSheetbyTime = (params, time, task, timesheetStopData) => 
                                 message: "Time Sheet Saved Successfully",
                             });
 
+                        } else if (response.data.status === 0) {
+                            notification.success({
+                                message: "Stop Time " +response.data.msg,
+                            });
                         }
                     });
                 }
@@ -295,6 +310,10 @@ export const insertTimeSheetbyTime = (params, time, task, timesheetStopData) => 
                 dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status })
 
                 return Promise.resolve();
+            } else if (response.data.status === 0) {
+                notification.success({
+                    message:((time ===true)?'Start Time ':'Stop Time ')+ response.data.msg,
+                });
             }
         });
 

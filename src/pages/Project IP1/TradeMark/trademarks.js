@@ -427,6 +427,8 @@ function TradeMark(properties) {
         },
         upload: {
             value: null,
+            id: "upload",
+            empty:false,
             error: null,
             errmsg: null,
             disabled: false,
@@ -459,37 +461,6 @@ function TradeMark(properties) {
             (obj) => TradeMarkForm[obj].error == true
         );
         console.log(filtererr.length);
-        // let params = {
-
-        //     "trademark_id": TradeMarkForm.trademark_id.value,
-        //     "project_id": rowId,//"71",//radeMarkForm.project_id.value,
-        //     "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
-        //     "mark_id": TradeMarkForm.mark_id.value,
-        //     "upload_image": selectedFile,
-        //     "application_no": TradeMarkForm.application_no.value,
-        //     "application_date": TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value,
-        //     "usage_details_id": TradeMarkForm.usage_details_id.value===''?'0':TradeMarkForm.usage_details_id.value,
-        //     "goods_description": TradeMarkForm.goods_description.value,
-        //     "usage_from_date": TradeMarkForm.usage_from_date.value===''?'0000-00-00':TradeMarkForm.usage_from_date.value,
-        //     "ip_india_status": TradeMarkForm.ip_india_status.value,
-        //     "comments": TradeMarkForm.comments.value,
-        //     "internal_status": TradeMarkForm.internal_status.value,
-        //     "allotment": TradeMarkForm.allotment.value,
-        //     "amendment": TradeMarkForm.amendment.value,
-        //     // "orders":TradeMarkForm.orders.value,
-        //     "priority_details": TradeMarkForm.priority_details.value,
-        //     "tmj_number": TradeMarkForm.tmj_number.value,
-        //     "tmj_date": TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value,
-        //     "journel_extract": TradeMarkForm.journel_extract.value,
-        //     "certificate_date": TradeMarkForm.certificate_date.value===''?'0000-00-00':TradeMarkForm.certificate_date.value,
-        //     "renewal_certificate_date": TradeMarkForm.renewal_certificate_date.value===''?'0000-00-00':TradeMarkForm.renewal_certificate_date.value,
-        //     "next_renewal": TradeMarkForm.next_renewal.value===''?'0000-00-00':TradeMarkForm.next_renewal.value,
-        //     "created_by": localStorage.getItem("empId"),
-        //     "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-        //     "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-        //     "updated_by": localStorage.getItem("empId"),
-        //     "ip_address": "ddf"
-        // }
 
         let formData = new FormData();
         formData.append("project_id", rowId)
@@ -538,7 +509,7 @@ function TradeMark(properties) {
             // setTradeMarkForm({ error: true });
         } else {
             // setTradeMarkForm({ error: false });
-
+            TradeMarkForm.upload.empty =true;
             dispatch(insertTradeMark(formData, TradeMarkForm, rowId)).then(() => {
                 handleCancel()
                 // dispatch(getTradeMark(rowId))
@@ -549,7 +520,7 @@ function TradeMark(properties) {
             ...prevState
         }));
     };
-
+console.log(TradeMarkForm.upload.value,"TradeMarkForm.upload.value")
     const handleCancel = () => {
         let From_key = [
             "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
@@ -561,6 +532,7 @@ function TradeMark(properties) {
             try {
                 if (data != "upload" || data != "orders") {
                     TradeMarkForm[data].value = ""
+                    TradeMarkForm[data].empty = false
                 } else {
                     TradeMarkForm[data].view_file = ""
                     TradeMarkForm[data].value = null;
@@ -650,7 +622,9 @@ function TradeMark(properties) {
                                     value: null, error: TradeMarkForm.upload.error, errmsg: TradeMarkForm.upload.errmsg, disabled: TradeMarkForm.upload.disabled, view_file: null
                                 },
                             })))}
+                            empty={TradeMarkForm.upload.empty}
                             value={TradeMarkForm.upload.value}
+                            upload_id={"upload"}
                             error={TradeMarkForm.upload.error}
                             errmsg={TradeMarkForm.upload.errmsg}
                             disabled={TradeMarkForm.upload.disabled}
@@ -787,6 +761,7 @@ function TradeMark(properties) {
                                     value: null, error: TradeMarkForm.orders.error, errmsg: TradeMarkForm.orders.errmsg, disabled: TradeMarkForm.orders.disabled, view_file: null
                                 },
                             })))}
+                            upload_id={TradeMarkForm.orders.id}
                             value={TradeMarkForm.orders.value}
                             error={TradeMarkForm.orders.error}
                             errmsg={TradeMarkForm.orders.errmsg}

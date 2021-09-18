@@ -156,6 +156,7 @@ function ProjectTaskModel(props) {
       }
 
       dispatch(inserTask(data)).then((response) => {
+        if(!props.ProjectTaskOpen_Hearing)
         dispatch(getProjectDetails(rowId))
         handleCancel();
         props.model_close && props.model_close()
@@ -168,7 +169,7 @@ function ProjectTaskModel(props) {
     }));
   };
 
-
+console.log(props.ProjectTaskOpen_Hearing,"props.ProjectTaskOpen_Hearing")
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
@@ -228,30 +229,6 @@ function ProjectTaskModel(props) {
   }, [props.ProjectDetails,
   props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.assignToList
   ]);
-
-  function fnLoadSubActivity(data, key) {
-    if (key == "activity") {
-      // Sub Activity
-      Axios({
-        method: "POST",
-        url: apiurl + "get_sub_activity",
-        data: {
-          activity_id: data,
-        },
-      }).then((response) => {
-        let projectSubActivitydata = [];
-        response.data.data.map((data) =>
-          projectSubActivitydata.push({
-            value: data.sub_activity,
-            id: data.sub_activity_id,
-          })
-        );
-        setprojectSubActivity({ projectSubActivitydata });
-      });
-    }
-  }
-
-
 
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
@@ -337,7 +314,6 @@ function ProjectTaskModel(props) {
           <Labelbox type="select"
             dropdown={activityList.activityTypeData}
             changeData={(data) => checkValidation(data, "activity")}
-            //changeData={(data) => fnLoadSubActivity(data, "activity")}
             placeholder={"Activity"}
             value={InsertTaskForm.activity.value}
             error={InsertTaskForm.activity.error}

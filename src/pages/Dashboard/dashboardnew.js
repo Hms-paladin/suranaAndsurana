@@ -264,10 +264,10 @@ function DashboardNew(props) {
         }
 
         // if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
-        if ((localStorage.getItem("department_id") === '5') ) {
+        // if ((localStorage.getItem("department_id") === '5') ) {
 
           menulist.current[8].menu_rights = true;
-        }
+        // }
 
         if (data.control === 'OPA/ Expenses - Search' && data.display_control === 'Y' || data.control === 'OPA/ Expenses- OPE - Save' && data.display_control === 'Y'
           || data.control === 'OPA/ Expenses- OPA - Save' && data.display_control === 'Y') {

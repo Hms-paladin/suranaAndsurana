@@ -502,7 +502,7 @@ function LeaveForm(props) {
                 fromtime: (TableData[m].from_time === "00:00:00" || TableData[m].from_time === null) ? 0 : moment(TableData[m].from_time, "HH:mm:ss").format("hh:mm A"),
                 totime: (TableData[m].to_time === "00:00:00" || TableData[m].to_time === null) ? 0 : moment(TableData[m].to_time, "HH:mm:ss").format("hh:mm A"),
                 status: TableData[m].approve_status === null ? 'Pending' : TableData[m].approve_status === 0 ? "Rejected" : 'Approved',
-                action: TableData[m].approve_status !== 1&&(
+                action: TableData[m].approve_status === null &&TableData[m].approve_status !== 1&&TableData[m].approve_status !== 0&&(
                     <>
                         <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onEditLeaveForm(TableData[index])} />{" "}
                         <img src={Delete} className="editImage" style={{ cursor: 'pointer' }} onClick={() => onDeleteLeaveForm(TableData[index].emp_leave_id)} />

@@ -338,10 +338,8 @@ function AddClient(props) {
     if (filtererr.length > 0) {
     } else {
       dispatch(InsertClient(Addclient_Form, fileupload)).then((response) => {
-        onStateClear()
-        setselectedFile([])
-
-
+        // onStateClear()
+        // setselectedFile([])
       })
     }
 

@@ -350,11 +350,11 @@ function Task(props) {
 
                     {props.getTaskLists.length > 0 && stableSort(props.getTaskLists, getComparator(order, orderBy))
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data, index) => {
-                            const num = index + 1
+                            const num = index + 1;
+                            let total_hours = 0;
                             if (data.totalHours && data.totalHours.length > 0) {
-                                data.totalHours = data.totalHours.split(":")[0];
+                                total_hours = data.totalHours[0].total_hours ? data.totalHours[0].total_hours.split(":")[0] : "0";
                             }
-                            console.log(data.perecent_completion, "tsssss")
                             if (data.perecent_completion === 100 && fieldVal.taskstatus.value === 'Completed') {
 
 
@@ -418,7 +418,7 @@ function Task(props) {
                                             <div style={{ marginTop: '20px' }}>
                                                 <div className="total_12_div">
                                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}</p>
+                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{total_hours}</p>
                                                 </div>
                                                 <div className="images_div">
                                                     {data.project_name !== 'Adhoc Task' && data.project_name !== null && <img src={data.Priority == 'High' ? H_icon : data.Priority == 'Low' ? L_icon : M_icon} style={{ marginRight: '5px', width: '18px', cursor: "pointer" }} onClick={() => fnPeriority({ data })} />}
@@ -498,7 +498,7 @@ function Task(props) {
                                             <div style={{ marginTop: '20px' }}>
                                                 <div className="total_12_div">
                                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours}</p>
+                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{total_hours}</p>
                                                 </div>
                                                 <div className="images_div">
                                                     {data.project_name !== 'Adhoc Task' && data.project_name !== null && <img src={data.Priority == 'High' ? H_icon : data.Priority == 'Low' ? L_icon : M_icon} style={{ marginRight: '5px', width: '18px', cursor: "pointer" }} onClick={() => fnPeriority({ data })} />}
