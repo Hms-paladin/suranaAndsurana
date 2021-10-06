@@ -149,8 +149,7 @@ function ProjectFormCreate(props) {
     },
     comments: {
       value: "",
-      validation: [{ "name": "required" }],
-      error: null,
+      validation: [],
       errmsg: null,
     },
     baseRate: {
