@@ -208,6 +208,19 @@ class ValidationLibrary extends Component {
           return { msg: " Value allow only two digit ", state: false };
         }
       }
+      else if (validatorsArray[valid].name == "gst") {
+        var re = /^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$/;
+        if (!re.test(textValue)  == true) {
+          return { msg: " Enter valid GST format ", state: false };
+        }
+      }
+      else if (validatorsArray[valid].name == "pan") {
+        var re =  /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+       console.log(re.test(textValue),"re.test(textValue)")
+        if (!re.test(textValue)  == true) {
+          return { msg: " Enter valid PAN format ", state: false };
+        }
+      }
     }
     return { msg: "", state: true };//if no error throw empty message
   }

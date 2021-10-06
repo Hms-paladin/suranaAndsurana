@@ -15,7 +15,7 @@ import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
-import { getDesignationList } from '../../actions/MasterDropdowns'
+import { getDesignationList, getCity_By_Id, } from '../../actions/MasterDropdowns'
 
 function AddClient(props) {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function AddClient(props) {
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
   const [getdata, setgetData] = useState([])
-  const [test, setTest] = useState([]);
+  const [SaveButton, setSaveButton] = useState(true);
   const [clientExists, setClientExists] = useState(1)
 
   const [Addclient_Form, setAddclient_Form] = useState({
@@ -50,7 +50,7 @@ function AddClient(props) {
     },
     designation_id_1: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -135,13 +135,19 @@ function AddClient(props) {
     },
     gst_no: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" }, { name: "gst" }],
       error: null,
       errmsg: null,
     },
     pan_no: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [{ name: "required" }, { name: "pan" }],
+      error: null,
+      errmsg: null,
+    },
+    state_code: {
+      value: "",
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -208,17 +214,17 @@ function AddClient(props) {
     });
 
     // city
-    Axios({
-      method: "GET",
-      url: apiurl + "get_s_tbl_m_city",
-    }).then((response) => {
-      console.log("response", response);
-      let cityData = [];
-      response.data.data.map((data) =>
-        cityData.push({ id: data.city_id, value: data.state })
-      );
-      setcityList({ cityData });
-    });
+    // Axios({
+    //   method: "GET",
+    //   url: apiurl + "get_s_tbl_m_city",
+    // }).then((response) => {
+    //   console.log("response", response);
+    //   let cityData = [];
+    //   response.data.data.map((data) =>
+    //     cityData.push({ id: data.city_id, value: data.state })
+    //   );
+    //   setcityList({ cityData });
+    // });
 
   }, [setClientName, setAddclient_Form]);
 
@@ -228,7 +234,15 @@ function AddClient(props) {
       Designation.push({ id: data.designation_id, value: data.designation })
     );
     setgetData({ Designation });
-  }, [props.getDesignationList]);
+    if (Addclient_Form.state.value != "") {
+      let cityData = [];
+      props.getCity.map((data, index) => {
+        cityData.push({ value: data.state, id: data.city_id });
+      });
+      setcityList({ cityData });
+    }
+
+  }, [props.getDesignationList, props.getCity]);
 
   const handleChange = (info, uploadName) => {
     console.log(info, 'sdfjdfsjklkl')
@@ -310,7 +324,9 @@ function AddClient(props) {
       });
 
     }
-
+    if (key === "state") {
+      dispatch(getCity_By_Id(data))
+    }
     setAddclient_Form((prevState) => ({
       ...prevState,
       [key]: dynObj,
@@ -318,7 +334,7 @@ function AddClient(props) {
   }
 
   // console.log(Addclient_Form,"Addclient_Form")
-  function onSubmit() {
+  async function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Addclient_Form);
 
@@ -337,15 +353,18 @@ function AddClient(props) {
     );
     if (filtererr.length > 0) {
     } else {
-      dispatch(InsertClient(Addclient_Form, fileupload)).then((response) => {
-        // onStateClear()
-        // setselectedFile([])
-      })
+      setSaveButton(false)
+      await dispatch(InsertClient(Addclient_Form, fileupload))
+      //  .then(() => {
+      onStateClear()
+      setSaveButton(true)
+      // })
     }
 
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
+
 
   }
 
@@ -396,8 +415,16 @@ function AddClient(props) {
 
   }
 
-
-  console.log(fileupload, "filetest");
+  useEffect(() => {
+    if (Addclient_Form.gst_no.value != "" && !Addclient_Form.gst_no.error) {
+      Addclient_Form.state_code.value = Addclient_Form.gst_no.value.substring(0, 2)
+    } else {
+      Addclient_Form.state_code.value = ""
+    }
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+    }));
+  }, [Addclient_Form.gst_no.value])
 
   const onStateClear = () => {
     let From_key = [
@@ -426,12 +453,8 @@ function AddClient(props) {
     }));
   };
 
-
-
-
   return (
     <div>
-      {console.log(Addclient_Form.client_name, "Addclient_Form.client_name")}
       <div
         style={{ marginBottom: "10px", fontSize: "16px", fontWeight: "600" }}
       >
@@ -443,16 +466,16 @@ function AddClient(props) {
             <Grid item xs={12} container direction="row" alignItems="center" >
               <Grid item xs={12}>
                 <div className="AddClientHead">Client Name</div>
-                  <Labelbox
-                    type="text"
-                    changeData={(data) => checkValidation(data, "client_name")}
-                    value={Addclient_Form.client_name.value}
-                    error={Addclient_Form.client_name.error}
-                    errmsg={Addclient_Form.client_name.errmsg}
-                  />
+                <Labelbox
+                  type="text"
+                  changeData={(data) => checkValidation(data, "client_name")}
+                  value={Addclient_Form.client_name.value}
+                  error={Addclient_Form.client_name.error}
+                  errmsg={Addclient_Form.client_name.errmsg}
+                />
               </Grid>
 
-          
+
             </Grid>
             <Grid item xs={12} container direction="row" alignItems="center" >
               <Grid item xs={6}>
@@ -467,15 +490,30 @@ function AddClient(props) {
                   />
                 </div>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <div className="AddClientHead">PAN No.</div>
-                <Labelbox
-                  type="text"
-                  changeData={(data) => checkValidation(data, "pan_no")}
-                  value={Addclient_Form.pan_no.value}
-                  error={Addclient_Form.pan_no.error}
-                  errmsg={Addclient_Form.pan_no.errmsg}
-                />
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    changeData={(data) => checkValidation(data, "pan_no")}
+                    value={Addclient_Form.pan_no.value}
+                    error={Addclient_Form.pan_no.error}
+                    errmsg={Addclient_Form.pan_no.errmsg}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={2}>
+                <div className="AddClientHead">State Code</div>
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    disabled
+                    changeData={(data) => checkValidation(data, "state_code")}
+                    value={Addclient_Form.state_code.value}
+                    error={Addclient_Form.state_code.error}
+                    errmsg={Addclient_Form.state_code.errmsg}
+                  />
+                </div>
               </Grid>
             </Grid>
             <Grid container spacing={2} className="dashed_div_client">
@@ -591,17 +629,17 @@ function AddClient(props) {
         </div>
         <div className="rightContainer_client">
           <Grid container spacing={2}>
-          <Grid item xs={12}>
-                <div className="AddClientHead">Industry</div>
-                <Labelbox
-                  type="select"
-                  dropdown={Industry.industryData}
-                  changeData={(data) => checkValidation(data, "industrty")}
-                  value={Addclient_Form.industrty.value}
-                  error={Addclient_Form.industrty.error}
-                  errmsg={Addclient_Form.industrty.errmsg}
-                />
-              </Grid>
+            <Grid item xs={12}>
+              <div className="AddClientHead">Industry</div>
+              <Labelbox
+                type="select"
+                dropdown={Industry.industryData}
+                changeData={(data) => checkValidation(data, "industrty")}
+                value={Addclient_Form.industrty.value}
+                error={Addclient_Form.industrty.error}
+                errmsg={Addclient_Form.industrty.errmsg}
+              />
+            </Grid>
             <Grid item xs={12}>
               <div className="AddClientHead">Client Type</div>
               <Labelbox
@@ -693,6 +731,7 @@ function AddClient(props) {
               className="resumeBtnContainer"
             >
               <CustomButton
+                btnDisable={!SaveButton}
                 btnName={"Save"}
                 btnCustomColor="customPrimary"
                 onBtnClick={onSubmit}
@@ -713,7 +752,8 @@ const mapStateToProps = (state) => (
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
     getDesignationList: state.getOptions.getDesignationList || [],
     getInsertStatus: state.AddClientReducer.InsertClient,
-    clientNameCheck: state.AddClientReducer.clientNameCheck
+    clientNameCheck: state.AddClientReducer.clientNameCheck,
+    getCity: state.getOptions.getCity_By_Id || []
   }
 );
 

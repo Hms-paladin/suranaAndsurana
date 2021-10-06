@@ -18,6 +18,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
     DocumentData.set("designation_id_1",Addclient_Form.designation_id_1.value )
     DocumentData.set("gst_no", Addclient_Form.gst_no.value)
     DocumentData.set("pan_no", Addclient_Form.pan_no.value)
+    DocumentData.set("state_code", Addclient_Form.state_code.value)
     DocumentData.set("contact_no", Number(Addclient_Form.con_ph_1.value))
     DocumentData.set("email_id", Addclient_Form.email_id_1.value )
     DocumentData.set("state", Addclient_Form.state.value)
@@ -34,7 +35,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
     DocumentData.set("created_by", localStorage.getItem("empId"))
     DocumentData.set("updated_by", localStorage.getItem("empId"))
 
-    Axios({
+   await Axios({
       method: 'POST',
       url: apiurl + 'insert_client',
       data: DocumentData

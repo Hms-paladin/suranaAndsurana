@@ -401,17 +401,23 @@ function Task(props) {
                                             </div>
                                             <div className="divider"></div>
                                             <div style={{ width: '37%' }}>
-                                                <div className="start_date_yellow">
-                                                    <p>&nbsp;</p>
-                                                    {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
+                                                {/* <div className="start_date_yellow"> */}
+                                                <p>&nbsp;</p>
+                                                {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
                                                     <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p> */}
-                                                </div>
+                                                {/* </div> */}
                                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date != "" ? moment(data.actual_start_date).format("DD MMM YYYY") : ""}</span></span>
                                                     <span>End Date :<span>{data.actual_end_date && data.actual_end_date != "" ? moment(data.actual_end_date).format("DD MMM YYYY") : ""}</span></span>
                                                 </div>
                                                 <div>
                                                     <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                </div>
+                                                <div>
+                                                    <p>Assigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                </div>
+                                                <div>
+                                                    <p>Reassigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div>
                                             </div>
                                             <div className="divider"></div>
@@ -481,17 +487,23 @@ function Task(props) {
                                             </div>
                                             <div className="divider"></div>
                                             <div style={{ width: '37%' }}>
-                                                <div className="start_date_yellow">
-                                                    <p>&nbsp;</p>
-                                                    {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
+                                                {/* <div className="start_date_yellow"> */}
+                                                {/* <p>&nbsp;</p> */}
+                                                {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
                                                     <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p> */}
-                                                </div>
+                                                {/* </div> */}
                                                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date != "" ? moment(data.actual_start_date).format("DD MMM YYYY") : ""}</span></span>
                                                     <span>End Date :<span>{data.actual_end_date && data.actual_end_date != "" ? moment(data.actual_end_date).format("DD MMM YYYY") : ""}</span></span>
                                                 </div>
                                                 <div>
                                                     <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                </div>
+                                                <div>
+                                                    <p>Assigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                </div>
+                                                <div>
+                                                    <p>Reassigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div>
                                             </div>
                                             <div className="divider"></div>
