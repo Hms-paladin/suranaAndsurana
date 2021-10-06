@@ -155,7 +155,7 @@ function DayReport(props) {
 
     const headCells = [
         { id: "surana_case_no", label: "Surana Case No." },
-        { id: "court_no", label: "Court No." },
+        { id: "court_no", label: "Case No." },
         { id: "court", label: "Court" },
         { id: "our_client_vs_other_party", label: "Our Client vs Other Party" },
         { id: "last_heard", label: "Last Heard" },

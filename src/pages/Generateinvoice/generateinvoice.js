@@ -24,9 +24,8 @@ function GenerateInvoice(props) {
   const dispatch = useDispatch();
   const [multiplePanel, setMultiplePanel] = useState([]);
   const [Billablerows, setBillablerows] = useState({});
-
   const [eeeeeee, setEeeeeee] = useState([]);
-  const [test,setTest]=useState(false);
+  const [test, setTest] = useState(false);
   const [generateInvoice, setGenerateInvoice] = useState({
     client: {
       value: "",
@@ -51,6 +50,12 @@ function GenerateInvoice(props) {
       error: null,
       errmsg: null,
     },
+    amount: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    }
   });
 
 
@@ -180,11 +185,11 @@ function GenerateInvoice(props) {
 
     setMultiplePanel(multipleTab);
   }, [props.getBeiSearch]);
-  
+
   useEffect(() => {
     let ipProjectDataList = [];
     eeeeeee.map((data, index) => {
-console.log("testsssssss")
+
       var rowdataListobj = {};
       rowdataListobj["billed"] = <Checkbox />;
       rowdataListobj["activity"] = data.activity;
@@ -194,20 +199,20 @@ console.log("testsssssss")
       rowdataListobj["start_date"] = data.start_date;
       rowdataListobj["end_date"] = data.end_date;
       rowdataListobj["base_rate"] = data.base_rate;
-      rowdataListobj["billablehours"] = <Labelbox type="text" changeData={(data) => (checkValidation(data, "billablehours", index),setTest(!test))} value={billhours[index] && billhours[index]} />;
+      rowdataListobj["billablehours"] = <Labelbox type="text" changeData={(data) => (checkValidation(data, "billablehours", index), setTest(!test))} value={billhours[index] && billhours[index]} />;
       rowdataListobj["amount"] = data.amount;
 
       ipProjectDataList.push(rowdataListobj);
 
     });
 
-    setBillablerows({ipProjectDataList});
+    setBillablerows({ ipProjectDataList });
 
   }, [eeeeeee, billhours]);
 
-  
+
   useEffect(() => {
-     
+
   }, [test])
 
   useEffect(() => {
@@ -232,15 +237,17 @@ console.log("testsssssss")
     };
 
     // if (key === "billablehours") {
-      setbillhours((prevState) => ({
-        ...prevState,
-        [index]: data,
-      }));
-      console.log(Billablerows, "Billablerows[index]")
-      // let amount1 = props.getBeiListByProjectId[index].base_rate * data;
-      setBillablerows(prevState => ({
-        ...prevState,
-      }));
+    setbillhours((prevState) => ({
+      ...prevState,
+      [index]: data,
+    }));
+
+    
+    console.log(Billablerows, "Billablerows[index]")
+    // let amount1 = props.getBeiListByProjectId[index].base_rate * data;
+    setBillablerows(prevState => ({
+      ...prevState,
+    }));
 
     // }
 
@@ -318,7 +325,7 @@ console.log("testsssssss")
 
       {billabletable && <><div>
         <p style={{ color: '#0353A4', marginTop: '20px', marginBottom: '0px' }}>Billable Hours</p>
-        <EnhancedTable headCells={BillableCells} rows={Billablerows.length===0?Billablerows:Billablerows.ipProjectDataList} />
+        <EnhancedTable headCells={BillableCells} rows={Billablerows.length === 0 ? Billablerows : Billablerows.ipProjectDataList} />
       </div>
 
         <div className="btngenerate">

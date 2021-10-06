@@ -43,7 +43,7 @@ function OpeModel(props) {
         },
         description: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [],
             error: null,
             errmsg: null,
         },
