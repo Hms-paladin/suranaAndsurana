@@ -266,7 +266,7 @@ function DashboardNew(props) {
         // if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
         // if ((localStorage.getItem("department_id") === '5') ) {
 
-          menulist.current[8].menu_rights = true;
+        menulist.current[8].menu_rights = true;
         // }
 
         if (data.control === 'OPA/ Expenses - Search' && data.display_control === 'Y' || data.control === 'OPA/ Expenses- OPE - Save' && data.display_control === 'Y'
@@ -353,57 +353,85 @@ function DashboardNew(props) {
       {
         changedashBoard ?
           <>
-            <div className="expAdvContainer">
-              <div className="expensePalce"><b>Expenses</b> {dashboardValues[0]?.Expense?.expences}</div>
-              <div className="advancePlace"><b>Advance</b>  {dashboardValues[0]?.Expense?.advance}</div>
-
-            </div>
-
-            <div className="topcontainer">
-              <div className="projectscroll">
-                <div className="tableHeader">
-                  <div className="linkHeader"></div>
-                  <div>Projects</div>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div className="Box">
+                <div className="expAdvContainer">
+                  <div className="expensePalce"><b>Expenses</b> {dashboardValues[0]?.Expense?.expences}</div>
+                  <div className="advancePlace"><b>Advance</b>  {dashboardValues[0]?.Expense?.advance}</div>
                 </div>
-                <div className="projectdatas">
-                  {dashboardValues[0]?.Projects.length ? dashboardValues[0]?.Projects?.map((data) => {
-                    return (
-                      <div className="projecttable">
-                        <div>
-                          <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>
-                        </div>
-                        <div>{data.project_type}</div>
-                        <div>{data.client}</div>
+
+                <div className="topcontainer">
+                  <div className="projectscroll">
+                    <div className="tableHeader">
+                      <div className="linkHeader"></div>
+                      <div>Projects</div>
+                    </div>
+                    <div className="projectdatas">
+                      {dashboardValues[0]?.Projects.length ? dashboardValues[0]?.Projects?.map((data) => {
+                        return (
+                          <div className="projecttable">
+                            <div>
+                              <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>
+                            </div>
+                            {/* <div>{data.project_type}</div> */}
+                            <div>{data.client}</div>
+                          </div>
+                        );
+                      }) : "No Projects Found"}
+                    </div>
+                  </div>
+                  <div className="Sub-Box">
+                    <div className="taskscroll">
+                      <div className="tableHeader">
+                        <div className="linkHeader"></div>
+                        <div>Tasks</div>
                       </div>
-                    );
-                  }) : "No Projects Found"}
+                      <div className="taskdatas">
+                        {Tasks.map((data) => {
+                          return (
+                            <div className="tasktable">
+                              <div>
+                                <Link to={`/Home/todoList`}>{data.task}</Link>
+                              </div>
+                              <div>{data.count}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="taskscroll">
+                      <div className="tableHeader">
+                        <div className="linkHeader"></div>
+                        <div>Stages</div>
+                      </div>
+                      <div className="taskdaysdatas">
+                        <div className="taskdaystableHeader">
+                          <div>Project Name</div>
+                          <div>Stage Name</div>
+                        </div>
+                        {calenderValues[0]?.stage?.length ? calenderValues[0]?.stage?.map((data) => {
+                          return (
+                            <>
+                              <div className="taskdaystablecal">
+                                <div>{data.project_name}</div>
+                                <div>{data.stage}</div>
+                              </div>
+                            </>
+                          );
+                        }) : "No Stages Found"}
+                        { }
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="taskscroll">
-                <div className="tableHeader">
-                  <div className="linkHeader"></div>
-                  <div>Tasks</div>
-                </div>
-                <div className="taskdatas">
-                  {Tasks.map((data) => {
-                    return (
-                      <div className="tasktable">
-                        <div>
-                          <Link to={`/Home/todoList`}>{data.task}</Link>
-                        </div>
-                        <div>{data.count}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <Grid item xs={3}>
+              <Grid item xs={4} alignItems="center" justifyContent="center">
                 <div className="custom_calender">
                   <Calendar fullscreen={false} onSelect={onPanelChange} />
                 </div>
               </Grid>
-
             </div>
+
 
             <div className="taskdaysscroll" >
               <div className="tableHeader">
@@ -412,26 +440,27 @@ function DashboardNew(props) {
               </div>
               <div className="taskdaysdatas">
                 <div className="taskdaystableHeader">
-                  <div>Activity</div>
-                  <div>Sub Activity</div>
-                  <div>Due by</div>
+                  <div>Comment/Description</div>
+                  <div>Project Name</div>
+                  <div>Client</div>
                   <div>Priority</div>
-                  <div>%Completed</div>
-                  <div>Assigned By</div>
+                  <div>Due by</div>
+                  <div>% Completed</div>
                 </div>
+                {console.log(dashboardValues, "dashboardValues")}
                 {dashboardValues[0]?.Due_task.length ? dashboardValues[0]?.Due_task?.map((data) => {
                   return (
                     <>
                       <div className="taskdaystable">
                         <div>
-                          <Link to={{ pathname: `/Home/search`, state: { value: 4 } }}>{data.activity}</Link>
+                          <Link to={{ pathname: `/Home/search`, state: { value: 4 } }}>{data.description}</Link>
 
                         </div>
-                        <div>{data.sub_activity}</div>
-                        <div>{moment(data.due_by).format('DD-MMM-YYYY')}</div>
+                        <div>{data.project_name}</div>
+                        <div>{data.client}</div>
                         <div>{data.priority}</div>
+                        <div>{moment(data.due_by).format('DD-MMM-YYYY')}</div>
                         <div>{data.perecent_completion ? data.perecent_completion : "--"}</div>
-                        <div>{data.assigned_by}</div>
                       </div>
                     </>
                   );
@@ -449,24 +478,26 @@ function DashboardNew(props) {
                 </div>
                 <div className="taskdaysdatas">
                   <div className="taskdaystableHeader">
+                    <div>Comment/Description</div>
                     <div>Project Name</div>
-                    <div>Activity</div>
-                    <div>Start Date</div>
-                    <div>End Date</div>
+                    <div>Client</div>
                     <div>Priority</div>
+                    <div>Due by</div>
+                    <div>% Completed</div>
                   </div>
                   {calenderValues[0]?.Task?.length ? calenderValues[0]?.Task?.map((data) => {
                     return (
                       <>
                         <div className="taskdaystable">
                           <div>
-                            {data.activity}
+                            <Link to={{ pathname: `/Home/search`, state: { value: 4 } }}>{data.description}</Link>
 
                           </div>
                           <div>{data.project_name}</div>
-                          <div>{moment(data.start_date).format('DD-MMM-YYYY')}</div>
+                          <div>{data.client}</div>
+                          <div>{data.priority}</div>
                           <div>{moment(data.end_date).format('DD-MMM-YYYY')}</div>
-                          <div>{data.status}</div>
+                          <div>{data.perecent_completion ? data.perecent_completion : "--"}</div>
                         </div>
                       </>
                     );
@@ -475,29 +506,7 @@ function DashboardNew(props) {
                 </div>
               </div>
 
-              <div className="taskscroll">
-                <div className="tableHeader">
-                  <div className="linkHeader"></div>
-                  <div>Stages</div>
-                </div>
-                <div className="taskdaysdatas">
-                  <div className="taskdaystableHeader">
-                    <div>Project Name</div>
-                    <div>Stage Name</div>
-                  </div>
-                  {calenderValues[0]?.stage?.length ? calenderValues[0]?.stage?.map((data) => {
-                    return (
-                      <>
-                        <div className="taskdaystablecal">
-                          <div>{data.project_name}</div>
-                          <div>{data.stage}</div>
-                        </div>
-                      </>
-                    );
-                  }) : "No Stages Found"}
-                  { }
-                </div>
-              </div>
+
             </section>
           </>
           :
