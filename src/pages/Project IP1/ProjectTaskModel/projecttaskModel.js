@@ -371,7 +371,7 @@ console.log(props.ProjectTaskOpen_Hearing,"props.ProjectTaskOpen_Hearing")
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="select"
-              value={InsertTaskForm.assignTo.value}
+              value={InsertTaskForm.assignTo.value?InsertTaskForm.assignTo.value:JSON.parse(localStorage.getItem("empId"))}
               error={InsertTaskForm.assignTo.error}
               errmsg={InsertTaskForm.assignTo.errmsg}
               dropdown={assignedToLists.assignedToData}

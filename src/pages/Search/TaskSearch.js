@@ -380,7 +380,7 @@ function Task(props) {
                                             <div style={{ width: '36%', padding: '15px' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
                                                     <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
-                                                    <p>{data.project_id != null ? data.project_type : data.description}</p>
+                                                    {/* <p>{data.project_id != null ? data.project_type : data.description}</p> */}
                                                     <p>{data.client}</p>
                                                 </div>
                                                 <div style={{ display: 'flex', marginLeft: '10px', fontWeight: 'bold', fontSize: '16px' }}>
@@ -473,7 +473,7 @@ function Task(props) {
                                             <div style={{ width: '36%', padding: '15px' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
                                                     <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
-                                                    <p>{data.project_id != null ? data.project_type : data.description}</p>
+                                                    {/* <p>{data.project_id != null ? data.project_type : data.description}</p> */}
                                                     <p>{data.client}</p>
                                                 </div>
                                                 <div style={{ display: 'flex', marginLeft: '10px', fontWeight: 'bold', fontSize: '16px' }}>
