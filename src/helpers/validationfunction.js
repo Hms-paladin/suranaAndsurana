@@ -112,6 +112,12 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: "Please Enter Numeric Value only", state: false };
         }
+      }
+      else if (validatorsArray[valid].name == "allowNumaricOnlyWithZero") {
+        var re = /^(0+|[1-9]\d*)$/;
+        if (re.test(textValue) == false) {
+          return { msg: "Please Enter Numeric Value only", state: false };
+        }
       } else if (validatorsArray[valid].name == "alphabetsOnly") {
         var re = /^[A-Za-z]+$/;
         if (re.test(textValue) == false) {
@@ -189,7 +195,7 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: " Value allow only two digit ", state: false };
         }
-      } 
+      }
       //  else if (validatorsArray[valid].name == "allownumspace") {
       //   var re = /^[1-9][0-9]{9,14}$/;
       //   if (re.test(textValue) == false) {
@@ -200,6 +206,19 @@ class ValidationLibrary extends Component {
         var re = /^[0-9-+()]*$/;
         if (!re.test(textValue) == false) {
           return { msg: " Value allow only two digit ", state: false };
+        }
+      }
+      else if (validatorsArray[valid].name == "gst") {
+        var re = /^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$/;
+        if (!re.test(textValue)  == true) {
+          return { msg: " Enter valid GST format ", state: false };
+        }
+      }
+      else if (validatorsArray[valid].name == "pan") {
+        var re =  /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+       console.log(re.test(textValue),"re.test(textValue)")
+        if (!re.test(textValue)  == true) {
+          return { msg: " Enter valid PAN format ", state: false };
         }
       }
     }

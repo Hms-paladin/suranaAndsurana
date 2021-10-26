@@ -7,7 +7,7 @@ import EnhancedTable from '../../component/DynTable/table';
 import Calender from "../../images/calender.svg";
 import Like from "../../images/like.svg";
 import Unlike from "../../images/unlike.svg";
-import More from "../../images/more.svg";
+import More from "../../images/Check.svg";
 import { getStageMonitor, insertStageMaonitor } from "../../actions/StageMonotorrAction";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import Labelbox from '../../helpers/labelbox/labelbox';
@@ -18,20 +18,14 @@ import moment from 'moment'
 const StageMonitor = (props) => {
   const history = useHistory();
 
-  const header = [
-    // { id: 'table_name', label: 'Table Name' },
-    { id: 'stages', label: 'Stages' },
-    { id: 'subStage', label: 'Sub Stages' },
-    { id: 'compDate', label: 'Compliance Date' },
-    { id: 'actDate', label: 'Actual Date' },
-    { id: 'statusImg', label: '' },
-  ];
+
   const [projectDetails, setProjectDetails] = useState({})
-  const [idDetails, setidDetails] = useState({})
+
   const [compliance_date, setCompliance_date] = useState("1");
   const [stageList, setStageList] = useState([]);
   const dispatch = useDispatch();
   const [disablebtn, setdisablebtn] = useState(false)
+  const [Litigation, setLitigation] = useState(false)
   const [updateParam, setupdateParam] = useState({
 
     compDate: {
@@ -47,7 +41,13 @@ const StageMonitor = (props) => {
       errmsg: null,
     }
   })
-
+  const header = [
+    { id: 'stages', label: Litigation ? 'Case Types' : 'Stages' },
+    { id: 'subStage', label: Litigation ? 'Sub Case Types' : 'Stages' },
+    { id: 'compDate', label: 'Compliance Date' },
+    { id: 'actDate', label: 'Actual Date' },
+    { id: 'statusImg', label: '' },
+  ];
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -75,7 +75,7 @@ const StageMonitor = (props) => {
     // dispatch(insertStageMaonitor());
 
   }, []);
-console.log(disablebtn,"disablebtn")
+  console.log(projectDetails, "disablebtn")
   const like = () => {
     return (
       <div className="likeIcon">
@@ -101,17 +101,18 @@ console.log(disablebtn,"disablebtn")
   }
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
-    props.ProjectDetails.length > 0 && setidDetails({
-      project_id: props.ProjectDetails[0].project_id,
-      client_id: props.ProjectDetails[0].client_id,
-    })
 
-    if(props.stageList.length > 0){
+    if (props.ProjectDetails && props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6) {
+      setLitigation(true)
+    } else {
+      setLitigation(false)
+    }
+    if (props.stageList.length > 0) {
       // console.log(props.stageList[props.stageList.length-1],"props.stageList[props.stageList.length-1].actual_date")
-      if(props.stageList[props.stageList.length-1].actual_date===true || props.stageList[props.stageList.length-1].actual_date===null)
-      setdisablebtn(false)
+      if (props.stageList[props.stageList.length - 1].actual_date === true || props.stageList[props.stageList.length - 1].actual_date === null)
+        setdisablebtn(false)
       else
-      setdisablebtn(true)
+        setdisablebtn(true)
     }
     let StageListData = []
     props.stageList.map((data) => {
@@ -154,7 +155,10 @@ console.log(disablebtn,"disablebtn")
 
         StageListData.push({
           stage: data.stage,
-          substage: data.sub_stage, compliancedate: data.compliance_date, actualdate: data.actual_date, statusImg: icon
+          substage: data.sub_stage,
+          compliancedate: data.compliance_date && moment(data.compliance_date).format("DD-MMM-YYYY") || '-',
+          actualdate: data.actual_date && moment(data.actual_date).format("DD-MMM-YYYY") || '-',
+          statusImg: icon
         })
       }
     }
@@ -163,7 +167,6 @@ console.log(disablebtn,"disablebtn")
 
   }, [props.stageList, props.ProjectDetails, updateParam.compDate.value]);
 
-  console.log(stageList && stageList?.StageListData?.length, "stage")
 
   function SubmitFunction() {
     // props.stageList.map((data, index) => {

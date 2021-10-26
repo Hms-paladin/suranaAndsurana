@@ -8,8 +8,9 @@ import { useDispatch, connect } from "react-redux";
 import {
   getClientType,
   getClient,
+  getProjectSubType,
   getProjectType,
-  getProjectName,
+  get_projectName_by_Desig,
   getBillableType,
   getClientlist,
 } from "../../actions/MasterDropdowns";
@@ -59,7 +60,7 @@ const OtherHead = [
 ];
 
 function Projectsearch(props) {
-  const [pathname, setpathname] = useState(window.location.pathname);
+  
   const [value, setValue] = React.useState(1);
   const [modelOpen, setModelOpen] = useState(false);
   const [clientType, setClientType] = useState({});
@@ -68,7 +69,7 @@ function Projectsearch(props) {
   const [projectName, setProjectName] = useState({});
   const [billableType, setBillableType] = useState({});
   const [multiplePanel, setMultiplePanel] = useState([]);
-
+  const [SubType_Project, setSubType_Project] = useState({});
   const [goRights, setGoRights] = useState([])
   const [createProjectRights, setCreateProjectRights] = useState([])
   const [createAdhocRights, setCreateAdhocRights] = useState([])
@@ -95,6 +96,12 @@ function Projectsearch(props) {
       error: null,
       errmsg: null,
     },
+    project_Subtype: {
+      value: "0",
+      // validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+    },
     projectname: {
       value: "0",
       validation: [{ name: "required" }],
@@ -118,7 +125,7 @@ function Projectsearch(props) {
     dispatch(getClientType());
     dispatch(getClientlist());
     dispatch(getProjectType());
-    dispatch(getProjectName());
+    dispatch(get_projectName_by_Desig());
     dispatch(getBillableType());
   }, []);
 
@@ -161,12 +168,22 @@ function Projectsearch(props) {
       })
     );
     setBillableType({ BillableType });
+
+    let projectSubTypeValue = [];
+    props.ProjectSubType.map((data) =>
+      projectSubTypeValue.push({
+        value: data.sub_project_type,
+        id: data.sub_project_type_id,
+      })
+    );
+    setSubType_Project({ projectSubTypeValue });
   }, [
     props.ClientType,
     props.Client,
     props.ProjectType,
     props.ProjectName,
     props.BillableType,
+    props.ProjectSubType
   ]);
 
   function checkValidation(data, key, multipleId) {
@@ -188,7 +205,10 @@ function Projectsearch(props) {
     // }
 
     // only for multi select (start)
+    if (key === "projecttype" && data) {
 
+      dispatch(getProjectSubType(data));
+    }
     let multipleIdList = [];
 
     if (multipleId) {
@@ -239,6 +259,7 @@ function Projectsearch(props) {
       "projecttype",
       "projectname",
       "billabletype",
+      "project_Subtype"
     ];
 
     Form_key.map((data) => {
@@ -265,21 +286,21 @@ function Projectsearch(props) {
 
 
         var rowdataListobj = {};
-        if (data.project_type_id === 1&&JSON.parse(localStorage.getItem("token")).department==='IP') {
+        if (data.project_type_id === 1 && localStorage.getItem("department_id") === '2') {
           rowdataListobj["ProjectName"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["subprojectype"] = data.sub_project_type;
           rowdataListobj["processtype"] = data.process;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
-        } else if (data.project_type_id === 6&&JSON.parse(localStorage.getItem("token")).department==='LITIGATION') {
+        } else if (data.project_type_id === 6 && localStorage.getItem("department_id") === '1') {
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["DRA"] = data.HR_name;
           rowdataListobj["DDRA"] = data.councel_name;
           rowdataListobj["fillingtype"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
-        } else if(JSON.parse(localStorage.getItem("token")).department==='RE & CORPORATE'){
+        } else if (localStorage.getItem("department_id") === '3' || localStorage.getItem("department_id") === '9' || localStorage.getItem("department_id") === '8' || localStorage.getItem("department_id") === '4' || localStorage.getItem("department_id") === '7') {
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
           rowdataListobj["hodAttorney"] = data.councel_name;
@@ -290,26 +311,26 @@ function Projectsearch(props) {
         ipProjectDataList.push(rowdataListobj);
       });
 
-      if((data.project_type==='IP Projects'&&JSON.parse(localStorage.getItem("token")).department==='IP')||(data.project_type==='Corporate Compliance Projects'&&JSON.parse(localStorage.getItem("token")).department==='RE & CORPORATE')||(data.project_type==='Litigation Projects'&&JSON.parse(localStorage.getItem("token")).department==='LITIGATION')){
-      multipleTab.push(
-        <Panel
-          header={`${data.project_type} (${data.project_details.length})`}
-          key={index + 1}
-        >
-          <EnhancedTable
-            headCells={
-              data.project_type_id === 1
-                ? ipProjectHead
-                : data.project_type_id === 6
-                  ? litigationHead
-                  : OtherHead
-            }
-            rows={ipProjectDataList}
-            tabletitle={""}
-          />
-        </Panel>
-      );
-     }
+      if ((data.project_type_id === 1 && localStorage.getItem("department_id") === '2') || (data.project_type_id === 2 && (localStorage.getItem("department_id") === '3' || localStorage.getItem("department_id") === '9' || localStorage.getItem("department_id") === '8' || localStorage.getItem("department_id") === '4' || localStorage.getItem("department_id") === '7')) || (data.project_type_id === 6 && localStorage.getItem("department_id") === '1')) {
+        multipleTab.push(
+          <Panel
+            header={`${data.project_type} (${data.project_details.length})`}
+            key={index + 1}
+          >
+            <EnhancedTable
+              headCells={
+                data.project_type_id === 1
+                  ? ipProjectHead
+                  : data.project_type_id === 6
+                    ? litigationHead
+                    : OtherHead
+              }
+              rows={ipProjectDataList}
+              tabletitle={""}
+            />
+          </Panel>
+        );
+      }
 
     });
 
@@ -386,6 +407,16 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Project Sub Type</div>
+            <Labelbox type="select"
+              dropdown={SubType_Project.projectSubTypeValue}
+              changeData={(data) => checkValidation(data, "project_Subtype")}
+              value={projectform.project_Subtype.value}
+              error={projectform.project_Subtype.error}
+              errmsg={projectform.project_Subtype.errmsg}
+            ></Labelbox>
+          </div>
+          <div className="projsearchfilterdrpdwn">
             <div className="Fieldheading">Project Name</div>
             <Labelbox
               type="select"
@@ -407,8 +438,9 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
-
+          <div style={{ marginTop: 10 }}>
+            <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
+          </div>
         </div>
       </div>
 
@@ -441,7 +473,7 @@ function Projectsearch(props) {
         </Link> */}
 
         <CustomButton
-          btnName={"Create Project "}
+          btnName={"Create Project / Case"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
           btnDisable={!createProjectRights || createProjectRights.display_control && createProjectRights.display_control === 'N' ? true : false}
@@ -457,15 +489,16 @@ function Projectsearch(props) {
   );
 }
 const mapStateToProps = (state) =>
-  // console.log(state,"statestatestate")
-  ({
-    TableData: state.projectSearchReducer.getProjectSearchTableData,
-    ClientType: state.getOptions.getClientType,
-    Client: state.getOptions.getClientlist,
-    ProjectType: state.getOptions.getProjectType,
-    ProjectName: state.getOptions.getProjectName,
-    BillableType: state.getOptions.getBillableType,
-    UserPermission: state.UserPermissionReducer.getUserPermission,
-  });
+// console.log(state,"statestatestate")
+({
+  TableData: state.projectSearchReducer.getProjectSearchTableData,
+  ClientType: state.getOptions.getClientType,
+  Client: state.getOptions.getClientlist,
+  ProjectType: state.getOptions.getProjectType,
+  ProjectName: state.getOptions.get_projectName_by_Desig,
+  BillableType: state.getOptions.getBillableType,
+  UserPermission: state.UserPermissionReducer.getUserPermission,
+  ProjectSubType: state.getOptions.getProjectSubType || [],
+});
 
 export default connect(mapStateToProps)(Projectsearch);

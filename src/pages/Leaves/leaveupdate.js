@@ -296,14 +296,6 @@ function LeaveUpdate(props) {
   
    }, [props.UserPermission]);
   
-  
-    // console.log(saveRights,"rights")
-  
-   function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
   /////////////
 
     return (

@@ -10,6 +10,7 @@ import {
   GET_TALENTS,
   GET_DESIGNATION_LIST,
   GET_DEPARTMENT,
+  GET_LOCATION_LIST,
   GET_INTERVIEWERS_LIST, GET_FREQUENCY,
   GET_INTERVIEW_STATUS, GET_CANDIDATES_NAMES, GET_TEMPLATE_NAME, GET_CHECKLIST_TYPE, GET_CHECKLIST_CAT
 } from "../utils/Constants.js";
@@ -34,7 +35,9 @@ import {
   GET_COURT_LOCATION,
   GET_TRADE_MARK_STATUS,
   GET_CASE_TYPE,
-  GET_SUB_CASE_TYPE, GET_QUATIONTYPE
+  GET_SUB_CASE_TYPE, GET_QUATIONTYPE,
+  GET_EMP_LIST_DEPARTMENT,
+  GET_PROJECT_NAME_BY_DESIG
 } from "../utils/Constants.js";
 import {
   GET_RESOURCE_TYPE,
@@ -47,8 +50,12 @@ import {
   GET_SUBACTIVITY,
   GET_LITIGATION_COUNSEL,
   GET_LEAVETYPE, GET_USERGROUP,
-  GET_CITY_BY_ID, GET_SUBORDINATE,
-  GET_AREA_DEVELOPMENT, GET_DEVELOPMENT
+  GET_CITY_BY_ID,
+  GET_AREA_DEVELOPMENT,
+  GET_DEVELOPMENT,
+  GET_PROJECT_TYPE_ALL,
+  GET_SUPERVISOR_BY_DEPT,
+  GET_EMP_LIST_PROJECT
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -78,11 +85,12 @@ const initalState = {
   getProjectName: [],
   getBillableType: [],
   getFilingType: [],
-  getEmployeeList: [],
+  getEmpListDepartment: [],
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
   getDesignationList: [],
+  getLoactionList: [],
   getDepartment: [],
   getInterviewersList: [],
   getInterviewStatus: [],
@@ -99,8 +107,19 @@ const initalState = {
   getUserGroup: [],
   getCategory: [],
   getCity_By_Id: [],
-  getSubCategory: [], getQuestionType: [], getCandidateName: [], GetTemplateName: [],
-  getCchecklistcategory: [], getCchecklisttype: [], getFrequency: [], getSubordinate: [], GetAreaDevelopment: [],GetDevelopment:[]
+  getSubCategory: [],
+  getQuestionType: [],
+  getCandidateName: [],
+  GetTemplateName: [],
+  getCchecklistcategory: [],
+  getCchecklisttype: [],
+  getFrequency: [],
+  GetAreaDevelopment: [],
+  GetDevelopment: [],
+  getEmployeeList: [],
+  get_projectName_by_Desig: [],
+  getSupervisorByDepartment: [],
+  getEmpListByProjectId: []
 };
 
 export default function (state = initalState, action) {
@@ -164,6 +183,8 @@ export default function (state = initalState, action) {
       return { ...state, getEmployeeList: payload };
     case GET_DESIGNATION_LIST:
       return { ...state, getDesignationList: payload };
+    case GET_LOCATION_LIST:
+      return { ...state, getLoactionList: payload };
     case GET_DEPARTMENT:
       return { ...state, getDepartment: payload };
     case GET_INTERVIEWERS_LIST:
@@ -214,12 +235,18 @@ export default function (state = initalState, action) {
       return { ...state, getCchecklistcategory: payload };
     case GET_FREQUENCY:
       return { ...state, getFrequency: payload };
-    case GET_SUBORDINATE:
-      return { ...state, getSubordinate: payload };
     case GET_AREA_DEVELOPMENT:
       return { ...state, GetAreaDevelopment: payload };
-      case GET_DEVELOPMENT:
-        return { ...state, GetDevelopment: payload };
+    case GET_DEVELOPMENT:
+      return { ...state, GetDevelopment: payload };
+    case GET_EMP_LIST_DEPARTMENT:
+      return { ...state, getEmpListDepartment: payload };
+    case GET_PROJECT_NAME_BY_DESIG:
+      return { ...state, get_projectName_by_Desig: payload };
+    case GET_SUPERVISOR_BY_DEPT:
+      return { ...state, getSupervisorByDepartment: payload };
+    case GET_EMP_LIST_PROJECT:
+      return { ...state, getEmpListByProjectId: payload };
     default:
       return state;
   }

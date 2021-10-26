@@ -1,9 +1,13 @@
-import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE ,GET_EMP_APPRAISAL_DETAIL_EMPID } from "../utils/Constants";
+import { GET_EMP_APPRAISAL_DETAILS, GET_EMP_APPRAISAL, GET_EMP_APPRAISAL_SUP_RATE, GET_EMP_APPRAISAL_DETAIL_EMPID } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { notification } from 'antd';
+import { Redirect, Link } from "react-router-dom";
 
-export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => async dispatch => {
+
+// const history = useHistory();,
+export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal, apprId) => async dispatch => {
     console.log(modelComment, respbtn, assignbtn, "Add_question")
     try {
         axios({
@@ -11,6 +15,7 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
             url: apiurl + 'insert_emp_appraisal',
             data:
             {
+                "emp_appr_id": apprId || 0,
                 "emp_id": localStorage.getItem("empId"),
                 "area_of_speci": modelComment.area_of_speci.value,
                 "self_work_des": modelComment.self_work_des.value,
@@ -30,14 +35,21 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
             .then((response) => {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Appraisal Applied Successfully',
+                        message: 'Appraisal Saved Successfully ',
                     });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    setTimeout(function () {
+                        window.location = "/Home/dashboardnew";
+                    }, 1000);
                     return Promise.resolve();
                 }
                 if (response.data.msg === "Alredy Applied") {
                     notification.error({
-                        message: 'This Period Already Exist.'
+                        message: 'Appraisal Already Saved '
                     });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAIL_EMPID, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL, payload: response.data.data })
                     return Promise.resolve();
                 }
             });
@@ -49,6 +61,41 @@ export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal) => a
     }
 }
 
+export const UpdateApplyAppraisal = (emp_appr_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'update_emp_appraisal',
+            data: {
+                "emp_id": localStorage.getItem("empId"),
+                "emp_appr_id": emp_appr_id
+            }
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    notification.success({
+                        message: 'Appraisal Applied Successfully',
+                    });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    return Promise.resolve();
+                }
+                if (response.data.msg === "Alredy Applied") {
+                    notification.error({
+                        message: 'Appraisal Already Applied'
+                    });
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL_DETAIL_EMPID, payload: response.data.data })
+                    dispatch({ type: GET_EMP_APPRAISAL, payload: response.data.data })
+                    return Promise.resolve();
+                }
+            });
+
+    } catch (err) {
+        notification.error({
+            message: 'Something Went Wrong,Record Not Added',
+        });
+    }
+}
 
 export const InsertAreaDevelopment = (showKeys, details, date) => async dispatch => {
     try {
@@ -86,7 +133,7 @@ export const GetEmpAppraisalDetails = (tempid) => async dispatch => {
             }
         })
             .then((response) => {
-                dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data })
+                dispatch({ type: GET_EMP_APPRAISAL_DETAILS, payload: response.data.data[0] })
             })
 
     } catch (err) {
@@ -103,7 +150,17 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
                 "emp_appr_id": emp_appr_id,
                 "appraisar_comments": supmodelComment.advice_manage_parter.values,
                 "instruction_action": supmodelComment.instruction_action.values,
-                "advice_manage_parter": supmodelComment.advice_manage_parter.values
+                "advice_manage_parter": supmodelComment.advice_manage_parter.values,
+                "area_of_speci_remarks": supmodelComment.area_of_speci_remarks.values,
+                "self_work_des_remarks": supmodelComment.self_work_des_remarks.values,
+                "current_duties_remarks": supmodelComment.current_duties_remarks.values,
+                "major_achievement_remarks": supmodelComment.major_achievement_remarks.values,
+                "urge_to_learn_remarks": supmodelComment.urge_to_learn_remarks.values,
+                "enhance_your_productivity_remarks": supmodelComment.enhance_your_productivity_remarks.values,
+                "improvement_ssia_remarks": supmodelComment.improvement_ssia_remarks.values,
+                "opinion_remark_remarks": supmodelComment.opinion_remark_remarks.values,
+                "growth_plan_three_yrs_remarks": supmodelComment.growth_plan_three_yrs_remarks.values,
+                "growth_plan_five_yrs_remarks": supmodelComment.growth_plan_five_yrs_remarks.values,
             }
         })
             .then((response) => {
@@ -111,7 +168,9 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
                     notification.success({
                         message: 'Appraisal Supervisor Added Successfully',
                     });
-                    return Promise.resolve();
+                    setTimeout(function () {
+                        window.location = "/Home/todoList";
+                    }, 1000);
                 }
             });
 
@@ -121,6 +180,7 @@ export const InsertApraisalSupervisor = (supmodelComment, emp_appr_id) => async 
 }
 
 export const InsertSupervisorRate = (rateList) => async dispatch => {
+
     try {
         axios({
             method: 'POST',
@@ -134,7 +194,6 @@ export const InsertSupervisorRate = (rateList) => async dispatch => {
                     notification.success({
                         message: ' Rating Added Successfully',
                     });
-                    return Promise.resolve();
                 }
             });
 
@@ -230,6 +289,8 @@ export const InsertManagingPartnerEmpAppraisal = (managemodelComment, emp_appr_i
 
     }
 }
+
+
 
 export const GetEmpAppraisalDetailbyEmpid = () => async dispatch => {
     try {

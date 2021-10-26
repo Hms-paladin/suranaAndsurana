@@ -21,11 +21,16 @@ import { DatePicker, Select } from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
 import { TimePicker } from '@material-ui/pickers'
+import Delete from '../../images/dashboard/delete.svg';
+import PublishIcon from '@material-ui/icons/Publish';
+import DynModel from "../../component/Model/model";
+import CustomButton from "../../component/Butttons/button";
+
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
 		console.log("valid date", props.value)
-		this.state = { gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
+		this.state = { upload_model: false, gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
 		// ? props.value : new Date()
 	}
 	changeGender = (data) => {
@@ -82,10 +87,10 @@ export default class Labelbox extends Component {
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text"
+						<input className={`${data.error && "brdred"} brdrcls inputID`} value={this.props.value} maxLength={this.props.maxlength} type="text"
 							onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
 							onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
-							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden}/>
+							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -100,7 +105,7 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<input className={`${data.error && "brdred"} brdrcls`} min="0" value={this.props.value} type="number" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} onKeyDown={e => (e.key === "e" || e.key === "+" || e.key === "-") && e.preventDefault()} disabled={this.props.disabled} />
+						<input className={`${data.error && "brdred"} brdrcls inputID`} min="0" value={this.props.value} type="number" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} onKeyDown={e => (e.key === "e" || e.key === "+" || e.key === "-") && e.preventDefault()} disabled={this.props.disabled} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -279,14 +284,16 @@ export default class Labelbox extends Component {
 						className={`${data.error && "selectbrdred brdnone"} ${this.props.mode !== "multiple" && "selectAdjustHeight"} selectbox`}
 						showSearch
 						mode={this.props.mode ? this.props.mode : false}
-						value={selectValue ? selectValue : this.props.placeholder }
+						value={selectValue ? selectValue : this.props.placeholder}
 						suffixIcon={<img src={SelectionIcon} className="SelectInput_svg" />}
 						placeholder={this.props.placeholder}
 						optionFilterProp="label"
 						filterOption={(input, option) =>
 							option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 						}
-						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
+						onChange={(value) => this.props.changeData && this.props.changeData(value)}
+						onSearch={(value) => this.props.searchData && this.props.searchData(value)}
+						onBlur={() => this.props.blurData && this.props.blurData()}>
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
 							if (item.value) {
 								if (this.props.mode === "multiple") {
@@ -312,6 +319,71 @@ export default class Labelbox extends Component {
 
 
 				</div>
+			)
+		} else if (data.type == 'upload') {
+
+			function onFileView(url) {
+				window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
+			}
+			if (this.props.empty && this.props.upload_id&&document.getElementById(this.props.upload_id)) {
+				document.getElementById(this.props.upload_id).value = "";
+			}
+			console.log(this.props.empty,this.props.upload_id && this.props.upload_id ,"ggggggggggggggggggg")
+			return (<>
+				<div className="formdiv inputlabel">
+					<label className="labeltxt">{data.labelname}</label>
+					<div className={`${data.error && "brdred"} upload`}>
+			
+						<div style={{ width: "100%", display: "flex" }}>
+							<input type="file"
+							//  accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+								style={{ fontSize: 12 }}
+								id={this.props.upload_id}
+								onChange={(e) => this.props.changeData && this.props.changeData(e.target.files[0])}
+								disabled={this.props.disabled}
+								hidden={this.props.hidden} />
+							<PublishIcon />
+						</div>
+						{(this.props.view_file && this.props.view_file != 'null' && this.props.view_file.length > 0) && <>
+							<hr />
+							<div style={{ display: "flex", marginTop: -6 }}>
+								<div style={{ width: "100%", cursor: 'pointer' }} onClick={() => onFileView(this.props.view_file)}>{(this.props.view_file && this.props.view_file.length > 0 ? (this.props.view_file.substr(35, 16).length > 15 ? this.props.view_file.substr(35, 16) + '..' : this.props.view_file.substr(35, 16)) : '')}</div>
+								<img src={Delete}
+									onClick={() => this.setState({ upload_model: true })}
+									style={{ width: '20px', cursor: 'pointer', padding: '3px' }} />
+							</div>
+						</>}
+
+					</div>
+					{
+						<div className="Errormsg">
+							<div>{data.error && data.errmsg}</div>
+						</div>
+					}
+				</div>
+				<DynModel
+					modelTitle={"Upload Image"}
+					handleChangeModel={this.state.upload_model}
+					handleChangeCloseModel={(bln) => this.setState({ upload_model: bln })}
+					content={
+						<div className="successModel">
+							<div>
+								{" "}
+								<label className="notfound_label">
+									Do You Want to Delete this File ?
+								</label>
+							</div>
+							<div className="customNotFoundbtn">
+								<CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => (this.setState({ upload_model: false }), this.props.remove_file && this.props.remove_file())} />
+								<CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => (this.setState({ upload_model: false }))} />
+							</div>
+						</div>
+					}
+					width={400}
+				/>
+
+			</>
+
 			)
 		}
 	}

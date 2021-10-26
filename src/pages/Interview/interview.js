@@ -17,9 +17,9 @@ import { apiurl } from "../../utils/baseUrl";
 import moment from "moment";
 import Axios from "axios";
 import { getOnlineTestDetails } from '../../actions/OnlineTestAction';
-
 // Model
 import InterviewApprover from "../InterviewApprover/InterviewApprover";
+import { interviewApproverTableData } from "../../actions/InterviewApproveraction";
 
 function InerviewScreen(props) {
   const dispatch = useDispatch();
@@ -37,17 +37,22 @@ function InerviewScreen(props) {
   const [canName, setcanName] = useState("");
   const [dropDownSel, setdropDownSel] = useState(false);
   const [interviewDetails, setInterviewDetails] = useState({})
+  const [interviewStatus, setInterviewStatus] = useState()
   const [testDetails, setTestDetails] = useState({})
+  const [Rows, setRows] = useState([]);
 
   const headCells = [
     { id: "testname", label: "Test Name" },
     { id: "testdate", label: "Test Date" },
     { id: "score", label: "Score" }
   ];
-  const rows = [
-    { testname: "Aptitude", testdata: "02-Mar-2021", score: "45" },
-    { testname: "General Knowledge", testdata: "02-Mar-2021", score: "23" }
+  const Header2 = [
+    { label: "Date" },
+    { label: "Initial Score" },
+    { label: "Comments" },
+    { label: "Interviewer" }, { label: "Round" },
   ];
+
   const [postData, setpostData] = useState({
     init_status: {
       value: "",
@@ -73,15 +78,15 @@ function InerviewScreen(props) {
     },
   });
   useEffect(() => {
-    dispatch(getInterviewStatus());
+    // dispatch(getInterviewStatus());
     dispatch(getInterviewQuestions());
-   
+
   }, []);
 
   useEffect(() => {
-    console.log(selectedCandidateId,"selectedCandidateId")
-    if(selectedCandidateId&&selectedCandidateId!=='')
-    dispatch(getOnlineTestDetails(selectedCandidateId));
+    console.log(selectedCandidateId, "selectedCandidateId")
+    if (selectedCandidateId && selectedCandidateId !== '')
+      dispatch(getOnlineTestDetails(selectedCandidateId));
   }, [selectedCandidateId]);
 
   useEffect(() => {
@@ -93,14 +98,26 @@ function InerviewScreen(props) {
 
     //test details
     let test_details = [];
-    props.getOnlineTestDetails&&props.getOnlineTestDetails.length>0&&props.getOnlineTestDetails.map((data, index) =>
-      test_details.push({ test_name: data.TestTempName,Test_Date: data.Test_Date!==null&&moment(data.Test_Date).format('DD-MMM-YYYY'),score:data.Score_Percentage})
+    props.getOnlineTestDetails && props.getOnlineTestDetails.length > 0 && props.getOnlineTestDetails.map((data, index) =>
+      test_details.push({ test_name: data.TestTempName, Test_Date: data.Test_Date !== null && moment(data.Test_Date).format('DD-MMM-YYYY'), score: data.Score_Percentage })
     );
     setTestDetails({ test_details });
+    let interviewersDetails = [];
+
+    props.interviewData.map((data) => {
+      interviewersDetails.push({
+        date: moment(data.Date).format("DD-MMM-YYYY"),
+        score: data.score_inital,
+        cmts: data.comment,
+        viewer: data.interviewer,
+        round: data.round
+      });
+    });
+    setRows(interviewersDetails)
 
     //Questions
     setgetData(props.getQuestions);
-  }, [props.getInterviewStatus, props.getQuestions,props.getOnlineTestDetails]);
+  }, [props.getInterviewStatus, props.getQuestions, props.getOnlineTestDetails, props.interviewData]);
 
   // console.log(cand_data[0]?.resume_id&&cand_data[0].resume_id,testDetails,"testDetails")
   useEffect(() => {
@@ -143,9 +160,12 @@ function InerviewScreen(props) {
       //     // propsdata.push(data)
       //     )}))
       setint_details({ Intview_data });
+      dispatch(getInterviewStatus(response.data.data[0].round));
+      setInterviewStatus(response.data.data[0].round)
     });
-  }, [props]);
+  }, [props.getOnlineTestDetails, props.getSelectedCandidates,props.interviewer_id, props.getQuestions, props.GetCandiateDetails]);
 
+  console.log(props.getOnlineTestDetails, props.getSelectedCandidates,props.interviewer_id, props.getQuestions, props.GetCandiateDetails,"gggggggggggggggg")
   function ViewCandiate(id) {
     setdata_id(
       cand_data.find((data) => {
@@ -204,6 +224,7 @@ function InerviewScreen(props) {
     onStateClear();
     setSelectedCandidateId("");
     setcanName("");
+
   }, [props.stateClear])
 
   const onStateClear = () => {
@@ -264,10 +285,13 @@ function InerviewScreen(props) {
     setSelectedCandidateId(id);
     setComments(true);
     setcanName(name);
+    dispatch(interviewApproverTableData(id, candDetails.CandList[0].designationID));
+    { console.log(props.interviewData, "props") }
   };
   // const
   return (
     <div>
+      {console.log(props.interviewData, "props")}
       <Grid
         item
         xs={12}
@@ -347,7 +371,7 @@ function InerviewScreen(props) {
                       justify="center"
                       alignItems="left"
                       display="flex"
-                      style={{cursor:'pointer'}}
+                      style={{ cursor: 'pointer' }}
                       className={`${data &&
                         data.resume_id &&
                         data.resume_id === selectedCandidateId &&
@@ -386,13 +410,15 @@ function InerviewScreen(props) {
       {comments === true ? (
         <>
           {/* Changes here */}
-          <div className="candidate_det">
-            <div>Name of the Candidate</div>
-            <div>{canName}</div>
-          </div>
+          <div className="interviewTitle">Name of the Candidate : <span className="interview_cont"> {canName} </span> </div>
+          <br></br>
+          <div className="interviewTitle">Online Test Results </div>
           <div className="score_table">
             <EnhancedTable headCells={headCells} rows={testDetails.test_details}></EnhancedTable>
           </div>
+          <div className="interviewTitle">Previous Interviewer Details </div>
+          <div className="score_table">
+            <EnhancedTable headCells={Header2} rows={Rows} />  </div>
           <div className="inter_status_div">
             <Labelbox
               type="select"
@@ -451,6 +477,7 @@ function InerviewScreen(props) {
                   int_resume_id={selectedCandidateId}
                   task_id={props.interviewer_id.task_id}
                   sel_appr_drop={dropDownSel}
+                  interviewStatus={interviewStatus}
                   //______________________
                   handleAproverModelClose={(bln) => setAppModelOpen(bln)}
                   handleModelClose={props.handleAproverModelClose}
@@ -472,7 +499,8 @@ const mapStateToProps = (state) => ({
   getInterviewStatus: state.getOptions.getInterviewStatus || [],
   getQuestions: state.getHrTodoList.getQuestions || [],
   getSelectedCandidates: state.getHrTodoList.getSelectedCandidates || [],
-  getOnlineTestDetails: state.OnlineTest.getOnlineTestDetails || []
+  getOnlineTestDetails: state.OnlineTest.getOnlineTestDetails || [],
+  interviewData: state.interviewApproverTableData,
 });
 
 export default connect(mapStateToProps)(InerviewScreen);

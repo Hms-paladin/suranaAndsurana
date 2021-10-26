@@ -49,7 +49,7 @@ export const getKra = (from, to,empid) => async (dispatch) => {
         data: {
             "emp_id":empid|| localStorage.getItem("empId"),
             "period_from":from?moment(from).format('YYYY-MM'):"",
-            "period_to":moment(to).format('YYYY-MM') || moment().format('YYYY-MM')
+            "period_to":to?moment(to).format('YYYY-MM') || moment().format('YYYY-MM'):''
         }
     });
     return dispatch({ type: GET_KRA, payload: response.data.data });

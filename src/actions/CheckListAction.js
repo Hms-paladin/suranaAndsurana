@@ -1,5 +1,5 @@
 import {
-    INSERT_CHECKLIST_CREATION,GET_PROJ_SUBPROJ, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED,GET_CHECK_LIST_VIEW,GET_DAYS_WEEK
+    GET_FREQUENCY_BY_CHECKLIST, GET_EMP_ALL, INSERT_CHECKLIST_CREATION, GET_PROJ_SUBPROJ, GET_CHECKLIST_LISTS, GET_CHECKLIST_LISTS_NAMES, GET_CHECK_LIST_ASSIGNED, GET_CHECK_LIST_VIEW, GET_DAYS_WEEK, GET_FREQUENCY
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -16,13 +16,14 @@ export const insertCheckList = (data) => async dispatch => {
         })
             .then(function (response) {
                 if (response.data.status === 1) {
+                    dispatch(getCheckListsNames())
                     dispatch(getCheckLists());
                     notification.success({
                         message: 'Checklist created Successfully',
                     });
                     return Promise.resolve();
                 }
-                
+
             });
 
     } catch (err) {
@@ -33,7 +34,7 @@ export const insertCheckList = (data) => async dispatch => {
 }
 
 export const insert_check_list_assign = (data) => async dispatch => {
-    console.log(data,"dataaa")
+    console.log(data, "dataaa")
     try {
         axios({
             method: 'POST',
@@ -61,8 +62,8 @@ export const getCheckLists = () => async dispatch => {
 
         axios({
             method: 'GET',
-            // url: apiurl + 'get_check_list_creation'
-            url: apiurl + 'get_checklist_search'
+            url: apiurl + 'get_check_list_creation'
+            // url: apiurl + 'get_checklist_search'
         })
             .then((response) => {
                 dispatch({ type: GET_CHECKLIST_LISTS, payload: response.data.data })
@@ -105,14 +106,13 @@ export const getCheckListsNames = () => async dispatch => {
     }
 }
 
-export const getCheckListsAssigned = (projectId, projectTypeId) => async dispatch => {
+export const getCheckListsAssigned = (projectId) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl + 'get_checklist',
             data: {
                 "project_id": projectId,
-                "project_type_id": projectTypeId,
             }
         })
             .then((response) => {
@@ -124,13 +124,13 @@ export const getCheckListsAssigned = (projectId, projectTypeId) => async dispatc
     }
 }
 
-export const get_projType_subProjType_by_projId = (projectId, projectTypeId) => async dispatch => {
+export const get_projType_subProjType_by_projId = (projectId) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl + 'get_projType_subProjType_by_projId',
             data: {
-                "project_id": projectId||0
+                "project_id": projectId || 0
             }
         })
             .then((response) => {
@@ -178,6 +178,24 @@ export const getCheckListsView = (emp_id) => async dispatch => {
         })
             .then((response) => {
                 dispatch({ type: GET_CHECK_LIST_VIEW, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
+
+export const getFrequencyByCheckListId = (id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_frequency_by_checkListId ',
+            data: {
+                "check_list_id": id,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_FREQUENCY_BY_CHECKLIST, payload: response.data.data })
             })
 
     } catch (err) {

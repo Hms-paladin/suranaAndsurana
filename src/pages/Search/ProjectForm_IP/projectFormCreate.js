@@ -15,6 +15,7 @@ import {
   getFilingType,
   getProjectCostRange,
   getClientlist,
+  getEmployeeList
 } from "../../../actions/MasterDropdowns";
 import VariableRate from "../../stages/RateMaster";
 import EnhancedTable from "../../../component/DynTable/table";
@@ -77,6 +78,7 @@ function ProjectFormCreate(props) {
   const [billable, setBillable] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [projectExists, setProjectExists] = useState(1)
+  const [Supervisor, setSupervisor] = useState({})
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -123,6 +125,7 @@ function ProjectFormCreate(props) {
     },
     employeelist: {
       value: "",
+      valueById: "",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
@@ -148,8 +151,7 @@ function ProjectFormCreate(props) {
     },
     comments: {
       value: "",
-      validation: [{ "name": "required" }],
-      error: null,
+      validation: [],
       errmsg: null,
     },
     baseRate: {
@@ -174,11 +176,13 @@ function ProjectFormCreate(props) {
 
   useEffect(() => {
     Axios({
-      method: "GET",
-      url: apiurl + "get_project_type",
+      method: "POST",
+      url: apiurl + "get_project_type_department",
+      data: {
+        emp_id: localStorage.getItem("empId"),
+      }
     }).then((response) => {
-      // SubType_Project_Api()
-      console.log(response.data.data, " response.data.data");
+
       let projectTypedata = [];
       response.data.data.map((data) =>
         projectTypedata.push({
@@ -187,7 +191,6 @@ function ProjectFormCreate(props) {
         })
       );
       setProjectType({ projectTypedata });
-      console.log({ projectTypedata }, " {projectTypedata}");
     });
 
     // billable type
@@ -195,7 +198,6 @@ function ProjectFormCreate(props) {
       method: "GET",
       url: apiurl + "get_billable_type",
     }).then((response) => {
-      console.log("response", response);
       let BillableData = [];
       response.data.data.map((data) =>
         BillableData.push({
@@ -225,10 +227,10 @@ function ProjectFormCreate(props) {
     dispatch(getEmployeeByDepartment(Number(JSON.parse(localStorage.getItem("token")).department_id)));
     dispatch(getProjectCostRange());
     dispatch(getClientlist());
+    dispatch(getEmployeeList());
   }, []);
 
   const onchangeAmount = (data, key) => {
-    console.log(parseInt(data), key, "onchangeAmount")
     // if (key === "amountSearch" && data) {
     setPrpjectSearchCreate((prevState) => ({
       ...prevState,
@@ -247,24 +249,23 @@ function ProjectFormCreate(props) {
         "project_name": projectName,
       }
     }).then((response) => {
-      console.log(response.data)
       setProjectExists(response.data.status)
     });
   }
 
 
-  function handleCost(data,key){
-      let value = data.replace(/,/g, "");
-      var x=value;
-      x=x.toString();
-      var lastThree = x.substring(x.length-3);
-      var otherNumbers = x.substring(0,x.length-3);
-      if(otherNumbers != '')
-          lastThree = ',' + lastThree;
-      var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      console.log(res,value,"ressssss")
-      checkValidation(res,key)
+  function handleCost(data, key) {
+    let value = data.replace(/,/g, "");
+    var x = value;
+    x = x.toString();
+    var lastThree = x.substring(x.length - 3);
+    var otherNumbers = x.substring(0, x.length - 3);
+    if (otherNumbers != '')
+      lastThree = ',' + lastThree;
+    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+    checkValidation(res, key)
   }
+
   function checkValidation(data, key, multipleId) {
     checkProjectNameExists(projectform.projectname.value)
     var errorcheck = ValidationLibrary.checkValidation(
@@ -278,7 +279,6 @@ function ProjectFormCreate(props) {
       validation: projectform[key].validation,
     };
 
-    console.log(projectExists, "projectExists")
 
     if (key === "projectname") {
       if (projectExists === 0) {
@@ -305,8 +305,6 @@ function ProjectFormCreate(props) {
         }));
       }
     }
-    console.log(dynObj, "dynObj")
-    console.log(key, data, "key")
 
     if (data === 1 && key === "project_type") {
       let IP_project_key = [
@@ -321,14 +319,13 @@ function ProjectFormCreate(props) {
         "projectcostrange",
         "projectname",
         "process_type",
-        "comments",
+        // "comments",
       ];
 
       IP_project_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }
+          projectform[data].validation = ([{ name: "required" }])
           // , { "name": "allowNumaricOnly1" }
-        ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -346,14 +343,14 @@ function ProjectFormCreate(props) {
         "employeelist",
         "hod_attorny",
         "projectcostrange",
-        "comments",
+        // "comments",
       ];
 
       Other_key.map((data) => {
         if (data === "projectcostrange") {
           projectform[data].validation = ([{ name: "required" }
-          // , { "name": "allowNumaricOnly1" }
-        ])
+            // , { "name": "allowNumaricOnly1" }
+          ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -374,15 +371,15 @@ function ProjectFormCreate(props) {
         "hod_attorny",
         "projectcostrange",
         "projectname",
-        "comments",
+        // "comments",
 
       ];
 
       Litigation_key.map((data) => {
         if (data === "projectcostrange") {
           projectform[data].validation = ([{ name: "required" }
-          // , { "name": "allowNumaricOnly1" }
-        ])
+            // , { "name": "allowNumaricOnly1" }
+          ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -405,11 +402,10 @@ function ProjectFormCreate(props) {
 
     if (data && key === "billable_type") {
       let projectcostrange = projectform.projectcostrange.value.replace(/,/g, "");
-        console.log(projectcostrange,"bill")
       if (data === 1 || data === 4 || data === 5) {
         projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
-        // , { "name": "allowNumaricOnly1" }
-      ])
+          // , { "name": "allowNumaricOnly1" }
+        ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
         projectform.limits.validation = []
         projectform.additionalRate.validation = []
@@ -417,10 +413,12 @@ function ProjectFormCreate(props) {
       else if (data === 3) {
         projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": 
-        projectcostrange === '' ? '0' : projectcostrange }
-        // , { "name": "allowNumaricOnly1" }
-      ])
+        projectform.baseRate.validation = ([{ name: "required" }, {
+          "name": "custommaxValue", "params":
+            projectcostrange === '' ? '0' : projectcostrange
+        }
+          // , { "name": "allowNumaricOnly1" }
+        ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
       } else if (data === 2) {
         projectform.limits.validation = []
@@ -495,10 +493,9 @@ function ProjectFormCreate(props) {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
-    // console.log(projectform.baseRate.validation, "projectform.baseRate.validation")
+
     if (data && key == "projectcostrange") {
-      let projectcostrange=data.replace(/,/g, "")
-      console.log(projectcostrange,"projectcost")
+      let projectcostrange = data.replace(/,/g, "")
       if (projectform.baseRate.validation[1]) {
         projectform.baseRate.validation[1].params = projectcostrange;
       } else {
@@ -534,7 +531,7 @@ function ProjectFormCreate(props) {
       ...prevState,
     }));
   }
-
+console.log(projectform['comments'],"ddddddddddd")
   function onsubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(projectform);
@@ -549,13 +546,6 @@ function ProjectFormCreate(props) {
     }
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
-
-    // if (billable === 3) {
-    //   projectform.limits.error = false;
-    //   projectform.limits.errmsg = "";
-    // }
-    console.log(filtererr.length, projectform, "projectform ")
-
 
     if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length === 0) {
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
@@ -642,7 +632,7 @@ function ProjectFormCreate(props) {
     props.ProcessType.map((data) =>
       Processtypevalue.push({ value: data.process, id: data.process_id })
     );
-    console.log("test", Processtypevalue);
+
     setProcessType({ Processtypevalue });
 
     //filing type
@@ -661,8 +651,15 @@ function ProjectFormCreate(props) {
     );
     setEmployeeList({ EmployeeList });
 
-
-    // Project Value
+    let employeeData = []
+    props.getEmployeeList.map((data) =>
+      employeeData.push({
+        value: data.name,
+        id: data.emp_id
+      })
+    )
+    setSupervisor({ employeeData })
+    // Project / Transaction Value
 
     let ProjectCostRange = [];
     props.ProjectCostRange.map((data) =>
@@ -698,8 +695,6 @@ function ProjectFormCreate(props) {
       setSearchdata(false);
       setSuccessmodel(true);
     }
-
-
 
     const newInsertrow = (data) => {
       console.log(data, "datadatadatas")
@@ -846,6 +841,7 @@ function ProjectFormCreate(props) {
     setSendVariableData([...sendVariableData]);
   };
 
+  console.log(projectform.employeelist.valueById, "projectform.employeelist.value")
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -917,18 +913,18 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.filing_type.errmsg} /></Grid>
                 </>
               }
-
               <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
                 <Labelbox type="select"
-                  dropdown={employeeList.EmployeeList}
+                  dropdown={Supervisor.employeeData}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
                   error={projectform.hod_attorny.error}
                   errmsg={projectform.hod_attorny.errmsg} /> </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
                 <Labelbox type="select"
+                  mode={"multiple"}
                   dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist")}
+                  changeData={(data) => checkValidation(data, "employeelist", employeeList.EmployeeList)}
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} /></Grid>
@@ -943,7 +939,7 @@ function ProjectFormCreate(props) {
                   <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
                 {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""}
               </Grid>
-              <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
+              <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                 <Labelbox type="text"
                   changeData={(data) => handleCost(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
@@ -974,7 +970,7 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.additionalRate.errmsg} /></Grid> </Grid>
               ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
-                  <Grid item xs={6}> <div className="Fieldheading">Base Rate</div>
+                  <Grid item xs={6}> <div className="Fieldheading">{projectform.billable_type.value == 5 ? 'Base / Professional Fee' : 'Base Rate'}</div>
                     <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
@@ -1017,8 +1013,9 @@ function ProjectFormCreate(props) {
                     errmsg={projectform.hod_attorny.errmsg} /></Grid>
                 <Grid item xs={6}> <div className="Fieldheading">Deputy Direct Responsible Attorney</div>
                   <Labelbox type="select"
+                    mode={"multiple"}
                     dropdown={employeeList.EmployeeList}
-                    changeData={(data) => checkValidation(data, "employeelist")}
+                    changeData={(data) => checkValidation(data, "employeelist", employeeList.EmployeeList)}
                     value={projectform.employeelist.value}
                     error={projectform.employeelist.error}
                     errmsg={projectform.employeelist.errmsg} /></Grid>
@@ -1034,7 +1031,7 @@ function ProjectFormCreate(props) {
                     <img src={PlusIcon} style={{ cursor: "pointer", width: 19 }} onClick={() => setVariableid(true)} /> </div>) : ("")}
                   {varRatePlusIcon === true ? showVariableTable.length !== 0 ? `Variable Rate Selected(${showVariableTable.length})` : "" : ""} </Grid>
 
-                <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
+                <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                   <Labelbox type="text"
                     changeData={(data) => handleCost(data, "projectcostrange")}
                     value={projectform.projectcostrange.value}
@@ -1102,24 +1099,26 @@ function ProjectFormCreate(props) {
                 <Grid item xs={6}></Grid>
               </>
             ) : projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5 ? (<>
-              <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
-                <Labelbox type="select"
-                  dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "employeelist")}
-                  value={projectform.employeelist.value}
-                  error={projectform.employeelist.error}
-                  errmsg={projectform.employeelist.errmsg} />
-              </Grid>
+
               <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
                 <Labelbox type="select"
-                  dropdown={employeeList.EmployeeList}
+                  dropdown={Supervisor.employeeData}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
                   error={projectform.hod_attorny.error}
                   errmsg={projectform.hod_attorny.errmsg}
                 />
               </Grid>
-              <Grid item xs={6}> <div className="Fieldheading">Project Value</div>
+              <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
+                <Labelbox type="select"
+                  mode={"multiple"}
+                  dropdown={employeeList.EmployeeList}
+                  changeData={(data) => checkValidation(data, "employeelist", employeeList.EmployeeList)}
+                  value={projectform.employeelist.value}
+                  error={projectform.employeelist.error}
+                  errmsg={projectform.employeelist.errmsg} />
+              </Grid>
+              <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                 <Labelbox type="text"
                   changeData={(data) => handleCost(data, "projectcostrange")}
                   value={projectform.projectcostrange.value}
@@ -1187,7 +1186,7 @@ function ProjectFormCreate(props) {
               ) : projectform.billable_type.value === 5 || projectform.billable_type.value === 1 || projectform.billable_type.value === 4 ? (
                 <Grid item xs={6} container direction="row" spacing={2}>
                   <Grid item xs={6}>
-                    <div className="Fieldheading">Base Rate</div> <Labelbox type="text"
+                    <div className="Fieldheading">{projectform.billable_type.value == 5 ? 'Base / Professional Fee' : 'Base Rate'}</div> <Labelbox type="text"
                       changeData={(data) => checkValidation(data, "baseRate")}
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
@@ -1233,6 +1232,7 @@ const mapStateToProps = (state) =>
   Client: state.getOptions.getClientlist,
   searchVariableRate: state.variableRateMaster.searchVariableRate,
   lenghtData: state.variableRateMaster.lengthData,
+  getEmployeeList: state.getOptions.getEmployeeList || [],
 });
 
 export default connect(mapStateToProps)(ProjectFormCreate);

@@ -9,11 +9,8 @@ import './candidateModel.scss';
 function DynModelView(props) {
   const [visible, setVisible] = React.useState(false);
   const [getdata, setgetData] = useState([])
-  const [res_id, setres_id] = useState({})
+
   useEffect(() => {
-    // console.log(props, "propsprops")
-    setres_id(props.data_id && props.data_id.resume_id)
-    // console.log(props.data_id, "//")
     Axios({
       method: "POST",
       url: apiurl + 'get_candidate_details_by_id',
@@ -25,9 +22,7 @@ function DynModelView(props) {
         setgetData(response.data.data[0].result)
       })
 
-  }, [props.res_data_id,props.data_id])
-
-  // console.log(props.res_data_id, "type_of_resource")
+  }, [props.res_data_id, props.data_id,props.data_refresh])
 
 
   function handleCancel() {
@@ -96,7 +91,7 @@ function DynModelView(props) {
               </div>
             </div>
 
-            {val.type_of_resource !== 'Intern' && <div className="expDetailes">
+            {val.experience.length > 0 && <div className="expDetailes">
               <div className="tableHeading">Previous Employer Details</div>
               <div className="educationtable">
                 <div className="EmployeeHeader">
@@ -118,8 +113,8 @@ function DynModelView(props) {
                       <div>{values.city}</div>
                       <div>{values.department}</div>
                       <div>{values.designation}</div>
-                      <div>{values.period_from ? moment(values.period_from,"YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
-                      <div>{values.period_to ? moment(values.period_to,"YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
+                      <div>{values.period_from ? moment(values.period_from, "YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
+                      <div>{values.period_to ? moment(values.period_to, "YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
                     </div>
 
                   )
@@ -140,7 +135,7 @@ function DynModelView(props) {
             <div className="employeeform_row5">
               <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no : "-"}</div></div>
               <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr : "-"}</div></div>
-              <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{ val.postal_addr?val.postal_addr : "-"}</div></div>
+              <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.postal_addr ? val.postal_addr : "-"}</div></div>
             </div>
             <div className="employeeform_row6">
               <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>

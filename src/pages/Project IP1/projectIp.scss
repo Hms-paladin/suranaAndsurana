@@ -211,3 +211,37 @@
     margin-left: 15px !important;
     }
 }
+.status_Btn{
+    white-space: nowrap;
+    background-color: orange;
+    border-radius: 4px;
+    padding: 4px;
+    color: white;
+    display: inline;
+ }
+
+.taskitem_div {
+    display: flex;
+    margin-top: 10px;
+    padding: 11px;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    border: 1px solid lightgray;
+}
+
+.taskitem_div div{
+    width:25%;
+}
+
+
+.taskitem_heading{
+    display: flex;
+    justify-content: space-around;
+    color: black;
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+.taskitem_heading div{
+    width:25%;
+}

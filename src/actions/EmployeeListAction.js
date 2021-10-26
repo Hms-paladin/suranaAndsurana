@@ -5,7 +5,7 @@ import moment from 'moment';
 import { notification } from "antd";
 
 
-export const getEmployeeListSearch = (empCodeName,params) => async dispatch => {
+export const getEmpListDepartmentSearch = (empCodeName,params) => async dispatch => {
  
   try {
 

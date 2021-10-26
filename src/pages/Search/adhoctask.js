@@ -9,8 +9,9 @@ import CustomButton from '../../component/Butttons/button';
 import DynModel from '../../component/Model/model';
 import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
-import { getTagList, insertAdhocTask, getAssignedTo } from "../../actions/projectTaskAction";
+import { getTagList, insertAdhocTask} from "../../actions/projectTaskAction";
 import { connect, useDispatch } from "react-redux";
+import { getEmpListDepartment } from '../../actions/MasterDropdowns';
 
 function AdhocTaskModal(props) {
     const dispatch = useDispatch();
@@ -52,7 +53,7 @@ function AdhocTaskModal(props) {
 
     useEffect(() => {
         dispatch(getTagList());
-        dispatch(getAssignedTo());
+        dispatch(getEmpListDepartment());
 
     }, []);
 
@@ -281,7 +282,7 @@ const mapStateToProps = (state) =>
 ({
 
     tagsList: state.projectTasksReducer.tagsList || [],
-    assignToList: state.projectTasksReducer.assignToLists || [],
+    assignToList: state.getOptions.getEmpListDepartment || [],
     UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 

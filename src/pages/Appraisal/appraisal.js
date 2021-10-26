@@ -12,10 +12,13 @@ import RatingModel from './ratingModel';
 import { useParams } from "react-router-dom";
 import './appraisal.scss';
 import { notification } from "antd";
+import { Redirect, Link } from 'react-router-dom';
 import { GetAreaDevelopment } from '../../actions/MasterDropdowns';
-import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal, GetEmpAppraisalDetailbyEmpid } from '../../actions/AppraisalAction';
+import { ApplyAppraisal, InsertAreaDevelopment, GetEmpAppraisalDetails, UpdateApplyAppraisal, InsertApraisalSupervisor, GetEmpAppraisal, InsertManagingPartnerEmpAppraisal, GetEmpAppraisalDetailbyEmpid } from '../../actions/AppraisalAction';
 import moment from 'moment';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
+import EnhancedTable from '../../component/DynTable/table'
+
 import axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 
@@ -41,7 +44,7 @@ function Appraisal(props) {
     const [modelCommentID, setModelCommentID] = useState()
     const [respbtn, setRespbtn] = useState()
     const [assignbtn, setAssignbtn] = useState()
-    const [rowID, setRowID] = useState()
+    const [rowID, setRowID] = useState("")
     const [todoListdata, setTodoListdata] = useState([])
     const [emp_appr_id, setEmp_appr_id] = useState()
     const [enableSave, setEnableSave] = useState(false)
@@ -90,10 +93,24 @@ function Appraisal(props) {
     //Approval
     const [supmodelComment, setSupModelComment] = useState({
         appraisar_comments: { values: "" }, instruction_action: { values: "" }, advice_manage_parter: { values: "" },
+        area_of_speci_remarks: { values: "" },
+        self_work_des_remarks: { values: "" },
+        current_duties_remarks: { values: "" },
+        major_achievement_remarks: { values: "" },
+        urge_to_learn_remarks: { values: "" },
+        enhance_your_productivity_remarks: { values: "" },
+        improvement_ssia_remarks: { values: "" },
+        opinion_remark_remarks: { values: "" },
+        growth_plan_three_yrs_remarks: { values: "" },
+        growth_plan_five_yrs_remarks: { values: "" },
+        current_responsibilites_remarks: { values: "" }
+
     })
 
-    const { appraisar_comments, instruction_action, advice_manage_parter } = supmodelComment
-    const Supervisor = [appraisar_comments, instruction_action, advice_manage_parter]
+    const { appraisar_comments, instruction_action, advice_manage_parter, area_of_speci_remarks, self_work_des_remarks, current_duties_remarks,
+        major_achievement_remarks, urge_to_learn_remarks, enhance_your_productivity_remarks, improvement_ssia_remarks, opinion_remark_remarks, growth_plan_three_yrs_remarks, growth_plan_five_yrs_remarks } = supmodelComment
+    const Supervisor = [appraisar_comments, instruction_action, advice_manage_parter, area_of_speci_remarks, self_work_des_remarks, current_duties_remarks,
+        major_achievement_remarks, urge_to_learn_remarks, enhance_your_productivity_remarks, improvement_ssia_remarks, opinion_remark_remarks, growth_plan_three_yrs_remarks, growth_plan_five_yrs_remarks]
 
 
     // Managing
@@ -131,26 +148,47 @@ function Appraisal(props) {
         },
     })
     const [empDetail, setEmpDetail] = useState({})
-    const test = localStorage.getItem("designation").toString()
+    // const test = localStorage.getItem("designation").toString()
 
+    const header = [
+        { label: 'Area of Assessment' },
+        { label: 'Appraisee  Response' },
+        { label: 'Appraiser Remarks' },
+
+    ];
+    const rowData = null
 
     useEffect(() => {
         dispatch(GetAreaDevelopment())
         dispatch(GetEmpAppraisal())
-        dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData.emp_appr_id))
-        console.log(props.location.state?.appraisalData.emp_appr_id, "empappid")
-        setEmp_appr_id(props.location.state?.appraisalData.emp_appr_id)
+        dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData?.emp_appr_id))
         dispatch(GetEmpAppraisalDetailbyEmpid())
-        let designation = test.substring(1, 5 - 1)
-        if (props.location.state?.appraisalData.task === "Employee Appraisal") {
-            if (designation === "HoD") {
+        setEmp_appr_id(props.location.state?.appraisalData?.emp_appr_id);
+        setSupModelComment(props.location?.prevState?.supmodelComment !== undefined ? props.location?.prevState?.supmodelComment : {
+            appraisar_comments: { values: "" }, instruction_action: { values: "" }, advice_manage_parter: { values: "" },
+            area_of_speci_remarks: { values: "" },
+            self_work_des_remarks: { values: "" },
+            current_duties_remarks: { values: "" },
+            major_achievement_remarks: { values: "" },
+            urge_to_learn_remarks: { values: "" },
+            enhance_your_productivity_remarks: { values: "" },
+            improvement_ssia_remarks: { values: "" },
+            opinion_remark_remarks: { values: "" },
+            growth_plan_three_yrs_remarks: { values: "" },
+            growth_plan_five_yrs_remarks: { values: "" },
+            current_responsibilites_remarks: { values: "" }
+        })
+
+        // let designation = test.substring(1, 5 - 1)
+        if (props.location.state?.appraisalData?.task === "Employee Appraisal") {
+            if (Number(localStorage.getItem("designation_id") )=== 6) {
                 setRowID(1)
             } else {
                 setRowID(2)
             }
         }
         // setRowID(props.location.state?.appraisalData.task === "Employee Appraisal" ? 1 : 2)
-    }, [props.location.state])
+    }, [props.location.state, props.location.prevState])
 
 
     useEffect(() => {
@@ -160,9 +198,28 @@ function Appraisal(props) {
         } else {
             setViewEmployee(3)
             setTodoListdata(props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.details[0])
+
+            Appraisal.comment.value = props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.current_assignment_command
+            let apprDetails = props.GetEmpAppraisalDetailbyEmpid[0]?.details[0];
+            modelComment["area_of_speci"].value = apprDetails?.area_of_speci;
+            modelComment["self_work_des"].value = apprDetails?.self_work_des;
+            modelComment["current_duties"].value = apprDetails?.current_duties;
+            modelComment["major_achievement"].value = apprDetails?.major_achievement;
+            modelComment["urge_to_learn"].value = apprDetails?.urge_to_learn;
+            modelComment["enhance_your_productivity"].value = apprDetails?.enhance_your_productivity;
+            modelComment["improvement_ssia"].value = apprDetails?.improvement_ssia;
+            modelComment["opinion_remark"].value = apprDetails?.opinion_remark;
+            modelComment["growth_plan_three_yrs"].value = apprDetails?.growth_plan_three_yrs;
+            modelComment["growth_plan_five_yrs"].value = apprDetails?.growth_plan_five_yrs;
+            setRespbtn(apprDetails?.current_responsibilites == "No" ? 2 : 1);
+            setAssignbtn(apprDetails?.current_assignment == "No" ? 2 : 1);
+            setModelComment((prevState) => ({
+                ...prevState,
+            }));
+
             Appraisal.comment.value = props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.details[0]?.current_assignment_command
             let details = props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.details[0]
-            // console.log(details.appraisar_comments, details.advice_manage_parter, details.instruction_action, "GetEmpAppraisalr")
+
 
             if (details?.appraisar_comments !== null, details?.advice_manage_parter !== null, details?.instruction_action !== null) {
                 setShowApprovecmd(4)
@@ -177,7 +234,7 @@ function Appraisal(props) {
             }
             let arrVal = []
 
-            props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.qualification.forEach((data) => {
+            addemployeeDetails.length == 0 && addemployeeseminar.length == 0 && addemployeeProgram.length == 0 && props.GetEmpAppraisalDetailbyEmpid && props.GetEmpAppraisalDetailbyEmpid[0]?.qualification.forEach((data) => {
                 if (data.area_development_id === 1) {
                     addemployeeDetails.push({ details: data.details, date: data.details_date })
                     // setAddemployeeDetails([...addemployeeDetails])
@@ -223,11 +280,11 @@ function Appraisal(props) {
             AreDevelopment.push({ id: data.area_development_id, value: data.area_development })
         );
         setAreDevelopment({ AreDevelopment });
-        console.log(props.GetEmpAppraisalDetailbyEmpid[0]?.rating[0], "props.GetEmpAppraisalDetailbyEmpid")
+
 
 
         if (props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails.length > 0) {
-            props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.area_development.map((val) => {
+            props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.area_development?.map((val) => {
                 if (val.area_development_id === 1) {
                     addemployeeDetails.push({ details: val.details, date: val.details_date })
                     setAddemployeeDetails([...addemployeeDetails])
@@ -239,17 +296,17 @@ function Appraisal(props) {
                     setAddemployeeProgram([...addemployeeProgram])
                 }
             })
+            setEmp_id(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0]?.emp_id)
 
-            Appraisal.comment.value = props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.current_assignment_command
-            setEmp_id(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.emp_id)
-            console.log(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0]?.emp_id, "emp")
-            setTodoListdata(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0][0])
+            setTodoListdata(props.GetEmpAppraisalDetails && props.GetEmpAppraisalDetails[0])
+
+
+
         }
 
 
     }, [props.GetAreaDevelopment, props.GetEmpAppraisalDetails])
 
-    console.log(todoListdata, "todolist")
 
     const AddempDetails = () => {
         dispatch(InsertAreaDevelopment(showKeys, Appraisal.details.value, Appraisal.date.value))
@@ -268,12 +325,8 @@ function Appraisal(props) {
         handleCancel()
     }
 
-    function callback(key) {
-        console.log(key);
-    }
-
     function checkValidation(data, key) {
-        console.log(data, key, "dataValue")
+
 
         if (data === 1 && key === "area_dev") {
             setShowKeys(data)
@@ -306,12 +359,6 @@ function Appraisal(props) {
         }));
     }
 
-    const appraisalModelOpen = (data, id) => {
-        setModelOpen(true)
-        setModelTitle(data)
-        setModelCommentID(id)
-    }
-
     ///***********user permission**********/
     useEffect(() => {
         if (props.UserPermission && props.UserPermission.length > 0 && props.UserPermission) {
@@ -329,18 +376,11 @@ function Appraisal(props) {
             cars /= 2;
         } while (cars < 1);
 
-        console.log("Number of cars: " + cars)
+
 
     }, [props.UserPermission]);
 
 
-    // console.log(saveRights,"rights")
-
-    function rightsNotification() {
-        notification.success({
-            message: "You are not Authorized. Please Contact Administrator",
-        });
-    }
     /////////////
 
     const onChange = e => {
@@ -366,6 +406,39 @@ function Appraisal(props) {
             } else if (value === "advice_manage_parter") {
                 supmodelComment.advice_manage_parter.values = data
             }
+            else if (value === "area_of_speci_remarks") {
+                supmodelComment.area_of_speci_remarks.values = data
+            }
+            else if (value === "self_work_des_remarks") {
+                supmodelComment.self_work_des_remarks.values = data
+            }
+            else if (value === "current_duties_remarks") {
+                supmodelComment.current_duties_remarks.values = data
+            }
+            else if (value === "major_achievement_remarks") {
+                supmodelComment.major_achievement_remarks.values = data
+            }
+            else if (value === "urge_to_learn_remarks") {
+                supmodelComment.urge_to_learn_remarks.values = data
+            }
+            else if (value === "enhance_your_productivity_remarks") {
+                supmodelComment.enhance_your_productivity_remarks.values = data
+            }
+            else if (value === "improvement_ssia_remarks") {
+                supmodelComment.improvement_ssia_remarks.values = data
+            }
+            else if (value === "opinion_remark_remarks") {
+                supmodelComment.opinion_remark_remarks.values = data
+            }
+            else if (value === "growth_plan_three_yrs_remarks") {
+                supmodelComment.growth_plan_three_yrs_remarks.values = data
+            }
+            else if (value === "growth_plan_five_yrs_remarks") {
+                supmodelComment.growth_plan_five_yrs_remarks.values = data
+            }
+            else if (value === "current_responsibilites_remarks") {
+                supmodelComment.current_responsibilites_remarks.values = data
+            }
             setSupModelComment((prevState) => ({
                 ...prevState,
             }));
@@ -379,9 +452,34 @@ function Appraisal(props) {
             } else if (value === "fb_managing_parter") {
                 managemodelComment.fb_managing_parter.value = data
             }
+            else if (value === "area_of_speci") {
+                modelComment.area_of_speci.value = data
+            } else if (value === "self_work_des") {
+                modelComment.self_work_des.value = data
+            } else if (value === "current_duties") {
+                modelComment.current_duties.value = data
+            } else if (value === "major_achievement") {
+                modelComment.major_achievement.value = data
+            } else if (value === "urge_to_learn") {
+                modelComment.urge_to_learn.value = data
+            } else if (value === "enhance_your_productivity") {
+                modelComment.enhance_your_productivity.value = data
+            } else if (value === "improvement_ssia") {
+                modelComment.improvement_ssia.value = data
+            } else if (value === "opinion_remark") {
+                modelComment.opinion_remark.value = data
+            } else if (value === "growth_plan_three_yrs") {
+                modelComment.growth_plan_three_yrs.value = data
+            } else if (value === "growth_plan_five_yrs") {
+                modelComment.growth_plan_five_yrs.value = data
+            }
+            setModelComment((prevState) => ({
+                ...prevState,
+            }));
             setManageModelComment((prevState) => ({
                 ...prevState,
             }));
+
 
         } else {
             if (value === "area_of_speci") {
@@ -412,59 +510,53 @@ function Appraisal(props) {
     }
 
 
-    const onsubmit = () => {
-        if (enableSave === true) {
-            if (rowID === 1) {
-                dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
-            } else if (rowID == 2) {
-                dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
-            }
-        }
-        else {
-            if (rowID === 1) {
-                let checkQuestion = Supervisor.find((data) => {
-                    return data.values == ""
-                })
-                if (checkQuestion === undefined) {
+    const onsubmit = (key) => {
+        if (rowID === 1) {
+            let checkQuestion = Supervisor.find((data) => {
+                return data.values == ""
+            })
+            if (checkQuestion === undefined) {
+                if (props.GetEmpAppraisalDetails[0]?.rating.length === 0) {
                     notification.error({
                         message: ' Please give a Rating',
                     });
                 } else {
-                    notification.error({
-                        message: ' Please Answer all the Questions',
-                    });
+                    dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
                 }
-            } else if (rowID == 2) {
 
-                console.log(Manageing, "mmi")
-                let checkQuestion = Manageing.find((data) => {
-                    return data.value == ""
-                })
-                if (checkQuestion === undefined) {
-                    notification.error({
-                        message: ' Please approve a Rating',
-                    });
-                } else {
-                    notification.error({
-                        message: ' Please Answer all the Questions',
-                    });
-                }
-            }
-            else {
-                let checkQuestion = EmpApply.find((data) => {
-                    return data.value == ""
-                })
-                if (checkQuestion === undefined) {
-                    dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal))
-                } else {
-                    notification.error({
-                        message: ' Please Answer all the Questions',
-                    });
-                }
+            } else if (checkQuestion !== undefined) {
+                notification.error({
+                    message: ' Please Answer all the Questions',
+                });
+            } else {
+                dispatch(InsertApraisalSupervisor(supmodelComment, emp_appr_id))
             }
         }
-    }
+        else {
+            if (key === 1) {
 
+
+                dispatch(ApplyAppraisal(modelComment, respbtn, assignbtn, Appraisal, props.GetEmpAppraisalDetailbyEmpid[0]?.details[0]?.emp_appr_id))
+
+
+                // dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+
+            } else if (key === 2) {
+                if (props.GetEmpAppraisalDetailbyEmpid[0]?.details?.length) {
+                    dispatch(UpdateApplyAppraisal(props.GetEmpAppraisalDetailbyEmpid[0]?.details[0]?.emp_appr_id))
+                    dispatch(GetAreaDevelopment())
+                    dispatch(GetEmpAppraisal())
+                    dispatch(GetEmpAppraisalDetails(props.location.state?.appraisalData?.emp_appr_id))
+                    dispatch(GetEmpAppraisalDetailbyEmpid())
+                }
+                else {
+                    dispatch(InsertManagingPartnerEmpAppraisal(managemodelComment, emp_appr_id))
+                }
+            }
+
+        }
+
+    }
 
     const handleCancel = () => {
         let From_key = [
@@ -485,7 +577,6 @@ function Appraisal(props) {
             ...prevState,
         }));
     };
-
 
     const qualification = () => {
         return (
@@ -538,7 +629,7 @@ function Appraisal(props) {
                 </div>
                 <div className="gridDatashow">
                     {addemployeeseminar.map((data) => {
-                        console.log(addemployeeseminar, "addemployeeseminar")
+
                         return (
                             <div className="ValueChildDiv">
                                 <div>{data.details}</div>
@@ -549,10 +640,6 @@ function Appraisal(props) {
                 </div>
             </div>
         )
-    }
-
-    const changeenable = (data) => {
-        setEnableSave(data)
     }
 
     function addMonths(date, months) {
@@ -592,7 +679,7 @@ function Appraisal(props) {
                     <div className="empDetails">
                         <div>
                             <div>Employee Name</div>
-                            {console.log(empDetail?.period_from, "empDetail?.name")}
+
                             <div>{(rowID == 1 || rowID == 2) ? todoListdata && todoListdata.employee_name : JSON.parse(localStorage.getItem("token")).user_name}</div>
                         </div>
                         {/* {(rowID == 1 || rowID == 2) && <div>
@@ -679,230 +766,880 @@ function Appraisal(props) {
                 </div>
 
 
-                {rowID == 1 || rowID == 2 || viewEmployee == 3 ?
-                    <>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Area of Specialization" ><div>{todoListdata && todoListdata.area_of_speci}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Self work descripition (List out the details of works carried and the frequency)" ><div>{todoListdata && todoListdata.self_work_des}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Out of the above, list out your current duties/work, which is your opinion, are not you competency" ><div>{todoListdata && todoListdata.current_duties}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Major Achievements in the review period" ><div>{todoListdata && todoListdata.major_achievement}</div></Panel></Collapse>
-                        </div>
-                        <div className="linkChoose">
-                            <div>Was your comfort level in your current responsibilities was adequate </div>
-                            <div className="yesorNoView">{todoListdata && todoListdata.current_responsibilites == "No" ? " -  No" : " -  Yes"}</div>
-                        </div>
-
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Urge to learn" ><div>{todoListdata && todoListdata.urge_to_learn}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Do you feel any specific training is required to enhance your productivity? if so, please specify" ><div>{todoListdata && todoListdata.enhance_your_productivity}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Suggestions, If any for improvement at SSIA" ><div>{todoListdata && todoListdata.improvement_ssia}</div></Panel></Collapse>
-                        </div>
-                        <div className="chooseleave">
-                            <div className="linkChooseOption">
-                                <div>Is your potential utilized fully in the current assignment </div>
-                                <div className="yesorNoView">{todoListdata && todoListdata.current_assignment == "No" ? " -  No" : " -  Yes"}</div>
-                            </div>
-                            {todoListdata && todoListdata.current_assignment === "No" &&
-                                <div className="reasonBox">
-                                    <div>Reason for why the potential was not fully utilized</div>
-                                    <div className="reasonscmt">
-                                        <Labelbox type="textarea"
-                                            changeData={(data) =>
-                                                checkValidation(data, "comment")
-                                            }
-                                            value={Appraisal.comment.value}
-                                            error={Appraisal.comment.error}
-                                            errmsg={Appraisal.comment.errmsg}
-                                        />
-                                    </div>
-                                </div>
-                            }
-                        </div>
-
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Any other specific opinion/remarks" ><div>{todoListdata && todoListdata.opinion_remark}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Spell out your growth plan for the next three years" ><div>{todoListdata && todoListdata.growth_plan_three_yrs}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Spell out your growth plan for the next five years" ><div>{todoListdata && todoListdata.growth_plan_five_yrs}</div></Panel></Collapse>
-                        </div>
-
-                    </>
-                    : <>
-                        <div className="linkingModel">
-                            <div className="linkview" id="areaofspec" onClick={() => appraisalModelOpen("Area of Specialization", "area_of_speci")}>Area of Specialization</div>
-                            <div className="tickIcons">{modelComment.area_of_speci.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Self work descripition (List out the details of works carried and the frequency)", "self_work_des")}>Self work descripition (List out the details of works carried and the frequency)</div>
-                            <div className="tickIcons">{modelComment.self_work_des.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Out of the above, list out your current duties/work, which is your opinion, are not you competency", "current_duties")}>Out of the above, list out your current duties/work, which is your opinion, are not you competency</div>
-                            <div className="tickIcons">{modelComment.current_duties.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Major Achievements in the review period", "major_achievement")}>Major Achievements in the review period</div>
-                            <div className="tickIcons">{modelComment.major_achievement.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="subheading">In your opinion</div>
-                        <div className="linkChoose">
-                            <div>Was your comfort level in your current responsibilities was adequate </div>
-                            <Radio.Group onChange={onChange} value={respbtn}>
-                                <Radio value={1}>Yes</Radio>
-                                <Radio value={2}>No</Radio>
-
-                            </Radio.Group>
-                            {/* <div><Checkbox /> Yes</div>
-                        <div><Checkbox /> No</div> */}
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Urge to learn", "urge_to_learn")}>Urge to learn</div>
-                            <div className="tickIcons">{modelComment.urge_to_learn.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Do you feel any specific training is required to enhance your productivity? if so, please specify", "enhance_your_productivity")}>Do you feel any specific training is required to enhance your productivity? if so, please specify</div>
-                            <div className="tickIcons">{modelComment.enhance_your_productivity.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Suggestions, If any for improvement at SSIA", "improvement_ssia")}>Suggestions, If any for improvement at SSIA</div>
-                            <div className="tickIcons">{modelComment.improvement_ssia.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="chooseleave">
-                            <div className="linkChooseOption">
-                                <div>Is your potential utilized fully in the current assignment </div>
-                                <Radio.Group onChange={linkChoose} value={assignbtn}>
-                                    <Radio value={1}>Yes</Radio>
-                                    <Radio value={2}>No</Radio>
-
-                                </Radio.Group>
-                            </div>
-                            {changeCheckbox &&
-                                <div className="reasonBox">
-                                    <div>Reason for why the potential was not fully utilized</div>
-                                    <div className="reasonscmt">
-                                        <Labelbox type="textarea"
-                                            changeData={(data) =>
-                                                checkValidation(data, "comment")
-                                            }
-                                            value={Appraisal.comment.value}
-                                            error={Appraisal.comment.error}
-                                            errmsg={Appraisal.comment.errmsg}
-                                        />
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Any other specific opinion/remarks", "opinion_remark")}>Any other specific opinion/remarks</div>
-                            <div className="tickIcons">{modelComment.opinion_remark.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next three years", "growth_plan_three_yrs")}>Spell out your growth plan for the next three years</div>
-                            <div className="tickIcons">{modelComment.growth_plan_three_yrs.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Spell out your growth plan for the next five years", "growth_plan_five_yrs")}>Spell out your growth plan for the next five years</div>
-                            <div className="tickIcons">{modelComment.growth_plan_five_yrs.value && <DoneAllIcon />}</div>
-                        </div>
-                    </>}
-                <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} modelComment={modelComment} supmodelComment={supmodelComment} managemodelComment={managemodelComment} />} />
-
-                {(rowID == 1 || rowID == 2 || showApprovecmd == 4) &&
-                    <>
-                        <div className="commentLine">------------------------------------------------------------- {rowID == 2 || showApprovecmd == 4 ? " Appraisal Section" : "Your comment "} ----------------------------------------------------------------</div>
-                    </>}
                 {rowID == 1 &&
                     <>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Appraiser Comments", "appraisar_comments")}>Appraiser Comments</div>
-                            <div className="tickIcons">{supmodelComment.appraisar_comments.values && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Instruction/Advice", "instruction_action")}>Instruction/Advice</div>
-                            <div className="tickIcons">{supmodelComment.instruction_action.values && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Advice to Managing Partner", "advice_manage_parter")}>Advice to Managing Partner</div>
-                            <div className="tickIcons">{supmodelComment.advice_manage_parter.values && <DoneAllIcon />}</div>
-                        </div>
+                        {/* <div className="appraisal_collapse">
+                            <Collapse onChange={callback}></Collapse> <Panel header="Area of Specialization" ><div>{todoListdata && todoListdata.area_of_speci}</div></Panel>
+                        </div> */}
+
+                        <Grid item xs={12} container direction="row" >
+                            <div className=" linkChoose3">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Area of Assessment
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>
+                                        Appraisee Response
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>
+                                        Appraiser Remarks
+                                    </div>
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Area of Specialization
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata && todoListdata.area_of_speci}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "area_of_speci_remarks")
+                                        }
+                                        value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : supmodelComment.area_of_speci_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Self work descripition (List out the details of works carried and the frequency)
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata && todoListdata.self_work_des}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "self_work_des_remarks")
+                                        }
+                                        value={todoListdata?.self_work_des_remarks ? todoListdata?.self_work_des_remarks : supmodelComment.self_work_des_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Out of the above, list out your current duties/work, which is your opinion, are not you competency
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata && todoListdata.current_duties}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "current_duties_remarks")
+                                        }
+                                        value={todoListdata?.current_duties_remarks ? todoListdata?.current_duties_remarks : supmodelComment.current_duties_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Major Achievements in the review period</div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata && todoListdata.self_work_des}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "major_achievement_remarks")
+                                        }
+                                        value={todoListdata?.major_achievement_remarks ? todoListdata?.major_achievement_remarks : supmodelComment.major_achievement_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Was your comfort level in your current responsibilities was adequate</div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div className="yesorNoView">{todoListdata && todoListdata.current_responsibilites == "No" ? "No" : "Yes"}</div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "current_responsibilites_remarks")
+                                        }
+                                        value={todoListdata?.current_responsibilites_remarks ? todoListdata?.current_responsibilites_remarks : supmodelComment.current_responsibilites_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Urge to learn
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata && todoListdata.urge_to_learn}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "urge_to_learn_remarks")
+                                        }
+                                        value={todoListdata?.urge_to_learn_remarks ? todoListdata?.urge_to_learn_remarks : supmodelComment.urge_to_learn_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Do you feel any specific training is required to enhance your productivity? if so, please specify
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+
+                                        value={todoListdata && todoListdata.enhance_your_productivity}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "enhance_your_productivity_remarks")
+                                        }
+                                        value={todoListdata?.enhance_your_productivity_remarks ? todoListdata?.enhance_your_productivity_remarks : supmodelComment.enhance_your_productivity_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Suggestions, If any for improvement at SSIA
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        disabled={true}
+                                        value={todoListdata && todoListdata.improvement_ssia}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "improvement_ssia_remarks")
+                                        }
+                                        value={todoListdata?.improvement_ssia_remarks ? todoListdata?.improvement_ssia_remarksS : supmodelComment.improvement_ssia_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Any other specific opinion/remarks
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        disabled={true}
+                                        value={todoListdata && todoListdata.opinion_remark}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "opinion_remark_remarks")
+                                        }
+                                        value={todoListdata?.opinion_remark_remarks ? todoListdata?.opinion_remark_remarks : supmodelComment.opinion_remark_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Spell out your growth plan for the next three years
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        disabled={true}
+                                        value={todoListdata && todoListdata.growth_plan_three_yrs}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "growth_plan_three_yrs_remarks")
+                                        }
+                                        value={todoListdata?.growth_plan_five_yrs_remarks ? todoListdata?.growth_plan_five_yrs_remarks : supmodelComment.growth_plan_three_yrs_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Spell out your growth plan for the next five years
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        disabled={true}
+                                        value={todoListdata && todoListdata.growth_plan_five_yrs}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "growth_plan_five_yrs_remarks")
+                                        }
+                                        value={todoListdata?.growth_plan_three_yrs_remarks ? todoListdata?.growth_plan_three_yrs_remarks : supmodelComment.growth_plan_five_yrs_remarks.values}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Is your potential utilized fully in the current assignment
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div className="yesorNoView">{todoListdata && todoListdata.current_assignment == "No" ? "No" : "Yes"}</div>
+                                </Grid>
+                            </div>
+                            {todoListdata && todoListdata.current_assignment === "No" || assignbtn == 2 &&
+                                <div className=" linkChoose">
+                                    <Grid item xs={4} >
+                                        <div>
+                                            Reason for why the potential was not fully utilized
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={4} >
+                                        <div className="reasonBox">
+                                            <div className="reasonscmt">
+                                                <Labelbox type="textarea"
+                                                    disabled={true}
+                                                    value={Appraisal.comment.value}
+                                                />
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={4} >
+                                        <Labelbox type="text"
+                                            changeData={(data) =>
+                                                addAppraisalcmt(data, "comment")
+                                            }
+                                            value={todoListdata?.current_assignment_remarks ? todoListdata?.current_assignment_remarks : todoListdata && todoListdata.current_assignment_remarks}
+                                            error={Appraisal.comment.error}
+                                            errmsg={Appraisal.comment.errmsg}
+                                        />
+                                    </Grid>
+                                </div>
+                            }
+                        </Grid>
                     </>
                 }
+                {rowID !== 1 &&
+                    <>
+                        <Grid item xs={12} container direction="row" >
+                            <div className=" linkChoose3">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Area of Assessment
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>
+                                        Appraisee Response
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>
+                                        Appraiser Remarks
+                                    </div>
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Area of Specialization
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "area_of_speci")
+                                        }
+                                        value={modelComment?.area_of_speci.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.area_of_speci_remarks ? todoListdata?.area_of_speci_remarks : supmodelComment.area_of_speci_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Self work descripition (List out the details of works carried and the frequency)
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "self_work_des")
+                                        }
+                                        value={modelComment?.self_work_des.value} error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.self_work_des_remarks ? todoListdata?.self_work_des_remarks : supmodelComment.self_work_des_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Out of the above, list out your current duties/work, which is your opinion, are not you competency
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "current_duties")
+                                        }
+                                        value={modelComment?.current_duties.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.current_duties_remarks ? todoListdata?.current_duties_remarks : supmodelComment.current_duties_remarks.values}
 
-                {rowID == 2 || showApprovecmd == 4 &&
-                    <>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Appraiser Comments" ><div>{todoListdata && todoListdata.appraisar_comments}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Instruction/Advice" ><div>{todoListdata && todoListdata.instruction_action}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Advice to Managing Partner" ><div>{todoListdata && todoListdata.advice_manage_parter}</div></Panel></Collapse>
-                        </div>
-                    </>}
-                {rowID == 2 || showmanagecmd == 5 &&
-                    <>
-                        <div className="commentLine">-------------------------------------------------------------{showmanagecmd == 5 ? "Managing Partner" : "Your comment"}   ----------------------------------------------------------------</div>
-                    </>}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Major Achievements in the review period</div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "major_achievement")
+                                        }
+                                        value={modelComment?.major_achievement.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.major_achievement_remarks ? todoListdata?.major_achievement_remarks : supmodelComment.major_achievement_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Was your comfort level in your current responsibilities was adequate</div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Radio.Group onChange={onChange} value={respbtn}>
+                                        <Radio value={1}>Yes</Radio>
+                                        <Radio value={2}>No</Radio>
+                                    </Radio.Group>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.current_responsibilites_remarks ? todoListdata?.current_responsibilites_remarks : supmodelComment.current_responsibilites_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Urge to learn
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "urge_to_learn")
+                                        }
+                                        value={modelComment?.urge_to_learn.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.urge_to_learn_remarks ? todoListdata?.urge_to_learn_remarks : supmodelComment.urge_to_learn_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Do you feel any specific training is required to enhance your productivity? if so, please specify
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "enhance_your_productivity")
+                                        }
+                                        value={modelComment?.enhance_your_productivity.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.enhance_your_productivity_remarks ? todoListdata?.enhance_your_productivity_remarks : supmodelComment.enhance_your_productivity_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Suggestions, If any for improvement at SSIA
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "improvement_ssia")
+                                        }
+                                        value={modelComment?.improvement_ssia.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.improvement_ssia_remarks ? todoListdata?.improvement_ssia_remarksS : supmodelComment.improvement_ssia_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Is your potential utilized fully in the current assignment
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Radio.Group onChange={linkChoose} value={assignbtn}>
+                                        <Radio value={1}>Yes</Radio>
+                                        <Radio value={2}>No</Radio>
+
+                                    </Radio.Group>
+                                </Grid>
+                            </div>
+                            {changeCheckbox &&
+                                <div className=" linkChoose">
+                                    <Grid item xs={4} >
+                                        <div>
+                                            Reason for why the potential was not fully utilized
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={4} >
+                                        <Labelbox type="text"
+                                            changeData={(data) =>
+                                                checkValidation(data, "comment")
+                                            }
+                                            // value={modelComment?.improvement_ssia.value}
+                                            error={Appraisal.comment.error}
+                                            errmsg={Appraisal.comment.errmsg}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={4} >
+                                        <Labelbox type="text"
+                                            value={todoListdata?.current_assignment_remarks ? todoListdata?.current_assignment_remarks : todoListdata && todoListdata.current_assignment_remarks}
+                                            disabled={true}
+                                        />
+                                    </Grid>
+                                </div>}
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Any other specific opinion/remarks
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "opinion_remark")
+                                        }
+                                        value={modelComment?.opinion_remark.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.opinion_remark_remarks ? todoListdata?.opinion_remark_remarks : supmodelComment.opinion_remark_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Spell out your growth plan for the next three years
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "growth_plan_three_yrs")
+                                        }
+                                        value={modelComment?.growth_plan_three_yrs.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.growth_plan_five_yrs_remarks ? todoListdata?.growth_plan_five_yrs_remarks : supmodelComment.growth_plan_three_yrs_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                            <div className=" linkChoose">
+                                <Grid item xs={4} >
+                                    <div>
+                                        Spell out your growth plan for the next five years
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        changeData={(data) =>
+                                            addAppraisalcmt(data, "growth_plan_five_yrs")
+                                        }
+                                        value={modelComment?.growth_plan_five_yrs.value}
+                                        error={Appraisal.comment.error}
+                                        errmsg={Appraisal.comment.errmsg}
+                                    />
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <Labelbox type="text"
+                                        value={todoListdata?.growth_plan_three_yrs_remarks ? todoListdata?.growth_plan_three_yrs_remarks : supmodelComment.growth_plan_five_yrs_remarks.values}
+                                        disabled={true}
+                                    />
+                                </Grid>
+                            </div>
+                        </Grid>
+
+                    </>
+
+                }
+                {/* <DynModel modelTitle={"Appraisal"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={<AppraisalModel modelTitle={modelTitle} modelCommentID={modelCommentID} addAppraisalcmt={(data, value) => addAppraisalcmt(data, value)} handleChangeCloseModel={(bln) => setModelOpen(bln)} modelComment={modelComment} supmodelComment={supmodelComment} managemodelComment={managemodelComment} />} /> */}
 
                 {
-                    rowID == 2 &&
+                    (rowID == 1) &&
                     <>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Advice/Instruction to Appraise", "instruction_to_appraise")}>Advice/Instruction to Appraise</div>
-                            <div className="tickIcons">{managemodelComment.instruction_to_appraise.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Advice to HOD", "advice_to_hod")}>Advice to HOD</div>
-                            <div className="tickIcons">{managemodelComment.advice_to_hod.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Instruction to Head Admin/HOD", "instruction_to_admin_hod")}>Instruction to Head Admin/HOD</div>
-                            <div className="tickIcons">{managemodelComment.instruction_to_admin_hod.value && <DoneAllIcon />}</div>
-                        </div>
-                        <div className="linkingModel">
-                            <div className="linkview" onClick={() => appraisalModelOpen("Feedback of Managing Partner", "fb_managing_parter")}>Feedback of Managing Partner</div>
-                            <div className="tickIcons">{managemodelComment.fb_managing_parter.value && <DoneAllIcon />}</div>
-                        </div>
-
+                        <div className="commentLine">------------------------------------------------------------- {rowID == 2 || showApprovecmd == 4 ? " Appraisal Section" : "Your comment "} -----------------------------------------------------</div>
                     </>
                 }
 
-                {showmanagecmd == 5 &&
+                {
+                    (rowID == 2 || showApprovecmd == 4) && (todoListdata?.appraisar_comments || todoListdata?.instruction_action || todoListdata?.advice_manage_parter) &&
                     <>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Advice/Instruction to Appraise" ><div>{todoListdata && todoListdata.instruction_to_appraise}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Advice to HOD" ><div>{todoListdata && todoListdata.advice_to_hod}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Instruction to Head Admin/HOD" ><div>{todoListdata && todoListdata.instruction_to_admin_hod}</div></Panel></Collapse>
-                        </div>
-                        <div className="appraisal_collapse">
-                            <Collapse onChange={callback}><Panel header="Feedback of Managing Partner" ><div>{todoListdata && todoListdata.fb_managing_parter}</div></Panel></Collapse>
-                        </div>
-                    </>}
+                        <div className="commentLine">------------------------------------------------------------- {rowID == 2 || showApprovecmd == 4 ? " Appraisal Section" : "Your comment "} -----------------------------------------------------</div>
+                    </>
+                }
+                {
+                    rowID == 1 && (todoListdata?.appraisar_comments || todoListdata?.advice_manage_parter || todoListdata?.instruction_actioN) &&
+                    <>
+                        <Grid item xs={12} container direction="row" spacing={2}>
+                            <div className=" linkChooseBox">
+                                <Grid item xs={4} >
+                                    <div>Appraiser Comments</div>
+                                    <div className="linkChooseBoxReason">
+                                        <Labelbox type="textarea"
+                                            changeData={(data) =>
+                                                addAppraisalcmt(data, "appraisar_comments")
+                                            }
+                                            value={supmodelComment.appraisar_comments.values}
+                                            error={Appraisal.comment.error}
+                                            errmsg={Appraisal.comment.errmsg}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>Instruction/Advice</div>
+                                    <div className="linkChooseBoxReason">
+                                        <Labelbox type="textarea"
+                                            changeData={(data) =>
+                                                addAppraisalcmt(data, "instruction_action")
+                                            }
+                                            value={supmodelComment.instruction_action.values}
+                                            error={Appraisal.comment.error}
+                                            errmsg={Appraisal.comment.errmsg}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>Advice to managing patner </div>
+                                    <div className="linkChooseBoxReason">
+                                        <Labelbox type="textarea"
+                                            changeData={(data) =>
+                                                addAppraisalcmt(data, "advice_manage_parter")
+                                            }
+                                            value={supmodelComment.advice_manage_parter.values}
+                                            error={Appraisal.comment.error}
+                                            errmsg={Appraisal.comment.errmsg}
+                                        />
+                                    </div>
+                                </Grid>
+                            </div>
+                        </Grid>
+                    </>
+                }
 
-                {showrating == 6 &&
+                {
+                    (rowID == 2 || showApprovecmd == 4) && (todoListdata?.appraisar_comments || todoListdata?.instruction_action || todoListdata?.advice_manage_parter) &&
                     <>
-                        <div className="commentLine">---------------------------------------------------------------- Rating  -- ----------------------------------------------------------------</div>
+                        <Grid item xs={12} container direction="row" spacing={2}>
+                            <div className=" linkChooseBox">
+                                <Grid item xs={4} >
+                                    <div>Appraiser Comments</div>
+                                    <div className="linkChooseBoxReason">
+                                        <Labelbox type="textarea"
+                                            value={todoListdata && todoListdata.appraisar_comments}
+                                            disabled={true}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>Instruction/Advice</div>
+                                    <div className="linkChooseBoxReason">
+                                        <Labelbox type="textarea"
+                                            value={todoListdata && todoListdata.instruction_action}
+                                            disabled={true}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4} >
+                                    <div>Advice to managing patner </div>
+                                    <div className="linkChooseBoxReason">
+                                        <Labelbox type="textarea"
+                                            value={todoListdata && todoListdata.advice_manage_parter}
+                                            disabled={true}
+                                        />
+                                    </div>
+                                </Grid>
+                            </div>
+                        </Grid>
+                    </>
+                }
+                {
+                    // rowID == 2 || showmanagecmd == 5 &&
+                    // <>
+                    //     <div className="commentLine">-------------------------------------------------------------{showmanagecmd == 5 ? "Managing Partner" : "Your comment"}   -----------------------------------------------------</div>
+                    // </>
+                }
+
+                {
+                    // rowID == 2 &&
+                    // <>
+
+                    //     <Grid item xs={12} container direction="row" spacing={2}>
+                    //         <div className=" linkChooseBox">
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Advice/Instruction to Appraise</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "instruction_to_appraise")
+                    //                         }
+                    //                         value={managemodelComment.instruction_to_appraise.value}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Advice to HOD</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "advice_to_hod")
+                    //                         }
+                    //                         value={managemodelComment.advice_to_hod.value}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Instruction to Head Admin/HOD</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "instruction_to_admin_hod")
+                    //                         }
+                    //                         value={managemodelComment.instruction_to_admin_hod.value}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Feedback of Managing Partner</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "fb_managing_parter")
+                    //                         }
+                    //                         value={managemodelComment.fb_managing_parter.value}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //         </div>
+                    //     </Grid>
+                    // </>
+                }
+                {
+                    // showmanagecmd == 5 &&
+                    // <>
+                    //     {/* <div className="appraisal_collapse">
+                    //         <Collapse onChange={callback}><Panel header="Advice/Instruction to Appraise" ><div>{todoListdata && todoListdata.instruction_to_appraise}</div></Panel></Collapse>
+                    //     </div>
+                    //     <div className="appraisal_collapse">
+                    //         <Collapse onChange={callback}><Panel header="Advice to HOD" ><div>{todoListdata && todoListdata.advice_to_hod}</div></Panel></Collapse>
+                    //     </div>
+                    //     <div className="appraisal_collapse">
+                    //         <Collapse onChange={callback}><Panel header="Instruction to Head Admin/HOD" ><div>{todoListdata && todoListdata.instruction_to_admin_hod}</div></Panel></Collapse>
+                    //     </div>
+                    //     <div className="appraisal_collapse">
+                    //         <Collapse onChange={callback}><Panel header="Feedback of Managing Partner" ><div>{todoListdata && todoListdata.fb_managing_parter}</div></Panel></Collapse>
+                    //     </div> */}
+                    //     <Grid item xs={12} container direction="row" spacing={2}>
+                    //         <div className=" linkChooseBox">
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Advice/Instruction to Appraise</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "instruction_to_appraise")
+                    //                         }
+                    //                         value={todoListdata && todoListdata.instruction_to_appraise}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Advice to HOD</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "advice_to_hod")
+                    //                         }
+                    //                         value={todoListdata && todoListdata.advice_to_hod}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Instruction to Head Admin/HOD</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "instruction_to_admin_hod")
+                    //                         }
+                    //                         value={todoListdata && todoListdata.instruction_to_admin_hod}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //             <Grid item xs={3} >
+                    //                 <div className="boxHeader">Feedback of Managing Partner</div>
+                    //                 <div className="linkChooseBoxReason">
+                    //                     <Labelbox type="textarea"
+                    //                         changeData={(data) =>
+                    //                             addAppraisalcmt(data, "fb_managing_parter")
+                    //                         }
+                    //                         value={todoListdata && todoListdata.fb_managing_parter}
+                    //                         error={Appraisal.comment.error}
+                    //                         errmsg={Appraisal.comment.errmsg}
+                    //                     />
+                    //                 </div>
+                    //             </Grid>
+                    //         </div>
+                    //     </Grid>
+                    // </>
+                }
+                {
+                    showrating == 6 &&
+                    <>
+                        <div className="commentLine">---------------------------------------------------------------- Rating  ------------------------------------------------------------</div>
                         <div className="showRatingtable">
                             {showratingDetails && showratingDetails.map((val, index) => {
-                                console.log(val, "yyyy")
+
                                 return (
                                     <div className="showRateingscontainer">
                                         <div className="ratingHeading">{val.area_of_development}</div>
@@ -911,19 +1648,31 @@ function Appraisal(props) {
                                 )
                             })}
                         </div>
-                    </>}
+                    </>
+                }
                 <div className="appraisalBtn">
-                    {(rowID == 1 || rowID == 2) && <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={() => setRatingModelOpen(true)} />}
-                    {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />}
+                    {rowID && (rowID == 1 || rowID == 2) && <>
+                        {props.GetEmpAppraisalDetails[0]?.rating?.length === 0 ?
+                            <Link to={{
+                                pathname: '/Home/ratingModel',
+                                ids: { emp_appr_id: emp_appr_id, employeeID: emp_id, rowID: rowID, empDetail: empDetail },
+                                state: props.location?.state,
+                                prevState: { supmodelComment }
+                            }}>
+                                <CustomButton btnName={"Rating"} btnCustomColor="customPrimary" btnDisable={props.GetEmpAppraisalDetails[0]?.rating.length === 0 ? false : true} custombtnCSS="custom_save" />
+                            </Link>
+                            : <CustomButton btnName={"Rating"} btnDisable={true} custombtnCSS="custom_save" />}</>}
+                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => onsubmit(1)} />
 
-                    <DynModel modelTitle={"Rating"} handleChangeModel={ratingModelOpen} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} content={<RatingModel employeeID={emp_id} rowID={rowID} empDetail={empDetail} handleChangeCloseModel={(bln) => setRatingModelOpen(bln)} changeenable={(data) => changeenable(data)} emp_appr_id={emp_appr_id} />} width={700} />
-
-
+                    {
+                        (viewEmployee === 3) &&
+                        <CustomButton btnName={"Submit"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={(props.GetEmpAppraisalDetailbyEmpid[0]?.details?.length === 1) ? false : true} onBtnClick={() => onsubmit(2)} />
+                    }
                     {(rowID == 1 || rowID == 2 || viewEmployee !== 3) && <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />}
                 </div>
-            </div>
+            </div >
             }
-        </div>
+        </div >
     )
 }
 

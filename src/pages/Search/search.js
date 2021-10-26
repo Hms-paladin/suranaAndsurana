@@ -30,7 +30,7 @@ function Search(props) {
             <div className="radioBoxContainer">
                 <Radio.Group onChange={onChange} value={value}>
                     <Radio value={1}>Resume</Radio>
-                    <Radio value={2}>Project</Radio>
+                    <Radio value={2}>Project / Case</Radio>
                     <Radio value={3}>HR</Radio>
                     <Radio value={4}>Task</Radio>
                     {/* <Radio value={5}>Label 4</Radio>

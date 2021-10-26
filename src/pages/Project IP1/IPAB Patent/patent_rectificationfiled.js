@@ -13,12 +13,117 @@ import { getFilingTypeIpab } from "../../../actions/MasterDropdowns";
 function PatentRectificationFiled(props) {
 
     const [tradeStatusList, settradeStatusList] = useState({})
-    const [classDetList, setclassDetList] = useState({})
     const [filingTypeList, setFilingTypeList] = useState({})
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
     let { rowId } = useParams()
+
+    
+    const [TradeMarkForm, setTradeMarkForm] = useState({
+        client_applicant: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        trademark_ipab_id: {
+            value: 0,
+            validation: [],
+            error: null,
+            errmsg: null,
+            disabled: false,
+        },
+        applicant_no: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        patent_title: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        recitification_filing_date: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        serial_no: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        org_appeal_no: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        hearing_date: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        respondent: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        respondent_rep: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        filing_type_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+        status_id: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+
+        comments: {
+            value: "",
+            validation: [{ "name": "required" },],
+            error: null,
+            errmsg: null,
+            disabled: false,
+
+        },
+    })
 
     useEffect(() => {
         dispatch(getFilingTypeIpab());
@@ -53,7 +158,7 @@ function PatentRectificationFiled(props) {
             // if(obj.comments && obj.comments.length)
             // TradeMarkForm.comments.disabled = true;
 
-            TradeMarkForm.rectification_filing.value = obj.rectification_filing;
+            TradeMarkForm.recitification_filing_date.value = obj.rectification_filing;
             // if(obj.rectification_filing && obj.rectification_filing.length)
             // TradeMarkForm.rectification_filing.disabled = true;
 
@@ -65,9 +170,9 @@ function PatentRectificationFiled(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            TradeMarkForm.date_of_hearing.value = obj.hearing_date || moment().format('YYYY-MM-DD');
+            obj.hearing_date&&(TradeMarkForm.hearing_date.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
-            // TradeMarkForm.date_of_hearing.disabled = true;
+            // TradeMarkForm.hearing_date.disabled = true;
 
             TradeMarkForm.filing_type_id.valueById = obj.filing_type_id ? JSON.parse("[" + obj.filing_type_id + "]") : [];
             let arr = [];
@@ -102,11 +207,6 @@ function PatentRectificationFiled(props) {
             // TradeMarkForm.patent_title.disabled = true;
         }
 
-        setProjectDetails(props.ProjectDetails);
-        props.ProjectDetails.length > 0 && setidDetails({
-            project_id: props.ProjectDetails[0].project_id,
-            client_id: props.ProjectDetails[0].client_id,
-        })
 
         let tradeStatusData = []
         props.tradeStatusList.map((data) =>
@@ -117,22 +217,7 @@ function PatentRectificationFiled(props) {
         )
         settradeStatusList({ tradeStatusData })
 
-        let classDetailsData = []
-        props.classDetailsList.map((data) =>
-            classDetailsData.push({
-                value: data.class,
-                id: data.class_id
-            })
-        )
-        setclassDetList({ classDetailsData })
-
-        const id = {
-            ProjectType: props.ProjectDetails[0].project_type_id,
-            ProjectSubtype: props.ProjectDetails[0].sub_project_id,
-            ProcessType: props.ProjectDetails[0].process_id
-        }
-        //dispatch(getFilingType(id));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails]);
+    }, [props.tradeStatusList, props.filingTypeList,props.tradeMark]);
 
 
     function onSubmit() {
@@ -144,19 +229,19 @@ function PatentRectificationFiled(props) {
 
         console.log(filtererr.length);
         let params = {
-            "ip_type": "ddf",
+            "ip_type": 0,
             "client_status_type": null,
             "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
             "project_id": rowId,
             "trademark_no": "",
             "class_id": 0,
-            "rectification_filing": TradeMarkForm.recitification_filing_date.value || "",
+            "rectification_filing":TradeMarkForm.recitification_filing_date.value,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date": TradeMarkForm.date_of_hearing.value || "",
+            "hearing_date":TradeMarkForm.hearing_date.value,
             "opp_applicant": "",
             "opp_applicant_rep": "",
-            "filing_type_id": TradeMarkForm.filing_type_id.valueById || "",
+            "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
             "status_id": TradeMarkForm.status_id.value,
             "comments": TradeMarkForm.comments.value,
             "created_on": moment().format('YYYY-MM-DD HH:m:s') || "",
@@ -167,16 +252,16 @@ function PatentRectificationFiled(props) {
             "mark": "",
             "respondent": TradeMarkForm.respondent.value,
             "respondent_rep": TradeMarkForm.respondent_rep.value,
-            "client_responent": "",
-            "revocation_filing_date": "",
+            "client_respondent": "",
+            "revocation_filing_date": null,
             "applicant_no": TradeMarkForm.applicant_no.value,
             "patent_title": TradeMarkForm.patent_title.value,
             "appeal_filing_date": null
         }
         console.log("paramscheck", params);
-        if (TradeMarkForm.class_id.value != "") {
-            params["class_id"] = TradeMarkForm.class_id.value;
-        }
+        // if (TradeMarkForm.class_id.value != "") {
+        //     params["class_id"] = TradeMarkForm.class_id.value;
+        // }
         if (filtererr.length > 0) {
             // setTradeMarkForm({ error: true });
         } else {
@@ -195,14 +280,14 @@ function PatentRectificationFiled(props) {
 
     const handleCancel = () => {
         let From_key = [
-            "client_applicant", "applicant_no", "patent_title", "rectification_filing", "serial_no", "org_appeal_no", "hearing_date", "respondent", "respondent_rep",
+            "client_applicant", "applicant_no", "patent_title", "recitification_filing_date", "serial_no", "org_appeal_no", "hearing_date", "respondent", "respondent_rep",
             "filing_type_id", "status_id", "comments"
         ]
 
         From_key.map((data) => {
             try {
-                TradeMarkForm[data].value = "";
-                console.log("appealFiling cancel", TradeMarkForm[data].value);
+                TradeMarkForm[data]&&(TradeMarkForm[data].value = "");
+                // !TradeMarkForm[data]&&(console.log(data,"ddddddddddddd"));
             } catch (error) {
                 throw error;
             }
@@ -213,112 +298,6 @@ function PatentRectificationFiled(props) {
     }
 
 
-    const [TradeMarkForm, setTradeMarkForm] = useState({
-        client_applicant: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        trademark_ipab_id: {
-            value: 0,
-            validation: [],
-            error: null,
-            errmsg: null,
-            disabled: false,
-        },
-        applicant_no: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        patent_title: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        recitification_filing_date: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        serial_no: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        org_appeal_no: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        date_of_hearing: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        respondent: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        respondent_rep: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        filing_type_id: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-        status_id: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-
-        comments: {
-            value: 0,
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-            disabled: false,
-
-        },
-    })
     function checkValidation(data, key, multipleId) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -361,7 +340,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
                         error={TradeMarkForm.client_applicant.error}
@@ -392,7 +371,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
+                        
                         changeData={(data) => checkValidation(data, "recitification_filing_date")}
                         value={TradeMarkForm.recitification_filing_date.value}
                         error={TradeMarkForm.recitification_filing_date.error}
@@ -403,7 +382,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -416,7 +395,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -427,18 +406,18 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        disablePast={true}
-                        changeData={(data) => checkValidation(data, "date_of_hearing")}
-                        value={TradeMarkForm.date_of_hearing.value}
-                        error={TradeMarkForm.date_of_hearing.error}
-                        errmsg={TradeMarkForm.date_of_hearing.errmsg}
-                        disabled={TradeMarkForm.date_of_hearing.disabled}
+                        
+                        changeData={(data) => checkValidation(data, "hearing_date")}
+                        value={TradeMarkForm.hearing_date.value}
+                        error={TradeMarkForm.hearing_date.error}
+                        errmsg={TradeMarkForm.hearing_date.errmsg}
+                        disabled={TradeMarkForm.hearing_date.disabled}
                     />
                 </Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "respondent")}
                         value={TradeMarkForm.respondent.value}
                         error={TradeMarkForm.respondent.error}
@@ -449,7 +428,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "respondent_rep")}
                         value={TradeMarkForm.respondent_rep.value}
                         error={TradeMarkForm.respondent_rep.error}
@@ -485,7 +464,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        disableFuture={false}
+                        
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

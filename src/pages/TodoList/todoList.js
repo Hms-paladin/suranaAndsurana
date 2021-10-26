@@ -4,7 +4,7 @@ import DynModel from "../../component/Model/model";
 import { getHrTaskList, getOtherTask } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link,useHistory } from "react-router-dom";
 
 
 
@@ -18,15 +18,13 @@ import Employeeform from '../Employeeform/employeeform';
 import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
-import Appraisal from '../Appraisal/appraisal';
-import AppraisalView from '../Appraisal/appraisalView';
-import MPAppraisal from '../Appraisal/MP_Appraisal'
+
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
-import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
 import { getTaskList } from "../../actions/projectTaskAction";
 import { getProjectTasks } from "../../actions/TodoListAction";
+
 // Hr Task:
 
 const headCells = [
@@ -70,6 +68,7 @@ const workflowheadCells = [
 function TodoList(props) {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const [modelOpen, setModelOpen] = useState(false)
     const [stateClear, setStateClear] = useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
@@ -162,7 +161,7 @@ function TodoList(props) {
                 showId = data.ticket_id
                 showName = "Recruitment Request"
             }
-             else if (data.kra_id) {
+            else if (data.kra_id) {
                 showId = data.kra_id
                 showName = "KRA Approval"
             }
@@ -191,7 +190,7 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        props.getProjectTasks.map((data) => {
+        props.getProjectTasks.length>0&&props.getProjectTasks.map((data) => {
             let showId = null
             let showName = null
 
@@ -242,7 +241,7 @@ function TodoList(props) {
                 showId = data.emp_appr_id
                 showName = "Employee Appraisal"
             }
-            else if(data.kpi_id){
+            else if (data.kpi_id) {
                 showId = data.kpi_id
                 showName = "KPI Approval"
             }
@@ -303,6 +302,7 @@ function TodoList(props) {
                 )
             })
             setEmployee_Data(checkData)
+            console.log(checkData,"checkData")
         }
         else if (name === "Recruitment Request") {
             setrecruitmodal(true)
@@ -320,7 +320,10 @@ function TodoList(props) {
 
     function ProjectTaskFunction(name, id, data) {
         // console.log(data, "unblockUserdata")
-        if (name === "Timesheet Approval") {
+
+        if (data.checklist_id && data.checklist_id !== 0) {
+            history.push(`/Home/search/task/${data.task_id}`);
+        }else if (name === "Timesheet Approval") {
             setTimesheetID(id)
             setTimeSheet_Approval(true)
 
@@ -342,6 +345,7 @@ function TodoList(props) {
 
         }
         else if (name === "Timesheet Approval") {
+            setTimesheetID(id)
             setTimeSheet_Approval(true)
 
         }

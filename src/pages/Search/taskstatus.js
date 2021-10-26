@@ -46,7 +46,7 @@ function TaskStatus(props) {
                    // if(props.rowData.data.assignee_id==localStorage.getItem("empId"))
 
                    // esle
-                    dispatch(getTaskList(props.rowData.data.assignee_id));
+                    dispatch(getTaskList(props.rowData.data.assignee_id,"Active"));
                     props.handleChangeCloseModel(false); 
                     notification.success({
                         message: ' Updated Successfully',

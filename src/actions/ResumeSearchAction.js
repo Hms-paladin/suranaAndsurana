@@ -1,24 +1,6 @@
 import { GET_INTERVIEW_STATUS, GET_RESUMESEARCH_ROWDATA } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
-import { notification } from 'antd'
-
-export const ResumeSearchStatus = () => async dispatch => {
-    try {
-
-        axios({
-            method: 'GET',
-            url: apiurl + 'get_Interview_Status',
-        })
-            .then((response) => {
-                console.log(response.data.data, "ddd")
-                dispatch({ type: GET_INTERVIEW_STATUS, payload: response.data.data })
-            })
-
-    } catch (err) {
-
-    }
-}
 
 export const searchRowdata = (data) => async dispatch => {
     console.log(data, "data")
@@ -44,8 +26,6 @@ export const searchRowdata = (data) => async dispatch => {
                
                     dispatch({ type: GET_RESUMESEARCH_ROWDATA, payload: response.data.data })
                     return Promise.resolve();
-               
-
             })
 
     } catch (err) {

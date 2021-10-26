@@ -3,59 +3,49 @@ import CustomButton from "../../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import EnhancedTable from '../../../component/DynTable/table';
-import { useParams, Link } from 'react-router-dom';
-import { Collapse } from 'antd';
-import { Select } from 'antd';
+
 import './timesheets.scss'
 import { useDispatch, connect } from "react-redux";
 import { notification } from "antd";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { getEmployeeList, getProjectType, getProjectSubType, getProjectName } from '../../../actions/MasterDropdowns'
+import { getProjectSubType } from '../../../actions/MasterDropdowns'
 import { getProjectWise_TimeSheet } from '../../../actions/TimeSheetAction'
 import moment from 'moment';
+import TimeSheets from './timesheetStart';
+import DynModel from '../../../component/Model/model';
+import { Checkbox } from 'antd'
+import { update_approve_timesheet, update_submit_timesheet } from "../../../actions/TimeSheetAction";
+import { getEmployeeList } from '../../../actions/MasterDropdowns';
+import Edit from "../../../images/editable.svg";
 
 function ProjectwiseTS(props) {
-    const [multiplePanel, setMultiplePanel] = useState([]);
-    const [searchRights, setSearchRights] = useState([])
-    const { Panel } = Collapse;
-    const { Option } = Select;
+
     let dispatch = useDispatch()
+    const [searchRights, setSearchRights] = useState([])
     const [projectList, setprojectList] = useState([])
-    const [openPanel, setopenPanel] = useState(0)
-    const [minDate, setMinDate] = useState(new Date())
+    const [TimeSheetTable, setTimeSheetTable] = useState([])
+    const [timesheetModelOpen, setTimesheetModelOpen] = useState(false)
+    const [TimeSheetArr, setTimeSheetArr] = useState([])
+    const [trigger, setTrigger] = useState(false)
+    const [OnRejectData, setOnRejectData] = useState([])
+    const [OnEditData, setOnEditData] = useState([])
+    const [ModelClear, setModelClear] = useState(0)
+
     const [projectSearch, setprojectSearch] = useState({
-        proj_name: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-        },
         emp_name: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-        },
-        project_type: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-        },
-        project_subtype: {
-            value: "",
-            validation: [{ name: "required" }],
+            value: Number(localStorage.getItem("empId")),
+            validation: [],
             error: null,
             errmsg: null,
         },
         from_date: {
-            value: "",
+            value: '',
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
         to_date: {
-            value: "",
+            value: '',
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -77,9 +67,6 @@ function ProjectwiseTS(props) {
             validation: projectSearch[key].validation
         }
 
-        if (key === "fromdate") {
-            setMinDate(data)
-        }
         setprojectSearch(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -87,50 +74,52 @@ function ProjectwiseTS(props) {
 
     };
 
-    const empname = "Employee Name";
+    useEffect(() => {
+        if (projectSearch.emp_name.value != "" && projectSearch.from_date.value != "" && projectSearch.to_date.value != "") {
+            dispatch(getProjectWise_TimeSheet(projectSearch))
+        }
+    }, [projectSearch.emp_name.value, projectSearch.from_date.value, projectSearch.to_date.value])
+
+    function selectAll(e) {
+        if (e.target.checked === true) {
+            TimeSheetArr.map((data, index) => {
+                TimeSheetArr[index].editicon = true
+            })
+        } else {
+            TimeSheetArr.map((data, index) => {
+                TimeSheetArr[index].editicon = false
+            })
+        }
+        setTrigger(!trigger)
+
+    }
+
     const headCells = [
-        { id: "empName", label: "Employee Name" },
+        { id: "start_date", label: "Start Date" },
+        { id: "start_time", label: "Start Time" },
+        { id: "End_date", label: "End Date" },
+        { id: "end_time", label: "End Time" },
+        { id: "hours", label: "Hours" },
         { id: "actitvity", label: "Activity" },
         { id: "subactivity", label: "Sub Activity" },
-        { id: "planned_sd", label: "Planned StartDate" },
-        { id: "planned_ed", label: "Planned EndDate" },
-        { id: "actualstart", label: "Actual Start (Date/Time)" },
-        { id: "actualend", label: "Actual End (Date/Time)" },
-        { id: "tothours", label: "Total Hours" }
-    ];
-
+        { id: "project_name", label: "Project Name" },
+        { id: "project_type", label: "Project Type" },
+        { id: "client", label: "Client" },
+        { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
 
     useEffect(() => {
         dispatch(getEmployeeList())
-        dispatch(getProjectType())
-        dispatch(getProjectSubType())
-        dispatch(getProjectName())
+        dispatch(getProjectWise_TimeSheet(projectSearch))
     }, [])
-    // useEffect(() => {
-    //     let ProjectDetails = []
-    //     props.Project_TimeSheet.map((data) => {
 
-    //     })
-    // }, [props.Project_TimeSheet])
     useEffect(() => {
         let employeeName = []
-        let Project_type = []
-        let Project_Sub_type = []
-        let project_name = []
         props.EmployeeList.map((data) => {
             employeeName.push({ id: data.emp_id, value: data.name })
         })
-        props.ProjectType.map((data) => {
-            Project_type.push({ id: data.project_type_id, value: data.project_type })
-        })
-        props.SubProjectType.map((data) => {
-            Project_Sub_type.push({ id: data.sub_project_type_id, value: data.sub_project_type })
-        })
-        props.Project_name.map((data) => {
-            project_name.push({ id: data.project_id, value: data.project_name })
-        })
-        setprojectList({ employeeName, Project_type, Project_Sub_type, project_name })
-    }, [props.EmployeeList, props.ProjectType, props.SubProjectType, props.Project_name])
+
+        setprojectList({ employeeName })
+    }, [props.EmployeeList])
     ///***********user permission**********/
     useEffect(() => {
         if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -146,269 +135,151 @@ function ProjectwiseTS(props) {
     }, [props.UserPermission]);
     ////////
 
-
     const SearchData = () => {
-        console.log(projectSearch.length, "len")
-        Object.size = function (obj) {
-            var size = 0,
-                key;
-            for (key in obj) {
-                if (obj.hasOwnProperty(key)) size++;
-            }
-            return size;
-        };
 
-        // Get the size of an object
-        var size = Object.size(projectSearch);
-        console.log(size, "len")
-        if (projectSearch) {
+        var mainvalue = {};
+        var targetkeys = Object.keys(projectSearch);
+
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                projectSearch[targetkeys[i]].value,
+                projectSearch[targetkeys[i]].validation
+            );
+            projectSearch[targetkeys[i]].error = !errorcheck.state;
+            projectSearch[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = projectSearch[targetkeys[i]].value;
+        }
+
+        var filtererr = targetkeys.filter(
+            (obj) => projectSearch[obj].error == true
+        );
+        if (filtererr.length > 0) {
+        } else {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
 
-        setprojectSearch({
-            proj_name: {
-                value: "",
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            emp_name: {
-                value: "",
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            project_type: {
-                value: "",
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            project_subtype: {
-                value: "",
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            from_date: {
-                value: "",
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-            to_date: {
-                value: "",
-                validation: [{ name: "required" }],
-                error: null,
-                errmsg: null,
-            },
-        })
+    }
+
+    const checkboxClick = (e, index) => {
+
+        if (e.target.checked === true) {
+            TimeSheetArr[index].editicon = true
+        }
+        else {
+            TimeSheetArr[index].editicon = false
+        }
+        setTrigger(!trigger)
+    }
+
+    const onReject = (data) => {
+        setTimesheetModelOpen(true)
+        setOnRejectData([data, projectSearch])
+    }
+
+    const onEdit = (data) => {
+
+        setTimesheetModelOpen(true)
+        setOnEditData([data, projectSearch])
     }
 
     useEffect(() => {
-        console.log(props.Project_TimeSheet, "pD")
-        let multipleTab = [];
-        let subCollapse = [];
-        let otherDataList = []
-        props?.Project_TimeSheet?.map((data, i) => {
-            let rowDataList = {}
-            let sample = {};
-            let tableRow1 = [];
-            let tableRow = [];
-            let tableRow2 = [];
-            let tableRow3 = [];
-            let tableRow4 = [];
-            let tableRow5 = [];
-            if (data.project_type_id === 1) {
-
-                sample["Design"] = data.project_details.filter((val) => val?.sub_project_id === 2)
-                sample["Patent"] = data.project_details.filter((val) => val?.sub_project_id === 3)
-                sample["Trademark"] = data.project_details.filter((val) => val?.sub_project_id === 1)
-                sample["Copyright"] = data.project_details.filter((val) => val?.sub_project_id === 4)
-                sample["IPABTrademark"] = data.project_details.filter((val) => val?.sub_project_id === 5)
-                sample["IPABDesign"] = data.project_details.filter((val) => val?.sub_project_id === 6)
-
-                if (sample?.Design.length > 0) {
-                    sample?.Design.map((dat, k) => {
-                        let currentData = {}
-                        currentData["empName"] = dat.name;
-                        currentData["actitvity"] = dat.actitvity;
-                        currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`;
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`;
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                        currentData["tothours"] = dat.no_of_hrs;
-                        tableRow1.push(currentData);
-                    })
-
-                }
-                console.log("filtersfilters", tableRow1)
-                sample["Design"] = tableRow1;
-
-                if (sample?.Patent.length > 0) {
-                    let currentData = {}
-                    sample?.Patent.map((dat, k) => {
-                        currentData["empName"] = dat.name;
-                        currentData["actitvity"] = dat.actitvity;
-                        currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                        currentData["tothours"] = dat.no_of_hrs;
-                        tableRow2.push(currentData);
-                    })
-                }
-                console.log("filtersfilters", tableRow2)
-                sample["Patent"] = tableRow2;
-
-                if (sample?.Trademark.length > 0) {
-                    let currentData = {}
-                    sample?.Trademark.map((dat, k) => {
-                        currentData["empName"] = dat.name;
-                        currentData["actitvity"] = dat.activity;
-                        currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                        currentData["tothours"] = dat.no_of_hrs;
-                        tableRow.push(currentData);
-                    })
-                }
-                console.log("filtersfilters", tableRow)
-                sample["Trademark"] = tableRow;
-
-                if (sample?.Copyright.length > 0) {
-                    let currentData = {}
-                    sample?.Copyright.map((dat, k) => {
-                        currentData["empName"] = dat.name;
-                        currentData["actitvity"] = dat.actitvity;
-                        currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                        currentData["tothours"] = dat.no_of_hrs;
-                        tableRow3.push(currentData);
-                    })
-                }
-                console.log("filtersfilters", tableRow3)
-                sample["Copyright"] = tableRow3;
-
-                if (sample?.IPABTrademark.length > 0) {
-                    let currentData = {}
-                    sample?.IPABTrademark.map((dat, k) => {
-                        currentData["empName"] = dat.name;
-                        currentData["actitvity"] = dat.actitvity;
-                        currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                        currentData["tothours"] = dat.no_of_hrs;
-                        tableRow4.push(currentData);
-                    })
-                }
-                console.log("filtersfilters", tableRow4)
-                sample["IPABTrademark"] = tableRow4;
-
-                if (sample?.IPABDesign.length > 0) {
-                    let currentData = {}
-                    sample?.IPABDesign.map((dat, k) => {
-                        currentData["empName"] = dat.name;
-                        currentData["actitvity"] = dat.actitvity;
-                        currentData["subactivity"] = dat.sub_activity;
-                        currentData["planned_sd"] = `${moment(dat?.start_date).format('DD-MMM-YYYY')}`
-                        currentData["planned_ed"] = `${moment(dat?.end_date).format('DD-MMM-YYYY')}`
-                        currentData["actualstart"] = `${moment(dat?.actual_start_date).format('DD-MMM-YYYY')}(${dat?.start_time})`
-                        currentData["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                        currentData["tothours"] = dat.no_of_hrs;
-                        tableRow5.push(currentData);
-                    })
-                }
-                console.log("filtersfilters", tableRow5)
-                sample["IPABDesign"] = tableRow5;
-
-                console.log("filtersfilterssample", sample)
-                for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
-                    subCollapse.push(
-                        <Panel
-                            header={`${key} (${value.length})`}
-                            key={index + 1}
-                        >
-
-                            <EnhancedTable
-                                headCells={
-                                    headCells
-                                }
-                                rows={value}
-                                tabletitle={""}
-                            />
-                        </Panel>
-                    )
-
-                }
-                multipleTab.push(
-                    <Panel
-                        header={`${data.project_type} (${data?.project_details?.length})`}
-                        key={i + 1}
-                    >
-                        <Collapse>{subCollapse}</Collapse>
-
-                    </Panel>
-                );
-            } else if (data.project_type_id !== 1) {
-                data.project_details.map((dat, k) => {
-                    console.log(dat, "level2-else")
-                    rowDataList["empName"] = dat.name;
-                    rowDataList["actitvity"] = dat.actitvity;
-                    rowDataList["subactivity"] = dat.sub_activity;
-                    rowDataList["planned_sd"] = `${moment(dat.start_date).format('DD-MMM-YYYY')}`
-                    rowDataList["planned_ed"] = `${moment(dat.end_date).format('DD-MMM-YYYY')}`
-                    rowDataList["actualstart"] = `${moment(dat.actual_start_date).format('DD-MMM-YYYY')}(${dat.start_time})`
-                    rowDataList["actualend"] = `${moment(dat.actual_end_date).format('DD-MMM-YYYY')}(${dat.end_time})`;
-                    rowDataList["tothours"] = dat.no_of_hrs;
-                    otherDataList.push(rowDataList)
-                    multipleTab.push(
-                        <Panel
-                            header={`${data.project_type} (${data?.project_details?.length})`}
-                            key={i + 1}
-                        >
-                            <EnhancedTable
-                                headCells={
-                                    headCells
-                                }
-                                rows={otherDataList}
-
-                            />
-                        </Panel>
-                    );
-                })
+        var updatelist = [];
+        TimeSheetArr && TimeSheetArr.length > 0 && TimeSheetArr.map((data, index) => {
+            let start_time = data.approved_start_time ? data.approved_start_time : data.start_time
+            let end_time = data.approved_end_time ? data.approved_end_time : data.end_time
+            let hrs_arr = data.no_of_hrs.split(':')
+            var listarray = {
+                start_date: (data.start_date === "0000-00-00" || data.start_date === null) ? 0 : moment(data.start_date).format("DD-MM-YYYY"),
+                start_time: (start_time === "00:00:00" || start_time === null) ? 0 : moment(start_time, "HH:mm:ss").format("hh:mm A"),
+                to_date: (data.end_date === "0000-00-00" || data.end_date === null) ? 0 : moment(data.end_date).format("DD-MM-YYYY"),
+                end_time: (end_time === "00:00:00" || end_time === null) ? 0 : moment(end_time, "HH:mm:ss").format("hh:mm A"),
+                no_of_hrs: (hrs_arr[0] + ` Hour${hrs_arr[0] !== '01' ? 's' : ''} ` + (hrs_arr[1] ? (' ' + hrs_arr[1] + ' minutes') : '')),
+                activity: data.activity,
+                sub_activity: data.sub_activity,
+                project_name: data.project_name,
+                project_type: data.project_type,
+                client: data.client,
+                status: (data.status_submit ? (data.status_submit === "Not Approved" ? (
+                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} />&nbsp;&nbsp;
+                        <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
+                    </>
+                    // ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
+                ) : data.status_submit) :
+                    data.status_appprove && data.status_appprove === "Not Approved" && (
+                        <>
+                            <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
+                        </>
+                    )),
             }
+
+            updatelist.push(listarray);
         })
-        setMultiplePanel(multipleTab);
+        setTimeSheetTable({ updatelist });
+
+    }, [TimeSheetArr, trigger])
+    console.log(TimeSheetTable, "updatelist")
+    useEffect(() => {
+        setTimeSheetArr(props.Project_TimeSheet)
     }, [props.Project_TimeSheet]);
 
-    console.log(props.Project_TimeSheet, "PD")
+    const Approve = async (data) => {
+
+        if (TimeSheetArr && TimeSheetArr.length > 0) {
+
+            let data_res_id = TimeSheetArr.find((val) => {
+                return (
+                    val.editicon && val.editicon === true
+                )
+            })
+
+            if (!data_res_id) {
+                notification.success({
+                    message: 'Please select atleast one timesheet',
+                });
+            } else {
+                await dispatch(update_approve_timesheet(TimeSheetArr, data))
+                await dispatch(getProjectWise_TimeSheet(projectSearch))
+
+            }
+        }
+    }
+    console.log(ModelClear, "ModelClear")
+    const SubmitApprove = async () => {
+        if (TimeSheetArr && TimeSheetArr.length > 0) {
+
+            let data_res_id = TimeSheetArr.find((val) => {
+                return (
+                    val.editicon && val.editicon === true
+                )
+            })
+            // console.log(data_res_id,"data_res_id")
+
+            if (!data_res_id) {
+                notification.success({
+                    message: 'Please select atleast one timesheet',
+                });
+            } else {
+                dispatch(update_submit_timesheet(TimeSheetArr)).then(() => {
+                    dispatch(getProjectWise_TimeSheet(projectSearch))
+                })
+
+
+            }
+        }
+    }
+    const closeModel = () => {
+        setTimesheetModelOpen(false)
+        setModelClear(ModelClear + 1)
+        setOnRejectData([])
+        setOnEditData([])
+    }
     return (
         <div>
-
             <div className="DRtitle">Project Wise Task / Time Sheet</div>
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
-                    <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">Project Name</div>
-                        <Labelbox type="select"
-                            dropdown={projectList.project_name}
-                            changeData={(data) => checkValidation(data, "proj_name")}
-                            value={projectSearch.proj_name.value}
-                            error={projectSearch.proj_name.error}
-                            errmsg={projectSearch.proj_name.errmsg}
-                        />
-                    </Grid>
-                    {/* <Grid item xs={2} container direction="column" spacing={1}>
+
+                    {props.EmployeeList && props.EmployeeList.length > 1 && <Grid item xs={3} container direction="column" spacing={1}>
                         <div className="Reporthead">Employee Name</div>
                         <Labelbox type="select"
                             dropdown={projectList.employeeName}
@@ -417,27 +288,8 @@ function ProjectwiseTS(props) {
                             error={projectSearch.emp_name.error}
                             errmsg={projectSearch.emp_name.errmsg}
                         />
-                    </Grid> */}
-                    <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">Project Type</div>
-                        <Labelbox type="select"
-                            dropdown={projectList.Project_type}
-                            changeData={(data) => checkValidation(data, "project_type")}
-                            value={projectSearch.project_type.value}
-                            error={projectSearch.project_type.error}
-                            errmsg={projectSearch.project_type.errmsg}
-                        />
-                    </Grid>
-                    <Grid item xs={2} container direction="column" spacing={1}>
-                        <div className="Reporthead">Project Sub Type</div>
-                        <Labelbox type="select"
-                            dropdown={projectList.Project_Sub_type}
-                            changeData={(data) => checkValidation(data, "project_subtype")}
-                            value={projectSearch.project_subtype.value}
-                            error={projectSearch.project_subtype.error}
-                            errmsg={projectSearch.project_subtype.errmsg}
-                        />
-                    </Grid>
+                    </Grid>}
+
                     <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">From Date</div>
                         <Labelbox type="datepicker"
@@ -457,18 +309,32 @@ function ProjectwiseTS(props) {
                             errmsg={projectSearch.to_date.errmsg}
                         />
                     </Grid>
-                    <Grid item xs={2} container direction="row" justify="center" alignItems="center">
-                        <CustomButton btnName={"Search"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
+                    <Grid item xs={6} container direction="column" spacing={1}>
+                        <div className="projectwise_search_div">
+                            <CustomButton btnName={"Search"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_search" onBtnClick={SearchData} />
+                        </div>
                     </Grid>
                 </Grid>
-            </div>
-            <div className="DRcollapsecss">
 
-                <Collapse>
-                    {multiplePanel}
-                </Collapse>
+
+
             </div>
+
+            {/* <div className="DRcollapsecss"> */}
+            <div className="leavetableformat">
+                <EnhancedTable headCells={headCells} projectwise tabletitle={""} rows={TimeSheetTable.length == 0 ? TimeSheetTable : TimeSheetTable.updatelist} />
+            </div>
+            {/* </div> */}
+            <div className="projectwise_Btn_div">
+                {props.EmployeeList && props.EmployeeList.length > 1 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Reject"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(2)} />}
+                {props.EmployeeList && props.EmployeeList.length > 1 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Approve"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(1)} />}
+                {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
+                <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
+            </div>
+            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
+
         </div>
+
     )
 }
 const mapStateToProps = (state) =>
@@ -476,9 +342,6 @@ const mapStateToProps = (state) =>
     UserPermission: state.UserPermissionReducer.getUserPermission,
     GetSeverance: state.ExitSeverance.GetSeverance,
     EmployeeList: state.getOptions.getEmployeeList,
-    ProjectType: state.getOptions.getProjectType,
-    SubProjectType: state.getOptions.getProjectSubType,
-    Project_name: state.getOptions.getProjectName,
     Project_TimeSheet: state.getTaskList.ProjectWise_TimeSheet
 
 });

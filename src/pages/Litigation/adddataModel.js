@@ -17,7 +17,7 @@ const AddDataModel = (props) => {
   const [projtId, setProjtId] = useState("");
   const [IteriumModel, setIteriumModel] = useState(false);
   const [LitiID, setLitiID] = useState("");
-  const [Litigation_Form, setResumeFrom] = useState({
+  const [Litigation_Form, setLitigation_Form] = useState({
     counsel: {
       value: "",
       validation: [{ name: "required" }],
@@ -73,10 +73,18 @@ const AddDataModel = (props) => {
       errmsg: null,
     },
   });
+
   useEffect(() => {
     dispatch(getLitigationCounsel());
   }, []);
 
+  useEffect(() => {
+    Litigation_Form.counsel.value=props.LitigationCounsel_id
+    setLitigation_Form((prevState) => ({
+      ...prevState,
+    }));
+  }, [props.LitigationCounsel_id]);
+  
   useEffect(() => {
     setProjtId(props.id.project_id);
   }, [props.id]);
@@ -108,9 +116,9 @@ const AddDataModel = (props) => {
     );
     console.log(filtererr.length);
     if (filtererr.length > 0) {
-      // setResumeFrom({ error: true });
+      // setLitigation_Form({ error: true });
     } else {
-      // setResumeFrom({ error: false });
+      // setLitigation_Form({ error: false });
 
       dispatch(InsertLitigationDetails(Litigation_Form, LitiID)).then(() => {
         handleCancel();
@@ -119,7 +127,7 @@ const AddDataModel = (props) => {
       });
     }
 
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
       ...prevState,
     }));
   }
@@ -139,7 +147,7 @@ const AddDataModel = (props) => {
     ResumeFrom_key.map((data) => {
       Litigation_Form[data].value = "";
     });
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
       ...prevState,
     }));
   };
@@ -158,7 +166,7 @@ const AddDataModel = (props) => {
     ResumeFrom_key.map((data) => {
       Litigation_Form[data].validation = [];
     });
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
       ...prevState,
     }));
   };
@@ -179,7 +187,7 @@ const AddDataModel = (props) => {
       ResumeFrom_key.map((data) => {
         Litigation_Form[data].validation = [{ name: "required" }];
       });
-      setResumeFrom((prevState) => ({
+      setLitigation_Form((prevState) => ({
         ...prevState,
       }));
     } else if (data && data !== 5 && key === "counsel") {
@@ -198,7 +206,7 @@ const AddDataModel = (props) => {
           Litigation_Form[data].validation = [{ name: "required" }];
         }
       });
-      setResumeFrom((prevState) => ({
+      setLitigation_Form((prevState) => ({
         ...prevState,
       }));
     }
@@ -230,7 +238,7 @@ const AddDataModel = (props) => {
     }
     // (end)
 
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
@@ -250,6 +258,7 @@ const AddDataModel = (props) => {
           <Labelbox
             type="select"
             placeholder={"Counsel"}
+            disabled
             dropdown={LitiCounsel.liti_councel}
             changeData={(data) => checkValidation(data, "counsel")}
             value={Litigation_Form.counsel.value}
@@ -298,7 +307,6 @@ const AddDataModel = (props) => {
             </>
           ) : (
             <>
-              {console.log("Litigation_Form", Litigation_Form)}
               <Labelbox
                 type="text"
                 placeholder={"Interim Name"}

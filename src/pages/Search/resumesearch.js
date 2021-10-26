@@ -8,7 +8,7 @@ import DynModelcom from "../../component/Model/model";
 import { GetResumeList } from '../../actions/ResumeAction';
 import { useDispatch, connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
-import { ResumeSearchStatus, searchRowdata } from "../../actions/ResumeSearchAction";
+import { searchRowdata } from "../../actions/ResumeSearchAction";
 import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus, getQualification } from "../../actions/MasterDropdowns";
 import CustomButton from "../../component/Butttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
@@ -17,9 +17,6 @@ import DynModelView from "../Interview/model";
 import './search.scss'
 import ResumeForm from '../Resume/resume';
 import Edit from "../../images/editable.svg";
-// import ResumePage from '../Resume/resume'
-import { notification } from "antd";
-
 
 const headCells = [
     { id: "view", label: "View/Edit" },
@@ -38,7 +35,7 @@ const headCells = [
 ];
 
 function Resumesearch(props) {
-
+    const [RefreshData, setRefreshData] = useState(0)
     const [pathname, setpathname] = useState(window.location.pathname);
     const dispatch = useDispatch();
     const [modelOpen, setModelOpen] = useState(false)
@@ -52,6 +49,8 @@ function Resumesearch(props) {
     const [editResumeRow, setEditResumeRow] = useState({})
     const [candidateViewModel, setCandidateViewModel] = useState(false)
     const [editModel, setEditModel] = useState(false)
+
+    // var RefreshData=0;
     const [goRights, setGoRights] = useState([])
     const [creatRights, setCreatRights] = useState([])
     const [interviewScheduleRights, setInterviewScheduleRights] = useState([])
@@ -284,11 +283,19 @@ function Resumesearch(props) {
         })
         obj = [];
     }
-    console.log(checkList, "checkedlist")
+
     const viewCandidate = (id) => {
+       
         setViewId(id)
+        // RefreshData=RefreshData+1;
         setCandidateViewModel(true)
+      
     }
+    
+    useEffect(() => {
+        setRefreshData(RefreshData+2)
+    }, [candidateViewModel])
+
     const editResume = (id) => {
         // setEditId(id)
         dispatch(GetResumeList(id))
@@ -336,7 +343,7 @@ function Resumesearch(props) {
 
     //     )
     // }
-// console.log(props.GetRowData,"GetRowData")
+    // console.log(props.GetRowData,"GetRowData")
 
     function onSearch() {
         dispatch(searchRowdata({
@@ -501,7 +508,7 @@ function Resumesearch(props) {
                     </Grid>
                 </div>
                 <div className="resume_searchtable">
-                    <EnhancedTable headCells={headCells} rows={rows && rows} hideSortIcon={false} Resume/>
+                    <EnhancedTable headCells={headCells} rows={rows && rows} hideSortIcon={false} Resume />
                 </div>
                 <div className="searchinterviewbtn">
                     <CustomButton btnName={"Schedule Interview "} btnCustomColor="customPrimary" custombtnCSS={"goSearchbtn"} btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false} onBtnClick={() => setModelOpen(true)} /></div>
@@ -513,6 +520,7 @@ function Resumesearch(props) {
                 handleChangeModel={candidateViewModel}
                 handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
                 res_data_id={viewId}
+                data_refresh={RefreshData}
             />
             <DynModelcom
                 modelTitle={"Edit Resume"}
@@ -527,7 +535,6 @@ function Resumesearch(props) {
     )
 }
 const mapStateToProps = state => ({
-    ResumeSearchStatus: state.ResumeSearchStatus,
     GetOptions: state.getOptions,
     GetRowData: state.getResumeSearchRowdata,
     GetResumeList: state.GetResumeList || [],

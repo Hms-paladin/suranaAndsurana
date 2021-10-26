@@ -240,6 +240,10 @@ export const insertLeaveCep = (Leave_Form, examSchedule,filedata) => async dispa
                 dispatch({ type: INSERT_LEAVE_FORM_CEP, payload: response.data.status })
                 dispatch(getLeaveForm())
                 return Promise.resolve();
+            }else{
+                notification.success({
+                    message: response.data.msg,
+                });
             }
         });
 

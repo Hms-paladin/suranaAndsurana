@@ -144,6 +144,7 @@ export const InsertKpi = (data) => async dispatch => {
                   });
                 }
             dispatch(getOtherTask())    
+            dispatch(getKpiDetailsByEmpId())    
             return Promise.resolve();
         })
         

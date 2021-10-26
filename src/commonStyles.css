@@ -59,6 +59,8 @@ body {
 /* input:focus {
   border: none !important;
 } */
-
+.ant-checkbox {
+  border: 1px solid #0354a4;
+}
 .ant-select-dropdown{
 }

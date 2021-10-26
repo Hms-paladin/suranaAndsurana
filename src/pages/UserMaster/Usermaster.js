@@ -8,7 +8,7 @@ import Edit from "../../images/pencil.svg";
 import "./Usermaster.scss";
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
 import {
   get_Tablenames,
   getClass,
@@ -20,7 +20,8 @@ import {
   InsertStatus,
   UpdateSubstage,
   UpdateSubActivity,
-  getControls
+  getControls,
+  getLoactionsList
 } from "../../actions/UserMasterAction";
 import {
   getActivity,
@@ -53,7 +54,7 @@ import {
   getCheckList,
   Common_Update_text,
   getProjectCostRange,
-
+  insertDesignationMaster
 } from "../../actions/UserMasterAction";
 
 const UserMaster = (props) => {
@@ -61,112 +62,144 @@ const UserMaster = (props) => {
     // { id: 'table_name', label: 'Table Name' },
     { id: "groupname", label: "Group Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header2 = [
     { id: "type", label: "Status Type" },
     { id: "statusname", label: "Status Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header3 = [
     { id: "skills", label: "Skills Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header4 = [
     { id: "traits", label: "Traits Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header5 = [
     { id: "certification", label: "Certification Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header6 = [
     { id: "specification", label: "Specification Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header7 = [
     { id: "qualification", label: "Qualification Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header8 = [
     { id: "industry", label: "Industry Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header9 = [
     { id: "institute", label: "Institute Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header10 = [
     { id: "Capalitity", label: "Capability Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header11 = [
     { id: "talents", label: "Talents Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header12 = [
     { id: "resource", label: "Type of Resource" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header13 = [
     { id: "desgination", label: "Designation Name" },
+    { id: "department", label: "Department Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header14 = [
     { id: "question", label: "Question Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header15 = [
     { id: "department", label: "Department Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header16 = [
     { id: "activity", label: "Activity Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header17 = [
     { id: "activity", label: "Activity" },
     { id: "activityname", label: "Sub Activity Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header18 = [
     { id: "class", label: "Class Type" },
     { id: "classname", label: "Class Name" },
     { id: "des", label: "Class Description" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header19 = [
     { id: "mark", label: "Mark Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header20 = [
     { id: "court", label: "Court Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header21 = [
     { id: "range", label: "Range Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header22 = [
     { id: "stage", label: "Stage Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header25 = [
     { id: "project_type", label: "Project Type" },
     { id: "checklist_name", label: "Check List" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header23 = [
     { id: "stage", label: "Stage" },
     { id: "sub_stage", label: "Sub Stage Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header24 = [
     { id: "case", label: "Case Type Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const header26 = [
     { id: "control", label: "Control Name" },
     { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
+  ];
+  const header27 = [
+    { id: "office_Loaction", label: "Office Location Name" },
+    { id: "", label: "Edit" },
+    { id: " ", label: "Delete" },
   ];
   const dispatch = useDispatch();
   const [tableHeaderMaster, setTableHeaderMaster] = useState({
@@ -174,18 +207,19 @@ const UserMaster = (props) => {
       // { id: 'table_name', label: 'Table Name' },
       { id: "groupname", label: "Group Name" },
       { id: " ", label: "Edit" },
+      { id: " ", label: "Delete" },
     ],
     header2: [
       { id: "status", label: "Status" },
       { id: "type", label: "Status Type" },
       { id: " ", label: "Edit" },
+      { id: " ", label: "Delete" },
     ],
   });
-  const [userTableHeader, setUserTableHeader] = useState([]);
-  const [getTablename, setgetTablename] = useState([]);
-  const [substageId,setsubstageId]=useState([])
+  const [DepartmentList, setDepartmentList] = useState({})
+  const [substageId, setsubstageId] = useState([])
   const [tablevalues, settablevalues] = useState([]);
-  const [Statusvalue,setStatusvalue]=useState("")
+  const [Statusvalue, setStatusvalue] = useState("")
   const [UserMaster, setUserMaster] = useState({
     tablename: {
       value: "",
@@ -379,24 +413,30 @@ const UserMaster = (props) => {
       error: null,
       errmsg: null,
     },
-    control:{
-      value:"",
-      validation:[],
-      error:null,
-      errmsg:null,
-  }
+    control: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
+    office_Location: {
+      value: "",
+      validation: [],
+      error: null,
+      errmsg: null,
+    }
   });
 
   function checkValidation(data, key) {
 
     if (key === "stage_dropdown") {
       dispatch(getSubStage(data));
-      setsubstageId(data) 
+      setsubstageId(data)
     }
     if (key === "class_type") {
       dispatch(getTableClass(data));
     }
-    if (data&&key === "activity_drop") {
+    if (data && key === "activity_drop") {
       dispatch(getSubActivity(data));
     }
     // if (key === "status_type") {
@@ -406,145 +446,150 @@ const UserMaster = (props) => {
       handleCancel()
       var value = props.table_name.find((item) => {
         return item.table_id == data;
-        
+
       });
       settable_name_value(value);
-    
-      if(data===3){
+
+      if (data === 3) {
         validationHide()
-         UserMaster.groupname.validation=[{name:"required"}]
+        UserMaster.groupname.validation = [{ name: "required" }]
       }
-      else if(data===4){
+      else if (data === 4) {
         validationHide()
-        const From_key=["status_type","status_name"]
-       From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-       
-      
-     }
-      else if(data===5){
-        validationHide()
-        UserMaster.skill_name.validation=[{name:"required"}]
-       
-        
-     }else if(data===6){
-      validationHide()
-      UserMaster.traits_name.validation.push({name:"required"})
-      
-     }
-     else if(data===7){
-      validationHide()
-      UserMaster.certification_name.validation.push({name:"required"})
-     } 
-     else if(data===8){
-      validationHide()
-      UserMaster.specialization_name.validation.push({name:"required"})
-     } 
-     else if(data===9){
-      validationHide()
-      UserMaster.qualification_name.validation.push({name:"required"})
-     } 
-     else if(data===11){
-      validationHide()
-      UserMaster.industry.validation.push({name:"required"})
-     } 
-     else if(data===12){
-      validationHide()
-      UserMaster.institute.validation.push({name:"required"})
-      
-     } 
-     else if(data===13){
-      validationHide()
-      UserMaster.capability.validation.push({name:"required"})
-     }
-     else if(data===14){
-      validationHide()
-      UserMaster.talents.validation.push({name:"required"})
-     } 
-     else if(data===15){
-      validationHide()
-      UserMaster.resourse.validation.push({name:"required"})
-     }
-     else if(data===16){
-      validationHide()
-      UserMaster.designation.validation.push({name:"required"})
-     }
-     else if(data===17){
-      validationHide()
-      UserMaster.question.validation.push({name:"required"})
-     }
-     else if(data===18){
-      validationHide()
-      UserMaster.department.validation.push({name:"required"})
-     }
-     else if(data===19){
-      validationHide()
-      UserMaster.activity.validation.push({name:"required"})
-     }
-     else if(data===20){
-      validationHide()
-       const From_key=["sub_activity","activity_drop"]
-       From_key.map((data) => {
-          UserMaster[data].validation.push({name:"required"})
+        const From_key = ["status_type", "status_name"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
         });
-     } 
-     else if(data===21){
-      validationHide()
-      const From_key=["class_name","class_type","description"]
-      From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-    }   
-     else if(data===23){
-      validationHide()
-      UserMaster.court.validation.push({name:"required"})
-     }
-     else if(data===24){
-      validationHide()
-      UserMaster.range.validation.push({name:"required"})
-     }
-     else if(data===25){
-      validationHide()
-      UserMaster.stage_name.validation.push({name:"required"})
-     } 
-     else if(data===26){
-      validationHide()
-      const From_key=["sub_stage","stage_dropdown"]
-      From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-     }
-     else if(data===28){
-      validationHide()
-      UserMaster.case_type.validation.push({name:"required"})
-     }
-     else if(data===29){
-      validationHide()
-      const From_key=["project_type","checklist_name"]
-      From_key.map((data) => {
-         UserMaster[data].validation.push({name:"required"})
-       });
-     } 
-     else if(data===30){
-      validationHide()
-      UserMaster.control.validation.push({name:"required"})
-     }         
-      
+
+
+      }
+      else if (data === 5) {
+        validationHide()
+        UserMaster.skill_name.validation = [{ name: "required" }]
+
+
+      } else if (data === 6) {
+        validationHide()
+        UserMaster.traits_name.validation.push({ name: "required" })
+
+      }
+      else if (data === 7) {
+        validationHide()
+        UserMaster.certification_name.validation.push({ name: "required" })
+      }
+      else if (data === 8) {
+        validationHide()
+        UserMaster.specialization_name.validation.push({ name: "required" })
+      }
+      else if (data === 9) {
+        validationHide()
+        UserMaster.qualification_name.validation.push({ name: "required" })
+      }
+      else if (data === 11) {
+        validationHide()
+        UserMaster.industry.validation.push({ name: "required" })
+      }
+      else if (data === 12) {
+        validationHide()
+        UserMaster.institute.validation.push({ name: "required" })
+
+      }
+      else if (data === 13) {
+        validationHide()
+        UserMaster.capability.validation.push({ name: "required" })
+      }
+      else if (data === 14) {
+        validationHide()
+        UserMaster.talents.validation.push({ name: "required" })
+      }
+      else if (data === 15) {
+        validationHide()
+        UserMaster.resourse.validation.push({ name: "required" })
+      }
+      else if (data === 16) {
+        validationHide()
+        UserMaster.designation.validation.push({ name: "required" })
+        UserMaster.department.validation.push({ name: "required" })
+      }
+      else if (data === 17) {
+        validationHide()
+        UserMaster.question.validation.push({ name: "required" })
+      }
+      else if (data === 18) {
+        validationHide()
+        UserMaster.department.validation.push({ name: "required" })
+      }
+      else if (data === 19) {
+        validationHide()
+        UserMaster.activity.validation.push({ name: "required" })
+      }
+      else if (data === 20) {
+        validationHide()
+        const From_key = ["sub_activity", "activity_drop"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 21) {
+        validationHide()
+        const From_key = ["class_name", "class_type", "description"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 23) {
+        validationHide()
+        UserMaster.court.validation.push({ name: "required" })
+      }
+      else if (data === 24) {
+        validationHide()
+        UserMaster.range.validation.push({ name: "required" })
+      }
+      else if (data === 25) {
+        validationHide()
+        UserMaster.stage_name.validation.push({ name: "required" })
+      }
+      else if (data === 26) {
+        validationHide()
+        const From_key = ["sub_stage", "stage_dropdown"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 28) {
+        validationHide()
+        UserMaster.case_type.validation.push({ name: "required" })
+      }
+      else if (data === 29) {
+        validationHide()
+        const From_key = ["project_type", "checklist_name"]
+        From_key.map((data) => {
+          UserMaster[data].validation.push({ name: "required" })
+        });
+      }
+      else if (data === 30) {
+        validationHide()
+        UserMaster.control.validation.push({ name: "required" })
+      }
+      else if (data === 31) {
+        validationHide()
+        UserMaster.office_Location.validation.push({ name: "required" })
+      }
+
     }
-    if(key==="status_type"){
-      UserMaster.status_name.value=""
+    if (key === "status_type") {
+      UserMaster.status_name.value = ""
       var value = tablevalues.get_status_type.find((item) => {
         setEditvisible(false);
         return item.id == data;
-        
+
       });
       setStatusvalue(value)
-      console.log("status_type",value.id)
+      console.log("status_type", value.id)
       dispatch(getTableStatus(value))
     }
-    
- 
+
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       UserMaster[key].validation
@@ -561,7 +606,7 @@ const UserMaster = (props) => {
     }));
   }
 
- 
+
   const [UserGroupsList, setUserGroupsList] = useState([]);
   const [table_name_value, settable_name_value] = useState([]);
   const [TableData, setTableData] = useState([]);
@@ -601,6 +646,7 @@ const UserMaster = (props) => {
     dispatch(getTableGroup(table_name_value.table_names));
     dispatch(getCheckList());
     dispatch(getControls())
+    dispatch(getLoactionsList())
   }, []);
 
   useEffect(() => {
@@ -661,7 +707,7 @@ const UserMaster = (props) => {
       ProjectType.push({ id: data.project_type_id, value: data.project_type });
     });
     props.Status.map((data, index) => {
-      get_status_type.push({ id: index+1, value: data.status_type });
+      get_status_type.push({ id: index + 1, value: data.status_type });
       // setStatusvalue.push(data)
     });
     settablevalues({
@@ -696,11 +742,19 @@ const UserMaster = (props) => {
     let class_data = [];
     let sub_activity = [];
     let checklist_data = [];
-    let control_data=[]
+    let control_data = [];
+    let office_Location_data = [];
     props.GroupData.map((data) => {
       group_data.push({
         groupname: data.group_name,
         edit: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
+        delete: (
           <img
             src={Edit}
             onClick={() => CommonEdit(data.group_id, data)}
@@ -720,6 +774,13 @@ const UserMaster = (props) => {
             className="edit_p"
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -731,6 +792,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.skill_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -746,6 +814,13 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.traitTable, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -757,6 +832,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.certification_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -772,6 +854,13 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.specialization_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -783,6 +872,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.qualification_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -798,6 +894,13 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.industry_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -809,6 +912,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.institute_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -824,6 +934,13 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.capability_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -835,6 +952,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.talent_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -850,17 +974,32 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.resource_type_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
     props.Designation.map((data, index) => {
       desgination_data.push({
         designation: data.designation,
+        department: data.department,
         edit: (
           <img
             src={Edit}
             className="edit_p"
-            onClick={() => CommonEdit(data.designation_id, data)}
+            onClick={() => EditDesignation(data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -876,10 +1015,24 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.question_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
+    let departmentData = []
+
     props.Department.map((data, index) => {
+
+      departmentData.push({
+        value: data.department,
+        id: data.department_id
+      })
       department_data.push({
         department: data.department,
         edit: (
@@ -889,9 +1042,16 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.department_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
-
+    setDepartmentList({ departmentData })
     props.Activity.map((data, index) => {
       activity_data.push({
         activity: data.activity,
@@ -900,6 +1060,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.activity_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -915,6 +1082,13 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.location_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -926,6 +1100,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.stage_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -941,6 +1122,13 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.range_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -952,6 +1140,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.case_type_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -966,6 +1161,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => EditSubStage(data.sub_stage_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -983,6 +1185,13 @@ const UserMaster = (props) => {
             onClick={() => EditClass(data.class_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
 
@@ -995,6 +1204,13 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => EditSubActivity(data.proj_activity_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -1011,6 +1227,13 @@ const UserMaster = (props) => {
             onClick={() => Editchecklist(data.check_list_id, data)}
           />
         ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
       });
     });
     props.getTableControl.map((data, index) => {
@@ -1021,6 +1244,32 @@ const UserMaster = (props) => {
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.screen_control_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
+          />
+        ),
+      });
+    });
+    props.getLoactionsList.map((data, index) => {
+      office_Location_data.push({
+        officeLocation: data.office_location,
+        edit: (
+          <img
+            src={Edit}
+            className="edit_p"
+            onClick={() => CommonEdit(data.office_location_id, data)}
+          />
+        ),
+        delete: (
+          <img
+            src={Edit}
+            onClick={() => CommonEdit(data.group_id, data)}
+            className="edit_p"
           />
         ),
       });
@@ -1051,12 +1300,14 @@ const UserMaster = (props) => {
       sub_activity,
       group_data,
       checklist_data,
-      control_data
+      control_data,
+      office_Location_data
+
     });
 
- 
+
   }, [props, table_name_value.table_names]);
-console.log(props.stage,"satge")
+  console.log(props.stage, "satge")
   function Submit(data) {
     // alert(substageId)
     setStatusvalue((prevState) => ({
@@ -1065,7 +1316,7 @@ console.log(props.stage,"satge")
     setsubstageId((prevState) => ({
       ...prevState,
     }));
-    
+
     var mainvalue = {};
     var targetkeys = Object.keys(UserMaster);
     for (var i in targetkeys) {
@@ -1078,7 +1329,7 @@ console.log(props.stage,"satge")
       mainvalue[targetkeys[i]] = UserMaster[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-    if (filtererr.length >0) {
+    if (filtererr.length > 0) {
     } else {
       if (data === 21) {
         dispatch(
@@ -1088,25 +1339,25 @@ console.log(props.stage,"satge")
             Editvisible,
             // props.Class_Table_Data.class_id,
             // Statusvalue,
-            props.Class_Table_Data&&props?.Class_Table_Data[0]?.class_type
+            props.Class_Table_Data && props?.Class_Table_Data[0]?.class_type
           )
         ).then(() => {
           setEditvisible(false);
           handleCancel()
         });
       } else if (data === 20) {
-        if(Editvisible){
-        dispatch(UpdateSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
-      else{
-        dispatch(InsertSubActivity(UserMaster,EditStoreData.SubActivityEdit,Editvisible,props.SubActivity_Data&&props.SubActivity_Data[0].activity_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
+        if (Editvisible) {
+          dispatch(UpdateSubActivity(UserMaster, EditStoreData.SubActivityEdit, Editvisible, props.SubActivity_Data && props.SubActivity_Data[0].activity_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
+        else {
+          dispatch(InsertSubActivity(UserMaster, EditStoreData.SubActivityEdit, Editvisible, props.SubActivity_Data && props.SubActivity_Data[0].activity_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
       } else if (data === 29) {
         dispatch(
           InsertCheckList(UserMaster, EditStoreData.ChecklistEdit, Editvisible)
@@ -1126,7 +1377,6 @@ console.log(props.stage,"satge")
         data === 13 ||
         data === 14 ||
         data === 15 ||
-        data === 16 ||
         data === 17 ||
         data === 18 ||
         data === 19 ||
@@ -1136,7 +1386,8 @@ console.log(props.stage,"satge")
         data === 25 ||
         data === 27 ||
         data === 28 ||
-        data === 30
+        data === 30 ||
+        data === 31
       ) {
         if (Editvisible) {
           dispatch(
@@ -1158,34 +1409,52 @@ console.log(props.stage,"satge")
             handleCancel()
           });
         }
+      } else if (data === 16) {
+
+        let DesignationMaster = {
+          "designation_id": Editvisible ? EditStoreData.DesignationEdit.designation_id : 0,
+          "department_id": UserMaster.department.value,
+          "designation": UserMaster.designation.value,
+          "created_by": localStorage.getItem("empId"),
+          "updated_by": localStorage.getItem("empId"),
+          "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+          "updated_on": moment().format('YYYY-MM-DD HH:m:s')
+
+        }
+        console.log(EditStoreData, "EditStoreData")
+        dispatch(insertDesignationMaster(DesignationMaster)).then(() => {
+          setEditvisible(false);
+          handleCancel()
+        });
+
       } else if (data === 26) {
-        if(Editvisible){
-        dispatch(UpdateSubstage(UserMaster,EditStoreData.SubStageEdit,Editvisible,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
-      else{
-        dispatch(InsertSubstage(UserMaster,props.SubStage_data&&props.SubStage_data[0].stage_id)).then(() => {
-          setEditvisible(false);
-          handleCancel()
-        });
-      }
+        if (Editvisible) {
+          dispatch(UpdateSubstage(UserMaster, EditStoreData.SubStageEdit, Editvisible, props.SubStage_data && props.SubStage_data[0].stage_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
+        else {
+          dispatch(InsertSubstage(UserMaster, props.SubStage_data && props.SubStage_data[0].stage_id)).then(() => {
+            setEditvisible(false);
+            handleCancel()
+          });
+        }
       } else if (data === 4) {
         dispatch(
-          InsertStatus(UserMaster, EditStoreData.StatusEdit, Editvisible,Statusvalue)
+          InsertStatus(UserMaster, EditStoreData.StatusEdit, Editvisible, Statusvalue)
         ).then(() => {
           setEditvisible(false);
           handleCancel()
         });
       }
     }
-  //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
+    //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   }
-
+console.log(table_name_value.table_names,"table_name_value.table_names")
   const CommonEdit = (id, data) => {
     var group = props.GroupData.find((data) => {
       return data.group_id == id;
@@ -1220,11 +1489,11 @@ console.log(props.stage,"satge")
     var resource = props.Resource.find((data) => {
       return data.resource_type_id == id;
     });
-    var designation = props.Designation.find((data) => {
-      return data.designation_id == id;
-    });
-    var question=props.Question.find((data)=>{
-      return data.question_id==id
+    // var designation = props.Designation.find((data) => {
+    //   return data.designation_id == id;
+    // });
+    var question = props.Question.find((data) => {
+      return data.question_id == id
     })
     var department = props.Department.find((data) => {
       return data.department_id == id;
@@ -1232,7 +1501,7 @@ console.log(props.stage,"satge")
     var activity = props.Activity.find((data) => {
       return data.activity_id == id;
     });
-   
+
     var court = props.Court.find((data) => {
       return data.location_id == id;
     });
@@ -1245,8 +1514,11 @@ console.log(props.stage,"satge")
     var casetype = props.CaseType.find((data) => {
       return data.case_type_id == id;
     });
-    var control =props.getTableControl.find((data)=>{
-      return data.screen_control_id==id
+    var control = props.getTableControl.find((data) => {
+      return data.screen_control_id == id
+    })
+    var office_Location = props.getLoactionsList.find((data) => {
+      return data.office_location_id == id
     })
     UserMaster.groupname.value = data.group_name;
     UserMaster.skill_name.value = data.skill_name;
@@ -1259,7 +1531,7 @@ console.log(props.stage,"satge")
     UserMaster.capability.value = data.capability;
     UserMaster.talents.value = data.talent;
     UserMaster.resourse.value = data.resource_type;
-    UserMaster.designation.value = data.designation;
+    // UserMaster.designation.value = data.designation;
     UserMaster.question.value = data.questions;
     UserMaster.department.value = data.department;
     UserMaster.activity.value = data.activity;
@@ -1267,7 +1539,8 @@ console.log(props.stage,"satge")
     UserMaster.range.value = data.range;
     UserMaster.stage_name.value = data.stage;
     UserMaster.case_type.value = data.case_type;
-    UserMaster.control.value=data.control
+    UserMaster.control.value = data.control
+    UserMaster.office_Location.value = data.office_location
     setEditStoreData({
       group,
       traits,
@@ -1281,14 +1554,17 @@ console.log(props.stage,"satge")
       talents,
       resource,
       department,
-      designation,
+      // designation,
       question,
       activity,
       court,
       range,
       stage,
       casetype,
-      control
+      control,
+      office_Location
+
+
     });
     setUserMaster((prevState) => ({
       ...prevState,
@@ -1310,6 +1586,22 @@ console.log(props.stage,"satge")
     //   ...prevState,
     // }))
   };
+
+  const EditDesignation = (data) => {
+    UserMaster.department.value = data.department_id;
+    UserMaster.designation.value = data.designation;
+
+    var DesignationEdit = props.Designation.find((data1) => {
+      return data1.designation_id == data.designation_id;
+    });
+    setEditvisible(true);
+
+    setEditStoreData({ DesignationEdit });
+    setUserMaster((prevState) => ({
+      ...prevState,
+    }));
+  };
+
   const EditClass = (id, data) => {
     UserMaster.class_type.value = data.sub_project_type_id;
     UserMaster.class_name.value = data.class;
@@ -1324,14 +1616,14 @@ console.log(props.stage,"satge")
       ...prevState,
     }));
   };
-
+  console.log(DepartmentList, "DepartmentList")
   const EditStatus = (id, data) => {
     UserMaster.status_type.value = data.status_id.toString();
     var StatusEdit = props.StatusTableData.find((data) => {
       return data.status_id == id;
     });
     UserMaster.status_name.value = data.status;
-    
+
     setEditvisible(true);
 
     setEditStoreData({ StatusEdit });
@@ -1369,53 +1661,53 @@ console.log(props.stage,"satge")
   };
   const handleCancel = () => {
     let From_key = [
-      "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
-      "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
-      "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage","control"
+      "groupname", "skill_name", "class_name", "class_type", "description", "activity", "activity_drop", "project_type", "checklist_name",
+      "status_type", "status_name", "status_name", "traits_name", "specialization_name", "certification_name", "qualification_name",
+      "industry", "institute", "capability", "talents", "resourse", "designation", "question", "department", "activity", "sub_activity",
+      "court", "range", "stage_dropdown", "stage_name", "case_type", "activity_drop", "sub_stage", "control", "office_Location"
     ];
 
     From_key.map((data) => {
       UserMaster[data].value = "";
     });
-  
-  
+
+
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   };
   const validationHide = () => {
     let From_key = [
-      "groupname","skill_name","class_name","class_type","description","activity","activity_drop","project_type","checklist_name",
-      "status_type","status_name","status_name","traits_name","specialization_name","certification_name","qualification_name",
-      "industry","institute","capability","talents","resourse","designation","question","department","activity","sub_activity",
-      "court","range","stage_dropdown","stage_name","case_type","activity_drop","sub_stage","control"
+      "groupname", "skill_name", "class_name", "class_type", "description", "activity", "activity_drop", "project_type", "checklist_name",
+      "status_type", "status_name", "status_name", "traits_name", "specialization_name", "certification_name", "qualification_name",
+      "industry", "institute", "capability", "talents", "resourse", "designation", "question", "department", "activity", "sub_activity",
+      "court", "range", "stage_dropdown", "stage_name", "case_type", "activity_drop", "sub_stage", "control", "office_Location"
     ];
 
     From_key.map((data) => {
-      UserMaster[data].validation =[];
+      UserMaster[data].validation = [];
     });
-  
-  
+
+
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   };
-   ///*****user permission**********/
-   const [saveRights, setSaveRights] = useState([])
-useEffect(() => {
-  if(props.UserPermission.length>0&&props.UserPermission){
-     let data_res_id = props.UserPermission.find((val) => { 
-     return (
-         "User Masters - Save" == val.control
-     ) 
- })
- setSaveRights(data_res_id)
- }
+  ///*****user permission**********/
+  const [saveRights, setSaveRights] = useState([])
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "User Masters - Save" == val.control
+        )
+      })
+      setSaveRights(data_res_id)
+    }
 
- }, [props.UserPermission]);
+  }, [props.UserPermission]);
 
-/////////////
+  /////////////
   return (
     <div className="user_master_parent">
       <div className="user_master_h">User Master</div>
@@ -1592,7 +1884,16 @@ useEffect(() => {
           )}
 
           {/* Designation  */}
-          {UserMaster.tablename.value === 16 && (
+          {UserMaster.tablename.value === 16 && (<>
+            <Labelbox
+              type="select"
+              dropdown={DepartmentList.departmentData}
+              placeholder={"Department"}
+              changeData={(data) => checkValidation(data, "department")}
+              value={UserMaster.department.value}
+              error={UserMaster.department.error}
+              errmsg={UserMaster.department.errmsg}
+            />
             <Labelbox
               type="text"
               placeholder={"Enter Designation  Name"}
@@ -1601,6 +1902,7 @@ useEffect(() => {
               error={UserMaster.designation.error}
               errmsg={UserMaster.designation.errmsg}
             />
+          </>
           )}
 
           {/* Question  */}
@@ -1802,22 +2104,32 @@ useEffect(() => {
               />
             </div>
           )}
-              {UserMaster.tablename.value === 30 && (
-              <Labelbox
-                type="text"
-                placeholder={"Control Name"}
-                changeData={(data) => checkValidation(data, "control")}
-                value={UserMaster.control.value}
-                error={UserMaster.control.error}
-                errmsg={UserMaster.control.errmsg}
-              />)}
+          {UserMaster.tablename.value === 30 && (
+            <Labelbox
+              type="text"
+              placeholder={"Control Name"}
+              changeData={(data) => checkValidation(data, "control")}
+              value={UserMaster.control.value}
+              error={UserMaster.control.error}
+              errmsg={UserMaster.control.errmsg}
+            />)}
+
+          {UserMaster.tablename.value === 31 && (
+            <Labelbox
+              type="text"
+              placeholder={"Office Location Name"}
+              changeData={(data) => checkValidation(data, "office_Location")}
+              value={UserMaster.office_Location.value}
+              error={UserMaster.office_Location.error}
+              errmsg={UserMaster.office_Location.errmsg}
+            />)}
 
           <div>
             {UserMaster.tablename.value >= 3 && (
               <img
                 src={PlusIcon}
-                onClick={() => saveRights&&saveRights.display_control&&saveRights.display_control==='Y'&&Submit(UserMaster.tablename.value)}
-                style={{cursor:  saveRights&&saveRights.display_control&&saveRights.display_control==="Y"?'pointer':'not-allowed'}}
+                onClick={() => saveRights && saveRights.display_control && saveRights.display_control === 'Y' && Submit(UserMaster.tablename.value)}
+                style={{ cursor: saveRights && saveRights.display_control && saveRights.display_control === "Y" ? 'pointer' : 'not-allowed' }}
                 className="plus_icon_user"
               />
             )}
@@ -2003,9 +2315,16 @@ useEffect(() => {
           />
         )}
 
-        {UserMaster.tablename.value===30&&<EnhancedTable headCells={header26}
-          rows={TableData.control_data}
-           aligncss="aligncss"/>} 
+        {UserMaster.tablename.value === 30 &&
+          <EnhancedTable headCells={header26}
+            rows={TableData.control_data}
+            aligncss="aligncss" />}
+
+        {UserMaster.tablename.value === 31 &&
+          <EnhancedTable headCells={header27}
+            rows={TableData.office_Location_data}
+            aligncss="aligncss" />}
+
       </div>
     </div>
   );
@@ -2044,9 +2363,10 @@ const mapStateToProps = (state) => ({
   CheckList_Data: state.UserMasterReducer.getChecklist,
   ClassDropdown: state.UserMasterReducer.get_user_class,
   Update_text: state.UserMasterReducer.Common_Update_text,
-  UpdateSubstage:state.UserMasterReducer.Update_Substage,
-  UpdateSubActivity:state.UserMasterReducer.Update_subactivity,
-  getTableControl:state.UserMasterReducer.getControls,
+  UpdateSubstage: state.UserMasterReducer.Update_Substage,
+  UpdateSubActivity: state.UserMasterReducer.Update_subactivity,
+  getTableControl: state.UserMasterReducer.getControls,
+  getLoactionsList: state.UserMasterReducer.getLoactionsList,
   UserPermission: state.UserPermissionReducer.getUserPermission,
 });
 

@@ -75,12 +75,8 @@ function ExperienceModel(props) {
 
     useEffect(() => {
 
-        // if(props.nullFieldValueExp){
-        //     handleCancel()
-        // }
-        console.log(props.editExperiences,"props.editExperiences")
         if(props.editExperiences&&props.editExperiences.length>0){
-            console.log(props.editExperiences,"Ssssssssssssssssssssssssss")
+        
         const industry = props.editExperiences[0]?.type_of_industry;
         const compName = props.editExperiences[0]?.company_name;
         const city = props.editExperiences[0]?.city_id;
@@ -150,12 +146,12 @@ function ExperienceModel(props) {
         var filtererr = targetkeys.filter(
             (obj) => Experience_Form[obj].error == true
         );
-        console.log(filtererr.length,"ssssssssssssssssss");
+   
         if (filtererr.length > 0) {
             // setExperienceForm({ error: true });
         } else {
             // setExperienceForm({ error: false });
-            console.log(Experience_Form,"Experience_Form")
+          
             if(data==='Save'){
                 props.addExperience(Experience_Form)
             }else{

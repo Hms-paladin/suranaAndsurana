@@ -311,8 +311,8 @@ const RateMaster = (props) => {
       "sub_activity",
       "upper_limit",
       "amount",
-      "court"
-      , "unit_measurement"];
+      "court",
+      "unit_measurement"];
 
     From_key.map((data) => {
 
@@ -506,27 +506,27 @@ const RateMaster = (props) => {
 
   console.log(RateMaster, "RateMasterRateMaster")
 
-///*****user permission**********/
-useEffect(() => {
-  if(props.UserPermission.length>0&&props.UserPermission){
-     let data_res_id = props.UserPermission.find((val) => { 
-     return (
-       "Variable Rate Master - Save" == val.control 
-     ) 
- })
- setSaveRights(data_res_id)
- }
+  ///*****user permission**********/
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "Variable Rate Master - Save" == val.control
+        )
+      })
+      setSaveRights(data_res_id)
+    }
 
- }, [props.UserPermission]);
+  }, [props.UserPermission]);
 
-   console.log(saveRights,"rights")
+  console.log(saveRights, "rights")
 
- function rightsNotification(){
-  notification.success({
+  function rightsNotification() {
+    notification.success({
       message: "You are not Authorized. Please Contact Administrator",
-  });
-}
-/////////////
+    });
+  }
+  /////////////
   return (
     <div>
       <div className="var_rate_master">Variable Rate Master</div>
@@ -633,7 +633,7 @@ useEffect(() => {
               btnCustomColor="customPrimary"
               custombtnCSS="custom_save"
               onBtnClick={onSubmit}
-              btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}
+              btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
             />
             <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} />
           </div>
@@ -662,11 +662,11 @@ useEffect(() => {
             <div>
               {" "}
               <label className="notfound_label">
-                Do You Want To Continue ?
-                </label>
+                Do You Want to Add this Item ?
+              </label>
             </div>
             <div className="customNotFoundbtn">
-              <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit}  />
+              <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit} />
               <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
             </div>
           </div>

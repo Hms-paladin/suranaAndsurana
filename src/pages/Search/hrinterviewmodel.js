@@ -98,7 +98,8 @@ const HrInterviewModel = (props) => {
    
     let Designation = []
     props.getDesignationList.map((data, index) =>
-      Designation.push({ id: data.designation_id, value: data.designation })
+      Designation.push({ value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{' - '+data.designation}</div>,
+      id: data.designation_id})
     )
     setdesignationdata({ Designation })
   }, [props.GetInterviewers, props.getDesignationList])

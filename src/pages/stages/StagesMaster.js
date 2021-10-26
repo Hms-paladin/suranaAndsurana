@@ -285,6 +285,15 @@ const StagesMaster = (props) => {
       }))
     }
 
+    if (data === 4 && key == "sub_project_type_search") {
+      RateMaster.process_type_search.value=""
+      RateMaster.process_type_search.validation = [{ name: "" }]
+    }
+    else if (data !== 4 && key == "sub_project_type_search") {
+      RateMaster.process_type_search.value=""
+      RateMaster.process_type_search.validation = [{ name: "required" }]
+    }
+
     if (key == "sub_project_type" && data) {
       //process type
       dispatch(getProcessType({
@@ -292,9 +301,11 @@ const StagesMaster = (props) => {
       }))
     }
     if (data === 4 && key == "sub_project_type") {
+      RateMaster.process_type.value=""
       RateMaster.process_type.validation = [{ name: "" }]
     }
     else if (data !== 4 && key == "sub_project_type") {
+      RateMaster.process_type.value=""
       RateMaster.process_type.validation = [{ name: "required" }]
     }
     //________________________________________________________________

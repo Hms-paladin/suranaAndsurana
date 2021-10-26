@@ -2,7 +2,6 @@ import react, { useEffect, useState } from "react";
 import "./litigation.scss";
 import { Tabs, Radio, Divider } from "antd";
 import Grid from "@material-ui/core/Grid";
-import Tabcontent from "../../component/TradeMarkTabIcons/trademarktabIcons";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
@@ -13,18 +12,21 @@ import DynModel from "../../component/Model/model";
 import AddDataModel from "./adddataModel";
 import {
   getCaseType,
-  getEmployeeList,
+  getEmpListDepartment,
   getLocation,
   getSubCaseType,
   getTradeMarkStatus,
 } from "../../actions/MasterDropdowns";
 import { GetLitigation, InsertLitigation } from "../../actions/Litigation";
+import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
+
 
 const { TabPane } = Tabs;
 
 const Litigation = (props) => {
   const dispatch = useDispatch();
   const [litigationCounsel, setLitigationCounsel] = useState(false);
+  const [LitigationCounsel_id, setLitigationCounsel_id] = useState(0); 
   const [employeeList, setEmployeeList] = useState({});
   const [locationslList, setlocationslList] = useState({});
   const [tradeMarkStatus, setTradeMarkStatus] = useState({});
@@ -33,6 +35,8 @@ const Litigation = (props) => {
   const [SubCaseType, setSubCaseType] = useState({});
   const [LitigationCaseDetails, setLitigationCaseDetails] = useState([]);
   const [LitigationCase, setLitigationCase] = useState();
+  const [confirmmodel, setConfirmModel] = useState(false);
+
   const [Litigation_Form, setLitigationForm] = useState({
     internalcaseno: {
       value: "",
@@ -42,72 +46,75 @@ const Litigation = (props) => {
     },
     status: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     courtname: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     casetype: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     courtcaseno: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     ddra: {
       value: "",
       valueById: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     hearingdate: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     duedate: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     subcase: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     suitvalue: {
       value: "",
-      validation: [{ name: "required" }, { name: "numericanddot" }],
+      validation: [{ name: "numericanddot" }],
       error: null,
       errmsg: null,
     },
   });
   useEffect(() => {
     handleCancel();
-    dispatch(getEmployeeList());
+    dispatch(getEmpListDepartment());
     dispatch(getLocation());
     dispatch(getTradeMarkStatus());
     dispatch(getCaseType());
   }, []);
   useEffect(() => {
-    handleCancel();
-    setIdDetails(props.id_Props);
-    dispatch(getSubCaseType(props.id_Props.client_id));
-    dispatch(GetLitigation(props.id_Props.project_id));
+
+    if (props.id_Props && props.id_Props.project_id) {
+      handleCancel();
+      setIdDetails(props.id_Props);
+      dispatch(getSubCaseType(props.id_Props.client_id));
+      dispatch(GetLitigation(props.id_Props.project_id));
+    }
   }, [props.id_Props]);
 
   useEffect(() => {
@@ -140,17 +147,22 @@ const Litigation = (props) => {
                   <div className="mailFields">{val.interim_application_date}</div>
                   <div className="addressFields">{val.interim_details}</div>
                 </>
-              ) : (
+              ) : data.liti_councel === "Adjournment" ? (<>
+                <div className="adjournFields">{val.adjournment_taken_by}</div>
+                <div className="adjournFields">{val.reason}</div>
+              </>) : (
                 <>
                   <div className="nameFields">{val.name}</div>
                   <div className="phoneFields">{val.phone_no}</div>
                   <div className="mailFields">{val.email_id}</div>
                   <div className="addressFields">{val.address}</div>
                 </>
-              )}
-            </div>
+              )
+              }
+            </div >
           );
         });
+
         return (
           <>
             {rowDataList && props.getLitigationDetails[0].case.length > 0 && (
@@ -158,18 +170,24 @@ const Litigation = (props) => {
                 <div className="ourCounselTitle ourCounselHead">
                   {" "}
                   <span>{data.liti_councel}</span>{" "}
-                  <img
+                  {data.liti_councel !== "Adjournment" && <img
                     src={AddIcon}
                     style={{ height: "20px" }}
-                    onClick={setLitigationCounselModel}
-                  />
+                    onClick={()=>setLitigationCounselModel(data.liti_councel_id)}
+                  />}
                 </div>
                 <div className="ourCounselFieldsHeading">
                   {" "}
-                  <div className="nameFields">Name</div>
-                  <div className="phoneFields">Phone No</div>
-                  <div className="mailFields">Email</div>
-                  <div className="addressFields">Address</div>
+                  {data.liti_councel === "Adjournment" ? (
+                    <> <div className="adjournFields" style={{ whiteSpace: 'nowrap' }}>Adjournment Taken By</div>
+                      <div className="adjournFields">Reason</div></>
+                  ) : (<>
+                    <div className="nameFields">Name</div>
+                    <div className="phoneFields">Phone No</div>
+                    <div className="mailFields">Email</div>
+                    <div className="addressFields">Address</div></>
+                  )}
+
                 </div>
                 <div >{rowDataList}</div>
               </div>
@@ -212,17 +230,16 @@ const Litigation = (props) => {
       Litigation_Form["status"].value = caseDetails.status_id || 0;
       Litigation_Form["courtname"].value = caseDetails.court_id || 0;
       Litigation_Form["casetype"].value = caseDetails.case_type_id || 0;
-      Litigation_Form["courtcaseno"].value = caseDetails.court_case_no || 0;
+      Litigation_Form["courtcaseno"].value = caseDetails.court_case_no || "";
       // _________________________
       Litigation_Form["ddra"].value = MultipleCouncelValue || "";
       Litigation_Form["ddra"].valueById = caseDetails.responsible_attorney;
-      // TicketCreation.language.value = languageValue;
-      // TicketCreation.language.valueById = props.TicketTemplate[0]?.language_id;
+
       // __________________________________________________
-      Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date || 0;
-      Litigation_Form["duedate"].value = caseDetails.due_date || 0;
+      caseDetails.next_hearing_date && caseDetails.next_hearing_date != "0000-00-00" && (Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date);
+      caseDetails.due_date && caseDetails.due_date != "0000-00-00" && (Litigation_Form["duedate"].value = caseDetails.due_date);
       Litigation_Form["subcase"].value = caseDetails.sub_case || 0;
-      Litigation_Form["suitvalue"].value = caseDetails.suit_value || 0;
+      Litigation_Form["suitvalue"].value = caseDetails.suit_value || "";
     }
     setLitigationForm((prevState) => ({
       ...prevState,
@@ -261,35 +278,35 @@ const Litigation = (props) => {
     props.getCaseType,
   ]);
 
-  const setLitigationCounselModel = () => {
+  const setLitigationCounselModel = (id) => {
     setLitigationCounsel(true);
+    setLitigationCounsel_id(id);
   };
   function onSubmit() {
-    // var mainvalue = {};
-    // var targetkeys = Object.keys(Litigation_Form);
-    // for (var i in targetkeys) {
-    //     var errorcheck = ValidationLibrary.checkValidation(
-    //         Litigation_Form[targetkeys[i]].value,
-    //         Litigation_Form[targetkeys[i]].validation
-    //     );
-    //     Litigation_Form[targetkeys[i]].error = !errorcheck.state;
-    //     Litigation_Form[targetkeys[i]].errmsg = errorcheck.msg;
-    //     mainvalue[targetkeys[i]] = Litigation_Form[targetkeys[i]].value;
-    // }
-    // var filtererr = targetkeys.filter(
-    //     (obj) => Litigation_Form[obj].error == true
-    // );
-    // console.log(filtererr.length);
-    // if (filtererr.length > 0) {
-    //     // setResumeFrom({ error: true });
-    // } else {
-    //     // setResumeFrom({ error: false });
+    var mainvalue = {};
+    var targetkeys = Object.keys(Litigation_Form);
+    for (var i in targetkeys) {
+      var errorcheck = ValidationLibrary.checkValidation(
+        Litigation_Form[targetkeys[i]].value,
+        Litigation_Form[targetkeys[i]].validation
+      );
+      Litigation_Form[targetkeys[i]].error = !errorcheck.state;
+      Litigation_Form[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = Litigation_Form[targetkeys[i]].value;
+    }
+    var filtererr = targetkeys.filter(
+      (obj) => Litigation_Form[obj].error == true
+    );
+    console.log(filtererr.length);
+    if (filtererr.length > 0) {
+      // setResumeFrom({ error: true });
+    } else {
+      // setResumeFrom({ error: false });
 
-    dispatch(InsertLitigation(Litigation_Form, IdDetails)).then(() => {
-      dispatch(GetLitigation(props.id_Props.project_id));
-    });
-    // }
+      dispatch(InsertLitigation(Litigation_Form, IdDetails))
 
+    }
+    setConfirmModel(false)
     setLitigationForm((prevState) => ({
       ...prevState,
     }));
@@ -329,9 +346,12 @@ const Litigation = (props) => {
       validation: Litigation_Form[key].validation,
     };
 
-    // if (data && key === "hearingdate") {
-
-    // }
+    if (data && key === "hearingdate") {
+      props.TaskModel&&props.TaskModel(true);
+    }
+    else{
+      props.TaskModel&&props.TaskModel(false);
+    }
 
     // only for multi select (start)
 
@@ -359,58 +379,61 @@ const Litigation = (props) => {
         <div className="addCase">Add Case</div>
       </div>
       <Grid item xs={12} container direction="row" spacing={2}>
+
+
         <Grid item xs={4} container direction="column" spacing={2}>
+          <div className="AddClientHead">Internal Case No.</div>
           <Labelbox
             type="text"
-            placeholder={"Internal Case No."}
+            // placeholder={"Internal Case No."}
             changeData={(data) => checkValidation(data, "internalcaseno")}
             value={Litigation_Form.internalcaseno.value}
             error={Litigation_Form.internalcaseno.error}
             errmsg={Litigation_Form.internalcaseno.errmsg}
           />
-
+          <div className="AddClientHead">Status</div>
           <Labelbox
             type="select"
-            placeholder={"Status"}
+            // placeholder={"Status"}
             dropdown={tradeMarkStatus.tradeMark}
             changeData={(data) => checkValidation(data, "status")}
             value={Litigation_Form.status.value}
             error={Litigation_Form.status.error}
             errmsg={Litigation_Form.status.errmsg}
           />
-
+          <div className="AddClientHead">Court Name</div>
           <Labelbox
             type="select"
-            placeholder={"Court Name"}
+            // placeholder={"Court Name"}
             dropdown={locationslList.locationData}
             changeData={(data) => checkValidation(data, "courtname")}
             value={Litigation_Form.courtname.value}
             error={Litigation_Form.courtname.error}
             errmsg={Litigation_Form.courtname.errmsg}
           />
-
+          <div className="AddClientHead">Case Type</div>
           <Labelbox
             type="select"
-            placeholder={"Case Type"}
+            // placeholder={"Case Type"}
             dropdown={CaseType.caseType}
             changeData={(data) => checkValidation(data, "casetype")}
             value={Litigation_Form.casetype.value}
             error={Litigation_Form.casetype.error}
             errmsg={Litigation_Form.casetype.errmsg}
           />
-
+          <div className="AddClientHead">Court Case No.</div>
           <Labelbox
             type="text"
-            placeholder={"Court Case No."}
+            // placeholder={"Court Case No."}
             changeData={(data) => checkValidation(data, "courtcaseno")}
             value={Litigation_Form.courtcaseno.value}
             error={Litigation_Form.courtcaseno.error}
             errmsg={Litigation_Form.courtcaseno.errmsg}
           />
-
+          <div className="AddClientHead">DDRA</div>
           <Labelbox
             type="select"
-            placeholder={"DDRA"}
+            // placeholder={"DDRA"}
             mode={"multiple"}
             dropdown={employeeList.EmployeeList}
             changeData={(data) =>
@@ -423,10 +446,10 @@ const Litigation = (props) => {
 
           <div className="litigationDatepicker">
             <div>
-              {" "}
+              <div className="AddClientHead">Next Hearing Date</div>
               <Labelbox
                 type="datepicker"
-                placeholder={"Next Hearing Date"}
+                // placeholder={"Next Hearing Date"}
                 disablePast={true}
                 changeData={(data) => checkValidation(data, "hearingdate")}
                 value={Litigation_Form.hearingdate.value}
@@ -435,10 +458,11 @@ const Litigation = (props) => {
               />
             </div>
             <div>
-              {" "}
+              <div className="AddClientHead">Due Date</div>
               <Labelbox
                 type="datepicker"
-                placeholder={"Due Date"} disablePast={true}
+                // placeholder={"Due Date"}
+                disablePast={true}
                 changeData={(data) => checkValidation(data, "duedate")}
                 value={Litigation_Form.duedate.value}
                 error={Litigation_Form.duedate.error}
@@ -447,19 +471,20 @@ const Litigation = (props) => {
               />
             </div>
           </div>
+          <div className="AddClientHead">Sub case</div>
           <Labelbox
             type="select"
-            placeholder={"Sub case"}
+            // placeholder={"Sub case"}
             dropdown={SubCaseType.subCaseType}
             changeData={(data) => checkValidation(data, "subcase")}
             value={Litigation_Form.subcase.value}
             error={Litigation_Form.subcase.error}
             errmsg={Litigation_Form.subcase.errmsg}
           />
-
+          <div className="AddClientHead">Suit Value (Numeric)</div>
           <Labelbox
             type="text"
-            placeholder={"Suit Value (Numeric)"}
+            // placeholder={"Suit Value (Numeric)"}
             changeData={(data) => checkValidation(data, "suitvalue")}
             value={Litigation_Form.suitvalue.value}
             error={Litigation_Form.suitvalue.error}
@@ -476,6 +501,7 @@ const Litigation = (props) => {
             content={
               <AddDataModel
                 id={IdDetails}
+                LitigationCounsel_id={LitigationCounsel_id&&LitigationCounsel_id}
                 Litigation_ID={LitigationCase && LitigationCase.ligitation_id}
                 handleChangeCloseModel={(bln) => setLitigationCounsel(bln)}
               />
@@ -486,7 +512,7 @@ const Litigation = (props) => {
               btnName={"SAVE "}
               btnCustomColor="customPrimary"
               custombtnCSS={"btnProjectForm"}
-              onBtnClick={onSubmit}
+              onBtnClick={() => setConfirmModel(true)}
             />
 
             <CustomButton
@@ -497,11 +523,32 @@ const Litigation = (props) => {
           </div>
         </Grid>
       </Grid>
+
+      <DynModel
+        modelTitle={"Litigation Save"}
+        handleChangeModel={confirmmodel}
+        handleChangeCloseModel={(bln) => setConfirmModel(bln)}
+        content={
+          <div className="successModel">
+            <div>
+              {" "}
+              <label className="notfound_label">
+                Are You Sure Want to Save ?
+              </label>
+            </div>
+            <div className="customNotFoundbtn">
+              <CustomButton btnName={"YES"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit} />
+              <CustomButton btnName={"NO "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setConfirmModel(false)} />
+            </div>
+          </div>
+        }
+        width={500}
+      />
     </div>
   );
 };
 const mapStateToProps = (state) => ({
-  EmployeeList: state.getOptions.getEmployeeList || [],
+  EmployeeList: state.getOptions.getEmpListDepartment || [],
   getCourtLocation: state.getOptions.getCourtLocation || [],
   getTradeMarkStatus: state.getOptions.getTradeMarkStatus || [],
   getCaseType: state.getOptions.getCaseType || [],

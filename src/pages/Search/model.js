@@ -6,7 +6,6 @@ import Axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl';
 import { GetInterviewers,GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
-import { GetDesignation } from "../../actions/GetDesignationActions";
 import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
@@ -178,7 +177,8 @@ function DynModel(props) {
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data.designation }))
+        Designation.push({ value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{'  - '+data.designation}</div>,
+        id: data.designation_id }))
 
       setdesignationdata({ Designation })
 
