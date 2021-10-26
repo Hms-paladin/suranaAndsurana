@@ -5,7 +5,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Checkbox, Collapse } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import './OpeAdvance.scss'
-import { getProjectType } from '../../actions/MasterDropdowns'
+import { getProjectType ,get_projectName_by_Desig} from '../../actions/MasterDropdowns'
 import { getExpenseType, getPaymentMode } from '../../actions/projectTaskAction'
 import { InsertOpeExpenses, GetOpeProjectType, ProjectBased_ClientName } from '../../actions/OutofPacketActions'
 import { useDispatch, connect } from "react-redux";
@@ -67,7 +67,7 @@ function OPE_Expense(props) {
         },
         description: {
             value: "",
-            validation: [{ name: "required" }],
+            // validation: [{ name: "required" }],
             errmsg: null,
             error: null
         },
@@ -94,6 +94,7 @@ function OPE_Expense(props) {
         dispatch(getProjectType())
         dispatch(getExpenseType())
         dispatch(getPaymentMode())
+        dispatch(get_projectName_by_Desig());
     }, [])
     useEffect(() => {
         let Proj_Name = []
@@ -104,8 +105,7 @@ function OPE_Expense(props) {
         props.ProjectName.map((data) => {
             Proj_Name.push({ id: data.project_id, value: data.project_name })
         })
-
-
+        
         props.ProjectType.map((data) => {
             Project_type.push({ id: data.project_type_id, value: data.project_type })
         })
@@ -339,7 +339,7 @@ function OPE_Expense(props) {
 const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
-    ProjectName: state.OutofPacket.projectTypebase_projectName || [],
+    ProjectName: state.getOptions.get_projectName_by_Desig || [],
     ProjectType: state.getOptions.getProjectType || [],
     ClientName: state.OutofPacket.projectNameBased_ClientName || [],
     ExpenseType: state.projectTasksReducer.expenseType || [],

@@ -449,13 +449,14 @@ export const Update_Variable_Rate = (data, amt, AddRow) => async dispatch => {
   }
 }
 
-export const UpdateCheckListNoTaskLink = (check_list_details_id,project_id) => async dispatch => {
+export const UpdateCheckListNoTaskLink = (check_list_details_id, project_id, end_date) => async dispatch => {
   try {
     await axios({
       method: 'POST',
       url: apiurl + 'update_check_list_no_task_link',
       data: {
         check_list_details_id: check_list_details_id || 0,
+        end_date: end_date,
       },
     })
       .then((response) => {

@@ -15,6 +15,7 @@ import {
   getFilingType,
   getProjectCostRange,
   getClientlist,
+  getEmployeeList
 } from "../../../actions/MasterDropdowns";
 import VariableRate from "../../stages/RateMaster";
 import EnhancedTable from "../../../component/DynTable/table";
@@ -77,6 +78,7 @@ function ProjectFormCreate(props) {
   const [billable, setBillable] = useState();
   const [notfoundmodel, setNotfoundmodel] = useState(false);
   const [projectExists, setProjectExists] = useState(1)
+  const [Supervisor, setSupervisor] = useState({})
   const [projectform, setprojectform] = useState({
     client: {
       value: "",
@@ -174,11 +176,13 @@ function ProjectFormCreate(props) {
 
   useEffect(() => {
     Axios({
-      method: "GET",
-      url: apiurl + "get_project_type",
+      method: "POST",
+      url: apiurl + "get_project_type_department",
+      data: {
+        emp_id: localStorage.getItem("empId"),
+      }
     }).then((response) => {
-      // SubType_Project_Api()
-      console.log(response.data.data, " response.data.data");
+
       let projectTypedata = [];
       response.data.data.map((data) =>
         projectTypedata.push({
@@ -187,7 +191,6 @@ function ProjectFormCreate(props) {
         })
       );
       setProjectType({ projectTypedata });
-      console.log({ projectTypedata }, " {projectTypedata}");
     });
 
     // billable type
@@ -195,7 +198,6 @@ function ProjectFormCreate(props) {
       method: "GET",
       url: apiurl + "get_billable_type",
     }).then((response) => {
-      console.log("response", response);
       let BillableData = [];
       response.data.data.map((data) =>
         BillableData.push({
@@ -225,10 +227,10 @@ function ProjectFormCreate(props) {
     dispatch(getEmployeeByDepartment(Number(JSON.parse(localStorage.getItem("token")).department_id)));
     dispatch(getProjectCostRange());
     dispatch(getClientlist());
+    dispatch(getEmployeeList());
   }, []);
 
   const onchangeAmount = (data, key) => {
-    console.log(parseInt(data), key, "onchangeAmount")
     // if (key === "amountSearch" && data) {
     setPrpjectSearchCreate((prevState) => ({
       ...prevState,
@@ -247,7 +249,6 @@ function ProjectFormCreate(props) {
         "project_name": projectName,
       }
     }).then((response) => {
-      console.log(response.data)
       setProjectExists(response.data.status)
     });
   }
@@ -262,7 +263,6 @@ function ProjectFormCreate(props) {
     if (otherNumbers != '')
       lastThree = ',' + lastThree;
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-    console.log(res, value, "ressssss")
     checkValidation(res, key)
   }
 
@@ -279,7 +279,6 @@ function ProjectFormCreate(props) {
       validation: projectform[key].validation,
     };
 
-    console.log(projectExists, "projectExists")
 
     if (key === "projectname") {
       if (projectExists === 0) {
@@ -306,8 +305,6 @@ function ProjectFormCreate(props) {
         }));
       }
     }
-    console.log(dynObj, "dynObj")
-    console.log(key, data, "key")
 
     if (data === 1 && key === "project_type") {
       let IP_project_key = [
@@ -322,14 +319,13 @@ function ProjectFormCreate(props) {
         "projectcostrange",
         "projectname",
         "process_type",
-        "comments",
+        // "comments",
       ];
 
       IP_project_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }
-            // , { "name": "allowNumaricOnly1" }
-          ])
+          projectform[data].validation = ([{ name: "required" }])
+          // , { "name": "allowNumaricOnly1" }
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -347,7 +343,7 @@ function ProjectFormCreate(props) {
         "employeelist",
         "hod_attorny",
         "projectcostrange",
-        "comments",
+        // "comments",
       ];
 
       Other_key.map((data) => {
@@ -375,7 +371,7 @@ function ProjectFormCreate(props) {
         "hod_attorny",
         "projectcostrange",
         "projectname",
-        "comments",
+        // "comments",
 
       ];
 
@@ -406,7 +402,6 @@ function ProjectFormCreate(props) {
 
     if (data && key === "billable_type") {
       let projectcostrange = projectform.projectcostrange.value.replace(/,/g, "");
-      console.log(projectcostrange, "bill")
       if (data === 1 || data === 4 || data === 5) {
         projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
           // , { "name": "allowNumaricOnly1" }
@@ -498,10 +493,9 @@ function ProjectFormCreate(props) {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
-    // console.log(projectform.baseRate.validation, "projectform.baseRate.validation")
+
     if (data && key == "projectcostrange") {
       let projectcostrange = data.replace(/,/g, "")
-      console.log(projectcostrange, "projectcost")
       if (projectform.baseRate.validation[1]) {
         projectform.baseRate.validation[1].params = projectcostrange;
       } else {
@@ -537,7 +531,7 @@ function ProjectFormCreate(props) {
       ...prevState,
     }));
   }
-
+console.log(projectform['comments'],"ddddddddddd")
   function onsubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(projectform);
@@ -552,13 +546,6 @@ function ProjectFormCreate(props) {
     }
 
     var filtererr = targetkeys.filter((obj) => projectform[obj].error == true);
-
-    // if (billable === 3) {
-    //   projectform.limits.error = false;
-    //   projectform.limits.errmsg = "";
-    // }
-    console.log(filtererr.length, projectform, "projectform ")
-
 
     if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length === 0) {
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
@@ -645,7 +632,7 @@ function ProjectFormCreate(props) {
     props.ProcessType.map((data) =>
       Processtypevalue.push({ value: data.process, id: data.process_id })
     );
-    console.log("test", Processtypevalue);
+
     setProcessType({ Processtypevalue });
 
     //filing type
@@ -664,7 +651,14 @@ function ProjectFormCreate(props) {
     );
     setEmployeeList({ EmployeeList });
 
-
+    let employeeData = []
+    props.getEmployeeList.map((data) =>
+      employeeData.push({
+        value: data.name,
+        id: data.emp_id
+      })
+    )
+    setSupervisor({ employeeData })
     // Project / Transaction Value
 
     let ProjectCostRange = [];
@@ -701,8 +695,6 @@ function ProjectFormCreate(props) {
       setSearchdata(false);
       setSuccessmodel(true);
     }
-
-
 
     const newInsertrow = (data) => {
       console.log(data, "datadatadatas")
@@ -921,10 +913,9 @@ function ProjectFormCreate(props) {
                       errmsg={projectform.filing_type.errmsg} /></Grid>
                 </>
               }
-
               <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
                 <Labelbox type="select"
-                  dropdown={employeeList.EmployeeList}
+                  dropdown={Supervisor.employeeData}
                   changeData={(data) => checkValidation(data, "hod_attorny")}
                   value={projectform.hod_attorny.value}
                   error={projectform.hod_attorny.error}
@@ -1108,6 +1099,16 @@ function ProjectFormCreate(props) {
                 <Grid item xs={6}></Grid>
               </>
             ) : projectform.project_type.value === 2 || projectform.project_type.value === 3 || projectform.project_type.value === 4 || projectform.project_type.value === 5 ? (<>
+
+              <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
+                <Labelbox type="select"
+                  dropdown={Supervisor.employeeData}
+                  changeData={(data) => checkValidation(data, "hod_attorny")}
+                  value={projectform.hod_attorny.value}
+                  error={projectform.hod_attorny.error}
+                  errmsg={projectform.hod_attorny.errmsg}
+                />
+              </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Counsel</div>
                 <Labelbox type="select"
                   mode={"multiple"}
@@ -1116,15 +1117,6 @@ function ProjectFormCreate(props) {
                   value={projectform.employeelist.value}
                   error={projectform.employeelist.error}
                   errmsg={projectform.employeelist.errmsg} />
-              </Grid>
-              <Grid item xs={6}> <div className="Fieldheading">HOD/Attorney</div>
-                <Labelbox type="select"
-                  dropdown={employeeList.EmployeeList}
-                  changeData={(data) => checkValidation(data, "hod_attorny")}
-                  value={projectform.hod_attorny.value}
-                  error={projectform.hod_attorny.error}
-                  errmsg={projectform.hod_attorny.errmsg}
-                />
               </Grid>
               <Grid item xs={6}> <div className="Fieldheading">Project / Transaction Value</div>
                 <Labelbox type="text"
@@ -1240,6 +1232,7 @@ const mapStateToProps = (state) =>
   Client: state.getOptions.getClientlist,
   searchVariableRate: state.variableRateMaster.searchVariableRate,
   lenghtData: state.variableRateMaster.lengthData,
+  getEmployeeList: state.getOptions.getEmployeeList || [],
 });
 
 export default connect(mapStateToProps)(ProjectFormCreate);

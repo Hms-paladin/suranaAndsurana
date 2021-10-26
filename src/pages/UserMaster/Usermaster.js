@@ -1454,7 +1454,7 @@ const UserMaster = (props) => {
       ...prevState,
     }));
   }
-
+console.log(table_name_value.table_names,"table_name_value.table_names")
   const CommonEdit = (id, data) => {
     var group = props.GroupData.find((data) => {
       return data.group_id == id;

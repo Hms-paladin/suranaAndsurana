@@ -23,7 +23,7 @@ import AddHearing from '../../task/AddHearing';
 import DynModel from '../../../component/Model/model';
 
 function TimeSheetStartModel(props) {
-    const [changeStop, setChangeStop] = useState(true)
+    const [StartProcess, setStartProcess] = useState(true)
     const dispatch = useDispatch();
     const [projectSubActivity, setprojectSubActivity] = useState({});
     const [activityList, setactivityList] = useState({})
@@ -31,9 +31,9 @@ function TimeSheetStartModel(props) {
     const [taggList, settaggList] = useState({})
     const [projectDetails, setProjectDetails] = useState([{}])
     const [projectName, setProjectName] = useState({});
-    const [SaveBtnProcess, setSaveBtnProcess] = useState(false);
+    const [SaveProcess, setSaveProcess] = useState(false);
     const [AddHearing_Data, setAddHearing_Data] = useState([]);
-
+    let { rowId } = useParams()
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: new Date("12-30-2017 " + moment().format('HH:mm:ss')),
@@ -60,16 +60,14 @@ function TimeSheetStartModel(props) {
             errmsg: null,
         },
         tag: {
-            value: "",
+            value: "0",
             valueById: "",
-            // validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
         priority: {
-            value: "",
+            value: "0",
             valueById: "",
-            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
@@ -111,11 +109,11 @@ function TimeSheetStartModel(props) {
         }
 
     })
-    let { rowId } = useParams()
+    
     useEffect(() => {
         setProjectDetails(props.projectrow)
     }, [props.projectrow])
-    console.log(SaveBtnProcess, "SaveBtnProcess")
+
     const handleCancel = () => {
 
         let From_key = [
@@ -139,7 +137,6 @@ function TimeSheetStartModel(props) {
                 } else {
                     timeSheetForm[data].value = new Date("12-30-2017 " + moment().format('HH:mm:ss'));
                 }
-                console.log("mapping", timeSheetForm[data].value);
             } catch (error) {
                 throw error;
             }
@@ -162,21 +159,20 @@ function TimeSheetStartModel(props) {
     }, []);
 
     useEffect(() => {
-        console.log(props.model_clear,"props.model_clear")
         if (props.model_clear)
             handleCancel()
     }, [props.model_clear]);
 
-    useEffect(() => {
-        if (props.approve_timesheet && props.approve_timesheet !== '') {
+    // useEffect(() => {
+    //     if (props.approve_timesheet && props.approve_timesheet !== '') {
 
-            // timeSheetForm.startTime.value
-            // timeSheetForm.startTime.value
-            // timeSheetForm.startTime.value
-            // timeSheetForm.startTime.value
-        }
-        // console.log(props.approve_timesheet,props.projectrow,'approve_timesheetd')
-    }, [props.approve_timesheet]);
+    //         // timeSheetForm.startTime.value
+    //         // timeSheetForm.startTime.value
+    //         // timeSheetForm.startTime.value
+    //         // timeSheetForm.startTime.value
+    //     }
+    //     // console.log(props.approve_timesheet,props.projectrow,'approve_timesheetd')
+    // }, [props.approve_timesheet]);
 
     useEffect(() => {
         if (timeSheetForm.activity.value) {
@@ -263,52 +259,43 @@ function TimeSheetStartModel(props) {
             });
         } else {
             let startTime = dateFormat(timeSheetForm.startTime.value && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
+            let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
 
-            var data = {
+            var insert_data = {
                 "project_id": props.approve_timesheet && props.approve_timesheet != '' && props.approve_timesheet.project_id || rowId || timeSheetForm.projectname.value != '' && timeSheetForm.projectname.value || 0,
-                "activiity_id": timeSheetForm.activity.value,
+                "activity_id": timeSheetForm.activity.value,
                 "sub_activity_id": timeSheetForm.subActivity.value,
                 "assignee_id": localStorage.getItem("empId"),
-                "start_date": timeSheetForm.fromDate.value,
-                "end_date": timeSheetForm.fromDate.value && timeSheetForm.fromDate.value != '' ? timeSheetForm.fromDate.value : timeSheetForm.fromDate.value,
                 "assigned_by": localStorage.getItem("empId"),
-                "priority": timeSheetForm.priority.value,
-                "description": timeSheetForm.description.value,
-                "tag": timeSheetForm.tag.value === "" ? 0 : timeSheetForm.tag.value
-            }
-            var timesheetData = {
-                "emp_id": localStorage.getItem("empId"),
-                "task_id": "0",
                 "start_date": timeSheetForm.fromDate.value,
                 "start_time": startTime,
+                "end_date": timeSheetForm.fromDate.value,
+                "end_time": SaveProcess ? end_time : '',
                 "comment": timeSheetForm.description.value,
-                "created_by": localStorage.getItem("empId"),
+                "task_status": SaveProcess ? 1 : 0,
+                "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+                "created_by": localStorage.getItem("empId")
             }
-            var stopData;
-            if (SaveBtnProcess) {
-                let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
-                stopData = {
-                    "emp_id": localStorage.getItem("empId"),
-                    "timesheet_id": 0,
-                    "end_date": timeSheetForm.fromDate.value,
-                    "end_time": end_time,
-                    "comment": timeSheetForm.description.value,
-                    "created_by": localStorage.getItem("empId"),
-                    "task_status": timeSheetForm.task_status.value ? timeSheetForm.task_status.value : 0,
+            axios({
+                method: 'POST',
+                url: apiurl + 'insert_task_timesheet',
+                data: insert_data
+            }).then(async (response) => {
+                if (response.data.status === 1) {
+                    if (!props.project_wise) {
+                        await dispatch(getProjectTimeSheetList(rowId));
+                    }
+                    notification.success({
+                        message: `Timesheet ${SaveProcess ? 'saved' : 'started'} successfully`,
+                    });
+                    handleCancel();
+                    props.close_model && props.close_model()
+                } else if (response.data.status === 0) {
+                    notification.success({
+                        message: response.data.msg,
+                    });
                 }
-            } else {
-                stopData = undefined;
-            }
-
-            await dispatch(inserTask(data, timesheetData, stopData, props.project_wise, AddHearing_Data))
-
-            //  !SaveBtnProcess && setChangeStop(false)
-            if (!props.project_wise) {
-                await dispatch(getProjectTimeSheetList(rowId));
-            }
-            handleCancel();
-            props.close_model && props.close_model()
-
+            })
 
         }
         settimeSheetForm(prevState => ({
@@ -345,12 +332,12 @@ function TimeSheetStartModel(props) {
                     } else if (props.project_wise || props.project_wise_reject || props.project_wise_edit) {
                         dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1] || props.project_wise_reject[1]))
                     }
-                    setChangeStop(true)
+                    setStartProcess(true)
                     props.close_model && props.close_model()
                     return Promise.resolve();
-                }else if (response.data.status === 0) {
+                } else if (response.data.status === 0) {
                     notification.success({
-                        message: "Stop Time " +response.data.msg,
+                        message: "Stop Time " + response.data.msg,
                     });
                 }
             });
@@ -374,12 +361,12 @@ function TimeSheetStartModel(props) {
             "end_date": timeSheetForm.fromDate.value,
             "end_time": end_time,
             "assigned_by": localStorage.getItem("empId"),
-            "priority": timeSheetForm.priority.value,
+            "priority": 0,
             "comment": timeSheetForm.description.value,
-            "tag": timeSheetForm.tag.value === "" ? 0 : timeSheetForm.tag.value,
-            "task_status": timeSheetForm.task_status.value ? timeSheetForm.task_status.value : 0,
+            "tag": 0,
+            "task_status": 0,
         }
-        await dispatch(EditProjectwiseTimesheet(timesheetData, props.project_wise_edit[1]))
+        dispatch(EditProjectwiseTimesheet(timesheetData, props.project_wise_edit[1]))
         props.close_model && props.close_model()
 
     }
@@ -426,7 +413,7 @@ function TimeSheetStartModel(props) {
     }, [timeSheetForm.startTime.value, timeSheetForm.endTime.value])
 
     useEffect(() => {
-        if (props.insertTask && props.insertTask.length > 0 && !SaveBtnProcess && !props.project_wise && !props.project_wise_reject) {
+        if (props.insertTask && props.insertTask.length > 0 && !SaveProcess && !props.project_wise && !props.project_wise_reject) {
             dispatch(getTaskTimeSheet(props.insertTask[0].task_id));
         }
     }, [props.insertTask])
@@ -439,13 +426,12 @@ function TimeSheetStartModel(props) {
 
     useEffect(() => {
         if ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value < moment().format("YYYY-MM-DD")) || ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value === moment().format("YYYY-MM-DD")) && (moment(timeSheetForm.startTime.value).format('HH:mm:ss') < moment().subtract(5, "minutes").format('HH:mm:ss')))) {
-            setSaveBtnProcess(true)
+            setSaveProcess(true)
         } else {
             if (props.project_wise_edit && props.project_wise_edit[0] && props.project_wise_edit[0].end_date && props.project_wise_edit[0].end_time) {
-                console.log("wwwwwwwwwwwwwww")
-                setSaveBtnProcess(true)
+                setSaveProcess(true)
             } else {
-                setSaveBtnProcess(false)
+                setSaveProcess(false)
             }
         }
     }, [timeSheetForm.fromDate.value, timeSheetForm.startTime.value])
@@ -455,16 +441,14 @@ function TimeSheetStartModel(props) {
             handleCancel();
             let response;
             let data;
+            if (props.project_wise && !props.project_wise_edit && !props.project_wise_reject) {
+                setStartProcess(true)
+                return
+            }
             if (props.project_wise && props.getTaskTimeSheet.length > 0) {
                 response = props.getTaskTimeSheet
                 data = response[response.length - 1].timesheet[0]
-            }
-            // if (!props.project_wise) {
-            // else if (props.project_wise && props.TimeSheetArr && props.TimeSheetArr.length > 0) {
-            //     console.log(props.TimeSheetArr[0], data, "gggggggggggggggggggggggg")
-            //     data = props.TimeSheetArr[props.TimeSheetArr.length - 1]
-            // }
-            else if (props.timeSheetProject.length > 0) {
+            } else if (props.timeSheetProject.length > 0) {
                 response = props.timeSheetProject
                 data = response[response.length - 1]
             } else if (props.project_wise_reject) {
@@ -479,6 +463,11 @@ function TimeSheetStartModel(props) {
 
             if (data) {
 
+                if (data.end_date && data.end_time && props.projectrow) {
+                    setStartProcess(true)
+                    return
+
+                }
                 if (data.project_id && data.project_id != 0) {
                     timeSheetForm.projectname.value = data.project_id
                 }
@@ -489,7 +478,7 @@ function TimeSheetStartModel(props) {
                 timeSheetForm.tag.value = data.tag_id
                 timeSheetForm.startTime.value = new Date("12-30-2017 " + data.start_time)
                 timeSheetForm.fromDate.value = data.start_date
-                // timeSheetForm.description.value=data.start_date
+                timeSheetForm.description.value=data?.description
                 data.task_status && data.task_status === "Completed" ? (timeSheetForm.task_status.value = 1) : (timeSheetForm.task_status.value = 0)
                 if (props.project_wise_edit) {
                     data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
@@ -500,10 +489,10 @@ function TimeSheetStartModel(props) {
                 }));
 
                 if (!data.end_date && !data.end_time && !props.project_wise_edit) {
-                    setChangeStop(false)
+                    setStartProcess(false)
                 }
                 else {
-                    setChangeStop(true)
+                    setStartProcess(true)
                 }
             }
             // }
@@ -518,11 +507,10 @@ function TimeSheetStartModel(props) {
         setTaskData([timeSheetForm, props.ProjectDetails]);
         setHearing(true)
     }
-    console.log(props.project_wise, "props.project_wise")
 
     return (
         <div className="timeSheetStartContainer">
-            {changeStop ?
+            {StartProcess ?
                 <div>
                     <Grid item xs={12} container direction="row" spacing={3}>
                         {projectDetails && projectDetails.length > 0 && projectDetails.map((data) => {
@@ -590,7 +578,7 @@ function TimeSheetStartModel(props) {
                             />
                         </Grid>
 
-                        <Grid item xs={3}>
+                        {/* <Grid item xs={3}>
                             <Labelbox type="select"
                                 placeholder={"Priority"}
                                 error={timeSheetForm.priority.error}
@@ -609,7 +597,7 @@ function TimeSheetStartModel(props) {
                                 value={timeSheetForm.tag.value}
                                 changeData={(data) => checkValidation(data, "tag")}
                                 dropdown={taggList.tagTypeData}
-                            /></Grid>
+                            /></Grid> */}
                         <Grid item xs={4}></Grid>
                     </Grid>
                     <Grid item xs={12} container direction="row" spacing={3}>
@@ -636,14 +624,14 @@ function TimeSheetStartModel(props) {
 
                             />
                         </Grid>
-                        {!SaveBtnProcess && <><Grid item xs={3}>
+                        {!SaveProcess && <><Grid item xs={3}>
                             End Date
                         </Grid>
                             <Grid item xs={3}>
                                 End Time
                             </Grid></>}
 
-                        {SaveBtnProcess && <><Grid item xs={3}>
+                        {SaveProcess && <><Grid item xs={3}>
                             <Labelbox type="datepicker"
                                 changeData={(data) => checkValidation(data, "toDate")}
                                 value={timeSheetForm.fromDate.value}
@@ -675,10 +663,10 @@ function TimeSheetStartModel(props) {
                             errmsg={timeSheetForm.description.errmsg} />
                     </div>
                     <div className="project_wise_div">
-                        <div className="project_wise_checkbox"> {SaveBtnProcess && <><Checkbox onClick={(data) => checkValidation(data, "task_status")} checked={timeSheetForm.task_status.value === 1 ? true : false} />&nbsp;<label>Task Completed</label></>}</div>
+                        {/* <div className="project_wise_checkbox"> {SaveProcess && <><Checkbox onClick={(data) => checkValidation(data, "task_status")} checked={timeSheetForm.task_status.value === 1 ? true : false} />&nbsp;<label>Task Completed</label></>}</div> */}
                         <div className="project_wise_checkbox"> {timeSheetForm.activity.value === 6 && <><img src={Order} style={{ marginRight: '5px', width: '25px', cursor: 'pointer' }} onClick={() => fntaskHearingDetails()} />&nbsp;<label>{props.project_wise_edit ? 'Edit' : 'Add'} Hearing</label></>}</div>
                         <div className="project_wise_save"> <CustomButton btnName={"CANCEL"} onBtnClick={() => (handleCancel(), props.close_model && props.close_model(false))} />
-                            {!props.project_wise_edit && <CustomButton btnName={`${!SaveBtnProcess ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" onBtnClick={submitStartTimeSheet} />}
+                            {!props.project_wise_edit && <CustomButton btnName={`${!SaveProcess ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" onBtnClick={submitStartTimeSheet} />}
                             {props.project_wise_edit && <CustomButton btnName={'UPDATE'} btnCustomColor="customPrimary" onBtnClick={onEditTimesheet} />}
                         </div>
                     </div>

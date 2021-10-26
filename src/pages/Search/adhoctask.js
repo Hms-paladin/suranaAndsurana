@@ -9,7 +9,7 @@ import CustomButton from '../../component/Butttons/button';
 import DynModel from '../../component/Model/model';
 import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";
-import { getTagList, insertAdhocTask} from "../../actions/projectTaskAction";
+import { getTagList, insertAdhocTask } from "../../actions/projectTaskAction";
 import { connect, useDispatch } from "react-redux";
 import { getEmpListDepartment } from '../../actions/MasterDropdowns';
 
@@ -54,7 +54,10 @@ function AdhocTaskModal(props) {
     useEffect(() => {
         dispatch(getTagList());
         dispatch(getEmpListDepartment());
-
+        adhoc_Form.assigned_task.value=Number(localStorage.getItem("empId"))
+        setadhoc_Form(prevState => ({
+            ...prevState
+        }));
     }, []);
 
     useEffect(() => {
@@ -141,17 +144,17 @@ function AdhocTaskModal(props) {
         }
         var dateFormat = require('dateformat');
 
-var now = new Date();
-var fromDateval= dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
-var descVal = encodeURI(adhoc_Form.task_description.value)
-descVal = descVal.replace(/%20/g, ' ');
-        var data ={
-            "start_date":fromDateval, //adhoc_Form.start_date.value,
-            "end_date":adhoc_Form.end_date.value,
-            "tag":adhoc_Form.tag.value,
-            "assignee_id":adhoc_Form.assigned_task.value, 
-            "assigned_by":localStorage.getItem("empId"),
-            "description":descVal
+        var now = new Date();
+        var fromDateval = dateFormat(adhoc_Form.start_date.value, "yyyy-mm-dd")
+        var descVal = encodeURI(adhoc_Form.task_description.value)
+        descVal = descVal.replace(/%20/g, ' ');
+        var data = {
+            "start_date": fromDateval, //adhoc_Form.start_date.value,
+            "end_date": adhoc_Form.end_date.value,
+            "tag": adhoc_Form.tag.value,
+            "assignee_id": adhoc_Form.assigned_task.value,
+            "assigned_by": localStorage.getItem("empId"),
+            "description": descVal
         }
         dispatch(insertAdhocTask(data)).then((response) => {
             console.log("Insert");

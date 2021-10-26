@@ -61,7 +61,8 @@ import {
   GET_AREA_DEVELOPMENT,
   GET_DEVELOPMENT,
   GET_PROJECT_NAME_BY_DESIG,
-  GET_SUPERVISOR_BY_DEPT
+  GET_SUPERVISOR_BY_DEPT,
+  GET_EMP_LIST_PROJECT
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -151,7 +152,7 @@ export const getInterviewers = () => async (dispatch) => {
 //HR-->ToDoList
 
 export const getSupervisorByDepartment = (id) => async (dispatch) => {
- 
+
   const response = await axios({
     method: "post",
     url: apiurl + "/get_supervisor_by_departmentId",
@@ -198,11 +199,6 @@ export const getClient = (id) => async (dispatch) => {
     },
   });
   return dispatch({ type: GET_CLIENT, payload: response.data.data });
-};
-
-export const getProjectTypeAll = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "get_project_type");
-  return dispatch({ type: GET_PROJECT_TYPE_ALL, payload: response.data.data });
 };
 
 export const getProjectType = () => async (dispatch) => {
@@ -562,10 +558,22 @@ export const getEmpListDepartment = () => async dispatch => {
     }
   })
     .then((response) => {
-      console.log(response, "GET_EMP_LIST_DEPARTMENT")
       dispatch({ type: GET_EMP_LIST_DEPARTMENT, payload: response.data.data })
+    })
+
+}
+export const getEmpListByProjectId = (project_id) => async dispatch => {
+
+  await axios({
+    method: 'POST',
+    url: apiurl + 'get_emp_by_projectId',
+    data: {
+      "project_id": project_id,
+    }
+  })
+    .then((response) => {
+      dispatch({ type: GET_EMP_LIST_PROJECT, payload: response.data.data })
     })
 
 
 }
-

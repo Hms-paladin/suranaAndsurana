@@ -1,25 +1,9 @@
 
-import { GET_DEPARTMENT, GET_PROJECT_TYPE, INSERT_IPPROJECT,GET_EMP_BY_DEPARTMENT } from "../utils/Constants";
+import { INSERT_IPPROJECT,GET_EMP_BY_DEPARTMENT } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
 import moment from 'moment'
-
-export const GetProject_Type = () => async dispatch => {
-    try {
-
-        axios({
-            method: 'GET',
-            url: apiurl + 'get_project_type',
-        })
-            .then((response) => {
-                dispatch({ type: GET_PROJECT_TYPE, payload: response.data.data })
-            })
-
-    } catch (err) {
-
-    }
-}
 
 export const getEmployeeByDepartment = (department) => async dispatch => {
     // try {

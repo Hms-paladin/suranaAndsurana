@@ -290,6 +290,12 @@ function CheckListCreation(props) {
   }
 
   function onSubmit() {
+    if (updateList.length === 0) {
+      notification.success({
+        message: `Please add checklist item`,
+      });
+      return
+    }
     hideValidation()
     var mainvalue = {};
     var targetkeys = Object.keys(checkListForm);
@@ -498,9 +504,9 @@ function CheckListCreation(props) {
 
       var listarray = {
         task: checkListForm.task.value,
-        activity: activity_name&&activity_name.length>0&&activity_name[0].value||'-',
+        activity: activity_name && activity_name.length > 0 && activity_name[0].value || '-',
         activity_id: checkListForm.activity.value === "" ? 0 : checkListForm.activity.value,
-        sub_activity: sub_activity_name&&sub_activity_name.length>0&&sub_activity_name[0]?.value||'-',
+        sub_activity: sub_activity_name && sub_activity_name.length > 0 && sub_activity_name[0]?.value || '-',
         sub_activity_id: checkListForm.subActivity.value === "" ? 0 : checkListForm.subActivity.value,
         frequency: frequency_name[0].value,
         frequency_id: checkListForm.frequency.value,
@@ -632,13 +638,13 @@ function CheckListCreation(props) {
               </div>
 
               {updateList && updateList.length > 0 && updateList.map((data, index) => {
-               
+
                 return (
                   <div className="DataValueDiv">
                     <div className="DataName">{data.task}</div>
-                    <div className="DataName">{data.activity||'-'}</div>
-                    <div className="DataName">{data.sub_activity|| '-'}</div>
-                    <div className="DataName">{data.frequency||'-'}</div>
+                    <div className="DataName">{data.activity || '-'}</div>
+                    <div className="DataName">{data.sub_activity || '-'}</div>
+                    <div className="DataName">{data.frequency || '-'}</div>
 
                     <div className="DataName">
                       <img src={Edit} className="editImage" onClick={() => onEdit(index)} style={{ cursor: 'pointer' }} />

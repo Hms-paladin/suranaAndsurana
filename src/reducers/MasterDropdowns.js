@@ -54,7 +54,8 @@ import {
   GET_AREA_DEVELOPMENT,
   GET_DEVELOPMENT,
   GET_PROJECT_TYPE_ALL,
-  GET_SUPERVISOR_BY_DEPT
+  GET_SUPERVISOR_BY_DEPT,
+  GET_EMP_LIST_PROJECT
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -117,8 +118,8 @@ const initalState = {
   GetDevelopment: [],
   getEmployeeList: [],
   get_projectName_by_Desig: [],
-  getProjectTypeAll: [],
-  getSupervisorByDepartment: []
+  getSupervisorByDepartment: [],
+  getEmpListByProjectId: []
 };
 
 export default function (state = initalState, action) {
@@ -172,8 +173,6 @@ export default function (state = initalState, action) {
       return { ...state, getClient: payload };
     case GET_PROJECT_TYPE:
       return { ...state, getProjectType: payload };
-    case GET_PROJECT_TYPE_ALL:
-      return { ...state, getProjectTypeAll: payload };
     case GET_PROJECT_NAME:
       return { ...state, getProjectName: payload };
     case GET_BILLABLE_TYPE:
@@ -246,6 +245,8 @@ export default function (state = initalState, action) {
       return { ...state, get_projectName_by_Desig: payload };
     case GET_SUPERVISOR_BY_DEPT:
       return { ...state, getSupervisorByDepartment: payload };
+    case GET_EMP_LIST_PROJECT:
+      return { ...state, getEmpListByProjectId: payload };
     default:
       return state;
   }

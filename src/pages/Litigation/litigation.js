@@ -26,6 +26,7 @@ const { TabPane } = Tabs;
 const Litigation = (props) => {
   const dispatch = useDispatch();
   const [litigationCounsel, setLitigationCounsel] = useState(false);
+  const [LitigationCounsel_id, setLitigationCounsel_id] = useState(0); 
   const [employeeList, setEmployeeList] = useState({});
   const [locationslList, setlocationslList] = useState({});
   const [tradeMarkStatus, setTradeMarkStatus] = useState({});
@@ -109,7 +110,6 @@ const Litigation = (props) => {
   useEffect(() => {
 
     if (props.id_Props && props.id_Props.project_id) {
-      console.log([props.id_Props].length, "props.id_Props")
       handleCancel();
       setIdDetails(props.id_Props);
       dispatch(getSubCaseType(props.id_Props.client_id));
@@ -170,11 +170,11 @@ const Litigation = (props) => {
                 <div className="ourCounselTitle ourCounselHead">
                   {" "}
                   <span>{data.liti_councel}</span>{" "}
-                  <img
+                  {data.liti_councel !== "Adjournment" && <img
                     src={AddIcon}
                     style={{ height: "20px" }}
-                    onClick={setLitigationCounselModel}
-                  />
+                    onClick={()=>setLitigationCounselModel(data.liti_councel_id)}
+                  />}
                 </div>
                 <div className="ourCounselFieldsHeading">
                   {" "}
@@ -278,8 +278,9 @@ const Litigation = (props) => {
     props.getCaseType,
   ]);
 
-  const setLitigationCounselModel = () => {
+  const setLitigationCounselModel = (id) => {
     setLitigationCounsel(true);
+    setLitigationCounsel_id(id);
   };
   function onSubmit() {
     var mainvalue = {};
@@ -500,6 +501,7 @@ const Litigation = (props) => {
             content={
               <AddDataModel
                 id={IdDetails}
+                LitigationCounsel_id={LitigationCounsel_id&&LitigationCounsel_id}
                 Litigation_ID={LitigationCase && LitigationCase.ligitation_id}
                 handleChangeCloseModel={(bln) => setLitigationCounsel(bln)}
               />

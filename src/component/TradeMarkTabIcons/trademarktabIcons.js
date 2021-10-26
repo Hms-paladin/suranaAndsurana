@@ -18,7 +18,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
 
-
+// import { Tooltip, Button } from 'antd';
 
 function TradeMarkTabIcons(props) {
     const [variableRateIcon, setVariableRateIcon] = useState("")
@@ -94,18 +94,26 @@ function TradeMarkTabIcons(props) {
 
                                 <div>
 
-                                    {data.title === data.title &&
-                                        <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+                                    {data.title === data.title && 
+                                     <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
 
-                                            title={<Timesheetmodel />}
-                                            onMouseEnter={() => setOpen(true)}
-                                            onMouseLeave={() => setOpen(false)}
-                                        >
-                                            <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
-                                                <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
-                                                <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
-                                            </div>
-                                        </HtmlTooltip>}
+                                        title={<Timesheetmodel />}
+                                        onMouseEnter={() => setOpen(true)}
+                                        onMouseLeave={() => setOpen(false)}
+                                    >
+                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
+                                            <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
+                                            <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
+                                        </div>
+                                    </HtmlTooltip>  } 
+
+                                     {/* <Tooltip width={1000} title={<Timesheetmodel />}>
+                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
+                                            <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
+                                            <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
+                                        </div>
+
+                                    </Tooltip>  */}
 
                                 </div>
                                 :

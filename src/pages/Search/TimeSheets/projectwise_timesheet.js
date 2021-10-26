@@ -39,13 +39,13 @@ function ProjectwiseTS(props) {
             errmsg: null,
         },
         from_date: {
-            value: moment().format('YYYY-MM-DD'),
+            value: '',
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
         },
         to_date: {
-            value: moment().format('YYYY-MM-DD'),
+            value: '',
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -78,7 +78,7 @@ function ProjectwiseTS(props) {
         if (projectSearch.emp_name.value != "" && projectSearch.from_date.value != "" && projectSearch.to_date.value != "") {
             dispatch(getProjectWise_TimeSheet(projectSearch))
         }
-    }, [projectSearch.emp_name.value,projectSearch.from_date.value,projectSearch.to_date.value])
+    }, [projectSearch.emp_name.value, projectSearch.from_date.value, projectSearch.to_date.value])
 
     function selectAll(e) {
         if (e.target.checked === true) {
@@ -109,6 +109,7 @@ function ProjectwiseTS(props) {
 
     useEffect(() => {
         dispatch(getEmployeeList())
+        dispatch(getProjectWise_TimeSheet(projectSearch))
     }, [])
 
     useEffect(() => {
@@ -184,15 +185,15 @@ function ProjectwiseTS(props) {
     useEffect(() => {
         var updatelist = [];
         TimeSheetArr && TimeSheetArr.length > 0 && TimeSheetArr.map((data, index) => {
-            let start_time=data.approved_start_time?data.approved_start_time:data.start_time
-            let end_time=data.approved_end_time?data.approved_end_time:data.end_time
+            let start_time = data.approved_start_time ? data.approved_start_time : data.start_time
+            let end_time = data.approved_end_time ? data.approved_end_time : data.end_time
             let hrs_arr = data.no_of_hrs.split(':')
             var listarray = {
                 start_date: (data.start_date === "0000-00-00" || data.start_date === null) ? 0 : moment(data.start_date).format("DD-MM-YYYY"),
                 start_time: (start_time === "00:00:00" || start_time === null) ? 0 : moment(start_time, "HH:mm:ss").format("hh:mm A"),
                 to_date: (data.end_date === "0000-00-00" || data.end_date === null) ? 0 : moment(data.end_date).format("DD-MM-YYYY"),
                 end_time: (end_time === "00:00:00" || end_time === null) ? 0 : moment(end_time, "HH:mm:ss").format("hh:mm A"),
-                no_of_hrs: (hrs_arr[0] + ` Hour${hrs_arr[0]!=='01'?'s':''} ` + (hrs_arr[1] ? (' ' + hrs_arr[1] + ' minutes') : '')),
+                no_of_hrs: (hrs_arr[0] + ` Hour${hrs_arr[0] !== '01' ? 's' : ''} ` + (hrs_arr[1] ? (' ' + hrs_arr[1] + ' minutes') : '')),
                 activity: data.activity,
                 sub_activity: data.sub_activity,
                 project_name: data.project_name,
@@ -216,7 +217,7 @@ function ProjectwiseTS(props) {
         setTimeSheetTable({ updatelist });
 
     }, [TimeSheetArr, trigger])
-
+    console.log(TimeSheetTable, "updatelist")
     useEffect(() => {
         setTimeSheetArr(props.Project_TimeSheet)
     }, [props.Project_TimeSheet]);
@@ -330,7 +331,7 @@ function ProjectwiseTS(props) {
                 {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
-            <DynModel modelTitle={"Time Sheet"}  handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
+            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
 
         </div>
 

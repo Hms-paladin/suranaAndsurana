@@ -119,6 +119,10 @@ function ProjectIp(props) {
     const [TaskItemModelID, setTaskItemModelID] = useState(0);
     const [multiplePanel, setMultiplePanel] = useState([]);
     const [ProjectTaskOpen_Hearing, setProjectTaskOpen_Hearing] = useState(false)
+    const [ChecklistDetails, setChecklistDetails] = useState([])
+
+    const [ChecklistChange, setChecklistChange] = useState(false);
+    const [IndexArr, setIndexArr] = useState("");
     function callback(key) {
         console.log(key);
     }
@@ -128,107 +132,11 @@ function ProjectIp(props) {
     }
 
 
-    const [Trade_Mark, setResumeFrom] = useState({
+    const [ProjectIP, setProjectIP] = useState({
 
-        mark: {
+        checklist_item_date: {
             value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        projecttype: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        goodsdescription: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        internalstutus: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        amendment: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        prioritydetails: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        applicationNumber: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        internalstutus: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        allotment: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        order: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        usagedetails: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        coments: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        indiaStatus: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        restrictions: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        clientname: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        process_type: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        filling_type: {
-            value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
 
@@ -265,12 +173,18 @@ function ProjectIp(props) {
     let { rowId } = useParams()
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
-
     }, [])
 
 
+    useEffect(() => {
+
+        if (props.getCheckListsAssigned) {
+            setChecklistDetails(props.getCheckListsAssigned)
+        }
+    }, [props.getCheckListsAssigned])
 
     useEffect(() => {
+
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
             project_id: props.ProjectDetails[0].project_id,
@@ -280,12 +194,13 @@ function ProjectIp(props) {
         if (props.ProjectDetails && props.ProjectDetails.length > 0) {
             dispatch(getCheckListsAssigned(props.ProjectDetails[0].project_id))
         }
+
     }, [props.ProjectDetails])
 
     useEffect(() => {
 
         let multipleTab = [];
-        props.getCheckListsAssigned.map((data, index) => {
+        ChecklistDetails.map((data, index) => {
 
             multipleTab.push(
                 <Panel
@@ -299,13 +214,13 @@ function ProjectIp(props) {
                             <div >Assigned To</div>
                             <div >Task End Date</div>
                         </div>
-                        {data.details.map((data1, index) => {
+                        {data.details.map((data1, index1) => {
                             return (<>
                                 <div className="taskitem_div">
                                     <div >{data1.task}</div>
-                                    <div >{(data.check_list_type === "No Task Linked" && data1.status === "In Progress") ? <Checkbox onClick={(e) => onTaskItemClick(e, data1.check_list_details_id)} /> : <div className="status_Btn">{data1.status}</div>} </div>
+                                    <div >{(data.check_list_type === "No Task Linked" && data1.status === "In Progress") ? <Checkbox onClick={(e) => onTaskItemClick(e, data1.check_list_details_id, index, index1, data)} checked={data1.checked ? true : false} /> : <div className="status_Btn">{data1.status}</div>} </div>
                                     <div >{data1.name}</div>
-                                    <div >{moment(data1.end_date).format("DD-MMM-YYYY")}</div>
+                                    <div >{data.check_list_type === "No Task Linked" && data1.status === "In Progress" ? ' - ' : moment(data1.end_date).format("DD-MMM-YYYY")}</div>
                                 </div>
                             </>
                             )
@@ -318,23 +233,68 @@ function ProjectIp(props) {
         });
 
         setMultiplePanel(multipleTab);
-    }, [props.getCheckListsAssigned])
+    }, [ChecklistDetails, ChecklistChange])
 
-    const onTaskItemClick = (e, data) => {
+    const onTaskItemClick = (e, data, index, index1, data1) => {
+        setIndexArr([index, index1, data1.start_date, data1.end_date])
+        if (e.target.checked === true) {
+            ChecklistDetails[index].details[index1].checked = true
+        }
+        else {
+            ChecklistDetails[index].details[index1].checked = false
+        }
+        ProjectIP.checklist_item_date.value = data1.end_date;
+        setChecklistChange(!ChecklistChange)
 
         setTaskItemModel(true)
         setTaskItemModelID(data)
+        setProjectIP((prevState) => ({
+            ...prevState,
+        }));
     }
 
     const onTaskItemComplete = async () => {
-        await dispatch(UpdateCheckListNoTaskLink(TaskItemModelID, rowId))
-        setTaskItemModel(false)
-    }
+        var mainvalue = {};
+        var targetkeys = Object.keys(ProjectIP);
 
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                ProjectIP[targetkeys[i]].value,
+                ProjectIP[targetkeys[i]].validation
+            );
+            ProjectIP[targetkeys[i]].error = !errorcheck.state;
+            ProjectIP[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = ProjectIP[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => ProjectIP[obj].error == true
+        );
+
+        if (filtererr.length > 0) {
+            // setInsertTaskForm({ error: true });
+        } else {
+            await dispatch(UpdateCheckListNoTaskLink(TaskItemModelID, rowId, ProjectIP.checklist_item_date.value))
+            setTaskItemModel(false)
+
+            ProjectIP.checklist_item_date.value = ""
+
+        }
+        setProjectIP((prevState) => ({
+            ...prevState,
+        }));
+    }
+    console.log(ChecklistDetails, IndexArr, moment(`${IndexArr[2]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format(), "ChecklistDetails")
     const onTaskItemCancel = async () => {
-        // console.log(TaskItemModelID[0],"TaskItemModelID")
-        // TaskItemModelID[0].target.checked = false
+        ChecklistDetails[IndexArr[0]].details[IndexArr[1]].checked = false
+        setChecklistDetails((prevState) => ([
+            ...prevState,
+        ]));
         setTaskItemModel(false)
+        setChecklistChange(!ChecklistChange)
+        ProjectIP.checklist_item_date.value = ""
+        setProjectIP((prevState) => ({
+            ...prevState,
+        }));
     }
 
 
@@ -344,9 +304,9 @@ function ProjectIp(props) {
     //     ]
 
     //     ResumeFrom_key.map((data) => {
-    //         Trade_Mark[data].value = ""
+    //         ProjectIP[data].value = ""
     //     })
-    //     setResumeFrom(prevState => ({
+    //     setProjectIP(prevState => ({
     //         ...prevState,
     //     }));
     // }
@@ -698,10 +658,31 @@ function ProjectIp(props) {
         setModelOpen(data)
         setProjectTaskOpen_Hearing(data)
     }
+
+    function checkValidation(data, key) {
+        let dynObj;
+
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            ProjectIP[key].validation
+        );
+        dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: ProjectIP[key].validation,
+        };
+
+        setProjectIP((prevState) => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    }
+    console.log(ProjectIP.checklist_item_date.value, "ProjectIP.checklist_item_date.value")
     return (
 
         <div>
-            {console.log(props.insertChangeLog, "insertChangeLog")}
+
             <div className="projectIpContainer">
                 {props.ProjectDetails.map((data) => {
                     return (
@@ -823,7 +804,7 @@ function ProjectIp(props) {
                     <DynModel
                         modelTitle={"TaskItem Completion"}
                         handleChangeModel={TaskItemModel}
-                        handleChangeCloseModel={(bln) => setTaskItemModel(bln)}
+                        handleChangeCloseModel={onTaskItemCancel}
                         content={
                             <div className="successModel">
                                 <div>
@@ -832,6 +813,20 @@ function ProjectIp(props) {
                                         Do You Want Complete This Item ?
                                     </label>
                                 </div>
+                                <Grid item xs={12} container direction="row" style={{ justifyContent: 'center', marginTop: 10 }} spacing={2}>
+                                    <Grid item xs={9} container direction="column">
+                                        <Labelbox type="datepicker"
+                                            // disablePast={true}
+                                            minDate={moment(`${IndexArr[2]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
+                                            maxDate={moment(`${IndexArr[3]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
+                                            changeData={(data) =>
+                                                checkValidation(data, "checklist_item_date")
+                                            }
+                                            value={ProjectIP.checklist_item_date.value}
+                                            error={ProjectIP.checklist_item_date.error}
+                                            errmsg={ProjectIP.checklist_item_date.errmsg} />
+                                    </Grid>
+                                </Grid>
                                 <div className="customNotFoundbtn">
                                     <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onTaskItemComplete} />
                                     <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onTaskItemCancel} />
@@ -962,13 +957,13 @@ function ProjectIp(props) {
                 <TabPane tab="Intellectual Property" key="1">
                     <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
                         <TabPane tab="Trade Mark" key="1">
-                            <TradeMarkTab Type={Trade_Mark} />
+                            <TradeMarkTab Type={ProjectIP} />
                         </TabPane>
                         <TabPane tab="Design" key="2">
-                            <Design Type={Trade_Mark} />
+                            <Design Type={ProjectIP} />
                         </TabPane>
                         <TabPane tab="Patent" key="3">
-                            <Patent Type={Trade_Mark} />
+                            <Patent Type={ProjectIP} />
                         </TabPane>
                         <TabPane tab="CopyRight" key="4">
                             <CopyRight />
@@ -979,7 +974,7 @@ function ProjectIp(props) {
             </Tabs>
  */}
             </div>
-        </div>
+        </div >
     )
 }
 const mapStateToProps = (state) => (

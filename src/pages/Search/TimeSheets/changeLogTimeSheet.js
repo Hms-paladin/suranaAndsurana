@@ -5,7 +5,7 @@ import Labelbox from '../../../helpers/labelbox/labelbox';
 import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getActivity, getPriorityList, getTagList, inserTask, getLocation, insertChangeLog } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, getLocation, insertChangeLog } from "../../../actions/projectTaskAction";
 import moment from 'moment';
 import Axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";

@@ -10,7 +10,7 @@ import { useDispatch, connect } from "react-redux";
 import {
   getCheckListsNames, insert_check_list_assign, getDaysOfWeek, get_projType_subProjType_by_projId, getFrequencyByCheckListId
 } from "../../actions/CheckListAction";
-import { getEmployeeList, getProjectType, get_projectName_by_Desig } from "../../actions/MasterDropdowns";
+import { getEmpListByProjectId, getProjectType, get_projectName_by_Desig } from "../../actions/MasterDropdowns";
 import ValidationLibrary from "../../helpers/validationfunction";
 import EnhancedTable from "../../component/DynTable/table";
 
@@ -87,7 +87,7 @@ function CheckListAssign(props) {
   });
   useEffect(() => {
     dispatch(getCheckListsNames());
-    dispatch(getEmployeeList());
+   
     dispatch(getProjectType());
     dispatch(getDaysOfWeek());
     dispatch(get_projectName_by_Desig());
@@ -101,13 +101,13 @@ function CheckListAssign(props) {
       "subProjectId",
       "startDate",
       "endDate",
+      "projectname"
     ];
 
     From_key.map((data) => {
       try {
         checkListForm[data].value = "";
         checkListForm[data].disabled = false;
-        console.log("mapping", checkListForm[data].value);
       } catch (error) {
         throw error;
       }
@@ -148,8 +148,8 @@ function CheckListAssign(props) {
 
       var data = {
         "check_list_id": checkListForm.checkListNameId.value,
-        "emp_id": checkListForm.employeeId.value == '' ? 0 : checkListForm.employeeId.value,
-        "project_id": checkListForm.projectname.value == '' ? 0 : checkListForm.projectname.value,
+        "emp_id": checkListForm.employeeId.value,
+        "project_id": checkListForm.projectname.value,
         "project_type_id": checkListForm.project_type_id.value == '' ? 0 : checkListForm.project_type_id.value,
         "project_sub_type_id": (!checkListForm.subProjectId.value || checkListForm.subProjectId.value === "") ? 0 : checkListForm.subProjectId.value,
         "start_date": checkListForm.startDate.value === "" ? '0000-00-00' : checkListForm.startDate.value,
@@ -192,20 +192,21 @@ function CheckListAssign(props) {
 
     if (data && key == "projectname") {
       dispatch(get_projType_subProjType_by_projId(data));
+      dispatch(getEmpListByProjectId(data));
     }
 
     if (data && key == "checkListNameId") {
       dispatch(getFrequencyByCheckListId(data));
     }
 
-    if (data && key == "employeeId") {
-      checkListForm['projectname'].disabled = true;
-      checkListForm['project_type_id'].disabled = true;
-      checkListForm['subProjectId'].disabled = true;
-      checkListForm['projectname'].validation = [];
-      checkListForm['project_type_id'].validation = [];
-      checkListForm['subProjectId'].validation = [];
-    }
+    // if (data && key == "employeeId") {
+    //   checkListForm['projectname'].disabled = true;
+    //   checkListForm['project_type_id'].disabled = true;
+    //   checkListForm['subProjectId'].disabled = true;
+    //   checkListForm['projectname'].validation = [];
+    //   checkListForm['project_type_id'].validation = [];
+    //   checkListForm['subProjectId'].validation = [];
+    // }
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -230,8 +231,8 @@ function CheckListAssign(props) {
 
     if (checkListForm.project_type_id.value != '') {
       var data = checkListForm.project_type_id.value
-      checkListForm['employeeId'].disabled = true;
-      checkListForm['employeeId'].validation = [];
+      // checkListForm['employeeId'].disabled = true;
+      // checkListForm['employeeId'].validation = [];
       Axios({
         method: "POST",
         url: apiurl + "get_project_sub_type",
@@ -266,7 +267,7 @@ function CheckListAssign(props) {
     setprojectTypeList({ projectTypeData })
 
     let employeeData = []
-    props.getEmployeeList.map((data) =>
+    props.getEmpListByProjectId.map((data) =>
       employeeData.push({
         value: data.name,
         id: data.emp_id
@@ -301,7 +302,7 @@ function CheckListAssign(props) {
     setProjectName({ ProjectName });
     //daysOfWeeksLists.daysofWeeksData
 
-  }, [props.getProjectType, props.getEmployeeList, props.getCheckListsNames, props.getDaysofWeeks, props.ProjectName]);
+  }, [props.getProjectType, props.getEmpListByProjectId, props.getCheckListsNames, props.getDaysofWeeks, props.ProjectName]);
 
   useEffect(() => {
     if (props.get_projType_subProjType_by_projId.length > 0 && props.get_projType_subProjType_by_projId) {
@@ -363,7 +364,7 @@ function CheckListAssign(props) {
       });
       valueByIdDays = multipleIdList.toString();
       // }
-      // console.log(valueByIdDays,"valueByIdDays")
+
       setDays_of_week((prevState) => ({
         ...prevState,
         [key]: data,
@@ -482,18 +483,6 @@ function CheckListAssign(props) {
 
           </Grid>
           <Grid item xs={3} container direction="column">
-            <div className="TThead">Employee</div>
-            <Labelbox type="select"
-              dropdown={employeeList.employeeData}
-              changeData={(data) => checkValidation(data, "employeeId")}
-              placeholder={"Employee"}
-              value={checkListForm.employeeId.value}
-              error={checkListForm.employeeId.error}
-              errmsg={checkListForm.employeeId.errmsg}
-              disabled={checkListForm.employeeId.disabled}
-            ></Labelbox>
-          </Grid>
-          <Grid item xs={3} container direction="column">
             <div className="TThead">Project Name</div>
             <Labelbox type="select"
               placeholder={"Project "}
@@ -504,6 +493,18 @@ function CheckListAssign(props) {
               errmsg={checkListForm.projectname.errmsg}
               disabled={checkListForm.projectname.disabled}></Labelbox>
 
+          </Grid>
+          <Grid item xs={3} container direction="column">
+            <div className="TThead">Employee</div>
+            <Labelbox type="select"
+              dropdown={employeeList.employeeData}
+              changeData={(data) => checkValidation(data, "employeeId")}
+              placeholder={"Employee"}
+              value={checkListForm.employeeId.value}
+              error={checkListForm.employeeId.error}
+              errmsg={checkListForm.employeeId.errmsg}
+              disabled={checkListForm.employeeId.disabled}
+            ></Labelbox>
           </Grid>
           <Grid item xs={3} container direction="column">
             <div className="TThead">Project Type</div>
@@ -584,7 +585,7 @@ const mapStateToProps = (state) =>
 ({
   UserPermission: state.UserPermissionReducer.getUserPermission,
   getProjectType: state.getOptions.getProjectType || [],
-  getEmployeeList: state.getOptions.getEmployeeList || [],
+  getEmpListByProjectId: state.getOptions.getEmpListByProjectId || [],
   getCheckListsNames: state.CheckListReducer.getCheckListsNames || [],
   getDaysofWeeks: state.CheckListReducer.getDaysofWeeks || [],
   ProjectName: state.getOptions.get_projectName_by_Desig || [],

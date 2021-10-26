@@ -342,7 +342,7 @@ function Task(props) {
 
                     <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}
                         content={<TaskStatus rowData={taskData} handleChangeCloseModel={(bln) => setTaskStatus(bln)} />} width={300} />
-                    <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)} content={<TaskTag rowData={taskData} />} width={300} />
+                    <DynModel modelTitle={"Task Tag"} handleChangeModel={task_tag} handleChangeCloseModel={(bln) => setTaskTag(bln)} content={<TaskTag close={() => setTaskTag(false)} rowData={taskData} />} width={300} />
 
                     <DynModel modelTitle={"Task Priority"} handleChangeModel={task_pri_modal} handleChangeCloseModel={(bln) => setTaskPrioriyModal(bln)} content={<TaskPriority rowData={taskData} />} width={300} />
                     <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)} content={<AddHearing rowData={taskData} onhearingclose={() => setHearing(false)} />} width={1000} />
@@ -353,7 +353,7 @@ function Task(props) {
                             const num = index + 1;
                             let total_hours = 0;
                             if (data.totalHours && data.totalHours.length > 0) {
-                                total_hours = data.totalHours[0].total_hours ? data.totalHours[0].total_hours.split(":")[0] : "0";
+                                total_hours = data.totalHours[0].total_hours ? data.totalHours[0].total_hours.split(":") : "0";
                             }
                             if (data.perecent_completion === 100 && fieldVal.taskstatus.value === 'Completed') {
 
@@ -406,25 +406,28 @@ function Task(props) {
                                                 {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
                                                     <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p> */}
                                                 {/* </div> */}
-                                                <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                                                <div style={{ marginBottom: '20px', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date != "" ? moment(data.actual_start_date).format("DD MMM YYYY") : ""}</span></span>
                                                     <span>End Date :<span>{data.actual_end_date && data.actual_end_date != "" ? moment(data.actual_end_date).format("DD MMM YYYY") : ""}</span></span>
                                                 </div>
-                                                <div>
+                                                {/* <div>
                                                     <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
-                                                </div>
+                                                </div> */}
                                                 <div>
                                                     <p>Assigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div>
-                                                <div>
-                                                    <p>Reassigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
-                                                </div>
+                                                {/* <div>
+                                                    <p>Reassigned By <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                </div> */}
+                                                {data.tag && <div>
+                                                    <span>Tag : <span>{data.tag}</span></span>
+                                                </div>}
                                             </div>
                                             <div className="divider"></div>
                                             <div style={{ marginTop: '20px' }}>
                                                 <div className="total_12_div">
                                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{total_hours}</p>
+                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours[0].total_hours ? (total_hours[0] + ':' + total_hours[1]) : '0'}</p>
                                                 </div>
                                                 <div className="images_div">
                                                     {data.project_name !== 'Adhoc Task' && data.project_name !== null && <img src={data.Priority == 'High' ? H_icon : data.Priority == 'Low' ? L_icon : M_icon} style={{ marginRight: '5px', width: '18px', cursor: "pointer" }} onClick={() => fnPeriority({ data })} />}
@@ -492,25 +495,28 @@ function Task(props) {
                                                 {/* <p>Started Date : {data.started_date && data.started_date != "" ? moment(data.started_date).format("DD MMM YYYY") : ""}</p>
                                                     <p>Time : {data.started_time && data.started_time != "" ? moment(data.started_time, ["HH.mm"]).format("hh:mm A") : ""}</p> */}
                                                 {/* </div> */}
-                                                <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                                                <div style={{ marginBottom: '20px', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
                                                     <span>Actual Start Date :<span>{data.actual_start_date && data.actual_start_date != "" ? moment(data.actual_start_date).format("DD MMM YYYY") : ""}</span></span>
                                                     <span>End Date :<span>{data.actual_end_date && data.actual_end_date != "" ? moment(data.actual_end_date).format("DD MMM YYYY") : ""}</span></span>
                                                 </div>
-                                                <div>
+                                                {/* <div>
                                                     <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
-                                                </div>
+                                                </div> */}
                                                 <div>
                                                     <p>Assigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div>
-                                                <div>
-                                                    <p>Reassigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
-                                                </div>
+                                                {/* <div>
+                                                    <p>Reassigned By <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                </div> */}
+                                                {data.tag && <div>
+                                                    <span>Tag : <span>{data.tag}</span></span>
+                                                </div>}
                                             </div>
                                             <div className="divider"></div>
                                             <div style={{ marginTop: '20px' }}>
                                                 <div className="total_12_div">
                                                     <p style={{ display: "flex", justifyContent: 'center', marginBottom: '0px' }}>Total Hours</p>
-                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{total_hours}</p>
+                                                    <p style={{ display: "flex", justifyContent: 'center' }}>{data.totalHours[0].total_hours ? (total_hours[0] + ':' + total_hours[1]) : '0'}</p>
                                                 </div>
                                                 <div className="images_div">
                                                     {data.project_name !== 'Adhoc Task' && data.project_name !== null && <img src={data.Priority == 'High' ? H_icon : data.Priority == 'Low' ? L_icon : M_icon} style={{ marginRight: '5px', width: '18px', cursor: "pointer" }} onClick={() => fnPeriority({ data })} />}

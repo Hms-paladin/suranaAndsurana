@@ -67,9 +67,11 @@ export const inserTask = (params, timeSheetParams, stopData, project_wise, AddHe
             data: params
         }).then(async (response) => {
             if (response.data.status === 1) {
-                notification.success({
-                    message: "Task Added Successfully",
-                });
+                if (!timeSheetParams || !stopData || !project_wise || !AddHearing_Data) {
+                    notification.success({
+                        message: "Task Added Successfully",
+                    });
+                }
 
                 dispatch({ type: INSERT_TASK, payload: response.data.data })
                 if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
@@ -83,6 +85,10 @@ export const inserTask = (params, timeSheetParams, stopData, project_wise, AddHe
                 }
 
                 return Promise.resolve();
+            } else if (response.data.status === 0) {
+                notification.success({
+                    message: response.data.msg,
+                });
             }
         });
 
@@ -283,7 +289,7 @@ export const insertTimeSheetbyTime = (params, time, task, timesheetStopData) => 
 
                         } else if (response.data.status === 0) {
                             notification.success({
-                                message: "Stop Time " +response.data.msg,
+                                message: "Stop Time " + response.data.msg,
                             });
                         }
                     });
@@ -312,7 +318,7 @@ export const insertTimeSheetbyTime = (params, time, task, timesheetStopData) => 
                 return Promise.resolve();
             } else if (response.data.status === 0) {
                 notification.success({
-                    message:((time ===true)?'Start Time ':'Stop Time ')+ response.data.msg,
+                    message: ((time === true) ? 'Start Time ' : 'Stop Time ') + response.data.msg,
                 });
             }
         });
