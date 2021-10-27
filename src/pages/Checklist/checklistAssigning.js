@@ -153,7 +153,7 @@ function CheckListAssign(props) {
         "project_type_id": checkListForm.project_type_id.value == '' ? 0 : checkListForm.project_type_id.value,
         "project_sub_type_id": (!checkListForm.subProjectId.value || checkListForm.subProjectId.value === "") ? 0 : checkListForm.subProjectId.value,
         "start_date": checkListForm.startDate.value === "" ? '0000-00-00' : checkListForm.startDate.value,
-        "end_date": checkListForm.endDate.value === "" ? '0000-00-00' : checkListForm.startDate.value,
+        "end_date": checkListForm.endDate.value === "" ? '0000-00-00' : checkListForm.endDate.value,
         "details": sendVariableData,
         "created_on": moment().format('YYYY-MM-DD HH:m:s'),
         "created_by": localStorage.getItem("empId")

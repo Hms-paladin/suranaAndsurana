@@ -260,7 +260,7 @@ function AdhocTaskModal(props) {
                         placeholder={"Assigned To"}
                         dropdown={assignedToLists.assignedToData}
                         changeData={(data) => checkValidation(data, "assigned_task")}
-                        value={adhoc_Form.assigned_task.value}
+                        value={adhoc_Form.assigned_task.value?adhoc_Form.assigned_task.value:JSON.parse(localStorage.getItem("empId"))}
                         error={adhoc_Form.assigned_task.error}
                         errmsg={adhoc_Form.assigned_task.errmsg}
                     />

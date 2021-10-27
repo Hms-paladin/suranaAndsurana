@@ -88,6 +88,7 @@ const { TabPane } = Tabs;
 
 function ProjectIp(props) {
     const dispatch = useDispatch()
+    let { rowId } = useParams()
     const { Panel } = Collapse;
     const [projectDetails, setProjectDetails] = useState({})
     const [modelOpen, setModelOpen] = useState(false)
@@ -170,7 +171,7 @@ function ProjectIp(props) {
         { id: "del", label: "Delete" },
     ];
 
-    let { rowId } = useParams()
+   
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
@@ -678,7 +679,6 @@ function ProjectIp(props) {
             [key]: dynObj,
         }));
     }
-    console.log(ProjectIP.checklist_item_date.value, "ProjectIP.checklist_item_date.value")
     return (
 
         <div>

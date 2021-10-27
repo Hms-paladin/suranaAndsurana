@@ -74,6 +74,7 @@ function Task(props) {
     const [taskData, setTaskData] = useState({})
     const [confirmmodel, setConfirmModel] = useState(false);
     const [employeeList, setemployeeList] = useState({})
+    const [ModelClear, setModelClear] = useState(0)
     const [fieldVal, setfieldVal] = useState({
         subOrdinateVal: {
             value: "",
@@ -185,7 +186,6 @@ function Task(props) {
         setemployeeList({ employeeData })
     }, [props.getEmpListDepartment]);
 
-    console.log(props.getEmpListDepartment, "props.getEmpListDepartment")
     useEffect(() => {
 
         let taskbyStatus = []
@@ -233,13 +233,11 @@ function Task(props) {
         setStartModelOpen(true)
     }
     function stopModel() {
-        // alert("test")
         setChangeModel(false)
     }
     function openTimeSheet(flg, obj) {
-        console.log(fieldVal.subOrdinateVal.value, localStorage.getItem("empId"), "fffffffffffffffffffff")
+        console.log(obj,"obj")
         if (!fieldVal.subOrdinateVal.value || fieldVal.subOrdinateVal.value === "" || (fieldVal.subOrdinateVal.value === Number(localStorage.getItem("empId")))) {
-            // console.log(obj.perecent_completion,"perecent_completion")
             if (obj.perecent_completion === 100) { return }
             setTaskData(obj);
             setStartModelOpen(flg);
@@ -337,8 +335,8 @@ function Task(props) {
                 {/* first card */}
 
                 <div className="card_div">
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => setStartModelOpen(bln)}
-                        content={<TimeSheetView rowData={taskData} handleChangeCloseModel={(bln) => setStartModelOpen(bln)} />} width={1000} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => (setStartModelOpen(bln),setModelClear(ModelClear+1))}
+                        content={<TimeSheetView model_clear={ModelClear} rowData={taskData} handleChangeCloseModel={(bln) => (setStartModelOpen(bln),setModelClear(ModelClear+1))} />} width={1000} />
 
                     <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}
                         content={<TaskStatus rowData={taskData} handleChangeCloseModel={(bln) => setTaskStatus(bln)} />} width={300} />
@@ -380,12 +378,12 @@ function Task(props) {
                                             <div style={{ width: '36%', padding: '15px' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
                                                     <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
-                                                    <p>{data.project_id != null ? data.project_type : data.description}</p>
+                                                    {/* <p>{data.project_id != null ? data.project_type : data.description}</p> */}
                                                     <p>{data.client}</p>
                                                 </div>
                                                 <div style={{ display: 'flex', marginLeft: '10px', fontWeight: 'bold', fontSize: '16px' }}>
-                                                    <p style={{ paddingRight: '30px' }}>{data.activity}</p>
-                                                    <p>{data.sub_activity}</p>
+                                                    <p style={{ paddingRight: '30px' }}>{data.description}</p>
+                                                    {/* <p>{data.sub_activity}</p> */}
                                                 </div>
                                                 <div style={{ display: 'flex', fontWeight: 'bold' }}>
                                                     <p style={{ marginRight: '10px' }}>Start Date :  {data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</p>
@@ -473,12 +471,12 @@ function Task(props) {
                                             <div style={{ width: '36%', padding: '15px' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-around', fontWeight: 'bold' }}>
                                                     <p>{data.project_id != null ? data.project_name : 'Adhoc Task'}</p>
-                                                    <p>{data.project_id != null ? data.project_type : data.description}</p>
+                                                    {/* <p>{data.project_id != null ? data.project_type : data.description}</p> */}
                                                     <p>{data.client}</p>
                                                 </div>
                                                 <div style={{ display: 'flex', marginLeft: '10px', fontWeight: 'bold', fontSize: '16px' }}>
-                                                    <p style={{ paddingRight: '30px' }}>{data.activity}</p>
-                                                    <p>{data.sub_activity}</p>
+                                                    <p style={{ paddingRight: '30px' }}>{data.description}</p>
+                                                    {/* <p>{data.sub_activity}</p> */}
                                                 </div>
                                                 <div style={{ display: 'flex', fontWeight: 'bold' }}>
                                                     <p style={{ marginRight: '10px' }}>Start Date :  {data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</p>

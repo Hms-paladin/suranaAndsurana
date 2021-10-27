@@ -15,8 +15,8 @@ function KRAModal(props) {
     const header = [
         { id: 'employeename', label: 'Employee Name' },
         { id: 'activity', label: 'Activity' },
-        { id: 'target', label: 'Target' },
-        { id:"percentage",label:"Percentage"}
+        { id: 'target', label: 'Target(%)' },
+        { id:"percentage",label:"Acheivement(%)"}
     ];
     const [employeeList, setEmployeeList] = useState({});
     const [rowData, setRowData] = useState([])

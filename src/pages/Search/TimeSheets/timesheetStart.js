@@ -7,12 +7,10 @@ import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";
 import moment from 'moment';
-import Axios from "axios";
-import { apiurl } from "../../../utils/baseUrl";
-// import dateFormat from 'dateformat';
 import { useParams } from "react-router-dom";
 import { getProjectTimeSheetList, getProjectWise_TimeSheet, EditProjectwiseTimesheet } from "../../../actions/TimeSheetAction";
 import axios from "axios";
+import { apiurl } from "../../../utils/baseUrl";
 import { notification } from "antd";
 import { get_projectName_by_Desig, getSubactivity } from "../../../actions/MasterDropdowns";
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
@@ -23,8 +21,9 @@ import AddHearing from '../../task/AddHearing';
 import DynModel from '../../../component/Model/model';
 
 function TimeSheetStartModel(props) {
-    const [StartProcess, setStartProcess] = useState(true)
     const dispatch = useDispatch();
+    let { rowId } = useParams()
+    const [StartProcess, setStartProcess] = useState(true)
     const [projectSubActivity, setprojectSubActivity] = useState({});
     const [activityList, setactivityList] = useState({})
     const [priorityList, setpriorityList] = useState({})
@@ -33,7 +32,8 @@ function TimeSheetStartModel(props) {
     const [projectName, setProjectName] = useState({});
     const [SaveProcess, setSaveProcess] = useState(false);
     const [AddHearing_Data, setAddHearing_Data] = useState([]);
-    let { rowId } = useParams()
+    const [TimeOverlap, setTimeOverlap] = useState(true);
+
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: new Date("12-30-2017 " + moment().format('HH:mm:ss')),
@@ -109,7 +109,7 @@ function TimeSheetStartModel(props) {
         }
 
     })
-    
+
     useEffect(() => {
         setProjectDetails(props.projectrow)
     }, [props.projectrow])
@@ -181,6 +181,31 @@ function TimeSheetStartModel(props) {
     }, [timeSheetForm.activity.value]);
 
     useEffect(() => {
+        var insert_data = {
+            "emp_id": localStorage.getItem("empId"),
+            "start_date": timeSheetForm.fromDate.value,
+            "start_time": moment(timeSheetForm.startTime.value).format('HH:mm:ss'),
+            "end_date": timeSheetForm.fromDate.value,
+            "end_time": moment(timeSheetForm.endTime.value).format('HH:mm:ss'),
+        }
+        axios({
+            method: 'POST',
+            url: apiurl + 'check_startTime_endTime_timesheet',
+            data: insert_data
+        }).then(async (response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: `Timesheet overlapped`,
+                });
+                setTimeOverlap(true)
+
+            } else if (response.data.status === 0) {
+                setTimeOverlap(false)
+            }
+        })
+    }, [timeSheetForm.fromDate.value, timeSheetForm.toDate.value, timeSheetForm.startTime.value, timeSheetForm.endTime.value])
+
+    useEffect(() => {
         let activityTypeData = []
         props.activitysList.map((data) => {
             if (timeSheetForm.projectname.value === "" && data.activity_id === 6) {
@@ -232,7 +257,7 @@ function TimeSheetStartModel(props) {
     }, [timeSheetForm.projectname.value, props.activitysList, props.getSubactivity, props.prioritysList, props.tagsList, props.locationList, props.ProjectName])
 
     const dateFormat = (data) => {
-        return moment(data, "HH:mm:ss").format("HH:mm:ss")
+        return moment(data, "HH:mm").format("HH:mm")
     }
     const submitStartTimeSheet = async () => {
 
@@ -478,7 +503,7 @@ function TimeSheetStartModel(props) {
                 timeSheetForm.tag.value = data.tag_id
                 timeSheetForm.startTime.value = new Date("12-30-2017 " + data.start_time)
                 timeSheetForm.fromDate.value = data.start_date
-                timeSheetForm.description.value=data?.description
+                timeSheetForm.description.value = data?.description
                 data.task_status && data.task_status === "Completed" ? (timeSheetForm.task_status.value = 1) : (timeSheetForm.task_status.value = 0)
                 if (props.project_wise_edit) {
                     data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
@@ -666,8 +691,8 @@ function TimeSheetStartModel(props) {
                         {/* <div className="project_wise_checkbox"> {SaveProcess && <><Checkbox onClick={(data) => checkValidation(data, "task_status")} checked={timeSheetForm.task_status.value === 1 ? true : false} />&nbsp;<label>Task Completed</label></>}</div> */}
                         <div className="project_wise_checkbox"> {timeSheetForm.activity.value === 6 && <><img src={Order} style={{ marginRight: '5px', width: '25px', cursor: 'pointer' }} onClick={() => fntaskHearingDetails()} />&nbsp;<label>{props.project_wise_edit ? 'Edit' : 'Add'} Hearing</label></>}</div>
                         <div className="project_wise_save"> <CustomButton btnName={"CANCEL"} onBtnClick={() => (handleCancel(), props.close_model && props.close_model(false))} />
-                            {!props.project_wise_edit && <CustomButton btnName={`${!SaveProcess ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" onBtnClick={submitStartTimeSheet} />}
-                            {props.project_wise_edit && <CustomButton btnName={'UPDATE'} btnCustomColor="customPrimary" onBtnClick={onEditTimesheet} />}
+                            {!props.project_wise_edit && <CustomButton btnName={`${!SaveProcess ? 'START' : 'SAVE'}`} btnDisable={TimeOverlap} btnCustomColor="customPrimary" onBtnClick={submitStartTimeSheet} />}
+                            {props.project_wise_edit && <CustomButton btnName={'UPDATE'} btnDisable={TimeOverlap} btnCustomColor="customPrimary" onBtnClick={onEditTimesheet} />}
                         </div>
                     </div>
                 </div>
@@ -785,7 +810,7 @@ function TimeSheetStartModel(props) {
                     </div>
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={() => (handleCancel(), props.close_model && props.close_model(false))} />
-                        <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={submitStopTimesheet} />
+                        <CustomButton btnName={"STOP"} btnDisable={TimeOverlap} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" onBtnClick={submitStopTimesheet} />
                     </div>
 
                 </div>

@@ -7,7 +7,8 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-import { getCheckListsAssigned } from "./CheckListAction";
+import { getCheckListsAssigned,getCheckListsView } from "./CheckListAction";
+
 export const getVariableRateTableData = () => async dispatch => {
   try {
 
@@ -120,121 +121,8 @@ export const InsertProjectVariableRate = (data) => async dispatch => {
 
   }
 
-
-
-
-
 }
-// export const InsertProjectVariableRate = (data) => async dispatch => {
-//   alert(data)
-//   setAddTableData({ searchVariableTableData });
-//   try {
 
-//     var DocumentData = new FormData();
-//     DocumentData.set("project_id", data.project_id || 0)
-//     DocumentData.set("range_id", data.range_id||0)
-//     DocumentData.set("court_id", data.location_id || 0)
-//     DocumentData.set("designation_id", data.designation_id || 0)
-//     DocumentData.set("activity_id", data.activity_id || 0)
-//     DocumentData.set("sub_activity_id", data.sub_activity_id || 0)
-//     DocumentData.set("amount", data.base_rate || 0)
-//     DocumentData.set("upper_limit", data.upper_limit || 0)
-//     DocumentData.set("lower_limit", data.lower_limit || 0)
-//     DocumentData.set("unit_of_measure", data.unit_of_measure || 0)
-
-//     DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
-//     DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
-//     DocumentData.set("created_by", localStorage.getItem("empId"))
-//     DocumentData.set("updated_by", localStorage.getItem("empId"))
-
-//     axios({
-//       method: 'POST',
-//       url: apiurl + "insert_project_variable_rate",
-//       data: DocumentData
-//     }).then((response) => {
-//       if (response.data.status === 1) {
-//         notification.success({
-//           message: " Added Successfully",
-//         });
-//         dispatch({type:INSERT_VARIABLERATE,payload:response.data.status})
-//         dispatch(getProjectVariableRate(data.project_id))
-
-//         return Promise.resolve();
-//       }
-//     });
-
-//   } catch (err) {
-
-//   }
-// }
-
-// export const InsertProjectVariableRate = (RateMaster) => async dispatch => {
-
-//   if (RateMaster.length<0) {
-//     let loop = 0;
-//     RateMaster.map((data, index) => {
-
-//       try {
-//         let api;
-//         let method;
-//         var DocumentData = new FormData();
-
-//         if (data.rate_master_id) {
-//           api = "update_project_vairable_rate"
-//           method = "PUT"
-//           DocumentData.set("rate_master_id", data.rate_master_id || 0)
-//           DocumentData.set("amount", data.base_rate || 0)
-//         }
-//         else {
-//           api = "insert_project_variable_rate"
-//           method = "POST"
-//           DocumentData.set("project_id", data.project_id || 0)
-//           DocumentData.set("range_id", data.range_id)
-//           DocumentData.set("court_id", data.location_id || 0)
-//           DocumentData.set("designation_id", data.designation_id || 0)
-//           DocumentData.set("activity_id", data.activity_id || 0)
-//           DocumentData.set("sub_activity_id", data.sub_activity_id || 0)
-//           DocumentData.set("amount", data.base_rate || 0)
-//           DocumentData.set("upper_limit", data.upper_limit || 0)
-//           DocumentData.set("lower_limit", data.lower_limit || 0)
-//           DocumentData.set("unit_of_measure", data.unit_of_measure || 0)
-
-//           DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
-//           DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
-//           DocumentData.set("created_by", localStorage.getItem("empId"))
-//           DocumentData.set("updated_by", localStorage.getItem("empId"))
-//         }
-//         axios({
-//           method: method,
-//           url: apiurl + api,
-//           data: DocumentData,
-//         }).then((response) => {
-
-
-//           if (response.data.status === 1) {
-//             if (loop === 0) {
-//               notification.success({
-//                 message: "Variable Rate Added Successfully",
-//               });
-//             }
-//             loop = 1;
-//             console.log("check",data.project_id)
-//             dispatch(getProjectVariableRate(data.project_id))
-//             //   dispatch({type:INSERT_VARIABLERATE,payload:true})
-
-//             return Promise.resolve();
-//           }
-//         });
-
-//       } catch (err) {
-
-//       }
-
-//     }
-//     );
-//   }
-
-// }
 export const InsertVariableRate = (RateMaster) => async dispatch => {
   // console.log("ratemastercheck",RateMaster.range_project_cost.value)
   try {
@@ -449,7 +337,7 @@ export const Update_Variable_Rate = (data, amt, AddRow) => async dispatch => {
   }
 }
 
-export const UpdateCheckListNoTaskLink = (check_list_details_id, project_id, end_date) => async dispatch => {
+export const UpdateCheckListNoTaskLink = (check_list_details_id, project_id, end_date,checklistview_empID) => async dispatch => {
   try {
     await axios({
       method: 'POST',
@@ -464,7 +352,9 @@ export const UpdateCheckListNoTaskLink = (check_list_details_id, project_id, end
           notification.success({
             message: "TaskItem Completed Successfully",
           });
-          dispatch(getCheckListsAssigned(project_id))
+
+          checklistview_empID&&dispatch(getCheckListsView(checklistview_empID))
+          !checklistview_empID&&dispatch(getCheckListsAssigned(project_id))
         }
 
       })
