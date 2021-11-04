@@ -6,7 +6,6 @@ import { notification } from "antd";
 
 export const getStageMonitor = (data) => async dispatch => {
 
-console.log(data,"chhjj")
     try {
         axios({
             method: 'POST',
@@ -87,7 +86,6 @@ export const insertStageMaonitor = (stageData,compliance_date,projectDetails) =>
             }
           }).then((response) => {
             if (response.data.status === 1) {
-              console.log(projectDetails,"projectDetails")
                 dispatch(getStageMonitor(projectDetails))
                 notification.success({
                   message: 'Stage Completion Date Added Successfully',

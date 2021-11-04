@@ -21,9 +21,9 @@ function RecruitmentModal(props) {
 
     useEffect(() => {
         let dept_id = localStorage.getItem("department_id")
-        console.log(dept_id, "dpt")
+
         setRecruitmentData(props.getRecruitmentTicket)
-        console.log(props.recruitmentDa.assigned_by, props.recruitmentDa.assignee_id, "props.recruitmentData")
+
         if ((props.recruitmentDa.assigned_by === props.recruitmentDa.assignee_id)) {
             setProcess(true)
         }
@@ -51,7 +51,7 @@ function RecruitmentModal(props) {
 
     return (
         <div>
-            {console.log(localStorage.getItem("department_id"), "id dept")}
+
             {recruitmentData.length > 0 && recruitmentData.map((data) => {
                 return (
                     <Grid container spacing={2} style={{ width: "100%" }}>

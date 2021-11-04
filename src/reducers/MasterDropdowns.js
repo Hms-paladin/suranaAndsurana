@@ -53,9 +53,9 @@ import {
   GET_CITY_BY_ID,
   GET_AREA_DEVELOPMENT,
   GET_DEVELOPMENT,
-  GET_PROJECT_TYPE_ALL,
   GET_SUPERVISOR_BY_DEPT,
-  GET_EMP_LIST_PROJECT
+  GET_EMP_LIST_PROJECT,
+  GET_CLIENT_DETAILS
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -119,7 +119,8 @@ const initalState = {
   getEmployeeList: [],
   get_projectName_by_Desig: [],
   getSupervisorByDepartment: [],
-  getEmpListByProjectId: []
+  getEmpListByProjectId: [],
+  getClientDetails:[]
 };
 
 export default function (state = initalState, action) {
@@ -247,6 +248,8 @@ export default function (state = initalState, action) {
       return { ...state, getSupervisorByDepartment: payload };
     case GET_EMP_LIST_PROJECT:
       return { ...state, getEmpListByProjectId: payload };
+    case GET_CLIENT_DETAILS:
+      return { ...state, getClientDetails: payload };
     default:
       return state;
   }

@@ -45,7 +45,6 @@ function TradeMark(properties) {
         handleCancel()
         if (properties.tradeMark && properties.tradeMark[0]) {
             let obj = properties.tradeMark[0];
-            console.log(obj, "objobjobj")
 
             TradeMarkForm.comments.value = obj.comments;
             TradeMarkForm.trademark_id.value = obj.trademark_id;
@@ -219,7 +218,7 @@ function TradeMark(properties) {
         // },
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+
             }
             if (info.file.status === 'done') {
                 setselectedFile(info.file.originFileObj);
@@ -230,8 +229,6 @@ function TradeMark(properties) {
         },
     };
     const dispatch = useDispatch()
-
-    console.log(selectedFile, "selectedFile")
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
@@ -428,7 +425,7 @@ function TradeMark(properties) {
         upload: {
             value: null,
             id: "upload",
-            empty:false,
+            empty: false,
             error: null,
             errmsg: null,
             disabled: false,
@@ -460,7 +457,6 @@ function TradeMark(properties) {
         var filtererr = targetkeys.filter(
             (obj) => TradeMarkForm[obj].error == true
         );
-        console.log(filtererr.length);
 
         let formData = new FormData();
         formData.append("project_id", rowId)
@@ -509,7 +505,7 @@ function TradeMark(properties) {
             // setTradeMarkForm({ error: true });
         } else {
             // setTradeMarkForm({ error: false });
-            TradeMarkForm.upload.empty =true;
+            TradeMarkForm.upload.empty = true;
             dispatch(insertTradeMark(formData, TradeMarkForm, rowId)).then(() => {
                 handleCancel()
                 // dispatch(getTradeMark(rowId))
@@ -520,7 +516,7 @@ function TradeMark(properties) {
             ...prevState
         }));
     };
-console.log(TradeMarkForm.upload.value,"TradeMarkForm.upload.value")
+
     const handleCancel = () => {
         let From_key = [
             "status_id", "class_id", "usage_details_id", "mark_id", "application_no", "application_date", "goods_description", "usage_from_date", "comments", "internal_status", "allotment",
@@ -872,7 +868,7 @@ console.log(TradeMarkForm.upload.value,"TradeMarkForm.upload.value")
     )
 }
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
 
     tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],

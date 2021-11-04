@@ -50,7 +50,6 @@ export const getCopyRight = (id) => async dispatch => {
             },
           }).then((response) => {
             if (response.data.status === 1) {
-              // console.log(response.data.data.length,"//")
                 dispatch({type:GET_COPYRIGHT,payload:response.data.data})
               return Promise.resolve();
             }

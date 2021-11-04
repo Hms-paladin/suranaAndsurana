@@ -6,7 +6,6 @@ import { notification } from "antd";
 
 export const InsertLitigation = (Litigation_Form, IdDetails) => async dispatch => {
   try {
-    console.log(IdDetails, "IdDetails")
     axios({
       method: "POST",
       url: apiurl + "insert_litigation",
@@ -68,7 +67,6 @@ export const GetLitigation = (ProjectID) => async dispatch => {
 
 
 export const InsertLitigationDetails = (data, id) => async dispatch => {
-  console.log("litiid", id)
   try {
     axios({
       method: "POST",

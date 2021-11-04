@@ -26,7 +26,7 @@ function TradeMarkInternational(properties) {
         name: 'file',
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+
             }
             if (info.file.status === 'done') {
                 setselectedFile(info.file.originFileObj);
@@ -459,7 +459,7 @@ function TradeMarkInternational(properties) {
         var filtererr = targetkeys.filter(
             (obj) => TradeMarkForm[obj].error == true
         );
-        //console.log(filtererr.length);
+
         if (filtererr.length > 0) {
         } else {
 
@@ -469,7 +469,7 @@ function TradeMarkInternational(properties) {
             formData.append("associate_reference", TradeMarkForm.associateRefernce.value || '')
             formData.append("our_reference", TradeMarkForm.ourRefernce.value || '')
             formData.append("mark_id", TradeMarkForm.mark_id.value)
-            formData.append("upload_image",(!TradeMarkForm.upload.view_file&&!TradeMarkForm.upload.value)?[]:(TradeMarkForm.upload.value?TradeMarkForm.upload.value:TradeMarkForm.upload.view_file.substr(35) ))
+            formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(35)))
             formData.append("associate", TradeMarkForm.associate.value || '')
             formData.append("application_no", TradeMarkForm.application_no.value || '')
             formData.append("application_date", TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value)
@@ -572,8 +572,6 @@ function TradeMarkInternational(properties) {
 
     };
 
-
-    console.log(TradeMarkForm.upload.value, "filedata122")
     return (
 
         <div className="tradeMarkContainer">

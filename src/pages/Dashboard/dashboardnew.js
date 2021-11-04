@@ -208,9 +208,6 @@ function DashboardNew(props) {
     })
   }
 
-  console.log(projectwise, "projectwise")
-
-
   const userdashboard = (color) => {
     setChangedashBoard(true)
     setcolor("")
@@ -223,8 +220,6 @@ function DashboardNew(props) {
     setcolor(color)
     setuserclr("")
   }
-
-  console.log(arrowHide, "arrowHide");
 
   useEffect(() => {
     if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -309,12 +304,12 @@ function DashboardNew(props) {
     },
     []
   );
-  console.log(calenderValues[0]?.end_date_due_task)
+
   return (
 
 
     < div >
-      {console.log(calenderValues, "cv")}
+
       <div className="dashboardMenuContainer">
         {arrowHide && (
           <div
@@ -449,7 +444,7 @@ function DashboardNew(props) {
                   <div>Due by</div>
                   <div>% Completed</div>
                 </div>
-                {console.log(dashboardValues, "dashboardValues")}
+
                 {dashboardValues[0]?.Due_task.length ? dashboardValues[0]?.Due_task?.map((data) => {
                   return (
                     <>
@@ -475,7 +470,7 @@ function DashboardNew(props) {
               <div className="projectscroll-second" >
                 <div className="tableHeader">
                   <div className="linkHeader"></div>
-                  <div>Tasks Start Due Date</div>
+                  <div>Tasks Start Date</div>
                 </div>
                 <div className="taskdaysdatas">
                   <div className="taskdaystableHeader">
@@ -508,11 +503,12 @@ function DashboardNew(props) {
 
 
             </section>
+            
             <section className="sec-section" >
               <div className="projectscroll-second" >
                 <div className="tableHeader">
                   <div className="linkHeader"></div>
-                  <div>Tasks End Due Date</div>
+                  <div>Tasks End Date</div>
                 </div>
                 <div className="taskdaysdatas">
                   <div className="taskdaystableHeader">

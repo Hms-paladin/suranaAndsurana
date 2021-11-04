@@ -235,7 +235,7 @@ function IPABRectificationDefended(props) {
         )
         setclassDetList({ classDetailsData })
 
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails,props.tradeMark]);
+    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeList, props.ProjectDetails, props.tradeMark]);
 
 
     function onSubmit() {
@@ -243,7 +243,7 @@ function IPABRectificationDefended(props) {
         var targetkeys = Object.keys(TradeMarkForm);
 
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
-        console.log(filtererr.length, "filtererr.length");
+
         let params = {
             "ip_type": 0,
             "client_status_type": null,
@@ -254,10 +254,10 @@ function IPABRectificationDefended(props) {
             "rectification_filing": TradeMarkForm.rectification_filing_date.value,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date": TradeMarkForm.date_of_hearing.value ,
+            "hearing_date": TradeMarkForm.date_of_hearing.value,
             "opp_applicant": TradeMarkForm.applicant.value,
             "opp_applicant_rep": TradeMarkForm.applicant_rep.value,
-            "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
+            "filing_type_id": TradeMarkForm.filing_type_id.valueById && TradeMarkForm.filing_type_id.valueById.toString() || '0',
             "status_id": TradeMarkForm.status_id.value,
             "comments": TradeMarkForm.comments.value,
             "created_on": moment().format('YYYY-MM-DD HH:m:s') || null,
@@ -304,7 +304,7 @@ function IPABRectificationDefended(props) {
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-                console.log("appealFiling cancel", TradeMarkForm[data].value);
+
             } catch (error) {
                 throw error;
             }
@@ -315,7 +315,7 @@ function IPABRectificationDefended(props) {
     }
 
 
- 
+
     function checkValidation(data, key, multipleId) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -399,7 +399,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                   
+
                         changeData={(data) => checkValidation(data, "rectification_filing_date")}
                         value={TradeMarkForm.rectification_filing_date.value}
                         error={TradeMarkForm.rectification_filing_date.error}
@@ -432,7 +432,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                       
+
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -489,7 +489,7 @@ function IPABRectificationDefended(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        
+
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

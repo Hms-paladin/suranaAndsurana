@@ -34,7 +34,6 @@ export const interviewApproverTableData = (resume_id,designation_id) => async di
             }
         })
         .then((response) => {
-            // console.log(response,"res_id")
             dispatch({type:INTERVIEWAPPROVER_TABLE_DATA,payload:response.data.data})
         })
         
@@ -68,7 +67,6 @@ export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res
             }
         })
         .then((response)=>{
-            // console.log(response,"response")
             if(response.data.status===1){
                 dispatch(getHrTaskList())
                 notification.success({

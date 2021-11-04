@@ -84,7 +84,6 @@ function InerviewScreen(props) {
   }, []);
 
   useEffect(() => {
-    console.log(selectedCandidateId, "selectedCandidateId")
     if (selectedCandidateId && selectedCandidateId !== '')
       dispatch(getOnlineTestDetails(selectedCandidateId));
   }, [selectedCandidateId]);
@@ -119,7 +118,6 @@ function InerviewScreen(props) {
     setgetData(props.getQuestions);
   }, [props.getInterviewStatus, props.getQuestions, props.getOnlineTestDetails, props.interviewData]);
 
-  // console.log(cand_data[0]?.resume_id&&cand_data[0].resume_id,testDetails,"testDetails")
   useEffect(() => {
     Axios({
       method: "POST",
@@ -154,7 +152,7 @@ function InerviewScreen(props) {
       setCandDetails({ CandList })
       setcand_data(response.data.data[0].output);
       // setint_details(props.interviewer_id.map((data,index)=>{
-      //     // console.log("datacheck",data),
+ 
       //     return(
       //     ({id:data.int_details_id})
       //     // propsdata.push(data)
@@ -165,7 +163,7 @@ function InerviewScreen(props) {
     });
   }, [props.getOnlineTestDetails, props.getSelectedCandidates,props.interviewer_id, props.getQuestions, props.GetCandiateDetails]);
 
-  console.log(props.getOnlineTestDetails, props.getSelectedCandidates,props.interviewer_id, props.getQuestions, props.GetCandiateDetails,"gggggggggggggggg")
+ 
   function ViewCandiate(id) {
     setdata_id(
       cand_data.find((data) => {
@@ -286,12 +284,11 @@ function InerviewScreen(props) {
     setComments(true);
     setcanName(name);
     dispatch(interviewApproverTableData(id, candDetails.CandList[0].designationID));
-    { console.log(props.interviewData, "props") }
+  
   };
   // const
   return (
     <div>
-      {console.log(props.interviewData, "props")}
       <Grid
         item
         xs={12}

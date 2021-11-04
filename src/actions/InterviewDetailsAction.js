@@ -4,7 +4,6 @@ import { notification } from 'antd';
 import moment from 'moment'
 
 export const InesertInterviewDetails = (Interviewschedule,selectedCandidateId) => async dispatch => {
-    console.log(Interviewschedule,selectedCandidateId,"<<<<<<<<<")
     try {
         axios({
             method: 'POST',

@@ -23,7 +23,7 @@ function DynModel(props){
         visible={visible}
         footer={null}
         width={props.width ? props.width : 520}
-        zIndex={1201}
+        zIndex={props.zIndex?props.zIndex:1201}
         onCancel={handleCancel}
         
         >

@@ -2,7 +2,7 @@ import {
     GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
     GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
-    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING, GET_ADJOURN_TAKEN_BY
+    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_TASK_WEEK_MONTH, INSERT_ADJOURN, INSERT_HEARING, GET_ADJOURN_TAKEN_BY
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -113,7 +113,6 @@ export const insertChangeLog = (params) => async dispatch => {
         });
 
     } catch (err) {
-        console.log(err)
     }
 }
 
@@ -275,7 +274,6 @@ export const insertTimeSheetbyTime = (params, time, task, timesheetStopData) => 
                 if (timesheetStopData) {
                     let tid = response.data.data[0].timesheet_id;
                     timesheetStopData.timesheet_id = tid;
-                    console.log(timesheetStopData, "timesheetStopData")
                     await axios({
                         method: 'POST',
                         url: apiurl + 'insert_stop_time',
@@ -351,7 +349,6 @@ export const getExpenseType = () => async dispatch => {
             url: apiurl + 'get_expense_type'
         })
             .then((response) => {
-                console.log(response.data.data, "dropdown");
                 dispatch({ type: GET_EXPENSE_TYPE, payload: response.data.data })
             })
 
@@ -368,7 +365,6 @@ export const getPaymentMode = () => async dispatch => {
             url: apiurl + 'get_payment_mode'
         })
             .then((response) => {
-                console.log(response.data.data, "dropdown");
                 dispatch({ type: GET_PAYMENT_MODE, payload: response.data.data })
             })
 
@@ -523,8 +519,8 @@ export const getTaskList = (empId, status, task_id) => async dispatch => {
             }
         })
             .then((response) => {
-
                 dispatch({ type: GET_TASK_LIST, payload: response.data.data })
+                dispatch(getTaskWeekMonth())
             })
 
     } catch (err) {
@@ -532,6 +528,25 @@ export const getTaskList = (empId, status, task_id) => async dispatch => {
     }
 }
 
+export const getTaskWeekMonth = () => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_task_week_month',
+            data: {
+                "assignee_id": localStorage.getItem("empId"),
+
+            }
+        })
+            .then((response) => {
+
+                dispatch({ type: GET_TASK_WEEK_MONTH, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
 
 export const getTaskTimeSheetbyTaskId = (taskId) => async dispatch => {
     try {

@@ -69,12 +69,12 @@ function ProjectTask() {
             error: null,
             errmsg: null,
         },
-        
+
     })
 
     useEffect(() => {
         dispatch(getActivity());
-      }, []);
+    }, []);
 
     function checkValidation(data, key, multipleId) {
 
@@ -136,12 +136,12 @@ function ProjectTask() {
         var filtererr = targetkeys.filter(
             (obj) => adhoc_Form[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setadhoc_Form({ error: true });
         } else {
             // setadhoc_Form({ error: false });
-          
+
         }
 
         setadhoc_Form(prevState => ({
@@ -208,7 +208,7 @@ function ProjectTask() {
             error: null,
             errmsg: null,
         },
-        
+
     })
 
     function checkValidation(data, key, multipleId) {
@@ -271,12 +271,12 @@ function ProjectTask() {
         var filtererr = targetkeys.filter(
             (obj) => createproject_Form[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setcreateproject_Form({ error: true });
         } else {
             // setcreateproject_Form({ error: false });
-          
+
         }
 
         setcreateproject_Form(prevState => ({
@@ -286,23 +286,23 @@ function ProjectTask() {
 
 
     const rows = [
-        {  projectType: "Field 1", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
-        {  projectType: "Field 2", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
-        {  projectType: "Field 3", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
-        {  projectType: "Field 1", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
-        {  projectType: "Field 2", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
-        {  projectType: "Field 3", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
+        { projectType: "Field 1", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
+        { projectType: "Field 2", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
+        { projectType: "Field 3", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
+        { projectType: "Field 1", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
+        { projectType: "Field 2", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
+        { projectType: "Field 3", projectName: 'Field 2', clientType: "Field 3", clientName: "Field 4", billingType: "Fiedl 5", reversed1: "field 6", reversed2: "field 7", reversed3: "field 8", reversed4: "field 9" },
     ];
 
 
     const onChange = e => {
-        console.log('radio checked', e.target.value);
+
         setValue(e.target.value);
     }
 
     const modelContent = () => {
         return (
-           "test"
+            "test"
         )
     }
 
@@ -316,7 +316,7 @@ function ProjectTask() {
     //                     <Grid item xs={4} container justify="center" alignItems="center">Project Name</Grid>
     //                     <Grid item xs={4} container justify="center" alignItems="center">Johnson & Johnson</Grid>
     //                 </Grid>
-               
+
 
     //             </Grid>
     //             <div className="activityTask">
@@ -426,17 +426,17 @@ function ProjectTask() {
             <div className="projectTaskModel">
 
                 <Grid item xs={12} className="projectTaskHeader" container >
-                    <Grid item xs={12} container  spacing={2} className="projectTasktitle">
+                    <Grid item xs={12} container spacing={2} className="projectTasktitle">
                         <Grid item xs={4} > IP Project</Grid>
                         <Grid item xs={4} >Project Name</Grid>
                         <Grid item xs={4} >Johnson & Johnson</Grid>
                     </Grid>
-                         <Grid item xs={12} container  spacing={2} className="projectTasktitle">
+                    <Grid item xs={12} container spacing={2} className="projectTasktitle">
                         <Grid item xs={4}> Operational</Grid>
                         <Grid item xs={4}>First Cut Draft</Grid>
                         <Grid item xs={4}>Assign To</Grid>
                     </Grid>
-               
+
 
                 </Grid>
                 {/* <div className="activityTask">
@@ -463,56 +463,56 @@ function ProjectTask() {
                 </div> */}
                 <div className="ddd">
                     <Grid container spacing={2}>
-                    <Grid item xs={6} >
+                        <Grid item xs={6} >
                             <Labelbox type="select"
                                 placeholder={"Expense Type"}
                                 changeData={(data) => checkValidation(data, "expense_type")}
-                                // value={createproject_Form.start_date_pro.value}
-                                // error={createproject_Form.start_date_pro.error}
-                                // errmsg={createproject_Form.start_date_pro.errmsg}  
+                            // value={createproject_Form.start_date_pro.value}
+                            // error={createproject_Form.start_date_pro.error}
+                            // errmsg={createproject_Form.start_date_pro.errmsg}  
                             />
                         </Grid>
                         <Grid item xs={6} >
                             <Labelbox type="text"
                                 placeholder={"Amount"}
                                 changeData={(data) => checkValidation(data, "amount")}
-                                // value={createproject_Form.start_date_pro.value}
-                                // error={createproject_Form.start_date_pro.error}
-                                // errmsg={createproject_Form.start_date_pro.errmsg}  
+                            // value={createproject_Form.start_date_pro.value}
+                            // error={createproject_Form.start_date_pro.error}
+                            // errmsg={createproject_Form.start_date_pro.errmsg}  
                             />
                         </Grid>
                         <Grid item xs={6} >
                             <Labelbox type="select"
                                 placeholder={"Mode Of Payment "}
                                 changeData={(data) => checkValidation(data, "mode_payment")}
-                                // value={createproject_Form.start_date_pro.value}
-                                // error={createproject_Form.start_date_pro.error}
-                                // errmsg={createproject_Form.start_date_pro.errmsg}  
+                            // value={createproject_Form.start_date_pro.value}
+                            // error={createproject_Form.start_date_pro.error}
+                            // errmsg={createproject_Form.start_date_pro.errmsg}  
                             />
                         </Grid>
                         <Grid item xs={6} >
                             <span className="bill_align"> BILL</span>
-                            <Checkbox className="checkbox_clr"/>
-                            <input type="file"/>                            
+                            <Checkbox className="checkbox_clr" />
+                            <input type="file" />
                         </Grid>
 
                         <Grid item xs={12} >
                             <Labelbox type="textarea"
                                 placeholder={"Description"}
-                                // changeData={(data) => checkValidation(data, "description")}
-                                // value={createproject_Form.description.value}
-                                // error={createproject_Form.description.error}
-                                // errmsg={createproject_Form.description.errmsg}
-                           />
+                            // changeData={(data) => checkValidation(data, "description")}
+                            // value={createproject_Form.description.value}
+                            // error={createproject_Form.description.error}
+                            // errmsg={createproject_Form.description.errmsg}
+                            />
                         </Grid>
-                  
+
 
                     </Grid>
                 </div>
-               
+
                 <div className="projectTaskModelButtons" >
                     {/* <CustomButton btnName={"CANCEL"}  custombtnCSS={"projectTaskGo"} /> */}
-                    <CustomButton btnName={"SAVE"}  btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"}onBtnClick={() => setTaskModelOpen(true)} custombtnCSS={"projectTaskButtons"} onBtnClick={ProjectSubmit} />
+                    <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" custombtnCSS={"projectTaskGo"} onBtnClick={() => setTaskModelOpen(true)} custombtnCSS={"projectTaskButtons"} onBtnClick={ProjectSubmit} />
 
                 </div>
             </div>
@@ -575,7 +575,7 @@ function ProjectTask() {
 
                 {/* Project Task Model */}
 
-                <CustomButton btnName={"Create Project Task"} btnCustomColor="customPrimary"   onBtnClick={() => setTaskModelOpen(true)}/>
+                <CustomButton btnName={"Create Project Task"} btnCustomColor="customPrimary" onBtnClick={() => setTaskModelOpen(true)} />
                 {/* <DynModel modelTitle={"Project Task"} handleChangeModel={taskModelOpen} handleChangeCloseModel={(bln) => setTaskModelOpen(bln)} content={projectTaskModelContent()} modalchanges="modalchangestask" /> */}
                 <DynModel modelTitle={"OPE"} handleChangeModel={taskModelOpen} handleChangeCloseModel={(bln) => setTaskModelOpen(bln)} content={projectTaskModelContent()} modalchanges="modalchangestask" />
 

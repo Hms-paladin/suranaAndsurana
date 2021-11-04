@@ -6,10 +6,10 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from "react-redux";
 import { Switch } from 'antd';
 import './usermanagement.scss';
-import {insertUser,editUser,GetEmployeeDetails} from "../../actions/UserMasterAction";
+import { insertUser, editUser, GetEmployeeDetails } from "../../actions/UserMasterAction";
 import {
     get_emp_not_in_user
-  } from "../../actions/UserGroupAction";
+} from "../../actions/UserGroupAction";
 
 function UserMasterModal(props) {
     const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function UserMasterModal(props) {
         },
         mobilenumber: {
             value: "",
-            validation: [{ name: "required" },{ name: "mobileSurana" }],
+            validation: [{ name: "required" }, { name: "mobileSurana" }],
             error: null,
             errmsg: null,
         },
@@ -49,46 +49,42 @@ function UserMasterModal(props) {
     });
 
     useEffect(() => {
-            handleCancel()
-            dispatch(get_emp_not_in_user())
-            dispatch(GetEmployeeDetails())
+        handleCancel()
+        dispatch(get_emp_not_in_user())
+        dispatch(GetEmployeeDetails())
     }, [props.user_add])
 
 
     useEffect(() => {
-       
-        if(!props.user_data){
-        const Employee_List = []
-        props.EmployeeList.map((data, index) => {
-            Employee_List.push({ value: data.name, id: data.emp_id })
-        })
-       
-        
-        setEmployeeList(Employee_List)
-        
 
-        props.GetEmployeeDetails.map((data)=>{
-            // setdisable(true)
-            setUserMaster((prevState) => ({
-                ...prevState,
-                mobilenumber:{value:data.official_contact},
-                emailid:{value:data.official_email}
-            }));
-        })
+        if (!props.user_data) {
+            const Employee_List = []
+            props.EmployeeList.map((data, index) => {
+                Employee_List.push({ value: data.name, id: data.emp_id })
+            })
+
+
+            setEmployeeList(Employee_List)
+
+
+            props.GetEmployeeDetails.map((data) => {
+                // setdisable(true)
+                setUserMaster((prevState) => ({
+                    ...prevState,
+                    mobilenumber: { value: data.official_contact },
+                    emailid: { value: data.official_email }
+                }));
+            })
         }
-    }, [props.EmployeeList,props.GetEmployeeDetails])
+    }, [props.EmployeeList, props.GetEmployeeDetails])
 
-      
-    // function SwitchChange() {
-    // }
     function onChangeActive(data) {
-      
+
         setChangeActive(data)
-        
+
     }
 
     function checkValidation(data, key) {
-        // console.log(key, "onchangeValue")
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             UserMaster[key].validation
@@ -99,26 +95,26 @@ function UserMasterModal(props) {
             errmsg: errorcheck.msg,
             validation: UserMaster[key].validation,
         };
-        // console.log(UserMaster.project_type.value, "UserMaster.client.value")
+
         setUserMaster((prevState) => ({
             ...prevState,
             [key]: dynObj,
         }));
-        if(key==="emp_name" && data){
+        if (key === "emp_name" && data) {
             const emp_name = employeeList.filter((list) => {
                 return (data === list.id)
-              })
-            //   console.log(emp_name[0].value,"emp_nameemp_name")
-              UserMaster.user_name.value=emp_name[0].value
+            })
+
+            UserMaster.user_name.value = emp_name[0].value
             dispatch(GetEmployeeDetails(data))
-          
+
         }
 
 
     }
 
     const handleCancel = () => {
-        // console.log('tttttt')
+
         let From_key = [
             "emp_name",
             "user_name",
@@ -129,7 +125,7 @@ function UserMasterModal(props) {
         From_key.map((data) => {
             try {
                 UserMaster[data].value = "";
-                console.log("mapping", UserMaster[data].value);
+
             } catch (error) {
                 throw error;
             }
@@ -145,25 +141,25 @@ function UserMasterModal(props) {
 
     useEffect(() => {
         handleCancel()
-        if(props.user_data){
+        if (props.user_data) {
             const Employee_List = []
-                Employee_List.push({ value: props.user_data.candidateName, id: props.user_data.employee_id })
+            Employee_List.push({ value: props.user_data.candidateName, id: props.user_data.employee_id })
             setEmployeeList(Employee_List)
 
-        UserMaster.emp_name.value=props.user_data.employee_id
-        UserMaster.user_name.value=props.user_data.user_name
-        UserMaster.mobilenumber.value=props.user_data.mobileno
-        UserMaster.emailid.value=props.user_data.email
-        // setPassword(props.user_data.password)
-        props.user_data.active_flag===1?setChangeActive(true):setChangeActive(false)
-        setUser_Id(props.user_data.user_id)
-        setUserMaster((prevState) => ({
-            ...prevState,
-        }));
+            UserMaster.emp_name.value = props.user_data.employee_id
+            UserMaster.user_name.value = props.user_data.user_name
+            UserMaster.mobilenumber.value = props.user_data.mobileno
+            UserMaster.emailid.value = props.user_data.email
+            // setPassword(props.user_data.password)
+            props.user_data.active_flag === 1 ? setChangeActive(true) : setChangeActive(false)
+            setUser_Id(props.user_data.user_id)
+            setUserMaster((prevState) => ({
+                ...prevState,
+            }));
         }
 
     }, [props.user_data])
-    
+
     function onsubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(UserMaster);
@@ -178,33 +174,32 @@ function UserMasterModal(props) {
         }
 
         var filtererr = targetkeys.filter((obj) => UserMaster[obj].error == true);
-   
-        if(filtererr.length>0||password===""){
-            console.log(filtererr.length,"filtererr.length")
-            if(password===""){setErrPassword(true)}
-        }else{
-                if(props.user_data){
-                    dispatch(editUser(UserMaster,password,changeActive,user_Id)).then(() => {
-                        handleCancel()
-                        props.closeModel()
-                       
-                    })
-                }
-                else{
-                dispatch(insertUser(UserMaster,password,changeActive)).then(() => {
-                   
+
+        if (filtererr.length > 0 || password === "") {
+
+            if (password === "") { setErrPassword(true) }
+        } else {
+            if (props.user_data) {
+                dispatch(editUser(UserMaster, password, changeActive, user_Id)).then(() => {
                     handleCancel()
                     props.closeModel()
-                   
+
                 })
-                }
-                
+            }
+            else {
+                dispatch(insertUser(UserMaster, password, changeActive)).then(() => {
+
+                    handleCancel()
+                    props.closeModel()
+
+                })
+            }
+
         }
         setUserMaster((prevState) => ({
             ...prevState,
         }));
     }
-// console.log(props.EmployeeList,"EmployeeList")
 
     return (
         <div>
@@ -213,7 +208,7 @@ function UserMasterModal(props) {
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">Employee Name</div>
                         <Labelbox type="select"
-                            disabled={props.user_data?true:false}
+                            disabled={props.user_data ? true : false}
                             dropdown={employeeList}
                             changeData={(data) => checkValidation(data, "emp_name")}
                             value={UserMaster.emp_name.value}
@@ -231,7 +226,7 @@ function UserMasterModal(props) {
                     </Grid>
                     <Grid item xs={4} container direction="column">
                         <div className="inputModeltitle">Password</div>
-                        <input type="password" className="passwordinput" value={password} onChange={(data)=>(setPassword(data.target.value),data.target.value!==''?setErrPassword(false):setErrPassword(true))}/>
+                        <input type="password" className="passwordinput" value={password} onChange={(data) => (setPassword(data.target.value), data.target.value !== '' ? setErrPassword(false) : setErrPassword(true))} />
                         {errPassword && <span className={"required_text"}>Field required</span>}
                     </Grid>
 
@@ -259,11 +254,11 @@ function UserMasterModal(props) {
                     </Grid>
 
                     <Grid item xs={4} container direction="column">
-                    <Grid item xs={4} container direction="column"></Grid>
+                        <Grid item xs={4} container direction="column"></Grid>
                         <div className="switchdiv">
-                            {changeActive? <div className="activeStatus">Active</div> : <div className="activeStatus"> In Active</div>}
-                           <Switch checked={changeActive} onChange={(data)=>onChangeActive(data)} />
-                            
+                            {changeActive ? <div className="activeStatus">Active</div> : <div className="activeStatus"> In Active</div>}
+                            <Switch checked={changeActive} onChange={(data) => onChangeActive(data)} />
+
                         </div>
                     </Grid>
 
@@ -280,8 +275,8 @@ function UserMasterModal(props) {
                 </Grid> */}
             </div>
             <div className="groupbtn">
-                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={()=>(handleCancel,props.closeModel())} />
-                <CustomButton btnName={props.user_data?"Update":"Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
+                <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={() => (handleCancel, props.closeModel())} />
+                <CustomButton btnName={props.user_data ? "Update" : "Create"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onsubmit} />
             </div>
         </div>
     )
@@ -293,7 +288,7 @@ const mapStateToProps = (state) =>
         // groupLists: state.UserGroupReducer.groupLists || [],
         // getUserList: state.UserMasterReducer.getUser || [],
         EmployeeList: state.UserGroupReducer.get_emp_not_in_user || [],
-        GetEmployeeDetails:state.UserMasterReducer.getEmployeeDetails||[]
+        GetEmployeeDetails: state.UserMasterReducer.getEmployeeDetails || []
     }
 );
 

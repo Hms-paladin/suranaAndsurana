@@ -129,8 +129,6 @@ function OutofPacket(props) {
       // var result=balance.toString().replace(/\D/g, '')
       // OpeSearch.balance=Number(result).toLocaleString()
       OpeSearch.balance = data.balance
-      //  console.log("props",(data.amount)+(data.advance_amount))
-
 
       OpeSearch.fromDate = moment(data.from_date).format("DD-MMM-YYYY")
       OpeSearch.ToDate = moment(data.to_date).format("DD-MMM-YYYY")
@@ -177,7 +175,7 @@ function OutofPacket(props) {
       ...prevState,
     }));
   }
- 
+
   /////////////
 
   return (

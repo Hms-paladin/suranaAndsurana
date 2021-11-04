@@ -5,12 +5,12 @@ import CustomButton from '../../component/Butttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from 'react-redux';
-import {getStageMasterSearch,getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
+import { getStageMasterSearch, getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
 import { getProjectType, getProjectSubType, getProcessType, getStageList, getSubStage } from '../../actions/MasterDropdowns';
 import './StagesMaster.scss'
 import { notification } from "antd";
 import Usermaster from '../UserMaster/Usermaster';
-import { useLocation, Switch } from 'react-router-dom'; 
+import { useLocation, Switch } from 'react-router-dom';
 
 const StagesMaster = (props) => {
   const header = [
@@ -32,9 +32,9 @@ const StagesMaster = (props) => {
   const [processType, setprocessType] = useState({})
   const [disabled, setEnabled] = useState(true);
   const [SearchAdd, setSearchAdd] = useState(false);
-  const [saveRights, setSaveRights] = useState([]) 
-  const [PageLoad, setPageLoad] = useState(false) 
-  
+  const [saveRights, setSaveRights] = useState([])
+  const [PageLoad, setPageLoad] = useState(false)
+
   const [RateMaster, setRateMaster] = useState({
     project_type: {
       value: "",
@@ -83,14 +83,14 @@ const StagesMaster = (props) => {
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
-      disabled:true
+      disabled: true
     },
     sub_project_type_search: {
       value: "",
       validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
-      disabled:true
+      disabled: true
     },
     project_type_search: {
       value: "",
@@ -110,7 +110,7 @@ const StagesMaster = (props) => {
   useEffect(() => {
     //stageTableData
     let stageMasterListData = []
-    !PageLoad&&props.getStageMasterSearch.map((data) =>
+    !PageLoad && props.getStageMasterSearch.map((data) =>
       stageMasterListData.push(data)
     )
     var rateList = [];
@@ -184,7 +184,6 @@ const StagesMaster = (props) => {
       (obj) => RateMaster[obj].error == true
     );
 
-    console.log(RateMaster,"RateMaster")
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
 
@@ -228,7 +227,7 @@ const StagesMaster = (props) => {
     let filtererr = targetkeys.filter(
       (obj) => RateMaster[obj].error == true
     );
-    console.log(filtererr.length,"filtererr.length")
+
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
 
@@ -261,20 +260,20 @@ const StagesMaster = (props) => {
 
     if (data === 1 && key == "project_type_search") {
       // ValidationHide()
-      RateMaster.sub_project_type_search.validation=[{ name: "required" }]
-      RateMaster.process_type_search.validation=[{ name: "required" }]
+      RateMaster.sub_project_type_search.validation = [{ name: "required" }]
+      RateMaster.process_type_search.validation = [{ name: "required" }]
       dispatch(getProjectSubType(data))
-      RateMaster.sub_project_type_search.disabled=false
-      RateMaster.process_type_search.disabled=false
+      RateMaster.sub_project_type_search.disabled = false
+      RateMaster.process_type_search.disabled = false
     } else if (data !== 1 && key == "project_type_search") {
-      RateMaster.sub_project_type_search.validation=[]
-      RateMaster.process_type_search.validation=[]
-      RateMaster.process_type_search.errmsg=null
-      RateMaster.sub_project_type_search.errmsg=null
-      RateMaster.process_type_search.error=false
-      RateMaster.sub_project_type_search.error=false
-      RateMaster.sub_project_type_search.disabled=true
-      RateMaster.process_type_search.disabled=true
+      RateMaster.sub_project_type_search.validation = []
+      RateMaster.process_type_search.validation = []
+      RateMaster.process_type_search.errmsg = null
+      RateMaster.sub_project_type_search.errmsg = null
+      RateMaster.process_type_search.error = false
+      RateMaster.sub_project_type_search.error = false
+      RateMaster.sub_project_type_search.disabled = true
+      RateMaster.process_type_search.disabled = true
     }
     //________________________________________________________________
 
@@ -286,11 +285,11 @@ const StagesMaster = (props) => {
     }
 
     if (data === 4 && key == "sub_project_type_search") {
-      RateMaster.process_type_search.value=""
+      RateMaster.process_type_search.value = ""
       RateMaster.process_type_search.validation = [{ name: "" }]
     }
     else if (data !== 4 && key == "sub_project_type_search") {
-      RateMaster.process_type_search.value=""
+      RateMaster.process_type_search.value = ""
       RateMaster.process_type_search.validation = [{ name: "required" }]
     }
 
@@ -301,11 +300,11 @@ const StagesMaster = (props) => {
       }))
     }
     if (data === 4 && key == "sub_project_type") {
-      RateMaster.process_type.value=""
+      RateMaster.process_type.value = ""
       RateMaster.process_type.validation = [{ name: "" }]
     }
     else if (data !== 4 && key == "sub_project_type") {
-      RateMaster.process_type.value=""
+      RateMaster.process_type.value = ""
       RateMaster.process_type.validation = [{ name: "required" }]
     }
     //________________________________________________________________
@@ -346,10 +345,9 @@ const StagesMaster = (props) => {
 
     }));
 
-    console.log(RateMaster.sub_project_type_search,"RateMaster.sub_project_type_search.validation")
   }
   const handleCancel = () => {
-    let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance","process_type_search", "sub_project_type_search", "project_type_search"]
+    let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance", "process_type_search", "sub_project_type_search", "project_type_search"]
     // setStageEnabled(true)
     setEnabled(true)
     From_key.map((data) => {
@@ -368,7 +366,7 @@ const StagesMaster = (props) => {
     })
   }
   const ValidationHide = () => {
-    let From_key = ["sub_project_type", "process_type", "sub_stages","process_type_search", "sub_project_type_search", "project_type_search"]
+    let From_key = ["sub_project_type", "process_type", "sub_stages", "process_type_search", "sub_project_type_search", "project_type_search"]
 
     From_key.map((data) => {
       RateMaster[data].validation = []
@@ -378,144 +376,143 @@ const StagesMaster = (props) => {
     }));
   }
 
-///*****user permission**********/
-useEffect(() => {
-  if(props.UserPermission.length>0&&props.UserPermission){
-     let data_res_id = props.UserPermission.find((val) => { 
-     return (
-       "Stage Template - Save" == val.control 
-     ) 
- })
- setSaveRights(data_res_id)
- }
+  ///*****user permission**********/
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "Stage Template - Save" == val.control
+        )
+      })
+      setSaveRights(data_res_id)
+    }
 
- }, [props.UserPermission]);
+  }, [props.UserPermission]);
 
-  //  console.log(rights.display_control,"rigths")
   useEffect(() => {
     setPageLoad(true)
   }, [location]);
-/////////////
+  /////////////
 
   return (
     <div>
       <div className="var_rate_master">Stage Template</div>
-     
-      {!SearchAdd&&<>
-        <Grid item xs={12} container spacing={2} direction={"rows"}>
-        <Grid item xs={4} spacing={2} >
-          <Labelbox type="select" placeholder={"Project Type"}
-            dropdown={projectType.projectTypedata}
-            changeData={(data) => checkValidation(data, "project_type_search")}
-            value={RateMaster.project_type_search.value}
-            error={RateMaster.project_type_search.error}
-            errmsg={RateMaster.project_type_search.errmsg}
-          />
-       </Grid>
-        <Grid item xs={4} spacing={2}>
-          <Labelbox type="select" placeholder={"Sub Project Type"}
-            dropdown={projectSubType.projectSubTypedata}
-            changeData={(data) => checkValidation(data, "sub_project_type_search")}
-            value={RateMaster.sub_project_type_search.value}
-            error={RateMaster.sub_project_type_search.error}
-            errmsg={RateMaster.sub_project_type_search.errmsg}
-            disabled={RateMaster.sub_project_type_search.disabled}
-          />
-        </Grid>
-        <Grid item xs={4} spacing={2}>
-          <Labelbox type="select" placeholder={"Process Type"}
-            dropdown={processType.processTypedata}
-            changeData={(data) => checkValidation(data, "process_type_search")}
-            value={RateMaster.process_type_search.value}
-            error={RateMaster.process_type_search.error}
-            errmsg={RateMaster.process_type_search.errmsg}
-            disabled={RateMaster.process_type_search.disabled}
-          />
 
+      {!SearchAdd && <>
+        <Grid item xs={12} container spacing={2} direction={"rows"}>
+          <Grid item xs={4} spacing={2} >
+            <Labelbox type="select" placeholder={"Project Type"}
+              dropdown={projectType.projectTypedata}
+              changeData={(data) => checkValidation(data, "project_type_search")}
+              value={RateMaster.project_type_search.value}
+              error={RateMaster.project_type_search.error}
+              errmsg={RateMaster.project_type_search.errmsg}
+            />
+          </Grid>
+          <Grid item xs={4} spacing={2}>
+            <Labelbox type="select" placeholder={"Sub Project Type"}
+              dropdown={projectSubType.projectSubTypedata}
+              changeData={(data) => checkValidation(data, "sub_project_type_search")}
+              value={RateMaster.sub_project_type_search.value}
+              error={RateMaster.sub_project_type_search.error}
+              errmsg={RateMaster.sub_project_type_search.errmsg}
+              disabled={RateMaster.sub_project_type_search.disabled}
+            />
+          </Grid>
+          <Grid item xs={4} spacing={2}>
+            <Labelbox type="select" placeholder={"Process Type"}
+              dropdown={processType.processTypedata}
+              changeData={(data) => checkValidation(data, "process_type_search")}
+              value={RateMaster.process_type_search.value}
+              error={RateMaster.process_type_search.error}
+              errmsg={RateMaster.process_type_search.errmsg}
+              disabled={RateMaster.process_type_search.disabled}
+            />
+
+          </Grid>
         </Grid>
-        </Grid>
-        </>
+      </>
       }
       <Grid container spacing={3} className="stage_firstgrid">
 
-      {SearchAdd&&<>
-        <Grid item xs={5} spacing={4} direction={"column"}>
-        </Grid>
-        <Grid item xs={5} spacing={2}>
-        </Grid>
-        <Grid item xs={4} spacing={4} direction={"column"}>
-          <Labelbox type="select" placeholder={"Project Type"}
-            dropdown={projectType.projectTypedata}
-            changeData={(data) => checkValidation(data, "project_type")}
-            value={RateMaster.project_type.value}
-            error={RateMaster.project_type.error}
-            errmsg={RateMaster.project_type.errmsg}
-          />
-          <Labelbox type="select" placeholder={"Stage"}
+        {SearchAdd && <>
+          <Grid item xs={5} spacing={4} direction={"column"}>
+          </Grid>
+          <Grid item xs={5} spacing={2}>
+          </Grid>
+          <Grid item xs={4} spacing={4} direction={"column"}>
+            <Labelbox type="select" placeholder={"Project Type"}
+              dropdown={projectType.projectTypedata}
+              changeData={(data) => checkValidation(data, "project_type")}
+              value={RateMaster.project_type.value}
+              error={RateMaster.project_type.error}
+              errmsg={RateMaster.project_type.errmsg}
+            />
+            <Labelbox type="select" placeholder={"Stage"}
 
-            dropdown={Stage.projectStagedata}
-            changeData={(data) => checkValidation(data, "stages")}
-            value={RateMaster.stages.value}
-            error={RateMaster.stages.error}
-            errmsg={RateMaster.stages.errmsg}
-          />
-          <Labelbox type="text" placeholder={"Reminder Days"}
-            changeData={(data) => checkValidation(data, "noOfDays")}
-            value={RateMaster.noOfDays.value}
-            error={RateMaster.noOfDays.error}
-            errmsg={RateMaster.noOfDays.errmsg}
-          />
-        </Grid>
-        <Grid item xs={4} spacing={2}>
-          <Labelbox type="select" placeholder={"Sub Project Type"}
-            disabled={disabled}
-            dropdown={projectSubType.projectSubTypedata}
-            changeData={(data) => checkValidation(data, "sub_project_type")}
-            value={RateMaster.sub_project_type.value}
-            error={RateMaster.sub_project_type.error}
-            errmsg={RateMaster.sub_project_type.errmsg}
-          />
-          <Labelbox type="select" placeholder={"Sub Stage"}
-            // disabled={stageDisable}
-            changeData={(data) => checkValidation(data, "sub_stages")}
-            dropdown={subStage.substagedata}
-            value={RateMaster.sub_stages.value}
-            error={RateMaster.sub_stages.error}
-            errmsg={RateMaster.sub_stages.errmsg}
-          />
-        </Grid>
-        <Grid item xs={4} spacing={2}>
-          <Labelbox type="select" placeholder={"Process Type"}
-            dropdown={processType.processTypedata}
-            disabled={disabled}
-            changeData={(data) => checkValidation(data, "process_type")}
-            value={RateMaster.process_type.value}
-            error={RateMaster.process_type.error}
-            errmsg={RateMaster.process_type.errmsg}
-          />
-          <Labelbox type="text" placeholder={"Number of Days"}
-            changeData={(data) => checkValidation(data, "compliance")}
+              dropdown={Stage.projectStagedata}
+              changeData={(data) => checkValidation(data, "stages")}
+              value={RateMaster.stages.value}
+              error={RateMaster.stages.error}
+              errmsg={RateMaster.stages.errmsg}
+            />
+            <Labelbox type="text" placeholder={"Reminder Days"}
+              changeData={(data) => checkValidation(data, "noOfDays")}
+              value={RateMaster.noOfDays.value}
+              error={RateMaster.noOfDays.error}
+              errmsg={RateMaster.noOfDays.errmsg}
+            />
+          </Grid>
+          <Grid item xs={4} spacing={2}>
+            <Labelbox type="select" placeholder={"Sub Project Type"}
+              disabled={disabled}
+              dropdown={projectSubType.projectSubTypedata}
+              changeData={(data) => checkValidation(data, "sub_project_type")}
+              value={RateMaster.sub_project_type.value}
+              error={RateMaster.sub_project_type.error}
+              errmsg={RateMaster.sub_project_type.errmsg}
+            />
+            <Labelbox type="select" placeholder={"Sub Stage"}
+              // disabled={stageDisable}
+              changeData={(data) => checkValidation(data, "sub_stages")}
+              dropdown={subStage.substagedata}
+              value={RateMaster.sub_stages.value}
+              error={RateMaster.sub_stages.error}
+              errmsg={RateMaster.sub_stages.errmsg}
+            />
+          </Grid>
+          <Grid item xs={4} spacing={2}>
+            <Labelbox type="select" placeholder={"Process Type"}
+              dropdown={processType.processTypedata}
+              disabled={disabled}
+              changeData={(data) => checkValidation(data, "process_type")}
+              value={RateMaster.process_type.value}
+              error={RateMaster.process_type.error}
+              errmsg={RateMaster.process_type.errmsg}
+            />
+            <Labelbox type="text" placeholder={"Number of Days"}
+              changeData={(data) => checkValidation(data, "compliance")}
 
-            value={RateMaster.compliance.value}
-            error={RateMaster.compliance.error}
-            errmsg={RateMaster.compliance.errmsg}
-          />
-        </Grid>
+              value={RateMaster.compliance.value}
+              error={RateMaster.compliance.error}
+              errmsg={RateMaster.compliance.errmsg}
+            />
+          </Grid>
         </>
-      }
+        }
         {/* <Grid  item xs={4} spacing={2}>
         
           </Grid>   */}
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
-          {!SearchAdd&&<><CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  onBtnClick={onSearch}  />
-          <CustomButton btnName={"Add"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}  onBtnClick={()=>setSearchAdd(true)}  />
-        </>}
+          {!SearchAdd && <><CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSearch} />
+            <CustomButton btnName={"Add"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => setSearchAdd(true)} />
+          </>}
 
-          {SearchAdd&&<><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save"  btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false}  onBtnClick={onSubmit}  />
-          <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} /></> }
+          {SearchAdd && <><CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onSubmit} />
+            <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick={handleCancel} /></>}
         </Grid>
       </Grid>
-      {!SearchAdd&&<div className="rate_enhanced_table">
+      {!SearchAdd && <div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
           rows={StageMasterList.length == 0 ? StageMasterList : StageMasterList.rateList}
         />

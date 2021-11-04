@@ -62,7 +62,8 @@ import {
   GET_DEVELOPMENT,
   GET_PROJECT_NAME_BY_DESIG,
   GET_SUPERVISOR_BY_DEPT,
-  GET_EMP_LIST_PROJECT
+  GET_EMP_LIST_PROJECT,
+  GET_CLIENT_DETAILS
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -574,6 +575,9 @@ export const getEmpListByProjectId = (project_id) => async dispatch => {
     .then((response) => {
       dispatch({ type: GET_EMP_LIST_PROJECT, payload: response.data.data })
     })
-
-
 }
+
+export const getClientDetails = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_client_details");
+  return dispatch({ type: GET_CLIENT_DETAILS, payload: response.data.data });
+};

@@ -6,7 +6,6 @@ import { GET_DESIGN_DETAILS } from "../utils/Constants";
 
 
 export const InsertDesign = (data, ProjectDetails, design_id) => async dispatch => {
-    console.log(design_id, "ProjectDetailsTest")
 
     try {
         axios({

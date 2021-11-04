@@ -5,7 +5,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import { Checkbox, Collapse } from 'antd';
 import CustomButton from '../../component/Butttons/button';
 import './OpeAdvance.scss'
-import { getProjectType ,get_projectName_by_Desig} from '../../actions/MasterDropdowns'
+import { getProjectType, get_projectName_by_Desig } from '../../actions/MasterDropdowns'
 import { getExpenseType, getPaymentMode } from '../../actions/projectTaskAction'
 import { InsertOpeExpenses, GetOpeProjectType, ProjectBased_ClientName } from '../../actions/OutofPacketActions'
 import { useDispatch, connect } from "react-redux";
@@ -80,7 +80,7 @@ function OPE_Expense(props) {
     }
     const Notification = () => {
         // if (bill) {
-            onFileChange()
+        onFileChange()
         // }
         // else {
         //     notification.warning({
@@ -88,7 +88,6 @@ function OPE_Expense(props) {
         //     })
         // }
     }
-    // console.log("files",FileList)
 
     useEffect(() => {
         dispatch(getProjectType())
@@ -105,7 +104,7 @@ function OPE_Expense(props) {
         props.ProjectName.map((data) => {
             Proj_Name.push({ id: data.project_id, value: data.project_name })
         })
-        
+
         props.ProjectType.map((data) => {
             Project_type.push({ id: data.project_type_id, value: data.project_type })
         })
@@ -134,7 +133,7 @@ function OPE_Expense(props) {
 
 
     }, [props.ProjectName, props.ProjectType, props.ClientName, props.ExpenseType, props.ModeOfPayment])
-    console.log("props", Expenses.client.id)
+
     ///***********user permission**********/
     useEffect(() => {
         if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -305,15 +304,15 @@ function OPE_Expense(props) {
                         {/* <Checkbox checked={bill} onChange={() => setbill(!bill)} /> */}
                     </div>
                     {/* {bill ? */}
-                        <div className="upload_div">
-                            <div style={{ width: "70%", backgroundColor: "#023e7d" }}>
+                    <div className="upload_div">
+                        <div style={{ width: "70%", backgroundColor: "#023e7d" }}>
 
-                                <input type="file" name="img" accept="image/*" style={{ fontSize: "14px", color: "#fff" }}
-                                    onChange={onFileChange} id="img" /> <PublishIcon className="publish_ic" />
-                            </div>
-
+                            <input type="file" name="img" accept="image/*" style={{ fontSize: "14px", color: "#fff" }}
+                                onChange={onFileChange} id="img" /> <PublishIcon className="publish_ic" />
                         </div>
-                         {/* :
+
+                    </div>
+                    {/* :
                         <CustomButton btnName={"Upload"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={Notification} />
                     } */}
                 </div>

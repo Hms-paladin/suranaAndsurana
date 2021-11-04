@@ -9,7 +9,6 @@ import moment from 'moment'
 
 
 export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatch => {
-    console.log(changemsg, "changemsg")
     try {
         axios({
             method: "POST",
@@ -54,7 +53,6 @@ export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatc
 
 export const getTicketTemplate = (TicketCreation) => async dispatch => {
     try {
-        // console.log(groupName, "groupName")
         axios({
             method: "POST",
             url: apiurl + "get_ticket_template",
@@ -79,7 +77,6 @@ export const getTicketTemplate = (TicketCreation) => async dispatch => {
 
 export const InsertRecruitmentTicket = (TicketCreation) => async dispatch => {
     try {
-        // console.log(groupName, "groupName")
         axios({
             method: "POST",
             url: apiurl + "insert_recruitment_ticket",
@@ -123,7 +120,6 @@ export const InsertRecruitmentTicket = (TicketCreation) => async dispatch => {
 
 export const getRecruitmentTicket = (id) => async dispatch => {
     try {
-        console.log(id, "groupName")
         axios({
             method: "POST",
             url: apiurl + "get_recruitment_ticket",
@@ -146,7 +142,6 @@ export const getRecruitmentTicket = (id) => async dispatch => {
 
 export const updateTicketStatus = (id) => async dispatch => {
     try {
-        // console.log(id, "groupName")
         axios({
             method: "POST",
             url: apiurl + "update_ticket_status",

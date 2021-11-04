@@ -213,11 +213,9 @@ function LeaveForm(props) {
 
     const onFileChange = (event) => {
         setFileData(event.target.files[0])
-        console.log(event, "filedata")
     }
     const onFileDelete = () => {
         setFileData({})
-        console.log(filedata, "filedata")
     }
 
     useEffect(() => {
@@ -225,7 +223,6 @@ function LeaveForm(props) {
             Leave_Form.other_days.value = "";
         } else {
             let otherdays = Leave_Form.tot_leave.value - Leave_Form.exam_days.value;
-            console.log(otherdays, "otherdays")
             Leave_Form.other_days.value = Leave_Form.tot_leave.value < Leave_Form.exam_days.value ? 0 : otherdays;
         }
 
@@ -244,17 +241,15 @@ function LeaveForm(props) {
         // var time = time
         // var array = time.split(":");
         // var seconds = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
-        // console.log(seconds,"seconds")
+
         var d = new Date("12-30-2017 " + time)
-        // d.setTime(seconds);
-        console.log(d, "Leave_Form")
+
         return d
     }
 
     const onEditLeaveForm = (val) => {
         handleCancel()
         setEditBtn(true)
-        console.log(val.subject_details, "valval")
         Leave_Form.leavetype.value = val.leave_type_id || ""
         Leave_Form.fromdate.value = val.from_date || ""
         Leave_Form.todate.value = val.to_date || ""
@@ -417,7 +412,6 @@ function LeaveForm(props) {
     }
 
     const viewexamschedule = () => {
-        // console.log(SubjectIndex,"examSchedule")
 
         const From_key = ["subject", "exam_date"]
         From_key.map((data) => {
@@ -448,7 +442,6 @@ function LeaveForm(props) {
                 });
                 return
             }
-            // console.log(sub_date,"sub_date")
             if (examSchedule[SubjectIndex] && SubjectIndex !== '') {
 
                 examSchedule[SubjectIndex].subject = subjectList.SubjectList.map((data) => {
@@ -523,8 +516,6 @@ function LeaveForm(props) {
     //     setSameDateVal(dates_arr)
     // }
 
-    // console.log(samedateval, "datatemp")
-
     const hideValidation = (From_key) => {
         From_key.map((data) => {
             try {
@@ -540,8 +531,6 @@ function LeaveForm(props) {
     }
 
     function onSubmit(value) {
-        console.log(Leave_Form.fromtime.value, "valuetype")
-
         //Expired date validation
         let starttime = moment(Leave_Form["fromtime"].value, "HH:mm:ss").format("hh:mm:ss A")
         let endtime = moment(Leave_Form["totime"].value, "HH:mm:ss").format("hh:mm:ss A")
@@ -612,7 +601,7 @@ function LeaveForm(props) {
                     handleCancel()
                 })
             } else {
-                console.log(Leave_Form, "Leave_Form")
+
                 dispatch(insertLeaveForm(Leave_Form)).then(() => {
                     // dispatch(getLeaveForm(Leave_Form.leavetype.value));
                     handleCancel()
@@ -638,7 +627,7 @@ function LeaveForm(props) {
         // if (fromdateval < curdate || todateval < curdate) {
         //     dateVal = true
         // }
-    //    console.log(fromdateval,todateval,curdate,Date(curdate),"wwwwwwwwwwwwwwwww")
+
         //Time compare validation
         let starttime = moment(Leave_Form["fromtime"].value, "HH:mm:ss").format("hh:mm:ss A")
         let endtime = moment(Leave_Form["totime"].value, "HH:mm:ss").format("hh:mm:ss A")
@@ -684,11 +673,11 @@ function LeaveForm(props) {
             mainvalue[targetkeys[i]] = Leave_Form[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter((obj) => Leave_Form[obj].error == true);
-        console.log(filtererr.length, "filtererr.length")
+
         if (filtererr.length > 0) {
 
         }
-        // else if (dateVal) { console.log("ddddddddddd") }
+
         else if (timeexceed) {
             notification.success({
                 message: "Time Hours not more than available hours.",
@@ -761,10 +750,7 @@ function LeaveForm(props) {
 
     function handleChange(data) {
         debugger;
-        console.log("data Handle change", data);
-        // setFromDate(data);
     }
-    console.log(filedata, "filedata")
     return (
         <div>
             <div className="leaveMainHeader">Leave Form </div>

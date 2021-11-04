@@ -141,7 +141,7 @@ function InterviewApprover(props) {
       mainvalue[targetkeys[i]] = ApproveForm[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => ApproveForm[obj].error == true);
-    console.log(filtererr.length);
+ 
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else {
@@ -167,7 +167,6 @@ function InterviewApprover(props) {
     }));
   }
 
-  console.log(props, "prop")
   return (
     <div className="interviewapprove_root">
       {/* <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} contents={<div>sdfghjkl</div>}> */}

@@ -34,7 +34,6 @@ export const insertCheckList = (data) => async dispatch => {
 }
 
 export const insert_check_list_assign = (data) => async dispatch => {
-    console.log(data, "dataaa")
     try {
         axios({
             method: 'POST',

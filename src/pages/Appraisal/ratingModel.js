@@ -142,9 +142,6 @@ function RatingModel(props) {
         dispatch(GetEmpAppraisalSupRate(props.location.ids?.employeeID))
         setEmpId(props.location.ids?.employeeID)
         setEmp_apprid(props.location.ids?.emp_appr_id)
-        console.log(props.location.ids?.empDetail, "props.location.ids?.employeeID")
-        console.log(props.location.state, "state loc")
-        // employeeID
     }, [])
 
     useEffect(() => {
@@ -156,7 +153,6 @@ function RatingModel(props) {
         setEmpDetails(props.location.ids?.empDetail)
         setShowrowID(props.location.ids?.rowID)
         setShowratingDetails(props.GetEmpAppraisalSupRate)
-        console.log(props.GetEmpAppraisalSupRate, "checkrate")
         setRatingTitle(props.GetDevelopment)
 
 
@@ -169,8 +165,6 @@ function RatingModel(props) {
             let arrVal = []
 
             showratingDetails && showratingDetails.map((data, index) => {
-                // let test =
-                console.log(data, "tesing")
 
                 let obj = {}
 
@@ -193,7 +187,6 @@ function RatingModel(props) {
                 arrVal.push(obj)
             })
 
-            console.log(arrVal, "arrval")
             setDropdownValue(arrVal)
         }
     }, [props?.rowID, props.GetEmpAppraisalSupRate, showratingDetails])
@@ -247,14 +240,13 @@ function RatingModel(props) {
                 let formKeys = Object.keys(formValue)
                 let setVal = []
                 formKeys.forEach((ke) => {
-                    console.log(formValue[ke], ke, "key_" + indexVal + "_" + index, ke === "key_" + indexVal + "_" + index && formValue[ke], "test123")
+                  
                     ke === "key_" + indexVal + "_" + index && setVal.push(formValue[ke])
                 })
 
                 return (
                     <div className="attributes">
                         <div className="attributeKey">{val.key}</div>
-                        {console.log(formValue[indexVal] && formValue[indexVal]["key_" + indexVal + "_" + index], "formValue[indexVal]")}
                         <div className="attributeValue">
                             <Labelbox type="select"
                                 dropdown={[
@@ -311,7 +303,7 @@ function RatingModel(props) {
                             />
                             </div> :
                             <div className="showratingValue" >
-                                {console.log(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)], "dropdownValue")}
+                               
                                 {(dropdownValue[dropDownID] && dropdownValue[dropDownID]["key" + (index + 1)])}
                             </div>}
 
@@ -322,9 +314,6 @@ function RatingModel(props) {
             })
         )
     }
-
-    console.log(dropdownValue, "dropdownValuett")
-
 
     const submitrate = () => {
         if (showrowID == 2) {
@@ -349,11 +338,8 @@ function RatingModel(props) {
             let rateLists = []
             let allobj = Object.keys(formValue)
             let allval = Object.values(formValue)
-            console.log(Object.values(formValue), "formValues")
-
 
             for (let i = 0; i < allobj.length; i++) {
-                console.log(allobj[i].split("_")[2], allobj[i].split("_")[1], "allobj[i]")
                 if (allobj[i].split("_")[2] == 0) {
                     if (allval[i] == 1) {
                         rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 9, "emp_appr_id": emp_apprid })
@@ -364,7 +350,7 @@ function RatingModel(props) {
                     if (allval[i] == 3) {
                         rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 7, "emp_appr_id": emp_apprid })
                     }
-                    console.log(allval[i], "allval")
+             
                 } else if (allobj[i].split("_")[2] == 1) {
                     if (allval[i] == 1) {
                         rateLists.push({ "emp_id": props.location.ids?.employeeID, "development_id": Number(allobj[i].split("_")[1]) + 1, "rating": 6, "emp_appr_id": emp_apprid })
@@ -388,8 +374,6 @@ function RatingModel(props) {
                 }
             }
 
-            console.log(rateLists, "splitval")
-            console.log(Object.keys(formValue).length, "formValue") 
             if (rateLists.length === 18) {
 
                 dispatch(InsertSupervisorRate(rateLists));
@@ -437,7 +421,7 @@ function RatingModel(props) {
                 {showrowID !== 2 && rating.map((id, index) => {
                     return (
                         <div>
-                            {console.log(ratingTitle && ratingTitle[index]?.area_of_development, "ratingTitle")}
+                          
                             <div className="ratingHeading">{ratingTitle && ratingTitle[index]?.area_of_development}</div>
                             <div>{showaddDetails(rating[index], index)}</div>
                         </div>
@@ -453,7 +437,6 @@ function RatingModel(props) {
                     )
                 })} */}
 
-                {console.log(showratingDetails, "showratingDetails")}
                 {showrowID === 2 && showratingDetails && showratingDetails.map((val, index) => {
                     return (
                         <div className="showRateingscontainer">
@@ -480,7 +463,7 @@ function RatingModel(props) {
 
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" />
             </div>
-            {console.log(Object.keys(formValue).length, "formValue")}
+     
         </div>
 
     )

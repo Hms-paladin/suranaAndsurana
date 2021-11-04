@@ -13,7 +13,6 @@ function ServeranceModal(props) {
     useEffect(() => {
         let ddd = true
         dispatch(ViewSeverance()).then((response) => {
-            console.log("activeState", response)
 
         })
 

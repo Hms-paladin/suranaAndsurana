@@ -15,7 +15,6 @@ export const GetCandiateDetails = (data) => async dispatch => {
         })
         .then((response) => {
             dispatch({type:GET_CANDIDATES_DETAILS,payload:response.data.data[0].result})
-        console.log("consolelog",response.data.data[0].result)
         })
         
     } catch (err) {

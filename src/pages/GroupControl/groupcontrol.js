@@ -116,13 +116,11 @@ const GroupControl = (props) => {
         })
 
     } catch (err) {
-      console.log("error", err);
     }
     setUsergroupmodel(flg, obj);
 
   }
   function handelCheck(event, data) {
-    console.log("mapping", data);
     let oo = checkedGroups;
     let d = [];
     for (var i = 0; i < oo.length; i++) {
@@ -178,10 +176,8 @@ const GroupControl = (props) => {
       userForm[targetkeys[i]].error = !errorcheck.state;
       userForm[targetkeys[i]].errmsg = errorcheck.msg;
       mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
-      console.log("mainvalue", mainvalue)
     }
     var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
-    console.log("checkuser", userForm)
 
     if (filtererr.length > 0) {
 
@@ -211,7 +207,6 @@ const GroupControl = (props) => {
     From_key.map((data) => {
       try {
         userForm[data].value = "";
-        console.log("mapping", userForm[data].value);
       } catch (error) {
         throw error;
       }

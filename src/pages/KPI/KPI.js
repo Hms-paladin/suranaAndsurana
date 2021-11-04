@@ -208,7 +208,7 @@ const Submit =()=>{
     })
    }
 }
-// console.log(achivement,"achivement")
+
 const SearchData=()=>{
     setdatechange(true)
     var mainvalue = {};
@@ -227,7 +227,6 @@ const SearchData=()=>{
     );
 
     if (filtererr.length > 0) {
-        console.log("filtererr",filtererr)
 
     }else{
         dispatch(GetKpiAchivement(kpi_form))        

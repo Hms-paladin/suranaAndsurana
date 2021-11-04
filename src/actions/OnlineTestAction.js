@@ -15,7 +15,6 @@ export const GettemplateQuetions = (tempid) => async dispatch => {
             }
         })
             .then((response) => {
-                console.log(response.data.data, "response.data.data")
                 dispatch({ type: GET_TEMPLATE_QUETIONS, payload: response.data.data})
 
             })
@@ -37,8 +36,6 @@ export const onlinetest = (designation,candidate,testData) => async dispatch => 
             }
         })
             .then((response) => {
-                console.log(response.data.data, "response.data.data")
-                // dispatch({ type: GET_TEMPLATE_QUETIONS, payload: response.data.data})
                 if(response.data.status===1){
                 notification.success({
                     message: 'Online Test Submitted Successfully',
@@ -60,7 +57,6 @@ export const getOnlineTestDetails = (data)  => async dispatch => {
                 ResId: data || 0
             }
         }).then((response) => {
-            console.log(response.data.data, 'asdfasdfas')
             dispatch({ type: GET_ONLINE_TEST_DETAILS, payload: response.data.data})
         })
 

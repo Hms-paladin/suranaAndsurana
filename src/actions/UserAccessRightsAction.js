@@ -14,7 +14,6 @@ export const get_user_rights = () => async dispatch => {
       data: DocumentData
     })
       .then((response) => {
-          console.log("resuser",response)
         dispatch(
           {
             type: GET_USER_PERMISSION,
@@ -38,7 +37,6 @@ export const getUserPermission = () => async dispatch => {
       data: DocumentData
     })
       .then((response) => {
-          console.log("resuser",response)
         // dispatch(
         //   {
         //     type: GET_USER_PERMISSION,

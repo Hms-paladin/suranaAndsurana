@@ -30,7 +30,6 @@ function ViewQuestionsModal(props) {
     }, [props.quescatId, props.quessubcatId, props.ques_type, props.delQuestions])
 
     useEffect(() => {
-        console.log(props.viewAddedQuestions, "viewAddedQuestion")
 
         setViewquetions(props.viewAddedQuestions[0])
 
@@ -48,16 +47,14 @@ function ViewQuestionsModal(props) {
 
         setRowData(rowDataList)
 
-        console.log(props.editQuestions, "props")
     }, [props.viewAddedQuestions, props.editQuestions])
-    console.log(props.quesId, "id")
+
     const editQuations = (Question, Choice, Answer, QuesId) => {
         setQusID(QuesId)
         setQuestion(Question)
         setChoice(Choice)
         setAnswer(Answer)
         setEditQuestionView(true)
-        console.log(viewquetions, "viewquetions")
 
     }
 

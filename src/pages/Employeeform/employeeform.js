@@ -102,7 +102,6 @@ function Employeeform(props) {
         dispatch(getInterviewers());
     }, [])
 
-    console.log(props, "emp_form_id")
     //CandidateDetails
 
     useEffect(() => {
@@ -126,19 +125,16 @@ function Employeeform(props) {
     //SETCandidateDetails
     useEffect(() => {
         setgetDetails(props.getCandidatesDetails)
-        // console.log("empformempform", props.getCandidatesDetails)
 
     }, [props.getCandidatesDetails])
 
     useEffect(() => {
         setgetDetails(props.getCandidatesDetails)
-        // console.log("empformempform", props.getCandidatesDetails)
 
     }, [props.getCandidatesDetails])
 
     useEffect(() => {
         setgetDetails(props.getEmployeeDetails)
-        console.log("setgetDetails", props.getEmployeeDetails)
 
     }, [props.getEmployeeDetails])
 
@@ -237,7 +233,6 @@ function Employeeform(props) {
         formData.append("created_by", localStorage.getItem("empId"));
         formData.append("task_id", props.emp_form_id && props.emp_form_id.task_id);
         // formData.append("supervisor_email", EmpForm.supervisor_email.value);
-        // console.log(formData,"formData")
         Axios({
             method: "post",
             url: apiurl + "insert_employee",
@@ -399,7 +394,6 @@ function Employeeform(props) {
         <div>
             <div style={{ marginBottom: "10px", fontSize: '16px', fontWeight: "600" }}>Employee form</div>
             {getDetails && getDetails.length > 0 && getDetails.map((val, index) => {
-                console.log(val.skill_name, "skill_name")
                 return (
                     <div className="Employee_formdiv">
 

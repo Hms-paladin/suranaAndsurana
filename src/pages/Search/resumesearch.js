@@ -285,15 +285,15 @@ function Resumesearch(props) {
     }
 
     const viewCandidate = (id) => {
-       
+
         setViewId(id)
         // RefreshData=RefreshData+1;
         setCandidateViewModel(true)
-      
+
     }
-    
+
     useEffect(() => {
-        setRefreshData(RefreshData+2)
+        setRefreshData(RefreshData + 2)
     }, [candidateViewModel])
 
     const editResume = (id) => {
@@ -312,7 +312,7 @@ function Resumesearch(props) {
 
     useEffect(() => {
         let rowDataList = []
-        console.log(props.GetRowData, "GetRowData")
+
         props.GetRowData && props.GetRowData.map((data, index) => {
             rowDataList.push({
                 view: <> <img
@@ -334,7 +334,7 @@ function Resumesearch(props) {
         })
 
         setRowData(rowDataList)
-        console.log()
+
     }, [props.GetRowData, test, checkList])
 
     // const resumeEditPage = () => {
@@ -343,7 +343,6 @@ function Resumesearch(props) {
 
     //     )
     // }
-    // console.log(props.GetRowData,"GetRowData")
 
     function onSearch() {
         dispatch(searchRowdata({

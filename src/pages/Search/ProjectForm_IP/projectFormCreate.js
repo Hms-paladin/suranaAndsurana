@@ -531,7 +531,6 @@ function ProjectFormCreate(props) {
       ...prevState,
     }));
   }
-console.log(projectform['comments'],"ddddddddddd")
   function onsubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(projectform);
@@ -697,8 +696,6 @@ console.log(projectform['comments'],"ddddddddddd")
     }
 
     const newInsertrow = (data) => {
-      console.log(data, "datadatadatas")
-      // setActivityid(id)
 
     }
 
@@ -832,7 +829,6 @@ console.log(projectform['comments'],"ddddddddddd")
   };
 
   const onDelete = (i) => {
-    console.log(i, "check")
     if (i > -1) {
       showVariableTable.splice(i, 1);
       sendVariableData.splice(i, 1);
@@ -841,7 +837,6 @@ console.log(projectform['comments'],"ddddddddddd")
     setSendVariableData([...sendVariableData]);
   };
 
-  console.log(projectform.employeelist.valueById, "projectform.employeelist.value")
   return (
     <div>
       <Grid item xs={12} className="projectFormTitle">
@@ -1147,8 +1142,7 @@ console.log(projectform['comments'],"ddddddddddd")
                     errmsg={projectform.comments.errmsg} />
                 </div>
               </Grid>
-              {/* {console.log(projectform.billable_type.value, "projectform.limits.errors")} */}
-
+            
               {projectform.billable_type.value === 3 ? (
                 <Grid xs={12} container direction="row" spacing={2}>
                   <Grid item xs={3}> <div className="Fieldheading">Base Rate</div>
@@ -1167,7 +1161,7 @@ console.log(projectform['comments'],"ddddddddddd")
                       errmsg={projectform.unit_measurement.errmsg} />
                   </Grid>
                   <Grid item xs={3}> <div className="Fieldheading">Limit</div>
-                    {/* {console.log(projectform.limits.error, "projectform.limits.errors")} */}
+                  
                     <Labelbox
                       type="text"
                       changeData={(data) => checkValidation(data, "limits")}

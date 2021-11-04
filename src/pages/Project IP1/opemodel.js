@@ -97,8 +97,6 @@ function OpeModel(props) {
         props.ProjectDetails, props.expenseList, props.paymentMode
     ]);
 
-    console.log(projectDetails, "props.ProjectDetails")
-
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(opeModel);
@@ -114,7 +112,7 @@ function OpeModel(props) {
         var filtererr = targetkeys.filter(
             (obj) => opeModel[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setopeModel({ error: true });
         } else {
@@ -182,8 +180,6 @@ function OpeModel(props) {
     };
 
 
-    // console.log(fileUpload, "fileUpload")
-
     const handleCancel = () => {
         let From_key = [
             "expenseType", "amount", "description", "payment"
@@ -216,7 +212,7 @@ function OpeModel(props) {
 
         if (multipleId) {
             multipleId.map((item) => {
-                console.log(item, 'item')
+
                 for (let i = 0; i < data.length; i++) {
                     if (data[i] === item.value) {
                         multipleIdList.push(item.id)
@@ -358,7 +354,7 @@ function OpeModel(props) {
 }
 
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
 
     expenseList: state.projectTasksReducer.expenseType || [],

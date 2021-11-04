@@ -26,7 +26,6 @@ export const getEmployeeByDepartment = (department) => async dispatch => {
 }
 
 export const InsertIpProject = (projectform, VariableRate, proj_type_name) => async dispatch => {
-    console.log(projectform, "projectformprojectform")
 
     // try {
         axios({

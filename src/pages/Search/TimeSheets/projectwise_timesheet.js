@@ -217,7 +217,7 @@ function ProjectwiseTS(props) {
         setTimeSheetTable({ updatelist });
 
     }, [TimeSheetArr, trigger])
-    console.log(TimeSheetTable, "updatelist")
+
     useEffect(() => {
         setTimeSheetArr(props.Project_TimeSheet)
     }, [props.Project_TimeSheet]);
@@ -243,7 +243,7 @@ function ProjectwiseTS(props) {
             }
         }
     }
-    console.log(ModelClear, "ModelClear")
+
     const SubmitApprove = async () => {
         if (TimeSheetArr && TimeSheetArr.length > 0) {
 
@@ -252,7 +252,6 @@ function ProjectwiseTS(props) {
                     val.editicon && val.editicon === true
                 )
             })
-            // console.log(data_res_id,"data_res_id")
 
             if (!data_res_id) {
                 notification.success({
@@ -331,7 +330,7 @@ function ProjectwiseTS(props) {
                 {((Number(localStorage.getItem("empId")) === projectSearch.emp_name.value && projectSearch.emp_name.value) || !projectSearch.emp_name.value || projectSearch.emp_name.value === "") && <CustomButton btnName={"Submit For Approval"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={SubmitApprove} />}
                 <CustomButton btnName={"Create Timesheet"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => setTimesheetModelOpen(true)} />
             </div>
-            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} />
+            <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={() => closeModel()} content={<TimeSheets project_wise_edit={OnEditData.length > 0 ? OnEditData : undefined} project_wise_reject={OnRejectData.length > 0 ? OnRejectData : undefined} project_wise={(OnRejectData.length === 0 && OnEditData.length === 0) ? projectSearch : undefined} model_clear={ModelClear} close_model={closeModel} />} width={1000} zIndex={1000} />
 
         </div>
 

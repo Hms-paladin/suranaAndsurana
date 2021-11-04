@@ -17,7 +17,7 @@ function PatentRectificationFiled(props) {
     const dispatch = useDispatch()
     let { rowId } = useParams()
 
-    
+
     const [TradeMarkForm, setTradeMarkForm] = useState({
         client_applicant: {
             value: "",
@@ -170,7 +170,7 @@ function PatentRectificationFiled(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            obj.hearing_date&&(TradeMarkForm.hearing_date.value = obj.hearing_date);
+            obj.hearing_date && (TradeMarkForm.hearing_date.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.hearing_date.disabled = true;
 
@@ -217,7 +217,7 @@ function PatentRectificationFiled(props) {
         )
         settradeStatusList({ tradeStatusData })
 
-    }, [props.tradeStatusList, props.filingTypeList,props.tradeMark]);
+    }, [props.tradeStatusList, props.filingTypeList, props.tradeMark]);
 
 
     function onSubmit() {
@@ -227,7 +227,6 @@ function PatentRectificationFiled(props) {
 
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
-        console.log(filtererr.length);
         let params = {
             "ip_type": 0,
             "client_status_type": null,
@@ -235,13 +234,13 @@ function PatentRectificationFiled(props) {
             "project_id": rowId,
             "trademark_no": "",
             "class_id": 0,
-            "rectification_filing":TradeMarkForm.recitification_filing_date.value,
+            "rectification_filing": TradeMarkForm.recitification_filing_date.value,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date":TradeMarkForm.hearing_date.value,
+            "hearing_date": TradeMarkForm.hearing_date.value,
             "opp_applicant": "",
             "opp_applicant_rep": "",
-            "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
+            "filing_type_id": TradeMarkForm.filing_type_id.valueById && TradeMarkForm.filing_type_id.valueById.toString() || '0',
             "status_id": TradeMarkForm.status_id.value,
             "comments": TradeMarkForm.comments.value,
             "created_on": moment().format('YYYY-MM-DD HH:m:s') || "",
@@ -258,7 +257,7 @@ function PatentRectificationFiled(props) {
             "patent_title": TradeMarkForm.patent_title.value,
             "appeal_filing_date": null
         }
-        console.log("paramscheck", params);
+
         // if (TradeMarkForm.class_id.value != "") {
         //     params["class_id"] = TradeMarkForm.class_id.value;
         // }
@@ -286,8 +285,8 @@ function PatentRectificationFiled(props) {
 
         From_key.map((data) => {
             try {
-                TradeMarkForm[data]&&(TradeMarkForm[data].value = "");
-                // !TradeMarkForm[data]&&(console.log(data,"ddddddddddddd"));
+                TradeMarkForm[data] && (TradeMarkForm[data].value = "");
+
             } catch (error) {
                 throw error;
             }
@@ -340,7 +339,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
                         error={TradeMarkForm.client_applicant.error}
@@ -371,7 +370,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Rectification Filing Date</div>
                     <Labelbox type="datepicker"
-                        
+
                         changeData={(data) => checkValidation(data, "recitification_filing_date")}
                         value={TradeMarkForm.recitification_filing_date.value}
                         error={TradeMarkForm.recitification_filing_date.error}
@@ -382,7 +381,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -395,7 +394,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Org Appeal No</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -406,7 +405,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        
+
                         changeData={(data) => checkValidation(data, "hearing_date")}
                         value={TradeMarkForm.hearing_date.value}
                         error={TradeMarkForm.hearing_date.error}
@@ -417,7 +416,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "respondent")}
                         value={TradeMarkForm.respondent.value}
                         error={TradeMarkForm.respondent.error}
@@ -428,7 +427,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "respondent_rep")}
                         value={TradeMarkForm.respondent_rep.value}
                         error={TradeMarkForm.respondent_rep.error}
@@ -464,7 +463,7 @@ function PatentRectificationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        
+
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

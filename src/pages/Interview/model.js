@@ -35,9 +35,6 @@ function DynModelView(props) {
     setVisible(props.handleChangeModel)
   }, [props.handleChangeModel])
 
-  console.log(getdata, "getdata")
-
-
   return (
     <Modal
       className="modelContainer"
@@ -50,7 +47,6 @@ function DynModelView(props) {
       onCancel={handleCancel}
     >
       {getdata.map((val, index) => {
-        console.log(val, "gender")
         return (
           <div className="Employee_formdiv">
 

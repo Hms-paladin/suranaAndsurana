@@ -129,7 +129,7 @@ function PatentAppealFiling(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            obj.hearing_date&&(TradeMarkForm.date_of_hearing.value = obj.hearing_date);
+            obj.hearing_date && (TradeMarkForm.date_of_hearing.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
 
@@ -145,7 +145,7 @@ function PatentAppealFiling(props) {
             // if(obj.patent_title && obj.patent_title.length)
             // TradeMarkForm.patent_title.disabled = true;
 
-            obj.appeal_filing_date&&(TradeMarkForm.appeal_filing_date.value = obj.appeal_filing_date) ;
+            obj.appeal_filing_date && (TradeMarkForm.appeal_filing_date.value = obj.appeal_filing_date);
             // if(obj.appeal_filing_date && obj.appeal_filing_date.length)
             // TradeMarkForm.appeal_filing_date.disabled = true;
         }
@@ -159,7 +159,7 @@ function PatentAppealFiling(props) {
         )
         settradeStatusList({ tradeStatusData })
 
-    }, [props.tradeStatusList,props.tradeMark]);
+    }, [props.tradeStatusList, props.tradeMark]);
 
 
     function onSubmit() {
@@ -167,7 +167,6 @@ function PatentAppealFiling(props) {
         var targetkeys = Object.keys(TradeMarkForm);
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
-        console.log(filtererr.length);
         let params = {
             "ip_type": 0,
             "client_status_type": null,
@@ -198,7 +197,7 @@ function PatentAppealFiling(props) {
             "client_applicant": TradeMarkForm.client_applicant.value,
             "mark": ""
         }
-        console.log("paramscheck", params);
+
         //if(TradeMarkForm.class_id.value != ""){
         //    params["class_id"] =TradeMarkForm.class_id.value;
         //}
@@ -226,7 +225,7 @@ function PatentAppealFiling(props) {
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-                // console.log("appealFiling cancel", !TradeMarkForm[data]?data:'');
+
             } catch (error) {
                 throw error;
             }
@@ -237,7 +236,7 @@ function PatentAppealFiling(props) {
     }
 
 
-  
+
     function checkValidation(data, key, multipleId) {
 
         var errorcheck = ValidationLibrary.checkValidation(
@@ -311,7 +310,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Appeal Filing Date</div>
                     <Labelbox type="datepicker"
-                       
+
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
                         error={TradeMarkForm.appeal_filing_date.error}
@@ -344,7 +343,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                       
+
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -366,7 +365,7 @@ function PatentAppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        
+
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

@@ -7,7 +7,6 @@ import { notification } from "antd";
 
 export const InsertTestTemplate = (tempname,postarr,maxques,durations) => async dispatch => {
     try {
-        console.log(tempname,postarr,maxques,durations,"actions")
         axios({
             method: 'POST',
             url: apiurl + 'postquestion',
@@ -44,7 +43,6 @@ export const GetNoOfQuetions = (QuesCatId,QuesubcatId) => async dispatch => {
             }
         })
             .then((response) => {
-                console.log(response.data.data, "response.data.data")
                 dispatch({ type: GET_NO_OF_QUETIONS, payload: response.data.data})
 
             })

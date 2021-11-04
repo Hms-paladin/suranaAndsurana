@@ -209,7 +209,6 @@ function Navbar(props) {
     history.push("/")
     window.location.reload()
   }
-  // console.log(pathname,"pathname")
   const [severanceopen, setSeveranceopen] = React.useState(false);
   const [masteropen, setMasteropen] = React.useState(false);
   const [userManageopen, setUserManageopen] = React.useState(false);
@@ -486,7 +485,6 @@ useEffect(() => {
       data: DocumentData
     })
       .then((response) => {
-          console.log("resuser",response)
           if (response.data.status === 0) {
             localStorage.clear();
             history.push("/login")

@@ -75,9 +75,6 @@ function AppraisalModel(props) {
         }
     }, [props])
 
-    console.log(appraisalcmt, "fff")
-
-
     const checkValidation = (data, key) => {
         setChangeanswer(data)
     }

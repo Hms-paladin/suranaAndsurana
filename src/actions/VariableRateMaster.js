@@ -31,7 +31,6 @@ export const getVariableRateTableData = () => async dispatch => {
 }
 
 export const getProjectVariableRate = (project_id) => async dispatch => {
-  console.log("projectid", project_id)
   try {
 
     axios({
@@ -57,9 +56,6 @@ export const getProjectVariableRate = (project_id) => async dispatch => {
 
 
 export const InsertProjectVariableRate = (data) => async dispatch => {
-
-
-  console.log("checkid", data.range_id)
 
   try {
     let api;
@@ -124,7 +120,6 @@ export const InsertProjectVariableRate = (data) => async dispatch => {
 }
 
 export const InsertVariableRate = (RateMaster) => async dispatch => {
-  // console.log("ratemastercheck",RateMaster.range_project_cost.value)
   try {
 
     axios({
@@ -171,7 +166,6 @@ export const InsertVariableRate = (RateMaster) => async dispatch => {
 }
 
 export const SearchVariableRate = (RateMaster) => async dispatch => {
-  console.log(RateMaster, "lengthData")
 
   try {
 
@@ -190,7 +184,6 @@ export const SearchVariableRate = (RateMaster) => async dispatch => {
       },
     }).then((response) => {
       if (response.data.status === 1) {
-        console.log(response.data.data.length, "SEARCH_VARIABLERATE")
         dispatch({ type: SEARCH_VARIABLERATE, payload: response.data.data })
         return Promise.resolve();
       }
@@ -228,7 +221,7 @@ export const deleteVariableRate = (id, project_id) => async dispatch => {
 
 
 export const UpdateVariableRate = (data, allRowAmount, allrowList, applicapleRatesAmount, applicapleRateLists) => async dispatch => {
-  // console.log(projectSearchCreate,"projectSearchCreate")
+
   var allrowIndex = false
   for (var i = 0; i < allrowList.length; i++) {
     allrowIndex = ((i + 1) === allrowList.length ? true : false);
@@ -310,7 +303,6 @@ export const UpdateVariableRate = (data, allRowAmount, allrowList, applicapleRat
 
 
 export const Update_Variable_Rate = (data, amt, AddRow) => async dispatch => {
-  console.log(AddRow.stage_list_id, amt, "projectSearchCreate")
   try {
     axios({
       method: 'PUT',

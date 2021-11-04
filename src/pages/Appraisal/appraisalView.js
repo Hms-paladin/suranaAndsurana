@@ -20,8 +20,9 @@ function AppraisalView() {
     const [changeYesNo, setYesNo] = useState(false)
     const [ModalOpen, setModalOpen] = useState(false)
     const [ModalTitle, setModalTitle] = useState()
+
     function callback(key) {
-        console.log(key);
+
     }
     function toggleYesNo() {
         setYesNo(!changeYesNo)

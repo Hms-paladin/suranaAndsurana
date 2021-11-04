@@ -104,7 +104,6 @@ function ChangeLogTimeSheet(props) {
         From_key.map((data) => {
             try {
                 timeSheetForm[data].value = "";
-                console.log("mapping", timeSheetForm[data].value);
             } catch (error) {
                 throw error;
             }
@@ -166,8 +165,6 @@ function ChangeLogTimeSheet(props) {
 
         )
         setassignedToLists(assignedToData)
-        console.log(assignedToData, "assignedToData");
-
 
     }, [props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.assignToList])
 
@@ -189,7 +186,7 @@ function ChangeLogTimeSheet(props) {
         var filtererr = targetkeys.filter(
             (obj) => timeSheetForm[obj].error == true
         );
-        console.log(filtererr.length, "err len");
+
         let startTime = dateFormat(timeSheetForm.startTime.value != undefined && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss");
         let endTime = dateFormat(timeSheetForm.endTime.value != undefined && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss");
 
@@ -220,7 +217,6 @@ function ChangeLogTimeSheet(props) {
     }
 
     function checkValidation(data, key) {
-        console.log(data, key, "dataValue")
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -400,15 +396,15 @@ function ChangeLogTimeSheet(props) {
 }
 
 const mapStateToProps = (state) =>
-    ({
+({
 
-        activitysList: state.projectTasksReducer.getActivityList || [],
-        prioritysList: state.projectTasksReducer.prioritysList || [],
-        tagsList: state.projectTasksReducer.tagsList || [],
-        assignToList: state.getOptions.getEmpListDepartment || [],
-        locationList: state.projectTasksReducer.locationLists || [],
-        insertChangeLog: state.projectTasksReducer.backLog || []
+    activitysList: state.projectTasksReducer.getActivityList || [],
+    prioritysList: state.projectTasksReducer.prioritysList || [],
+    tagsList: state.projectTasksReducer.tagsList || [],
+    assignToList: state.getOptions.getEmpListDepartment || [],
+    locationList: state.projectTasksReducer.locationLists || [],
+    insertChangeLog: state.projectTasksReducer.backLog || []
 
-    });
+});
 
 export default connect(mapStateToProps)(ChangeLogTimeSheet);

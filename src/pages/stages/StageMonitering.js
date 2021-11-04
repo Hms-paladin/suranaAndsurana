@@ -75,7 +75,7 @@ const StageMonitor = (props) => {
     // dispatch(insertStageMaonitor());
 
   }, []);
-  console.log(projectDetails, "disablebtn")
+
   const like = () => {
     return (
       <div className="likeIcon">
@@ -108,7 +108,7 @@ const StageMonitor = (props) => {
       setLitigation(false)
     }
     if (props.stageList.length > 0) {
-      // console.log(props.stageList[props.stageList.length-1],"props.stageList[props.stageList.length-1].actual_date")
+
       if (props.stageList[props.stageList.length - 1].actual_date === true || props.stageList[props.stageList.length - 1].actual_date === null)
         setdisablebtn(false)
       else
@@ -176,7 +176,7 @@ const StageMonitor = (props) => {
     //   else {
     //     setdisablebtn(false)
     //   }
-    //   console.log(data, data.actual_date === null, "stagelist")
+
     //   // if (index <= stageList.StageListData.length) {
 
     //   // }
@@ -198,8 +198,6 @@ const StageMonitor = (props) => {
     props.cancel_btn('APPLICATION')
 
   }
-
-  // console.log(stageList.StageListData.actualdate, stageList, "stageList.StageListData")
 
   return (
     <div>

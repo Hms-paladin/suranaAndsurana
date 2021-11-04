@@ -6,7 +6,6 @@ import { GET_KRA, GET_KRA_APPROVE } from "../utils/Constants";
 import {GetKpiAchivement} from './KPIActions'
 
 export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async dispatch => {
-    console.log(moment(kpi_form.fromperiod.value).format('YYYY-MM-DD HH:m:s'), kpi_form, "kra")
     try {
         axios({
             method: 'POST',
@@ -42,7 +41,6 @@ export const InsertKra = (kpi_form, Active, Percent, refLength, i) => async disp
 }
 
 export const getKra = (from, to,empid) => async (dispatch) => {
-    console.log(empid, from, to, "kra_Model")
     const response = await axios({
         method: "post",
         url: apiurl + "get_kra",
@@ -68,7 +66,6 @@ export const getKraApprove = (kra_id) => async (dispatch) => {
 
 
 export const updateKraApprove = (kra_id, kra_form, approveid) => async (dispatch) => {
-    console.log(kra_id, kra_form, approveid, "approveid")
     const response = await axios({
         method: "post",
         url: apiurl + "update_kra_precentage",
@@ -81,7 +78,6 @@ export const updateKraApprove = (kra_id, kra_form, approveid) => async (dispatch
 
 
 export const InsertApproveKra = (approveid, kraList, Active, Percent, refLength, i) => async dispatch => {
-    console.log(approveid, "approveid")
     try {
         axios({
             method: 'POST',

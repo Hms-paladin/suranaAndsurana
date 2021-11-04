@@ -73,7 +73,7 @@ const UserGroups = (props) => {
     let DesigData = []
     props.getDesignationList.map((data) => {
       DesigData.push({
-        value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{' - '+data.designation}</div>,
+        value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
         id: data.designation_id
       })
     }
@@ -88,7 +88,7 @@ const UserGroups = (props) => {
 
       let a = <img src={Edit} style={{ cursor: rights && rights.display_control && rights.display_control === "Y" ? 'pointer' : 'not-allowed', width: 19 }} onClick={() => (rights && rights.display_control && rights.display_control === "Y" && onModealOpen(true, o))} />
       let listarray = {
-        "department_designation": dets[i].department+' - '+dets[i].designation,
+        "department_designation": dets[i].department + ' - ' + dets[i].designation,
         "group": dets[i].group_name,
         "process_type": a,
       }
@@ -121,7 +121,6 @@ const UserGroups = (props) => {
         })
 
     } catch (err) {
-      console.log("error", err);
     }
     setUsergroupmodel(flg, obj);
 
@@ -141,7 +140,6 @@ const UserGroups = (props) => {
       mainvalue[targetkeys[i]] = userForm[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => userForm[obj].error == true);
-    console.log("checkuser", userForm)
 
     if (filtererr.length > 0) {
     } else {
@@ -194,7 +192,6 @@ const UserGroups = (props) => {
     setUsergroupmodel(false);
   }
   function handelCheck(event, data) {
-    console.log("mapping", data);
     let oo = checkedGroups;
     let d = [];
     for (var i = 0; i < oo.length; i++) {
@@ -360,7 +357,6 @@ const UserGroups = (props) => {
 }
 
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
 ({
 
   groupLists: state.UserGroupReducer.groupLists || [],

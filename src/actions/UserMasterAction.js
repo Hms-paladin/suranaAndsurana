@@ -31,7 +31,8 @@ import {
   GET_COST_RANGE,
   GET_USER_STAGELIST,
   GET_CONTROLS,
-  GET_LOCATION_LIST
+  GET_LOCATION_LIST,
+  GET_CLIENT_DETAILS
 } from '../utils/Constants'
 export const get_Tablenames = () => async dispatch => {
   try {
@@ -465,7 +466,6 @@ export const UpdateSubstage = (UserMaster, stageId, Editvisible, id) => async di
 }
 // insert status insert api
 export const InsertStatus = (UserMaster, StatusId, Editvisible, Statusvalue) => async dispatch => {
-  console.log(StatusId, "StatusId")
   try {
     axios({
       method: 'POST',
@@ -729,6 +729,10 @@ export const getTableCourt = () => async (dispatch) => {
   return dispatch({ type: GET_TABLE_COURT, payload: response.data.data });
 };
 
+export const getClientDetails = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_client_details");
+  return dispatch({ type: GET_CLIENT_DETAILS, payload: response.data.data });
+};
 
 export const getStageList = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_stage_list");

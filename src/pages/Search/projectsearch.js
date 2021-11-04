@@ -30,7 +30,6 @@ import { notification } from "antd";
 const { Panel } = Collapse;
 
 function callback(key) {
-  console.log(key);
 }
 
 const { Option } = Select;
@@ -276,7 +275,6 @@ function Projectsearch(props) {
   };
 
   useEffect(() => {
-    // console.log(props.TableData, "projectLength")
 
     let multipleTab = [];
     props.TableData.map((data, index) => {
@@ -489,7 +487,6 @@ function Projectsearch(props) {
   );
 }
 const mapStateToProps = (state) =>
-// console.log(state,"statestatestate")
 ({
   TableData: state.projectSearchReducer.getProjectSearchTableData,
   ClientType: state.getOptions.getClientType,

@@ -132,10 +132,10 @@ function TimeSheetStartModel(props) {
 
         From_key.map((data) => {
             try {
-                if (data !== "startTime" && data !== "endTime") {
+                if (data !== "startTime" && data !== "endTime" && data !== "fromDate" && data !== "toDate") {
                     timeSheetForm[data].value = "";
                 } else {
-                    timeSheetForm[data].value = new Date("12-30-2017 " + moment().format('HH:mm:ss'));
+                    timeSheetForm[data].value = new Date();
                 }
             } catch (error) {
                 throw error;
@@ -171,7 +171,7 @@ function TimeSheetStartModel(props) {
     //         // timeSheetForm.startTime.value
     //         // timeSheetForm.startTime.value
     //     }
-    //     // console.log(props.approve_timesheet,props.projectrow,'approve_timesheetd')
+    
     // }, [props.approve_timesheet]);
 
     useEffect(() => {
@@ -195,7 +195,7 @@ function TimeSheetStartModel(props) {
         }).then(async (response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: `Timesheet overlapped`,
+                    message: response.data.msg,
                 });
                 setTimeOverlap(true)
 
@@ -309,6 +309,8 @@ function TimeSheetStartModel(props) {
                 if (response.data.status === 1) {
                     if (!props.project_wise) {
                         await dispatch(getProjectTimeSheetList(rowId));
+                    } else if (props.project_wise || props.project_wise_reject || props.project_wise_edit) {
+                        dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1] || props.project_wise_reject[1]))
                     }
                     notification.success({
                         message: `Timesheet ${SaveProcess ? 'saved' : 'started'} successfully`,
@@ -637,7 +639,7 @@ function TimeSheetStartModel(props) {
                             />
                         </Grid>
                         <Grid item xs={3}>
-                            <Labelbox type="timepicker"
+                            <Labelbox type="timepickernew"
                                 placeholder={"Start Time"}
                                 changeData={(data) =>
                                     checkValidation(data, "startTime")
@@ -668,7 +670,7 @@ function TimeSheetStartModel(props) {
                             />
                         </Grid>
                             <Grid item xs={3}>
-                                <Labelbox type="timepicker"
+                                <Labelbox type="timepickernew"
                                     placeholder={"End Time"}
                                     changeData={(data) =>
                                         checkValidation(data, "endTime")
@@ -789,7 +791,7 @@ function TimeSheetStartModel(props) {
                             />
                         </Grid>
                         <Grid item xs={3}>
-                            <Labelbox type="timepicker"
+                            <Labelbox type="timepickernew"
                                 placeholder={"End Time"}
                                 changeData={(data) =>
                                     checkValidation(data, "endTime")

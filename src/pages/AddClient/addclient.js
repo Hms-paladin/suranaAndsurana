@@ -30,6 +30,9 @@ function AddClient(props) {
   const [clientExists, setClientExists] = useState(1)
 
   const [Addclient_Form, setAddclient_Form] = useState({
+    client_id: {
+      value: "0",
+    },
     client_name: {
       value: "",
       validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }],
@@ -154,7 +157,6 @@ function AddClient(props) {
   });
 
   useEffect(() => {
-    console.log(props.getInsertStatus, "getInsertStatus")
   }, [props.getInsertStatus])
 
 
@@ -165,7 +167,6 @@ function AddClient(props) {
       method: "GET",
       url: apiurl + "get_client_type",
     }).then((response) => {
-      console.log("response", response);
       let clientData = [];
       response.data.data.map((data) =>
         clientData.push({ id: data.client_type_id, value: data.client_type })
@@ -178,7 +179,6 @@ function AddClient(props) {
       method: "GET",
       url: apiurl + "get_s_tbl_m_industry",
     }).then((response) => {
-      console.log("response", response);
       let industryData = [];
       response.data.data.map((data) =>
         industryData.push({ id: data.industry_id, value: data.industry })
@@ -192,7 +192,6 @@ function AddClient(props) {
       method: "GET",
       url: apiurl + "get_client_type",
     }).then((response) => {
-      console.log("response", response);
       let clientData = [];
       response.data.data.map((data) =>
         clientData.push({ id: data.client_type_id, value: data.client_type })
@@ -205,7 +204,6 @@ function AddClient(props) {
       method: "GET",
       url: apiurl + "get_s_tbl_m_state",
     }).then((response) => {
-      console.log("response", response);
       let stateData = [];
       response.data.data.map((data) =>
         stateData.push({ id: data.state_id, value: data.state })
@@ -218,7 +216,6 @@ function AddClient(props) {
     //   method: "GET",
     //   url: apiurl + "get_s_tbl_m_city",
     // }).then((response) => {
-    //   console.log("response", response);
     //   let cityData = [];
     //   response.data.data.map((data) =>
     //     cityData.push({ id: data.city_id, value: data.state })
@@ -245,7 +242,6 @@ function AddClient(props) {
   }, [props.getDesignationList, props.getCity]);
 
   const handleChange = (info, uploadName) => {
-    console.log(info, 'sdfjdfsjklkl')
 
 
     if (info.status !== 'error' && info.status !== "uploading") {
@@ -291,7 +287,6 @@ function AddClient(props) {
         }
       });
       dynObj.valueById = multipleIdList.toString();
-      // console.log(dynObj.valueById,"id")
     }
     // (end)
 
@@ -305,7 +300,6 @@ function AddClient(props) {
           "client_name": data,
         },
       }).then((response) => {
-        console.log(response.data.status, "response.data.status")
         if (response.data.status === 0) {
           let dynObj = {
             value: data,
@@ -333,7 +327,6 @@ function AddClient(props) {
     }));
   }
 
-  // console.log(Addclient_Form,"Addclient_Form")
   async function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Addclient_Form);
@@ -356,7 +349,7 @@ function AddClient(props) {
       setSaveButton(false)
       await dispatch(InsertClient(Addclient_Form, fileupload))
       //  .then(() => {
-      onStateClear()
+      onHandleCancel()
       setSaveButton(true)
       // })
     }
@@ -399,7 +392,6 @@ function AddClient(props) {
 
       //   try {
       //     data!=='upload'?(Addclient_Form[data].value = ""):(Addclient_Form[data].value = []);
-      //     console.log("mapping", Addclient_Form[data].value)
       //   } catch (error) {
       //     throw (error)
       //   }
@@ -416,7 +408,7 @@ function AddClient(props) {
   }
 
   useEffect(() => {
-    if (Addclient_Form.gst_no.value != "" && !Addclient_Form.gst_no.error) {
+    if (Addclient_Form.gst_no.value && Addclient_Form.gst_no.value != "" && !Addclient_Form.gst_no.error) {
       Addclient_Form.state_code.value = Addclient_Form.gst_no.value.substring(0, 2)
     } else {
       Addclient_Form.state_code.value = ""
@@ -434,14 +426,13 @@ function AddClient(props) {
       "emai_id_2",
       "con_ph_2",
       "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "designation_id_1", "con_per_1", "industrty", "client_name", "gst_no", "pan_no"]
+      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no"]
 
 
     From_key.map((data) => {
 
       try {
         Addclient_Form[data].value = "";
-        console.log("mapping", Addclient_Form[data].value)
       } catch (error) {
         throw (error)
       }
@@ -451,14 +442,52 @@ function AddClient(props) {
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
+
   };
+  const onHandleCancel = () => {
+    onStateClear()
+    props.model_close && props.model_close()
+  }
+  useEffect(() => {
+    if (props.EditClientData) {
+      let CreateClient_key = [
+        // "document_upload_name",
+        "city",
+        "state",
+        "emai_id_2",
+        "con_ph_2",
+        "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
+        "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no"]
+
+
+      let CreateClient_value = [
+        // "document_upload_name",
+        "city_id",
+        "state_id",
+        "ct_email_id",
+        "ct_contact_no",
+        "designation_id_2", "contact_person_2", "client_type_id", "address", "email_id", "contact_no",
+        "designation_id_1", "contact_person_1", "industry_id", "client", "client_id", "gst_no", "pan_no"];
+
+      CreateClient_key.map((data, index) => {
+        Addclient_Form[data].value = props.EditClientData[0][CreateClient_value[index]] === '0' ? '' : props.EditClientData[0][CreateClient_value[index]];
+        return true;
+      });
+      setAddclient_Form((prevState) => ({
+        ...prevState,
+      }));
+    }
+    else {
+      onStateClear()
+    }
+  }, [props.EditClientData])
 
   return (
     <div>
       <div
         style={{ marginBottom: "10px", fontSize: "16px", fontWeight: "600" }}
       >
-        Add Client
+        {props.EditClientData ? 'Edit' : 'Add'} Client
       </div>
       <div className="Container">
         <div className="leftContainer">
@@ -736,7 +765,7 @@ function AddClient(props) {
                 btnCustomColor="customPrimary"
                 onBtnClick={onSubmit}
               />
-              <CustomButton btnName={"Cancel"} onBtnClick={onStateClear} />
+              <CustomButton btnName={"Cancel"} onBtnClick={onHandleCancel} />
             </Grid>
           </Grid>
         </div>

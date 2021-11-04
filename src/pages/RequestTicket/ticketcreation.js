@@ -173,7 +173,7 @@ function TicketCreation(props) {
     }, []);
 
     useEffect(() => {
-        console.log(props.StateList, "props.Department")
+
         // Department
         let Department = [];
         props.Department.map((data) =>
@@ -487,7 +487,7 @@ function TicketCreation(props) {
                 )
             } else {
                 // Generate Ticket
-                console.log(TicketCreation, "TC")
+
                 dispatch(InsertRecruitmentTicket(TicketCreation)).then(
                     (response) => {
                         handleCancel();

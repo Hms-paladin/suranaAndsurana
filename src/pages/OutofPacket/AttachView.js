@@ -1,6 +1,6 @@
-import React, { useState} from "react";
-import {NavLink} from 'react-router-dom'
-import {Row,Col} from 'antd';
+import React, { useState } from "react";
+import { NavLink } from 'react-router-dom'
+import { Row, Col } from 'antd';
 import './AttachView.scss'
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
@@ -12,9 +12,9 @@ function SampleNextArrow(props) {
     const { className, style, onClick } = props
     return (
         <div
-        className={className}
-        style={{ ...style, display: "block", background: "red" }}
-        onClick={onClick}
+            className={className}
+            style={{ ...style, display: "block", background: "red" }}
+            onClick={onClick}
         />
     )
 }
@@ -23,9 +23,9 @@ function SamplePrevArrow(props) {
     const { className, style, onClick } = props
     return (
         <div
-        className={className}
-        style={{ ...style, display: "block", background: "green" }}
-        onClick={onClick}
+            className={className}
+            style={{ ...style, display: "block", background: "green" }}
+            onClick={onClick}
         />
     )
 }
@@ -40,8 +40,8 @@ const settings = {
 }
 
 
-function AttachView (props) {
- const download=(file)=>{
+function AttachView(props) {
+    const download = (file) => {
 
         // const url = window.URL.createObjectURL(new Blob([file]));
         const link = document.createElement("a");
@@ -50,27 +50,25 @@ function AttachView (props) {
         document.body.appendChild(link);
         link.click();
 
-console.log("ViewData",file)
+    }
 
- }
+    return (
+        <div className="carosal_root">
 
-  return (
-    <div className="carosal_root">
-      
-          {/* <Carousel {...settings} arrows draggable={true}>
+            {/* <Carousel {...settings} arrows draggable={true}>
         
                 <div>
                     <img src={File} />
                 </div>
                 
           </Carousel> */}
-          <div><img src={props.ViewData} style={{width:"100%",height:"100%"}}/></div>
-          <div style={{textAlign:"center",marginTop:"10px"}}>
-           <CustomButton btnName={"Download"} custombtnCSS={"attch_btn_css"} onBtnClick={()=>download(props.ViewData) } btnCustomColor="customPrimary"/>
+            <div><img src={props.ViewData} style={{ width: "100%", height: "100%" }} /></div>
+            <div style={{ textAlign: "center", marginTop: "10px" }}>
+                <CustomButton btnName={"Download"} custombtnCSS={"attch_btn_css"} onBtnClick={() => download(props.ViewData)} btnCustomColor="customPrimary" />
+            </div>
+
         </div>
-      
-    </div>
-  )
+    )
 }
 
 export default AttachView;

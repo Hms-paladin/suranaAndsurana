@@ -7,7 +7,7 @@ export default class ComponentToPrint extends React.Component {
         productDetails: [],
     }
     UNSAFE_componentWillReceiveProps(preState) {
-        console.log(preState.productDetails, "productDetails")
+      
         this.setState({
             productDetails: preState.productDetails
         })

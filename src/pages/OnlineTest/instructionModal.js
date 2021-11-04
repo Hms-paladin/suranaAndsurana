@@ -26,7 +26,7 @@ function InstructionModal(props) {
     useEffect(() => {
         setTemplateRowdata(props.GettemplateQuetions)
     }, [props.GettemplateQuetions])
-console.log(props.test_data,"temp_nametest_data")
+
     return (
         <div>
             <div className="Instruction_Modal_Container">
@@ -61,7 +61,7 @@ console.log(props.test_data,"temp_nametest_data")
 
                 <div>
                     <Link to={`/Home/onlineQA/${designation}/${candidate}/${testTemplateId}`}>
-                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary"  />
+                        <CustomButton btnName={"Start Test"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" />
                     </Link>
                 </div>
             </div>
@@ -70,7 +70,7 @@ console.log(props.test_data,"temp_nametest_data")
 }
 
 const mapStateToProps = (state) => (
-    console.log(state, "checkscheckstatetates"),
+
     {
         GettemplateQuetions: state.OnlineTest.GettemplateQuetions || []
     }

@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import Axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl';
-import { GetInterviewers,GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
+import { GetInterviewers, GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
@@ -110,7 +110,7 @@ function DynModel(props) {
       // Interviewschedule.interviewer.value = finalIntId
       dispatch(GetInterviewersApprFinal());
       // setFinalRound(true)
-    } 
+    }
     if (data !== 27 && key === "round") {
       // setFinalRound(false)
       dispatch(GetInterviewers());
@@ -153,11 +153,11 @@ function DynModel(props) {
     var filtererr = targetkeys.filter(
       (obj) => Interviewschedule[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
     } else {
       dispatch(InesertInterviewDetails(Interviewschedule, props.selectedId)).then((response) => {
-        // console.log(props.checkList, "checkList")
+
         stateClear()
 
       })
@@ -168,7 +168,7 @@ function DynModel(props) {
     }));
     props.handleUnCheck();
   };
- 
+
   useEffect(() => {
 
     Axios({
@@ -177,8 +177,10 @@ function DynModel(props) {
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{'  - '+data.designation}</div>,
-        id: data.designation_id }))
+        Designation.push({
+          value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{'  - ' + data.designation}</div>,
+          id: data.designation_id
+        }))
 
       setdesignationdata({ Designation })
 
@@ -269,7 +271,7 @@ function DynModel(props) {
             btnCustomColor="customPrimary"
             onBtnClick={onSubmit}
           />
-          
+
         </div>
       </div>
     </Modal>
@@ -277,7 +279,7 @@ function DynModel(props) {
 }
 
 const mapStateToProps = (state) => (
-  // console.log(state.getOptions.getInterviewApprover, "getProcessType")
+
   {
     GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
     GetInterviewersApprFinal: state.InterviewSchedule.GetInterviewersApprFinal || [],

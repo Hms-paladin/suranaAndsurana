@@ -41,11 +41,9 @@ function desc(a, b, orderBy) {
 }
 
 function stableSort(array, cmp) {
-  console.log("sort", array);
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = cmp(a[0], b[0]);
-    console.log("order", order);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
@@ -207,7 +205,6 @@ class Useraccess_rights extends Component {
     this.setState({ view: false, DeleteView: false });
   };
   handleClickOpen = (t, title) => {
-    console.log("type", t, title)
     this.setState({
       type: t,
       title
@@ -267,8 +264,6 @@ class Useraccess_rights extends Component {
         response.data.data.map((value) => {
           arrval.push({ dropdown_val: value.group_name, id: value.group_id })
         })
-       // console.log(response.data.data[0].user_id, "response")
-        //console.log(arrval, "arrval")
 
         self.setState({
           user: arrval[0].dropdown_val,
@@ -278,7 +273,6 @@ class Useraccess_rights extends Component {
         })
       })
       .catch(function (error) {
-        console.log(error, "error");
       });
 
   }
@@ -364,13 +358,11 @@ class Useraccess_rights extends Component {
             for (let x = 0; x < subdata_ch_arr.length; x++) {
               sub_data_arr.push(...subdata_ch_arr[x].item)
             }
-            console.log(sub_data_arr, "sub_data_arr")
             var head_all_concat = []
             for (let y = 0; y < sub_data_arr.length; y++) {
               if (sub_data_arr[y].screen_name) {
                 head_all_concat.push(sub_data_arr[y].allow_view === "Y", sub_data_arr[y].allow_add === "Y", sub_data_arr[y].allow_edit === "Y", sub_data_arr[y].allow_delete === "Y", sub_data_arr[y].allow_print === "Y")
               } else if (sub_data_arr[y].item) {
-                console.log(sub_data_arr[y].item, "sub_data_arr[y].submodule_name")
                 for (let z = 0; z < sub_data_arr[y].item.length; z++) {
                   sub_data_arr[y].item[z] && inside_sub.push(sub_data_arr[y].item[z])
                 }
@@ -425,7 +417,6 @@ class Useraccess_rights extends Component {
 
               </div>} key="1">
                 {val.item.map((first_item) => {
-                  console.log(first_item, "first_item")
                   if (first_item.submodule_name === null) {
 
                     return (first_item.item.map((first_item_insidedata, index) => {
@@ -605,7 +596,6 @@ class Useraccess_rights extends Component {
 
 
     }).catch(function (error) {
-      console.log(error, "error_get");
     });
   }
 
@@ -796,7 +786,6 @@ class Useraccess_rights extends Component {
         self.recall_permission(true,userid,useraccess)
       })
       .catch(function (error) {
-        console.log(error, "error");
       });
     this.setState({insertmodalopen: false})
   }
@@ -812,7 +801,6 @@ class Useraccess_rights extends Component {
         this.recall_permission(true,this.state.currentuserid,this.state.useraccess)
       })
       .catch(function (error) {
-        console.log(error, "error");
       });    
 
   }
@@ -824,7 +812,6 @@ class Useraccess_rights extends Component {
       this.recall_permission(null,this.state.responseid,useraccess)
       this.setState({onceopen:false,useraccess:useraccess})
     } 
-    console.log(this.state.user,"user")
     return (
       <div>
         {this.state.loading ? <Spin className="spinner_align" spinning={this.state.loading}></Spin> :

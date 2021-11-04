@@ -4,7 +4,6 @@ import axios from "axios";
 import { notification } from 'antd';
 
 export const InesertQuations = (Add_question) => async dispatch => {
-    console.log(Add_question, "Add_question")
     try {
         axios({
             method: 'POST',

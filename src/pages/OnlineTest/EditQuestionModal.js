@@ -119,11 +119,11 @@ function EditQuestionsModal(props) {
         var filtererr = targetkeys.filter(
             (obj) => Add_question[obj].error == true
         );
-        // console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setAdd_question({ error: true });
         } else {
-            console.log(props.quesId, "id")
+
             dispatch(editQuestions(props.quesId, Add_question.answer.value, Add_question.option.value, Add_question.type_ques.value)).then((response) => {
                 props.handleChangeCloseModel()
                 notification.success({
@@ -140,7 +140,7 @@ function EditQuestionsModal(props) {
     }
     return (
         <div>
-            {console.log(props.question, "ques")}
+
             {/* {viewquetions && viewquetions.map((val) => {
                 return ( */}
             <div className="viewques_container">
@@ -181,7 +181,6 @@ function EditQuestionsModal(props) {
 }
 
 const mapStateToProps = (state) => (
-    console.log(state.AddQuations, "state.getOptions.getCategory"),
 
     {
         viewAddedQuestions: state.AddQuations.viewAddedQuestions || [],

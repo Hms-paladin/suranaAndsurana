@@ -19,8 +19,8 @@ const KPI = (props) => {
         // { id: 'table_name', label: 'Table Name' },
         { id: 'activity', label: 'Activity' },
         { id: 'subactivity', label: 'Subactivity' },
-        { id: 'target', label: 'Target' },
-        { id: 'achievement', label: 'Achievement' },
+        { id: 'target', label: 'Target(%)' },
+        { id: 'achievement', label: 'Achievement(%)' },
     ];
 
     const [kpimodel, setKpimodel] = useState(false);
@@ -106,7 +106,7 @@ const KPI = (props) => {
  dispatch(GetKpiApproval(props.KpiId))
 
  },[props.KpiId])
- console.log("props",props)
+
 useEffect(()=>{
     let Data=[]
     let Achivement=[]

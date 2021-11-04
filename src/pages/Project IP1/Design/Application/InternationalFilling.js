@@ -158,7 +158,7 @@ function InternationalFilling(props) {
     var filtererr = targetkeys.filter(
       (obj) => InternationlForm[obj].error == true
     );
-    console.log(filtererr.length);
+  
     if (filtererr.length > 0) {
     } else {
       dispatch(InsertDesign(InternationlForm, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
@@ -210,13 +210,13 @@ function InternationalFilling(props) {
       let interFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "applicant", "title", "class_id", "country_id", "priority_country_id", "priority_date", "status_id", "comments", "renewal_date"]
 
       interFil_key.map((data, index) => {
-        console.log(interFil_value[index], interFil_value[index] !== "application_date", "interFil_value[index]")
+      
         if (interFil_value[index] !== "application_date" && interFil_value[index] !== "priority_date" && interFil_value[index] !== "renewal_date") {
           InternationlForm[data].value = getDesign[0][interFil_value[index]];
           // InternationlForm[data].disabled = getDesign[0][interFil_value[index]] ? true : false;
         }
         else {
-          console.log(getDesign[0][interFil_value[index]], "getDesign[0]")
+        
           InternationlForm[data].value = getDesign[0][interFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][interFil_value[index]]);
           // InternationlForm[data].disabled = getDesign[0][interFil_value[index]] === "0000-00-00" ? false : true;
 

@@ -61,7 +61,6 @@ function ResignationApproveval(props) {
             })
         })
     }, [props.GetSeverance])
-    console.log("props", props)
     function checkValidation(data, key) {
         if (key === "accept_date") {
             setDatehide(data)
@@ -102,7 +101,7 @@ function ResignationApproveval(props) {
         }
         var filtererr = targetkeys.filter((obj) => Resignation[obj].error == true);
         if (filtererr.length > 0) {
-            console.log(filtererr.length)
+
         } else {
             let status = false
             if (name === "accept") {
@@ -168,7 +167,7 @@ function ResignationApproveval(props) {
 
 
     }
-    console.log("dfghj", props.GetSeverance[0] && props.GetSeverance[0].employee_id)
+
     return (
         <div>
             <div className="severancemodelsContainer">
@@ -196,8 +195,6 @@ function ResignationApproveval(props) {
                         <div><Checkbox onChange={HandleChange} checked={checked} /></div>
                     </div>}
             </div>
-            {console.log("checking", checked)}
-
 
             {props.TaskModelTitle === "Resignation Approval" && <div className="ResigContent">
                 <Grid item xs={12} container direction="row" spacing={3}>

@@ -87,7 +87,7 @@ try {
     )
 }
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
   prioritysList: state.projectTasksReducer.prioritysList || [],
 });

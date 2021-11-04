@@ -172,7 +172,6 @@ export const InsertGroupControlMaster = (userForm) => async dispatch => {
 
 export const InsertUsergroup = (UserGroup, groupName) => async dispatch => {
     try {
-        console.log(UserGroup.groupname.value, "UserGroup.groupname.value")
         axios({
             method: "POST",
             url: apiurl + "insertGroupMaster",
@@ -303,7 +302,6 @@ export const editGroupControl = (UserGroup) => async dispatch => {
 }
 
 export const deleteGroupName = (deleteID) => async dispatch => {
-    console.log(deleteID,"deleteID")
     try {
         axios({
             method: 'DELETE',

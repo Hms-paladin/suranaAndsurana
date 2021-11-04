@@ -48,7 +48,7 @@ function OnlineQA(props) {
     const handleChange = (event) => {
         setValue(event.target.value);
         questions[increament - 1].checked = event.target.value
-        // console.log(event.target.value,"event.target.value")
+
     };
 
 
@@ -77,21 +77,16 @@ function OnlineQA(props) {
                 }
                 updatelist.push(listarray);
             }
-            //  console.log(updatelist, "arrarrarrarrarrarr")
+
             setSubmitData(updatelist)
         }
 
 
     }, [props.GettemplateQuetions])
 
-    // console.log(submitData, "templateRowdata")
-
     // templateRowdata
     useEffect(() => {
         let myInterval = setInterval(() => {
-            // console.log(props.GettemplateQuetions[0]?.Duration, setCount.current.count, runTime.current.runMin > props.GettemplateQuetions[0]?.Duration, "testQuestionDetails")
-
-            // console.log(runTime.current.runMin, setCount.current.count, runTime.current.runSec, "timing")
 
             if (runTime.current.runMin === setCount.current.count && runTime.current.runSec === 1) {
 
@@ -119,7 +114,7 @@ function OnlineQA(props) {
         const timer = digitmin + runTime.current.runMin + ":" + digitsec + runTime.current.runSec
 
         if (runTime.current.runSec > 0) {
-            console.log(runTime.current.runSec - 1, "time")
+
             runTime.current.runSec = runTime.current.runSec - 1
         } else {
             runTime.current.runSec = 0
@@ -155,12 +150,7 @@ function OnlineQA(props) {
                 setIncreament(increament + 1)
             }
             submitData[increament - 1].answer = questions[increament - 1].checked ? questions[increament - 1].checked : ''
-            // no_of_questions.map((data) => {
-            //     alert("tset")
-            //     console.log(data, "datadatagdjsfjdk")
-            // })
 
-            console.log(questions[increament - 1], "datadatagdjsfjdk")
         }
         if (questions[increament - 1].checked)
             questions[increament - 1].visited = 'submited'
@@ -182,12 +172,9 @@ function OnlineQA(props) {
 
         setIncreament(increament - 1)
 
-        // console.log(increament,"increamentincreament")
-
         var inc = increament - 2
         let testvalue = questions[inc]
         setQues_no(testvalue)
-        console.log(testvalue, inc, "increament")
 
         if (questions[increament - 1].checked) {
             if (submitData[increament - 1].answer !== '')
@@ -198,25 +185,6 @@ function OnlineQA(props) {
 
 
     })
-
-
-    //  console.log((increament === 1&&props.GettemplateQuetions[0]?.testQuestionDetails[0]?.Choice.split(','))||(ques_no.Choice?.split(',')), "increamentincreament")
-    // console.log(submitData,"22222222222222222222")
-    // console.log(questions&&questions.length>0&&questions[increament- 1].checked?questions[increament- 1].checked:'uncheck',"testttttt")
-    // const mapingdata = () => {
-
-
-    //     no_of_questions.map((data, index) => {
-    //         // let testvalue = no_of_questions.find((val) => {
-    //         console.log(data, "no_of_questions")
-
-    //         // return (
-    //         //     val == val.id
-    //         // )
-    //         // })
-    //     })
-
-    // }
 
     var names = '';
     return (
@@ -234,7 +202,6 @@ function OnlineQA(props) {
                     <div id="Question">{increament === 1 ? props.GettemplateQuetions[0]?.testQuestionDetails[0].Question : ques_no.Question}</div>
                     <div className="options">
 
-                        {/* {console.log(ques_no,"ques_noques_noques_no")} */}
                         <FormControl component="fieldset">
                             <RadioGroup aria-label="gender" name="gender1" value={questions && questions.length > 0 && questions[increament - 1].checked ? questions[increament - 1].checked : 'uncheck'} onChange={handleChange}>
 
@@ -270,7 +237,7 @@ function OnlineQA(props) {
                 </div>
                 <div className="question_traverse">
                     <div className="question_flows">
-                        {/* {console.log(props.GettemplateQuetions[0]?.testQuestionDetails,"hhhhhhhhhhhhhhhhhhhhhh")} */}
+
                         {props.GettemplateQuetions[0] && questions && questions.map((noq, index) =>
                             <div style={{ backgroundColor: noq.visited && noq.visited === "submited" ? '#14D756' : noq.visited === "visited" ? 'white' : '#D77E4D', color: noq.visited && noq.visited === "submited" ? 'white' : noq.visited === "visited" ? 'blue' : 'white' }} >{index + 1}</div>)}
                     </div>

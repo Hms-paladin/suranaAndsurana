@@ -15,11 +15,6 @@ function DynModelEdit(props) {
         setVisible(props.handleChangeModel)
     }, [props.handleChangeModel])
 
-    useEffect(() => {
-        console.log(props.resumeEditid, "resumeEditid")
-
-    }, [props.resumeEditid])
-
     return (
         < Modal
             className="modelContainer"

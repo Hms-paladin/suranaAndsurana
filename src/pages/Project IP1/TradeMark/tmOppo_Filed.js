@@ -21,7 +21,7 @@ function TradeMarkOposition1(properties) {
 
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+
             }
             if (info.file.status === 'done') {
                 setselectedFile(info.file.originFileObj);
@@ -507,7 +507,6 @@ function TradeMarkOposition1(properties) {
         var filtererr = targetkeys.filter(
             (obj) => TradeMarkForm[obj].error == true
         );
-        //console.log(filtererr.length);
 
         if (filtererr.length > 0) {
         } else {
@@ -538,8 +537,8 @@ function TradeMarkOposition1(properties) {
             formData.append("status_id", TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value)
             formData.append("our_reference", TradeMarkForm.ourReference.value || '')
             formData.append("mark_id", TradeMarkForm.mark_id.value)
-            formData.append("upload_image",(!TradeMarkForm.upload.view_file&&!TradeMarkForm.upload.value)?[]:(TradeMarkForm.upload.value?TradeMarkForm.upload.value:TradeMarkForm.upload.view_file.substr(35) ))
-     formData.append("orders", (!TradeMarkForm.orders.view_file&&!TradeMarkForm.orders.value)?[]:(TradeMarkForm.orders.value?TradeMarkForm.orders.value:TradeMarkForm.orders.view_file.substr(35) ))
+            formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(35)))
+            formData.append("orders", (!TradeMarkForm.orders.view_file && !TradeMarkForm.orders.value) ? [] : (TradeMarkForm.orders.value ? TradeMarkForm.orders.value : TradeMarkForm.orders.view_file.substr(35)))
             formData.append("application_no", TradeMarkForm.application_no.value || '')
             formData.append("application_date", TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value)
             formData.append("tmj_number", TradeMarkForm.tmj_number.value || '')
@@ -566,7 +565,7 @@ function TradeMarkOposition1(properties) {
             if (TradeMarkForm.trademark_id.value != 0) {
                 formData.set("trademark_id", TradeMarkForm.trademark_id.value)
             }
-            dispatch(insertTradeMark(formData,TradeMarkForm,rowId)).then(() => {
+            dispatch(insertTradeMark(formData, TradeMarkForm, rowId)).then(() => {
 
                 // dispatch(getTradeMark(rowId))
                 handleCancel()
@@ -590,12 +589,12 @@ function TradeMarkOposition1(properties) {
             "internal_status", "oppositionNumber", "end_date", "upload_image", "goods_description", "usage_from_date", "comments", "allotment",
             "ip_india_status", "amendment", "orders", "priority_details", "tmj_number", "tmj_date", "journel_extract",
             "poa", "certificate_date", "renewal_certificate_date", "created_on", "updated_on", "updated_by",
-            "ip_address","upload","orders"
+            "ip_address", "upload", "orders"
         ]
 
         From_key.map((data) => {
             try {
-                if (data != "upload"||data != "orders") {
+                if (data != "upload" || data != "orders") {
                     TradeMarkForm[data].value = ""
                 } else {
                     TradeMarkForm[data].view_file = ""
@@ -646,7 +645,7 @@ function TradeMarkOposition1(properties) {
         }));
 
     };
-    console.log(TradeMarkForm.upload.view_file,"TradeMarkForm.upload.view_file")
+
     return (
         <div className="trademarkOpsosotionContainer">
             <Grid item xs={12} container direction="row" spacing={1} >
@@ -727,23 +726,23 @@ function TradeMarkOposition1(properties) {
 
                         </Grid>
                         <Grid item xs={6}>
-                        <div className="Tradeheadings">Upload</div>
-                        <Labelbox type="upload"
-                            changeData={(data) => checkValidation(data, "upload")}
-                            view_file={TradeMarkForm.upload.view_file}
-                            remove_file={() => (setTradeMarkForm(prevState => ({
-                                ...prevState,
-                                upload: {
-                                    value: null, error: TradeMarkForm.upload.error, errmsg: TradeMarkForm.upload.errmsg, disabled: TradeMarkForm.upload.disabled, view_file: null
-                                },
-                            })))}
-                            value={TradeMarkForm.upload.value}
-                            error={TradeMarkForm.upload.error}
-                            errmsg={TradeMarkForm.upload.errmsg}
-                            disabled={TradeMarkForm.upload.disabled}
-                        />
+                            <div className="Tradeheadings">Upload</div>
+                            <Labelbox type="upload"
+                                changeData={(data) => checkValidation(data, "upload")}
+                                view_file={TradeMarkForm.upload.view_file}
+                                remove_file={() => (setTradeMarkForm(prevState => ({
+                                    ...prevState,
+                                    upload: {
+                                        value: null, error: TradeMarkForm.upload.error, errmsg: TradeMarkForm.upload.errmsg, disabled: TradeMarkForm.upload.disabled, view_file: null
+                                    },
+                                })))}
+                                value={TradeMarkForm.upload.value}
+                                error={TradeMarkForm.upload.error}
+                                errmsg={TradeMarkForm.upload.errmsg}
+                                disabled={TradeMarkForm.upload.disabled}
+                            />
 
-                    </Grid>
+                        </Grid>
 
                     </Grid>
                     <Grid item xs={12} container direction="row" spacing={1}>
@@ -833,23 +832,23 @@ function TradeMarkOposition1(properties) {
                             />
                         </Grid>
                         <Grid item xs={2}>
-                        <div className="Tradeheadings">Order</div>
-                        <Labelbox type="upload"
-                            changeData={(data) => checkValidation(data, "orders")}
-                            view_file={TradeMarkForm.orders.view_file}
-                            remove_file={() => (setTradeMarkForm(prevState => ({
-                                ...prevState,
-                                orders: {
-                                    value: null, error: TradeMarkForm.orders.error, errmsg: TradeMarkForm.orders.errmsg, disabled: TradeMarkForm.orders.disabled, view_file: null
-                                },
-                            })))}
-                            value={TradeMarkForm.orders.value}
-                            error={TradeMarkForm.orders.error}
-                            errmsg={TradeMarkForm.orders.errmsg}
-                            disabled={TradeMarkForm.orders.disabled}
-                        />
+                            <div className="Tradeheadings">Order</div>
+                            <Labelbox type="upload"
+                                changeData={(data) => checkValidation(data, "orders")}
+                                view_file={TradeMarkForm.orders.view_file}
+                                remove_file={() => (setTradeMarkForm(prevState => ({
+                                    ...prevState,
+                                    orders: {
+                                        value: null, error: TradeMarkForm.orders.error, errmsg: TradeMarkForm.orders.errmsg, disabled: TradeMarkForm.orders.disabled, view_file: null
+                                    },
+                                })))}
+                                value={TradeMarkForm.orders.value}
+                                error={TradeMarkForm.orders.error}
+                                errmsg={TradeMarkForm.orders.errmsg}
+                                disabled={TradeMarkForm.orders.disabled}
+                            />
 
-                    </Grid>
+                        </Grid>
                     </Grid>
 
                 </Grid>

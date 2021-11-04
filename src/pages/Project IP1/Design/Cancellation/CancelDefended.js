@@ -93,7 +93,7 @@ function CancelDefended(props) {
         var filtererr = targetkeys.filter(
             (obj) => CancelDefended[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
         } else {
             dispatch(InsertDesign(CancelDefended, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
@@ -157,7 +157,7 @@ function CancelDefended(props) {
                     // CancelDefended[data].disabled = cancDef_value[index]!=='status_id'&&getDesign[0][cancDef_value[index]] ? true : false;
                 }
                 else {
-                    console.log(getDesign[0][cancDef_value[index]], "getDesign[0]")
+
                     CancelDefended[data].value = getDesign[0][cancDef_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancDef_value[index]]);
                     // CancelDefended[data].disabled = getDesign[0][cancDef_value[index]] === "0000-00-00" ? false : true;
                 }

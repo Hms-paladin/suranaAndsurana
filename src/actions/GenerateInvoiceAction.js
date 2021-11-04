@@ -8,9 +8,10 @@ export const insertGenerateInvoice = (generate_invoice_details) => async dispatc
 
   let subject_details = []
   generate_invoice_details.length > 0 && generate_invoice_details.map((data, index) =>
-    subject_details.push({
+    data?.checked && (subject_details.push({
+      rate_master_id:data.rate_master_id,
       project_id: data.project_id,
-      activity_id: data.activity_id,
+      activity_id: data.activiity_id || 0,
       emp_id: data.emp_id,
       actual_no_of_hours: data.actual_hrs,
       actual_rate: data.base_rate,
@@ -18,28 +19,27 @@ export const insertGenerateInvoice = (generate_invoice_details) => async dispatc
       amount: data.amount,
       start_date: data.start_date,
       end_date: data.end_date,
-    })
+    }))
   );
-  console.log(subject_details,"subject_details")
-  // try {
-  //   axios({
-  //     method: 'POST',
-  //     url: apiurl + 'insert_generate_invoice',
-  //     data: { "invoice_details": subject_details }
-  //   }).then((response) => {
-  //     if (response.data.status === 1) {
-  //       notification.success({
-  //         message: "Invoice Generated Successfully",
-  //       });
-  //       dispatch({ type: INSERT_GENERATE_INVOICE, payload: response.data.status })
-  //       // dispatch(getBeiListByProjectId(params, employee_code))
-  //       return Promise.resolve();
-  //     } 
-  //   });
+  try {
+    axios({
+      method: 'POST',
+      url: apiurl + 'insert_generate_invoice',
+      data: { "invoice_details": subject_details }
+    }).then((response) => {
+      if (response.data.status === 1) {
+        notification.success({
+          message: "Invoice Generated Successfully",
+        });
+        dispatch({ type: INSERT_GENERATE_INVOICE, payload: response.data.status })
+        dispatch(getBeiListByProjectId(generate_invoice_details[0].project_id))
+        return Promise.resolve();
+      }
+    });
 
-  // } catch (err) {
+  } catch (err) {
 
-  // }
+  }
 }
 
 export const getBeiListByProjectId = (project_id) => async dispatch => {
@@ -54,7 +54,6 @@ export const getBeiListByProjectId = (project_id) => async dispatch => {
       },
     }).then((response) => {
       if (response.data.status === 1) {
-        // console.log(response.data.data.length,"//")
         dispatch({ type: GET_BEI_BY_PROJECT, payload: response.data.data })
         return Promise.resolve();
       }
@@ -79,7 +78,6 @@ export const getBeiSearch = (params) => async dispatch => {
       },
     }).then((response) => {
       if (response.data.status === 1) {
-        // console.log(response.data.data.length,"//")
         dispatch({ type: GET_BEI_SEARCH, payload: response.data.data })
         return Promise.resolve();
       }

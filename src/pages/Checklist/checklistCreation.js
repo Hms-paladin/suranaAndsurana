@@ -127,7 +127,7 @@ function CheckListCreation(props) {
     From_key.map((data) => {
       try {
         checkListForm[data].value = "";
-        console.log("mapping", checkListForm[data].value);
+      
       } catch (error) {
         throw error;
       }
@@ -149,7 +149,6 @@ function CheckListCreation(props) {
     From_key.map((data) => {
       try {
         checkListForm[data].value = "";
-        console.log("mapping", checkListForm[data].value);
       } catch (error) {
         throw error;
       }
@@ -219,9 +218,7 @@ function CheckListCreation(props) {
   ]);
 
   function checkValidation(data, key, multipleId) {
-    if (key == "checkListName") {
-      console.log(data, "dataaaa")
-    }
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       checkListForm[key].validation
@@ -537,7 +534,7 @@ function CheckListCreation(props) {
       ...prevState
     }));
   }, [updateList && updateList.length])
-  console.log(subActivity.projectSubActivitydata, "updateList")
+  
   return (
     <div>
       <div className="mainHeading">Check List Creation</div>

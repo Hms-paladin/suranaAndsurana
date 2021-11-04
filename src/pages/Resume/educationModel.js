@@ -47,16 +47,6 @@ function EducationModel(props) {
       handleCancel()
   }, [props.editbtn])
 
-
-
-
-  console.log(props.editbtn, "edittt")
-  //   useEffect(() => {
-  //     setEditbtn(props.editbtn);
-  //   }, [props]);
-
-
-
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Education_Form);
@@ -65,7 +55,6 @@ function EducationModel(props) {
         Education_Form[targetkeys[i]].value,
         Education_Form[targetkeys[i]].validation
       );
-      console.log(Education_Form[targetkeys[i]].validation, "Education_Form[targetkeys[i]].validation")
 
       Education_Form[targetkeys[i]].error = !errorcheck.state;
       Education_Form[targetkeys[i]].errmsg = errorcheck.msg;
@@ -97,11 +86,6 @@ function EducationModel(props) {
     handleCancel()
     props.handleChangeCloseModel()
   }
-
-
-
-
-  console.log(props.nullFieldValue, props.editEducations, "props.editExperiences")
 
   const handleCancel = () => {
     let ResumeFrom_key = [

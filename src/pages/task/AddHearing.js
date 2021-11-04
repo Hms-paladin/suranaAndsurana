@@ -112,7 +112,6 @@ export function Hearing(props) {
     }
     dispatch(getEmpListDepartment());
   }, []);
-  // console.log(props.rowData.data.activiity_id, "props.rowData.data")
 
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
@@ -162,7 +161,7 @@ export function Hearing(props) {
     var filtererr = targetkeys.filter(
       (obj) => HearingData[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else if (!AddAdjourn) {
@@ -240,16 +239,15 @@ export function Hearing(props) {
     setAddAdjourn(true)
   }
 
-  console.log(props.rowData, "props.rowData")
   return (
     <div>
       <div className="var_rate_master">Hearing</div>
       <div className="hearing_sh_table">
         <div><div>Project Name</div><div>{props.rowData?.data.project_name || props.project_wise[1][0]?.project_name}</div></div>
         <div><div>Client Name</div><div> {props.rowData?.data.client || props.project_wise[1][0]?.client}</div></div>
-        <div><div>Project Type</div><div></div>{props.rowData?.data.project_type || props.project_wise&&props.project_wise[1][0]?.project_type}</div>
-        <div><div>Project Sub Type</div><div>{props.rowData?.data.sub_project_type || props.project_wise&&props.project_wise[1][0]?.sub_project_type || '-'}</div></div>
-        <div><div>Process Type</div><div>{props.rowData?.data.process || props.project_wise&&props.project_wise[1][0]?.process || '-'}</div></div>
+        <div><div>Project Type</div><div></div>{props.rowData?.data.project_type || props.project_wise && props.project_wise[1][0]?.project_type}</div>
+        <div><div>Project Sub Type</div><div>{props.rowData?.data.sub_project_type || props.project_wise && props.project_wise[1][0]?.sub_project_type || '-'}</div></div>
+        <div><div>Process Type</div><div>{props.rowData?.data.process || props.project_wise && props.project_wise[1][0]?.process || '-'}</div></div>
       </div>
       <Grid item xs={12} container direction="row" spacing={3}>
         {!props.project_wise && <Grid item xs={3} container direction="column">

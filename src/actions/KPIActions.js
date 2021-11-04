@@ -76,7 +76,6 @@ export const GetKpiApproval = (data) => async dispatch => {
             },
         })
         .then((response) => {
-            console.log("responsedata",response)
             dispatch({type:GET_KPI_APPROVAL,payload:response.data.data})
         })
         
@@ -87,7 +86,6 @@ export const GetKpiApproval = (data) => async dispatch => {
 
 
 export const ApproveKpi = (form,props) => async dispatch => {
-    console.log("formdataaaa",form,props.kpi_id)
     try {
         axios({
             method: 'post',
@@ -108,7 +106,6 @@ export const ApproveKpi = (form,props) => async dispatch => {
         })
         .then((response) => {
             dispatch({type:UPDATE_KPI_APPROVAL,payload:response.data.data})
-            console.log("responsedata",response)
             if(response.data.status===1){
                 notification.success({
                     message: 'Kpi approved successfully',
@@ -137,7 +134,6 @@ export const InsertKpi = (data) => async dispatch => {
         })
         .then((response) => {
             dispatch({type:INSERT_KPI,payload:response.data.data})
-            console.log("responsedata",response)
             if(response.data.status===1){
                 notification.success({
                     message: 'Kpi inserted successfully',

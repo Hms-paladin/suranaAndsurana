@@ -5,8 +5,6 @@ import React, { Component } from 'react';
 class ValidationLibrary extends Component {
   checkValidation(textValue, validatorsArray) {
     for (var valid in validatorsArray) {//check validations through array
-      console.log("mystextvalue", validatorsArray[valid].name);
-      console.log("RAN", validatorsArray[valid].rangeID);
       if (textValue == "") {//check value is empty
         if (validatorsArray[valid].name == 'required') {
           return { msg: "Field required", state: false };//validation occurs break the loop & throw the error
@@ -39,13 +37,11 @@ class ValidationLibrary extends Component {
         }
       }
       else if (validatorsArray[valid].name == 'custommaxValue') {
-        console.log("validation", validatorsArray[valid].params)
         if (parseInt(textValue) > parseInt(validatorsArray[valid].params)) {
           return { msg: "Value should not greater than " + validatorsArray[valid].params, state: false };//validation occurs break the loop & throw the error
         }
       }
       else if (validatorsArray[valid].name == 'customminValue') {
-        console.log("validation", validatorsArray[valid].params)
         if (parseInt(textValue) < parseInt(validatorsArray[valid].params)) {
           return { msg: "Value should  greater than " + validatorsArray[valid].params, state: false };//validation occurs break the loop & throw the error
         }
@@ -216,7 +212,6 @@ class ValidationLibrary extends Component {
       }
       else if (validatorsArray[valid].name == "pan") {
         var re =  /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-       console.log(re.test(textValue),"re.test(textValue)")
         if (!re.test(textValue)  == true) {
           return { msg: " Enter valid PAN format ", state: false };
         }

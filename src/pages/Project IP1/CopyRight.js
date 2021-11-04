@@ -52,8 +52,6 @@ const CopyRight = (props) => {
 
     useEffect(() => {
 
-        console.log(props.getCopyRightData, "getCopyRightData")
-
         if (props.getCopyRightData.length > 0) {
             let CopyRightData = props.getCopyRightData
 
@@ -74,13 +72,9 @@ const CopyRight = (props) => {
         }));
         // copy_Right["reference"].value = copyright.reference|| ""
 
-        // console.log(props.getCopyRightData.length ,"ss")
-        // console.log(CopyRightData,"api data");
     }, [props.getCopyRightData])
 
     const handleChange = (info, uploadName) => {
-        console.log(info, 'sdfjdfsjklkl')
-
 
         if (info.status !== 'error' && info.status !== "uploading") {
 
@@ -117,14 +111,14 @@ const CopyRight = (props) => {
         var filtererr = targetkeys.filter(
             (obj) => copy_Right[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setCopy_Right({ error: true });
         } else {
             // setCopy_Right({ error: false });
             if (props.getCopyRightData.length > 0) {
                 var copy_right_id = props.getCopyRightData[0].copy_right_id
-                console.log(copy_right_id)
+
                 dispatch(updateCopyright(copy_Right, IdDetails, fileupload, copy_right_id)).then(() => {
                     handleCancel()
                     setFileupload([])
@@ -175,7 +169,7 @@ const CopyRight = (props) => {
         let multipleIdList = []
 
         if (multipleId) {
-            multipleId.length>0&&multipleId.map((item) => {
+            multipleId.length > 0 && multipleId.map((item) => {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i] === item.value) {
                         multipleIdList.push(item.id)
@@ -196,7 +190,7 @@ const CopyRight = (props) => {
 
     return (
         <div >
-            
+
             <div className="copyright_div">
                 <Grid item xs={12} md={12} className="app_cont_domestic">
 
@@ -222,16 +216,16 @@ const CopyRight = (props) => {
                         <div className="copyFieldheadings">Upload Image</div>
                         <div className="uploadbox_div"  >
                             {/* <div> */}
-                                <Upload
-                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                                    onChange={(info) => handleChange(info, "examScheduleUpload")}
-                                    // fileList={fileupload}
-                                    accept={'jpg'}
-                                >
-                                    <Button>
-                                        <UploadOutlined />Click to upload
-                                    </Button>
-                                </Upload>
+                            <Upload
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                                onChange={(info) => handleChange(info, "examScheduleUpload")}
+                                // fileList={fileupload}
+                                accept={'jpg'}
+                            >
+                                <Button>
+                                    <UploadOutlined />Click to upload
+                                </Button>
+                            </Upload>
 
                             {/* </div> */}
                         </div>
@@ -257,7 +251,7 @@ const CopyRight = (props) => {
                     </Grid>
                 </Grid>
             </div>
-           
+
             <Grid item xs={12} container justify="flex-end" className="patent_btns">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />

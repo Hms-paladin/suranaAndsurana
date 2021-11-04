@@ -52,7 +52,7 @@ function TimeSheetApproval(props) {
     }, [props.timesheet_data]);
 
     function checkboxClick(e, index) {
-        console.log(e.target.checked, index, "checkbox")
+
         if (e.target.checked === true) {
             TimeSheetArr[index].editicon = true
         }
@@ -73,7 +73,7 @@ function TimeSheetApproval(props) {
             })
         }
         setEditicon(!editicon)
-        // console.log(e.target.checked,'checksss')
+
     }
     function edittimesheetResult(data) {
         TimeSheetArr[edit_timesheet_index] = data
@@ -96,14 +96,13 @@ function TimeSheetApproval(props) {
                     val.editicon && val.editicon === true
                 )
             })
-            // console.log(data_res_id,"data_res_id")
 
             if (!data_res_id) {
                 notification.success({
                     message: 'Please select atleast one timesheet',
                 });
             } else {
-                dispatch(update_approve_timesheet(TimeSheetArr,1)).then(() => {
+                dispatch(update_approve_timesheet(TimeSheetArr, 1)).then(() => {
                     dispatch(getOtherTask())
                     props.closemodal(false)
                 })

@@ -377,11 +377,6 @@ const ResumePage = (props) => {
   }, [props]);
 
   function checkValidation(data, key, multipleId) {
-    // if (data !== 1 && data !== 10 && key === "candidate") {
-    //   console.log("candidate", experienceList.length);
-    // } else {
-    //   employererr && setEmployererr(false);
-    // }
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -416,9 +411,7 @@ const ResumePage = (props) => {
     }));
   }
 
-  useEffect(async() => {
-    console.log(props.resumeEditrow && props.resumeEditrow[0]?.experience, "Resume_Form")
-
+  useEffect(async () => {
 
     if (props.resumeEditrow && props.resumeEditrow[0]?.qualification.length > 0) {
       setEducationList(props.resumeEditrow[0]?.qualification)
@@ -435,7 +428,7 @@ const ResumePage = (props) => {
       setEditResume(true)
       setResume_id(props.resumeEditrow[0].resume_id)
       let languageValue = [];
-     await JSON.parse("[" + props.resumeEditrow[0]?.language_id + "]").map((data) => {
+      await JSON.parse("[" + props.resumeEditrow[0]?.language_id + "]").map((data) => {
         resumeGetList && resumeGetList?.languagesList?.map((list) => {
           if (data === list.id) {
 
@@ -443,7 +436,6 @@ const ResumePage = (props) => {
           }
         })
       })
-      console.log(languageValue,resumeGetList?.languagesList, "testinglan")
 
       // skills
       let skillsValue = [];
@@ -561,12 +553,12 @@ const ResumePage = (props) => {
 
     }
 
-  }, [props.resumeEditrow,resumeGetList?.languagesList])
+  }, [props.resumeEditrow, resumeGetList?.languagesList])
 
 
 
   function onSubmit(text) {
-    console.log(text, "testing")
+
     var mainvalue = {};
     var targetkeys = Object.keys(Resume_Form);
     for (var i in targetkeys) {
@@ -579,8 +571,7 @@ const ResumePage = (props) => {
       mainvalue[targetkeys[i]] = Resume_Form[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => Resume_Form[obj].error == true);
-    console.log(filtererr.length, "error");
-    // console.log(educationList.length, "educationList.length")
+
     if (educationList.length === 0 || experienceList.length === 0) {
       educationList.length === 0 && !educationerr && setEducationerr(true);
 
@@ -611,7 +602,7 @@ const ResumePage = (props) => {
       (experienceList.length !== 0 || Resume_Form.candidate.value === 1 || Resume_Form.candidate.value === 10) &&
       filtererr.length === 0
     ) {
-      console.log("checkkkk")
+
       setSaveButton(false)
       dispatch(UpdateResume(Resume_Form, educationList, experienceList, resume_id)).then(
         () => {
@@ -639,7 +630,7 @@ const ResumePage = (props) => {
         }
       );
     }
-    console.log(educationList.length, experienceList.length, Resume_Form.candidate.value, filtererr.length, "checkkkk")
+
     setResumeFrom((prevState) => ({
       ...prevState,
     }));
@@ -704,7 +695,6 @@ const ResumePage = (props) => {
     setEducationModelOpen(true);
   };
   const showDeleteEducationModel = (x) => {
-    console.log(educationList[x], "educationList");
     if (x > -1) {
       educationList.splice(x, 1);
     }
@@ -757,8 +747,6 @@ const ResumePage = (props) => {
   };
 
   function addExperience(data) {
-    console.log(data, "addExperience");
-
     setExperienceList([
       ...experienceList,
       {
@@ -805,12 +793,11 @@ const ResumePage = (props) => {
   const onFileChange = (event) => {
     setFileData(event.target.files[0])
     setEditBtn(true)
-    console.log(event, "filedata")
+
   }
   const onFileDelete = () => {
     setFileData({})
     setEditBtn(false)
-    console.log(filedata, "filedata")
   }
 
   return (
@@ -1354,7 +1341,6 @@ const ResumePage = (props) => {
 
                 <div className="experienceOuterBox">
                   {experienceList.map((data, index) => {
-                    console.log(data, "experiencexperienceListeList")
                     return (
                       <div className="experienceKeyValue">
                         <div className="experienceKey">
@@ -1471,7 +1457,6 @@ const ResumePage = (props) => {
 };
 
 const mapStateToProps = (state) => (
-  console.log(state, "checkstate"),
   {
     getResourcesType: state.getOptions.getResourcesType || [],
     getInstitute: state.getOptions.getInstitute || [],

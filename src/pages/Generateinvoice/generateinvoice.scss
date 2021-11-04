@@ -3,7 +3,8 @@
 }
 
 .btngenerate{
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
     padding-right: 20px;
     margin-top: 30px;
 }
@@ -13,3 +14,9 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.grandTotal{    
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }

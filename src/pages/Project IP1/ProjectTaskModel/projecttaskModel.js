@@ -98,7 +98,7 @@ function ProjectTaskModel(props) {
     From_key.map((data) => {
       try {
         InsertTaskForm[data].value = "";
-        console.log("mapping", InsertTaskForm[data].value);
+
       } catch (error) {
         throw error;
       }
@@ -156,8 +156,8 @@ function ProjectTaskModel(props) {
       }
 
       dispatch(inserTask(data)).then((response) => {
-        if(!props.ProjectTaskOpen_Hearing)
-        dispatch(getProjectDetails(rowId))
+        if (!props.ProjectTaskOpen_Hearing)
+          dispatch(getProjectDetails(rowId))
         handleCancel();
         props.model_close && props.model_close()
       })
@@ -169,7 +169,6 @@ function ProjectTaskModel(props) {
     }));
   };
 
-console.log(props.ProjectTaskOpen_Hearing,"props.ProjectTaskOpen_Hearing")
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
@@ -371,7 +370,7 @@ console.log(props.ProjectTaskOpen_Hearing,"props.ProjectTaskOpen_Hearing")
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="select"
-              value={InsertTaskForm.assignTo.value?InsertTaskForm.assignTo.value:JSON.parse(localStorage.getItem("empId"))}
+              value={InsertTaskForm.assignTo.value ? InsertTaskForm.assignTo.value : JSON.parse(localStorage.getItem("empId"))}
               error={InsertTaskForm.assignTo.error}
               errmsg={InsertTaskForm.assignTo.errmsg}
               dropdown={assignedToLists.assignedToData}
@@ -430,7 +429,7 @@ console.log(props.ProjectTaskOpen_Hearing,"props.ProjectTaskOpen_Hearing")
 }
 
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
 
   activitysList: state.projectTasksReducer.getActivityList || [],

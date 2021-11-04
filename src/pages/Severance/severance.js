@@ -1,22 +1,22 @@
-import react, { useState,useEffect } from 'react';
+import react, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
 import './severance.scss';
 import { notification } from "antd";
 import { useDispatch, connect } from "react-redux";
-import {GetEmployeeDetails,InsertSeverance,ViewSeverance}  from '../../actions/ExitSeveranceAction'
+import { GetEmployeeDetails, InsertSeverance, ViewSeverance } from '../../actions/ExitSeveranceAction'
 import ValidationLibrary from "../../helpers/validationfunction";
 import moment from 'moment';
 
 function Severance(props) {
 
-    const [SeveranceDetails,setSeveranceDetails]=useState([])
+    const [SeveranceDetails, setSeveranceDetails] = useState([])
     const [saveRights, setSaveRights] = useState([])
     const [EmployeeDoj, setEmployeeDoj] = useState(new Date())
-    const [ExitSeverance,setExitSeverance]=useState({
+    const [ExitSeverance, setExitSeverance] = useState({
         date: {
-            value:"",
+            value: "",
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -28,27 +28,27 @@ function Severance(props) {
             errmsg: null,
         },
     })
-    let dispatch=useDispatch()
+    let dispatch = useDispatch()
     useEffect(() => {
         dispatch(ViewSeverance())
         dispatch(GetEmployeeDetails())
-    },[])
-   
+    }, [])
+
     useEffect(() => {
-        props.EmployeeDetails&&props.EmployeeDetails.length>0&&props.EmployeeDetails.map((data)=>{
+        props.EmployeeDetails && props.EmployeeDetails.length > 0 && props.EmployeeDetails.map((data) => {
             setSeveranceDetails({
-                emp_name:data.name===null?"-":data.name,
-                designation:data.senior_associate===null?"-":data.senior_associate,
-                department:data.department===null?"-":data.department
+                emp_name: data.name === null ? "-" : data.name,
+                designation: data.senior_associate === null ? "-" : data.senior_associate,
+                department: data.department === null ? "-" : data.department
             })
-            if(props.EmployeeDetails[0].doj<moment().format("YYYY-MM-DD")){
+            if (props.EmployeeDetails[0].doj < moment().format("YYYY-MM-DD")) {
                 setEmployeeDoj(new Date())
-            }else{
-            setEmployeeDoj(moment(`${props.EmployeeDetails[0].doj&&props.EmployeeDetails[0].doj} 11:00:00 AM`,"YYYY-MM-DD HH:mm:ss A").format())
+            } else {
+                setEmployeeDoj(moment(`${props.EmployeeDetails[0].doj && props.EmployeeDetails[0].doj} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format())
             }
         })
-        // console.log( props.EmployeeDetails,"dfghj")
-    },[props.EmployeeDetails])    
+
+    }, [props.EmployeeDetails])
 
     function checkValidation(data, key) {
         var errorcheck = ValidationLibrary.checkValidation(
@@ -65,14 +65,14 @@ function Severance(props) {
             ...prevState,
             [key]: dynObj,
         }));
-       
+
 
     }
 
     const handleCancel = () => {
-        let From_key = ["date","reason"]
+        let From_key = ["date", "reason"]
         From_key.map((data) => {
-            ExitSeverance[data].value = ""; 
+            ExitSeverance[data].value = "";
         });
         setExitSeverance((prevState) => ({
             ...prevState,
@@ -91,12 +91,12 @@ function Severance(props) {
             mainvalue[targetkeys[i]] = ExitSeverance[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter((obj) => ExitSeverance[obj].error == true);
-        if(filtererr.length>0){
-          
-        }else{
-               dispatch(InsertSeverance(ExitSeverance,props.EmployeeDetails[0]&&props.EmployeeDetails[0].emp_id)).then((response)=>{
-                 handleCancel()
-               })     
+        if (filtererr.length > 0) {
+
+        } else {
+            dispatch(InsertSeverance(ExitSeverance, props.EmployeeDetails[0] && props.EmployeeDetails[0].emp_id)).then((response) => {
+                handleCancel()
+            })
         }
         setExitSeverance((prevState) => ({
             ...prevState,
@@ -104,24 +104,20 @@ function Severance(props) {
     }
 
     ///***********user permission**********/
-useEffect(() => {
-if(props.UserPermission.length>0&&props.UserPermission){
-   let data_res_id = props.UserPermission.find((val) => { 
-   return (
-       "Exit Interview Form - Save" == val.control 
-   ) 
-  })
-  setSaveRights(data_res_id)
-}
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Exit Interview Form - Save" == val.control
+                )
+            })
+            setSaveRights(data_res_id)
+        }
 
-}, [props.UserPermission]);
+    }, [props.UserPermission]);
 
+    /////////////
 
-console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status==='Rejected',"ViewSeverance")
-
-
-/////////////
-    console.log(props.EmployeeDetails[0]&&props.EmployeeDetails[0].emp_id,"dfghjk")
     return (
         <div>
             <div className="heading">Severance</div>
@@ -129,7 +125,7 @@ console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status=
                 <div className="severanceHeader">
                     <div>
                         <div>Employee</div>
-                        
+
                         <div className="severanceData">{SeveranceDetails.emp_name}</div>
                     </div>
                     <div>
@@ -148,14 +144,14 @@ console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status=
                             <div className="appraisalFieldheading"> Date of Resignation</div>
                             <div>
                                 <Labelbox type="datepicker"
-                                placeholder="Date"
-                                changeData={(data) =>
-                                    checkValidation(data, "date")
-                                }
-                                value={ExitSeverance.date.value}
-                                error={ExitSeverance.date.error}
-                                errmsg={ExitSeverance.date.errmsg}
-                                minDate={EmployeeDoj}
+                                    placeholder="Date"
+                                    changeData={(data) =>
+                                        checkValidation(data, "date")
+                                    }
+                                    value={ExitSeverance.date.value}
+                                    error={ExitSeverance.date.error}
+                                    errmsg={ExitSeverance.date.errmsg}
+                                    minDate={EmployeeDoj}
                                 />
                             </div>
                         </Grid>
@@ -164,12 +160,12 @@ console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status=
                             <div className="reasonBoxseverance">
                                 <div className="reasonsSeverance">
                                     <Labelbox type="textarea"
-                                    changeData={(data) =>
-                                        checkValidation(data, "reason")
-                                    }
-                                    value={ExitSeverance.reason.value}
-                                    error={ExitSeverance.reason.error}
-                                    errmsg={ExitSeverance.reason.errmsg}
+                                        changeData={(data) =>
+                                            checkValidation(data, "reason")
+                                        }
+                                        value={ExitSeverance.reason.value}
+                                        error={ExitSeverance.reason.error}
+                                        errmsg={ExitSeverance.reason.errmsg}
                                     />
                                 </div>
                             </div>
@@ -178,13 +174,13 @@ console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status=
 
                         </Grid>
                         <Grid item xs={9}>
-                            {((props.ViewSeverance.length===0)||(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status==='Rejected'))&&
-                            <div className="appraisalBtn">
-                                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} onBtnClick={onsubmit}/>
-                                <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={handleCancel}/>
-                            </div>
+                            {((props.ViewSeverance.length === 0) || (props.ViewSeverance.length > 0 && props.ViewSeverance[0].approve_status === 'Rejected')) &&
+                                <div className="appraisalBtn">
+                                    <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={onsubmit} />
+                                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={handleCancel} />
+                                </div>
                             }
-                            
+
                         </Grid>
                     </Grid>
 
@@ -192,13 +188,13 @@ console.log(props.ViewSeverance.length>0&&props.ViewSeverance[0].approve_status=
             </div>
 
 
-    </div>
+        </div>
     )
 }
-    const mapStateToProps = (state) =>
-    ({
-        UserPermission: state.UserPermissionReducer.getUserPermission,
-        EmployeeDetails:state.ExitSeverance.EmployeeDetails,
-        ViewSeverance:state.ExitSeverance.ViewSeverance,
-    });
-export default connect(mapStateToProps) (Severance);
+const mapStateToProps = (state) =>
+({
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+    EmployeeDetails: state.ExitSeverance.EmployeeDetails,
+    ViewSeverance: state.ExitSeverance.ViewSeverance,
+});
+export default connect(mapStateToProps)(Severance);

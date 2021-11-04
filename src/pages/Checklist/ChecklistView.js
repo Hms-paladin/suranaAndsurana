@@ -38,12 +38,6 @@ function CheckListView(props) {
         }
 
     })
-    const header = [
-        { id: 'checklist', label: 'CheckList Name' },
-        { id: 'startdate', label: 'Start Date' },
-        { id: 'endmonth', label: 'End Month' },
-        { id: 'week', label: 'Days Of Week' },
-    ];
 
     useEffect(() => {
         dispatch(getEmployeeList())
@@ -169,32 +163,23 @@ function CheckListView(props) {
         });
         setEmployeelist({ EmployeeList })
 
-        // Table Show:
-
-        // let rowDataList = []
-        // props.getCheckListsView && props.getCheckListsView.map((data, index) => {
-        //     var Days = []
-        //     var weeks = data.days_of_week.map((val) => {
-        //         Days.push(val.days_of_week)
-        //     })
-        //     rowDataList.push({
-        //         checklist: data.check_list,
-        //         startdate: moment(data.start_date).format("DD-MMM-YYYY"),
-        //         endmonth: moment(data.end_date).format("MMMM"),
-        //         week: Days.toString()
-        //     })
-        // })
-
-        // setRowData(rowDataList)
         setEmployeeId(Number(localStorage.getItem("empId")))
-    }, [props.getEmployeeList, props.getCheckListsView])
+    }, [props.getEmployeeList])
 
 
-    const checkValidation = useCallback((data, key) => {
+    const checkValidation = (data, key) => {
 
-        dispatch(getCheckListsView(data))
-        setEmployeeId(data)
-    }, [employeeId])
+        if (key === "employee") {
+            dispatch(getCheckListsView(data))
+            setEmployeeId(data)
+        } else if (key === "checklist_item_date") {
+            ChecklistView.checklist_item_date.value = data
+            setChecklistView((prevState) => ({
+                ...prevState
+            }));
+        }
+    }
+
 
 
     return (
@@ -232,7 +217,8 @@ function CheckListView(props) {
                         </div>
                         <Grid item xs={12} container direction="row" style={{ justifyContent: 'center', marginTop: 10 }} spacing={2}>
                             <Grid item xs={9} container direction="column">
-                                <Labelbox type="datepicker"
+                                <Labelbox
+                                    type="datepicker"
                                     // disablePast={true}
                                     minDate={moment(`${IndexArr[2]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
                                     maxDate={moment(`${IndexArr[3]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}

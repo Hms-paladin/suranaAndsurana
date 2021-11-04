@@ -34,12 +34,12 @@ function TradeMarkOposition2(properties) {
             TradeMarkForm.status_id.value = obj.status_id;
             // if (obj.status_id && obj.status_id.length)
             //     TradeMarkForm.status_id.disabled = true;
-            
-            if(obj.deadline!=null&&obj.deadline!="0000-00-00"){    
+
+            if (obj.deadline != null && obj.deadline != "0000-00-00") {
                 TradeMarkForm.end_date.value = obj.deadline;
                 // if (obj.deadline && obj.deadline.length)
                 //     TradeMarkForm.end_date.disabled = true;
-            }  
+            }
             TradeMarkForm.class_id.value = obj.class_id;
             // if (obj.class_id && obj.class_id.length)
             //     TradeMarkForm.class_id.disabled = true;
@@ -59,7 +59,7 @@ function TradeMarkOposition2(properties) {
             // TradeMarkForm.class_id.value = obj.class_id;
             // if (obj.class_id && obj.class_id.length)
             // TradeMarkForm.class_id.disabled = true;
-        
+
             TradeMarkForm.mark_id.value = obj.mark_id;
             // if (obj.mark_id && obj.mark_id.length)
             //     TradeMarkForm.mark_id.disabled = true;
@@ -85,7 +85,7 @@ function TradeMarkOposition2(properties) {
             // if (obj.status_id && obj.status_id.length)
             //     TradeMarkForm.status_id.disabled = true;
 
-            if(obj.tmj_date!="0000-00-00"){
+            if (obj.tmj_date != "0000-00-00") {
                 TradeMarkForm.tmj_date.value = obj.tmj_date;
                 // if (obj.tmj_date && obj.tmj_date.length)
                 //     TradeMarkForm.tmj_date.disabled = true;
@@ -130,14 +130,14 @@ function TradeMarkOposition2(properties) {
         )
         setclassDetList({ classDetailsData })
 
-    }, [properties.tradeStatusList, properties.classDetailsList,properties.tradeMark  ]);
+    }, [properties.tradeStatusList, properties.classDetailsList, properties.tradeMark]);
 
     const dispatch = useDispatch()
     let { rowId } = useParams()
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
-  
+
     const [TradeMarkForm, setTradeMarkForm] = useState({
         trademark_id: {
             value: 0,
@@ -159,7 +159,7 @@ function TradeMarkOposition2(properties) {
             error: null,
             errmsg: null,
             disabled: false,
-        },  
+        },
         status_id: {
             value: "",
             // validation: [{ "name": "required" },],
@@ -180,7 +180,7 @@ function TradeMarkOposition2(properties) {
             error: null,
             errmsg: null,
             disabled: false,
-        }, 
+        },
         end_date: {
             value: "",
             // validation: [{ "name": "required" },],
@@ -257,22 +257,21 @@ function TradeMarkOposition2(properties) {
 
     function onSubmit() {
 
-          var mainvalue = {};
-          var targetkeys = Object.keys(TradeMarkForm);
-          for (var i in targetkeys) {
-              var errorcheck = ValidationLibrary.checkValidation(
-                  TradeMarkForm[targetkeys[i]].value,
-                  TradeMarkForm[targetkeys[i]].validation
-              );
-              TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
-              TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
-              mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
-          }
-          var filtererr = targetkeys.filter(
-              (obj) => TradeMarkForm[obj].error == true
-          ); 
-        console.log(filtererr.length);
-        
+        var mainvalue = {};
+        var targetkeys = Object.keys(TradeMarkForm);
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                TradeMarkForm[targetkeys[i]].value,
+                TradeMarkForm[targetkeys[i]].validation
+            );
+            TradeMarkForm[targetkeys[i]].error = !errorcheck.state;
+            TradeMarkForm[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => TradeMarkForm[obj].error == true
+        );
+
         // let params = {
         //     "project_id": rowId,//radeMarkForm.project_id.value,
         //     "status_id":TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value,
@@ -294,48 +293,48 @@ function TradeMarkOposition2(properties) {
         //     "updated_by": localStorage.getItem("empId"),
         //     "ip_address": "ddf"
         // }
-// console.log(TradeMarkForm.orders.value,"TradeMarkForm.orders.value")
+
         let formData = new FormData();
-        formData.append("project_id",rowId)
-        formData.append("status_id",TradeMarkForm.status_id.value===''?'0':TradeMarkForm.status_id.value)
-        formData.append("our_reference",TradeMarkForm.ourReference.value||'')
-        formData.append("mark_id",TradeMarkForm.mark_id.value)
-        formData.append("upload_image",(!TradeMarkForm.upload.view_file&&!TradeMarkForm.upload.value)?[]:(TradeMarkForm.upload.value?TradeMarkForm.upload.value:TradeMarkForm.upload.view_file.substr(35) ))
-        formData.append("orders", (!TradeMarkForm.orders.view_file&&!TradeMarkForm.orders.value)?[]:(TradeMarkForm.orders.value?TradeMarkForm.orders.value:TradeMarkForm.orders.view_file.substr(35) ))
-        formData.append("application_no",TradeMarkForm.application_no.value||'')
-        formData.append("application_date",TradeMarkForm.application_date.value===''?'0000-00-00':TradeMarkForm.application_date.value)
-        formData.append("tmj_number",TradeMarkForm.tmj_number.value||'')
-        formData.append("tmj_date",TradeMarkForm.tmj_date.value===''?'0000-00-00':TradeMarkForm.tmj_date.value)
+        formData.append("project_id", rowId)
+        formData.append("status_id", TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value)
+        formData.append("our_reference", TradeMarkForm.ourReference.value || '')
+        formData.append("mark_id", TradeMarkForm.mark_id.value)
+        formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(35)))
+        formData.append("orders", (!TradeMarkForm.orders.view_file && !TradeMarkForm.orders.value) ? [] : (TradeMarkForm.orders.value ? TradeMarkForm.orders.value : TradeMarkForm.orders.view_file.substr(35)))
+        formData.append("application_no", TradeMarkForm.application_no.value || '')
+        formData.append("application_date", TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value)
+        formData.append("tmj_number", TradeMarkForm.tmj_number.value || '')
+        formData.append("tmj_date", TradeMarkForm.tmj_date.value === '' ? '0000-00-00' : TradeMarkForm.tmj_date.value)
 
-        formData.append("opposition_no",TradeMarkForm.oppositionNumber.value||'')
-        formData.append("applicant",TradeMarkForm.applicant.value||'')
-        formData.append("applicant_agent",TradeMarkForm.applicantAgent.value||'')
-        
-        formData.append("deadline",TradeMarkForm.end_date.value===''?'0000-00-00':TradeMarkForm.end_date.value)
-        formData.append("internal_status",TradeMarkForm.internal_status.value)
+        formData.append("opposition_no", TradeMarkForm.oppositionNumber.value || '')
+        formData.append("applicant", TradeMarkForm.applicant.value || '')
+        formData.append("applicant_agent", TradeMarkForm.applicantAgent.value || '')
 
-        formData.append("created_by",localStorage.getItem("empId"))
-        formData.append("created_on",moment().format('YYYY-MM-DD HH:m:s'))
-        formData.append("updated_on",moment().format('YYYY-MM-DD HH:m:s'))
-        formData.append("updated_by",localStorage.getItem("empId"))
-        formData.append("ip_address","ddf")
+        formData.append("deadline", TradeMarkForm.end_date.value === '' ? '0000-00-00' : TradeMarkForm.end_date.value)
+        formData.append("internal_status", TradeMarkForm.internal_status.value)
 
-        if (TradeMarkForm.class_id.value&&TradeMarkForm.class_id.value != "") {
-            formData.set("class_id",TradeMarkForm.class_id.value)
+        formData.append("created_by", localStorage.getItem("empId"))
+        formData.append("created_on", moment().format('YYYY-MM-DD HH:m:s'))
+        formData.append("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
+        formData.append("updated_by", localStorage.getItem("empId"))
+        formData.append("ip_address", "ddf")
+
+        if (TradeMarkForm.class_id.value && TradeMarkForm.class_id.value != "") {
+            formData.set("class_id", TradeMarkForm.class_id.value)
             // params["class_id"] = TradeMarkForm.class_id.value;
         }
 
         if (TradeMarkForm.trademark_id.value != 0) {
-            formData.set("trademark_id",TradeMarkForm.trademark_id.value)
+            formData.set("trademark_id", TradeMarkForm.trademark_id.value)
         }
 
         if (filtererr.length > 0) {
             // setResumeFrom({ error: true });
         } else {
-        dispatch(insertTradeMark(formData,TradeMarkForm,rowId)).then(() => {
-            handleCancel()
-        })
-    }
+            dispatch(insertTradeMark(formData, TradeMarkForm, rowId)).then(() => {
+                handleCancel()
+            })
+        }
         /* if (filtererr.length > 0) {
              // setResumeFrom({ error: true });
          } else {
@@ -350,12 +349,12 @@ function TradeMarkOposition2(properties) {
 
     const handleCancel = () => {
         let From_key = ["ourReference", "status_id", "class_id", "applicant", "applicantAgent", "mark_id", "application_no", "application_date",
-            "end_date","oppositionNumber", "internal_status", "tmj_number", "tmj_date","upload","orders"
+            "end_date", "oppositionNumber", "internal_status", "tmj_number", "tmj_date", "upload", "orders"
         ]
 
         From_key.map((data) => {
             try {
-                if (data != "upload"||data != "orders") {
+                if (data != "upload" || data != "orders") {
                     TradeMarkForm[data].value = ""
                 } else {
                     TradeMarkForm[data].view_file = ""
@@ -414,7 +413,7 @@ function TradeMarkOposition2(properties) {
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Status</div>
                         <Labelbox type="select"
-                             changeData={(data) => checkValidation(data, "status_id")}
+                            changeData={(data) => checkValidation(data, "status_id")}
                             dropdown={tradeStatusList.tradeStatusData}
                             value={TradeMarkForm.status_id.value}
                             error={TradeMarkForm.status_id.error}

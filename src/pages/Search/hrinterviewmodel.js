@@ -7,8 +7,8 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-import {getDesignationList } from "../../actions/MasterDropdowns";
-import { GetInterviewers,GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
+import { getDesignationList } from "../../actions/MasterDropdowns";
+import { GetInterviewers, GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 const HrInterviewModel = (props) => {
   const dispatch = useDispatch();
   const [roundDropdownValues, setroundDropdownValues] = useState({})
@@ -86,7 +86,7 @@ const HrInterviewModel = (props) => {
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
 
-    
+
     // if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
     //   let data_res_id = props.GetInterviewers.find((val) => {
     //     return (
@@ -95,22 +95,24 @@ const HrInterviewModel = (props) => {
     //   })
     //   setFinalIntId(data_res_id.emp_id)
     // }
-   
+
     let Designation = []
     props.getDesignationList.map((data, index) =>
-      Designation.push({ value: <div style={{whiteSpace:'nowrap',display:'flex',color:'black'}}><div style={{fontWeight:'bold'}}>{!data.department?' - ':data.department}</div>{' - '+data.designation}</div>,
-      id: data.designation_id})
+      Designation.push({
+        value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
+        id: data.designation_id
+      })
     )
     setdesignationdata({ Designation })
   }, [props.GetInterviewers, props.getDesignationList])
 
-    useEffect(() => {
-      let InterviewApprover = []
-      props.GetInterviewersApprFinal.length > 0 && props.GetInterviewersApprFinal.map((data, index) =>
-        InterviewApprover.push({ id: data.emp_id, value: data.name }))
-      setInterviewApprover({ InterviewApprover })
-  
-    }, [props.GetInterviewersApprFinal])
+  useEffect(() => {
+    let InterviewApprover = []
+    props.GetInterviewersApprFinal.length > 0 && props.GetInterviewersApprFinal.map((data, index) =>
+      InterviewApprover.push({ id: data.emp_id, value: data.name }))
+    setInterviewApprover({ InterviewApprover })
+
+  }, [props.GetInterviewersApprFinal])
   // ____________________
 
   function checkValidation(data, key, multipleId) {
@@ -119,7 +121,7 @@ const HrInterviewModel = (props) => {
       // Interviewschedule.interviewer.value = finalIntId
       dispatch(GetInterviewersApprFinal());
       // setFinalRound(true)
-    } 
+    }
     if (data !== 27 && key === "round") {
       // setFinalRound(false)
       dispatch(GetInterviewers());
@@ -159,7 +161,7 @@ const HrInterviewModel = (props) => {
     var filtererr = targetkeys.filter(
       (obj) => Interviewschedule[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
     } else {
       dispatch(InesertInterviewDetails(Interviewschedule, props.selectedId)).then(() => {
@@ -201,11 +203,11 @@ const HrInterviewModel = (props) => {
         return (props.roundName === data.value)
       })
       for (let i = 0; i < getDisableId[0].id; i++) {
-        if(roundDropdownValues.hr_round[i])
-        roundDropdownValues.hr_round[i].disable = true
+        if (roundDropdownValues.hr_round[i])
+          roundDropdownValues.hr_round[i].disable = true
       }
     }
-    
+
   }, [props])
 
   return (
@@ -262,7 +264,6 @@ const HrInterviewModel = (props) => {
 }
 
 const mapStateToProps = (state) => (
-  // console.log(state.getOptions.GetInterviewers, "getProcessType")
   {
     GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
     getDesignationList: state.getOptions.getDesignationList || [],

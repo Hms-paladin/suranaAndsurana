@@ -52,15 +52,7 @@ function AddResource(props) {
    }
   
    }, [props.UserPermission]);
-  
-  
-  //    console.log(rights,"rigths")
-  
-   function rightsNotification(){
-    notification.success({
-        message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
+
   /////////////
     return (
         <div>

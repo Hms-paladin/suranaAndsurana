@@ -21,17 +21,13 @@ function LeaveApproval(props) {
 
     let dispatch = useDispatch()
     useEffect(() => {
-        console.log(props.LeaveData, "props.LeaveData")
         dispatch(getEmpApproval(props.LeaveData))
-        // setLeaveModelTitle(props.modelTitles)
         setChangebtn(true)
     }, [props.LeaveData])
 
     useEffect(() => {
-        console.log(props.getLeaveApproval, "props.getLeaveApproval")
         let Approvaldata = []
         props.getLeaveApproval.map((data) => {
-            console.log(data, "props.getLeaveApproval")
             Approvaldata.push({
                 empname: data.name === null ? "-" : data.name,
                 leavetype: data.leave_type,
@@ -66,7 +62,6 @@ function LeaveApproval(props) {
         setChangebtn(false)
     }
     const EmployeeApprove = (data) => {
-        // console.log(data,"leaveStatus")
         let Leave_status = false;
         if (data === "approve") {
             Leave_status = true
@@ -106,7 +101,6 @@ function LeaveApproval(props) {
             placement: "topRight",
         });
     };
-    console.log("ApprovalData", ApprovalData)
     return (
         <div className="leaveContainer">
             <div className="leaveModelFields">
@@ -158,7 +152,7 @@ function LeaveApproval(props) {
                         <div>
                             <div>To </div>
                             <div className="fielddataView">{ApprovalData[0] && ApprovalData[0].to != "Invalid date" ? ApprovalData[0].to : '--'}</div>
-                            {/* {console.log(ApprovalData[0])} */}
+
                         </div>
                         <div>
                             <div>Balance</div>

@@ -42,7 +42,7 @@ function Stages(props) {
 
     useEffect(() => {
         if (props.projectDetails && props.projectDetails.length > 0) {
-            if (props.projectDetails[0].project_type_id ===6) {
+            if (props.projectDetails[0].project_type_id === 6) {
                 setLitigation(true)
             } else {
                 setLitigation(false)
@@ -162,7 +162,6 @@ function Stages(props) {
         let stageArrItem = []
         let subStageArrItem = []
 
-        console.log(props.getAllStages, "getAllStages")
         props.getAllStages.map((data) => {
             stageArrItem.push(data.stage)
             subStageArrItem.push(data.sub_stage)
@@ -172,10 +171,6 @@ function Stages(props) {
         setSubStageItem(subStageArrItem)
 
     }, [props.getAllStages])
-
-    console.log(stageItem, "stageItem")
-
-
 
     return (
         <div>
@@ -214,7 +209,7 @@ function Stages(props) {
                 <Grid item xs={4}>
                     <div className="stageHeading"> Sub {Litigation ? 'Case Types' : 'Stages'}</div>
                     {subStageItem.map((data) => {
-                        return <div >{!data?'-':data}</div>
+                        return <div >{!data ? '-' : data}</div>
                     })}
                 </Grid>
 

@@ -35,9 +35,6 @@ function Timesheetmodel(props) {
         }
     }, [props.rowData]);
 
-
-    // console.log("propsTImeSheet", props);
-
     return (
         <div className="tabIconsViewtooltip">
             <div className="tooltiptitle">Time Sheet</div>

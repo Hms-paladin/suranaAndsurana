@@ -99,7 +99,6 @@ function DayReport(props) {
 
     //API DISPATCH
     const SearchData = () => {
-        console.log(dayReportSearch.length, "len")
         Object.size = function (obj) {
             var size = 0,
                 key;
@@ -111,7 +110,6 @@ function DayReport(props) {
 
         // Get the size of an object
         var size = Object.size(dayReportSearch);
-        console.log(size, "len")
         if (dayReportSearch) {
             dispatch(getDayReport_TimeSheet(dayReportSearch))
         }
@@ -203,7 +201,6 @@ function DayReport(props) {
         setConfirmModel(false)
     }
     // useEffect(() => {
-    //     console.log(props.dayReport, "pD")
 
     //     let multipleTab = [];
     //     let subCollapse = [];
@@ -332,9 +329,7 @@ function DayReport(props) {
     //                 sample["IPABDesign"] = tableRow5;
 
     //             }
-    //             console.log("filtersfilterssample", sample)
     //             for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
-    //                 console.log("tttttttttttttttttt", key);
     //                 subCollapse.push(
     //                     value.length &&
     //                     <Panel
@@ -365,7 +360,6 @@ function DayReport(props) {
     //         } else if ((data.project_type_id !== 1) && (checkDupliactesProjectIds[i] == data.project_type_id)) {
     //             let otherDataList = []
     //             data.project_details.length && data.project_details.map((dat, k) => {
-    //                 console.log(dat, "level2-else")
     //                 let aEndDate = dat.actual_end_date;
     //                 let endDate = dat.end_date;
     //                 rowDataList["actitvity"] = dat.activity;

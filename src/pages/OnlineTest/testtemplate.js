@@ -7,7 +7,7 @@ import Edit from "../../images/editable.svg";
 import Delete from '../../images/dashboard/delete.svg';
 import './onlinetest.scss'
 import { getCategory, getSubCategory } from '../../actions/MasterDropdowns'
-import { InsertTestTemplate,GetNoOfQuetions } from '../../actions/TestTemplateAction'
+import { InsertTestTemplate, GetNoOfQuetions } from '../../actions/TestTemplateAction'
 import { connect, useDispatch } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 
@@ -93,29 +93,29 @@ function TestTemplate(props) {
     }, [])
 
     useEffect(() => {
-        console.log(props.GetNoOfQuetions.length>0&&props.GetNoOfQuetions[0].no_of_questions);
-        var noofqtnsArr=[];
-        if(props.GetNoOfQuetions.length>0&&props.GetNoOfQuetions[0].no_of_questions&&props.GetNoOfQuetions[0].no_of_questions!==0){
-            for(var i=0;i<props.GetNoOfQuetions[0].no_of_questions;i++){
+
+        var noofqtnsArr = [];
+        if (props.GetNoOfQuetions.length > 0 && props.GetNoOfQuetions[0].no_of_questions && props.GetNoOfQuetions[0].no_of_questions !== 0) {
+            for (var i = 0; i < props.GetNoOfQuetions[0].no_of_questions; i++) {
                 var listarray = {
-                    id:i+1,
-                    value:i+1
+                    id: i + 1,
+                    value: i + 1
                 }
                 noofqtnsArr.push(listarray);
             }
             // setNoOfquestions({noofqtnsArr})
-            dynQA[ind] = {noofqtnsArr};
+            dynQA[ind] = { noofqtnsArr };
             setdynQA([...dynQA])
             // setdynQA((prevState) => ({
             //     ...prevState,
             // }));
-        }else if(props.GetNoOfQuetions.length>0&&props.GetNoOfQuetions[0].no_of_questions&&props.GetNoOfQuetions[0].no_of_questions===0){
-            dynQA[ind] = {noofqtnsArr};
+        } else if (props.GetNoOfQuetions.length > 0 && props.GetNoOfQuetions[0].no_of_questions && props.GetNoOfQuetions[0].no_of_questions === 0) {
+            dynQA[ind] = { noofqtnsArr };
             // setNoOfquestions([])
         }
-       
+
     }, [props.GetNoOfQuetions])
-    // console.log(getNoOfquestions,"noofqtnsArrnoofqtnsArr")
+
     //Called Second
     useEffect(() => {
         let obj = Object.keys(list);
@@ -154,7 +154,7 @@ function TestTemplate(props) {
         )
         setSubCategoryddl({ subcategorylist })
         if (subcategorylist.length > 0) {
-            console.log(subcategorylist, "subcat")
+
             dynarr[ind] = subcategorylist;
         }
 
@@ -236,16 +236,16 @@ function TestTemplate(props) {
         if (key == "category") {
             setInd(i)
             dispatch((getSubCategory(item)))
-            var noofqtnsArr=[];
-            dynQA[i] = {noofqtnsArr};
+            var noofqtnsArr = [];
+            dynQA[i] = { noofqtnsArr };
         }
         if (key == "no_of_ques") {
             maxquesval()
         }
 
-        if(key==='subcategory'){
-            // console.log(list[data]['category'].value,i,"testtttttttttttt")
-            dispatch(GetNoOfQuetions(list[data]['category'].value,item))
+        if (key === 'subcategory') {
+
+            dispatch(GetNoOfQuetions(list[data]['category'].value, item))
         }
 
         // if(key==='category'){
@@ -271,7 +271,7 @@ function TestTemplate(props) {
     // //SubCategory function
     // function subcategoryfunc(item, key, data, i) {
     //     checkValidation(item, key);
-    //     console.log(item, "item")
+
     //     list[data]["subcategory"].value = item;
     //     var errorcheck = ValidationLibrary.checkValidation(
     //         item,
@@ -284,7 +284,6 @@ function TestTemplate(props) {
 
     function maxquesval() {
 
-        console.log(template.maxques.value, "template.maxques.value")
         let total = 0;
         var m = Object.keys(list)
         m.forEach(element => {
@@ -314,7 +313,7 @@ function TestTemplate(props) {
 
 
     function plusfunc() {
-        // console.log(count, minusCount, list, "listData")
+
         // let data = "obj" + (count - minusCount);
         let o = Object.keys(list)[Object.keys(list).length - 1]
         var m = Object.keys(list[o])
@@ -327,7 +326,7 @@ function TestTemplate(props) {
             list[o][element].errmsg = errorcheck.msg
         });
         var filtererr = m.filter((ele) => list[o][ele].error === true)
-        console.log(filtererr.length, "fill")
+
         setList(prevState => ({
             ...prevState,
         }))
@@ -364,7 +363,7 @@ function TestTemplate(props) {
             else { setmaxques(false) }
         }
 
-     
+
 
 
     }
@@ -403,26 +402,22 @@ function TestTemplate(props) {
         }));
 
     }
-    console.log("list", list)
 
-   ///***********user permission**********/
-   const [saveRights, setSaveRights] = useState([])
-useEffect(() => {
-    if(props.UserPermission.length>0&&props.UserPermission){
-       let data_res_id = props.UserPermission.find((val) => { 
-       return (
-           "Test - Submit" == val.control 
-       ) 
-      })
-      setSaveRights(data_res_id)
-   }
-   console.log(props.UserPermission[24],"arr")
-   }, [props.UserPermission]);
-  
-  /////////////
-   console.log(dynQA,template,"dynObjs")
-   console.log(list,Itemkeys,"list")
-   
+    ///***********user permission**********/
+    const [saveRights, setSaveRights] = useState([])
+    useEffect(() => {
+        if (props.UserPermission.length > 0 && props.UserPermission) {
+            let data_res_id = props.UserPermission.find((val) => {
+                return (
+                    "Test - Submit" == val.control
+                )
+            })
+            setSaveRights(data_res_id)
+        }
+
+    }, [props.UserPermission]);
+
+    /////////////
 
     return (
         <div>
@@ -496,9 +491,9 @@ useEffect(() => {
                     )
                 })
                 }
-                
+
                 <div id="TTbtns">
-                    <CustomButton btnName={"Submit"} btnDisable={!saveRights||saveRights.display_control&&saveRights.display_control==='N'?true:false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"Submit"} btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />
                     <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" onBtnClick="" />
                 </div>
             </div>

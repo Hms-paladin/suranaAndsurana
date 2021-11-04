@@ -32,7 +32,7 @@ const AddDataModel = (props) => {
     },
     phoneno: {
       value: "",
-      validation: [{name:"mobile"}],
+      validation: [{ name: "mobile" }],
       error: null,
       errmsg: null,
     },
@@ -79,12 +79,12 @@ const AddDataModel = (props) => {
   }, []);
 
   useEffect(() => {
-    Litigation_Form.counsel.value=props.LitigationCounsel_id
+    Litigation_Form.counsel.value = props.LitigationCounsel_id
     setLitigation_Form((prevState) => ({
       ...prevState,
     }));
   }, [props.LitigationCounsel_id]);
-  
+
   useEffect(() => {
     setProjtId(props.id.project_id);
   }, [props.id]);
@@ -114,7 +114,7 @@ const AddDataModel = (props) => {
     var filtererr = targetkeys.filter(
       (obj) => Litigation_Form[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
       // setLitigation_Form({ error: true });
     } else {
@@ -196,13 +196,13 @@ const AddDataModel = (props) => {
 
       let ResumeFrom_key = ["name", "phoneno", "emailid", "address"];
       ResumeFrom_key.map((data) => {
-        if(data=="phoneno"){
-          Litigation_Form[data].validation = [{ name: "required" },{name:"mobile"}];
+        if (data == "phoneno") {
+          Litigation_Form[data].validation = [{ name: "required" }, { name: "mobile" }];
         }
-        else if(data=="emailid"){
-          Litigation_Form[data].validation = [{ name: "required" },{name:"email"}];
+        else if (data == "emailid") {
+          Litigation_Form[data].validation = [{ name: "required" }, { name: "email" }];
         }
-        else{
+        else {
           Litigation_Form[data].validation = [{ name: "required" }];
         }
       });

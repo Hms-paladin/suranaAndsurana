@@ -192,7 +192,7 @@ function TimeSheetView(props) {
             if (response.data.status === 1) {
                 // if (TimeOverlap) {
                     notification.success({
-                        message: `Timesheet overlapped`,
+                        message: response.data.msg,
                     });
                     setTimeOverlap(true)
                 // }
@@ -262,10 +262,10 @@ function TimeSheetView(props) {
 
         From_key.map((data) => {
             try {
-                if (data !== "startTime" && data !== "endTime") {
+                if (data !== "startTime" && data !== "endTime" && data !== "fromDate" && data !== "toDate") {
                     timeSheetForm[data].value = "";
                 } else {
-                    timeSheetForm[data].value = new Date("12-30-2017 " + moment().format('HH:mm'));
+                    timeSheetForm[data].value = new Date();
                 }
             } catch (error) {
                 throw error;
@@ -275,7 +275,7 @@ function TimeSheetView(props) {
             ...prevState,
         }));
     };
-    console.log(props.rowData, "props.rowData")
+  
     return (
         <div className="timeSheetStartContainer">
             {timesheetStart ?
@@ -314,7 +314,7 @@ function TimeSheetView(props) {
                             />
                         </Grid>
                         <Grid item xs={3}>
-                            <Labelbox type="timepicker"
+                            <Labelbox type="timepickernew"
                                 placeholder={"Start Time"}
                                 changeData={(data) =>
                                     checkValidation(data, "startTime")
@@ -341,7 +341,7 @@ function TimeSheetView(props) {
                                 />
                             </Grid>
                             <Grid item xs={3}>
-                                <Labelbox type="timepicker"
+                                <Labelbox type="timepickernew"
                                     placeholder={"End Time"}
                                     changeData={(data) =>
                                         checkValidation(data, "endTime")

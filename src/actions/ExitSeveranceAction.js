@@ -8,7 +8,6 @@ import moment from "moment"
 import { FeedbackOutlined } from "@material-ui/icons";
 
 export const GetSeverance = (emp_id) => async dispatch => {
-    console.log("emp_id", emp_id)
     try {
 
         axios({
@@ -28,7 +27,6 @@ export const GetSeverance = (emp_id) => async dispatch => {
 }
 
 export const GetEmployeeDetails = (emp_id) => async dispatch => {
-    console.log("emp_id", emp_id)
     try {
 
         axios({
@@ -81,7 +79,6 @@ export const InsertSeverance = (ExitSeverance, emp_id) => async dispatch => {
 }
 
 export const GetResignationApproval = (SeveranceId) => async dispatch => {
-    // console.log(SeveranceId.severece_id,"check")
     try {
 
         axios({
@@ -126,7 +123,6 @@ export const InsertResignation = (status, data, emp_id, sev_Id) => async dispatc
                     //     notification.success({
                     //         message: "Resignation Rejected",
                     //     });
-                    // console.log("sss",sev_Id.severanceId)
                     // }
                     notification.success({
                         message: `Resignation ${status === true ? 'Approved' : 'Rejected'} successfully`,
@@ -265,12 +261,10 @@ export const UpdateFinaceNoc = (checked, emp_id) => async dispatch => {
             })
 
     } catch (err) {
-        console.log(err)
     }
 }
 
 export const ViewSeverance = () => async dispatch => {
-    // console.log("emp_id",emp_id)
     try {
 
         axios({

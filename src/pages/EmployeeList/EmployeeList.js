@@ -120,7 +120,6 @@ function EmployeeList(props) {
             employee_List_Data.push(listarray);
         }
         setEmployee_List_Data({ employee_List_Data });
-        console.log(employee_List_Data, "getEmployee_List_Data")
 
     }, [props.getEmployee_List_Data])
 
@@ -150,7 +149,6 @@ function EmployeeList(props) {
     // }
 
     function checkValidation(data, key) {
-        console.log(data, key, "dataValue")
 
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -192,7 +190,6 @@ function EmployeeList(props) {
         setEmployee_Data({ int_status_id: data.emp_id })
         setEmployeeFormOpen(true)
     }
-    console.log(resume_id, "resume_id", Employee_Data)
     const onNewPageClear = (bln) => {
         // setStateClear(!stateClear);
         // setInerviewScreen(bln);
@@ -220,14 +217,6 @@ function EmployeeList(props) {
 
     }, [props.UserPermission]);
 
-
-    // console.log(goRights,"rights")
-
-    function rightsNotification() {
-        notification.success({
-            message: "You are not Authorized. Please Contact Administrator",
-        });
-    }
     /////////////
     return (
         <div>

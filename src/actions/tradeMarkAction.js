@@ -140,7 +140,6 @@ export const getCountryDetails= () => async dispatch => {
 }
 
 export const insertTradeMark = (formData,params,project_id) => async dispatch => {
-    console.log(params.trademark_id.value,"trademark_id")
     try {
         var url ='insert_trade_mark';
         var method = 'POST';
@@ -171,7 +170,6 @@ export const insertTradeMark = (formData,params,project_id) => async dispatch =>
 }
 
 export const insertIPAB = (params,projectdetails) => async dispatch => {
-    console.log(params.trademark_ipab_id,"params.trademark_ipab_id")
     try {
 
         for (var x in params){
@@ -217,7 +215,6 @@ export const insertIPAB = (params,projectdetails) => async dispatch => {
                         "description": '',
                         "tag": ''
                       }
-                      console.log("ggggggggggggggggggg",projectdetails)
                   dispatch(inserTask(data)).then((response) => {
                   })
                 }
@@ -245,7 +242,6 @@ export const insertAppealFiling = (data) => async dispatch =>{
                 type:INSERT_APPEAL_FILING,
                 payload:response.data.data
             })
-            console.log("Insert Appeal Filing", data)
         })
         
     } catch (err) {
@@ -265,7 +261,6 @@ export const insertRectificationDefended = (data) => async dispatch =>{
                 type: INSERT_RECTIFICATION_DEFENDED,
                 payload:response.data.data
             })
-            console.log("insert Rectification Defended", data)
         })
         
     } catch (err) {
@@ -285,7 +280,6 @@ export const insertPatentAppealFiling = (data) => async dispatch =>{
                 type: INSERT_PATENT_APPEAL_FILING,
                 payload:response.data.data
             })
-            console.log("insert Patent Appeal Filing", data)
         })
         
     } catch (err) {
@@ -305,7 +299,6 @@ export const insertPatentRectificationDef = (data) => async dispatch =>{
                 type: INSERT_PATENT_RECTIFICATION_DEF,
                 payload:response.data.data
             })
-            console.log("insert Patent Rectification Def", data)
         })
         
     } catch (err) {
@@ -325,7 +318,6 @@ export const insertPatentRectificationFiled = (data) => async dispatch =>{
                 type: INSERT_PATENT_RECTIFICATION_FILED,
                 payload:response.data.data
             })
-            console.log("insert Patent Rectification FILED", data)
         })
         
     } catch (err) {
@@ -346,7 +338,6 @@ export const insertPatentRevocationDef = (data) => async dispatch =>{
                 type: INSERT_PATENT_REVOCATION_DEF,
                 payload:response.data.data
             })
-            console.log("insert Patent Revocation Def", data)
         })
         
     } catch (err) {
@@ -365,7 +356,6 @@ export const insertPatentRevocationFiled = (data) => async dispatch =>{
                 type: INSERT_PATENT_REVOCATION_FILED,
                 payload:response.data.data
             })
-            console.log("insert Patent Revocation filed", data)
         })
         
     } catch (err) {
@@ -385,7 +375,6 @@ export const insertRectificationFiled = (data) => async dispatch =>{
                 type: INSERT_RECTIFICATION_FILED,
                 payload:response.data.data
             })
-            console.log("insert Rectification filed", data)
         })
         
     } catch (err) {
@@ -405,7 +394,6 @@ export const insertRevocationDefended = (data) => async dispatch =>{
                 type: INSERT_REVOCATION_DEFENDED,
                 payload:response.data.data
             })
-            console.log("insert Revocation Defended", data)
         })
         
     } catch (err) {
@@ -424,7 +412,6 @@ export const insertRevocationFiled = (data) => async dispatch =>{
                 type: INSERT_REVOCATION_FILED,
                 payload:response.data.data
             })
-            console.log("insert Revocation Filed", data)
         })
         
     } catch (err) {

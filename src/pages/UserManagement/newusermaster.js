@@ -33,7 +33,7 @@ function NewUserMaster(props){
     
         })
     }
-    // console.log(User_Id);
+
     /////////////////
     useEffect(() => {
         dispatch(getUser());

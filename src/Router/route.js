@@ -114,7 +114,7 @@
 
 
 //   useEffect(() => {
-   
+
 //       var DocumentData = new FormData();
 //       DocumentData.set("user_id",localStorage.getItem("user_id"))
 //       try {
@@ -124,7 +124,6 @@
 //           data: DocumentData
 //         })
 //           .then((response) => {
-//               console.log("resuser",response)
 //               if (response.data.status === 0) {
 //                 localStorage.clear();
 //                 history.push("/login")
@@ -132,7 +131,7 @@
 //                   message: response.data.msg,
 //                 });
 //               }
-      
+
 //           })
 
 //     } catch (err) {

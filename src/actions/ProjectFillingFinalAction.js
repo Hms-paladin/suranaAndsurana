@@ -6,7 +6,6 @@ import axios from "axios";
 
 
 export const getProjectDetails = (data) => async dispatch => {
-    // console.log(data,"actiondata")
     try {
         axios({
             method: 'POST',
@@ -16,8 +15,6 @@ export const getProjectDetails = (data) => async dispatch => {
             }
         })
         .then((response) => {
-            // console.log(response.data.data,"GET_HRSEARCH_ROWDATA")
-
             dispatch({type:GET_PROJECT_DETAILS,payload:response.data.data})
         })
         

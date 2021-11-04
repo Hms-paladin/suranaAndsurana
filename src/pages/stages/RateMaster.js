@@ -202,15 +202,12 @@ const RateMaster = (props) => {
         })
       }
     }
-    // console.log(props.lenghtData, "props.lenghtData")
-    console.log("ratemasterdddd", RateMaster)
-
 
     setRateMaster((prevState) => ({
       ...prevState,
     }));
   };
-  // console.log("checkval",props.)
+
   function checkValidation(data, key, multipleId) {
 
     if (key === "activity") {
@@ -228,16 +225,13 @@ const RateMaster = (props) => {
       //         RateMaster.amount.validation[3].params = ""
 
 
-      //         console.log("Upto",Number(sl.value.slice(5,sl.value.length).replace(/,/g, "")),)
-      //         console.log("Upto",sl.value.includes("Upto"))
       //         break;
       //       case sl.value.includes("Above"):
       //         RateMaster.amount.validation[3].params = Number((sl.value.slice(6,sl.value.length).replace(/,/g, "")))
 
       //         RateMaster.amount.validation[2].params = ""
 
-      //         console.log("Above",Number(sl.value.slice(6,sl.value.length).replace(/,/g, "")),)
-      //         console.log("Above",sl.value.includes("Above"))
+
       //         break;  
       //       default:
       //         break;
@@ -318,7 +312,7 @@ const RateMaster = (props) => {
 
       try {
         RateMaster[data].value = "";
-        console.log("mapping", RateMaster[data].value)
+
       } catch (error) {
         throw (error)
       }
@@ -330,7 +324,7 @@ const RateMaster = (props) => {
   };
 
   useEffect(() => {
-    console.log("propslength", props.lenghtData !== 0)
+
     if (variablebtnchange) {
       if (props.lenghtData !== 0) {
         setNotfoundmodel(false);
@@ -376,8 +370,7 @@ const RateMaster = (props) => {
           projectRangedata.push({ value: data.range, id: data.range_id })
         );
         setprojectRange({ projectRangedata });
-        console.log(projectRange, "projectRange")
-        console.log(projectRangedata, "projectRange")
+
       });
 
       // Court
@@ -503,9 +496,6 @@ const RateMaster = (props) => {
 
   }
 
-
-  console.log(RateMaster, "RateMasterRateMaster")
-
   ///*****user permission**********/
   useEffect(() => {
     if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -519,13 +509,6 @@ const RateMaster = (props) => {
 
   }, [props.UserPermission]);
 
-  console.log(saveRights, "rights")
-
-  function rightsNotification() {
-    notification.success({
-      message: "You are not Authorized. Please Contact Administrator",
-    });
-  }
   /////////////
   return (
     <div>

@@ -22,7 +22,6 @@ function UnblockUserActive(props) {
             setUnblockData(props.unblock_user_data)
         }
     },[props.unblock_user_data])
-    console.log(props.unblock_user_data,"props.unblock_user_data")
 
     const unblock=()=>{
         dispatch(unblockUser(props.unblock_user_data)).then(

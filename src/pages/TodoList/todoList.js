@@ -4,7 +4,7 @@ import DynModel from "../../component/Model/model";
 import { getHrTaskList, getOtherTask } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
-import { Redirect, Link,useHistory } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
 
 
 
@@ -190,7 +190,7 @@ function TodoList(props) {
     useEffect(() => {
         let projectTask = []
 
-        props.getProjectTasks.length>0&&props.getProjectTasks.map((data) => {
+        props.getProjectTasks.length > 0 && props.getProjectTasks.map((data) => {
             let showId = null
             let showName = null
 
@@ -208,13 +208,11 @@ function TodoList(props) {
 
         })
         setProjectTodoList(projectTask)
-        // console.log(props.getProjectTasks, "getProjectTasks")
 
         //Other Task
         let otherTask = []
 
         props.getOtherTask.map((data) => {
-            console.log(data, "othertask")
             let showId = null
             let showName = null
             if (data.emp_leave_id) {
@@ -296,13 +294,11 @@ function TodoList(props) {
         else if (name === "int_status_id") {
             setEmployeeFormOpen(true)
             let checkData = props.getHrTodoList.find((val) => {
-                // console.log(val,"valval")
                 return (
                     id == val.int_status_id
                 )
             })
             setEmployee_Data(checkData)
-            console.log(checkData,"checkData")
         }
         else if (name === "Recruitment Request") {
             setrecruitmodal(true)
@@ -319,18 +315,16 @@ function TodoList(props) {
     }
 
     function ProjectTaskFunction(name, id, data) {
-        // console.log(data, "unblockUserdata")
 
         if (data.checklist_id && data.checklist_id !== 0) {
             history.push(`/Home/search/task/${data.task_id}`);
-        }else if (name === "Timesheet Approval") {
+        } else if (name === "Timesheet Approval") {
             setTimesheetID(id)
             setTimeSheet_Approval(true)
 
         }
     }
     function OtherTaskFunction(name, id, data) {
-        // console.log(name, id,data, "names")
         setTaskModelTitle(data.task)
         if (name === "Leave Approval") {
             setLeaveApproval(true)
@@ -372,7 +366,6 @@ function TodoList(props) {
                 return id === val.emp_appr_id
 
             })
-            console.log(Appraisaldata, "Appraisaldata")
             // setAppraisalData(Appraisaldata.task === "Employee Appraisal" ? 1 : null)
             setAppraisalData(Appraisaldata)
 

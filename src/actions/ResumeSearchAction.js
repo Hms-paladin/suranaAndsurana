@@ -3,7 +3,6 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
 export const searchRowdata = (data) => async dispatch => {
-    console.log(data, "data")
     try {
         axios({
             method: 'POST',

@@ -79,7 +79,6 @@ const KRA = (props) => {
 
     useEffect(()=>{
         dispatch(getKra())
-        // console.log(props.getKra,"datechange")
     },[]);
 
     useEffect(() => {
@@ -241,7 +240,6 @@ const get_period_by_id=()=>{
     const editRows = (data) => {
         setRowUpdate(true)
         setIndex(data)
-        console.log(reference,"referencereference")
         // let Activity_Name = reference[data].activitys
         // let activityId;
 
@@ -280,8 +278,6 @@ useEffect(()=>{
             Percentage.push(Number(data.percent))
         })
 
-        console.log(Percentage.reduce((a, b) => a + b, 0), "Percentage")
-
         setTotalPercentage(Percentage.reduce((a, b) => a + b, 0))
 
     }
@@ -305,8 +301,6 @@ useEffect(()=>{
         kpi_form.percentage.value = "";
     }
 
-    // console.log(reference.activitys, "percent")
-
     const handleCancel = () => {
         let From_key = [
             "activity",
@@ -316,7 +310,6 @@ useEffect(()=>{
         From_key.map((data) => {
             try {
                 kpi_form[data].value = "";
-                // console.log("mapping", kpi_form[data].value);
             } catch (error) {
                 throw error;
             }
@@ -338,7 +331,6 @@ useEffect(()=>{
         else {
             let refLength = reference.length
             for (let i = 0; i < refLength; i++) {
-                console.log(reference[i].activitys, "length")
                 let activityId;
                 activity.Activity && activity.Activity.filter((data) => {
                     if (data.value === reference[i].activitys) {

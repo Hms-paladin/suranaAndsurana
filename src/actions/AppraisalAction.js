@@ -5,10 +5,7 @@ import { useHistory } from "react-router-dom";
 import { notification } from 'antd';
 import { Redirect, Link } from "react-router-dom";
 
-
-// const history = useHistory();,
 export const ApplyAppraisal = (modelComment, respbtn, assignbtn, Appraisal, apprId) => async dispatch => {
-    console.log(modelComment, respbtn, assignbtn, "Add_question")
     try {
         axios({
             method: 'POST',

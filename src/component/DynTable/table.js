@@ -46,7 +46,7 @@ function TablePaginationActions(props) {
 
   const handleLastPageButtonClick = (event) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    
+
   };
 
   return (
@@ -73,7 +73,6 @@ function TablePaginationActions(props) {
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
-        {console.log(page, "page")}
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </div>
@@ -141,28 +140,27 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
-            // hideSortIcon={headCell.id?true:false}
+          // hideSortIcon={headCell.id?true:false}
           >
-            {console.log(headCell.id, orderBy, "headcell")}
 
-            {headCell.id?
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-              // icon={}
-              hideSortIcon={orderBy===headCell.id?true:false}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>:
-            <>{headCell.label}</>
-              }
-           
+            {headCell.id ?
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+                // icon={}
+                hideSortIcon={orderBy === headCell.id ? true : false}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <span className={classes.visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </span>
+                ) : null}
+              </TableSortLabel> :
+              <>{headCell.label}</>
+            }
+
           </TableCell>
         ))}
       </TableRow>
@@ -203,7 +201,7 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
   inactiveSortIcon: {
-    display:'none',
+    display: 'none',
   },
 }));
 
@@ -223,12 +221,11 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(() => {
-    if(props.rows){
-    setRows(props.rows);
-    if(!props.Resume&&!props.var_rate&&!props.projectwise)
-    setPage(0)
+    if (props.rows) {
+      setRows(props.rows);
+      if (!props.Resume && !props.var_rate && !props.projectwise)
+        setPage(0)
     }
-  console.log("newpage",props.rows)
   }, [props.rows]);
 
 
@@ -236,7 +233,6 @@ export default function EnhancedTable(props) {
   //   for(let i=0;i<(props.rows.length/rowsPerPage);i++){
   //     page
   //     setPage(i) 
-  //     console.log(i,"testlength")
   //   }
 
   // }, [props.rows]);
@@ -249,7 +245,6 @@ export default function EnhancedTable(props) {
     }
     setSelected([]);
   };
- console.log("selected",selected)
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -275,23 +270,21 @@ export default function EnhancedTable(props) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-  
+
     setRowsPerPage(parseInt(event.target.value));
     setPage(0)
-   
+
   };
- 
+
 
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows && rows.length - page * rowsPerPage);
-  console.log("pagination",emptyRows)
-  
+
   return (
-   
+
     <div className={classes.root}>
-     {console.log("perpage",rowsPerPage,page)}
       {/* <Paper className={classes.paper}> */}
       <div className="tableTitle">{props.tabletitle}</div>
       <TableContainer>
@@ -367,7 +360,6 @@ export default function EnhancedTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      {console.log(rows.length, "rrrr")}
       {rows.length > 5 && (
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
@@ -387,7 +379,7 @@ export default function EnhancedTable(props) {
         />
       )}
       {/* </Paper> */}
-    
+
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import {
   getTradeMarkStatus, getCountryDetails,
 } from "../../../actions/tradeMarkAction";
-import { insertPatent,getPatentDetails } from "../../../actions/PatentAction";
+import { insertPatent, getPatentDetails } from "../../../actions/PatentAction";
 import moment from 'moment'
 
 function ApplicationPCT(props) {
@@ -143,23 +143,23 @@ function ApplicationPCT(props) {
 
   useEffect(() => {
     handleCancel()
-    if (props.getPatentDetails&&props.getPatentDetails.length > 0) {
+    if (props.getPatentDetails && props.getPatentDetails.length > 0) {
       let indiaFil_key = ["file_cover", "our_ref", "associate", "deadline", "client_ref", "app_num", "app_date", "comments", "status", "priority_country", "priority_num", "priority_date"]
 
-      let indiaFil_value = ["file_cover", "our_reference","associate", "dead_line","client_reference", "application_no", "application_date",  "comments","status_id","priority_country", "priority_application_no","priority_date" ]
+      let indiaFil_value = ["file_cover", "our_reference", "associate", "dead_line", "client_reference", "application_no", "application_date", "comments", "status_id", "priority_country", "priority_application_no", "priority_date"]
 
       indiaFil_key.map((data, index) => {
-        // console.log(indiaFil_value[index], indiaFil_value[index] !== "application_date", props.getPatentDetails[0][indiaFil_value[index]],"indiaFil_value[index]")
-        if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" ) {
+
+        if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date") {
           patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]];
           // patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
         }
         else {
-          console.log(props.getPatentDetails[0][indiaFil_value[index]], "props.getPatentDetails[0]")
+
           patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]);
           // patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
 
-        } 
+        }
       });
       setpatentForm((prevState) => ({
         ...prevState,
@@ -182,7 +182,7 @@ function ApplicationPCT(props) {
     var filtererr = targetkeys.filter(
       (obj) => patentForm[obj].error == true
     );
-    console.log(filtererr.length);
+
     let params = {
       "project_id": idDetails.project_id,
       "file_cover": patentForm.file_cover.value,
@@ -190,20 +190,20 @@ function ApplicationPCT(props) {
       "our_reference": patentForm.our_ref.value,
       "client_reference": patentForm.client_ref.value,
       "application_no": patentForm.app_num.value,
-      "application_date": patentForm.app_date.value===''?'0000-00-00':moment(patentForm.app_date.value,"YYYY-MM-DD").format("YYYY-MM-DD"),
-      "priority_country": patentForm.priority_country.value===''?0:patentForm.priority_country.value,
+      "application_date": patentForm.app_date.value === '' ? '0000-00-00' : moment(patentForm.app_date.value, "YYYY-MM-DD").format("YYYY-MM-DD"),
+      "priority_country": patentForm.priority_country.value === '' ? 0 : patentForm.priority_country.value,
       "priority_application_no": patentForm.priority_num.value,
-      "priority_date": patentForm.priority_date.value===''?'0000-00-00':moment(patentForm.priority_date.value,"YYYY-MM-DD").format("YYYY-MM-DD"),
-      "status_id": patentForm.status.value===''?0:patentForm.status.value,
+      "priority_date": patentForm.priority_date.value === '' ? '0000-00-00' : moment(patentForm.priority_date.value, "YYYY-MM-DD").format("YYYY-MM-DD"),
+      "status_id": patentForm.status.value === '' ? 0 : patentForm.status.value,
       "comments": patentForm.comments.value,
-      "dead_line": patentForm.deadline.value===''?'0000-00-00':moment(patentForm.deadline.value,"YYYY-MM-DD").format("YYYY-MM-DD"),
+      "dead_line": patentForm.deadline.value === '' ? '0000-00-00' : moment(patentForm.deadline.value, "YYYY-MM-DD").format("YYYY-MM-DD"),
       "created_by": localStorage.getItem("empId"),
       "created_on": moment().format('YYYY-MM-DD HH:m:s'),
       "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
       "updated_by": localStorage.getItem("empId"),
     }
 
-   if (props.getPatentDetails[0]?.patent_id != "0") {
+    if (props.getPatentDetails[0]?.patent_id != "0") {
       params["patent_id"] = props.getPatentDetails[0]?.patent_id;
     }
     if (filtererr.length > 0) {

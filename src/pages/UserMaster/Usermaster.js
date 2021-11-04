@@ -585,7 +585,7 @@ const UserMaster = (props) => {
 
       });
       setStatusvalue(value)
-      console.log("status_type", value.id)
+
       dispatch(getTableStatus(value))
     }
 
@@ -1307,7 +1307,7 @@ const UserMaster = (props) => {
 
 
   }, [props, table_name_value.table_names]);
-  console.log(props.stage, "satge")
+
   function Submit(data) {
     // alert(substageId)
     setStatusvalue((prevState) => ({
@@ -1421,7 +1421,7 @@ const UserMaster = (props) => {
           "updated_on": moment().format('YYYY-MM-DD HH:m:s')
 
         }
-        console.log(EditStoreData, "EditStoreData")
+
         dispatch(insertDesignationMaster(DesignationMaster)).then(() => {
           setEditvisible(false);
           handleCancel()
@@ -1449,12 +1449,12 @@ const UserMaster = (props) => {
         });
       }
     }
-    //  console.log(props.Class_Table_Data&&props.Class_Table_Data[0].class_type,"check_whe")
+
     setUserMaster((prevState) => ({
       ...prevState,
     }));
   }
-console.log(table_name_value.table_names,"table_name_value.table_names")
+
   const CommonEdit = (id, data) => {
     var group = props.GroupData.find((data) => {
       return data.group_id == id;
@@ -1616,7 +1616,7 @@ console.log(table_name_value.table_names,"table_name_value.table_names")
       ...prevState,
     }));
   };
-  console.log(DepartmentList, "DepartmentList")
+
   const EditStatus = (id, data) => {
     UserMaster.status_type.value = data.status_id.toString();
     var StatusEdit = props.StatusTableData.find((data) => {

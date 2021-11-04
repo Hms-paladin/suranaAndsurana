@@ -61,7 +61,6 @@ function EmployeeFeedback(props) {
     const submit=()=>{
         let feedbackId=Object.keys(checked)
         const feedbackDataId=feedbackId.toString()
-        console.log(feedbackId,"feedbackId")
         var mainvalue = {};
     var targetkeys = Object.keys(feedbackInput);
     for (var i in targetkeys) {
@@ -115,14 +114,7 @@ useEffect(() => {
  
   }, [props.UserPermission]);
  
- 
-   // console.log(saveRights,"rights")
- 
-  function rightsNotification(){
-   notification.success({
-       message: "You are not Authorized. Please Contact Administrator",
-   });
- }
+
  /////////////
     return (
         <div>

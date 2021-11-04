@@ -11,16 +11,11 @@ import {
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-// import DateFnsUtils from '@date-io/date-fns';
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker,
-// } from '@material-ui/pickers';
+import { TimePicker } from 'antd';
 import { DatePicker, Select } from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
-import { TimePicker } from '@material-ui/pickers'
+// import { TimePicker } from '@material-ui/pickers'
 import Delete from '../../images/dashboard/delete.svg';
 import PublishIcon from '@material-ui/icons/Publish';
 import DynModel from "../../component/Model/model";
@@ -29,7 +24,6 @@ import CustomButton from "../../component/Butttons/button";
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
-		console.log("valid date", props.value)
 		this.state = { upload_model: false, gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
 		// ? props.value : new Date()
 	}
@@ -47,9 +41,13 @@ export default class Labelbox extends Component {
 
 	}
 	timepickerChange = (time) => {
-		console.log("time", time);
 		var timeformat = dateFormat(time, "hh:MM:ss");
-		console.log("timeformat", timeformat)
+		this.setState({ selectedtime: time });
+		this.props.changeData && this.props.changeData(time);
+	};
+
+	newtimepickerChange = (time) => {
+		var timeformat = dateFormat(time, "HH:mm");
 		this.setState({ selectedtime: time });
 		this.props.changeData && this.props.changeData(time);
 	};
@@ -133,7 +131,6 @@ export default class Labelbox extends Component {
 
 			)
 		} else if (data.type == 'radio') {
-			// console.log(this.props.checked,"checked")
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
@@ -148,7 +145,6 @@ export default class Labelbox extends Component {
 			)
 		} else if (data.type == 'datepicker') {
 			function onChange(date, dateString) {
-				console.log(date, dateString);
 
 			}
 
@@ -158,7 +154,6 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div className={`${data.error && "datePickerbrdred"} ${this.props.className}`}>
-						{console.log(this.props.format === "MMM-yyyy", "teyyyyst")}
 						{/* <DatePicker value={moment(this.props.value)?moment(this.props.value):new Date()} open={this.state.open}  onFocus={()=>this.setState({open:true})} onChange={(date)=>this.datepickerChange(date)}  className="datepickerchnge" style={{width:'100%',}} format="YYYY-MM-DD"  /> */}
 						<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<KeyboardDatePicker
@@ -196,11 +191,8 @@ export default class Labelbox extends Component {
 			)
 		} else if (data.type == 'timepicker') {
 			function onChange(date, dateString) {
-				console.log(date, dateString);
 
 			}
-
-			console.log(this.props.value, "this.props.value")
 
 			const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -238,25 +230,63 @@ export default class Labelbox extends Component {
 
 				</div>
 			)
+		} else if (data.type == 'timepickernew') {
+			function onChange(date, dateString) {
+
+			}
+		
+			return (
+				<div className="formdiv">
+					<label className="labeltxt">{data.labelname}</label>
+					<div >
+
+						{/* <MuiPickersUtilsProvider utils={DateFnsUtils} >
+							<KeyboardTimePicker
+								margin="normal"
+								inputVariant="outlined"
+								id="time-picker"
+								value={this.props.value || new Date()}
+								onChange={(time) => this.timepickerChange(time)}
+								KeyboardButtonProps={{
+									'aria-label': 'change time',
+								}}
+								minTime={this.props.minTime && this.props.minTime}
+								maxTime={this.props.maxTime && this.props.maxTime}
+								InputProps={{ readOnly: true }}
+								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker"
+									minTime={this.props.minTime && this.props.minTime}
+									maxTime={this.props.maxTime && this.props.maxTime} />
+								}
+							/>
+						</MuiPickersUtilsProvider> */}
+						<TimePicker
+							onChange={(time) => this.newtimepickerChange(time)}
+							value={(data.value && data.value != '') ? moment(data.value, 'HH:mm') : ''}
+							autoComplete={'off'}
+							minuteStep={5}
+							format={'HH:mm'} />
+						{
+							<div className="Errormsg">
+								<div>{data.error && data.errmsg}</div>
+							</div>
+						}
+					</div>
+
+				</div>
+			)
 		}
 		else if (data.type == 'select') {
 			function onChange(value) {
-				console.log(`selected ${value}`);
 			}
 			const { Option } = Select;
 			function onBlur() {
-				console.log('blur');
 			}
 
 			function onFocus() {
-				console.log('focus');
 			}
 
 			function onSearch(val) {
-				console.log('search:', val);
 			}
-
-			console.log(data.value, "data.value");
 
 			var optionValue = null
 
@@ -325,18 +355,17 @@ export default class Labelbox extends Component {
 			function onFileView(url) {
 				window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
 			}
-			if (this.props.empty && this.props.upload_id&&document.getElementById(this.props.upload_id)) {
+			if (this.props.empty && this.props.upload_id && document.getElementById(this.props.upload_id)) {
 				document.getElementById(this.props.upload_id).value = "";
 			}
-			console.log(this.props.empty,this.props.upload_id && this.props.upload_id ,"ggggggggggggggggggg")
 			return (<>
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div className={`${data.error && "brdred"} upload`}>
-			
+
 						<div style={{ width: "100%", display: "flex" }}>
 							<input type="file"
-							//  accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+								//  accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
 								style={{ fontSize: 12 }}
 								id={this.props.upload_id}
 								onChange={(e) => this.props.changeData && this.props.changeData(e.target.files[0])}

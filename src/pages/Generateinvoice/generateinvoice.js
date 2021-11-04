@@ -16,16 +16,17 @@ import { getBeiSearch, getBeiListByProjectId, insertGenerateInvoice } from "../.
 const { Panel } = Collapse;
 
 function GenerateInvoice(props) {
+  const dispatch = useDispatch();
   const [billabletable, setBillabletable] = useState(false)
   const [billhours, setbillhours] = useState([])
   const [searchRigths, setSearchRights] = useState([])
   const [client, setClient] = useState({});
   const [generateRights, setGenerateRights] = useState([])
-  const dispatch = useDispatch();
   const [multiplePanel, setMultiplePanel] = useState([]);
-  const [Billablerows, setBillablerows] = useState({});
-  const [eeeeeee, setEeeeeee] = useState([]);
-  const [test, setTest] = useState(false);
+  const [Billablerows, setBillablerows] = useState([]);
+  const [TableData, setTableData] = useState([]);
+  const [Arrchange, setArrchange] = useState(false);
+  const [TotalAmount, setTotalAmount] = useState(0);
   const [generateInvoice, setGenerateInvoice] = useState({
     client: {
       value: "",
@@ -73,7 +74,7 @@ function GenerateInvoice(props) {
     );
     setClient({ Client });
 
-  }, [props.Client,]);
+  }, [props.Client]);
 
 
   const BillableCells = [
@@ -89,18 +90,21 @@ function GenerateInvoice(props) {
     { id: 'amount', label: 'Amount(Rs)' },
   ];
 
-  function callback(key) {
-    console.log(key);
-  }
-
   function onClickProject(project_id) {
     setBillabletable(true)
     dispatch(getBeiListByProjectId(project_id))
   }
 
   function onSubmit() {
+    var count = (Billablerows.reduce((a, b) => b.checked ? (a + 1) : (a), 0))
 
-    dispatch(insertGenerateInvoice(Billablerows))
+    if (count === 0) {
+      notification.success({
+        message: "Please chosse atleast one item",
+      });
+    } else {
+      dispatch(insertGenerateInvoice(Billablerows))
+    }
   }
 
   function onSearch() {
@@ -139,7 +143,6 @@ function GenerateInvoice(props) {
   ];
 
   useEffect(() => {
-    // console.log(props.getBeiSearch, "projectLength")
     let project_details_length = 0;
     let multipleTab = [];
     // if(props.getBeiSearch.length>0){
@@ -180,18 +183,38 @@ function GenerateInvoice(props) {
 
     if (project_details_length === 0) {
       setBillabletable(false)
-      setBillablerows({});
+      setBillablerows([]);
     }
 
     setMultiplePanel(multipleTab);
   }, [props.getBeiSearch]);
 
+  const GrandTotal = () => {
+    var total_amount = (Billablerows.reduce((a, b) => b.checked ? (a + Number(b.amount)) : (a), 0))
+    setTotalAmount(total_amount)
+  }
+  const onTaskItemClick = (e, data, index) => {
+
+    if (e.target.checked === true) {
+      Billablerows[index].checked = true
+    }
+    else {
+      Billablerows[index].checked = false
+    }
+
+    setBillablerows((prevState) => ([
+      ...prevState
+    ]));
+    setArrchange(!Arrchange)
+    GrandTotal()
+  }
+
   useEffect(() => {
     let ipProjectDataList = [];
-    eeeeeee.map((data, index) => {
+    Billablerows.map((data, index) => {
 
       var rowdataListobj = {};
-      rowdataListobj["billed"] = <Checkbox />;
+      rowdataListobj["billed"] = data.status === 0 && (<Checkbox onClick={(e) => onTaskItemClick(e, data, index)} checked={data.checked ? true : false} />) || 'Billed';
       rowdataListobj["activity"] = data.activity;
       rowdataListobj["description"] = data.description;
       rowdataListobj["emp_name"] = data.emp_name;
@@ -199,31 +222,23 @@ function GenerateInvoice(props) {
       rowdataListobj["start_date"] = data.start_date;
       rowdataListobj["end_date"] = data.end_date;
       rowdataListobj["base_rate"] = data.base_rate;
-      rowdataListobj["billablehours"] = <Labelbox type="text" changeData={(data) => (checkValidation(data, "billablehours", index), setTest(!test))} value={billhours[index] && billhours[index]} />;
+      rowdataListobj["billablehours"] = data.status === 0 && (<Labelbox disabled={data.checked ? false : true} type="text" changeData={(data) => (checkValidation(data, "billablehours", index))} value={billhours[index] && billhours[index]?.billable_hours || 1} />) || data?.billable_hours;
       rowdataListobj["amount"] = data.amount;
 
       ipProjectDataList.push(rowdataListobj);
 
     });
 
-    setBillablerows({ ipProjectDataList });
+    setTableData({ ipProjectDataList });
 
-  }, [eeeeeee, billhours]);
-
-
-  useEffect(() => {
-
-  }, [test])
+  }, [Arrchange]);
 
   useEffect(() => {
-    setEeeeeee(props.getBeiListByProjectId)
+    setBillablerows(props.getBeiListByProjectId)
+    setArrchange(!Arrchange)
   }, [props.getBeiListByProjectId])
 
   function checkValidation(data, key, index) {
-
-    setBillablerows(prevState => ({
-      ...prevState,
-    }));
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -236,27 +251,27 @@ function GenerateInvoice(props) {
       validation: generateInvoice[key].validation,
     };
 
-    // if (key === "billablehours") {
+    if (key === "billablehours") {
+
+      Billablerows[index].amount = Billablerows[index].base_rate * data
+      Billablerows[index].billable_hours = data
+      GrandTotal()
+      setBillablerows((prevState) => ([
+        ...prevState
+      ]));
+      setArrchange(!Arrchange)
+    }
     setbillhours((prevState) => ({
       ...prevState,
       [index]: data,
     }));
-
-    
-    console.log(Billablerows, "Billablerows[index]")
-    // let amount1 = props.getBeiListByProjectId[index].base_rate * data;
-    setBillablerows(prevState => ({
-      ...prevState,
-    }));
-
-    // }
 
     setGenerateInvoice((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
   }
-  console.log(Billablerows, "billhours")
+
   ///***********user permission**********/
   useEffect(() => {
     if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -325,11 +340,12 @@ function GenerateInvoice(props) {
 
       {billabletable && <><div>
         <p style={{ color: '#0353A4', marginTop: '20px', marginBottom: '0px' }}>Billable Hours</p>
-        <EnhancedTable headCells={BillableCells} rows={Billablerows.length === 0 ? Billablerows : Billablerows.ipProjectDataList} />
+        <EnhancedTable headCells={BillableCells} rows={TableData.length === 0 ? TableData : TableData.ipProjectDataList} />
       </div>
 
         <div className="btngenerate">
-          <CustomButton btnName={"Grand Total"} btnCustomColor="customPrimary" btnDisable={!generateRights || generateRights.display_control && generateRights.display_control === 'N' ? true : false} onBtnClick={''} />
+          <div className="grandTotal">Grand Total : {TotalAmount}</div>
+          {/* <CustomButton btnName={"Grand Total"} btnCustomColor="customPrimary" btnDisable={!generateRights || generateRights.display_control && generateRights.display_control === 'N' ? true : false} onBtnClick={''} /> */}
           <CustomButton btnName={"Generate"} btnCustomColor="customPrimary" btnDisable={!generateRights || generateRights.display_control && generateRights.display_control === 'N' ? true : false} onBtnClick={onSubmit} />
         </div></>
       }
@@ -341,7 +357,6 @@ function GenerateInvoice(props) {
 }
 
 const mapStateToProps = (state) =>
-// console.log(state,"statestatestate")
 ({
   Client: state.getOptions.getClientlist,
   getBeiSearch: state.GenerateInvoiceReducer.getBeiSearch || [],

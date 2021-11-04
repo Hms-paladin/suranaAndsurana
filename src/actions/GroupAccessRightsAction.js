@@ -10,7 +10,6 @@ export const GetGroupPermision = () => async dispatch => {
     
 
         try {
-           // console.log(groupName, "groupName")
             axios({
                 method: "POST",
                 url: apiurl + "getgroupPermission",
@@ -36,7 +35,6 @@ export const GetGroupPermision = () => async dispatch => {
 
 export const InsertGroupAccess = (UserGroup) => async dispatch => {
     try {
-        //console.log(groupName, "groupName")
         axios({
             method: "POST",
             url: apiurl + "insertGroupPermission",

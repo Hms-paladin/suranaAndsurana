@@ -186,7 +186,7 @@ function AppealFiling(props) {
             ProcessType: props.ProjectDetails[0].process_id
         }
         dispatch(getFilingType(id));
-    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeData, props.ProjectDetails,props.tradeMark]);
+    }, [props.tradeStatusList, props.classDetailsList, props.filingTypeData, props.ProjectDetails, props.tradeMark]);
 
 
     const errorMessege = () => {
@@ -214,7 +214,7 @@ function AppealFiling(props) {
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
-     
+
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
         params = {
             "ip_type": 0,
@@ -246,7 +246,7 @@ function AppealFiling(props) {
             "client_applicant": TradeMarkForm.client_applicant.value,
             "mark": TradeMarkForm.client_mark.value
         }
-        console.log("paramscheck", params);
+
         if (TradeMarkForm.class_id.value != "") {
             params["class_id"] = TradeMarkForm.class_id.value;
         }
@@ -274,7 +274,7 @@ function AppealFiling(props) {
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-                console.log("appealFiling cancel", TradeMarkForm[data].value);
+
             } catch (error) {
                 throw error;
             }
@@ -284,7 +284,7 @@ function AppealFiling(props) {
         }));
     }
 
-  
+
 
     function checkValidation(data, key, multipleId) {
 
@@ -328,7 +328,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
                         error={TradeMarkForm.client_applicant.error}
@@ -339,7 +339,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Mark</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "client_mark")}
                         value={TradeMarkForm.client_mark.value}
                         error={TradeMarkForm.client_mark.error}
@@ -350,7 +350,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Trade Mark No</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "trade_mark_no")}
                         value={TradeMarkForm.trade_mark_no.value}
                         error={TradeMarkForm.trade_mark_no.error}
@@ -372,7 +372,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Appeal Filing Date</div>
                     <Labelbox type="datepicker"
-                       
+
                         changeData={(data) => checkValidation(data, "appeal_filing_date")}
                         value={TradeMarkForm.appeal_filing_date.value}
                         error={TradeMarkForm.appeal_filing_date.error}
@@ -385,7 +385,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings"> Serial No</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -397,7 +397,7 @@ function AppealFiling(props) {
                     <div className="copyFieldheadings">Appeal No</div>
                     <Labelbox type="text"
                         placeholder={" Appeal No"}
-                        
+
                         changeData={(data) => checkValidation(data, "appeal_no")}
                         value={TradeMarkForm.appeal_no.value}
                         error={TradeMarkForm.appeal_no.error}
@@ -408,7 +408,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Date of Hearing</div>
                     <Labelbox type="datepicker"
-                       
+
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -431,7 +431,7 @@ function AppealFiling(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        
+
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

@@ -8,7 +8,7 @@ const initalState = {
 
 export default function (state = initalState, action) {
     const { type, payload } = action;
-    console.log(type, "type")
+ 
     switch (type) {
         case GET_RESUMELIST:
             return payload

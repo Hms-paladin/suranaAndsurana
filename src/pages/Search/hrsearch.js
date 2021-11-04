@@ -100,7 +100,7 @@ function Hrsearch(props) {
     //   selectedCandidateId.push(resume_id)
     //   setDeignationID(designation_id)
     // }
-    // console.log(event.target.checked,"checkList")
+
     setCheckedList(
       prevState => ({
         // ...prevState,
@@ -109,7 +109,7 @@ function Hrsearch(props) {
     )
     setTest(!test)
   }
-  // console.log(checkList,selectedCandidateId,"checkList")
+
   const viewCandidate = (id) => {
     setViewId(id)
     setCandidateViewModel(true)
@@ -129,7 +129,6 @@ function Hrsearch(props) {
         })
       )
       setroundDropdownValues({ hr_round })
-      console.log(roundDropdownValues.hr_round, "hr_round")
     })
     Axios({
       method: "GET",
@@ -147,7 +146,6 @@ function Hrsearch(props) {
 
   useEffect(() => {
     let multipleTable = []
-    console.log(props.GetRowData, "GetRowData")
     props.GetRowData.map((data) => {
       let rowDataList = []
       if (data.result.length > 0) {
@@ -240,7 +238,6 @@ function Hrsearch(props) {
       ...prevState,
     }));
   };
-  console.log(roundValue, "rowDataList")
 
   ///*****user permission**********/
 
@@ -307,7 +304,7 @@ function Hrsearch(props) {
             />
           </Grid>
           <>
-            { statusId && <Grid item xs={3}>
+            {statusId && <Grid item xs={3}>
               <Labelbox
                 type="select"
                 placeholder="Status"

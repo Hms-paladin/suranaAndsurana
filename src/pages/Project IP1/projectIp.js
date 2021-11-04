@@ -125,11 +125,9 @@ function ProjectIp(props) {
     const [ChecklistChange, setChecklistChange] = useState(false);
     const [IndexArr, setIndexArr] = useState("");
     function callback(key) {
-        console.log(key);
     }
 
     function callbackinside(key) {
-        console.log(key);
     }
 
 
@@ -171,7 +169,7 @@ function ProjectIp(props) {
         { id: "del", label: "Delete" },
     ];
 
-   
+
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
     }, [])
@@ -284,7 +282,7 @@ function ProjectIp(props) {
             ...prevState,
         }));
     }
-    console.log(ChecklistDetails, IndexArr, moment(`${IndexArr[2]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format(), "ChecklistDetails")
+
     const onTaskItemCancel = async () => {
         ChecklistDetails[IndexArr[0]].details[IndexArr[1]].checked = false
         setChecklistDetails((prevState) => ([
@@ -453,14 +451,14 @@ function ProjectIp(props) {
             data = 0
         }
         setAmountChange(true)
-        // console.log(parseInt(data), key, "onchangeAmountappli")
+
         setDisableCondition(false)
         // if (key === "amt" && data) {
         setApplicableamount((prevState) => ({
             ...prevState,
             [key]: parseInt(data),
         }));
-        console.log(disableCondition, "console")
+
         // }
 
 
@@ -605,7 +603,7 @@ function ProjectIp(props) {
                         </div>
                     </>
                 )}
-                {console.log(showVariableTable, "showid")}
+
                 {showVariableTable.length !== 0 &&
                     <div>
                         <div style={{ fontSize: 20, fontWeight: 'bold' }}> Applicable Rates</div>

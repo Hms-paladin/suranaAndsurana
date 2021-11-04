@@ -27,7 +27,7 @@ function PatentRevocationFiled(props) {
 
         },
         trademark_ipab_id: {
-            value:0,
+            value: 0,
             validation: [],
             error: null,
             errmsg: null,
@@ -164,7 +164,7 @@ function PatentRevocationFiled(props) {
             // if(obj.org_appeal_no && obj.org_appeal_no.length)
             // TradeMarkForm.org_appeal_no.disabled = true;
 
-            obj.hearing_date&&(TradeMarkForm.date_of_hearing.value = obj.hearing_date);
+            obj.hearing_date && (TradeMarkForm.date_of_hearing.value = obj.hearing_date);
             // if(obj.hearing_date && obj.hearing_date.length)
             // TradeMarkForm.date_of_hearing.disabled = true;
 
@@ -192,7 +192,7 @@ function PatentRevocationFiled(props) {
             // if(obj.respondent_rep && obj.respondent_rep.length)
             // TradeMarkForm.respondent_rep.disabled = true;
 
-            obj.revocation_filing_date&&(TradeMarkForm.revocation_filing_date.value = obj.revocation_filing_date);
+            obj.revocation_filing_date && (TradeMarkForm.revocation_filing_date.value = obj.revocation_filing_date);
             // if(obj.revocation_filing_date && obj.revocation_filing_date.length)
             // TradeMarkForm.revocation_filing_date.disabled = true;
 
@@ -214,16 +214,15 @@ function PatentRevocationFiled(props) {
         )
         settradeStatusList({ tradeStatusData })
 
-    }, [props.tradeStatusList, props.filingTypeList,props.tradeMark]);
+    }, [props.tradeStatusList, props.filingTypeList, props.tradeMark]);
 
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(TradeMarkForm);
         var filtererr = targetkeys.filter((obj) => TradeMarkForm[obj].error == true);
 
-        console.log(filtererr.length);
         let params = {
-      
+
             "ip_type": null,
             "client_status_type": null,
             "trademark_ipab_id": TradeMarkForm.trademark_ipab_id.value,
@@ -232,10 +231,10 @@ function PatentRevocationFiled(props) {
             "rectification_filing": null,
             "serial_no": TradeMarkForm.serial_no.value,
             "org_appeal_no": TradeMarkForm.org_appeal_no.value,
-            "hearing_date": TradeMarkForm.date_of_hearing.value ,
+            "hearing_date": TradeMarkForm.date_of_hearing.value,
             "opp_applicant": null,
             "opp_applicant_rep": null,
-            "filing_type_id": TradeMarkForm.filing_type_id.valueById&&TradeMarkForm.filing_type_id.valueById.toString()|| '0',
+            "filing_type_id": TradeMarkForm.filing_type_id.valueById && TradeMarkForm.filing_type_id.valueById.toString() || '0',
             "status_id": TradeMarkForm.status_id.value,
             "comments": TradeMarkForm.comments.value,
             "created_on": moment().format("YYYY-MM-DD"),
@@ -245,15 +244,15 @@ function PatentRevocationFiled(props) {
             "respondent": TradeMarkForm.respondent.value,
             "respondent_rep": TradeMarkForm.respondent_rep.value,
             "client_respondent": null,
-            "revocation_filing_date": TradeMarkForm.revocation_filing_date.value ,
+            "revocation_filing_date": TradeMarkForm.revocation_filing_date.value,
             "applicant_no": TradeMarkForm.applicant_no.value,
             "patent_title": TradeMarkForm.patent_title.value,
             "appeal_filing_date": null,
             "client_applicant": TradeMarkForm.client_applicant.value,
             "mark": "",
-            "project_id":rowId,
+            "project_id": rowId,
         }
-        console.log("paramscheck", params);
+
         // if(TradeMarkForm.class_id.value != ""){
         //     params["class_id"] =TradeMarkForm.class_id.value;
         // }
@@ -282,7 +281,7 @@ function PatentRevocationFiled(props) {
         From_key.map((data) => {
             try {
                 TradeMarkForm[data].value = "";
-                console.log("appealFiling cancel", TradeMarkForm[data].value);
+
             } catch (error) {
                 throw error;
             }
@@ -334,7 +333,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "client_applicant")}
                         value={TradeMarkForm.client_applicant.value}
                         error={TradeMarkForm.client_applicant.error}
@@ -365,7 +364,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Revocation Filing Date</div>
                     <Labelbox type="datepicker"
-                        
+
                         changeData={(data) => checkValidation(data, "revocation_filing_date")}
                         value={TradeMarkForm.revocation_filing_date.value}
                         error={TradeMarkForm.revocation_filing_date.error}
@@ -376,7 +375,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "serial_no")}
                         value={TradeMarkForm.serial_no.value}
                         error={TradeMarkForm.serial_no.error}
@@ -389,7 +388,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Org Appeal No.</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "org_appeal_no")}
                         value={TradeMarkForm.org_appeal_no.value}
                         error={TradeMarkForm.org_appeal_no.error}
@@ -400,7 +399,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings"> Date of Hearing</div>
                     <Labelbox type="datepicker"
-                        
+
                         changeData={(data) => checkValidation(data, "date_of_hearing")}
                         value={TradeMarkForm.date_of_hearing.value}
                         error={TradeMarkForm.date_of_hearing.error}
@@ -411,7 +410,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "respondent")}
                         value={TradeMarkForm.respondent.value}
                         error={TradeMarkForm.respondent.error}
@@ -422,7 +421,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Respondent - Rep</div>
                     <Labelbox type="text"
-                        
+
                         changeData={(data) => checkValidation(data, "respondent_rep")}
                         value={TradeMarkForm.respondent_rep.value}
                         error={TradeMarkForm.respondent_rep.error}
@@ -458,7 +457,7 @@ function PatentRevocationFiled(props) {
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Comments</div>
                     <Labelbox type="textarea"
-                        
+
                         changeData={(data) => checkValidation(data, "comments")}
                         value={TradeMarkForm.comments.value}
                         error={TradeMarkForm.comments.error}

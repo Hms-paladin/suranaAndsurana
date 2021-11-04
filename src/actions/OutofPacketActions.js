@@ -5,7 +5,6 @@ import { notification } from 'antd';
 import moment from 'moment'
 
 export const GetOpeSearch = (data) => async dispatch => {
-    console.log(data,"data")
     try {
         axios({
             method: 'POST',

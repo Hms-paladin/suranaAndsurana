@@ -34,7 +34,7 @@ import TimeSheetView from '../Search/TimeSheets/timesheetview';
 import TaskPriority from '../Search/task_priority'
 import TaskTag from '../Search/tasktag'
 import TaskStatus from '../Search/taskstatus'
-import { getTaskList, insert_reassign_task_assignee } from "../../actions/projectTaskAction";
+import { getTaskList, getTaskWeekMonth, insert_reassign_task_assignee } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
@@ -172,6 +172,7 @@ function Task(props) {
         dispatch(getTaskList(empid, "Active", task_id));
         dispatch(getEmployeeList());
         dispatch(getEmpListDepartment());
+        dispatch(getTaskWeekMonth());
     }, []);
 
     useEffect(() => {
@@ -236,7 +237,7 @@ function Task(props) {
         setChangeModel(false)
     }
     function openTimeSheet(flg, obj) {
-        console.log(obj,"obj")
+      
         if (!fieldVal.subOrdinateVal.value || fieldVal.subOrdinateVal.value === "" || (fieldVal.subOrdinateVal.value === Number(localStorage.getItem("empId")))) {
             if (obj.perecent_completion === 100) { return }
             setTaskData(obj);
@@ -335,8 +336,8 @@ function Task(props) {
                 {/* first card */}
 
                 <div className="card_div">
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => (setStartModelOpen(bln),setModelClear(ModelClear+1))}
-                        content={<TimeSheetView model_clear={ModelClear} rowData={taskData} handleChangeCloseModel={(bln) => (setStartModelOpen(bln),setModelClear(ModelClear+1))} />} width={1000} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={startModelOpen} handleChangeCloseModel={(bln) => (setStartModelOpen(bln), setModelClear(ModelClear + 1))}
+                        content={<TimeSheetView model_clear={ModelClear} rowData={taskData} handleChangeCloseModel={(bln) => (setStartModelOpen(bln), setModelClear(ModelClear + 1))} />} width={1000} zIndex={1000} />
 
                     <DynModel modelTitle={"Task Completed"} handleChangeModel={task_status} handleChangeCloseModel={(bln) => setTaskStatus(bln)}
                         content={<TaskStatus rowData={taskData} handleChangeCloseModel={(bln) => setTaskStatus(bln)} />} width={300} />
@@ -412,7 +413,7 @@ function Task(props) {
                                                     <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div> */}
                                                 <div>
-                                                    <p>Assigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                    <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div>
                                                 {/* <div>
                                                     <p>Reassigned By <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
@@ -501,7 +502,7 @@ function Task(props) {
                                                     <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div> */}
                                                 <div>
-                                                    <p>Assigned To <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
+                                                    <p>Assigned By <a>{data.name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
                                                 </div>
                                                 {/* <div>
                                                     <p>Reassigned By <a>{data.assignee_name}</a> On <a>{data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</a></p>
@@ -550,12 +551,12 @@ function Task(props) {
                         <div className="divider_bottom"></div>
                         <div style={{ width: '45%' }}>
                             <p style={{ marginBottom: '0px' }}>This Month</p>
-                            <p>247 Hrs</p>
+                            <p>{props.getTaskWeekMonth && props.getTaskWeekMonth.length > 0 && props.getTaskWeekMonth[1][0].totalHours_for_month} Hrs</p>
                         </div>
                         <div className="divider_bottom"></div>
                         <div style={{ width: '40%' }}>
                             <p style={{ marginBottom: '0px' }}>This Week</p>
-                            <p>47 Hrs</p>
+                            <p>{props.getTaskWeekMonth && props.getTaskWeekMonth.length > 0 && props.getTaskWeekMonth[0][0].totalHours_for_week} Hrs</p>
                         </div>
                     </div>
                     <div>
@@ -635,6 +636,7 @@ const mapStateToProps = (state) =>
 ({
     UserPermission: state.UserPermissionReducer.getUserPermission,
     getTaskLists: state.projectTasksReducer.getTaskLists,
+    getTaskWeekMonth: state.projectTasksReducer.getTaskWeekMonth,
     subordinateslis: state.getOptions.getEmployeeList,
     getEmpListDepartment: state.getOptions.getEmpListDepartment || [],
 });

@@ -196,9 +196,7 @@
   .card_div .MuiPaper-rounded{
     border-radius:25px;       
   }
-  .card_div .MuiPaper-root{
-    // padding: 14px;
-  }
+
   .num_align_side{
     display: flex;
     justify-content: center;
@@ -355,7 +353,6 @@
     height: 35px;
 }
 
-// .customPrimary.MuiButton-contained {
-//     width: fit-content !important;
-//     white-space: nowrap !important;
-// }
+.addClientBtn{
+    width: 100%;
+}

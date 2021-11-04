@@ -100,7 +100,7 @@ function CancelFiled(props) {
         var filtererr = targetkeys.filter(
             (obj) => CancelFiled[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
         } else {
             dispatch(InsertDesign(CancelFiled, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
@@ -147,7 +147,7 @@ function CancelFiled(props) {
     };
 
     useEffect(() => {
-        dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id,getDesign));
+        dispatch(getDesignDetails(props.projectDetails && props.projectDetails[0].project_id, getDesign));
     }, [props.projectDetails])
 
     useEffect(() => {
@@ -163,7 +163,7 @@ function CancelFiled(props) {
                     // CancelFiled[data].disabled = cancFil_value[index]!=='status_id'&&getDesign[0][cancFil_value[index]] ? true : false;
                 }
                 else {
-                    console.log(getDesign[0][cancFil_value[index]], "getDesign[0]")
+
                     CancelFiled[data].value = getDesign[0][cancFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancFil_value[index]]);
                     // CancelFiled[data].disabled = getDesign[0][cancFil_value[index]] === "0000-00-00" ? false : true;
                 }

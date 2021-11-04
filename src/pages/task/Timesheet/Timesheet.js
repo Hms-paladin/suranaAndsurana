@@ -25,7 +25,7 @@ export default function EditTimeSheet(props) {
 
     useEffect(() => {
         setNoOHours(props.edit_timesheet && props.edit_timesheet.no_of_hrs)
-        console.log(props.edit_timesheet, "edit_timesheet")
+
     }, [props.edit_timesheet]);
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function EditTimeSheet(props) {
             var min = num % 60
             time = (Hours < 10 ? '0' + Hours : Hours) + ":" + (min < 10 ? '0' + min : min)
             setNoOHours(time)
-            console.log(time, "aaaaaaa");
+
         }
     }, [Timesheet.fromtime.value, Timesheet.totime.value]);
 
@@ -51,7 +51,7 @@ export default function EditTimeSheet(props) {
         props.edit_timesheet.no_of_hrs = noofhours
         props.update_data(props.edit_timesheet)
         props.closemodal(false)
-        // console.log(moment(Timesheet.fromtime.value,'HH:mm:ss').format('HH:mm:ss'),"edit_timesheet")
+
     }
 
     function checkValidation(data, key) {

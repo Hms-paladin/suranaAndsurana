@@ -122,9 +122,9 @@ function AddQuestion(props) {
 
 
     useEffect(() => {
-        console.log(props.getAddQuations, "getAddQuations")
+
         let rowDataList = []
-        console.log(props.GetRowData, "GetRowData")
+
         props.getAddQuations && props.getAddQuations.map((data, index) => {
             rowDataList.push({
                 category: data.QuescatName,
@@ -135,7 +135,7 @@ function AddQuestion(props) {
             })
         })
         setRowData(rowDataList)
-        console.log(rowDataList, "RDD")
+
     }, [props.getAddQuations])
 
     function checkValidation(data, key) {
@@ -187,15 +187,11 @@ function AddQuestion(props) {
         }
         const splitArray = Add_question.option.value.split(",")
         var check = splitArray.includes(Add_question.answer.value)
-        console.log(check, "Array")
-
-
+     
         var filtererr = targetkeys.filter(
             (obj) => Add_question[obj].error == true
         );
 
-
-        // console.log(filtererr.length);
         if (filtererr.length > 0) {
             // setAdd_question({ error: true });
         } else {
@@ -312,7 +308,7 @@ function AddQuestion(props) {
 }
 
 const mapStateToProps = (state) => (
-    console.log(state.getAddQuations, "state.getOptions.getCategory"),
+  
     {
         Category: state.getOptions.getCategory || [],
         SubCategory: state.getOptions.getSubCategory || [],

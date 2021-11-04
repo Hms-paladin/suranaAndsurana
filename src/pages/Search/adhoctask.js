@@ -54,7 +54,7 @@ function AdhocTaskModal(props) {
     useEffect(() => {
         dispatch(getTagList());
         dispatch(getEmpListDepartment());
-        adhoc_Form.assigned_task.value=Number(localStorage.getItem("empId"))
+        adhoc_Form.assigned_task.value = Number(localStorage.getItem("empId"))
         setadhoc_Form(prevState => ({
             ...prevState
         }));
@@ -135,7 +135,7 @@ function AdhocTaskModal(props) {
         var filtererr = targetkeys.filter(
             (obj) => adhoc_Form[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setadhoc_Form({ error: true });
         } else {
@@ -157,7 +157,7 @@ function AdhocTaskModal(props) {
             "description": descVal
         }
         dispatch(insertAdhocTask(data)).then((response) => {
-            console.log("Insert");
+
             handleCancel();
         })
         setadhoc_Form(prevState => ({
@@ -177,7 +177,7 @@ function AdhocTaskModal(props) {
         From_key.map((data) => {
             try {
                 adhoc_Form[data].value = "";
-                console.log("mapping", adhoc_Form[data].value);
+
             } catch (error) {
                 throw error;
             }
@@ -260,7 +260,7 @@ function AdhocTaskModal(props) {
                         placeholder={"Assigned To"}
                         dropdown={assignedToLists.assignedToData}
                         changeData={(data) => checkValidation(data, "assigned_task")}
-                        value={adhoc_Form.assigned_task.value?adhoc_Form.assigned_task.value:JSON.parse(localStorage.getItem("empId"))}
+                        value={adhoc_Form.assigned_task.value ? adhoc_Form.assigned_task.value : JSON.parse(localStorage.getItem("empId"))}
                         error={adhoc_Form.assigned_task.error}
                         errmsg={adhoc_Form.assigned_task.errmsg}
                     />
@@ -281,7 +281,7 @@ function AdhocTaskModal(props) {
 }
 
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
 
     tagsList: state.projectTasksReducer.tagsList || [],

@@ -24,12 +24,11 @@ export default function Patent(props) {
         )
     }
 
-    console.log(props, "props")
     return (
         <div>
             <Tabs onChangeTabBox={(data) => projectTaskModel(data)} />
             <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
-           
+
             {
                 props.Type.process_type.value === '' && props.Type.filling_type.value == '' &&
                 <IndiaFilling />

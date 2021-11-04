@@ -26,7 +26,7 @@ const { TabPane } = Tabs;
 const Litigation = (props) => {
   const dispatch = useDispatch();
   const [litigationCounsel, setLitigationCounsel] = useState(false);
-  const [LitigationCounsel_id, setLitigationCounsel_id] = useState(0); 
+  const [LitigationCounsel_id, setLitigationCounsel_id] = useState(0);
   const [employeeList, setEmployeeList] = useState({});
   const [locationslList, setlocationslList] = useState({});
   const [tradeMarkStatus, setTradeMarkStatus] = useState({});
@@ -133,7 +133,7 @@ const Litigation = (props) => {
       props.getLitigationDetails[0] &&
       props.getLitigationDetails[0].case_details.map((data) => {
         if (data.liti_councel_id === 5) {
-          console.log("datadata", data);
+
         } else {
           //
         }
@@ -173,7 +173,7 @@ const Litigation = (props) => {
                   {data.liti_councel !== "Adjournment" && <img
                     src={AddIcon}
                     style={{ height: "20px" }}
-                    onClick={()=>setLitigationCounselModel(data.liti_councel_id)}
+                    onClick={() => setLitigationCounselModel(data.liti_councel_id)}
                   />}
                 </div>
                 <div className="ourCounselFieldsHeading">
@@ -297,7 +297,7 @@ const Litigation = (props) => {
     var filtererr = targetkeys.filter(
       (obj) => Litigation_Form[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else {
@@ -347,10 +347,10 @@ const Litigation = (props) => {
     };
 
     if (data && key === "hearingdate") {
-      props.TaskModel&&props.TaskModel(true);
+      props.TaskModel && props.TaskModel(true);
     }
-    else{
-      props.TaskModel&&props.TaskModel(false);
+    else {
+      props.TaskModel && props.TaskModel(false);
     }
 
     // only for multi select (start)
@@ -501,7 +501,7 @@ const Litigation = (props) => {
             content={
               <AddDataModel
                 id={IdDetails}
-                LitigationCounsel_id={LitigationCounsel_id&&LitigationCounsel_id}
+                LitigationCounsel_id={LitigationCounsel_id && LitigationCounsel_id}
                 Litigation_ID={LitigationCase && LitigationCase.ligitation_id}
                 handleChangeCloseModel={(bln) => setLitigationCounsel(bln)}
               />

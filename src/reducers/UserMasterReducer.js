@@ -39,7 +39,6 @@ const intialState = {
 export default function (state = intialState, action) {
     const { type, payload } = action;
 
-    console.log(payload, "test")
     switch (type) {
         case GET_TABLE_NAME:
             return { ...state, TableNamedropdownData: payload.data }
