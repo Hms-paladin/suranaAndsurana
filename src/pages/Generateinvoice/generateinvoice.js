@@ -18,7 +18,6 @@ const { Panel } = Collapse;
 function GenerateInvoice(props) {
   const dispatch = useDispatch();
   const [billabletable, setBillabletable] = useState(false)
-  const [billhours, setbillhours] = useState([])
   const [searchRigths, setSearchRights] = useState([])
   const [client, setClient] = useState({});
   const [generateRights, setGenerateRights] = useState([])
@@ -190,7 +189,7 @@ function GenerateInvoice(props) {
   }, [props.getBeiSearch]);
 
   const GrandTotal = () => {
-    var total_amount = (Billablerows.reduce((a, b) => b.checked ? (a + Number(b.amount)) : (a), 0))
+    var total_amount = (Billablerows.reduce((a, b) => b.checked ? (a + Number(b.update_amount)) : (a), 0))
     setTotalAmount(total_amount)
   }
   const onTaskItemClick = (e, data, index) => {
@@ -212,7 +211,9 @@ function GenerateInvoice(props) {
   useEffect(() => {
     let ipProjectDataList = [];
     Billablerows.map((data, index) => {
-
+      if (!data.update_amount) {
+        data.update_amount = data.amount;
+      }
       var rowdataListobj = {};
       rowdataListobj["billed"] = data.status === 0 && (<Checkbox onClick={(e) => onTaskItemClick(e, data, index)} checked={data.checked ? true : false} />) || 'Billed';
       rowdataListobj["activity"] = data.activity;
@@ -222,8 +223,8 @@ function GenerateInvoice(props) {
       rowdataListobj["start_date"] = data.start_date;
       rowdataListobj["end_date"] = data.end_date;
       rowdataListobj["base_rate"] = data.base_rate;
-      rowdataListobj["billablehours"] = data.status === 0 && (<Labelbox disabled={data.checked ? false : true} type="text" changeData={(data) => (checkValidation(data, "billablehours", index))} value={billhours[index] && billhours[index]?.billable_hours || 1} />) || data?.billable_hours;
-      rowdataListobj["amount"] = data.amount;
+      rowdataListobj["billablehours"] = data.status === 0 && (<Labelbox disabled={data.checked ? false : true} type="text" changeData={(data) => (checkValidation(data, "billablehours", index))} value={data?.billable_hours} />) || data?.billable_hours.replace('.', ':');
+      rowdataListobj["amount"] = data.update_amount;
 
       ipProjectDataList.push(rowdataListobj);
 
@@ -252,8 +253,8 @@ function GenerateInvoice(props) {
     };
 
     if (key === "billablehours") {
-
-      Billablerows[index].amount = Billablerows[index].base_rate * data
+      // console.log(Billablerows[index].actual_hrs.replace(':', '.'), "billablehours")
+      Billablerows[index].update_amount = data.trim() === "" ? Billablerows[index].amount : ((Billablerows[index].base_rate / Billablerows[index].actual_hrs.replace(':', '.')) * data).toFixed(2)
       Billablerows[index].billable_hours = data
       GrandTotal()
       setBillablerows((prevState) => ([
@@ -261,10 +262,6 @@ function GenerateInvoice(props) {
       ]));
       setArrchange(!Arrchange)
     }
-    setbillhours((prevState) => ({
-      ...prevState,
-      [index]: data,
-    }));
 
     setGenerateInvoice((prevState) => ({
       ...prevState,

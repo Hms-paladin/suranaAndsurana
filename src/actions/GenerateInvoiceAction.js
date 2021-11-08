@@ -9,14 +9,14 @@ export const insertGenerateInvoice = (generate_invoice_details) => async dispatc
   let subject_details = []
   generate_invoice_details.length > 0 && generate_invoice_details.map((data, index) =>
     data?.checked && (subject_details.push({
-      rate_master_id:data.rate_master_id,
+      rate_master_id: data.rate_master_id,
       project_id: data.project_id,
       activity_id: data.activiity_id || 0,
       emp_id: data.emp_id,
       actual_no_of_hours: data.actual_hrs,
       actual_rate: data.base_rate,
-      billable_hours: data.billable_hours,
-      amount: data.amount,
+      billable_hours: data.billable_hours.trim() === "" ? data.actual_hrs : data.billable_hours,
+      amount: data.update_amount,
       start_date: data.start_date,
       end_date: data.end_date,
     }))

@@ -451,13 +451,13 @@ function AddClient(props) {
   useEffect(() => {
     if (props.EditClientData) {
       let CreateClient_key = [
-        // "document_upload_name",
+
         "city",
         "state",
         "emai_id_2",
         "con_ph_2",
         "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-        "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no"]
+        "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "document_upload_name"]
 
 
       let CreateClient_value = [
@@ -467,9 +467,17 @@ function AddClient(props) {
         "ct_email_id",
         "ct_contact_no",
         "designation_id_2", "contact_person_2", "client_type_id", "address", "email_id", "contact_no",
-        "designation_id_1", "contact_person_1", "industry_id", "client", "client_id", "gst_no", "pan_no"];
+        "designation_id_1", "contact_person_1", "industry_id", "client", "client_id", "gst_no", "pan_no", "document_upload_name"];
 
       CreateClient_key.map((data, index) => {
+        if (data === "document_upload_name") {
+          setFileupload(props.EditClientData[0]['documents']);
+          return
+        }
+        if (data === "state") {
+          dispatch(getCity_By_Id(props.EditClientData[0][CreateClient_value[index]]))
+        }
+
         Addclient_Form[data].value = props.EditClientData[0][CreateClient_value[index]] === '0' ? '' : props.EditClientData[0][CreateClient_value[index]];
         return true;
       });
@@ -648,8 +656,8 @@ function AddClient(props) {
               return (<>
 
                 <div className="doc_upload_items">
-                  <div style={{ width: '50%' }}>{data.document_upload_name}</div>
-                  <div>{data.selectedFile.name}</div>
+                  <div style={{ width: '50%' }}>{data.document_upload_name || data.document_name}</div>
+                  <div>{data?.selectedFile?.name || data.url.length > 0 ? data.url.substr(35, 10) + '..' : ''}</div>
                 </div></>
               )
             })}

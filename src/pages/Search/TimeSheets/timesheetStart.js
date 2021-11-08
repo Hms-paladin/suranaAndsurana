@@ -110,6 +110,10 @@ function TimeSheetStartModel(props) {
 
     })
 
+    const dateFormat = (data) => {
+        return moment(data, "HH:mm").format("HH:mm")
+    }
+
     useEffect(() => {
         setProjectDetails(props.projectrow)
     }, [props.projectrow])
@@ -163,17 +167,6 @@ function TimeSheetStartModel(props) {
             handleCancel()
     }, [props.model_clear]);
 
-    // useEffect(() => {
-    //     if (props.approve_timesheet && props.approve_timesheet !== '') {
-
-    //         // timeSheetForm.startTime.value
-    //         // timeSheetForm.startTime.value
-    //         // timeSheetForm.startTime.value
-    //         // timeSheetForm.startTime.value
-    //     }
-    
-    // }, [props.approve_timesheet]);
-
     useEffect(() => {
         if (timeSheetForm.activity.value) {
             dispatch(getSubactivity(timeSheetForm.activity.value));
@@ -183,9 +176,9 @@ function TimeSheetStartModel(props) {
     useEffect(() => {
         var insert_data = {
             "emp_id": localStorage.getItem("empId"),
-            "start_date": timeSheetForm.fromDate.value,
+            "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "start_time": moment(timeSheetForm.startTime.value).format('HH:mm:ss'),
-            "end_date": timeSheetForm.fromDate.value,
+            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "end_time": moment(timeSheetForm.endTime.value).format('HH:mm:ss'),
         }
         axios({
@@ -256,9 +249,7 @@ function TimeSheetStartModel(props) {
 
     }, [timeSheetForm.projectname.value, props.activitysList, props.getSubactivity, props.prioritysList, props.tagsList, props.locationList, props.ProjectName])
 
-    const dateFormat = (data) => {
-        return moment(data, "HH:mm").format("HH:mm")
-    }
+   
     const submitStartTimeSheet = async () => {
 
         var mainvalue = {};
@@ -292,9 +283,9 @@ function TimeSheetStartModel(props) {
                 "sub_activity_id": timeSheetForm.subActivity.value,
                 "assignee_id": localStorage.getItem("empId"),
                 "assigned_by": localStorage.getItem("empId"),
-                "start_date": timeSheetForm.fromDate.value,
+                "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
                 "start_time": startTime,
-                "end_date": timeSheetForm.fromDate.value,
+                "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
                 "end_time": SaveProcess ? end_time : '',
                 "comment": timeSheetForm.description.value,
                 "task_status": SaveProcess ? 1 : 0,
@@ -336,7 +327,7 @@ function TimeSheetStartModel(props) {
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "timesheet_id": timeSheetForm.timesheet_id.value,
-            "end_date": timeSheetForm.fromDate.value,
+            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "end_time": end_time,
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId")
@@ -383,9 +374,9 @@ function TimeSheetStartModel(props) {
             "activity_id": timeSheetForm.activity.value,
             "sub_activity_id": timeSheetForm.subActivity.value,
             "assignee_id": localStorage.getItem("empId"),
-            "start_date": timeSheetForm.fromDate.value,
+            "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "start_time": startTime,
-            "end_date": timeSheetForm.fromDate.value,
+            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "end_time": end_time,
             "assigned_by": localStorage.getItem("empId"),
             "priority": 0,

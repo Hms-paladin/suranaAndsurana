@@ -37,7 +37,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
 
     await Axios({
       method: 'POST',
-      url: apiurl + 'insert_client',
+      url: apiurl + (Addclient_Form.client_id.value != '0' ? 'update_client' : 'insert_client'),
       data: DocumentData
     }).then((response) => {
       if (response.data.status === 1) {

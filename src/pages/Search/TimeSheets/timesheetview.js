@@ -179,9 +179,9 @@ function TimeSheetView(props) {
     useEffect(() => {
         var insert_data = {
             "emp_id": localStorage.getItem("empId"),
-            "start_date": timeSheetForm.fromDate.value,
+            "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "start_time": moment(timeSheetForm.startTime.value).format('HH:mm'),
-            "end_date": timeSheetForm.fromDate.value,
+            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "end_time": moment(timeSheetForm.endTime.value).format('HH:mm'),
         }
         axios({
@@ -226,14 +226,14 @@ function TimeSheetView(props) {
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
             "task_id": props.rowData.task_id,
-            "start_date": timeSheetForm.fromDate.value,
+            "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
             "start_time": (timeSheetForm.startTime.value !== null && timeSheetForm.startTime.value !== '') ? moment(timeSheetForm.startTime.value).format('HH:mm') : moment(new Date()).format("HH:mm"),//dateFormat(timeSheetForm.startTime.value != undefined ? timeSheetForm.startTime.value : new Date(), "hh:MM:ss"),
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
         if (SaveBtnProcess) {
             timesheetStopData = {
-                "end_date": timeSheetForm.fromDate.value,
+                "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
                 "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm') : moment(new Date()).format("HH:mm"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
                 "comment": timeSheetForm.description.value,
                 "updated_by": localStorage.getItem("empId"),

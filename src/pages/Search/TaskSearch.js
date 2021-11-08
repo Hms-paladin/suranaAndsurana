@@ -172,7 +172,6 @@ function Task(props) {
         dispatch(getTaskList(empid, "Active", task_id));
         dispatch(getEmployeeList());
         dispatch(getEmpListDepartment());
-        dispatch(getTaskWeekMonth());
     }, []);
 
     useEffect(() => {

@@ -14,7 +14,7 @@ const headCells = [
     { id: 's_no', label: 'S.No' },
     { id: 'name', label: 'Name' },
     { id: 'client_type', label: 'Client Type' },
-    { id: 'gender', label: 'Gender' },
+    // { id: 'gender', label: 'Gender' },
     { id: 'email', label: ' Email' },
     { id: 'state', label: 'State ' },
     { id: "edit", label: "Edit" },
@@ -43,7 +43,7 @@ function Clientsearch(props) {
                 s_no: (index + 1),
                 name: data.client,
                 client_type: data.client_type,
-                gender: data.gender,
+                // gender: data.gender,
                 email_id: data.email_id,
                 state: data.state,
                 action: (
@@ -62,13 +62,13 @@ function Clientsearch(props) {
     return (
         <div>
             <div>
-
+                <div className="addClientBtn">
+                    <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary" onBtnClick={() => (setEditClientData([]), setClientModel(true))} />
+                </div>
                 <div className="resume_searchtable">
                     <EnhancedTable headCells={headCells} rows={updateList.length == 0 ? updateList : updateList.updatelist} hideSortIcon={false} />
                 </div>
-                <div className="searchinterviewbtn">
-                    <CustomButton btnName={"Create Client "} btnCustomColor="customPrimary" onBtnClick={() => (setEditClientData([]), setClientModel(true))} />
-                </div>
+
                 <DynModel
                     modelTitle={""}
                     handleChangeModel={ClientModel}

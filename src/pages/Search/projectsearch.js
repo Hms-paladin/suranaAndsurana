@@ -59,12 +59,12 @@ const OtherHead = [
 ];
 
 function Projectsearch(props) {
-  
+
   const [value, setValue] = React.useState(1);
   const [modelOpen, setModelOpen] = useState(false);
   const [clientType, setClientType] = useState({});
   const [client, setClient] = useState({});
-  const [projectType, setProjectType] = useState({});
+  // const [projectType, setProjectType] = useState({});
   const [projectName, setProjectName] = useState({});
   const [billableType, setBillableType] = useState({});
   const [multiplePanel, setMultiplePanel] = useState([]);
@@ -143,12 +143,13 @@ function Projectsearch(props) {
     setClient({ Client });
 
     //Project Type
-    let ProjectType = [];
-    props.ProjectType.map((data) =>
-      ProjectType.push({ id: data.project_type_id, value: data.project_type })
-    );
-    setProjectType({ ProjectType });
+    // let ProjectType = [];
+    // props.ProjectType.map((data) =>
+    //   ProjectType.push({ id: data.project_type_id, value: data.project_type })
+    // );
+    // setProjectType({ ProjectType });
 
+    projectform.projecttype.value = props?.ProjectType[0]?.project_type_id
     // Project Name
 
     let ProjectName = [];
@@ -255,7 +256,7 @@ function Projectsearch(props) {
     let Form_key = [
       "clienttype",
       "client",
-      "projecttype",
+      // "projecttype",
       "projectname",
       "billabletype",
       "project_Subtype"
@@ -393,7 +394,7 @@ function Projectsearch(props) {
               errmsg={projectform.client.errmsg}
             />
           </div>
-          <div className="projsearchfilterdrpdwn">
+          {/* <div className="projsearchfilterdrpdwn">
             <div className="Fieldheading">Project Type</div>
             <Labelbox
               type="select"
@@ -403,7 +404,7 @@ function Projectsearch(props) {
               error={projectform.projecttype.error}
               errmsg={projectform.projecttype.errmsg}
             />
-          </div>
+          </div> */}
           <div className="projsearchfilterdrpdwn">
             <div className="Fieldheading">Project Sub Type</div>
             <Labelbox type="select"
