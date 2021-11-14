@@ -578,16 +578,6 @@ export const getEmpListByProjectId = (project_id) => async dispatch => {
 }
 
 export const getClientDetails = () => async (dispatch) => {
-  // const response = await axios.post(apiurl + "/get_client_details");
-  // return dispatch({ type: GET_CLIENT_DETAILS, payload: response.data.data });
-  await axios({
-    method: 'POST',
-    url: apiurl + 'get_client_details',
-    data: {
-      "emp_id": localStorage.getItem("empId"),
-    }
-  })
-    .then((response) => {
-      dispatch({ type: GET_CLIENT_DETAILS, payload: response.data.data })
-    })
+  const response = await axios.get(apiurl + "/get_client_details");
+  return dispatch({ type: GET_CLIENT_DETAILS, payload: response.data.data });
 };
