@@ -100,14 +100,8 @@ function UserGroup(props) {
         }
 
     }, [props.UserPermission]);
-    console.log(permission, "permission")
-    function rights() {
-        notification.success({
-            message: "You Dont't Have Rights To Access This",
-        });
-    }
+
     const addGroupName = () => {
-        alert("test")
         setUsergroupModel(true)
     }
 
@@ -115,7 +109,7 @@ function UserGroup(props) {
         <div>
             <div className="UserGroup">
                 <div>User Group</div>
-                {/* <img src={PlusIcon} className="plusicon" onClick={() => (permission.allow_add==='Y'?setUsergroupModel(true):rights())} /> */}
+
                 <img src={PlusIcon} className="plusicon" onClick={() => addGroupName()} />
                 <DynModel modelTitle={"ADD USER GROUP"} handleChangeModel={usergroupModel} handleChangeCloseModel={(bln) => setUsergroupModel(bln)} content={<UserGroupModal handleChangeCloseModel={(bln) => setUsergroupModel(bln)} editbtn={onEdit}
                     handleChangeCloseModel={(bln) => handleFieldNull(bln)}

@@ -18,12 +18,28 @@
 
 .projectscroll {
     // height: 200px;
-    width: 40%;
+    width: 100%;
     background-color: white;
     margin: 10px;
     border-radius: 5px;
-    height: 100px;
-    > div:first-child {
+
+    >div:first-child {
+        padding: 8px 8px 8px 0px;
+        font-size: 17px;
+        font-weight: 600;
+    }
+}
+
+.projectscroll-second {
+    // height: 200px;
+    width: 100%;
+    background-color: white;
+    margin-top: 10px;
+    border-radius: 5px;
+    //height: 190px;
+    overflow: auto;
+
+    >div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
@@ -34,15 +50,27 @@
     width: 100%;
     display: flex;
     padding: 5px;
-    > div {
-        width: 33%;
+
+    >div {
+        width: 100%;
+    }
+}
+
+.projecttable-second {
+    width: 100%;
+    display: flex;
+    padding: 5px;
+
+    >div {
+        width: 50%;
     }
 }
 
 .projectdatas {
-    height: 130px;
+    max-height: 130px;
+    min-height: 130px;
     overflow: auto;
-    background-color: rgb(246, 240, 240);
+    background-color: #f6f0f0;
 }
 
 // task
@@ -51,19 +79,21 @@
     width: 100%;
     display: flex;
     padding: 5px;
-    > div {
+
+    >div {
         width: 33%;
     }
 }
 
 .taskscroll {
-    width: 30%;
+    width: 100%;
     background-color: white;
     margin: 10px;
     border-radius: 5px;
-    overflow: auto;
-    height: 170px;
-    > div:first-child {
+    height: 157px;
+    // height: 170px;
+
+    >div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
@@ -71,24 +101,37 @@
 }
 
 .taskdatas {
-    height: 130px;
+    height: 117px;
     overflow: auto;
-    background-color: rgb(250, 244, 244);
+    background-color: #faf4f4;
 }
 
 .topcontainer {
+    // display: flex;
+    // height: auto;
+}
+
+.bottomcontainer {
     display: flex;
     height: auto;
 }
 
+.Box{
+    width: 70%;
+}
+.Sub-Box{
+    display: flex;
+    width: 103%;
+}
 // expAdvContainer
 .expAdvContainer {
-    width: 71%;
+    width: 100%;
     padding: 20px 15px;
     background-color: white;
     margin: 20px 0px 7px 8px;
     border-radius: 8px;
     display: flex;
+    height: 16%;
 }
 
 .expensePalce {
@@ -116,19 +159,27 @@
     display: flex;
     padding: 5px;
     font-weight: 600;
-    > div {
-        width: 16.6%;
+
+    >div {
+        width: 100%;
+        padding: 0px 5px;
     }
 }
+
+.taskdaystableHeader div:first-child{
+    width:154%;
+}
+
 .taskdaysscroll {
-    width: 72%;
+    // width: 100%;
     background-color: white;
     margin: 10px;
     border-radius: 5px;
     overflow: auto;
-    position: relative;
-    bottom: 210px;
-    > div:first-child {
+    // position: relative;
+    // bottom: 210px;
+
+    >div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
@@ -136,18 +187,23 @@
 }
 
 .taskdaysdatas {
-    height: 150px;
+    height: 117px;
     overflow: auto;
-    background-color: rgb(246, 240, 240);
+    background-color: #f6f0f0;
 }
 
 .taskdaystable {
     width: 100%;
     display: flex;
     padding: 5px;
-    > div {
-        width: 16.6%;
+
+    >div {
+        width: 100%;
+        padding: 0px 5px;
     }
+}
+.taskdaystable div:first-child{
+    width: 154%;
 }
 
 .dashboardmenu {
@@ -220,7 +276,8 @@
     background-color: white;
     margin: 10px;
     border-radius: 5px;
-    > div:first-child {
+
+    >div:first-child {
         padding: 8px 8px 8px 0px;
         font-size: 17px;
         font-weight: 600;
@@ -239,7 +296,8 @@
     padding: 6px 0px;
     color: gray;
     border-bottom: 1px solid #d8d4d4;
-    > div:first-child {
+
+    >div:first-child {
         width: 40%;
     }
 }
@@ -250,7 +308,8 @@
     padding: 6px 0px;
     font-weight: 600%;
     border-bottom: 1px solid #d8d4d4;
-    > div:first-child {
+
+    >div:first-child {
         width: 40%;
     }
 }
@@ -262,7 +321,8 @@
 .taskStages {
     width: 60%;
     display: flex;
-    > div {
+
+    >div {
         width: 50%;
     }
 }
@@ -270,7 +330,8 @@
 .taskStage {
     display: flex;
     text-align: center;
-    > div {
+
+    >div {
         width: 50%;
         padding: 5px;
     }
@@ -283,33 +344,41 @@
     padding: 7px 0px;
     border-bottom: 1px solid #d8d4d4;
 
-    > div:first-child {
+    >div:first-child {
         width: 20%;
     }
+
     .firstheading {
         width: 30%;
     }
+
     .secondheading {
         width: 50%;
     }
+
     .taskStage {
         width: 30%;
         display: flex;
         text-align: center;
-        > div {
+
+        >div {
             width: 50%;
             padding: 5px;
         }
     }
+
     .taskStages {
         width: 50%;
         display: flex;
-        > div {
+
+        >div {
             width: 50%;
+
             .taskStagefields {
                 display: flex;
                 text-align: center;
-                > div {
+
+                >div {
                     width: 50%;
                 }
             }
@@ -322,33 +391,42 @@
     text-align: center;
     font-weight: 600;
     padding: 7px 0px;
-    > div:first-child {
+
+    >div:first-child {
         width: 20%;
     }
+
     .firstheading {
         width: 30%;
     }
+
     .secondheading {
         width: 50%;
     }
+
     .taskStage {
         width: 30%;
         display: flex;
         text-align: center;
-        > div {
+
+        >div {
             width: 50%;
             padding: 5px;
         }
     }
+
     .taskStages {
         width: 50%;
         display: flex;
-        > div {
+
+        >div {
             width: 50%;
+
             .taskStagefields {
                 display: flex;
                 text-align: center;
-                > div {
+
+                >div {
                     width: 50%;
                 }
             }
@@ -359,6 +437,7 @@
 .custom_calender {
     margin: 10px 0px 10px 20px;
     background-color: white;
+    height: 440px;
 }
 
 // .ant-card-grid {
@@ -369,16 +448,17 @@
 .ant-fullcalendar-header {
     padding: 11px 16px 11px 16px;
     text-align: right;
-  
+
 }
 
-.calender_view{
+.calender_view {
     background-color: white;
     margin-left: 21px;
     position: relative;
     bottom: 10px;
     height: 122px;
-    >div{
+
+    >div {
         margin: 5px;
         background-color: #E4E4E4;
         height: 117px;
@@ -387,12 +467,56 @@
     }
 }
 
-.calDay{
+.caltableHeader {
+    width: 100%;
+    display: flex;
+    padding: 5px;
+    font-weight: 600;
+
+    >div {
+        margin-right: 30px;
+    }
+}
+
+.caltable {
+    width: 100%;
+    display: flex;
+    padding: 5px;
+
+    >div {
+        margin-right: 30px;
+    }
+}
+
+.calDay {
     font-size: 15px;
     font-weight: 600;
 }
 
-.cal_time{
+.cal_time {
     font-size: 10px;
     padding-top: 5px;
+}
+
+.btncustom_css {
+    text-transform: none !important;
+}
+
+.sec-section {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: space-between;
+    // position: relative;
+    // bottom: 210px;
+}
+
+.taskdaystablecal {
+    width: 100%;
+    display: flex;
+    padding: 5px;
+
+    >div {
+        width: 46.6%;
+    }
 }

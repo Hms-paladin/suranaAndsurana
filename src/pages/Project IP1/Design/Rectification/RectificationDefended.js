@@ -5,7 +5,9 @@ import CustomButton from "../../../../component/Butttons/button";
 import ValidationLibrary from "../../../../helpers/validationfunction";
 import { useSelector, useDispatch } from 'react-redux';
 import { getIPStatus } from "../../../../actions/IPDropdown.js";
-import { InsertDesign } from "../../../../actions/InsertDesign";
+import { InsertDesign, getDesignDetails } from "../../../../actions/InsertDesign";
+import moment from "moment";
+import { useParams } from "react-router-dom";
 
 function RectificationDefended(props) {
     const [RectificationDefended, setRectificationDefended] = useState({
@@ -45,6 +47,12 @@ function RectificationDefended(props) {
     })
     const DesignDropDowns = useSelector((state) => state.IPDropdownReducer)
     const dispatch = useDispatch();
+    const getDesign = useSelector((state) => state.getDesignDetails)
+
+    useEffect(() => {
+        dispatch(getIPStatus());
+        dispatch(getDesignDetails(rowId))
+    }, [])
 
     function checkValidation(data, key) {
 
@@ -80,10 +88,10 @@ function RectificationDefended(props) {
         var filtererr = targetkeys.filter(
             (obj) => RectificationDefended[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
         } else {
-            dispatch(InsertDesign(RectificationDefended, props.projectDetails && props.projectDetails[0])).then(() => {
+            dispatch(InsertDesign(RectificationDefended, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
                 handleCancel()
             })
         }
@@ -91,10 +99,34 @@ function RectificationDefended(props) {
             ...prevState
         }));
     }
+    let { rowId } = useParams()
+
 
     useEffect(() => {
-        dispatch(getIPStatus());
-    }, [])
+        handleCancel()
+        if (getDesign.length > 0) {
+            let indiaFil_key = ["des_number", "respondent", "petitioner_rep", "status", "comments"]
+
+            let indiaFil_value = ["design_number", "responent_rep", "petitioner", "status_id", "comments"]
+
+            indiaFil_key.map((data, index) => {
+
+                if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date" && indiaFil_value[index] !== "renewal_date") {
+                    RectificationDefended[data].value = getDesign[0][indiaFil_value[index]];
+                    //   RectificationDefended[data].disabled = indiaFil_value[index]!=='status_id'&&getDesign[0][indiaFil_value[index]] ? true : false;
+                }
+                else {
+
+                    RectificationDefended[data].value = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][indiaFil_value[index]]);
+                    //   RectificationDefended[data].disabled = getDesign[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+
+                }
+            });
+            setRectificationDefended((prevState) => ({
+                ...prevState,
+            }));
+        }
+    }, [getDesign])
 
     useEffect(() => {
 
@@ -169,7 +201,7 @@ function RectificationDefended(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comments</div>
-                        <Labelbox type="text"
+                        <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={RectificationDefended.comments.value}
                             error={RectificationDefended.comments.error}

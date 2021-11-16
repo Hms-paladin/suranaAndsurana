@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url(./helpers/poppins/Poppins-Regular.ttf);
+}
+
+@font-face{
+  font-family: "Poppins-MediumItalic";
+  src: url(./helpers/poppins/Poppins-MediumItalic.ttf);
+}
+
+* {
+font-family: "Poppins-Regular";
+}
+
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #E4E4E4 !important;
+  font-size: 14px !important;
+}
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+
+
+/* table select null css */
+
+.MuiTableRow-root.Mui-selected, .MuiTableRow-root.Mui-selected:hover{
+  background-color: transparent !important;
+}
+
+.ant-notification{  
+ z-index: 30000 !important;
+}
+
+
+
+/* main content */
+
+.makeStyles-content-6{
+  width: 100px;
+}
+.ant-select-dropdown {
+  z-index: 1800 !important;
+  min-height:fit-content !important;
+}
+
+/* .ant-calendar-picker {
+  z-index: 1410 !important;
+} */
+
+/* input:focus {
+  border: none !important;
+} */
+
+.ant-select-dropdown{
+}

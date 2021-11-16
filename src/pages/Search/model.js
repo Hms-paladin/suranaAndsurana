@@ -5,14 +5,11 @@ import { Button } from "@material-ui/core";
 import Axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl';
-import { GetInterviewers } from "../../actions/GetInterviewersActions";
-import { GetDesignation } from "../../actions/GetDesignationActions";
+import { GetInterviewers, GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 import ValidationLibrary from '../../helpers/validationfunction';
 import CustomButton from "../../component/Butttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
 import { getInterviewApprover } from "../../actions/MasterDropdowns";
-
-
 import './search.scss'
 
 
@@ -25,6 +22,7 @@ function DynModel(props) {
   const [finalRound, setFinalRound] = useState(false);
   const [interviewApprover, setInterviewApprover] = useState([]);
   const [finalIntId, setFinalIntId] = useState(0);
+  const [uncheck, setUncheck] = useState(false)
 
   const [Interviewschedule, setInterviewschedule] = useState({
     desgination: {
@@ -87,24 +85,35 @@ function DynModel(props) {
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
 
-    if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
-      let data_res_id = props.GetInterviewers.find((val) => {
-        return (
-          "Venkat" == val.name
-        )
-      })
-      setFinalIntId(data_res_id.emp_id)
-    }
+    // if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+    //   let data_res_id = props.GetInterviewers.find((val) => {
+    //     return (
+    //       "Venkat" == val.name
+    //     )
+    //   })
+    //   setFinalIntId(data_res_id.emp_id)
+    // }
   }, [props.GetInterviewers])
 
-  console.log(finalIntId, "GetInterviewers")
+  useEffect(() => {
+    let InterviewApprover = []
+    props.GetInterviewersApprFinal.length > 0 && props.GetInterviewersApprFinal.map((data, index) =>
+      InterviewApprover.push({ id: data.emp_id, value: data.name }))
+    setInterviewApprover({ InterviewApprover })
+
+  }, [props.GetInterviewersApprFinal])
+
+
   function checkValidation(data, key, multipleId) {
 
-    if (data == 27 && key === "round") {
-      Interviewschedule.interviewer.value = finalIntId
-      setFinalRound(true)
-    } else {
-      setFinalRound(false)
+    if (data === 27 && key === "round") {
+      // Interviewschedule.interviewer.value = finalIntId
+      dispatch(GetInterviewersApprFinal());
+      // setFinalRound(true)
+    }
+    if (data !== 27 && key === "round") {
+      // setFinalRound(false)
+      dispatch(GetInterviewers());
     }
 
 
@@ -123,9 +132,7 @@ function DynModel(props) {
       [key]: dynObj,
     }));
   }
-  useEffect(() => {
 
-  }, [props.checkList])
 
   React.useEffect(() => {
     setVisible(props.handleChangeModel)
@@ -146,11 +153,11 @@ function DynModel(props) {
     var filtererr = targetkeys.filter(
       (obj) => Interviewschedule[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
     } else {
       dispatch(InesertInterviewDetails(Interviewschedule, props.selectedId)).then((response) => {
-        // console.log(props.checkList, "checkList")
+
         stateClear()
 
       })
@@ -159,22 +166,10 @@ function DynModel(props) {
     setInterviewschedule(prevState => ({
       ...prevState
     }));
+    props.handleUnCheck();
   };
 
-
   useEffect(() => {
-
-    // Axios({
-    //   method: "get",
-    //   url: apiurl + "get_interviewers",
-    // }).then((response) => {
-    //   let Interviewer = []
-    //   response.data.data.map((data, index) =>
-    //     Interviewer.push({ id: data.emp_id, value: data.name }))
-
-    //   setinterviewerdata({ Interviewer })
-
-    // })
 
     Axios({
       method: "get",
@@ -182,7 +177,10 @@ function DynModel(props) {
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data.designation }))
+        Designation.push({
+          value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{'  - ' + data.designation}</div>,
+          id: data.designation_id
+        }))
 
       setdesignationdata({ Designation })
 
@@ -202,7 +200,6 @@ function DynModel(props) {
         })
       )
       setroundDropdownValues({ hr_round })
-      console.log(roundDropdownValues.hr_round, "hr_round")
     })
 
   }, [dispatch])
@@ -247,7 +244,7 @@ function DynModel(props) {
           <LabelBox
             type="datepicker"
             placeholder={"Proposed Date"}
-            disablePast={true}
+            minDate={new Date(new Date().getTime() + 86400000)}
             changeData={(data) => checkValidation(data, "propsedDate")}
             value={Interviewschedule.propsedDate.value}
             error={Interviewschedule.propsedDate.error}
@@ -259,7 +256,7 @@ function DynModel(props) {
             type="select"
             placeholder={"Interviewer"}
             // dropdown={interviewerdata.Interviewer}
-            disabled={finalRound ? true : false}
+            // disabled={finalRound ? true : false}
             dropdown={interviewApprover.InterviewApprover}
             changeData={(data) => checkValidation(data, "interviewer")}
             value={Interviewschedule.interviewer.value}
@@ -274,6 +271,7 @@ function DynModel(props) {
             btnCustomColor="customPrimary"
             onBtnClick={onSubmit}
           />
+
         </div>
       </div>
     </Modal>
@@ -281,10 +279,10 @@ function DynModel(props) {
 }
 
 const mapStateToProps = (state) => (
-  // console.log(state.getOptions.getInterviewApprover, "getProcessType")
+
   {
     GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
-
+    GetInterviewersApprFinal: state.InterviewSchedule.GetInterviewersApprFinal || [],
   }
 );
 

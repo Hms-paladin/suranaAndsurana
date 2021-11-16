@@ -1,30 +1,8 @@
-import { GET_STAGEMASTER_TABLEDATA, INSERT_STAGEMASTER,GET_STAGEMASTER } from "../utils/Constants";
+import { GET_STAGEMASTER,GET_STAGEMASTER_SEARCH } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
 import { notification } from "antd";
-
-
-export const getStageMasterTableData = () => async dispatch => {
-  try {
-
-    axios({
-      method: 'GET',
-      url: apiurl + 'get_project_stage',
-    })
-      .then((response) => {
-        dispatch(
-          {
-            type: GET_STAGEMASTER_TABLEDATA,
-            payload: response.data.data
-          }
-        )
-      })
-
-  } catch (err) {
-
-  }
-}
 
 export const getStageMaster = () => async dispatch => {
   try {
@@ -84,4 +62,32 @@ export const InsertStageMaster = (RateMaster) => async dispatch => {
     } catch (err) {
         
     }
+}
+
+export const getStageMasterSearch = (RateMaster) => async dispatch => {
+  try {
+
+      axios({
+          method: "POST",
+          url: apiurl + 'get_stage_master_search',
+          data: {
+            "project_type_id": RateMaster.project_type_search.value,
+            "process_id": RateMaster.process_type_search.value || 0,
+            "sub_project_type_id": RateMaster.sub_project_type_search.value || 0,
+          }
+        }).then((response) => {
+          if (response.data.status === 1) {
+            dispatch(
+              {
+                type: GET_STAGEMASTER_SEARCH,
+                payload: response.data.data
+              }
+            )
+              return Promise.resolve();
+          }
+        });
+      
+  } catch (err) {
+      
+  }
 }

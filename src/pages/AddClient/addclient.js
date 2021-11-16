@@ -8,16 +8,16 @@ import CustomButton from "../../component/Butttons/button";
 import { Label } from "@material-ui/icons";
 import moment from "moment";
 import { notification } from "antd";
-import { InsertClient } from "../../actions/AddClientAction"
+import { InsertClient, getClientNameCheck } from "../../actions/AddClientAction"
 import PublishIcon from '@material-ui/icons/Publish';
 import { connect, useDispatch } from "react-redux";
 import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
+import { getDesignationList, getCity_By_Id, } from '../../actions/MasterDropdowns'
 
-
-function AddClient() {
+function AddClient(props) {
   const dispatch = useDispatch();
   const [clientName, setClientName] = useState({});
   const [fileupload, setFileupload] = useState([]);
@@ -25,11 +25,17 @@ function AddClient() {
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
-  const [Addclient_Form, setAddclient_Form] = useState({
+  const [getdata, setgetData] = useState([])
+  const [SaveButton, setSaveButton] = useState(true);
+  const [clientExists, setClientExists] = useState(1)
 
+  const [Addclient_Form, setAddclient_Form] = useState({
+    client_id: {
+      value: "0",
+    },
     client_name: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphabetwithspace" }],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
@@ -45,21 +51,15 @@ function AddClient() {
       error: null,
       errmsg: null,
     },
-    gender_1: {
+    designation_id_1: {
       value: "",
-      validation: [{ name: "required" }],
-      error: null,
-      errmsg: null,
-    },
-    DOB_1: {
-      value: "",
-      validation: [],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     con_ph_1: {
       value: "",
-      validation: [{ name: "required" }, { name: "mobileSurana" }],
+      validation: [{ name: "required" }, { name: "mobile" }],
       error: null,
       errmsg: null,
     },
@@ -92,13 +92,7 @@ function AddClient() {
       error: null,
       errmsg: null,
     },
-    gender_2: {
-      value: "",
-      validation: [],
-      error: null,
-      errmsg: null,
-    },
-    DOB_2: {
+    designation_id_2: {
       value: "",
       validation: [],
       error: null,
@@ -106,7 +100,7 @@ function AddClient() {
     },
     con_ph_2: {
       value: "",
-      validation: [{ name: "mobileSurana" }],
+      validation: [{ name: "mobile" }],
       error: null,
       errmsg: null,
     },
@@ -128,46 +122,51 @@ function AddClient() {
       error: null,
       errmsg: null,
     },
-    poa_name: {
+    document_upload_name: {
       value: "",
       validation: [],
       error: null,
       errmsg: null,
-    }
+    },
+    upload: {
+      value: null,
+      validation: [],
+      error: null,
+      errmsg: null,
+      disabled: false,
+      view_file: null
+    },
+    gst_no: {
+      value: "",
+      validation: [{ name: "required" }, { name: "gst" }],
+      error: null,
+      errmsg: null,
+    },
+    pan_no: {
+      value: "",
+      validation: [{ name: "required" }, { name: "pan" }],
+      error: null,
+      errmsg: null,
+    },
+    state_code: {
+      value: "",
+      // validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
+    },
   });
 
-  const props = {
-    name: 'file',
-    // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    // headers: {
-    //   authorization: 'authorization-text',
-    // },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log("uploading", info.fileList);
-      }
-      if (info.file.status === 'done') {
-
-        message.success(`${info.file.name} file uploaded successfully`);
-        setselectedFile(info.file.originFileObj);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
   useEffect(() => {
-    console.log(props.getInsertStatus, "getInsertStatus")
   }, [props.getInsertStatus])
 
-  useEffect(() => {
 
+  useEffect(() => {
+    dispatch(getDesignationList());
     // Client
     Axios({
       method: "GET",
       url: apiurl + "get_client_type",
     }).then((response) => {
-      console.log("response", response);
       let clientData = [];
       response.data.data.map((data) =>
         clientData.push({ id: data.client_type_id, value: data.client_type })
@@ -180,7 +179,6 @@ function AddClient() {
       method: "GET",
       url: apiurl + "get_s_tbl_m_industry",
     }).then((response) => {
-      console.log("response", response);
       let industryData = [];
       response.data.data.map((data) =>
         industryData.push({ id: data.industry_id, value: data.industry })
@@ -194,7 +192,6 @@ function AddClient() {
       method: "GET",
       url: apiurl + "get_client_type",
     }).then((response) => {
-      console.log("response", response);
       let clientData = [];
       response.data.data.map((data) =>
         clientData.push({ id: data.client_type_id, value: data.client_type })
@@ -207,7 +204,6 @@ function AddClient() {
       method: "GET",
       url: apiurl + "get_s_tbl_m_state",
     }).then((response) => {
-      console.log("response", response);
       let stateData = [];
       response.data.data.map((data) =>
         stateData.push({ id: data.state_id, value: data.state })
@@ -216,24 +212,61 @@ function AddClient() {
     });
 
     // city
-    Axios({
-      method: "GET",
-      url: apiurl + "get_s_tbl_m_city",
-    }).then((response) => {
-      console.log("response", response);
-      let cityData = [];
-      response.data.data.map((data) =>
-        cityData.push({ id: data.city_id, value: data.state })
-      );
-      setcityList({ cityData });
-    });
-  }, []);
+    // Axios({
+    //   method: "GET",
+    //   url: apiurl + "get_s_tbl_m_city",
+    // }).then((response) => {
+    //   let cityData = [];
+    //   response.data.data.map((data) =>
+    //     cityData.push({ id: data.city_id, value: data.state })
+    //   );
+    //   setcityList({ cityData });
+    // });
 
-  function checkValidation(data, key, multipleId) {
+  }, [setClientName, setAddclient_Form]);
+
+  useEffect(() => {
+    let Designation = [];
+    props.getDesignationList.map((data, index) =>
+      Designation.push({ id: data.designation_id, value: data.designation })
+    );
+    setgetData({ Designation });
+    if (Addclient_Form.state.value != "") {
+      let cityData = [];
+      props.getCity.map((data, index) => {
+        cityData.push({ value: data.state, id: data.city_id });
+      });
+      setcityList({ cityData });
+    }
+
+  }, [props.getDesignationList, props.getCity]);
+
+  const handleChange = (info, uploadName) => {
+
+
+    if (info.status !== 'error' && info.status !== "uploading") {
+
+      let fileList = [...info.fileList];
+
+      // fileList = fileList.slice(-1);
+
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+      setselectedFile(fileList);
+
+    }
+  };
+
+  async function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       Addclient_Form[key].validation
     );
+
     let dynObj = {
       value: data,
       error: !errorcheck.state,
@@ -254,40 +287,50 @@ function AddClient() {
         }
       });
       dynObj.valueById = multipleIdList.toString();
-      // console.log(dynObj.valueById,"id")
     }
     // (end)
 
+    if (key === "client_name" && data) {
+
+
+      Axios({
+        method: "POST",
+        url: apiurl + "get_client_name_check",
+        data: {
+          "client_name": data,
+        },
+      }).then((response) => {
+        if (response.data.status === 0) {
+          let dynObj = {
+            value: data,
+            error: true,
+            errmsg: "Client Name Already Exits",
+            validation: Addclient_Form[key].validation,
+          };
+
+          setAddclient_Form((prevState) => ({
+            ...prevState,
+            ['client_name']: dynObj,
+          }));
+          return Promise.resolve();
+        }
+
+      });
+
+    }
+    if (key === "state") {
+      dispatch(getCity_By_Id(data))
+    }
     setAddclient_Form((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
-    // var filtererr = targetkeys.filter(
-    //     (obj) =>
-    //         Addclient_Form[obj].error == true ||
-    //         Addclient_Form[obj].error == null
-    // );
-    // if (filtererr.length > 0) {
-    //     setAddclient_Form({ error: true, errordummy: false });
-    // } else {
-    //     setAddclient_Form({ error: false });
-    // }
   }
-  const handleImagePreview = (e) => {
 
-    // setselectedFile(URL.createObjectURL(e.target.files[0]))
-    setselectedFile(e.target.files[0].name);
-    console.log("testringhh", e.target.value)
-    //let image_as_files = e.target.files[0];
-    /*   this.setState({
-            image_preview: image_as_base64,
-            image_file: image_as_files,
-        }) */
-  };
-
-  function onSubmit() {
+  async function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Addclient_Form);
+
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
         Addclient_Form[targetkeys[i]].value,
@@ -301,131 +344,220 @@ function AddClient() {
     var filtererr = targetkeys.filter(
       (obj) => Addclient_Form[obj].error == true
     );
-    // console.log(filtererr.length);
     if (filtererr.length > 0) {
-      // setAddclient_Form({ error: true });
     } else {
-      dispatch(InsertClient(Addclient_Form, fileupload)).then((response) => {
-        onStateClear()
-      })
+      setSaveButton(false)
+      await dispatch(InsertClient(Addclient_Form, fileupload))
+      //  .then(() => {
+      onHandleCancel()
+      setSaveButton(true)
+      // })
     }
 
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
-    setFileupload([])
-    // setselectedFile([])
+
+
   }
 
-
   async function onfileupload() {
-
-    if (Addclient_Form.poa_name.value === '') {
-      notification.success({
-        message: 'Please Select Document',
+    const From_key = ['document_upload_name', 'upload'];
+    if (!Addclient_Form.upload.value || Addclient_Form.upload.value === '' || Addclient_Form.document_upload_name.value === '') {
+      From_key.map((data) => {
+        if (!Addclient_Form[data].value || Addclient_Form[data].value === '') {
+          let dynObj = {
+            value: Addclient_Form[data].value,
+            error: true,
+            errmsg: "Field required",
+            validation: [{ "name": "required" }],
+          };
+          setAddclient_Form((prevState) => ({
+            ...prevState,
+            [data]: dynObj,
+          }));
+        }
       });
+
     } else {
-
-      // let wait=await check()
-      // function check(){
-
-      //   return new Promise((resolve)=>{
-      //     setFileupload((prevState) => (
-      //       [...prevState, {
-      //         poa_name: Addclient_Form.poa_name.value,
-      //         selectedFile: "",
-      //       }]
-
-      //     ));
-
-
-
-
-      //   })
-      //   Addclient_Form["poa_name"].value=""
-
-      // //  return Promise.resolve(true);
-      // }
-
-
-
-      // }
       setFileupload((prevState) => (
         [...prevState, {
-          poa_name: Addclient_Form.poa_name.value,
-          selectedFile: "",
+          document_upload_name: Addclient_Form.document_upload_name.value,
+          selectedFile: Addclient_Form.upload.value,
         }]
 
       ));
+
+      // From_key.map((data) => {
+
+      //   try {
+      //     data!=='upload'?(Addclient_Form[data].value = ""):(Addclient_Form[data].value = []);
+      //   } catch (error) {
+      //     throw (error)
+      //   }
+      // });
+      // Addclient_Form.upload.value=null;
+      // Addclient_Form.document_upload_name.value='';
+      setAddclient_Form((prevState) => ({
+        ...prevState,
+      }));
+
     }
+
+
   }
 
+  useEffect(() => {
+    if (Addclient_Form.gst_no.value && Addclient_Form.gst_no.value != "" && !Addclient_Form.gst_no.error) {
+      Addclient_Form.state_code.value = Addclient_Form.gst_no.value.substring(0, 2)
+    } else {
+      Addclient_Form.state_code.value = ""
+    }
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+    }));
+  }, [Addclient_Form.gst_no.value])
 
   const onStateClear = () => {
     let From_key = [
-      "poa_name",
+      "document_upload_name",
       "city",
       "state",
       "emai_id_2",
       "con_ph_2",
-      "DOB_2", "gender_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "DOB_1", "gender_1", "con_per_1", "industrty", "client_name"]
+      "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
+      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no"]
 
 
     From_key.map((data) => {
 
       try {
         Addclient_Form[data].value = "";
-        console.log("mapping", Addclient_Form[data].value)
       } catch (error) {
         throw (error)
       }
     });
-    setselectedFile("")
+    setselectedFile([])
     setFileupload([])
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
+
   };
+  const onHandleCancel = () => {
+    onStateClear()
+    props.model_close && props.model_close()
+  }
+  useEffect(() => {
+    if (props.EditClientData) {
+      let CreateClient_key = [
+
+        "city",
+        "state",
+        "emai_id_2",
+        "con_ph_2",
+        "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
+        "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "document_upload_name"]
+
+
+      let CreateClient_value = [
+        // "document_upload_name",
+        "city_id",
+        "state_id",
+        "ct_email_id",
+        "ct_contact_no",
+        "designation_id_2", "contact_person_2", "client_type_id", "address", "email_id", "contact_no",
+        "designation_id_1", "contact_person_1", "industry_id", "client", "client_id", "gst_no", "pan_no", "document_upload_name"];
+
+      CreateClient_key.map((data, index) => {
+        if (data === "document_upload_name") {
+          setFileupload(props.EditClientData[0]['documents']);
+          return
+        }
+        if (data === "state") {
+          dispatch(getCity_By_Id(props.EditClientData[0][CreateClient_value[index]]))
+        }
+
+        Addclient_Form[data].value = props.EditClientData[0][CreateClient_value[index]] === '0' ? '' : props.EditClientData[0][CreateClient_value[index]];
+        return true;
+      });
+      setAddclient_Form((prevState) => ({
+        ...prevState,
+      }));
+    }
+    else {
+      onStateClear()
+    }
+  }, [props.EditClientData])
 
   return (
     <div>
       <div
         style={{ marginBottom: "10px", fontSize: "16px", fontWeight: "600" }}
       >
-        Add Client
+        {props.EditClientData ? 'Edit' : 'Add'} Client
       </div>
       <div className="Container">
         <div className="leftContainer">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Labelbox
-                type="text"
-                placeholder={"Client Name"}
-                changeData={(data) => checkValidation(data, "client_name")}
-                value={Addclient_Form.client_name.value}
-                error={Addclient_Form.client_name.error}
-                errmsg={Addclient_Form.client_name.errmsg}
-              />
+            <Grid item xs={12} container direction="row" alignItems="center" >
+              <Grid item xs={12}>
+                <div className="AddClientHead">Client Name</div>
+                <Labelbox
+                  type="text"
+                  changeData={(data) => checkValidation(data, "client_name")}
+                  value={Addclient_Form.client_name.value}
+                  error={Addclient_Form.client_name.error}
+                  errmsg={Addclient_Form.client_name.errmsg}
+                />
+              </Grid>
+
+
             </Grid>
-            <Grid item xs={12}>
-              <Labelbox
-                type="select"
-                placeholder={"Industry"}
-                dropdown={Industry.industryData}
-                // dropdown={resumeGetList.candidateList}
-                changeData={(data) => checkValidation(data, "industrty")}
-                value={Addclient_Form.industrty.value}
-                error={Addclient_Form.industrty.error}
-                errmsg={Addclient_Form.industrty.errmsg}
-              />
+            <Grid item xs={12} container direction="row" alignItems="center" >
+              <Grid item xs={6}>
+                <div className="AddClientHead">GST No.</div>
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    changeData={(data) => checkValidation(data, "gst_no")}
+                    value={Addclient_Form.gst_no.value}
+                    error={Addclient_Form.gst_no.error}
+                    errmsg={Addclient_Form.gst_no.errmsg}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={4}>
+                <div className="AddClientHead">PAN No.</div>
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    changeData={(data) => checkValidation(data, "pan_no")}
+                    value={Addclient_Form.pan_no.value}
+                    error={Addclient_Form.pan_no.error}
+                    errmsg={Addclient_Form.pan_no.errmsg}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={2}>
+                <div className="AddClientHead">State Code</div>
+                <div className="genderDobFlex">
+                  <Labelbox
+                    type="text"
+                    disabled
+                    changeData={(data) => checkValidation(data, "state_code")}
+                    value={Addclient_Form.state_code.value}
+                    error={Addclient_Form.state_code.error}
+                    errmsg={Addclient_Form.state_code.errmsg}
+                  />
+                </div>
+              </Grid>
             </Grid>
             <Grid container spacing={2} className="dashed_div_client">
               <Grid item xs={12}>
+                <div className="AddClientHead">Contact Person 1</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Contact Person 1"}
-                  // dropdown={resumeGetList.qualificationList}
                   changeData={(data) => checkValidation(data, "con_per_1")}
                   value={Addclient_Form.con_per_1.value}
                   error={Addclient_Form.con_per_1.error}
@@ -434,52 +566,34 @@ function AddClient() {
               </Grid>
               <Grid item xs={12} container direction="row" alignItems="center">
                 <Grid item xs={6}>
+                  <div className="AddClientHead">Designation</div>
                   <div className="genderDobFlex">
                     <Labelbox
-                      type="select"
-                      placeholder={"Gender"}
-                      dropdown={[
-                        { id: "M", value: "Male" },
-                        { id: "F", value: "Female" },
-                      ]}
-                      changeData={(data) => checkValidation(data, "gender_1")}
-                      value={Addclient_Form.gender_1.value}
-                      error={Addclient_Form.gender_1.error}
-                      errmsg={Addclient_Form.gender_1.errmsg}
+                      type="text"
+                      changeData={(data) => checkValidation(data, "designation_id_1")}
+                      value={Addclient_Form.designation_id_1.value}
+                      error={Addclient_Form.designation_id_1.error}
+                      errmsg={Addclient_Form.designation_id_1.errmsg}
                     />
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="genderDobFlex">
-                    <Labelbox
-                      type="datepicker"
-                      placeholder={"Date of Birth"}
-                      disableFuture={true}
-                      changeData={(data) => checkValidation(data, "DOB_1")}
-                      value={Addclient_Form.DOB_1.value}
-                      error={Addclient_Form.DOB_1.error}
-                      errmsg={Addclient_Form.DOB_1.errmsg}
-                    />
-                  </div>
+                  <div className="AddClientHead">Contact Phone</div>
+                  <Labelbox
+                    type="text"
+                    changeData={(data) => checkValidation(data, "con_ph_1")}
+                    value={Addclient_Form.con_ph_1.value}
+                    error={Addclient_Form.con_ph_1.error}
+                    errmsg={Addclient_Form.con_ph_1.errmsg}
+                  />
                 </Grid>
               </Grid>
 
-              <Grid item xs={7}>
-                <Labelbox
-                  type="text"
-                  placeholder={"Contact Phone"}
-                  // dropdown={resumeGetList.qualificationList}
-                  changeData={(data) => checkValidation(data, "con_ph_1")}
-                  value={Addclient_Form.con_ph_1.value}
-                  error={Addclient_Form.con_ph_1.error}
-                  errmsg={Addclient_Form.con_ph_1.errmsg}
-                />
-              </Grid>
+
               <Grid item xs={12}>
+                <div className="AddClientHead">Email ID</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Email ID"}
-                  // dropdown={resumeGetList.qualificationList}
                   changeData={(data) => checkValidation(data, "email_id_1")}
                   value={Addclient_Form.email_id_1.value}
                   error={Addclient_Form.email_id_1.error}
@@ -488,9 +602,9 @@ function AddClient() {
               </Grid>
             </Grid>
             <Grid item xs={12} className="textarea_height">
+              <div className="AddClientHead">Postal Address</div>
               <Labelbox
                 type="textarea"
-                placeholder={"Postal Address"}
                 changeData={(data) => checkValidation(data, "postal_address")}
                 value={Addclient_Form.postal_address.value}
                 error={Addclient_Form.postal_address.error}
@@ -502,64 +616,71 @@ function AddClient() {
                 <Grid md={12}>
                   <Labelbox
                     type="text"
-                    placeholder="Name of Power Attorney"
-                    changeData={(data) => checkValidation(data, "poa_name")}
-                    value={Addclient_Form.poa_name.value}
-                    error={Addclient_Form.poa_name.error}
-                    errmsg={Addclient_Form.poa_name.errmsg}
+                    placeholder="Document Upload"
+                    changeData={(data) => checkValidation(data, "document_upload_name")}
+                    value={Addclient_Form.document_upload_name.value}
+                    error={Addclient_Form.document_upload_name.error}
+                    errmsg={Addclient_Form.document_upload_name.errmsg}
                   ></Labelbox>
                 </Grid>
               </div>
 
               <div className="uploadfileSpace">
                 {" "}
-                {/* <input type="file" onChange={handleImagePreview} /> */}
-                <Upload {...props} accept=".pdf" >
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>
-                {/* <PublishIcon/> */}
+
+                <Labelbox type="upload"
+                  changeData={(data) => checkValidation(data, "upload")}
+                  view_file={Addclient_Form.upload.view_file}
+                  // remove_file={() => (setAddclient_Form(prevState => ({
+                  //   ...prevState,
+                  //   upload: {
+                  //     value: [], error: Addclient_Form.upload.error, errmsg: Addclient_Form.upload.errmsg, disabled: Addclient_Form.upload.disabled, view_file: null
+                  //   },
+                  // })))}
+                  value={Addclient_Form.upload.value}
+                  error={Addclient_Form.upload.error}
+                  errmsg={Addclient_Form.upload.errmsg}
+                  disabled={Addclient_Form.upload.disabled}
+                />
+
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 15 }} >
+
                 <img src={PlusIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} onClick={onfileupload} />
               </div>
 
             </div>
-            <div className="doc_upload_div"><div style={{ width: '50%' }}>POA</div>  <div>File Name</div></div>
+            <div className="doc_upload_div"><div style={{ width: '50%' }}>Document Title</div>  <div>File Name</div></div>
             {fileupload.map((data) => {
               return (<>
 
                 <div className="doc_upload_items">
-                  <div style={{ width: '50%' }}>{data.poa_name}</div>
-                  <div>{""}</div>
+                  <div style={{ width: '50%' }}>{data.document_upload_name || data.document_name}</div>
+                  <div>{data?.selectedFile?.name || data.url.length > 0 ? data.url.substr(35, 10) + '..' : ''}</div>
                 </div></>
               )
             })}
-            {/* <Grid container spacing={2} md={12}>
-              <Grid md={2} style={{ color: "#023e7d" }}>
-                POA{" "}
-              </Grid>
-              <Grid md={2} style={{ color: "#023e7d" }}>
-                File Name{" "}
-              </Grid>
-            </Grid>
 
-            <Grid container spacing={2} md={12}>
-              <Grid md={2}>Field 1 </Grid>
-              <Grid md={2}>Field 1 </Grid>
-            </Grid>
-            <Grid container spacing={2} md={12}>
-              <Grid md={2}>Field 2 </Grid>
-              <Grid md={2}>Field 2 </Grid>
-            </Grid> */}
           </Grid>
         </div>
         <div className="rightContainer_client">
           <Grid container spacing={2}>
             <Grid item xs={12}>
+              <div className="AddClientHead">Industry</div>
               <Labelbox
                 type="select"
-                placeholder={"Client Type"}
+                dropdown={Industry.industryData}
+                changeData={(data) => checkValidation(data, "industrty")}
+                value={Addclient_Form.industrty.value}
+                error={Addclient_Form.industrty.error}
+                errmsg={Addclient_Form.industrty.errmsg}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <div className="AddClientHead">Client Type</div>
+              <Labelbox
+                type="select"
                 dropdown={clientName.clientData}
                 changeData={(data) => checkValidation(data, "client_type")}
                 value={Addclient_Form.client_type.value}
@@ -569,10 +690,9 @@ function AddClient() {
             </Grid>
             <Grid container spacing={2} className="dashed_div_client">
               <Grid item xs={12}>
+                <div className="AddClientHead">Contact Person 2</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Contact Person 2"}
-                  // dropdown={resumeGetList.certificateList}
                   changeData={(data) => checkValidation(data, "cont_per_2")}
                   value={Addclient_Form.cont_per_2.value}
                   error={Addclient_Form.cont_per_2.error}
@@ -581,49 +701,33 @@ function AddClient() {
               </Grid>
               <Grid item xs={12} container direction="row" alignItems="center">
                 <Grid item xs={6}>
+                  <div className="AddClientHead">Designation</div>
                   <div className="genderDobFlex">
                     <Labelbox
-                      type="select"
-                      placeholder={"Gender"}
-                      dropdown={[
-                        { id: "M", value: "Male" },
-                        { id: "F", value: "Female" },
-                      ]}
-                      changeData={(data) => checkValidation(data, "gender_2")}
-                      value={Addclient_Form.gender_2.value}
-                      error={Addclient_Form.gender_2.error}
-                      errmsg={Addclient_Form.gender_2.errmsg}
+                      type="text"
+                      changeData={(data) => checkValidation(data, "designation_id_2")}
+                      value={Addclient_Form.designation_id_2.value}
+                      error={Addclient_Form.designation_id_2.error}
+                      errmsg={Addclient_Form.designation_id_2.errmsg}
                     />
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="genderDobFlex">
-                    <Labelbox
-                      type="datepicker"
-                      placeholder={"Date of Birth"}
-                      disableFuture={true}
-                      changeData={(data) => checkValidation(data, "DOB_2")}
-                      value={Addclient_Form.DOB_2.value}
-                      error={Addclient_Form.DOB_2.error}
-                      errmsg={Addclient_Form.DOB_2.errmsg}
-                    />
-                  </div>
+                  <div className="AddClientHead">Contact Phone</div>
+                  <Labelbox
+                    type="text"
+                    changeData={(data) => checkValidation(data, "con_ph_2")}
+                    value={Addclient_Form.con_ph_2.value}
+                    error={Addclient_Form.con_ph_2.error}
+                    errmsg={Addclient_Form.con_ph_2.errmsg}
+                  />
                 </Grid>
               </Grid>
-              <Grid item xs={7}>
-                <Labelbox
-                  type="text"
-                  placeholder={"Contact Phone "}
-                  changeData={(data) => checkValidation(data, "con_ph_2")}
-                  value={Addclient_Form.con_ph_2.value}
-                  error={Addclient_Form.con_ph_2.error}
-                  errmsg={Addclient_Form.con_ph_2.errmsg}
-                />
-              </Grid>
+
               <Grid item xs={12}>
+                <div className="AddClientHead">Email ID</div>
                 <Labelbox
                   type="text"
-                  placeholder={"Email ID"}
                   changeData={(data) => checkValidation(data, "emai_id_2")}
                   value={Addclient_Form.emai_id_2.value}
                   error={Addclient_Form.emai_id_2.error}
@@ -632,9 +736,9 @@ function AddClient() {
               </Grid>
             </Grid>
             <Grid item xs={12}>
+              <div className="AddClientHead">State</div>
               <Labelbox
                 type="select"
-                placeholder={"State"}
                 dropdown={stateList.stateData}
                 changeData={(data) => checkValidation(data, "state")}
                 value={Addclient_Form.state.value}
@@ -642,10 +746,11 @@ function AddClient() {
                 errmsg={Addclient_Form.state.errmsg}
               />
             </Grid>
+
             <Grid item xs={12}>
+              <div className="AddClientHead">City</div>
               <Labelbox
                 type="select"
-                placeholder={"City"}
                 dropdown={cityList.cityData}
                 changeData={(data) => checkValidation(data, "city")}
                 value={Addclient_Form.city.value}
@@ -663,11 +768,12 @@ function AddClient() {
               className="resumeBtnContainer"
             >
               <CustomButton
+                btnDisable={!SaveButton}
                 btnName={"Save"}
                 btnCustomColor="customPrimary"
                 onBtnClick={onSubmit}
               />
-              <CustomButton btnName={"Cancel"} onBtnClick={onStateClear} />
+              <CustomButton btnName={"Cancel"} onBtnClick={onHandleCancel} />
             </Grid>
           </Grid>
         </div>
@@ -681,9 +787,10 @@ function AddClient() {
 const mapStateToProps = (state) => (
   {
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
-    // getInsertStatus: state.AddClientReducer.addClientDocumentStatus ,
+    getDesignationList: state.getOptions.getDesignationList || [],
     getInsertStatus: state.AddClientReducer.InsertClient,
-
+    clientNameCheck: state.AddClientReducer.clientNameCheck,
+    getCity: state.getOptions.getCity_By_Id || []
   }
 );
 

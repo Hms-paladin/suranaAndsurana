@@ -22,7 +22,6 @@ function Dashboard(){
 
     const [ modelOpen, setModelOpen ] = useState(false)
     const [ approveModalOpen, setApproveOpen] = useState(false)
-    console.log(modelOpen,"modelopen")
     
     return(
         <>

@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import AddIcon from '../../images/addIcon.svg';
-import { getStageMasterTableData } from "../../actions/StageMasterAction";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { getStagesByProjectId, getSubStages, insertStages,getProjectStageList } from "../../actions/projectTaskAction";
+import { connect, useDispatch } from "react-redux";
+import { getStagesByProjectId, getSubStages, insertStages, getProjectStageList } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
 import moment from 'moment';
-import {getStageMonitor,insertStageMaonitor} from "../../actions/StageMonotorrAction";
+import { getStageMonitor } from "../../actions/StageMonotorrAction";
 import { useParams } from "react-router-dom";
-import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";  
+import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import './stagesicon.scss';
 
 
@@ -33,30 +32,23 @@ function Stages(props) {
     const [substages, setsubstages] = useState({})
     const [stageItem, setStageItem] = useState([])
     const [subStageItem, setSubStageItem] = useState([])
-
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
-    const [stageList, setStageList] = useState([]);
+    const [Litigation, setLitigation] = useState(false)
     let { rowId } = useParams();
+
     useEffect(() => {
-      
-      dispatch(getProjectDetails(rowId))
-      dispatch(getStageMonitor(props.ProjectDetails))
-     // dispatch(insertStageMaonitor());
-     
-      
-      
+        dispatch(getProjectDetails(rowId))
+        dispatch(getStageMonitor(props.ProjectDetails))
     }, []);
-    useEffect(() => {
-        dispatch(getStageMasterTableData())
-    }, [])
 
     useEffect(() => {
-        console.log(props.projectDetails, "projectDetails")
-
         if (props.projectDetails && props.projectDetails.length > 0) {
+            if (props.projectDetails[0].project_type_id === 6) {
+                setLitigation(true)
+            } else {
+                setLitigation(false)
+            }
             dispatch(getStagesByProjectId(props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id));
-            dispatch(getProjectStageList(props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id,props.projectDetails[0].project_id))
+            dispatch(getProjectStageList(props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id, props.projectDetails[0].project_id))
         }
     }, [props.projectDetails]);
 
@@ -143,10 +135,10 @@ function Stages(props) {
             }
             dispatch(insertStages(params, props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id)).then(() => {
                 handleCancel();
-               // dispatch(getStageMonitor(props.ProjectDetails))
+                // dispatch(getStageMonitor(props.ProjectDetails))
             })
         }
-        
+
         setstageForm((prevState) => ({
             ...prevState,
         }));
@@ -170,7 +162,6 @@ function Stages(props) {
         let stageArrItem = []
         let subStageArrItem = []
 
-        console.log(props.getAllStages, "getAllStages")
         props.getAllStages.map((data) => {
             stageArrItem.push(data.stage)
             subStageArrItem.push(data.sub_stage)
@@ -181,26 +172,23 @@ function Stages(props) {
 
     }, [props.getAllStages])
 
-    console.log(stageItem, "stageItem")
-
-
-
     return (
         <div>
             <Grid>
-                <div className="StagesTitle">Stages</div>
+                <div className="StagesTitle">{Litigation ? 'Case Types' : 'Stages'}</div>
             </Grid>
             <Grid item xs={9} container direction="row" spacing={2}>
                 <Grid item xs={5}>
                     <Labelbox type="select"
-                        placeholder="Stage"
+                        placeholder={Litigation ? 'Case Type' : 'Stage'}
                         dropdown={stages.stagesData}
                         changeData={(data) => checkValidation(data, "stages")}
                         value={stageForm.stages.value} />
 
                 </Grid>
                 <Grid item xs={5}>
-                    <Labelbox type="select" placeholder="Sub Stage"
+                    <Labelbox type="select"
+                        placeholder={Litigation ? 'Sub Case Types' : 'Sub Stages'}
                         dropdown={substages.SubstagesData}
                         changeData={(data) => checkValidation(data, "subStages")}
                         value={stageForm.subStages.value} />
@@ -211,17 +199,31 @@ function Stages(props) {
             </Grid>
 
             <Grid item xs={9} container direction="row" spacing={2}>
-                <Grid item xs={5}>
-                    <div className="stageHeading" >Stages</div>
+                <Grid item xs={4}>
+                    <div className="stageHeading" >{Litigation ? 'Case Types' : 'Stages'}</div>
                     {stageItem.map((data) => {
                         return <div >{data}</div>
                     })}
                 </Grid>
 
-                <Grid item xs={5}>
-                    <div className="stageHeading"> Sub Stages</div>
+                <Grid item xs={4}>
+                    <div className="stageHeading"> Sub {Litigation ? 'Case Types' : 'Stages'}</div>
                     {subStageItem.map((data) => {
-                        return <div >{data}</div>
+                        return <div >{!data ? '-' : data}</div>
+                    })}
+                </Grid>
+
+                <Grid item xs={2}>
+                    <div className="stageHeading"> No of Days</div>
+                    {props.getAllStages.length > 0 && props.getAllStages.map((data) => {
+                        return <div >{data.no_of_compliance_days}</div>
+                    })}
+                </Grid>
+
+                <Grid item xs={2}>
+                    <div className="stageHeading"> Reminder Days</div>
+                    {props.getAllStages.length > 0 && props.getAllStages.map((data) => {
+                        return <div >{data.remainder_days}</div>
                     })}
                 </Grid>
             </Grid>
@@ -233,7 +235,7 @@ const mapStateToProps = (state) => ({
     subStagesList: state.projectTasksReducer.SubStagesList || [],
     getAllStages: state.projectTasksReducer.getAllStage || [],
     stageList: state.StageMonotorReducer.getStageMonitor || [],
-     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
+    ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 
 export default connect(mapStateToProps)(Stages);

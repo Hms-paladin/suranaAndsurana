@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Surana from '../../images/surana.gif'
+import Surana from '../../images/SSIALogo.png'
 import { Redirect } from 'react-router-dom';
 import { apiurl } from "../../utils/baseUrl";
 import axios from "axios";
@@ -22,6 +22,7 @@ import { useAuth } from "../../context/auth";
 import { notification } from 'antd';
 
 import './login.scss';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -77,7 +78,7 @@ const SignInSide = (props) => {
     const [invalidEmail, setInvalidEmail] = useState(false)
     const [isLoggedIn, setLoggedIn] = React.useState(false);
     const { setAuthTokens } = useAuth();
-
+    const history = useHistory();
     const handleSubmit = event => {
         event.preventDefault()
 
@@ -95,8 +96,15 @@ const SignInSide = (props) => {
                     password:password
                   }).then(res => {
                     if (res.status === 200) {
+                        if(res.data.status===1){
                       setAuthTokens(res.data);
-                      setLoggedIn(true);
+                    //   setLoggedIn(true);
+                    history.push("/Home/dashboardnew");
+                       }else{
+                        notification.error({
+                            message: res.data.msg,
+                          });
+                        }
                     }
                   }).catch(e => {
                     notification.error({
@@ -107,9 +115,9 @@ const SignInSide = (props) => {
 
     }
 
-    if (isLoggedIn) {
-        return <Redirect to="/dashboardnew" />;
-      }
+    // if (isLoggedIn) {
+    //     return <Redirect to="/Home/dashboardnew" />;
+    //   }
 
 
     // const validateEmail = data => {
@@ -178,7 +186,7 @@ const SignInSide = (props) => {
 
             <Grid item xs={12} sm={6} md={4} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
-                    <img src={Surana} width='155px' height='130px' />   <Typography component="h5" variant="h6">
+                    <img src={Surana} width='197px' height='194px' />   <Typography component="h5" variant="h6">
                         {/* Client Portal */}
           </Typography>
                     <form className={classes.form} noValidate onSubmit={handleSubmit}>

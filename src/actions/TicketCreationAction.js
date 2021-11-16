@@ -9,7 +9,6 @@ import moment from 'moment'
 
 
 export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatch => {
-    console.log(changemsg, "changemsg")
     try {
         axios({
             method: "POST",
@@ -18,6 +17,7 @@ export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatc
                 "department_id": TicketCreation.department.value || 0,
                 "designation_id": TicketCreation.designation.value || 0,
                 "number_of_position": TicketCreation.position.value || 0,
+                "location_office": TicketCreation.location.value || 0,
                 "required_by": TicketCreation.req_by.value || 0,
                 "qualification_id": TicketCreation.qualification.valueById || 0,
                 "experience": TicketCreation.experience.value || 0,
@@ -30,6 +30,7 @@ export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatc
                 "specialization_id": TicketCreation.specialization.valueById || 0,
                 "capability_id": TicketCreation.capablities.valueById || 0,
                 "talent_id": TicketCreation.talents.valueById || 0,
+                "remarks": TicketCreation.remarks.value || "",
                 "assigned_to": TicketCreation.assignedto.value || 0,
                 "created_on": moment().format("YYYY-MM-DD"),
                 "created_by": localStorage.getItem("empId"),
@@ -52,7 +53,6 @@ export const InsertTicketTemplate = (TicketCreation, changemsg) => async dispatc
 
 export const getTicketTemplate = (TicketCreation) => async dispatch => {
     try {
-        // console.log(groupName, "groupName")
         axios({
             method: "POST",
             url: apiurl + "get_ticket_template",
@@ -77,13 +77,13 @@ export const getTicketTemplate = (TicketCreation) => async dispatch => {
 
 export const InsertRecruitmentTicket = (TicketCreation) => async dispatch => {
     try {
-        // console.log(groupName, "groupName")
         axios({
             method: "POST",
             url: apiurl + "insert_recruitment_ticket",
             data: {
                 "department_id": TicketCreation.department.value || 0,
                 "designation_id": TicketCreation.designation.value || 0,
+                "location_office": TicketCreation.location.value || 0,
                 "number_of_position": TicketCreation.position.value || 0,
                 "required_by": TicketCreation.req_by.value || 0,
                 "qualification_id": TicketCreation.qualification.valueById || 0,
@@ -98,6 +98,7 @@ export const InsertRecruitmentTicket = (TicketCreation) => async dispatch => {
                 "capability_id": TicketCreation.capablities.valueById || 0,
                 "talent_id": TicketCreation.talents.valueById || 0,
                 "assigned_to": TicketCreation.assignedto.value || 0,
+                "remarks": TicketCreation.remarks.value || "",
                 "created_on": moment().format("YYYY-MM-DD"),
                 "created_by": localStorage.getItem("empId"),
 
@@ -119,7 +120,6 @@ export const InsertRecruitmentTicket = (TicketCreation) => async dispatch => {
 
 export const getRecruitmentTicket = (id) => async dispatch => {
     try {
-        console.log(id, "groupName")
         axios({
             method: "POST",
             url: apiurl + "get_recruitment_ticket",
@@ -142,7 +142,6 @@ export const getRecruitmentTicket = (id) => async dispatch => {
 
 export const updateTicketStatus = (id) => async dispatch => {
     try {
-        // console.log(id, "groupName")
         axios({
             method: "POST",
             url: apiurl + "update_ticket_status",

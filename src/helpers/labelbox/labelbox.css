@@ -1,3 +1,7 @@
+div.formdiv > div.selectbrdred > div.ant-select-selection{
+  border: 1px solid red !important;
+}
+
 .formdiv {
   /* display: inline-block; */
   width: 100%;
@@ -101,6 +105,7 @@
   width: 100%;
   border-radius: 0;
   outline: unset;
+ 
 }
 .formdiv .ant-select-selection {
   padding: 0px !important;
@@ -125,8 +130,20 @@
 }
 .formdiv .ant-select-selection-selected-value {
   margin-left: -3px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   padding-right: 35px !important;
+  color: black;
+
+}
+.formdiv .ant-select-selection--multiple .ant-select-selection__choice__content {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-transition: margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  color: black;
 }
 .formdiv .ant-select-search--inline .ant-select-search__field {
   border: none;
@@ -245,4 +262,13 @@
 
 .ant-select-dropdown-menu-item {
   color: rgb(102, 98, 98);
+}
+
+.inputID::placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+input:disabled{
+background-color: #c9c8c8 !important;
 }

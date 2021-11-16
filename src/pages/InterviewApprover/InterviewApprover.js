@@ -26,7 +26,7 @@ function InterviewApprover(props) {
     { label: "Date" },
     { label: "Initial Score" },
     { label: "Comments" },
-    { label: "Interviewer" },   { label: "Round" },   { label: "Status" },
+    { label: "Interviewer" }, { label: "Round" }, { label: "Status" },
   ];
 
   const [modelOpen, setModelOpen] = useState(false);
@@ -37,7 +37,7 @@ function InterviewApprover(props) {
   const [ApproveForm, setApproveForm] = useState({
     final_score: {
       value: "",
-      validation: [{ name: "required" },{ name: "allowNumaricOnly1" },{ name: "custommaxValue",params:100 }],
+      validation: [{ name: "required" }, { name: "allowNumaricOnly1" }, { name: "custommaxValue", params: 100 }],
       error: null,
       errmsg: null,
     },
@@ -60,7 +60,7 @@ function InterviewApprover(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(interviewApproverTableData(props.int_resume_id));
+    dispatch(interviewApproverTableData(props.int_resume_id, props.int_props.designationID));
   }, []);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ function InterviewApprover(props) {
         score: data.score_inital,
         cmts: data.comment,
         viewer: data.interviewer,
-        round:data.round,status:data.status,
+        round: data.round, status: data.status,
       });
     });
     setRows(interviewList);
@@ -85,8 +85,11 @@ function InterviewApprover(props) {
 
   useEffect(() => {
     Axios({
-      method: "get",
+      method: "post",
       url: apiurl + "get_Interview_Status",
+      data: {
+        status_id: props.interviewStatus,
+      },
     }).then((response) => {
       let interview_status = [];
       response.data.data.map((data, index) =>
@@ -138,7 +141,7 @@ function InterviewApprover(props) {
       mainvalue[targetkeys[i]] = ApproveForm[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => ApproveForm[obj].error == true);
-    console.log(filtererr.length);
+ 
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else {
@@ -164,7 +167,6 @@ function InterviewApprover(props) {
     }));
   }
 
-
   return (
     <div className="interviewapprove_root">
       {/* <DynModel modelTitle={"Interview Approver"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} contents={<div>sdfghjkl</div>}> */}
@@ -176,8 +178,8 @@ function InterviewApprover(props) {
           <label>
             Name : <span>
               {/* {nameAndDesg && nameAndDesg.name}  */}
-             { props.props_name && props.props_name}
-             </span>
+              {props.props_name && props.props_name}
+            </span>
           </label>
         </div>
         <div>
@@ -185,7 +187,7 @@ function InterviewApprover(props) {
             Designation : <span
             >
               {/* {nameAndDesg && nameAndDesg.Designation}  */}
-            {props.props_design &&props.props_design}</span>
+              {props.props_design && props.props_design}</span>
           </label>
         </div>
       </div>

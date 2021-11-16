@@ -11,7 +11,7 @@ import {
   getTradeMarkStatus,
   getCountryDetails,
 } from "../../../actions/tradeMarkAction";
-import { insertPatent } from "../../../actions/PatentAction";
+import { insertPatent, getPatentDetails } from "../../../actions/PatentAction";
 import moment from "moment";
 function ApplicationDomestic(props) {
   const [projectDetails, setProjectDetails] = useState({});
@@ -100,6 +100,7 @@ function ApplicationDomestic(props) {
     dispatch(getProjectDetails(rowId));
     dispatch(getTradeMarkStatus());
     dispatch(getCountryDetails());
+    dispatch(getPatentDetails(rowId));
   }, []);
 
   useEffect(() => {
@@ -123,6 +124,32 @@ function ApplicationDomestic(props) {
     setcountryDetList({ countryListsData });
   }, [props.ProjectDetails, props.tradeStatusList, props.countriesList]);
 
+  useEffect(() => {
+    handleCancel()
+    if (props.getPatentDetails && props.getPatentDetails.length > 0) {
+      let indiaFil_key = ["file_cover", "associate", "our_ref", "client_ref", "app_num", "app_date", "title", "country", "priority_date", "status", "comments", "priority_num"]
+
+      let indiaFil_value = ["file_cover", "associate", "our_reference", "client_reference", "application_no", "application_date", "patent_title", "priority_country", "priority_date", "status_id", "comments", "priority_application_no"]
+
+      indiaFil_key.map((data, index) => {
+
+        if (indiaFil_value[index] !== "application_date" && indiaFil_value[index] !== "priority_date") {
+          patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]];
+          // patentForm[data].disabled = indiaFil_value[index]!=='status_id'&&props.getPatentDetails[0][indiaFil_value[index]] ? true : false;
+        }
+        else {
+
+          patentForm[data].value = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? "" : moment(props.getPatentDetails[0][indiaFil_value[index]]);
+          // patentForm[data].disabled = props.getPatentDetails[0][indiaFil_value[index]] === "0000-00-00" ? false : true;
+
+        }
+      });
+      setpatentForm((prevState) => ({
+        ...prevState,
+      }));
+    }
+  }, [props.getPatentDetails])
+
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(patentForm);
@@ -136,13 +163,13 @@ function ApplicationDomestic(props) {
       mainvalue[targetkeys[i]] = patentForm[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => patentForm[obj].error == true);
-    console.log(filtererr.length);
+
     let params = {
-      project_id: idDetails.project_id,
+      // patent_id: props.getPatentDetails[0].patent_id,
       project_id: idDetails.project_id,
       application_no: patentForm.app_num.value,
       patent_title: patentForm.title.value,
-      application_date: patentForm.app_date.value,
+      application_date: patentForm.app_date.value === '' ? '0000-00-00' : moment(patentForm.app_date.value, "YYYY-MM-DD").format("YYYY-MM-DD"),
       comments: patentForm.comments.value,
       file_cover: patentForm.file_cover.value,
       associate: patentForm.associate.value,
@@ -150,7 +177,7 @@ function ApplicationDomestic(props) {
       client_reference: patentForm.client_ref.value,
       priority_country: patentForm.country.value,
       priority_application_no: patentForm.priority_num.value,
-      priority_date: patentForm.priority_date.value,
+      priority_date: patentForm.priority_date.value === '' ? '0000-00-00' : moment(patentForm.priority_date.value, "YYYY-MM-DD").format("YYYY-MM-DD"),
       status_id: patentForm.status.value,
       created_by: localStorage.getItem("empId"),
       created_on: moment().format("YYYY-MM-DD HH:m:s"),
@@ -158,6 +185,9 @@ function ApplicationDomestic(props) {
       updated_by: localStorage.getItem("empId"),
     };
 
+    if (props.getPatentDetails[0]?.patent_id != "0") {
+      params["patent_id"] = props.getPatentDetails[0]?.patent_id;
+    }
     if (filtererr.length > 0) {
       // setpatentForm({ error: true });
     } else {
@@ -362,7 +392,7 @@ function ApplicationDomestic(props) {
             <div className="Fieldheadings">Comments</div>
             <div className="coments_div">
               <Labelbox
-                type="text"
+                type="textarea"
                 changeData={(data) => checkValidation(data, "comments")}
                 value={patentForm.comments.value}
                 error={patentForm.comments.error}
@@ -392,6 +422,7 @@ function ApplicationDomestic(props) {
 const mapStateToProps = (state) => ({
   tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
   countriesList: state.tradeMarkReducer.getCountryList || [],
+  getPatentDetails: state.PatentReducer.getPatentDetails || [],
   ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });
 

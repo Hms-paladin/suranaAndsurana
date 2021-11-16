@@ -1,10 +1,11 @@
 import { INSERT_USERGROUP, GET_GROUPNAME, UPDATE_GROUP_NAME, 
-    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_LIST,GET_EMP_GROUP_LIST,
+    DELETE_GROUPNAME, GET_GROUP_LIST,GET_EMP_NOT_IN_USER,GET_EMP_GROUP_LIST,MASTER_EMPLOYEE_DETAILS,
     GET_GROUP_EMP,GET_GROUP_CONTROL_LIST,EDIT_GROUP_NAME,EDIT_GROUP_CONTROL,GET_CONTROL_LIST,INSERT_GROUP_CONTROL} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
 import moment from 'moment'
+import { useFormControl } from "@material-ui/core";
 
 export const getGroupList = () => async dispatch => {
     try {
@@ -37,15 +38,16 @@ export const getControl = () => async dispatch => {
 
     }
 }
-export const getEmployeeList = () => async dispatch => {
+
+export const get_emp_not_in_user = () => async dispatch => {
     try {
 
         axios({
             method: 'GET',
-            url: apiurl + 'get_employee_list',
+            url: apiurl + 'get_emp_not_in_user',
         })
             .then((response) => {
-                dispatch({ type: GET_EMP_LIST, payload: response.data.data })
+                dispatch({ type: GET_EMP_NOT_IN_USER, payload: response.data.data })
             })
 
     } catch (err) {
@@ -114,37 +116,52 @@ export const InsertUsergroupMaster = (data) => async dispatch => {
             url: apiurl + "insert_employee_group",
             data: data,
         }).then((response) => {
-            if (response.data.status === 1) {
-                dispatch({ type: INSERT_USERGROUP, payload: true })
+               if (response.data.status === 1) {
                 notification.success({
-                    message: " inserted Successfully",
+                    message: "Inserted successfully",
                 });
+            }
+                else if (response.data.status === 0) {
+                    notification.success({
+                        message:response.data.msg,
+                    });
+                }
+                dispatch({ type: INSERT_USERGROUP, payload:true})
                 dispatch(getEmployeeGroupDetails())
                 return Promise.resolve();
-            }
+            
         });
 
     } catch (err) {
 
     }
 }
-export const InsertGroupControlMaster = (data) => async dispatch => {
+export const InsertGroupControlMaster = (userForm) => async dispatch => {
     try {
         axios({
             method: "POST",
             url: apiurl + "insert_group_control",
-            data: data,
+            data:{
+                "screen_control_id": userForm.controls.valueById,
+                "group_id": userForm.group.value,
+            }
         }).then((response) => {
             if (response.data.status === 1) {
-                dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 notification.success({
-                    message: " inserted Successfully",
+                    message: " Inserted successfully",
                 });
+              }
+                else if(response.data.status===0){
+                    notification.info({
+                        message:response.data.msg,
+                    }); 
+                }
+                dispatch({ type: INSERT_GROUP_CONTROL, payload: true })
                 dispatch(getGroupControlList())
                 
-                dispatch(getGroupName())
+                // dispatch(getGroupName())
                 return Promise.resolve();
-            }
+            
         });
 
     } catch (err) {
@@ -155,7 +172,6 @@ export const InsertGroupControlMaster = (data) => async dispatch => {
 
 export const InsertUsergroup = (UserGroup, groupName) => async dispatch => {
     try {
-        console.log(UserGroup.groupname.value, "UserGroup.groupname.value")
         axios({
             method: "POST",
             url: apiurl + "insertGroupMaster",
@@ -234,7 +250,7 @@ export const editEmployeeGroup = (UserGroup) => async dispatch => {
                 });
                 dispatch({ type: EDIT_GROUP_NAME, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
-                dispatch(getGroupName())
+                dispatch(getEmployeeGroupDetails())
                 return Promise.resolve();
             } else {
                 notification.success({
@@ -270,7 +286,7 @@ export const editGroupControl = (UserGroup) => async dispatch => {
                 });
                 dispatch({ type: EDIT_GROUP_CONTROL, payload: response.data.status })
                 // dispatch(getLeaveBalance(params,employee_code))
-                dispatch(getGroupName())
+                dispatch(getGroupControlList())
                 return Promise.resolve();
             } else {
                 notification.success({
@@ -286,7 +302,6 @@ export const editGroupControl = (UserGroup) => async dispatch => {
 }
 
 export const deleteGroupName = (deleteID) => async dispatch => {
-    console.log(deleteID,"deleteID")
     try {
         axios({
             method: 'DELETE',
@@ -331,3 +346,5 @@ export const getGroupControlList = () => async dispatch => {
 
     }
 }
+
+

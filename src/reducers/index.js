@@ -32,7 +32,17 @@ import StageMonotorReducer from './StageMonotorReducer';
 import AddClientReducer from './AddClientReducer';
 import getDesignDetails from "./insertDesign";
 import getTaskList from './TimeSheetReducer';
-
+import GetResumeList from './ResumeReducer';
+import ExitSeverance from './ExitSeveranceReducers'
+import AddQuations from "./AddQuationsReducer";
+import OnlineTest from './OnlineTestREducer';
+import KraReducer from './KraReducer';
+import CheckListReducer from './CheckListReducer';
+import OutofPacket from './OutofPacketReducers'
+import KpiReducer from './KPIReducers';
+import GetEmpAppraisalDetails from './AppraisalReducer';
+import ProjectformReducers from './ProjectformReducers';
+import GenerateInvoiceReducer from './GenerateInvoiceReducer';
 
 export default combineReducers({
   getInterviewquestions,
@@ -67,7 +77,18 @@ export default combineReducers({
   TicketCreationReducer,
   AddClientReducer,
   getDesignDetails,
-  getTaskList
+  getTaskList,
+  GetResumeList,
+  ExitSeverance,
+  AddQuations,
+  OnlineTest,
+  KraReducer,
+  CheckListReducer,
+  OutofPacket,
+  KpiReducer,
+  GetEmpAppraisalDetails,
+  ProjectformReducers,
+  GenerateInvoiceReducer
 });
 
 

@@ -13,7 +13,6 @@ import { getHrTaskList } from "../../actions/TodoListAction";
 function EmployeeApprove(props) {
     const dispatch = useDispatch();
     const [employee, setemployee] = useState([])
-    const [status, setStatus] = useState()
 
     useEffect(() => {
         // setresume_id(props.int_details_id)
@@ -35,16 +34,17 @@ function EmployeeApprove(props) {
         })
 
     }, [props])
-    const InsertEmployee = (data) => {
 
+const InsertEmployee = (data) => {
+    let status=false
         if (data === "accept") {
-            setStatus(true)
+            status=true
         }
         if (data === "reject") {
-            setStatus(false)
+            status=false
         }
 
-        dispatch(EmployeeApproveOrReject(employee.id, status, props.emp_viewer_id.task_id)).then((response) => {
+        dispatch(EmployeeApproveOrReject(employee[0].id, status, props.emp_viewer_id.task_id)).then((response) => {
             props.closemodal()
         })
         //     Axios({
@@ -84,7 +84,7 @@ function EmployeeApprove(props) {
                     <Labelbox type="text" placeholder="Employee N" disabled={true} value={data.name} />
                     <Labelbox type="text" placeholder="Designation" disabled={true} value={data.designation} />
                     <div className="employeeform_save">
-                        <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={() => InsertEmployee("reject")} />
+                        {/* <CustomButton btnName={"Reject"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={() => InsertEmployee("reject")} /> */}
                         <CustomButton btnName={"Approve"} btnCustomColor="customPrimary" custombtnCSS="int_btn_save" onBtnClick={() => InsertEmployee("accept")} />
                     </div>
                 </div>

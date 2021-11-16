@@ -41,14 +41,14 @@
 }
 
 .checklistBtn {
-    text-align: center;
-    padding-top: 8px;
+    display: grid;
+    align-content: center;
 }
 
 // Check List Assigning
 
 .clAssignFields {
-    width: 80%;
+    // width: 80%;
     padding: 30px 10px;
     margin-top: 10px;
     background-color: white;
@@ -59,3 +59,69 @@
     text-align: center;
     padding: 35px 0px;
 }
+.Btn_change{
+    width: 14% !important;
+
+}
+
+.clAssignFields_card{
+    width: 100%;
+    padding: 30px 10px;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 10px; 
+}
+.label_div_card{
+    width:18%;
+}
+.label_div_card .formdiv .labeltxt{
+    margin-bottom: 5px;
+    color:#333 !important;
+}
+.checklist_collapse{
+    margin-top: 50px;
+}
+
+.DataNameDiv{
+    width: 100%;
+    display: inline-flex;
+    padding: 7px;
+    border-bottom: 1px solid #797979;
+}
+
+.DataNameDiv .DataName{
+    width: 25%;
+    text-align: center;
+    color: #000;
+    font-weight: bold;
+    
+}
+
+.DataValueDiv{
+    width: 100%;
+    display: inline-flex;
+    padding: 7px;
+}
+
+.DataValueDiv .DataName{
+    width: 25%;
+    text-align: center;
+    color: #000;
+}
+.DataTableDiv{
+    background: #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.checklist_Btn{
+    text-align: right;
+}
+.taskDetailsCheck{
+    font-size: 14px;
+    text-align: center;
+    color: #016991;
+    margin-top: 15px;
+}
+
+

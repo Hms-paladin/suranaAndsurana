@@ -4,7 +4,6 @@ import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 
 export const searchRowdata = (data) => async dispatch => {
-    console.log(data,"actiondata")
     try {
         axios({
             method: 'POST',
@@ -16,7 +15,6 @@ export const searchRowdata = (data) => async dispatch => {
                 }
         })
         .then((response) => {
-            console.log(response.data.data,"GET_HRSEARCH_ROWDATA")
 
             dispatch({type:GET_HRSEARCH_ROWDATA,payload:response.data.data})
         })

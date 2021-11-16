@@ -5,7 +5,7 @@ import moment from 'moment';
 import { notification } from "antd";
 
 
-export const getEmployeeListSearch = (empCodeName,params) => async dispatch => {
+export const getEmpListDepartmentSearch = (empCodeName,params) => async dispatch => {
  
   try {
 
@@ -19,7 +19,6 @@ export const getEmployeeListSearch = (empCodeName,params) => async dispatch => {
           },
         }).then((response) => {
           if (response.data.status === 1) {
-            // console.log(response.data.data.length,"//")
               dispatch({type:GET_EMPLOYEE_LIST_SEARCH,payload:response.data.data})
             return Promise.resolve();
           }

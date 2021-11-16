@@ -5,12 +5,15 @@
     margin: 10px 5px;
     padding: 10px;
 }
+
 .empDetails {
     display: flex;
-    > div {
+
+    >div {
         width: 20%;
         padding: 5px;
-        > div:first-child {
+
+        >div:first-child {
             font-weight: 600;
             font-size: 16px;
         }
@@ -40,7 +43,8 @@
     padding: 10px 0px;
     border-bottom: #f0f0f0 1px solid;
     color: #707070;
-    > div {
+
+    >div {
         width: 50%;
     }
 }
@@ -49,7 +53,7 @@
     display: flex;
     padding-bottom: 5px;
 
-    > div {
+    >div {
         width: 50%;
     }
 }
@@ -61,15 +65,41 @@
     margin: 0px 5px 3px 5px;
     border-radius: 7px;
     display: flex;
+    justify-content: space-between;
+    height: 47px;
+
     .linkview {
         color: #1d7dbd;
         text-decoration: underline;
         cursor: pointer;
     }
+
+    .tickIcons {
+        color: #0353A4;
+        padding-right: 20px;
+    }
+}
+
+.yesorNoView {
+    color: #0353A4;
+    font-weight: bold;
 }
 
 .subheading {
     margin: 10px;
+}
+
+.ant-collapse-content>.ant-collapse-content-box {
+    padding: 16px 16px 16px 40px !important;
+    // width: 70px !important;
+    width: 95%;
+    //word-break:break-all;
+}
+
+.modelcontent {
+    height: 430px;
+    overflow: auto;
+    padding: 10px;
 }
 
 .linkChoose {
@@ -77,40 +107,103 @@
     padding: 10px;
     background-color: white;
     margin: 0px 5px 3px 5px;
-    border-radius: 7px;
+    color: #0353A4;
     display: flex;
-    > div:first-child {
-        width: 40%;
-        margin-right: 50px;
-        font-weight: 600;
+
+    >div:first-child {
+        margin-left: 31px;
     }
-    > div {
+
+    >div {
         margin-right: 50px;
     }
 }
-.chooseleave {
+
+.linkChooseBox {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    margin: 0px 5px 3px 5px;
+    display: flex;
+
+    >div:first-child {
+        margin-left: 31px;
+    }
+
+    >div {
+        margin-right: 50px;
+    }
+
+    .linkChooseBoxReason {
+        margin-top: 15px;
+    }
+    .boxHeader{
+        height: 35px;
+    }
+}
+
+.linkChoose3 {
+    width: 100%;
+    padding: 10px;
+    background-color: #0353a4;
+    margin: 0px 5px 3px 5px;
+    color: white;
+    display: flex;
+
+    >div:first-child {
+        margin-left: 31px;
+    }
+
+    >div {
+        margin-right: 50px;
+    }
+}
+
+.linkChoose1 {
     width: 100%;
     padding: 10px;
     background-color: white;
     margin: 0px 5px 3px 5px;
     border-radius: 7px;
+    display: flex;
+
+    >div:first-child {
+        width: 40%;
+        margin-right: 50px;
+        font-weight: 600;
+        margin-left: 31px;
+    }
+
+    >div {
+        margin-right: 50px;
+    }
+}
+
+.chooseleave {
+    width: 100%;
+    padding: 10px 10px 10px 42px;
+    background-color: white;
+    margin: 0px 5px 3px 5px;
+    border-radius: 7px;
+
     .linkChooseOption {
         width: 100%;
         display: flex;
 
-        > div:first-child {
+        >div:first-child {
             width: 40%;
             margin-right: 50px;
             font-weight: 600;
         }
-        > div {
+
+        >div {
             margin-right: 50px;
         }
     }
 }
 
 .reasonBox {
-    > div {
+    >div {
         width: 60%;
         margin: 5px;
     }
@@ -131,7 +224,7 @@
 }
 
 .modelbox {
-    > div {
+    >div {
         width: 100%;
         margin: 5px;
     }
@@ -139,22 +232,24 @@
 
 // rating Model
 
-.empDetailsIn{
+.empDetailsIn {
     display: flex;
-    >div{
-        width: 30%;
+
+    >div {
+        width: 50%;
     }
 }
 
-.employeeData{
+.employeeData {
     font-size: 16px;
     font-weight: 600;
 }
 
-.areaDevelopment{
+.areaDevelopment {
     margin-top: 10px;
     display: flex;
-    >img{
+
+    >img {
         margin-left: 10px;
     }
 }
@@ -162,69 +257,89 @@
 
 // Appraisal Supervisor View
 
-.commentLine{
+.commentLine {
     margin: 5px 0px;
     padding: 5px;
 }
 
-.appraisal_collapse{
+.appraisal_collapse {
     margin: 0px 0px 3px 5px;
+    font-weight: 600;
+    // color: #0f0f0f;
 }
 
 .appraisal_collapse {
-    .ant-collapse{
+    .ant-collapse {
         background-color: white !important;
     }
-    .ant-collapse-arrow svg{
-    position: relative;
-    top: 50%  !important;
-    left: 1200px !important;
-    font-size: 16px !important;
-    .ant-collapse-header{
-        font-weight: 600 !important;
-        font-size: 16px;
+
+    .ant-collapse-arrow svg {
+        position: relative;
+        // top: 50%  !important;
+        left: 1191px !important;
+
+        // font-size: 16px !important;
+        .ant-collapse-header {
+            font-weight: 600 !important;
+            font-size: 16px;
+        }
+
+
     }
-    
-  
-}
 }
 
-.employeeApprisal_Container{
+.empAppraisalContainer {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 8px;
+}
+
+.employeeApprisal_Container {
     display: flex;
     justify-content: space-between;
     padding: 8px;
+
     .employeeApprisal_Child_Container:nth-child(2),
     .employeeApprisal_Child_Container:nth-child(3) {
-        height:20%;
-      }
+        height: 20%;
+    }
 }
 
-.employeeApprisal_Child_Container{
+.employeeApprisal_Child_Container {
     border-radius: 10px;
     width: 33%;
     background-color: #f3f3f3;
     padding: 20px;
 }
 
-.TitleChildDiv{
+.TitleChildDiv {
     display: flex;
     justify-content: flex-start;
     padding: 10px;
     box-shadow: 0px 2px #e8e5e5;
-    >div{
-        width:50%;
-    }
-}
-.ValueChildDiv{
-    display: flex;
-    padding:10px;
-    >div{
-        width:50%;
+    font-weight: 600;
+
+    >div {
+        width: 50%;
     }
 }
 
+.ValueChildDiv {
+    display: flex;
+    padding: 10px;
+
+    >div {
+        width: 50%;
+    }
+}
+
+.gridDatashow {
+    height: 100px;
+    overflow: auto;
+}
+
 //AppraisalView
-.RatingContainer{
+.RatingContainer {
     width: 100%;
     padding: 15px;
     border-radius: 10px;
@@ -232,7 +347,8 @@
     overflow: auto;
     height: 200px;
 }
-.RateBox{
+
+.RateBox {
     width: 20px;
     height: 20px;
     margin-bottom: 4px;
@@ -244,40 +360,48 @@
     text-align: center;
     margin-right: 5px;
 }
-.RatingContentBox{
+
+.RatingContentBox {
     display: flex;
     justify-content: space-between;
 }
-.heading{
+
+.heading {
     font-weight: 600;
     color: #0353A4;
     font-size: 15px;
 }
+
 //MP_Appraisal
-.mp_appraisal_container{
+.mp_appraisal_container {
     width: 100%;
     background-color: white;
     border-radius: 7px;
     margin: 10px 5px;
     padding: 10px;
 }
+
 .empDet {
     display: flex;
-    > div {
+
+    >div {
         width: 20%;
         padding: 5px;
-        > div:nth-child(2) {
+
+        >div:nth-child(2) {
             font-weight: 600;
             font-size: 16px;
         }
     }
 }
-.MP_btns{
+
+.MP_btns {
     display: flex;
     justify-content: center;
     padding: 5px;
 }
-.MP_appraisal_comments{
+
+.MP_appraisal_comments {
     display: flex;
     width: 100%;
     border-radius: 5px;
@@ -286,45 +410,134 @@
     height: 45px;
     align-items: center;
     margin-left: 5px;
-    margin-bottom:3px;
-    cursor:pointer;
+    margin-bottom: 3px;
+    cursor: pointer;
 }
-.MPRatingContainer{
+
+.MPRatingContainer {
     width: 100%;
     padding: 15px;
     border-radius: 10px;
     background-color: white;
 }
-.MP_RatingContentBox{
+
+.MP_RatingContentBox {
     display: flex;
     justify-content: space-between;
 }
-.edit_rate{
+
+.edit_rate {
     display: flex;
     width: 50px;
 }
-.img_rate{width:20px;}
-.MP_Details{
-    width:100%;
+
+.img_rate {
+    width: 20px;
+}
+
+.MP_Details {
+    width: 100%;
     background-color: white;
-    padding:10px;
+    padding: 10px;
     margin-left: 6px;
-    >div:nth-child(1){
+
+    >div:nth-child(1) {
         display: flex;
         justify-content: flex-start;
-        >div{
-            width:30%;
+
+        >div {
+            width: 30%;
         }
     }
-    >div:nth-child(2){
+
+    >div:nth-child(2) {
         display: flex;
         justify-content: flex-start;
-        >div{
-            width:30%;
+
+        >div {
+            width: 30%;
             font-weight: 600;
         }
     }
 }
 
 
+.employeeDetails {
+    width: 100%;
+    display: flex;
+}
 
+// Rating Model
+
+.attributes {
+    width: 100%;
+    display: flex;
+}
+
+.attributeKey {
+    width: 90%;
+}
+
+.attributeValue {
+    width: 10%;
+}
+
+.ratingList {
+    margin-top: 20px;
+}
+
+.ratingHeading {
+    font-weight: 600;
+    font-size: 17px;
+    color: #3f51b5;
+    padding: 5px 0px;
+}
+
+.showRatings {
+    width: 100%;
+    display: flex;
+    height: 35px;
+}
+
+.showratingContent {
+    width: 87%;
+    color: #000000;
+}
+
+
+.showratingValue {
+    border: 1px solid #0353A4;
+    text-align: center;
+    margin: 4px;
+    padding: 2px 5px;
+    width: 31px;
+    height: 25px;
+    border-radius: 6px;
+}
+
+
+//showRateingscontainer
+.showratingdrop {
+    width: 11%;
+    margin-right: 5px;
+}
+
+.editrow {
+    width: 2%;
+}
+
+.editRating {
+    width: 20px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+// showRating
+.showRatingtable {
+    background: #fff;
+    padding: 10px 0px 10px 47px;
+    border-radius: 5px;
+    height: 400px;
+    overflow: auto;
+    margin: 10px
+}

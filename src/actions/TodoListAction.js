@@ -1,4 +1,4 @@
-import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES } from "../utils/Constants";
+import { GET_HRTODOLIST, GET_INTERVIEW_QUESTIONS,GET_SELECTED_CANDIDATES,GET_PROJECT_TASK } from "../utils/Constants";
 import {GET_OTHER_TASK} from '../utils/Constants'
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
@@ -23,6 +23,7 @@ export const getHrTaskList = () =>async dispatch => {
 
     }
 }
+
 //InterviewPage
 export const getInterviewQuestions = () =>async dispatch => {
     try{
@@ -59,6 +60,7 @@ export const getSelectedCandidates = (data) =>async dispatch => {
 //EmployeeApproveAction
 
 export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch => {
+
     try{
         axios({
             method: 'POST',
@@ -67,20 +69,20 @@ export const EmployeeApproveOrReject = (EmpId,status,taskId) =>async dispatch =>
                 "emp_id":EmpId,
                 "approved_by":localStorage.getItem("empId"),
                 "approved_date":moment().format('YYYY-MM-DD') ,
-                "emp_status":status === true?1 :2, 
+                "emp_status":status === true?1 :0, 
                 "task_id":taskId                               
             },
         })
         .then((response)=>{
             if(response.data.status==1){
                 notification.success({
-                    message: `Employee approved successfully`,
+                    message: `Employee Approved Successfully`,
                     placement: "topRight",
                   });
             }
             if(response.data.status==0){
                 notification.warning({
-                    message: `Employee rejected`,
+                    message: `Employee Rejected Successfully`,
                     placement: "topRight",
                   });
             }
@@ -103,6 +105,50 @@ export const getOtherTask = () =>async dispatch => {
         })
         .then((response) => {
             dispatch({type:GET_OTHER_TASK,payload:response.data.data})
+        })
+    }
+    catch(err){
+
+    }
+}
+
+// project task
+export const getProjectTasks = () =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'get_project_tasks',
+            data:{
+                "emp_id":localStorage.getItem("empId")
+            }
+        })
+        .then((response) => {
+            dispatch({type:GET_PROJECT_TASK,payload:response.data.data})
+        })
+    }
+    catch(err){
+
+    }
+}
+
+export const unblockUser = (data) =>async dispatch => {
+    try{
+        axios({
+            method: 'POST',
+            url: apiurl +'update_unblock_status',
+            data:{
+                "emp_id":data.employee_id,
+                "active_flag":"1",
+                "status_change_datetime":moment().format('YYYY-MM-DD')
+            }
+        })
+        .then((response) => {
+            if (response.data.status === 1) {
+                notification.success({
+                    message: "User Unblocked Successfully",
+                  });
+                }
+                dispatch(getOtherTask())
         })
     }
     catch(err){

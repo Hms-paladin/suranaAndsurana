@@ -93,10 +93,10 @@ function CancelDefended(props) {
         var filtererr = targetkeys.filter(
             (obj) => CancelDefended[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
         } else {
-            dispatch(InsertDesign(CancelDefended, props.projectDetails && props.projectDetails[0], getDesign)).then(() => {
+            dispatch(InsertDesign(CancelDefended, props.projectDetails && props.projectDetails[0], getDesign[0])).then(() => {
                 // handleCancel()
             })
         }
@@ -145,20 +145,21 @@ function CancelDefended(props) {
 
 
     useEffect(() => {
+        handleCancel()
         if (getDesign.length > 0) {
             let cancDef_key = ["client_respontent", "des_number", "respondent", "petitioner_rep", "status", "comments"]
 
-            let cancDef_value = ["client_petitioner", "design_number", "responent_rep", "petitioner", "status", "comments"]
+            let cancDef_value = ["client_petitioner", "design_number", "responent_rep", "petitioner", "status_id", "comments"]
 
             cancDef_key.map((data, index) => {
                 if (cancDef_value[index] !== "application_date" && cancDef_value[index] !== "priority_date" && cancDef_value[index] !== "renewal_date") {
                     CancelDefended[data].value = getDesign[0][cancDef_value[index]];
-                    CancelDefended[data].disabled = getDesign[0][cancDef_value[index]] ? true : false;
+                    // CancelDefended[data].disabled = cancDef_value[index]!=='status_id'&&getDesign[0][cancDef_value[index]] ? true : false;
                 }
                 else {
-                    console.log(getDesign[0][cancDef_value[index]], "getDesign[0]")
+
                     CancelDefended[data].value = getDesign[0][cancDef_value[index]] === "0000-00-00" ? "" : moment(getDesign[0][cancDef_value[index]]);
-                    CancelDefended[data].disabled = getDesign[0][cancDef_value[index]] === "0000-00-00" ? false : true;
+                    // CancelDefended[data].disabled = getDesign[0][cancDef_value[index]] === "0000-00-00" ? false : true;
                 }
             });
             setCancDefGetList((prevState) => ({
@@ -231,7 +232,7 @@ function CancelDefended(props) {
 
                     <Grid>
                         <div className="Fieldheadings">Comments</div>
-                        <Labelbox type="text"
+                        <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}
                             value={CancelDefended.comments.value}
                             error={CancelDefended.comments.error}

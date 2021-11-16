@@ -56,7 +56,6 @@ export const getEmployee = (emp_code) => async dispatch => {
           },
         }).then((response) => {
           if (response.data.status === 1) {
-            // console.log(response.data.data.length,"//")
               dispatch({type:GET_EMPLOYEE,payload:response.data.data})
             return Promise.resolve();
           }
@@ -76,12 +75,11 @@ export const getLeaveBalance = (params,employee_code) => async dispatch => {
             url: apiurl + "get_leave_balance",
             data: {
               employee_code: employee_code,
-              start_date: params.start_date.value,
-              end_date: params.end_date.value,
+              start_date: 0,//params.start_date.value,
+              end_date:  0,//params.end_date.value,
             },
           }).then((response) => {
             if (response.data.status === 1) {
-              // console.log(response.data.data.length,"//")
                 dispatch({type:GET_LEAVE_BALANCE,payload:response.data.data})
               return Promise.resolve();
             }

@@ -3,11 +3,12 @@ import Grid from '@material-ui/core/Grid';
 import '../Project IP1/Patent/Patent.scss'
 import CustomButton from '../../component/Butttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import { Upload } from 'antd';
+import { Upload, Button } from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { insertCopyright, getCopyRight, updateCopyright } from "../../actions/copyrightAction";
+import { UploadOutlined } from '@ant-design/icons';
 
 
 
@@ -15,7 +16,7 @@ const CopyRight = (props) => {
 
     const dispatch = useDispatch()
     const [IdDetails, setIdDetails] = useState({});
-    const [fileupload, setFileupload] = useState("");
+    const [fileupload, setFileupload] = useState([]);
     const [copy_Right, setCopy_Right] = useState({
 
         title: {
@@ -51,8 +52,6 @@ const CopyRight = (props) => {
 
     useEffect(() => {
 
-        console.log(props.getCopyRightData, "getCopyRightData")
-
         if (props.getCopyRightData.length > 0) {
             let CopyRightData = props.getCopyRightData
 
@@ -73,9 +72,27 @@ const CopyRight = (props) => {
         }));
         // copy_Right["reference"].value = copyright.reference|| ""
 
-        // console.log(props.getCopyRightData.length ,"ss")
-        // console.log(CopyRightData,"api data");
     }, [props.getCopyRightData])
+
+    const handleChange = (info, uploadName) => {
+
+        if (info.status !== 'error' && info.status !== "uploading") {
+
+            let fileList = [...info.fileList];
+
+            // fileList = fileList.slice(-1);
+
+            fileList = fileList.map(file => {
+                if (file.response) {
+                    file.url = file.response.url;
+                }
+                return file;
+            });
+            setFileupload(fileList);
+
+        }
+    };
+
 
 
 
@@ -94,20 +111,22 @@ const CopyRight = (props) => {
         var filtererr = targetkeys.filter(
             (obj) => copy_Right[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setCopy_Right({ error: true });
         } else {
             // setCopy_Right({ error: false });
             if (props.getCopyRightData.length > 0) {
                 var copy_right_id = props.getCopyRightData[0].copy_right_id
-                console.log(copy_right_id)
+
                 dispatch(updateCopyright(copy_Right, IdDetails, fileupload, copy_right_id)).then(() => {
                     handleCancel()
+                    setFileupload([])
                 })
             } else {
                 dispatch(insertCopyright(copy_Right, IdDetails, fileupload)).then(() => {
                     handleCancel()
+                    setFileupload([])
 
                 })
             }
@@ -150,7 +169,7 @@ const CopyRight = (props) => {
         let multipleIdList = []
 
         if (multipleId) {
-            multipleId.map((item) => {
+            multipleId.length > 0 && multipleId.map((item) => {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i] === item.value) {
                         multipleIdList.push(item.id)
@@ -171,62 +190,68 @@ const CopyRight = (props) => {
 
     return (
         <div >
+
             <div className="copyright_div">
-                <Grid>
-                    <div className="Fieldheadings">Title</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "title")}
-                        value={copy_Right.title.value}
-                        error={copy_Right.title.error}
-                        errmsg={copy_Right.title.errmsg} />
-                </Grid>
+                <Grid item xs={12} md={12} className="app_cont_domestic">
 
-                <Grid>
-                    <div className="Fieldheadings">Type of work</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "type_of_work")}
-                        value={copy_Right.type_of_work.value}
-                        error={copy_Right.type_of_work.error}
-                        errmsg={copy_Right.type_of_work.errmsg} />
-                </Grid>
+                    <Grid >
+                        <div className="copyFieldheadings">Title</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "title")}
+                            value={copy_Right.title.value}
+                            error={copy_Right.title.error}
+                            errmsg={copy_Right.title.errmsg} />
+                    </Grid>
 
-                <Grid>
-                    <div className="Fieldheadings">Upload Image</div>
-                    <div className="uploadbox_div"  >
-                        <div>
-                            <Upload {...props} className="uploadbox_tag"
-                            // action='https://www.mocky.io/v2/5cc8019d300000980a055e76' 
-                            // onChange={(e)=>onFileChange()}
+                    <Grid>
+                        <div className="copyFieldheadings">Type of work</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "type_of_work")}
+                            value={copy_Right.type_of_work.value}
+                            error={copy_Right.type_of_work.error}
+                            errmsg={copy_Right.type_of_work.errmsg} />
+                    </Grid>
+
+                    <Grid xs={2}>
+                        <div className="copyFieldheadings">Upload Image</div>
+                        <div className="uploadbox_div"  >
+                            {/* <div> */}
+                            <Upload
+                                action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                                onChange={(info) => handleChange(info, "examScheduleUpload")}
+                                // fileList={fileupload}
+                                accept={'jpg'}
                             >
-
-                                <div className="upload_file_inside" ><label style={{ whiteSpace: 'nowrap' }}>Upload Image</label><PublishIcon /></div>
+                                <Button>
+                                    <UploadOutlined />Click to upload
+                                </Button>
                             </Upload>
 
+                            {/* </div> */}
                         </div>
-                    </div>
-                </Grid>
+                    </Grid>
 
+
+                    <Grid>
+                        <div className="copyFieldheadings">Reference</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "reference")}
+                            value={copy_Right.reference.value}
+                            error={copy_Right.reference.error}
+                            errmsg={copy_Right.reference.errmsg} />
+                    </Grid>
+
+                    <Grid>
+                        <div className="copyFieldheadings">Status</div>
+                        <Labelbox type="text"
+                            changeData={(data) => checkValidation(data, "status")}
+                            value={copy_Right.status.value}
+                            error={copy_Right.status.error}
+                            errmsg={copy_Right.status.errmsg} />
+                    </Grid>
+                </Grid>
             </div>
-            <div className="copyright_div">
-                <Grid>
-                    <div className="Fieldheadings">Reference</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "reference")}
-                        value={copy_Right.reference.value}
-                        error={copy_Right.reference.error}
-                        errmsg={copy_Right.reference.errmsg} />
-                </Grid>
 
-                <Grid>
-                    <div className="Fieldheadings">Status</div>
-                    <Labelbox type="text"
-                        changeData={(data) => checkValidation(data, "status")}
-                        value={copy_Right.status.value}
-                        error={copy_Right.status.error}
-                        errmsg={copy_Right.status.errmsg} />
-                </Grid>
-
-            </div>
             <Grid item xs={12} container justify="flex-end" className="patent_btns">
                 <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
                 <CustomButton btnName={"Cancel"} custombtnCSS="custom_cancel" />

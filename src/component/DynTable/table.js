@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, useTheme  } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -29,6 +29,7 @@ const useStyles1 = makeStyles((theme) => ({
 function TablePaginationActions(props) {
   const classes = useStyles1();
   const theme = useTheme();
+
   const { count, page, rowsPerPage, onChangePage } = props;
 
   const handleFirstPageButtonClick = (event) => {
@@ -45,6 +46,7 @@ function TablePaginationActions(props) {
 
   const handleLastPageButtonClick = (event) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+
   };
 
   return (
@@ -132,24 +134,33 @@ function EnhancedTableHead(props) {
           </TableCell>
         )}
         {headCells.map((headCell) => (
+
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
+          // hideSortIcon={headCell.id?true:false}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
+
+            {headCell.id ?
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+                // icon={}
+                hideSortIcon={orderBy === headCell.id ? true : false}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <span className={classes.visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </span>
+                ) : null}
+              </TableSortLabel> :
+              <>{headCell.label}</>
+            }
+
           </TableCell>
         ))}
       </TableRow>
@@ -161,7 +172,7 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  // onSelectAllClick: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -189,6 +200,9 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  inactiveSortIcon: {
+    display: 'none',
+  },
 }));
 
 export default function EnhancedTable(props) {
@@ -207,17 +221,20 @@ export default function EnhancedTable(props) {
   };
 
   React.useEffect(() => {
-    console.log("rowss",props.rows)
-    setRows(props.rows);
-  }, [props]);
+    if (props.rows) {
+      setRows(props.rows);
+      if (!props.Resume && !props.var_rate && !props.projectwise)
+        setPage(0)
+    }
+  }, [props.rows]);
+
 
   // React.useEffect(() => {
   //   for(let i=0;i<(props.rows.length/rowsPerPage);i++){
   //     page
   //     setPage(i) 
-  //     console.log(i,"testlength")
   //   }
-    
+
   // }, [props.rows]);
 
   const handleSelectAllClick = (event) => {
@@ -228,7 +245,6 @@ export default function EnhancedTable(props) {
     }
     setSelected([]);
   };
-
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -254,18 +270,20 @@ export default function EnhancedTable(props) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+
+    setRowsPerPage(parseInt(event.target.value));
+    setPage(0)
+
   };
 
-  
+
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows && rows.length - page * rowsPerPage);
 
   return (
+
     <div className={classes.root}>
       {/* <Paper className={classes.paper}> */}
       <div className="tableTitle">{props.tabletitle}</div>
@@ -283,7 +301,7 @@ export default function EnhancedTable(props) {
             numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            //   onSelectAllClick={handleSelectAllClick}
+            onSelectAllClick={handleSelectAllClick}
             EnableSno={props.EnableSno}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
@@ -300,7 +318,7 @@ export default function EnhancedTable(props) {
                   let keys = Object.keys(row);
                   let arrval = [];
                   // let idLenght= props.idLenght? props.idLenght:0
-                  for (var m = 0; m < keys.length ; m++) {
+                  for (var m = 0; m < keys.length; m++) {
                     arrval.push(
                       <TableCell keys={index + "" + m} align="left">
                         {row[keys[m]] ? row[keys[m]] : "---"}
@@ -317,7 +335,7 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={index}
                       selected={isItemSelected}
-                     
+
                     >
                       {props.EnableSno && (
                         <TableCell align="center">
@@ -349,12 +367,19 @@ export default function EnhancedTable(props) {
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
         />
       )}
       {/* </Paper> */}
+
     </div>
   );
 }

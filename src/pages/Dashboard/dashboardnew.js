@@ -1,4 +1,4 @@
-import react, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useRef, useEffect, useState } from "react";
 import "./dashboard.scss";
 import Library from "../../images/dashboard/library.svg";
 import appraisal from "../../images/dashboard/appraisal.svg";
@@ -19,7 +19,10 @@ import DynModel from "../../component/Model/model";
 import AdhocTaskModal from "../Search/adhoctask"
 import { Calendar } from 'antd';
 import Grid from "@material-ui/core/Grid";
-
+import Axios from 'axios';
+import { apiurl } from "../../utils/baseUrl";
+import { useDispatch, connect } from "react-redux";
+import moment from 'moment';
 
 const Projectbox = [
   { projects: "Project 1", projecttype: "Project Type 1 ", client: "Client 1" },
@@ -28,11 +31,6 @@ const Projectbox = [
   { projects: "Project 4", projecttype: "Project Type 4 ", client: "Client 4" },
 ];
 
-const Tasks = [
-  { task: "Project", count: 12 },
-  { task: "HR", count: " 2 " },
-  { task: "Other", count: "1 " },
-];
 
 const projectwise = [
   { projects: "IP Project", task: "24% ", stage: "10%" },
@@ -69,97 +67,236 @@ const Taskdays = [
   },
 ];
 
-function DashboardNew() {
+function DashboardNew(props) {
   const [pathname, setpathname] = useState(window.location.pathname);
   const [menuListItem, setMenuListItem] = useState([]);
   const [arrowHide, setArrowHide] = useState(false);
   const [changedashBoard, setChangedashBoard] = useState(true);
+  const [color, setcolor] = useState("")
+  const [userclr, setuserclr] = useState("customPrimary")
   // const[adhoc,setAdhoc]=useState(false)
+  const [dashboardValues, setDashboardValues] = useState([])
+  const [calenderValues, setCalenderValues] = useState([])
 
-  const [menulist, setMenulist] = useState([
+  const menulist = useRef([
     {
       img: <img src={Library} className="imageicons" />,
       title: "Library",
-      path: "/librarybook",
+      path: "/Home/librarybook",
     },
     {
       img: <img src={appraisal} className="imageicons" />,
       title: "Appraisal",
-      path: "/appraisal",
+      path: "/Home/appraisal",
     },
     {
       img: <img src={KRA} className="imageicons" />,
       title: "KRA",
-      path: "/KRA",
+      path: "/Home/KRA",
     },
     {
       img: <img src={KPI} className="imageicons" />,
       title: "KPI",
-      path: "/KPI",
+      path: "/Home/KPI",
     },
     {
       img: <img src={Timesheet} className="imageicons" />,
       title: "Time Sheet",
-      path: "/projectwise_timesheet",
+      path: "/Home/projectwise_timesheet",
     },
     {
       img: <img src={AdhocTask} className="imageicons" />,
       title: "Adhoc Task",
-      path: "/adhoctask",
+      path: "/Home/adhoctask",
     },
 
     {
       img: <img src={ApplyLeave} className="imageicons" />,
       title: "Apply Leave",
-      path: "/leaveform",
+      path: "/Home/leaveform",
     },
     {
       img: <img src={TicketCreation} className="imageicons" />,
       title: "Ticket Creation",
-      path: "/ticketcreation",
+      path: "/Home/ticketcreation",
     },
     {
       img: <img src={Employee} className="imageicons" />,
       title: "List of Employees",
-      path: "/employeelist",
+      path: "/Home/employeelist",
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
       title: "OPA/Expenses",
-      path: "/outofpacket",
+      path: "/Home/outofpacket",
     },
     {
       img: <img src={OPAdv} className="imageicons" />,
       title: "Day Report",
-      path: "/dayreport",
+      path: "/Home/dayreport",
+    },
+    {
+      img: <img src={Employee} className="imageicons" />,
+      title: "CheckList Assigning View",
+      path: "/Home/checklistview",
     },
   ]);
+
+  const Tasks = [
+    { task: "Project", count: dashboardValues[0]?.Tasks[1]?.[0]?.Project_task || 0 },
+    { task: "HR", count: dashboardValues[0]?.Tasks[0]?.[0]?.HR_task || 0 },
+    { task: "Other", count: dashboardValues[0]?.Tasks[2]?.[0]?.Other_task || 0 },
+  ];
+
 
   const handleClick = (data) => {
     setpathname(data.path);
   };
 
+  // useEffect(() => {
+  //   orderChange();
+  // }, []);
+
+
   useEffect(() => {
-    orderChange();
-  }, []);
+    Axios({
+      method: 'POST',
+      url: apiurl + 'get_dashboard_user',
+      data: {
+        "emp_id": localStorage.getItem("empId"),
+      }
+    }).then((response) => {
+      let dashboardData = []
+      dashboardData.push({
+        Projects: response.data.data[0].Projects,
+        Due_task: response.data.data[0].Due_task,
+        Expense: response.data.data[0].Expense[0],
+        Tasks: response.data.data[0].Task
+      })
+      setDashboardValues(dashboardData)
+    })
+
+
+  }, [])
+  useEffect(() => {
+
+    onPanelChange()
+  }, [])
 
   function onPanelChange(value, mode) {
-    console.log(value, mode);
+
+    let now = moment(value?._d);
+    now = now.format('YYYY-MM-DD');
+
+    Axios({
+      method: 'POST',
+      url: apiurl + 'get_dashboard_calendar',
+      data: {
+        "cur_date": `${now}`,
+        "emp_id": localStorage.getItem("empId"),
+      }
+    }).then((response) => {
+      // setCalenderValues(response.data.data)
+      let calenderData = []
+      calenderData.push({
+        Task: response.data.data[0].task,
+        stage: response.data.data[0].stage,
+        EndTask: response.data.data[0].end_date_due_task,
+      })
+      setCalenderValues(calenderData)
+
+    })
   }
 
-  console.log(projectwise, "projectwise")
+  const userdashboard = (color) => {
+    setChangedashBoard(true)
+    setcolor("")
+    setuserclr(color)
+
+  }
+
+  const compliancedashboard = (color) => {
+    setChangedashBoard(false)
+    setcolor(color)
+    setuserclr("")
+  }
+
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      props.UserPermission.map((data) => {
+
+        if (data.control === 'Library - Add Resource' && data.display_control === 'Y' || data.control === 'Library - Receive' && data.display_control === 'Y'
+          || data.control === 'Library - Issue' && data.display_control === 'Y' || data.control === 'Library - Search' && data.display_control === 'Y') {
+
+          menulist.current[0].menu_rights = true;
+        }
+
+        if (data.control === 'Appraisal - Save' && data.display_control === 'Y') {
+          menulist.current[1].menu_rights = true;
+        }
+
+        if (data.control === 'KRA - Save' && data.display_control === 'Y' || data.control === 'KRA - View KRA' && data.display_control === 'Y') {
+          menulist.current[2].menu_rights = true;
+        }
+
+        if (data.control === 'KPI - Save' && data.display_control === 'Y' || data.control === 'KPI - View KPI' && data.display_control === 'Y') {
+          menulist.current[3].menu_rights = true;
+        }
+
+        menulist.current[4].menu_rights = true;
+
+        if (data.control === 'Adhoc Task - Save' && data.display_control === 'Y') {
+          menulist.current[5].menu_rights = true;
+        }
+
+        if (data.control === 'Apply Leave - Save' && data.display_control === 'Y') {
+          menulist.current[6].menu_rights = true;
+        }
+
+
+        // if(data.control==='Ticket Creation - Save as Template'&&data.display_control==='Y'||data.control==='Ticket Creation - Generate Ticket'&&data.display_control==='Y'){  
+        if (localStorage.getItem("designation_id") === '6') {
+          menulist.current[7].menu_rights = true;
+        }
+
+        // if(data.control==='List of Employees - Go'&&data.display_control==='Y'){  
+        // if ((localStorage.getItem("department_id") === '5') ) {
+
+        menulist.current[8].menu_rights = true;
+        // }
+
+        if (data.control === 'OPA/ Expenses - Search' && data.display_control === 'Y' || data.control === 'OPA/ Expenses- OPE - Save' && data.display_control === 'Y'
+          || data.control === 'OPA/ Expenses- OPA - Save' && data.display_control === 'Y') {
+          menulist.current[9].menu_rights = true;
+        }
+
+        if (data.control === 'Day Report - Save' && data.display_control === 'Y') {
+          menulist.current[10].menu_rights = true;
+        }
+
+        menulist.current[11].menu_rights = true;
+
+        orderChange()
+      })
+
+    }
+
+  }, [props.UserPermission]);
+
   const orderChange = useCallback(
     (showListStart = 0, showListEnd = 7, arrowshow) => {
-      const menuLists = menulist.map((data, index) => {
+      const menuLists = menulist.current.map((data, index) => {
         if (index >= showListStart - 1 && index <= showListEnd - 1) {
-          return (
-            <Link to={data.path} onClick={() => handleClick(data)}>
-              <div>
-                <div className="dashboardmenu">{data.img}</div>
-                <div className="dashboardtitle">{data.title}</div>
-              </div>
-            </Link>
-          );
+          if (data.menu_rights) {
+            return (
+              <Link to={data.path} onClick={() => handleClick(data)}>
+                <div>
+                  <div className="dashboardmenu">{data.img}</div>
+                  <div className="dashboardtitle">{data.title}</div>
+                </div>
+              </Link>
+            )
+          }
         }
       });
       setMenuListItem(menuLists);
@@ -168,17 +305,11 @@ function DashboardNew() {
     []
   );
 
-  const userdashboard = () => {
-    setChangedashBoard(true)
-  }
-
-  const compliancedashboard = () => {
-    setChangedashBoard(false)
-  }
-
-  console.log(arrowHide, "arrowHide");
   return (
-    <div>
+
+
+    < div >
+
       <div className="dashboardMenuContainer">
         {arrowHide && (
           <div
@@ -201,256 +332,356 @@ function DashboardNew() {
 
       <div className="dashboardbtn">
         <CustomButton
+          btnCustomColor={userclr}
           btnName={"User Overview"}
-          onBtnClick={userdashboard}
+          custombtnCSS="btncustom_css"
+          onBtnClick={() => userdashboard("customPrimary")}
         />
         <CustomButton btnName={"Compliance"}
-          btnCustomColor="customPrimary"
+          btnCustomColor={color}
           onBtnClick={userdashboard}
-          onBtnClick={compliancedashboard}
+          custombtnCSS="btncustom_css"
+          onBtnClick={() => compliancedashboard("customPrimary")}
         />
       </div>
 
 
 
-      {changedashBoard ?
-        <>
-          <div className="expAdvContainer">
-            <div className="expensePalce">Expenses  4000</div>
-            <div className="advancePlace">Advance  20000</div>
+      {
+        changedashBoard ?
+          <>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div className="Box">
+                <div className="expAdvContainer">
+                  <div className="expensePalce"><b>Expenses</b> {dashboardValues[0]?.Expense?.expences}</div>
+                  <div className="advancePlace"><b>Advance</b>  {dashboardValues[0]?.Expense?.advance}</div>
+                </div>
 
-          </div>
+                <div className="topcontainer">
+                  <div className="projectscroll">
+                    <div className="tableHeader">
+                      <div className="linkHeader"></div>
+                      <div>Projects</div>
+                    </div>
+                    <div className="projectdatas">
+                      {dashboardValues[0]?.Projects.length ? dashboardValues[0]?.Projects?.map((data) => {
+                        return (
+                          <div className="projecttable">
+                            <div>
+                              <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>
+                            </div>
+                            {/* <div>{data.project_type}</div> */}
+                            <div>{data.client}</div>
+                          </div>
+                        );
+                      }) : "No Projects Found"}
+                    </div>
+                  </div>
+                  <div className="Sub-Box">
+                    <div className="taskscroll">
+                      <div className="tableHeader">
+                        <div className="linkHeader"></div>
+                        <div>Tasks</div>
+                      </div>
+                      <div className="taskdatas">
+                        {Tasks.map((data) => {
+                          return (
+                            <div className="tasktable">
+                              <div>
+                                <Link to={`/Home/todoList`}>{data.task}</Link>
+                              </div>
+                              <div>{data.count}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="taskscroll">
+                      <div className="tableHeader">
+                        <div className="linkHeader"></div>
+                        <div>Stages</div>
+                      </div>
+                      <div className="taskdaysdatas">
+                        <div className="taskdaystableHeader">
+                          <div>Project Name</div>
+                          <div>Stage Name</div>
+                        </div>
+                        {calenderValues[0]?.stage?.length ? calenderValues[0]?.stage?.map((data) => {
+                          return (
+                            <>
+                              <div className="taskdaystablecal">
+                                <div>{data.project_name}</div>
+                                <div>{data.stage}</div>
+                              </div>
+                            </>
+                          );
+                        }) : "No Stages Found"}
+                        { }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <Grid item xs={4} alignItems="center" justifyContent="center">
+                <div className="custom_calender">
+                  <Calendar fullscreen={false} onSelect={onPanelChange} />
+                </div>
+              </Grid>
+            </div>
 
-          <div className="topcontainer">
-            <div className="projectscroll">
+
+            <div className="taskdaysscroll" >
               <div className="tableHeader">
                 <div className="linkHeader"></div>
-                <div>Projects</div>
+                <div>Tasks due by 5 days</div>
               </div>
-              <div className="projectdatas">
-                {Projectbox.map((data) => {
+              <div className="taskdaysdatas">
+                <div className="taskdaystableHeader">
+                  <div>Comment/Description</div>
+                  <div>Project Name</div>
+                  <div>Client</div>
+                  <div>Priority</div>
+                  <div>Due by</div>
+                  <div>% Completed</div>
+                </div>
+
+                {dashboardValues[0]?.Due_task.length ? dashboardValues[0]?.Due_task?.map((data) => {
                   return (
-                    <div className="projecttable">
-                      <div>
-                        <a href={"#"} className="linktable">
-                          {data.projects}
-                        </a>
+                    <>
+                      <div className="taskdaystable">
+                        <div>
+                          <Link to={{ pathname: `/Home/search/task/${data.task_id}` }}>{data.description || '-'}</Link>
+                        </div>
+                        <div>{data.project_name}</div>
+                        <div>{data.client}</div>
+                        <div>{data.priority}</div>
+                        <div>{moment(data.due_by).format('DD-MMM-YYYY')}</div>
+                        <div>{data.perecent_completion ? data.perecent_completion : "--"}</div>
                       </div>
-                      <div>{data.projecttype}</div>
-                      <div>{data.client}</div>
-                    </div>
+                    </>
                   );
-                })}
-              </div>
-            </div>
-            <div className="taskscroll">
-              <div className="tableHeader">
-                <div className="linkHeader"></div>
-                <div>Tasks</div>
-              </div>
-              <div className="taskdatas">
-                {Tasks.map((data) => {
-                  return (
-                    <div className="tasktable">
-                      <div>
-                        <a href={"#"} className="linktable">
-                          {data.task}
-                        </a>
-                      </div>
-                      <div>{data.count}</div>
-                    </div>
-                  );
-                })}
+                }) : "No Tasks Found"}
+                { }
               </div>
             </div>
 
-            <Grid item xs={3}>
-              <div className="custom_calender">
-                <Calendar fullscreen={false} onPanelChange={onPanelChange} />
-              </div>
-              <div className="calender_view">
-                <div>
-                  <div className="calDay">16 May</div>
-                  <div className="cal_time">09:00 aM</div>
-                  <div className="cal_time">10:00 aM</div>
-                  <div className="cal_time">11:00 aM</div>
 
+            <section className="sec-section" >
+              <div className="projectscroll-second" >
+                <div className="tableHeader">
+                  <div className="linkHeader"></div>
+                  <div>Tasks Start Date</div>
                 </div>
-              </div>
-
-            </Grid>
-
-
-          </div>
-          <div className="taskdaysscroll">
-            <div className="tableHeader">
-              <div className="linkHeader"></div>
-              <div>Tasks due by 5 days</div>
-            </div>
-            <div className="taskdaysdatas">
-              <div className="taskdaystableHeader">
-                <div>Activity</div>
-                <div>Sub Activity</div>
-                <div>Due by</div>
-                <div>Priority</div>
-                <div>%Completed</div>
-                <div>Assigned By</div>
-              </div>
-              {Taskdays.map((data) => {
-                return (
-                  <>
-                    <div className="taskdaystable">
-                      <div>
-                        <a href={"#"} className="linktable">
-                          {data.activity}
-                        </a>
-                      </div>
-                      <div>{data.subactivity}</div>
-                      <div>{data.dueby}</div>
-                      <div>{data.priority}</div>
-                      <div>{data.completed}</div>
-                      <div>{data.assignedby}</div>
-                    </div>
-                  </>
-                );
-              })}
-            </div>
-
-          </div>
-
-
-        </>
-        :
-        <>
-          <div className="overallContainer">
-            <div className="overallScroll">
-              <div className="tableHeader">
-                <div className="linkHeader"></div>
-                <div>Over All</div>
-              </div>
-              <div className="overallData">
-                <div className="overallMajorheading">
-                  <div className="firstheading">Completed on or before</div>
-                  <div className="secondheading">Completed on or before</div>
-                </div>
-                <div className="overallMajorheading">
-                  <div className="taskStage">
-                    <div>Task</div>
-                    <div>Stage</div>
+                <div className="taskdaysdatas">
+                  <div className="taskdaystableHeader">
+                    <div>Comment/Description</div>
+                    <div>Project Name</div>
+                    <div>Client</div>
+                    <div>Priority</div>
+                    <div>Due by</div>
+                    <div>% Completed</div>
                   </div>
-                  <div className="taskStages">
-                    <div>
-                      <div>Delayed less than 5 days</div>
-                      <div className="taskStage">
-                        <div>Task</div>
-                        <div>Stage</div>
-                      </div>
-                    </div>
-                    <div>
-                      <div>Delayed less than 5 days</div>
-                      <div className="taskStage">
-                        <div>Task</div>
-                        <div>Stage</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="overallMajordatas">
-                  <div className="taskStage">
-                    <div>24%</div>
-                    <div>10%</div>
-                  </div>
-                  <div className="taskStages">
-                    <div className="taskStage">
-                      <div>24%</div>
-                      <div>10%</div>
-                    </div>
-                    <div className="taskStage">
-                      <div>24%</div>
-                      <div>10%</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-          <div className="overallContainer">
-            <div className="overallScroll">
-              <div className="tableHeader">
-                <div className="linkHeader"></div>
-                <div>Project wise</div>
-              </div>
-              <div className="overallData">
-                <div className="projectwiseheading">
-                  <div >Project</div>
-                  <div className="firstheading">Completed on or before</div>
-                  <div className="secondheading">Completed on or before</div>
-                </div>
-                <div className="projectwiseheading">
-                  <div ></div>
-                  <div className="taskStage">
-                    <div>Task</div>
-                    <div>Stage</div>
-                  </div>
-                  <div className="taskStages">
-                    <div>
-                      <div>Delayed less than 5 days</div>
-                      <div className="taskStagefields">
-                        <div>Task</div>
-                        <div>Stage</div>
-                      </div>
-                    </div>
-                    <div>
-                      <div>Delayed less than 5 days</div>
-                      <div className="taskStagefields">
-                        <div>Task</div>
-                        <div>Stage</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div >
-                  {projectwise && projectwise.map((data) => {
+                  {calenderValues[0]?.Task?.length ? calenderValues[0]?.Task?.map((data) => {
                     return (
-                      <div className="projectwisedata">
-                        <div >{data.projects}</div>
-                        <div className="taskStage">
-                          <div>{data.task}</div>
-                          <div>{data.stage}</div>
+                      <>
+                        <div className="taskdaystable">
+                          <div>
+                            <Link to={{ pathname: `/Home/search/task/${data.task_id}` }}>{data.description || '-'}</Link>
+                          </div>
+                          <div>{data.project_name}</div>
+                          <div>{data.client}</div>
+                          <div>{data.priority}</div>
+                          <div>{moment(data.end_date).format('DD-MMM-YYYY')}</div>
+                          <div>{data.perecent_completion ? data.perecent_completion : "--"}</div>
                         </div>
-                        <div className="taskStages">
+                      </>
+                    );
+                  }) : "No Tasks Found"}
+                  { }
+                </div>
+              </div>
+
+
+            </section>
+            
+            <section className="sec-section" >
+              <div className="projectscroll-second" >
+                <div className="tableHeader">
+                  <div className="linkHeader"></div>
+                  <div>Tasks End Date</div>
+                </div>
+                <div className="taskdaysdatas">
+                  <div className="taskdaystableHeader">
+                    <div>Comment/Description</div>
+                    <div>Project Name</div>
+                    <div>Client</div>
+                    <div>Priority</div>
+                    <div>Due by</div>
+                    <div>% Completed</div>
+                  </div>
+                  {calenderValues[0]?.EndTask?.length ? calenderValues[0]?.EndTask?.map((data) => {
+                    return (
+                      <>
+                        <div className="taskdaystable">
                           <div>
-                            <div className="taskStagefields">
-                              <div>{data.task}</div>
-                              <div>{data.stage}</div>
-                            </div>
+                            <Link to={{ pathname: `/Home/search/task/${data.task_id}` }}>{data.description || '-'}</Link>
                           </div>
-                          <div>
-                            <div className="taskStagefields">
-                              <div>{data.task}</div>
-                              <div>{data.stage}</div>
-                            </div>
-                          </div>
+                          <div>{data.project_name}</div>
+                          <div>{data.client}</div>
+                          <div>{data.priority}</div>
+                          <div>{moment(data.end_date).format('DD-MMM-YYYY')}</div>
+                          <div>{data.perecent_completion ? data.perecent_completion : "--"}</div>
+                        </div>
+                      </>
+                    );
+                  }) : "No Tasks Found"}
+                  { }
+                </div>
+              </div>
+
+
+            </section>
+          </>
+          :
+          <>
+            <div className="overallContainer">
+              <div className="overallScroll">
+                <div className="tableHeader">
+                  <div className="linkHeader"></div>
+                  <div>Over All</div>
+                </div>
+                <div className="overallData">
+                  <div className="overallMajorheading">
+                    <div className="firstheading">Completed on or before</div>
+                    <div className="secondheading">Completed on or before</div>
+                  </div>
+                  <div className="overallMajorheading">
+                    <div className="taskStage">
+                      <div>Task</div>
+                      <div>Stage</div>
+                    </div>
+                    <div className="taskStages">
+                      <div>
+                        <div>Delayed less than 5 days</div>
+                        <div className="taskStage">
+                          <div>Task</div>
+                          <div>Stage</div>
                         </div>
                       </div>
-                    )
+                      <div>
+                        <div>Delayed less than 5 days</div>
+                        <div className="taskStage">
+                          <div>Task</div>
+                          <div>Stage</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="overallMajordatas">
+                    <div className="taskStage">
+                      <div>24%</div>
+                      <div>10%</div>
+                    </div>
+                    <div className="taskStages">
+                      <div className="taskStage">
+                        <div>24%</div>
+                        <div>10%</div>
+                      </div>
+                      <div className="taskStage">
+                        <div>24%</div>
+                        <div>10%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div className="overallContainer">
+              <div className="overallScroll">
+                <div className="tableHeader">
+                  <div className="linkHeader"></div>
+                  <div>Project wise</div>
+                </div>
+                <div className="overallData">
+                  <div className="projectwiseheading">
+                    <div >Project</div>
+                    <div className="firstheading">Completed on or before</div>
+                    <div className="secondheading">Completed on or before</div>
+                  </div>
+                  <div className="projectwiseheading">
+                    <div ></div>
+                    <div className="taskStage">
+                      <div>Task</div>
+                      <div>Stage</div>
+                    </div>
+                    <div className="taskStages">
+                      <div>
+                        <div>Delayed less than 5 days</div>
+                        <div className="taskStagefields">
+                          <div>Task</div>
+                          <div>Stage</div>
+                        </div>
+                      </div>
+                      <div>
+                        <div>Delayed less than 5 days</div>
+                        <div className="taskStagefields">
+                          <div>Task</div>
+                          <div>Stage</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div >
+                    {projectwise && projectwise.map((data) => {
+                      return (
+                        <div className="projectwisedata">
+                          <div >{data.projects}</div>
+                          <div className="taskStage">
+                            <div>{data.task}</div>
+                            <div>{data.stage}</div>
+                          </div>
+                          <div className="taskStages">
+                            <div>
+                              <div className="taskStagefields">
+                                <div>{data.task}</div>
+                                <div>{data.stage}</div>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="taskStagefields">
+                                <div>{data.task}</div>
+                                <div>{data.stage}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )
 
 
-                  })}
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </>}
+          </>
+
+      }
       {/* <div>
             <DynModel modelTitle="Adhoc Task" handleChangeModel={adhoc} handleChangeCloseModel={(bln) => setAdhoc(bln)} width={1000} 
             content={<AdhocTaskModal />} closeModel={()=>setAdhoc(false)}/>
         </div> */}
-    </div>
+    </div >
 
   );
 }
 
-export default DashboardNew;
+const mapStateToProps = (state) => (
+
+  {
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+  }
+);
+export default connect(mapStateToProps)(DashboardNew);

@@ -23,7 +23,7 @@ function MPAppraisal() {
     const [ModalOpen, setModalOpen] = useState(false)
     const [ModalTitle, setModalTitle] = useState()
     function callback(key) {
-        console.log(key);
+    
     }
     function toggleYesNo() {
         setYesNo(!changeYesNo)

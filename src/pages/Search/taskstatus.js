@@ -24,26 +24,30 @@ function TaskStatus(props) {
       useEffect(() => {
         
         
-        setSlideVal(props.rowData.perecent_completion)
+        setSlideVal(props.rowData.data.perecent_completion == null ? 0 : props.rowData.data.perecent_completion)
       }, [props.rowData
       ]);
 
       function handelSave(e,val ){
           var a =valToSave;
-        setSlideVal(val.status_id);
+        setSlideVal(a);
           var val ={
-            "task_id":props.rowData.task_id,
-            "tag_id":val.status_id
+            "task_id":props.rowData.data.task_id,
+            "percentage_completion":a
         }
     try {
         axios({
             method: 'PUT',
-            url: apiurl + 'update_task_tag',
+            url: apiurl + 'update_task_perecent_completion',
             data: val
         })
             .then(function (response) {
                 if (response.data.status === 1) {
-                    dispatch(getTaskList());
+                   // if(props.rowData.data.assignee_id==localStorage.getItem("empId"))
+
+                   // esle
+                    dispatch(getTaskList(props.rowData.data.assignee_id,"Active"));
+                    props.handleChangeCloseModel(false); 
                     notification.success({
                         message: ' Updated Successfully',
                     });
@@ -70,6 +74,7 @@ function TaskStatus(props) {
                     step={10}
                     valueLabelDisplay="auto"
                     onChange={range}
+                    value={sildeval?sildeval:0}
                 />
                 <div className="status_btn"><CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={handelSave} /></div>
             </div>

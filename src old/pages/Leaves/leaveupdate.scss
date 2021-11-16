@@ -1,0 +1,268 @@
+.leaveMainHeader{
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.leaveFields{
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.leavebuttons{
+    width: 20%;
+}
+
+.editImage{
+    width: 15px;
+}
+.leaveFieldheading{
+    margin-bottom: 5px;
+}
+
+// leave form
+
+.leavetableformat{
+    margin-top: 40px;
+}
+
+.reasonscmt .formdiv .brdrcls {
+    height: 80px;
+  }
+
+  .plusicon{
+    width: 23px;
+    padding-top: 8px;
+    cursor: pointer;
+}
+
+.uploadleave_form{
+    display: flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+    path{
+        fill:#023E7D;
+    }
+    div{
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        width:50%;
+        border: 1px solid #023E7D;
+        background-color: #fff;
+
+    }
+    // input[type="file"]{
+    //     display: none !important;
+    // }
+    .ant-upload-select {
+        border: 1px solid #023E7D !important;
+        background-color: #fff;
+        box-shadow: 0px 0px 4px 2px #b8b6b6;
+        border-radius: 5px !important;
+        padding-left:10px;
+        padding-right:10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:230px;
+    }
+    .upload_tag{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    div{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 2px;
+    }
+    
+}
+.upload_file_inside{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.examinfotable{
+    width: 70%;
+    text-align: center;
+    background-color: #F0F0F0;
+    border-radius: 10px;
+    padding: 10px;
+    height: 150px;
+    overflow: auto;
+    >div{
+        display: flex;
+    }
+    .examfieldSubject,.examfieldDate{
+        width: 40%;
+        font-weight: 600;
+        font-size: 15px;
+        padding-bottom: 10px;
+        border-bottom: rgb(201, 196, 196) 1px solid;
+    }
+    .examfieldEdit{
+        width: 20%;
+        padding-bottom: 10px;
+        border-bottom: rgb(201, 196, 196) 1px solid;
+    }
+}
+
+.examdate{
+    display: flex;
+    justify-content: space-around;
+    padding: 5px 0px;
+    .subvalue{
+        width: 40%;
+        text-align: left;
+        padding-left: 30px;
+    }
+    >img{
+        width: 20px;
+        cursor: pointer;
+    }
+    
+}
+
+// leave approval Model
+
+.leaveContainer{
+    margin: auto;
+}
+
+.leaveModelFields{
+    display: flex;
+    margin: 15px 0px;
+    >div{
+        width: 25%;
+    }
+   
+}
+
+
+.fielddataView{
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+
+.middleContent{
+    display: flex;
+    justify-content: space-around;
+    >div{
+        width: 50%;
+    }
+}
+
+
+
+.examInfobox{
+    text-align: center;
+}
+
+.subjectDetailsbox{
+    width: 80%;
+    background-color:  #F0F0F0;
+    border-radius: 7px;
+    padding: 8px;
+    margin: auto;
+}
+
+.subjectDetails{
+    width: 100%;
+    display: flex;
+    padding: 5px;
+    border-bottom: 1px solid rgb(192, 187, 187);
+    >div:first-child{
+        width: 60%;
+    }
+}
+
+.subjectDate{
+    width: 100%;
+    display: flex;
+    padding: 5px;
+    border-bottom: 1px solid rgb(192, 187, 187);
+    >div:first-child{
+        width: 60%;
+    }
+}
+.customBtndwn{
+    width: 200px;
+}
+
+.btnAlign{
+    margin-top: 15px;
+}
+
+//reject leave model
+
+.rejectLeaveReasonBox{
+    padding-top: 5px;
+    .reasonscmt{
+    padding-top: 5px;
+
+    }
+}
+
+
+// Search input design
+
+.searchbtnChange{
+    .ant-btn-primary {
+        color: #fff;
+        background-color: #023E7D;
+        border-color: #023E7D;
+    }
+    .ant-input-group .ant-input {
+       
+        border: 1px solid #023E7D;
+    }
+    .ant-btn-primary:active, .ant-btn-primary.active {
+        color: #fff;
+        background-color: #023E7D !important;
+        border-color: #023E7D;
+    }
+    .ant-input-search-enter-button + .ant-input-group-addon .ant-input-search-button, .ant-input-search-enter-button input + .ant-input-group-addon .ant-input-search-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        font-size: 21px;
+        padding: revert;
+        position: relative;
+        right: 1px;
+    }
+}
+.required_text{
+font-size: 12px;
+color:red
+}
+
+.required_box{
+    border: 1px solid red;
+    border-radius: 4px;
+}
+.image_box{
+    display: flex;
+    height: 44px;
+    align-items: center;
+    margin-left: -140px;
+    box-shadow: lavenderblush;
+    box-shadow: 0px 0px 4px 2px #b8b6b6;
+    border-radius: 5px !important;
+    width: 100%;
+    justify-content: space-evenly;
+    border: 2px solid #023E7D;
+    // background-color: #5a8dff;
+}
+.image_text {
+    display: flex;
+    align-items: center;
+    /* height: 21px; */
+    // width: 100%;
+    // justify-content: space-evenly;
+}
+

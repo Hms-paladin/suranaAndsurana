@@ -16,6 +16,11 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { apiurl } from "../../utils/baseUrl";
 import moment from 'moment';
 import { roundToNearestMinutes } from 'date-fns/esm';
+import { notification } from "antd";
+import {
+  getInterviewStatus
+} from "../../actions/MasterDropdowns";
+
 
 const headCells = [
   { id: "view", label: "View" },
@@ -44,6 +49,10 @@ function Hrsearch(props) {
   const [candidateViewModel, setCandidateViewModel] = useState(false)
   const [test, setTest] = useState(true)
   const [roundValue, setRoundValue] = useState()
+  const [goRights, setGoRights] = useState([])
+  const [interviewScheduleRights, setInterviewScheduleRights] = useState([])
+  const [statusId, setStatusId] = useState()
+
   const [HrSearch_Form, setHrSearchFrom] = useState({
     designation_id: {
       value: "0",
@@ -73,26 +82,34 @@ function Hrsearch(props) {
   const handleCheck = (event, resume_id, designation_id, round) => {
     setRoundValue(round)
 
-    if (selectedCandidateId.includes(resume_id)) {
-      selectedCandidateId.map((data, index) => {
-        if (data === resume_id) {
-          selectedCandidateId.splice(index, 1);
-        }
-      })
-
-    } else {
-      selectedCandidateId.push(resume_id)
+    if (event.target.checked === true) {
+      setSelectedCandidateId([resume_id])
       setDeignationID(designation_id)
+    } else {
+      setSelectedCandidateId([])
+      setDeignationID()
     }
+    // if (selectedCandidateId.includes(resume_id)) {
+    //   selectedCandidateId.map((data, index) => {
+    //     if (data === resume_id) {
+    //       selectedCandidateId.splice(index, 1);
+    //     }
+    //   })
+
+    // } else {
+    //   selectedCandidateId.push(resume_id)
+    //   setDeignationID(designation_id)
+    // }
 
     setCheckedList(
       prevState => ({
-        ...prevState,
+        // ...prevState,
         [event.target.name]: !checkList[event.target.name],
       })
     )
     setTest(!test)
   }
+
   const viewCandidate = (id) => {
     setViewId(id)
     setCandidateViewModel(true)
@@ -112,7 +129,6 @@ function Hrsearch(props) {
         })
       )
       setroundDropdownValues({ hr_round })
-      console.log(roundDropdownValues.hr_round, "hr_round")
     })
     Axios({
       method: "GET",
@@ -124,52 +140,50 @@ function Hrsearch(props) {
 
       setdesignationdata({ Designation })
 
-      Axios({
-        method: "get",
-        url: apiurl + "get_Interview_Status",
-      }).then((response) => {
-        let interview_status = [];
-        response.data.data.map((data, index) =>
-          interview_status.push({ value: data.status, id: data.status_id })
-        );
-        setinterviewStatus({ interview_status });
-      });
-
     }, [dispatch])
 
   }, [])
+
   useEffect(() => {
     let multipleTable = []
-    console.log(props.GetRowData,"GetRowData")
     props.GetRowData.map((data) => {
       let rowDataList = []
+      if (data.result.length > 0) {
+        data.result.length > 0 && data.result.map((data, index) => {
 
-      data.result.map((data, index) => {
-
-        rowDataList.push({
-          view: <img
-            src={Eyes}
-            className="viewCandidatesList"
-            onClick={() => viewCandidate(data.resume_id)}
-          />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
-          basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: moment(data.interviewed_date).format('DD-MM-YYYY'),
-          score: data.score, round: data.round, result: data.status,
-          box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id, data.designation_id, data.round)} name={"checked" + data.resume_id}
-            checked={checkList["checked" + data.resume_id]} value={checkList["checked" + data.resume_id]} />
+          rowDataList.push({
+            view: <img
+              src={Eyes}
+              className="viewCandidatesList"
+              onClick={() => viewCandidate(data.resume_id)}
+            />, name: data.name, age: data.age, gender: data.gender === "M" ? "Male" : "Female",
+            basic: data.basic_qualifciation, interviewedby: data.interviewed_by, interviewed_date: moment(data.interviewed_date).format('DD-MM-YYYY'),
+            score: data.score, round: data.round, result: data.status,
+            box: <Checkbox onClick={(event) => handleCheck(event, data.resume_id, data.designation_id, data.round)} name={"checked" + data.resume_id + data.designation_id}
+              checked={checkList["checked" + data.resume_id + data.designation_id]} value={checkList["checked" + data.resume_id]} />
+          })
         })
-      })
-      multipleTable.push(
-        <EnhancedTable
-          headCells={headCells}
-          rows={rowDataList}
-          tabletitle={data.designation}
-        />
-      )
+        multipleTable.push(
+          <EnhancedTable
+            headCells={headCells}
+            rows={rowDataList}
+            tabletitle={data.designation}
+          />
+        )
+      }
     })
     setMultipleTable(multipleTable)
 
   }, [props.GetRowData, test])
+
+
   function checkValidation(data, key) {
+
+    if (key == "round") {
+      dispatch(getInterviewStatus(data))
+      setStatusId(true)
+    }
+
 
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -224,11 +238,50 @@ function Hrsearch(props) {
       ...prevState,
     }));
   };
-  console.log(roundValue, "rowDataList")
 
+  ///*****user permission**********/
+
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "HR - Go" == val.control
+        )
+      })
+      setGoRights(data_res_id)
+
+      data_res_id = props.UserPermission.find((val) => {
+        return (
+          "HR - Schedule Interview" == val.control
+        )
+      })
+      setInterviewScheduleRights(data_res_id)
+    }
+
+  }, [props.UserPermission]);
+
+  //For page render dropdowns
+  useEffect(() => {
+    let statusList = []
+    props.getInterviewStatus.map((data) => {
+      statusList.push({ id: data.status_id, value: data.status })
+    })
+    setinterviewStatus({ statusList })
+  }, [props.getInterviewStatus])
+
+
+  function rightsNotification() {
+    notification.success({
+      message: "You are not Authorized. Please Contact Administrator",
+    });
+  }
+  /////////////
 
   return (
-    <div className="hrContainer">
+
+    < div className="hrContainer" >
+
+
       <div className="hrHeader">
         <Grid item xs={12} container direction="row" spacing={1}>
           <Grid item xs={3}>
@@ -250,17 +303,19 @@ function Hrsearch(props) {
               value={HrSearch_Form.round.value}
             />
           </Grid>
+          <>
+            {statusId && <Grid item xs={3}>
+              <Labelbox
+                type="select"
+                placeholder="Status"
+                dropdown={interviewStatus.statusList}
+                changeData={(data) => checkValidation(data, "status_id")}
+                value={HrSearch_Form.status_id.value}
+              />
+            </Grid>}
+          </>
           <Grid item xs={3}>
-            <Labelbox
-              type="select"
-              placeholder="Status"
-              dropdown={interviewStatus.interview_status}
-              changeData={(data) => checkValidation(data, "status_id")}
-              value={HrSearch_Form.status_id.value}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" onBtnClick={onSearch} />
+            <CustomButton btnName={"Go"} btnCustomColor="customPrimary" btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
           </Grid>
         </Grid>
       </div>
@@ -270,8 +325,9 @@ function Hrsearch(props) {
           btnName={"Schedule Interview"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
+          btnDisable={selectedCandidateId.length <= 0 || !interviewScheduleRights || interviewScheduleRights.display_control && interviewScheduleRights.display_control === 'N' ? true : false}
           onBtnClick={() => scheduleInterview()}
-          btnDisable={selectedCandidateId.length <= 0}
+
         />
         <DynModel
           modelTitle={"Interview Details"}
@@ -293,16 +349,16 @@ function Hrsearch(props) {
         handleChangeCloseModel={(bln) => setCandidateViewModel(bln)}
         res_data_id={viewId}
       />
-    </div>
+    </div >
   );
 }
 
 
 const mapStateToProps = state => (
   {
-    // console.log("state",state)
-
-    GetRowData: state.HrSearchRowData
+    GetRowData: state.HrSearchRowData,
+    UserPermission: state.UserPermissionReducer.getUserPermission,
+    getInterviewStatus: state.getOptions.getInterviewStatus || [],
   }
 )
 

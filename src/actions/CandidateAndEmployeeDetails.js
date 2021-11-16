@@ -15,7 +15,6 @@ export const GetCandiateDetails = (data) => async dispatch => {
         })
         .then((response) => {
             dispatch({type:GET_CANDIDATES_DETAILS,payload:response.data.data[0].result})
-        console.log("consolelog",response.data.data[0].result)
         })
         
     } catch (err) {
@@ -24,6 +23,7 @@ export const GetCandiateDetails = (data) => async dispatch => {
 }
 
 export const GetEmployeeDetails = (data) => async dispatch => {
+
     try {
         axios({
             method: "post",
@@ -33,7 +33,7 @@ export const GetEmployeeDetails = (data) => async dispatch => {
             },
             url: apiurl + "get_employee_by_id",
             data: {
-                "emp_id": data
+                "emp_id": data||0
             }
         })
         .then((response) => {

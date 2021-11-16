@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import EnhancedTable from "../../component/DynTable/table";
 import DynModel from "../../component/Model/model";
-import { getHrTaskList,getOtherTask } from "../../actions/TodoListAction";
+import { getHrTaskList, getOtherTask } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
-import { useParams, Link } from 'react-router-dom';
+import { Redirect, Link, useHistory } from "react-router-dom";
+
 
 
 // Model
@@ -17,13 +18,12 @@ import Employeeform from '../Employeeform/employeeform';
 import LeaveApproval from '../Leaves/leaveapprovalModel';
 import KPI from '../KPI/kpiModel';
 import KRI from '../KRA/kraModel';
-import Appraisal from '../Appraisal/appraisal';
-import AppraisalView from '../Appraisal/appraisalView';
-import MPAppraisal from '../Appraisal/MP_Appraisal'
+
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
-import ServeranceModal from '../Severance/serverance_userview_Modal'
 import "./todoList.scss"
+import { getTaskList } from "../../actions/projectTaskAction";
+import { getProjectTasks } from "../../actions/TodoListAction";
 
 // Hr Task:
 
@@ -31,7 +31,8 @@ const headCells = [
     { id: 'id', label: 'Task' },
     { id: 'interviewDate', label: 'Interview date' },
     { id: 'designation', label: 'Designation' },
-    { id: 'candidates', label: 'No. of Candidates' }
+    { id: 'candidates', label: 'No. of Candidates' },
+    { id: 'candidates', label: 'Department' }
 ];
 
 //Project Task:
@@ -56,8 +57,7 @@ const workflowheadCells = [
     { id: 'sub_activity', label: 'Sub Activity' },
     { id: 'startdate', label: 'Start Date' },
     { id: 'end_date', label: 'End Date' },
-    { id: 'no_hours', label: 'Number of Hours'},
-
+    { id: 'no_hours', label: 'No. of hours / No. of days' },
 
 ];
 
@@ -68,6 +68,7 @@ const workflowheadCells = [
 function TodoList(props) {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const [modelOpen, setModelOpen] = useState(false)
     const [stateClear, setStateClear] = useState(false)
     const [approveModalOpen, setApproveOpen] = useState(false)
@@ -84,9 +85,8 @@ function TodoList(props) {
     const [res_id, setres_id] = useState([])
     const [viewer_id, setviewer_id] = useState([])
     const [modelTitle, setModeltitle] = useState()
-    const [leaveModelTitle, setleaveModelTitle] = useState()
+    const [TaskModelTitle, setTaskModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
-    const [kraapprovemodel, setKraapprovemodel] = useState(false);
     // timesheet
     const [TimeSheet_Approval, setTimeSheet_Approval] = useState(false)
     // recruitment
@@ -95,16 +95,35 @@ function TodoList(props) {
     const [editTickettemplate, setEditTickettemplate] = useState(false);
     const [ticket_id, setTicket_id] = useState();
     // leave approval
-    const [LeaveId,setLeaveId]=useState([])
+    const [LeaveId, setLeaveId] = useState([])
+    const [severanceId, setseveranceId] = useState([])
 
+    // KRA Approval
+    const [kraapprovemodel, setKraapprovemodel] = useState(false)
+    const [kraApprove, setKraApprove] = useState([])
+
+    // KPI APPROVAL
+    const [KpiApproval, setKpiApproval] = useState("")
+    const [kraempname, setKraempname] = useState()
+
+    // Appraisal
+
+    const [appraisalModel, setAppraisalModel] = useState(false)
+    const [appraisalData, setAppraisalData] = useState()
 
 
     //serverance
     const [serverancemodal, setserverancemodal] = useState(false)
 
+    const [unblockUser, setUnblockUser] = useState([])
+    const [timesheetID, setTimesheetID] = useState()
+
+    let empid = localStorage.getItem("empId");
     useEffect(() => {
+        dispatch(getTaskList(empid));
         dispatch(getHrTaskList())
         dispatch(getOtherTask())
+        dispatch(getProjectTasks())
     }, [])
 
     // let { rowId } = useParams(false)
@@ -142,111 +161,106 @@ function TodoList(props) {
                 showId = data.ticket_id
                 showName = "Recruitment Request"
             }
+            else if (data.kra_id) {
+                showId = data.kra_id
+                showName = "KRA Approval"
+            }
+
             else {
                 showName = ""
             }
             hrList.push({
-                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task}</div>,
+                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task_name ? data.task_name : data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
-                designation: data.designation, candidates: data.no_of_candidates
+                designation: data.designation,
+                candidates: data.no_of_candidates,
+                department: data.department,
+            },
+            )
+        })
+
+        setHrTodoList(hrList)
+
+        if (props.getHrTodoList.assigned_by !== props.getHrTodoList.assignee_id) {
+        }
+
+
+    }, [props.getHrTodoList])
+
+    useEffect(() => {
+        let projectTask = []
+
+        props.getProjectTasks.length > 0 && props.getProjectTasks.map((data) => {
+            let showId = null
+            let showName = null
+
+            projectTask.push({
+                id: <div onClick={(id, name) => ProjectTaskFunction(data.task, data.task_id, data)} className="tempClass" >{data.task ? data.task : data.task}</div>,
+                activity: data.activity,
+                sub_activity: data.sub_activity,
+                case: '',
+                start_date: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
+                end_date: data.end_date ? moment(data.end_date).format('DD-MMM-YYYY') : null,
             },
             )
 
 
 
         })
-
-        setHrTodoList(hrList)
-
-        if (props.getHrTodoList.assigned_by !== props.getHrTodoList.assignee_id) {
-            alert("test")
-        }
-
-
-    }, [props.getHrTodoList])
-  
-    useEffect(() => {
-        let projectTask = []
-
-        // projectTask.push({
-        //     id: <div className="ProjectTaskId" onClick={unblockUser}>Unblock User</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
-        // },
-        //     {
-        //         id: <div className="ProjectTaskId" onClick={() => setTimeSheet_Approval(true)}
-        //         >Time Sheet Approval</div>, activity: "Activity1", subactivity: "Sub activity1", case: "Case1", startdate: "11-Jan-2021", enddate: "12-Jan-2021"
-        //     },
-        // )
-
         setProjectTodoList(projectTask)
 
         //Other Task
         let otherTask = []
-        
-        props.getOtherTask.map((data)=>{
-            let showId=null
-            let showName=null
-            if(data.emp_leave_id){
-               showId=data.emp_leave_id
-               showName="Leave Approval"
+
+        props.getOtherTask.map((data) => {
+            let showId = null
+            let showName = null
+            if (data.emp_leave_id) {
+                showId = data.emp_leave_id
+                showName = "Leave Approval"
             }
-            else if(data.user_id){
-               showId=data.user_id
-               showName="Unblock User"
+            else if (data.user_id) {
+                showId = data.user_id
+                showName = "Unblock User"
             }
-            else{
-                showName="Timesheet Approval"
+            else if (data.ts_approver_id) {
+                showName = "Timesheet Approval"
+                showId = data.ts_approver_id
             }
-        
+            else if (data.severece_id) {
+                showName = "Severance"
+                showId = data.severece_id
+            }
+            else if (data.kra_id) {
+                showId = data.kra_id
+                showName = "KRA Approval"
+            }
+            else if (data.emp_appr_id) {
+                showId = data.emp_appr_id
+                showName = "Employee Appraisal"
+            }
+            else if (data.kpi_id) {
+                showId = data.kpi_id
+                showName = "KPI Approval"
+            }
+
             otherTask.push({
-                task:<div onClick={() => OtherTaskFunction( showName,showId,data)} className="ProjectTaskId">{data.task}</div>,
-                empname:data.employee,
-                activity:data.activity,
-                sub_activity:data.sub_activity,
-                startdate:data.start_date,
-                enddate:data.end_date,
-                no_hours:data.num_of_hrs,
+                task: <div onClick={() => OtherTaskFunction(showName, showId, data)} className="ProjectTaskId">{data.task_name ? data.task_name : data.task}</div>,
+                empname: data.employee,
+                activity: data.activity,
+                sub_activity: data.sub_activity,
+                startdate: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
+                enddate: data.end_date && data.end_date != "0000-00-00" ? moment(data.end_date).format('DD-MMM-YYYY') : null,
+                no_hours: data.num_of_hrs === "0" ? data.num_of_day : data.num_of_hrs,
 
             })
-         })
-        otherTask.push({
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Resignation Approval")}
-            >Resignation Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("HR Noc")}
-            >HR Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("IT Noc")}
-            >IT Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Admin Noc")}
-            >Admin Noc</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => resignationApproveval("Final Relieving")}
-            >Final Relieving</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-         {
-            id: <div className="ProjectTaskId" onClick={() => setKraapprovemodel(true)}
-            >KRA Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <div className="ProjectTaskId" onClick={() => setKpiapprovemodel(true)}
-            >KPI Approval</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        }, {
-            id: <Link to={`/appraisal/${1}`}><div className="ProjectTaskId">Appraiser Supervisor </div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-        {
-            id: <Link to={'appraisalView'}><div className="ProjectTaskId">Appraisal View</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-        // {
-        //     id: <div className="ProjectTaskId" onClick={() => setserverancemodal(true)}>ServeranceUserView</div>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        // },
-        {
-            id: <Link to={'MP_Appraisal'}><div className="ProjectTaskId">MP Appraisal</div></Link>, requestedby: "Activity1", requestedon: "Sub activity1", approvedby: "Case1", startdateon: "11-Jan-2021"
-        },
-        )
-
+        })
         setOtherTodoList(otherTask)
+        // setOtherTodoList((prevState) => ({
+        //     ...prevState,
+        // }));
 
-    }, [props.getOtherTask])
+    }, [props.getOtherTask, props.getProjectTasks])
 
 
     function openModelFunc(name, id) {
@@ -280,7 +294,6 @@ function TodoList(props) {
         else if (name === "int_status_id") {
             setEmployeeFormOpen(true)
             let checkData = props.getHrTodoList.find((val) => {
-                // console.log(val,"valval")
                 return (
                     id == val.int_status_id
                 )
@@ -298,41 +311,80 @@ function TodoList(props) {
             })
             setRecruitmentData(checkData)
             setTicket_id(id)
-            console.log(checkData, "props.getHrTodoList")
+        }
+    }
 
+    function ProjectTaskFunction(name, id, data) {
 
+        if (data.checklist_id && data.checklist_id !== 0) {
+            history.push(`/Home/search/task/${data.task_id}`);
+        } else if (name === "Timesheet Approval") {
+            setTimesheetID(id)
+            setTimeSheet_Approval(true)
 
         }
-
     }
-   
-    function OtherTaskFunction(name,id,data){
-      setleaveModelTitle(data.task)
-      if(name === "Leave Approval"){  
-        setLeaveApproval(true)
-        let leavedata = props.getOtherTask.find((val) => {
-            return id === val.emp_leave_id
-        })
-        setLeaveId(leavedata)
-      }
-      else if(name === "Unblock User"){  
-        setUnblockuserActive(true)
-        let leavedata = props.getOtherTask.find((val) => {
-            return id === val.emp_leave_id
-        })
-        setLeaveId(leavedata)
-      }
-      else if(name === "Timesheet Approval"){  
-          setTimeSheet_Approval(true)
-        
-      }
+    function OtherTaskFunction(name, id, data) {
+        setTaskModelTitle(data.task)
+        if (name === "Leave Approval") {
+            setLeaveApproval(true)
+            let leavedata = props.getOtherTask.find((val) => {
+                return id === val.emp_leave_id
+            })
+            setLeaveId(leavedata)
+        }
+        else if (name === "Unblock User") {
+            setUnblockUser(data)
+            setUnblockuserActive(true)
 
+        }
+        else if (name === "Timesheet Approval") {
+            setTimesheetID(id)
+            setTimeSheet_Approval(true)
+
+        }
+        else if (name === "Severance") {
+            setResignationApprove(true)
+            let Sevevarncedata = props.getOtherTask.find((val) => {
+                return id === val.severece_id
+            })
+            setseveranceId(Sevevarncedata)
+        }
+        else if (name === "KRA Approval") {
+            setKraapprovemodel(true)
+            let checkData = props.getOtherTask.find((val) => {
+                return (
+                    id == val.kra_id
+                )
+            })
+            setKraApprove(checkData.kra_id)
+            setKraempname(checkData.employee)
+        }
+        else if (name === "Employee Appraisal") {
+            setAppraisalModel(true)
+            let Appraisaldata = props.getOtherTask.find((val) => {
+                return id === val.emp_appr_id
+
+            })
+            // setAppraisalData(Appraisaldata.task === "Employee Appraisal" ? 1 : null)
+            setAppraisalData(Appraisaldata)
+
+        }
+        else if (name === "KPI Approval") {
+            setKpiapprovemodel(true)
+            let Kpi = props.getOtherTask.find((val) => {
+                return (
+                    id == val.kpi_id
+                )
+            })
+            setKpiApproval(Kpi)
+        }
     }
 
     // unblockUsers ==>
-    function unblockUser() {
-        setUnblockuserActive(true)
-    }
+    // function unblockUser() {
+    //     setUnblockuserActive(true)
+    // }
 
     // resignationApproveval
 
@@ -343,10 +395,8 @@ function TodoList(props) {
 
     const leaveApprovalModel = (val) => {
         setLeaveApproval(true)
-        setleaveModelTitle(val)
+        // setleaveModelTitle(val)
     }
-
-
 
     const onNewPageClear = (bln) => {
         setStateClear(!stateClear);
@@ -355,7 +405,6 @@ function TodoList(props) {
         setApproveOpen(bln);
 
     }
-    //appraisalSupervisor
 
     return (
         <div>
@@ -365,7 +414,7 @@ function TodoList(props) {
                 <EnhancedTable headCells={headCells} rows={hrTodoList} tabletitle={"HR Task"} />
                 {/*InrerviewScreen after  Schedule     */}
                 <DynModel modelTitle={"Interview"} handleChangeModel={inerviewScreen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1000} content={<InerviewScreen interviewer_id={can_int_id}
-                    handleAproverModelClose={(bln) => onNewPageClear(bln)} stateClear={stateClear}  />} />
+                    handleAproverModelClose={(bln) => onNewPageClear(bln)} stateClear={stateClear} />} />
 
                 {/*EmployeeForm after  selected in interview approve     */}
                 <DynModel modelTitle={"Employee Form"} handleChangeModel={EmployeeFormOpen} handleChangeCloseModel={(bln) => onNewPageClear(bln)} width={1100}
@@ -388,27 +437,31 @@ function TodoList(props) {
             {/* __________________________________________________________________________ */}
             <div>
                 <EnhancedTable headCells={projectheadCells} rows={projectTodoList} tabletitle={"Project Task"} />
-                <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
+                <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive unblock_user_data={unblockUser} closemodal={(bln) => setUnblockuserActive(bln)} />} />
 
-                <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
+                <DynModel modelTitle={"TimeSheet"} handleChangeModel={TimeSheet_Approval} handleChangeCloseModel={(bln) => setTimeSheet_Approval(bln)} width={1100} content={<TimeSheetApproval timesheet_data={timesheetID} closemodal={(bln) => setTimeSheet_Approval(bln)} />} />
+                {/* severance */}
+                <DynModel modelTitle={TaskModelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval TaskModelTitle={TaskModelTitle} closemodal={(bln) => setResignationApprove(bln)} severanceId={severanceId} />} />
+
             </div>
             <div>
                 <EnhancedTable headCells={workflowheadCells} rows={otherTodoList} tabletitle={"Other Task"} />
 
-                <DynModel modelTitle={modelTitle} handleChangeModel={resignationApprove} handleChangeCloseModel={(bln) => setResignationApprove(bln)} width={700} content={<ResignationApproveval modelTitles={modelTitle} closemodal={(bln) => setResignationApprove(bln)} />} />
 
-                <DynModel modelTitle={"Leave Approval"} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={800} content={<LeaveApproval modelTitles={leaveModelTitle} LeaveData={LeaveId} closemodal={(bln) => setLeaveApproval(bln)} />} />
+                <DynModel modelTitle={"Leave Approval"} handleChangeModel={leaveApproval} handleChangeCloseModel={(bln) => setLeaveApproval(bln)} width={800} content={<LeaveApproval LeaveData={LeaveId} closemodal={(bln) => setLeaveApproval(bln)} />} />
 
-                <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} />
-
-
-                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} />} />
-
-                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} />} />
+                {/* <DynModel modelTitle={"Unblock User"} handleChangeModel={unblockuserActive} handleChangeCloseModel={(bln) => setUnblockuserActive(bln)} content={<UnblockUserActive closemodal={(bln) => setUnblockuserActive(bln)} />} /> */}
 
 
+                <DynModel modelTitle={"KRA Approval"} handleChangeModel={kraapprovemodel} handleChangeCloseModel={(bln) => setKraapprovemodel(bln)} width={800} content={<KRI closemodal={(bln) => setKraapprovemodel(bln)} kraApproveid={kraApprove} kraempname={kraempname} />} />
 
+                <DynModel modelTitle={"KPI Approval"} handleChangeModel={kpiapprovemodel} handleChangeCloseModel={(bln) => setKpiapprovemodel(bln)} width={800} content={<KPI closemodal={(bln) => setKpiapprovemodel(bln)} KpiId={KpiApproval} />} />
+                {/* {appraisalModel && <Redirect push to={`/Home/appraisal/${appraisalData}`} */}
 
+                {appraisalModel && <Redirect push to={{
+                    pathname: "/Home/appraisal/",
+                    state: { appraisalData }
+                }} />}
 
             </div>
 
@@ -421,11 +474,10 @@ function TodoList(props) {
 const mapStateToProps = state => (
     {
         getHrTodoList: state.getHrTodoList.getHrToDoListTableData || [],
-        getOtherTask:state.getHrTodoList.getOtherTask||[]
+        getOtherTask: state.getHrTodoList.getOtherTask || [],
+        getTaskLists: state.projectTasksReducer.getTaskLists,
+        getProjectTasks: state.getHrTodoList.getProjectTasks,
     }
 )
 
 export default connect(mapStateToProps)(TodoList);
-
-
-

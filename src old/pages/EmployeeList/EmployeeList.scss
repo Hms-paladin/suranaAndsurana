@@ -1,0 +1,23 @@
+.emp_btn_css{
+    height:28px;
+    margin-bottom: 12px !important;
+   
+}
+.link_tag{
+    text-decoration: underline;
+}
+.emp_master_h{
+    font-size: 17px;
+    font-weight: bold;
+    padding-left: 5px;
+}
+.emp_grid_cont{
+    margin-top: 10px !important;
+
+}
+.emp_item_grid:nth-child(1){
+    padding-left: 0px !important;
+}
+.emp_grid_cont .formdiv .selectbox .ant-select-selection--single{
+    border: 0px !important;
+}

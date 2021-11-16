@@ -1,3 +1,7 @@
+svg.MuiSvgIcon-root{
+  cursor: pointer;
+}
+
 .Container {
   width: 100%;
   display: flex;
@@ -68,14 +72,38 @@
   padding-bottom: 0px;
 }
 
-.educationKeyValue,
+.educationKeyValue{
+  display: flex;
+  >div{
+    // display: flex;
+    // margin: 2px;
+    >div{
+      display: flex;
+      margin: 2px;
+      >div{
+        white-space: nowrap;
+      }
+      .qualheading{
+        width: 55%;
+        
+      }
+
+      .qualdata{
+        margin-left: 20px;
+      }
+
+    }
+  }
+  
+}
+
 .experienceKeyValue {
   display: flex;
   width: 100%;
   margin-top: 20px;
 }
 
-.educationKeyValue:first-child,
+
 .experienceKeyValue:first-child {
   margin-top: 5px !important;
 }
@@ -90,6 +118,14 @@
 .experienceValue {
   color: #333232;
   width: 50%;
+  white-space: nowrap;
+
+}
+
+.companyname{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // Resume Educational Model scss ==>
@@ -113,6 +149,7 @@
 .spaceBtGrid {
   display: flex;
   justify-content: space-between;
+  // height:38px;
   .MuiGrid-grid-xs-6 {
     max-width: 48% !important;
   }
@@ -121,4 +158,10 @@
 .errmsgClrResume{
   color: red;
   font-size: 13px;
+}
+
+.education_edit_delete{
+  display: flex;
+  justify-content: flex-end;
+  width: 35%;
 }

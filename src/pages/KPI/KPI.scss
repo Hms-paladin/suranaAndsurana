@@ -10,11 +10,19 @@
 
 .kpi_table {
     background-color: #F3F3F3;
+    // padding-bottom: 10px;
+}
+.kpi_table_custom{
+    background-color: #F3F3F3;
+    margin-top: 35px;  
 }
 .kpi_sub{
     height: 85px;
 }
-
+.save_ic{
+    fill:blue !important;
+    margin-left: 33px;
+}
 .kpi_btn {
     height: 65px;
     align-items: center;
@@ -35,4 +43,28 @@
 .title_label {
     text-align: initial;
     padding-left: 15px;
+}
+.KRAhead{padding-bottom: 5px;}
+.period{padding-bottom: 5px;}
+.kra_table{
+    >.MuiTableBody-root >tr >td:nth-child(3){
+        width: 25% !important;
+        padding-right: 40px !important;
+    }
+}
+.nodata_found_div{
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:200px;
+}
+.spaceBtnGrid{
+  height:38px;
+}
+.datepicker_kpidiv{
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 20px 10px;
+    margin-bottom: 20px;
 }

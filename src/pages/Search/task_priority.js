@@ -8,6 +8,7 @@ import { connect, useDispatch } from "react-redux";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from "antd";
+import { getTaskList } from "../../actions/projectTaskAction";
 function TaskPriority(props) {
     const [priorityList, setpriorityList] = useState({})
     const [value, setValue] = useState('')
@@ -15,6 +16,7 @@ function TaskPriority(props) {
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+    //var params = props.rowData;
     useEffect(() => {
         dispatch(getPriorityList());
     
@@ -30,7 +32,7 @@ function TaskPriority(props) {
           })
         )
         setpriorityList({ priorityTypeData })
-        setValue(props.rowData.priority_id)
+        setValue(props.rowData.data.priority_id)
     
     
       }, [props.prioritysList,props.rowData
@@ -38,7 +40,7 @@ function TaskPriority(props) {
   function handelCheck(e,val ){
     setValue(val.status_id);
     var val ={
-      "task_id":props.rowData.task_id,
+      "task_id":props.rowData.data.task_id,
       "priority_id":val.status_id
   }
 try {
@@ -49,6 +51,7 @@ try {
   })
       .then(function (response) {
           if (response.data.status === 1) {
+            dispatch(getTaskList(localStorage.getItem("empId")));
               notification.success({
                   message: ' Updated Successfully',
               });
@@ -72,7 +75,7 @@ try {
                 //<RadioGroup aria-label="task" name="task_pri" value={value} onChange={handleChange}>
                      <RadioGroup aria-label="task" name="task_pri" value={value} >
                     <FormControlLabel value={data.status_id} 
-                    onClick={(event) => handelCheck(event,data)}
+                    onChange={(event) => handelCheck(event,data)}
                     control={<Radio />} label={data.status} style={{borderBottom:"1px solid #f5efef",width:"275px"}}/>
                     
                 </RadioGroup>
@@ -84,7 +87,7 @@ try {
     )
 }
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
   prioritysList: state.projectTasksReducer.prioritysList || [],
 });

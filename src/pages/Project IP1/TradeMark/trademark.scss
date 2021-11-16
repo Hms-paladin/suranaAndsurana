@@ -6,8 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    bottom: 10px;
+    padding-top: 6px;
 
     path {
         fill: #023e7d;
@@ -33,7 +32,7 @@
         justify-content: space-between;
         display: flex;
         align-items: center;
-        padding: 1px;
+        padding: 2px;
         margin-right: 8px;
         margin-left: 3px;
     }
@@ -42,6 +41,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+   
 }
 
 // trade Mark Application International Filed =>>
@@ -92,10 +92,10 @@
 }
 
 .uploadbox_div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // position: relative;
 
     path {
         fill: #023e7d;
@@ -105,14 +105,15 @@
         background-color: #fff;
         box-shadow: 0px 0px 4px 2px #b8b6b6;
         border-radius: 5px !important;
-        padding-left: 10px;
+        // padding-left: 10px;
         padding-right: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 155px;
+        // width: 155px;
         position: relative;
-        left: 14px;
+        // left: 14px;
+        width:100%;
     }
     .uploadbox_tag {
         display: flex;
@@ -121,10 +122,26 @@
     }
     div {
         justify-content: space-between;
-        display: flex;
+        // display: flex;
         align-items: center;
         padding: 1px;
-        margin-right: 8px;
-        margin-left: 3px;
+        // margin-right: 8px;
+        // margin-left: 3px;
     }
+}
+.txtmark{
+    overflow:auto
+}
+
+.Tradeheadings{
+    font-weight: 600;
+    padding-left: 8px;
+}
+.upload{
+    // margin: 7px 20px 15px 7px;
+    background-color: white;
+    width: 180px !important;
+    border-radius: 8px;
+    border: 1px solid #023e7d;
+    padding: 2px;
 }

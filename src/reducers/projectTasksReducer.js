@@ -1,14 +1,15 @@
 import {
-    GET_ACTIVITY, GET_PRIORITY, GET_TAG, INSERT_TASK, INSERT_ADHOC_TASK,
-    GET_ASSIGN_TO, GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
-     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,GET_PROJECT_STAGES_LIST,GET_TASK_TIME_SHEET,
-     GET_TASK_LIST,GET_HEARING_DETS,GET_ADJOURN_DET,INSERT_ADJOURN,INSERT_HEARING
+    GET_ACTIVITY, GET_PRIORITY, GET_TAG, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
+    GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
+    GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES, GET_PROJECT_STAGES_LIST, GET_TASK_TIME_SHEET,
+    GET_TASK_LIST, GET_HEARING_DETS, GET_ADJOURN_DET, INSERT_ADJOURN, INSERT_HEARING, GET_ADJOURN_TAKEN_BY, GET_TASK_WEEK_MONTH
 } from '../utils/Constants.js'
 
 const intialState = {
-    getProjectStageList:[],getActivityList: [], prioritysList: [], tagsList: [], insertTask: [],getTaskLists :[],
-    insertAdhocTask: [], assignToLists: [], locationLists: [], stagesList: [], SubStagesList: [], getAllStage: [],
-    getTaskTimeSheet :[],getHearingDets :[],getAdjournDets :[],InsertHearingDets:[],InsertAdjournDets :[]
+    getProjectStageList: [], getActivityList: [], prioritysList: [], tagsList: [], insertTask: [], getTaskLists: [],
+    insertAdhocTask: [], locationLists: [], stagesList: [], SubStagesList: [], getAllStage: [],
+    getTaskTimeSheet: [], getHearingDets: [], getAdjournDets: [], InsertHearingDets: [], InsertAdjournDets: [], getTaskTimeSheetbyTaskId: [],
+    backLog: [], getAdjournTakenBy: [], getTaskWeekMonth: []
 }
 
 export default function (state = intialState, action) {
@@ -22,14 +23,14 @@ export default function (state = intialState, action) {
             return { ...state, prioritysList: payload }
         case INSERT_TASK:
             return { ...state, insertTask: payload }
+        case INSERT_BACK_LOG:
+            return { backLog: payload }
         case INSERT_ADHOC_TASK:
             return { ...state, insertAdhocTask: payload }
-        case GET_ASSIGN_TO:
-            return { ...state, assignToLists: payload }
         case GET_LOCATION:
             return { ...state, locationLists: payload }
         case INSERT_TIME_SHEET:
-            return { ...state, insertTask: payload }
+            return { ...state, insertTimeSheetbyTime: payload }
         case GET_EXPENSE_TYPE:
             return { ...state, expenseType: payload }
         case GET_PAYMENT_MODE:
@@ -44,8 +45,10 @@ export default function (state = intialState, action) {
             return { ...state, getProjectStageList: payload }
         case GET_TASK_LIST:
             return { ...state, getTaskLists: payload }
+        case GET_TASK_WEEK_MONTH:
+            return { ...state, getTaskWeekMonth: payload }
         case GET_TASK_TIME_SHEET:
-            return { ...state, getTaskTimeSheet: payload } 
+            return { ...state, getTaskTimeSheet: payload }
         case GET_HEARING_DETS:
             return { ...state, getHearingDets: payload }
         case GET_ADJOURN_DET:
@@ -53,7 +56,11 @@ export default function (state = intialState, action) {
         case INSERT_ADJOURN:
             return { ...state, InsertHearingDets: payload }
         case INSERT_HEARING:
-            return { ...state, InsertAdjournDets: payload }   
+            return { ...state, InsertAdjournDets: payload }
+        case GET_TIMESHEET_BY_TASK:
+            return { ...state, getTaskTimeSheetbyTaskId: payload }
+        case GET_ADJOURN_TAKEN_BY:
+            return { ...state, getAdjournTakenBy: payload }
         default:
             return state;
     }

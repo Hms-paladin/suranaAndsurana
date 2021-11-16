@@ -13,7 +13,11 @@ import { InesertResume } from "../../actions/ResumeAction";
 import { getExpenseType, getPaymentMode, InsertOPE } from "../../actions/projectTaskAction";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
-import moment from 'moment'
+import moment from 'moment';
+import { notification } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+
+
 
 function OpeModel(props) {
     const [expenseLists, setexpenseLists] = useState({})
@@ -22,21 +26,8 @@ function OpeModel(props) {
     const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const [selectedFile, setselectedFile] = useState([]);
-    const fileUpload = {
-        name: 'file',
+    const [uploadList, setUploadFile] = useState(true)
 
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                setselectedFile(info.file.originFileObj);
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
     const [opeModel, setopeModel] = useState({
         expenseType: {
             value: "",
@@ -46,13 +37,13 @@ function OpeModel(props) {
         },
         amount: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "10" }, { "name": "allowNumaricOnly" }],
             error: null,
             errmsg: null,
         },
         description: {
             value: "",
-            validation: [{ "name": "required" },],
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -62,8 +53,13 @@ function OpeModel(props) {
             error: null,
             errmsg: null,
         },
-
-
+        bill: {
+            value: null,
+            error: null,
+            errmsg: null,
+            disabled: false,
+            view_file: null
+        },
 
     })
 
@@ -101,8 +97,6 @@ function OpeModel(props) {
         props.ProjectDetails, props.expenseList, props.paymentMode
     ]);
 
-    console.log(projectDetails, "props.ProjectDetails")
-
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(opeModel);
@@ -118,25 +112,46 @@ function OpeModel(props) {
         var filtererr = targetkeys.filter(
             (obj) => opeModel[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setopeModel({ error: true });
         } else {
             // setopeModel({ error: false });
-            let params = {
-                "project_id": idDetails.project_id,
-                "expence_type": opeModel.expenseType.value,
-                "mode_of_payment": opeModel.payment.value,
-                "amount": opeModel.amount.value,
-                "bill": selectedFile,
-                "description": opeModel.description.value,
-                "created_by": localStorage.getItem("empId"),
-                "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-                "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-                "updated_by": localStorage.getItem("empId"),
-            }
-            dispatch(InsertOPE(params)).then(() => {
+            // let params = {
+            //     "emp_id": localStorage.getItem("empId"),
+            //     "project_id": idDetails.project_id,
+            //     "expence_type": opeModel.expenseType.value,
+            //     "mode_of_payment": opeModel.payment.value,
+            //     "amount": opeModel.amount.value,
+            //     "bill": opeModel.bill.value,
+            //     "description": opeModel.description.value,
+            //     "created_by": localStorage.getItem("empId"),
+            //     "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+            //     "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
+            //     "updated_by": localStorage.getItem("empId"),
+            // }
+
+            let formData = new FormData();
+            formData.append("emp_id", localStorage.getItem("empId"))
+            formData.append("project_id", idDetails.project_id)
+            formData.append("expence_type", opeModel.expenseType.value)
+            formData.append("mode_of_payment", opeModel.payment.value)
+            formData.append("amount", opeModel.amount.value)
+            formData.append("bill", opeModel.bill.value || [])
+            formData.append("description", opeModel.description.value)
+            formData.append("ope_date", moment().format('YYYY-MM-DD'))
+            formData.append("created_by", localStorage.getItem("empId"))
+            formData.append("created_on", moment().format('YYYY-MM-DD HH:m:s'))
+            formData.append("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
+            formData.append("updated_by", localStorage.getItem("empId"))
+
+
+            dispatch(InsertOPE(formData)).then((response) => {
+
                 handleCancel()
+                props.handleChangeCloseModel()
+                setselectedFile([])
+
             })
         }
 
@@ -144,6 +159,26 @@ function OpeModel(props) {
             ...prevState
         }));
     };
+
+
+    const handleChange = (info, uploadName) => {
+        if (info.status !== 'error' && info.status !== "uploading") {
+
+            let fileList = [...info.fileList];
+
+            // fileList = fileList.slice(-1);
+
+            fileList = fileList.map(file => {
+                if (file.response) {
+                    file.url = file.response.url;
+                }
+                return file;
+            });
+            setselectedFile(fileList);
+
+        }
+    };
+
 
     const handleCancel = () => {
         let From_key = [
@@ -177,7 +212,7 @@ function OpeModel(props) {
 
         if (multipleId) {
             multipleId.map((item) => {
-                console.log(item, 'item')
+
                 for (let i = 0; i < data.length; i++) {
                     if (data[i] === item.value) {
                         multipleIdList.push(item.id)
@@ -196,7 +231,7 @@ function OpeModel(props) {
     };
     return (
         <div>
-            { projectDetails.length > 0 && projectDetails.map((data) => {
+            {projectDetails.length > 0 && projectDetails.map((data) => {
                 return (
                     <div className="opeHeader">
                         <div>{data.project_type} </div>
@@ -227,28 +262,67 @@ function OpeModel(props) {
                             error={opeModel.amount.error}
                             errmsg={opeModel.amount.errmsg} />
                     </Grid>
-                    <Grid item xs={6}>
-                        <Labelbox type="select"
-                            placeholder={" Mode of Payment"}
-                            dropdown={paymentMode.paymentmode}
-                            changeData={(data) => checkValidation(data, "payment")}
-                            value={opeModel.payment.value}
-                            error={opeModel.payment.error}
-                            errmsg={opeModel.payment.errmsg} />
-                    </Grid>
-                    <Grid item xs={5} className="opeHeader">
-
-                        <div>BILL</div>
-                        <Checkbox />
-                        <div className="uploadbox_div" >
+                    <Grid item xs={12}>
+                        <div className="billupload">
                             <div>
-                                <Upload {...fileUpload} className="uploadbox_tag"
-                                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
-
-                                    <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
-                                </Upload>
+                                <Labelbox type="select"
+                                    placeholder={" Mode of Payment"}
+                                    dropdown={paymentMode.paymentmode}
+                                    changeData={(data) => checkValidation(data, "payment")}
+                                    value={opeModel.payment.value}
+                                    error={opeModel.payment.error}
+                                    errmsg={opeModel.payment.errmsg} />
+                            </div>
+                            <div className="rightitems">
+                                <div>
+                                    <div id="bill">BILL</div>
+                                    {/* <Checkbox /> */}
+                                </div>
+                                <div className="uploadbtn" >
+                                    <Labelbox type="upload"
+                                        changeData={(data) => checkValidation(data, "bill")}
+                                        view_file={opeModel.bill.view_file}
+                                        remove_file={() => (setopeModel(prevState => ({
+                                            ...prevState,
+                                            bill: {
+                                                value: null, error: opeModel.bill.error, errmsg: opeModel.bill.errmsg, disabled: opeModel.bill.disabled, view_file: null
+                                            },
+                                        })))}
+                                        value={opeModel.bill.value}
+                                        error={opeModel.bill.error}
+                                        errmsg={opeModel.bill.errmsg}
+                                        disabled={opeModel.bill.disabled}
+                                    />
+                                </div>
                             </div>
                         </div>
+
+                        {/* <Grid item xs={6}>
+                            <Labelbox type="select"
+                                placeholder={" Mode of Payment"}
+                                dropdown={paymentMode.paymentmode}
+                                changeData={(data) => checkValidation(data, "payment")}
+                                value={opeModel.payment.value}
+                                error={opeModel.payment.error}
+                                errmsg={opeModel.payment.errmsg} />
+                        </Grid>
+                        <Grid item xs={6} className="opeHeader" direction="row">
+                            <div style={{ display: "flex" }}>
+                                <div>BILL</div>
+                                <Checkbox />
+                            </div>
+                            <div>
+                                <div className="uploadbox_div" >
+                                    <div>
+                                        <Upload {...fileUpload} className="uploadbox_tag"
+                                            action='https://www.mocky.io/v2/5cc8019d300000980a055e76' >
+
+                                            <div className="upload_file_inside"><label>Bill Upload</label><PublishIcon /></div>
+                                        </Upload>
+                                    </div>
+                                </div>
+                            </div>
+                        </Grid> */}
                     </Grid>
                 </Grid>
 
@@ -280,7 +354,7 @@ function OpeModel(props) {
 }
 
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
 
     expenseList: state.projectTasksReducer.expenseType || [],

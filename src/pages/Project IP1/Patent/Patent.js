@@ -26,7 +26,6 @@ export default function Patent(props) {
       )
    }
 
-   console.log(props, "props")
    return (
       <div>
          <Tabs  onChangeTabBox={(data) => projectTaskModel(data)} />

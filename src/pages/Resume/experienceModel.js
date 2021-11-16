@@ -10,14 +10,13 @@ import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import './resume.scss';
 import { getIndustry } from '../../actions/MasterDropdowns';
-
+import moment from "moment";
 
 function ExperienceModel(props) {
 
     const dispatch = useDispatch()
     const [city, setCity] = useState([])
     const [industryOptions, setIndustryOptions] = useState([])
-    const [rowchange, setRowchange] = useState([]);
     const [Experience_Form, setExperienceForm] = useState({
 
         industry: {
@@ -51,7 +50,7 @@ function ExperienceModel(props) {
             errmsg: null,
         },
         periodfrom: {
-            value: "",
+            value: '',
             validation: [{ "name": "required" },],
             error: null,
             errmsg: null,
@@ -64,53 +63,54 @@ function ExperienceModel(props) {
         },
         responsibilities: {
             value: "",
-            validation: [{ "name": "required" },{ "name": "custommaxLength", "params": "200"}],
+            validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
     })
 
     useEffect(() => {
-        const industry = props.editExperiences?.type_of_industry;
-        const compName = props.editExperiences?.company_name;
-        const city = props.editExperiences?.city;
-        const dept = props.editExperiences?.department;
-        const desig = props.editExperiences?.designation;
-        const periodFrm = props.editExperiences?.period_from;
-        const periodTo = props.editExperiences?.period_to;
-        const respons = props.editExperiences?.responsible;
-
-
-
-        Experience_Form.industry.value = industry;
-        Experience_Form.companyname.value = compName;
-        Experience_Form.city.value = city;
-        Experience_Form.department.value = dept;
-        Experience_Form.designation.value = desig;
-        Experience_Form.periodfrom.value = periodFrm;
-        Experience_Form.periodto.value = periodTo;
-        Experience_Form.responsibilities.value = respons;
-
-        setExperienceForm((prevState) => ({
-            ...prevState,
-        }));
-    }, [props.editExperiences, props.editExperienceid]);
-
-    //update experience details==>
-
-    function updateExperience() {
-        setRowchange(Experience_Form)
-        props.EditExperience(Experience_Form, props.editExperienceid);
-        handleCancel()
-        props.handleChangeCloseModel()
-    }
-
-
-    useEffect(() => {
         handleCancel()
     }, [props.nullFieldValueExp])
 
+    useEffect(() => {
 
+        if (props.editExperiences && props.editExperiences.length > 0) {
+
+            const industry = props.editExperiences[0]?.type_of_industry;
+            const compName = props.editExperiences[0]?.company_name;
+            const city = props.editExperiences[0]?.city_id;
+            const dept = props.editExperiences[0]?.department;
+            const desig = props.editExperiences[0]?.designation;
+            const periodFrm = props.editExperiences[0]?.period_from;
+            const periodTo = props.editExperiences[0]?.period_to;
+            const respons = props.editExperiences[0]?.responsible;
+
+            Experience_Form.industry.value = industry;
+            Experience_Form.companyname.value = compName;
+            Experience_Form.city.value = Number(city);
+            Experience_Form.department.value = dept;
+            Experience_Form.designation.value = desig;
+            Experience_Form.periodfrom.value = periodFrm;
+            Experience_Form.periodto.value = periodTo;
+            Experience_Form.responsibilities.value = respons;
+
+            setExperienceForm((prevState) => ({
+                ...prevState,
+            }));
+        }
+        // Experience_Form.companyname.value = "compName";
+    }, [props.editExperiences, props.editExperienceid]);
+
+
+    //     function updateExperience() {
+
+    //         props.EditExperience(Experience_Form, props.editExperienceid);
+    //         handleCancel()
+
+    //         props.handleChangeCloseModel()
+
+    // }
 
     useEffect(() => {
         Axios({
@@ -126,7 +126,8 @@ function ExperienceModel(props) {
 
     }, [])
 
-    function onSubmit() {
+
+    function onSubmit(data) {
         var mainvalue = {};
         var targetkeys = Object.keys(Experience_Form);
         for (var i in targetkeys) {
@@ -141,14 +142,19 @@ function ExperienceModel(props) {
         var filtererr = targetkeys.filter(
             (obj) => Experience_Form[obj].error == true
         );
-        console.log(filtererr.length);
+
         if (filtererr.length > 0) {
             // setExperienceForm({ error: true });
         } else {
             // setExperienceForm({ error: false });
 
-            props.addExperience(Experience_Form)
+            if (data === 'Save') {
+                props.addExperience(Experience_Form)
+            } else {
+                props.EditExperience(Experience_Form, props.editExperienceid);
+            }
             handleCancel()
+            props.handleChangeCloseModel && props.handleChangeCloseModel()
         }
 
         setExperienceForm(prevState => ({
@@ -167,6 +173,7 @@ function ExperienceModel(props) {
         setExperienceForm(prevState => ({
             ...prevState,
         }));
+
     }
 
     function checkValidation(data, key, multipleId) {
@@ -248,7 +255,8 @@ function ExperienceModel(props) {
                     value={Experience_Form.periodfrom.value}
                     error={Experience_Form.periodfrom.error}
                     errmsg={Experience_Form.periodfrom.errmsg}
-                    disableFuture={"false"} />
+                    disableFuture={"false"}
+                />
                 </Grid>
                 <Grid item xs={6}><Labelbox type="datepicker" placeholder="Period To"
                     changeData={(data) => checkValidation(data, "periodto")}
@@ -277,10 +285,10 @@ function ExperienceModel(props) {
                 <CustomButton
                     btnName={"Update"}
                     btnCustomColor="customPrimary"
-                    onBtnClick={updateExperience}
+                    onBtnClick={() => onSubmit('Update')}
                 />
             ) : (
-                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={onSubmit} />
+                <CustomButton btnName={"Save"} btnCustomColor="customPrimary" onBtnClick={() => onSubmit('Save')} />
             )}
 
         </div>

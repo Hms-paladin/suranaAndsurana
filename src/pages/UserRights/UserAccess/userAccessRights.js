@@ -21,7 +21,7 @@ import Dropdownantd from "./userAccessDropdown"
 import Green_checkBox from "../blueCheckBox";
 import { Spin, notification } from 'antd';
 import { apiurl } from "../../../utils/baseUrl.js";
-import {getUserPermission} from "../../../actions/UserAccessRightsAction";
+import { getUserPermission } from "../../../actions/UserAccessRightsAction";
 import "./userAccessRights.css"
 import { connect } from "react-redux";
 
@@ -43,11 +43,11 @@ function desc(a, b, orderBy) {
 }
 
 function stableSort(array, cmp) {
-  console.log("sort", array);
+
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = cmp(a[0], b[0]);
-    console.log("order", order);
+
     if (order !== 0) return order;
     return a[1] - b[1];
   });
@@ -194,7 +194,7 @@ class Useraccess_rights extends Component {
       conditionalrendering: false,
       loading: false,
       insideLoading: false,
-      onceopen:true,
+      onceopen: true,
     };
   }
 
@@ -209,7 +209,7 @@ class Useraccess_rights extends Component {
     this.setState({ view: false, DeleteView: false });
   };
   handleClickOpen = (t, title) => {
-    console.log("type", t, title)
+
     this.setState({
       type: t,
       title
@@ -249,12 +249,12 @@ class Useraccess_rights extends Component {
       rotateicon: !this.state.rotateicon
     })
   }
-  changeDynamic = (data, setname,useraccess) => {
-      this.setState({
-        user:data,
-        insideLoading:true
+  changeDynamic = (data, setname, useraccess) => {
+    this.setState({
+      user: data,
+      insideLoading: true
     })
-      this.recall_permission(null,data,useraccess)
+    this.recall_permission(null, data, useraccess)
   }
 
   componentDidMount() {
@@ -269,30 +269,28 @@ class Useraccess_rights extends Component {
         response.data.data.map((value) => {
           arrval.push({ dropdown_val: value.user_name, id: value.id })
         })
-        console.log(response.data.data[0].user_id, "response")
-        console.log(arrval, "arrval")
 
         self.setState({
           user: arrval[0].dropdown_val,
           user_arr: arrval,
-          responseid:response.data.data[0].user_id,
-          onceopen:true,
+          responseid: response.data.data[0].user_id,
+          onceopen: true,
         })
       })
       .catch(function (error) {
-        console.log(error, "error");
+
       });
 
   }
 
 
-  recall_permission = (showNotification,userid,useraccess) => {
-    userid=JSON.parse(localStorage.getItem("user_id"))
+  recall_permission = (showNotification, userid, useraccess) => {
+    userid = JSON.parse(localStorage.getItem("user_id"))
     function setobject(name) {
       return name
     }
 
-    var self=this
+    var self = this
 
     axios({
       method: 'post',
@@ -301,9 +299,9 @@ class Useraccess_rights extends Component {
         "user_id": userid
       }
     }).then(response => {
-      let local =  JSON.parse(localStorage.getItem("user_id"))
-      if(local === userid){
-      // this.props.dispatch(userAccessFunc(userid))
+      let local = JSON.parse(localStorage.getItem("user_id"))
+      if (local === userid) {
+        // this.props.dispatch(userAccessFunc(userid))
       }
 
       var stroe_table_arr = response.data.data.map((val, index) => {
@@ -366,13 +364,13 @@ class Useraccess_rights extends Component {
             for (let x = 0; x < subdata_ch_arr.length; x++) {
               sub_data_arr.push(...subdata_ch_arr[x].item)
             }
-            console.log(sub_data_arr, "sub_data_arr")
+
             var head_all_concat = []
             for (let y = 0; y < sub_data_arr.length; y++) {
               if (sub_data_arr[y].screen_name) {
                 head_all_concat.push(sub_data_arr[y].allow_view === "Y", sub_data_arr[y].allow_add === "Y", sub_data_arr[y].allow_edit === "Y", sub_data_arr[y].allow_delete === "Y", sub_data_arr[y].allow_print === "Y")
               } else if (sub_data_arr[y].item) {
-                console.log(sub_data_arr[y].item, "sub_data_arr[y].submodule_name")
+
                 for (let z = 0; z < sub_data_arr[y].item.length; z++) {
                   sub_data_arr[y].item[z] && inside_sub.push(sub_data_arr[y].item[z])
                 }
@@ -406,28 +404,28 @@ class Useraccess_rights extends Component {
               <Panel header={<div className="grp_expanse_firstdata ">
                 <div className="grp_firstdata_clr firstname_grpaccs module_name_top">{
                   val.module_name}</div>
-                <div>{<Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={val.item && head_all_concat.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,null, val.item && head_all_concat.every((val) => { return (val === true) }), "head_all", val.item[0].item) : null} />
+                <div>{<Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={val.item && head_all_concat.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, null, val.item && head_all_concat.every((val) => { return (val === true) }), "head_all", val.item[0].item) : null} />
                 }</div>
                 <div>{
-                  <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={val.item && head_view.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,null, val.item && head_view.every((val) => { return (val === true) }), "head_view", val.item[0].item) : null} />
+                  <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={val.item && head_view.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, null, val.item && head_view.every((val) => { return (val === true) }), "head_view", val.item[0].item) : null} />
                 }
                 </div>
                 <div>{
-                  <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={val.item && head_add.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,null, val.item && head_add.every((val) => { return (val === true) }), "head_add", val.item[0].item) : null} />
+                  <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={val.item && head_add.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, null, val.item && head_add.every((val) => { return (val === true) }), "head_add", val.item[0].item) : null} />
                 }
                 </div>
                 <div>{
-                  <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={val.item && head_edit.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,null, val.item && head_edit.every((val) => { return (val === true) }), "head_edit", val.item[0].item) : null} />
+                  <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={val.item && head_edit.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, null, val.item && head_edit.every((val) => { return (val === true) }), "head_edit", val.item[0].item) : null} />
                 }
                 </div>
                 <div>{
-                  <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={val.item && head_delete.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,null, val.item && head_delete.every((val) => { return (val === true) }), "head_delete", val.item[0].item) : null} />
+                  <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={val.item && head_delete.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, null, val.item && head_delete.every((val) => { return (val === true) }), "head_delete", val.item[0].item) : null} />
                 }
                 </div>
 
               </div>} key="1">
                 {val.item.map((first_item) => {
-                  console.log(first_item, "first_item")
+
                   if (first_item.submodule_name === null) {
 
                     return (first_item.item.map((first_item_insidedata, index) => {
@@ -440,23 +438,23 @@ class Useraccess_rights extends Component {
                           <div className="grp_expanse_data">
                             <div className="firstname_grpaccs sub_module_name_top">{first_item_insidedata.screen_name}</div>
                             <div>{
-                              <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={alltrue_enable_row.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,first_item_insidedata.id, alltrue_enable_row.every((val) => { return (val === true) }), "allow_row_all" + index, first_item_insidedata, index) : null} />
+                              <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={alltrue_enable_row.every((val) => { return (val === true) })} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, first_item_insidedata.id, alltrue_enable_row.every((val) => { return (val === true) }), "allow_row_all" + index, first_item_insidedata, index) : null} />
                             }
                             </div>
                             <div>{
-                              <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={first_item_insidedata.allow_view === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,first_item_insidedata.id, first_item_insidedata.allow_view === "Y" ? "N" : "Y", "allow_view" + index, first_item_insidedata, index) : null} />
+                              <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={first_item_insidedata.allow_view === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, first_item_insidedata.id, first_item_insidedata.allow_view === "Y" ? "N" : "Y", "allow_view" + index, first_item_insidedata, index) : null} />
                             }
                             </div>
                             <div>{
-                              <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={first_item_insidedata.allow_add === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,first_item_insidedata.id, first_item_insidedata.allow_add === "Y" ? "N" : "Y", "allow_add" + index, first_item_insidedata, index) : null} />
+                              <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={first_item_insidedata.allow_add === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, first_item_insidedata.id, first_item_insidedata.allow_add === "Y" ? "N" : "Y", "allow_add" + index, first_item_insidedata, index) : null} />
                             }
                             </div>
                             <div>{
-                              <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={first_item_insidedata.allow_edit === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,first_item_insidedata.id, first_item_insidedata.allow_edit === "Y" ? "N" : "Y", "allow_edit" + index, first_item_insidedata, index) : null} />
+                              <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={first_item_insidedata.allow_edit === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, first_item_insidedata.id, first_item_insidedata.allow_edit === "Y" ? "N" : "Y", "allow_edit" + index, first_item_insidedata, index) : null} />
                             }
                             </div>
                             <div>{
-                              <Green_checkBox className={useraccess && useraccess.allow_edit==="N" && "disablenotallow"} checked={first_item_insidedata.allow_delete === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit==="Y" ? () => this.change_checkbox(useraccess,userid,first_item_insidedata.id, first_item_insidedata.allow_delete === "Y" ? "N" : "Y", "allow_delete" + index, first_item_insidedata, index) : null} />
+                              <Green_checkBox className={useraccess && useraccess.allow_edit === "N" && "disablenotallow"} checked={first_item_insidedata.allow_delete === "Y" && true} change_checkbox={useraccess && useraccess.allow_edit === "Y" ? () => this.change_checkbox(useraccess, userid, first_item_insidedata.id, first_item_insidedata.allow_delete === "Y" ? "N" : "Y", "allow_delete" + index, first_item_insidedata, index) : null} />
                             }
                             </div>
                           </div>
@@ -595,8 +593,8 @@ class Useraccess_rights extends Component {
         rows: stroe_table_arr,
         loading: false,
         insideLoading: false,
-        group:response.data.data[0].group_name,
-        currentuserid:userid
+        group: response.data.data[0].group_name,
+        currentuserid: userid
       })
       if (showNotification) {
         notification.success({
@@ -607,13 +605,13 @@ class Useraccess_rights extends Component {
 
 
     }).catch(function (error) {
-      console.log(error, "error_get");
+
     });
   }
 
-  change_checkbox = (useraccess,userid,id, val, name, allvalue, index) => {
+  change_checkbox = (useraccess, userid, id, val, name, allvalue, index) => {
     var userid = localStorage.getItem("user_id")
-console.log(localStorage.getItem("user_id"),"localStorage.getItem")
+
     this.setState({
       insideLoading: true
     })
@@ -698,14 +696,14 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
       if (val) {
 
         allvalue.map((data) => {
-          var allowview=[name === "head_view" ? "N" : data.allow_view,name === "head_add" ? "N" : data.allow_add,name === "head_edit" ? "N" : data.allow_edit,name === "head_delete" ? "N" : data.allow_delete]
+          var allowview = [name === "head_view" ? "N" : data.allow_view, name === "head_add" ? "N" : data.allow_add, name === "head_edit" ? "N" : data.allow_edit, name === "head_delete" ? "N" : data.allow_delete]
 
-          var enableview=allowview.find((val)=>{return val==="Y"})
+          var enableview = allowview.find((val) => { return val === "Y" })
 
           sendData.push({
             "user_id": userid,
             "screen_master_id": data.id,
-            "allow_view": name === "head_view" ?  "N" : data.allow_view,
+            "allow_view": name === "head_view" ? "N" : data.allow_view,
             "allow_add": name === "head_add" ? "N" : data.allow_add,
             "allow_edit": name === "head_edit" ? "N" : data.allow_edit,
             "allow_delete": name === "head_delete" ? "N" : data.allow_delete,
@@ -720,15 +718,15 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
         })
       } else {
         allvalue.map((data) => {
-        var allowview=[name === "head_view" ? "Y" : data.allow_view,name === "head_add" ? "Y" : data.allow_add,name === "head_edit" ? "Y" : data.allow_edit,name === "head_delete" ? "Y" : data.allow_delete]
+          var allowview = [name === "head_view" ? "Y" : data.allow_view, name === "head_add" ? "Y" : data.allow_add, name === "head_edit" ? "Y" : data.allow_edit, name === "head_delete" ? "Y" : data.allow_delete]
 
-        var enableview=allowview.find((val)=>{return val==="Y"})
-        // enableview==="N"?"N":"Y"
+          var enableview = allowview.find((val) => { return val === "Y" })
+          // enableview==="N"?"N":"Y"
 
           sendData.push({
             "user_id": userid,
             "screen_master_id": data.id,
-            "allow_view": name === "head_view" ?  "Y" : data.allow_view,
+            "allow_view": name === "head_view" ? "Y" : data.allow_view,
             "allow_add": name === "head_add" ? "Y" : data.allow_add,
             "allow_edit": name === "head_edit" ? "Y" : data.allow_edit,
             "allow_delete": name === "head_delete" ? "Y" : data.allow_delete,
@@ -770,12 +768,12 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
           break;
       }
 
-      var allowview=[allow_view,allow_add,allow_edit,allow_delete]
-      var enableview=allowview.find((val)=>{return val==="Y"})
+      var allowview = [allow_view, allow_add, allow_edit, allow_delete]
+      var enableview = allowview.find((val) => { return val === "Y" })
       var sendData = [{
         "user_id": userid,
         "screen_master_id": id,
-        "allow_view": enableview?enableview:"N",
+        "allow_view": enableview ? enableview : "N",
         "allow_add": allow_add,
         "allow_edit": allow_edit,
         "allow_delete": allow_delete,
@@ -792,42 +790,42 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
     axios({
       method: 'post',
       url: `${apiurl}/insertUserPermission`,
-      data:{"submit": sendData}
+      data: { "submit": sendData }
     })
       .then(function (response) {
-        self.recall_permission(true,userid,useraccess)
-       this.props.dispatch()
-      })
-      .catch(function (error) {
-        console.log(error, "error");
-      });
-    this.setState({insertmodalopen: false})
-  }
-
-  reset=()=>{
-    this.setState({insideLoading:true})
-    axios({
-      method: 'put',
-      url: `${apiurl}/insertUserPermission`,
-      data:{"user_id":this.state.currentuserid}
-    })
-      .then(()=> {
-        this.recall_permission(true,this.state.currentuserid,this.state.useraccess)
+        self.recall_permission(true, userid, useraccess)
         this.props.dispatch()
       })
       .catch(function (error) {
-        console.log(error, "error");
-      });    
+
+      });
+    this.setState({ insertmodalopen: false })
+  }
+
+  reset = () => {
+    this.setState({ insideLoading: true })
+    axios({
+      method: 'put',
+      url: `${apiurl}/insertUserPermission`,
+      data: { "user_id": this.state.currentuserid }
+    })
+      .then(() => {
+        this.recall_permission(true, this.state.currentuserid, this.state.useraccess)
+        this.props.dispatch()
+      })
+      .catch(function (error) {
+
+      });
 
   }
 
   render() {
     const { rows, rowsPerPage, page } = this.state;
-    var useraccess={allow_edit:"Y"}
-    if(this.state.onceopen && useraccess){
-      this.recall_permission(null,this.state.responseid,useraccess)
-      this.setState({onceopen:false,useraccess:useraccess})
-    } 
+    var useraccess = { allow_edit: "Y" }
+    if (this.state.onceopen && useraccess) {
+      this.recall_permission(null, this.state.responseid, useraccess)
+      this.setState({ onceopen: false, useraccess: useraccess })
+    }
     return (
       <div>
         {this.state.loading ? <Spin className="spinner_align" spinning={this.state.loading}></Spin> :
@@ -839,11 +837,11 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
                 <div className="group_accessrights_dropdown">
                   <div className="d-flex mr-3">
                     <h6>User</h6>
-                    <Dropdownantd className={`accessrights-option ${useraccess && useraccess.allow_edit==="N" && "disablenotallow"}`} breakclass="drop_down_br" option={this.state.user_arr} changeData={
-                        useraccess && useraccess.allow_edit==="Y" ? 
-                    (data) => this.changeDynamic(data, "Group",useraccess) 
-                    : null
-                }
+                    <Dropdownantd className={`accessrights-option ${useraccess && useraccess.allow_edit === "N" && "disablenotallow"}`} breakclass="drop_down_br" option={this.state.user_arr} changeData={
+                      useraccess && useraccess.allow_edit === "Y" ?
+                        (data) => this.changeDynamic(data, "Group", useraccess)
+                        : null
+                    }
                       value={this.state.user} />
                   </div>
                   <div className="d-flex userAccessGroupField">
@@ -852,7 +850,7 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
                   </div>
                 </div>
                 <div className="btn_group_acceess_flex">
-                  <Button className={`accessrights_button_cancel ${useraccess && useraccess.allow_edit==="N" && "disablenotallow"}`} onClick={useraccess && useraccess.allow_edit==="Y" && this.reset}>Reset</Button>
+                  <Button className={`accessrights_button_cancel ${useraccess && useraccess.allow_edit === "N" && "disablenotallow"}`} onClick={useraccess && useraccess.allow_edit === "Y" && this.reset}>Reset</Button>
                 </div>
               </div>
               <Paper className="paper">
@@ -911,7 +909,7 @@ console.log(localStorage.getItem("user_id"),"localStorage.getItem")
                   onChangePage={this.handleChangePage}
                   onChangerowsPerPage={this.handleChangerowsPerPage}
                   ActionsComponent={TablePaginationActionsWrapped}
-                /> 
+                />
               </Paper>
             </div>
           </Spin>
@@ -934,4 +932,4 @@ const mapStateToProps = (state) => (
     // UserPermission: state.UserPermissionReducer.getUserPermission,
   }
 );
-export default connect(mapStateToProps, mapDispatchToProps)(Useraccess_rights) ;
+export default connect(mapStateToProps, mapDispatchToProps)(Useraccess_rights);

@@ -19,5 +19,11 @@
     background-color: #707070 !important;
     color: white !important;
     padding: 6px !important;
+    text-transform: none !important;
 
+}
+
+.MuiButtonBase-root.Mui-disabled {
+    cursor: not-allowed !important;
+    pointer-events: all !important;
 }

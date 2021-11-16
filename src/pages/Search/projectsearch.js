@@ -8,8 +8,9 @@ import { useDispatch, connect } from "react-redux";
 import {
   getClientType,
   getClient,
+  getProjectSubType,
   getProjectType,
-  getProjectName,
+  get_projectName_by_Desig,
   getBillableType,
   getClientlist,
 } from "../../actions/MasterDropdowns";
@@ -29,7 +30,6 @@ import { notification } from "antd";
 const { Panel } = Collapse;
 
 function callback(key) {
-  console.log(key);
 }
 
 const { Option } = Select;
@@ -54,20 +54,26 @@ const OtherHead = [
   { id: "clientname", label: "Client Name" },
   { id: "hodAttorney", label: "HOD/Attorney" },
   { id: "Counsel", label: "Counsel" },
-  { id: "rangeOfCost", label: "Project Cost Range" },
+  // { id: "rangeOfCost", label: "Project Cost Range" },
   { id: "billabletype", label: "Billable Type" },
 ];
 
 function Projectsearch(props) {
-  const [pathname, setpathname] = useState(window.location.pathname);
+
   const [value, setValue] = React.useState(1);
   const [modelOpen, setModelOpen] = useState(false);
   const [clientType, setClientType] = useState({});
   const [client, setClient] = useState({});
-  const [projectType, setProjectType] = useState({});
+  // const [projectType, setProjectType] = useState({});
   const [projectName, setProjectName] = useState({});
   const [billableType, setBillableType] = useState({});
   const [multiplePanel, setMultiplePanel] = useState([]);
+  const [SubType_Project, setSubType_Project] = useState({});
+  const [goRights, setGoRights] = useState([])
+  const [createProjectRights, setCreateProjectRights] = useState([])
+  const [createAdhocRights, setCreateAdhocRights] = useState([])
+
+  const [redirectToProject, setRedirectToProject] = useState(false)
   const dispatch = useDispatch();
 
   const [projectform, setprojectform] = useState({
@@ -89,6 +95,12 @@ function Projectsearch(props) {
       error: null,
       errmsg: null,
     },
+    project_Subtype: {
+      value: "0",
+      // validation: [{ "name": "required" }],
+      error: null,
+      errmsg: null,
+    },
     projectname: {
       value: "0",
       validation: [{ name: "required" }],
@@ -104,7 +116,6 @@ function Projectsearch(props) {
   });
 
   const onChange = (e) => {
-    console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
 
@@ -113,7 +124,7 @@ function Projectsearch(props) {
     dispatch(getClientType());
     dispatch(getClientlist());
     dispatch(getProjectType());
-    dispatch(getProjectName());
+    dispatch(get_projectName_by_Desig());
     dispatch(getBillableType());
   }, []);
 
@@ -132,12 +143,13 @@ function Projectsearch(props) {
     setClient({ Client });
 
     //Project Type
-    let ProjectType = [];
-    props.ProjectType.map((data) =>
-      ProjectType.push({ id: data.project_type_id, value: data.project_type })
-    );
-    setProjectType({ ProjectType });
+    // let ProjectType = [];
+    // props.ProjectType.map((data) =>
+    //   ProjectType.push({ id: data.project_type_id, value: data.project_type })
+    // );
+    // setProjectType({ ProjectType });
 
+    projectform.projecttype.value = props?.ProjectType[0]?.project_type_id
     // Project Name
 
     let ProjectName = [];
@@ -156,12 +168,22 @@ function Projectsearch(props) {
       })
     );
     setBillableType({ BillableType });
+
+    let projectSubTypeValue = [];
+    props.ProjectSubType.map((data) =>
+      projectSubTypeValue.push({
+        value: data.sub_project_type,
+        id: data.sub_project_type_id,
+      })
+    );
+    setSubType_Project({ projectSubTypeValue });
   }, [
     props.ClientType,
     props.Client,
     props.ProjectType,
     props.ProjectName,
     props.BillableType,
+    props.ProjectSubType
   ]);
 
   function checkValidation(data, key, multipleId) {
@@ -183,7 +205,10 @@ function Projectsearch(props) {
     // }
 
     // only for multi select (start)
+    if (key === "projecttype" && data) {
 
+      dispatch(getProjectSubType(data));
+    }
     let multipleIdList = [];
 
     if (multipleId) {
@@ -231,9 +256,10 @@ function Projectsearch(props) {
     let Form_key = [
       "clienttype",
       "client",
-      "projecttype",
+      // "projecttype",
       "projectname",
       "billabletype",
+      "project_Subtype"
     ];
 
     Form_key.map((data) => {
@@ -250,65 +276,60 @@ function Projectsearch(props) {
   };
 
   useEffect(() => {
-    console.log(props.TableData, "projectLength")
 
     let multipleTab = [];
     props.TableData.map((data, index) => {
       let ipProjectDataList = [];
 
       data.project_details.map((data, index) => {
-        //   var rowdataListobj = {}
-
-        //   if( data.project_name){
-        //   rowdataListobj["project_name"] = data.project_name
-        // }
 
 
         var rowdataListobj = {};
-        if (data.project_type_id === 1) {
-          let currentData = {}
-          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
-          rowdataListobj["ClientName"] = data.client;
-          rowdataListobj["SubProjectType"] = data.sub_project_type;
-          rowdataListobj["Process"] = data.process;
-          rowdataListobj["filing_type"] = data.filing_type;
-          rowdataListobj["BillingType"] = data.billable_type;
-        } else if (data.project_type_id === 6) {
-          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
-          rowdataListobj["ClientName"] = data.client;
-          rowdataListobj["HR_name"] = data.HR_name;
-          rowdataListobj["councel_name"] = data.councel_name;
-          rowdataListobj["filing_type"] = data.filing_type;
-          rowdataListobj["BillingType"] = data.billable_type;
-        } else {
-          rowdataListobj["ProjectName"] = <Link to={`/projectIp/${data.project_id}`}>{data.project_name}</Link>;
-          rowdataListobj["ClientName"] = data.client;
-          rowdataListobj["SubProjectType"] = data.councel_name;
-          rowdataListobj["HR_name"] = data.HR_name;
-          rowdataListobj["RangeOfCost"] = data.filing_type;
-          rowdataListobj["BillingType"] = data.billable_type;
+        if (data.project_type_id === 1 && localStorage.getItem("department_id") === '2') {
+          rowdataListobj["ProjectName"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["clientname"] = data.client;
+          rowdataListobj["subprojectype"] = data.sub_project_type;
+          rowdataListobj["processtype"] = data.process;
+          rowdataListobj["fillingtype"] = data.filing_type;
+          rowdataListobj["billabletype"] = data.billable_type;
+        } else if (data.project_type_id === 6 && localStorage.getItem("department_id") === '1') {
+          rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["clientname"] = data.client;
+          rowdataListobj["DRA"] = data.HR_name;
+          rowdataListobj["DDRA"] = data.councel_name;
+          rowdataListobj["fillingtype"] = data.filing_type;
+          rowdataListobj["billabletype"] = data.billable_type;
+        } else if (localStorage.getItem("department_id") === '3' || localStorage.getItem("department_id") === '9' || localStorage.getItem("department_id") === '8' || localStorage.getItem("department_id") === '4' || localStorage.getItem("department_id") === '7') {
+          rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
+          rowdataListobj["clientname"] = data.client;
+          rowdataListobj["hodAttorney"] = data.councel_name;
+          rowdataListobj["Counsel"] = data.HR_name;
+          // rowdataListobj["rangeOfCost"] = data.filing_type;
+          rowdataListobj["billabletype"] = data.billable_type;
         }
         ipProjectDataList.push(rowdataListobj);
       });
 
-      multipleTab.push(
-        <Panel
-          header={`${data.project_type} (${data.project_details.length})`}
-          key={index + 1}
-        >
-          <EnhancedTable
-            headCells={
-              data.project_type_id === 1
-                ? ipProjectHead
-                : data.project_type_id === 6
-                  ? litigationHead
-                  : OtherHead
-            }
-            rows={ipProjectDataList}
-            tabletitle={""}
-          />
-        </Panel>
-      );
+      if ((data.project_type_id === 1 && localStorage.getItem("department_id") === '2') || (data.project_type_id === 2 && (localStorage.getItem("department_id") === '3' || localStorage.getItem("department_id") === '9' || localStorage.getItem("department_id") === '8' || localStorage.getItem("department_id") === '4' || localStorage.getItem("department_id") === '7')) || (data.project_type_id === 6 && localStorage.getItem("department_id") === '1')) {
+        multipleTab.push(
+          <Panel
+            header={`${data.project_type} (${data.project_details.length})`}
+            key={index + 1}
+          >
+            <EnhancedTable
+              headCells={
+                data.project_type_id === 1
+                  ? ipProjectHead
+                  : data.project_type_id === 6
+                    ? litigationHead
+                    : OtherHead
+              }
+              rows={ipProjectDataList}
+              tabletitle={""}
+            />
+          </Panel>
+        );
+      }
 
     });
 
@@ -316,15 +337,43 @@ function Projectsearch(props) {
   }, [props.TableData]);
 
 
+  ///*****user permission**********/
 
+  useEffect(() => {
+    if (props.UserPermission.length > 0 && props.UserPermission) {
+      let data_res_id = props.UserPermission.find((val) => {
+        return (
+          "Project - Go" == val.control
+        )
+      })
+      setGoRights(data_res_id)
+
+      data_res_id = props.UserPermission.find((val) => {
+        return (
+          "Project - Create Project" == val.control
+        )
+      })
+      setCreateProjectRights(data_res_id)
+
+      data_res_id = props.UserPermission.find((val) => {
+        return (
+          "Project - Create Adhoc Task" == val.control
+        )
+      })
+      setCreateAdhocRights(data_res_id)
+    }
+
+  }, [props.UserPermission]);
+
+  /////////////
   return (
     <div>
       <div className="searchflex1"></div>
       <div className="searchfilterflex">
         <div className="searchfilterflex1">
           <div className="projsearchfilterdrpdwn">
-            
-          <div className="Fieldheading">Client Type</div>
+
+            <div className="Fieldheading">Client Type</div>
             <Labelbox
               type="select"
               dropdown={clientType.ClientType}
@@ -335,7 +384,7 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Client</div>
+            <div className="Fieldheading">Client</div>
             <Labelbox
               type="select"
               dropdown={client.Client}
@@ -345,8 +394,8 @@ function Projectsearch(props) {
               errmsg={projectform.client.errmsg}
             />
           </div>
-          <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Project Type</div>
+          {/* <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Project Type</div>
             <Labelbox
               type="select"
               dropdown={projectType.ProjectType}
@@ -355,9 +404,19 @@ function Projectsearch(props) {
               error={projectform.projecttype.error}
               errmsg={projectform.projecttype.errmsg}
             />
+          </div> */}
+          <div className="projsearchfilterdrpdwn">
+            <div className="Fieldheading">Project Sub Type</div>
+            <Labelbox type="select"
+              dropdown={SubType_Project.projectSubTypeValue}
+              changeData={(data) => checkValidation(data, "project_Subtype")}
+              value={projectform.project_Subtype.value}
+              error={projectform.project_Subtype.error}
+              errmsg={projectform.project_Subtype.errmsg}
+            ></Labelbox>
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Project Name</div>
+            <div className="Fieldheading">Project Name</div>
             <Labelbox
               type="select"
               dropdown={projectName.ProjectName}
@@ -368,7 +427,7 @@ function Projectsearch(props) {
             />
           </div>
           <div className="projsearchfilterdrpdwn">
-          <div className="Fieldheading">Billing Type</div>
+            <div className="Fieldheading">Billing Type</div>
             <Labelbox
               type="select"
               dropdown={billableType.BillableType}
@@ -378,8 +437,9 @@ function Projectsearch(props) {
               errmsg={projectform.billabletype.errmsg}
             />
           </div>
-          <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} onBtnClick={onSearch} />
-         
+          <div style={{ marginTop: 10 }}>
+            <CustomButton btnName={"Go "} btnCustomColor="customPrimary" custombtnCSS={"btnGo"} btnDisable={!goRights || goRights.display_control && goRights.display_control === 'N' ? true : false} onBtnClick={onSearch} />
+          </div>
         </div>
       </div>
 
@@ -391,6 +451,7 @@ function Projectsearch(props) {
           btnName={"Create Adhoc Task"}
           btnCustomColor="customPrimary"
           custombtnCSS={"goSearchbtn"}
+          btnDisable={!createAdhocRights || createAdhocRights.display_control && createAdhocRights.display_control === 'N' ? true : false}
           onBtnClick={() => setModelOpen(true)}
         />
         <DynModel
@@ -399,29 +460,43 @@ function Projectsearch(props) {
           handleChangeCloseModel={(bln) => setModelOpen(bln)}
           content={<AdhocTaskModel />}
         />
-        <Link to="/projectFormCreate">
+
+        {/* <Link to={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?'search':'projectFormCreate'}>
           <CustomButton
             btnName={"Create Project "}
             btnCustomColor="customPrimary"
             custombtnCSS={"goSearchbtn"}
-            onBtnClick={() => setpathname("/projectFormCreate")}
+            // onBtnClick={createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')&&rightsNotification}
+            onBtnClick={() => createProjectRights===undefined||(createProjectRights.display_control&&createProjectRights.display_control==='N')?rightsNotification():''}
           />
-        </Link>
+        </Link> */}
+
+        <CustomButton
+          btnName={"Create Project / Case"}
+          btnCustomColor="customPrimary"
+          custombtnCSS={"goSearchbtn"}
+          btnDisable={!createProjectRights || createProjectRights.display_control && createProjectRights.display_control === 'N' ? true : false}
+          onBtnClick={() => setRedirectToProject(true)}
+        />
       </div>
+      {redirectToProject && createProjectRights && createProjectRights.display_control && createProjectRights.display_control === 'Y' &&
+        <Redirect push to="/Home/projectFormCreate" />
+      }
 
       {/* <DynModel modelTitle={"Interview Details"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln)=>setModelOpen(bln)} /> */}
     </div>
   );
 }
 const mapStateToProps = (state) =>
-// console.log(state,"statestatestate")
 ({
   TableData: state.projectSearchReducer.getProjectSearchTableData,
   ClientType: state.getOptions.getClientType,
   Client: state.getOptions.getClientlist,
   ProjectType: state.getOptions.getProjectType,
-  ProjectName: state.getOptions.getProjectName,
+  ProjectName: state.getOptions.get_projectName_by_Desig,
   BillableType: state.getOptions.getBillableType,
+  UserPermission: state.UserPermissionReducer.getUserPermission,
+  ProjectSubType: state.getOptions.getProjectSubType || [],
 });
 
 export default connect(mapStateToProps)(Projectsearch);

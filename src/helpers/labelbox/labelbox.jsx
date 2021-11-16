@@ -11,23 +11,20 @@ import {
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-// import DateFnsUtils from '@date-io/date-fns';
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker,
-// } from '@material-ui/pickers';
-import { DatePicker, Select, TimePicker } from 'antd';
+import { TimePicker } from 'antd';
+import { DatePicker, Select } from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
-
-
+// import { TimePicker } from '@material-ui/pickers'
+import Delete from '../../images/dashboard/delete.svg';
+import PublishIcon from '@material-ui/icons/Publish';
+import DynModel from "../../component/Model/model";
+import CustomButton from "../../component/Butttons/button";
 
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
-		console.log("valid date", props.value)
-		this.state = { gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
+		this.state = { upload_model: false, gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
 		// ? props.value : new Date()
 	}
 	changeGender = (data) => {
@@ -44,9 +41,13 @@ export default class Labelbox extends Component {
 
 	}
 	timepickerChange = (time) => {
-		console.log("time", time);
 		var timeformat = dateFormat(time, "hh:MM:ss");
-		console.log("timeformat", timeformat)
+		this.setState({ selectedtime: time });
+		this.props.changeData && this.props.changeData(time);
+	};
+
+	newtimepickerChange = (time) => {
+		var timeformat = dateFormat(time, "HH:mm");
 		this.setState({ selectedtime: time });
 		this.props.changeData && this.props.changeData(time);
 	};
@@ -84,7 +85,10 @@ export default class Labelbox extends Component {
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<input className={`${data.error && "brdred"} brdrcls`} value={this.props.value} maxLength={this.props.maxlength} type="text" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} placeholder={this.props.placeholder} disabled={this.props.disabled} />
+						<input className={`${data.error && "brdred"} brdrcls inputID`} value={this.props.value} maxLength={this.props.maxlength} type="text"
+							onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
+							onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
+							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -99,7 +103,7 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div>
-						<input className={`${data.error && "brdred"} brdrcls`} min="0" value={this.props.value} type="number" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} onKeyDown={e => (e.key === "e" || e.key === "+" || e.key === "-") && e.preventDefault()} disabled={this.props.disabled} />
+						<input className={`${data.error && "brdred"} brdrcls inputID`} min="0" value={this.props.value} type="number" onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)} onKeyDown={e => (e.key === "e" || e.key === "+" || e.key === "-") && e.preventDefault()} disabled={this.props.disabled} />
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>
@@ -127,7 +131,6 @@ export default class Labelbox extends Component {
 
 			)
 		} else if (data.type == 'radio') {
-			// console.log(this.props.checked,"checked")
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
@@ -142,7 +145,6 @@ export default class Labelbox extends Component {
 			)
 		} else if (data.type == 'datepicker') {
 			function onChange(date, dateString) {
-				console.log(date, dateString);
 
 			}
 
@@ -152,7 +154,6 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div className={`${data.error && "datePickerbrdred"} ${this.props.className}`}>
-
 						{/* <DatePicker value={moment(this.props.value)?moment(this.props.value):new Date()} open={this.state.open}  onFocus={()=>this.setState({open:true})} onChange={(date)=>this.datepickerChange(date)}  className="datepickerchnge" style={{width:'100%',}} format="YYYY-MM-DD"  /> */}
 						<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<KeyboardDatePicker
@@ -166,8 +167,9 @@ export default class Labelbox extends Component {
 								disableFuture={this.props.disableFuture ? this.props.disableFuture : false}
 								disablePast={this.props.disablePast && this.props.disablePast}
 								minDate={this.props.minDate && this.props.minDate}
+								maxDate={this.props.maxDate && this.props.maxDate}
 								inputVariant="outlined"
-								format={this.props.format ? this.props.format : "dd-MMM-yyyy"}
+								format={this.props.format === "MMM-yyyy" ? "MMM-yyyy" : "dd-MM-yyyy"}
 								margin="normal"
 								id="date-picker-inline"
 								// value={this.state.selecteddate}
@@ -189,11 +191,8 @@ export default class Labelbox extends Component {
 			)
 		} else if (data.type == 'timepicker') {
 			function onChange(date, dateString) {
-				console.log(date, dateString);
 
 			}
-
-			console.log(this.props.value,"this.props.value")
 
 			const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -213,8 +212,13 @@ export default class Labelbox extends Component {
 								KeyboardButtonProps={{
 									'aria-label': 'change time',
 								}}
+								minTime={this.props.minTime && this.props.minTime}
+								maxTime={this.props.maxTime && this.props.maxTime}
 								InputProps={{ readOnly: true }}
-								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker" />}
+								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker"
+									minTime={this.props.minTime && this.props.minTime}
+									maxTime={this.props.maxTime && this.props.maxTime} />
+								}
 							/>
 						</MuiPickersUtilsProvider>
 						{
@@ -226,24 +230,63 @@ export default class Labelbox extends Component {
 
 				</div>
 			)
-		} else if (data.type == 'select') {
+		} else if (data.type == 'timepickernew') {
+			function onChange(date, dateString) {
+
+			}
+		
+			return (
+				<div className="formdiv">
+					<label className="labeltxt">{data.labelname}</label>
+					<div >
+
+						{/* <MuiPickersUtilsProvider utils={DateFnsUtils} >
+							<KeyboardTimePicker
+								margin="normal"
+								inputVariant="outlined"
+								id="time-picker"
+								value={this.props.value || new Date()}
+								onChange={(time) => this.timepickerChange(time)}
+								KeyboardButtonProps={{
+									'aria-label': 'change time',
+								}}
+								minTime={this.props.minTime && this.props.minTime}
+								maxTime={this.props.maxTime && this.props.maxTime}
+								InputProps={{ readOnly: true }}
+								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker"
+									minTime={this.props.minTime && this.props.minTime}
+									maxTime={this.props.maxTime && this.props.maxTime} />
+								}
+							/>
+						</MuiPickersUtilsProvider> */}
+						<TimePicker
+							onChange={(time) => this.newtimepickerChange(time)}
+							value={(data.value && data.value != '') ? moment(data.value, 'HH:mm') : ''}
+							autoComplete={'off'}
+							minuteStep={5}
+							format={'HH:mm'} />
+						{
+							<div className="Errormsg">
+								<div>{data.error && data.errmsg}</div>
+							</div>
+						}
+					</div>
+
+				</div>
+			)
+		}
+		else if (data.type == 'select') {
 			function onChange(value) {
-				console.log(`selected ${value}`);
 			}
 			const { Option } = Select;
 			function onBlur() {
-				console.log('blur');
 			}
 
 			function onFocus() {
-				console.log('focus');
 			}
 
 			function onSearch(val) {
-				console.log('search:', val);
 			}
-
-			console.log(data.value, "data.value");
 
 			var optionValue = null
 
@@ -278,16 +321,18 @@ export default class Labelbox extends Component {
 						filterOption={(input, option) =>
 							option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 						}
-						onChange={(value) => this.props.changeData && this.props.changeData(value)}>
+						onChange={(value) => this.props.changeData && this.props.changeData(value)}
+						onSearch={(value) => this.props.searchData && this.props.searchData(value)}
+						onBlur={() => this.props.blurData && this.props.blurData()}>
 						{data.dropdown && data.dropdown.length > 0 ? data.dropdown.map((item, index) => {
 							if (item.value) {
 								if (this.props.mode === "multiple") {
 									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
 								}
-								else if(this.props.stringvalue){
+								else if (this.props.stringvalue) {
 									return (<Option key={index} disabled={item.disable} value={item.value}>{item.value}</Option>)
 								}
-								 else {
+								else {
 									return (<Option key={index} disabled={item.disable} value={item.id}>{item.value}</Option>)
 								}
 							}
@@ -304,6 +349,70 @@ export default class Labelbox extends Component {
 
 
 				</div>
+			)
+		} else if (data.type == 'upload') {
+
+			function onFileView(url) {
+				window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
+			}
+			if (this.props.empty && this.props.upload_id && document.getElementById(this.props.upload_id)) {
+				document.getElementById(this.props.upload_id).value = "";
+			}
+			return (<>
+				<div className="formdiv inputlabel">
+					<label className="labeltxt">{data.labelname}</label>
+					<div className={`${data.error && "brdred"} upload`}>
+
+						<div style={{ width: "100%", display: "flex" }}>
+							<input type="file"
+								//  accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
+								style={{ fontSize: 12 }}
+								id={this.props.upload_id}
+								onChange={(e) => this.props.changeData && this.props.changeData(e.target.files[0])}
+								disabled={this.props.disabled}
+								hidden={this.props.hidden} />
+							<PublishIcon />
+						</div>
+						{(this.props.view_file && this.props.view_file != 'null' && this.props.view_file.length > 0) && <>
+							<hr />
+							<div style={{ display: "flex", marginTop: -6 }}>
+								<div style={{ width: "100%", cursor: 'pointer' }} onClick={() => onFileView(this.props.view_file)}>{(this.props.view_file && this.props.view_file.length > 0 ? (this.props.view_file.substr(35, 16).length > 15 ? this.props.view_file.substr(35, 16) + '..' : this.props.view_file.substr(35, 16)) : '')}</div>
+								<img src={Delete}
+									onClick={() => this.setState({ upload_model: true })}
+									style={{ width: '20px', cursor: 'pointer', padding: '3px' }} />
+							</div>
+						</>}
+
+					</div>
+					{
+						<div className="Errormsg">
+							<div>{data.error && data.errmsg}</div>
+						</div>
+					}
+				</div>
+				<DynModel
+					modelTitle={"Upload Image"}
+					handleChangeModel={this.state.upload_model}
+					handleChangeCloseModel={(bln) => this.setState({ upload_model: bln })}
+					content={
+						<div className="successModel">
+							<div>
+								{" "}
+								<label className="notfound_label">
+									Do You Want to Delete this File ?
+								</label>
+							</div>
+							<div className="customNotFoundbtn">
+								<CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => (this.setState({ upload_model: false }), this.props.remove_file && this.props.remove_file())} />
+								<CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => (this.setState({ upload_model: false }))} />
+							</div>
+						</div>
+					}
+					width={400}
+				/>
+
+			</>
+
 			)
 		}
 	}

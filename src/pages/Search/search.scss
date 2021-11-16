@@ -196,9 +196,7 @@
   .card_div .MuiPaper-rounded{
     border-radius:25px;       
   }
-  .card_div .MuiPaper-root{
-    // padding: 14px;
-  }
+
   .num_align_side{
     display: flex;
     justify-content: center;
@@ -226,7 +224,7 @@
     display: flex;
     margin: 6px;
     justify-content: space-between;
-    color: #FFE81A;
+    color: #6b6106;
     font-weight: 500;
   }
 
@@ -353,4 +351,14 @@
 .btnGo{
     width: 5%;
     height: 35px;
+}
+
+.addClientBtn{
+    height: 125px;
+    align-items: center;
+    display: flex;
+    background-color: white;
+    border-radius: 7px;
+    margin-top: 10px;
+    margin-bottom: 50px;
 }

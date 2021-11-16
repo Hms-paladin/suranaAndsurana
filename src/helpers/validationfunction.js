@@ -5,11 +5,21 @@ import React, { Component } from 'react';
 class ValidationLibrary extends Component {
   checkValidation(textValue, validatorsArray) {
     for (var valid in validatorsArray) {//check validations through array
-      console.log("mystextvalue", validatorsArray[valid].name);
-      console.log("RAN", validatorsArray[valid].rangeID);
       if (textValue == "") {//check value is empty
         if (validatorsArray[valid].name == 'required') {
           return { msg: "Field required", state: false };//validation occurs break the loop & throw the error
+        }
+      }
+      else if (validatorsArray[valid].name == 'checkNameExists') {
+        if (validatorsArray[valid].params === 0) {
+          return { msg: "Name Already Exist", state: false };//validation occurs break the loop & throw the error
+        }
+      }
+      else if (validatorsArray[valid].name == 'checkOption') {
+        const splitArray = validatorsArray[valid].params.split(",")
+        var check = splitArray.includes(textValue)
+        if (!check) {
+          return { msg: "Answers should be  from Options", state: false };//validation occurs break the loop & throw the error
         }
       }
       else if (validatorsArray[valid].name == 'email') {
@@ -27,13 +37,11 @@ class ValidationLibrary extends Component {
         }
       }
       else if (validatorsArray[valid].name == 'custommaxValue') {
-        console.log("validation", validatorsArray[valid].params)
         if (parseInt(textValue) > parseInt(validatorsArray[valid].params)) {
           return { msg: "Value should not greater than " + validatorsArray[valid].params, state: false };//validation occurs break the loop & throw the error
         }
       }
       else if (validatorsArray[valid].name == 'customminValue') {
-        console.log("validation", validatorsArray[valid].params)
         if (parseInt(textValue) < parseInt(validatorsArray[valid].params)) {
           return { msg: "Value should  greater than " + validatorsArray[valid].params, state: false };//validation occurs break the loop & throw the error
         }
@@ -100,6 +108,12 @@ class ValidationLibrary extends Component {
         if (re.test(textValue) == false) {
           return { msg: "Please Enter Numeric Value only", state: false };
         }
+      }
+      else if (validatorsArray[valid].name == "allowNumaricOnlyWithZero") {
+        var re = /^(0+|[1-9]\d*)$/;
+        if (re.test(textValue) == false) {
+          return { msg: "Please Enter Numeric Value only", state: false };
+        }
       } else if (validatorsArray[valid].name == "alphabetsOnly") {
         var re = /^[A-Za-z]+$/;
         if (re.test(textValue) == false) {
@@ -136,12 +150,12 @@ class ValidationLibrary extends Component {
           }
         }
       }
-       else if (validatorsArray[valid].name == "numericanddot") {
+      else if (validatorsArray[valid].name == "numericanddot") {
         var re = /^[0-9]*\.?[0-9]*$/;
         if (re.test(textValue) == false) {
           return { msg: "Please Enter Numeric and dot only", state: false };
         }
-      } 
+      }
       else if (validatorsArray[valid].name == "PercentageCGPA") {
         var re = /	^100$|^\d{0,2}(\.\d{1,2})? *%?$/;
         if (re.test(textValue) == false || Number(textValue) == "00") {
@@ -168,13 +182,40 @@ class ValidationLibrary extends Component {
           return { msg: " Invalid Input ", state: false };
         }
       } else if (validatorsArray[valid].name == "alphaspecialwithwhitespace") {
-        var re =/^[a-zA-Z !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+        var re = /^[a-zA-Z !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
         if (re.test(textValue) == false) {
           return { msg: " Invalid Input ", state: false };
         }
+      } else if (validatorsArray[valid].name == "allowtwodigit") {
+        var re = /^\S[0-9]{0,1}$/;
+        if (re.test(textValue) == false) {
+          return { msg: " Value allow only two digit ", state: false };
+        }
       }
-
-
+      //  else if (validatorsArray[valid].name == "allownumspace") {
+      //   var re = /^[1-9][0-9]{9,14}$/;
+      //   if (re.test(textValue) == false) {
+      //     return { msg: " 10-15 space ", state: false };
+      //   }
+      // }
+      else if (validatorsArray[valid].name == "Allow numeric and special characters") {
+        var re = /^[0-9-+()]*$/;
+        if (!re.test(textValue) == false) {
+          return { msg: " Value allow only two digit ", state: false };
+        }
+      }
+      else if (validatorsArray[valid].name == "gst") {
+        var re = /^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$/;
+        if (!re.test(textValue)  == true) {
+          return { msg: " Enter valid GST format ", state: false };
+        }
+      }
+      else if (validatorsArray[valid].name == "pan") {
+        var re =  /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+        if (!re.test(textValue)  == true) {
+          return { msg: " Enter valid PAN format ", state: false };
+        }
+      }
     }
     return { msg: "", state: true };//if no error throw empty message
   }

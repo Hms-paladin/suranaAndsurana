@@ -10,9 +10,9 @@ import { notification } from 'antd';
 import moment from "moment";
 import { getHrTaskList } from "../../actions/TodoListAction";
 import { connect, useDispatch } from "react-redux";
-import { getDesignationList, getDepartment, getInterviewers } from '../../actions/MasterDropdowns'
+import { getDesignationList, getDepartment, getInterviewers, getSupervisorByDepartment } from '../../actions/MasterDropdowns'
 import { GetCandiateDetails, GetEmployeeDetails, getBankName } from '../../actions/CandidateAndEmployeeDetails';
-import DynModelView from '../Interview/model';
+
 import './employeeform.scss'
 function Employeeform(props) {
     const dispatch = useDispatch();
@@ -24,6 +24,7 @@ function Employeeform(props) {
     const [sup_name, setsup_name] = useState({})
     const [file, setfile] = useState("")
     const [fileList, setfileList] = useState("")
+    const [EmpCodeDub, setEmpCodeDub] = useState(false)
     const [EmpForm, setEmpFrom] = useState({
         desgination: {
             value: props.emp_form_id.designation_id,
@@ -49,18 +50,6 @@ function Employeeform(props) {
             error: null,
             errmsg: null,
         },
-        supervisor_email: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "email" }],
-            error: null,
-            errmsg: null,
-        },
-        supervisor_ph: {
-            value: "",
-            validation: [{ "name": "required" }, { "name": "mobile" }],
-            error: null,
-            errmsg: null,
-        },
         EmpOfficialEmail: {
             value: "",
             validation: [{ "name": "required" }, { "name": "email" }],
@@ -81,19 +70,25 @@ function Employeeform(props) {
         },
         account_no: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "16" }, { "name": "allowNumaricOnly1" }],
+            validation: [{ "name": "custommaxLength", "params": "16" }, { "name": "allowNumaricOnly1" }],
             error: null,
             errmsg: null,
         },
         ifsc_code: {
             value: "",
-            validation: [{ "name": "required" }, { "name": "custommaxLength", "params": "11" }, { "name": "alphaNumaricOnly" }],
+            validation: [{ "name": "custommaxLength", "params": "11" }, { "name": "alphaNumaricOnly" }],
             error: null,
             errmsg: null,
         },
         bank_name: {
             value: "",
-            validation: [{ "name": "required" }],
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
+        branch_name: {
+            value: "",
+            validation: [],
             error: null,
             errmsg: null,
         },
@@ -107,12 +102,20 @@ function Employeeform(props) {
         dispatch(getInterviewers());
     }, [])
 
-    console.log(props, "emp_form_id")
     //CandidateDetails
 
     useEffect(() => {
         if (!props.emp_list) {
             EmpForm.desgination.value = props.emp_form_id.designation_id
+            // EmpForm.desgination.value = Number(localStorage.getItem("designation_id"))
+           
+            let data_res_id = props.getDesignationList.find((val) => {
+                return (
+                    props.emp_form_id.designation_id == val.designation_id
+                )
+            })
+             EmpForm.department.value = data_res_id
+            dispatch(getSupervisorByDepartment(data_res_id))
             dispatch(GetCandiateDetails(props.emp_form_id.int_status_id));
         } else {
             dispatch(GetEmployeeDetails(props.emp_form_id.int_status_id));
@@ -122,19 +125,16 @@ function Employeeform(props) {
     //SETCandidateDetails
     useEffect(() => {
         setgetDetails(props.getCandidatesDetails)
-        console.log("empformempform", props.getCandidatesDetails)
 
     }, [props.getCandidatesDetails])
 
     useEffect(() => {
         setgetDetails(props.getCandidatesDetails)
-        console.log("empformempform", props.getCandidatesDetails)
 
     }, [props.getCandidatesDetails])
 
     useEffect(() => {
         setgetDetails(props.getEmployeeDetails)
-        console.log("setgetDetails", props.getEmployeeDetails)
 
     }, [props.getEmployeeDetails])
 
@@ -153,7 +153,10 @@ function Employeeform(props) {
     useEffect(() => {
         let Designation = [];
         props.getDesignationList.map((data, index) =>
-            Designation.push({ id: data.designation_id, value: data.designation })
+            Designation.push({
+                value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
+                id: data.designation_id
+            })
         );
         setgetData({ Designation });
 
@@ -222,14 +225,14 @@ function Employeeform(props) {
         formData.append("department", EmpForm.department.value);
         formData.append("employee_code", EmpForm.employee_code.value);
         formData.append("upload_document", file);
-        formData.append("account_number", EmpForm.account_no.value);
-        formData.append("ifsc_code", EmpForm.ifsc_code.value);
-        formData.append("bank_id", EmpForm.bank_name.value);
+        formData.append("account_number", EmpForm.account_no.value || "");
+        formData.append("ifsc_code", EmpForm.ifsc_code.value || "");
+        formData.append("bank_id", EmpForm.bank_name.value || 0);
+        formData.append("branch_name", EmpForm.branch_name.value || "");
         formData.append("created_on", moment().format("YYYY-MM-DD HH:m:s"));
         formData.append("created_by", localStorage.getItem("empId"));
         formData.append("task_id", props.emp_form_id && props.emp_form_id.task_id);
-        formData.append("supervisor_email", EmpForm.supervisor_email.value);
-        // console.log(formData,"formData")
+        // formData.append("supervisor_email", EmpForm.supervisor_email.value);
         Axios({
             method: "post",
             url: apiurl + "insert_employee",
@@ -281,7 +284,7 @@ function Employeeform(props) {
 
     const handleCancel = () => {
         let From_key = [
-            "account_no", "ifsc_code", "bank_name", "date_of_birth", "supervisor_name", "supervisor_email", "supervisor_ph", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department"
+            "account_no", "ifsc_code", "bank_name", "date_of_birth", "supervisor_name", "EmpOfficialContact", "EmpOfficialEmail", "employee_code", "department", "branch_name"
         ]
 
         From_key.map((data) => {
@@ -300,6 +303,38 @@ function Employeeform(props) {
         setfile(e.target.files[0].name)
     }
 
+    function get_employee_code_check(data) {
+        if (data != '') {
+            try {
+                Axios({
+                    method: 'POST',
+                    url: apiurl + 'get_employee_code_check',
+                    data: {
+                        employee_code: data
+                    }
+                }).then((response) => {
+                    if (response.data.status !== 1) {
+                        let dynObj = {
+                            value: data,
+                            error: true,
+                            errmsg: "Employee Code Already Exits",
+                            validation: [{ "name": "required" }],
+                        };
+
+                        setEmpFrom((prevState) => ({
+                            ...prevState,
+                            ['employee_code']: dynObj,
+                        }));
+                        return Promise.resolve();
+
+                    }
+                });
+
+            } catch (err) {
+
+            }
+        }
+    }
 
     function checkValidation(data, key, multipleId) {
         if (data && key === "supervisor_name") {
@@ -340,6 +375,9 @@ function Employeeform(props) {
         }
         // (end)
 
+        if (key === "employee_code") {
+            get_employee_code_check(data)
+        }
         setEmpFrom(prevState => ({
             ...prevState,
             [key]: dynObj,
@@ -356,7 +394,6 @@ function Employeeform(props) {
         <div>
             <div style={{ marginBottom: "10px", fontSize: '16px', fontWeight: "600" }}>Employee form</div>
             {getDetails && getDetails.length > 0 && getDetails.map((val, index) => {
-                console.log(val.skill_name, "skill_name")
                 return (
                     <div className="Employee_formdiv">
 
@@ -366,7 +403,7 @@ function Employeeform(props) {
                                 <div className="employeeform_r1"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Resume ID</div><div className="employeecont">{val.resume_id ? val.resume_id : ""}</div></div>
                                 <div className="employeeform_r1"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                                <div className="employeeform_r1"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === 1 || val.gender === "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row2flex2">
                                 <div className="employeeform_r2"><div className="headcolor">Skills</div><div className="employeecont">{val.skill_name ? val.skill_name : "-"}</div></div>
@@ -378,7 +415,7 @@ function Employeeform(props) {
                                 <div className="employeeform_r2"><div className="headcolor">Employee Code</div><div className="employeecont">{val.employee_code ? val.employee_code : "-"}</div></div>
                                 <div className="employeeform_r2"><div className="headcolor">Name</div><div className="employeecont">{val.name ? val.name : "-"}</div></div>
                                 <div className="employeeform_r2"><div className="headcolor">Date of Birth</div><div className="employeecont">{val.dob ? moment(val.dob).format("DD-MMM-YYYY") : "-"}</div></div>
-                                <div className="employeeform_r2"><div className="headcolor">Gender</div><div className="employeecont">{val.gender == 1 || "M" ? "Male" : "Female"}</div></div>
+                                <div className="employeeform_r2"><div className="headcolor">Gender</div><div className="employeecont">{val.gender === 1 || val.gender === "M" ? "Male" : "Female"}</div></div>
                             </div>
                             <div className="employeeform_row3">
                                 <div className="employeeform_r2 "><div className="headcolor">Date of Joining</div><div className="employeecont">{val.doj ? val.doj : "-"}</div></div>
@@ -419,7 +456,7 @@ function Employeeform(props) {
                             </div>
                         </div>}
 
-                        {!props.emp_list && val.type_of_resource !== 'Intern' && <div className="expDetailes">
+                        {val.experience.length > 0 && <div className="expDetailes">
                             <div className="tableHeading">Previous Employer Details</div>
                             <div className="educationtable">
                                 <div className="EmployeeHeader">
@@ -434,15 +471,15 @@ function Employeeform(props) {
                                 </div>
                                 {val.experience.map((values, index) => {
                                     return (
-                                        <div className="EmployeeRow">
+                                        <div className="employeerows">
                                             <div>{index + 1}</div>
-                                            <div>{values.industry}</div>
-                                            <div>{values.company_name}</div>
-                                            <div>{values.city}</div>
-                                            <div>{values.department_id}</div>
-                                            <div>{values.designation_id}</div>
-                                            <div>{values.period_from}</div>
-                                            <div>{values.period_to}</div>
+                                            <div>{values.industry || "-"}</div>
+                                            <div>{values.company_name || "-"}</div>
+                                            <div>{values.city || "-"}</div>
+                                            <div>{values.department_id || values.department || "-"}</div>
+                                            <div>{values.designation_id || values.designation || "-"}</div>
+                                            <div>{values.period_from ? moment(values.period_from, "YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
+                                            <div>{values.period_to ? moment(values.period_to, "YYYY-MM-DD").format('DD-MMM-YYYY') : "-"}</div>
                                         </div>
 
                                     )
@@ -463,13 +500,13 @@ function Employeeform(props) {
                         <div className="employeeform_row5">
                             <div className="employeeform_r2"><div className="headcolor">Contact Phone no.</div><div className="employeecont">{val.con_ph_no ? val.con_ph_no : "-"}</div></div>
                             <div className="employeeform_r2 traitsdiv"><div className="headcolor">Email ID</div><div className="employeecont">{val.email_addr ? val.email_addr : "-"}</div></div>
-                            {!props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Mail Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>}
-                            {props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.address ? val.address : "-"}</div></div>}
+                            {/* {!props.emp_list && <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Postel Address</div><div className="employeecont">{val.email_addr ? val.postal_addr : "-"}</div></div>} */}
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Address</div><div className="employeecont">{val.postal_addr ? val.postal_addr : val.address ? val.address : "-"}</div></div>
                         </div>
                         {!props.emp_list && <div className="employeeform_row6">
                             <div className="employeeform_r2"><div className="headcolor">State of Domicile</div><div className="employeecont">{val.state_of_domecile ? val.state_of_domecile : "-"}</div></div>
                             <div className="employeeform_r2 traitsdiv"><div className="headcolor">City</div><div className="employeecont">{val.city ? val.city : "-"}</div></div>
-                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.lang_known ? val.lang_known : "-"}</div></div>
+                            <div className="employeeform_r2 traitsdiv"><div className="headcolor"> Languages Known</div><div className="employeecont">{val.language ? val.language : "-"}</div></div>
                             <div className="employeeform_r2 traitsdiv"><div className="headcolor">Interview Status</div><div className="employeecont">{val.status_resource ? val.status_resource : "-"}</div></div>
 
                         </div>}
@@ -510,31 +547,17 @@ function Employeeform(props) {
                         error={EmpForm.supervisor_name.error}
                         errmsg={EmpForm.supervisor_name.errmsg}
                     /></div>
-                <div><Labelbox type="text" placeholder="Supervisor's Email ID"
-                    changeData={(data) => checkValidation(data, "supervisor_email")}
-                    value={EmpForm.supervisor_email.value}
-                    error={EmpForm.supervisor_email.error}
-                    errmsg={EmpForm.supervisor_email.errmsg}
-                />
-                </div>
-                <div><Labelbox type="text" placeholder="Supervisor's Phone No."
-                    changeData={(data) => checkValidation(data, "supervisor_ph")}
-                    value={EmpForm.supervisor_ph.value}
-                    error={EmpForm.supervisor_ph.error}
-                    errmsg={EmpForm.supervisor_ph.errmsg}
-                />
-                </div>
-
-
-            </div>}
-
-            {!props.emp_list && <div className="employeeform_row8">
                 <div><Labelbox type="text" placeholder="Official Email ID"
                     changeData={(data) => checkValidation(data, "EmpOfficialEmail")}
                     value={EmpForm.EmpOfficialEmail.value}
                     error={EmpForm.EmpOfficialEmail.error}
                     errmsg={EmpForm.EmpOfficialEmail.errmsg}
                 /></div>
+
+            </div>}
+
+            {!props.emp_list && <div className="employeeform_row8">
+
                 <div><Labelbox type="text" placeholder="Official Contact No."
                     changeData={(data) => checkValidation(data, "EmpOfficialContact")}
                     value={EmpForm.EmpOfficialContact.value}
@@ -543,6 +566,7 @@ function Employeeform(props) {
                 /></div>
                 <div>
                     <Labelbox type="select" placeholder="Department"
+                        disabled={true}
                         dropdown={dept.Department}
                         changeData={(data) => checkValidation(data, "department")}
                         value={EmpForm.department.value}
@@ -557,16 +581,10 @@ function Employeeform(props) {
                     errmsg={EmpForm.employee_code.errmsg}
                 /></div>
 
+
                 <div className="upload_div">
-                    {/* <div><Labelbox type="text" placeholder="Upload Document"/></div> */}
                     <div>
-                        {/* <Upload {...props} className="upload_tag"
-                      action= 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                    //   onChange= {(info)=>handleChange(info) } 
-                    //   fileList={fileListData}
-                    >
-                          <div className="upload_file_inside"><label>Click to upload</label><PublishIcon/></div>
-                     </Upload>, */}
+
                         <input type="file" accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
                             onChange={onFileChange} id="pdfupload" /> <PublishIcon />
                     </div>
@@ -574,7 +592,7 @@ function Employeeform(props) {
                 </div>
 
             </div>}
-            {!props.emp_list && <div className="employeeform_row9">
+            {!props.emp_list && <div className="employeeform_row8">
                 <div><Labelbox type="text" placeholder="Account Number"
                     changeData={(data) => checkValidation(data, "account_no")}
                     value={EmpForm.account_no.value}
@@ -597,6 +615,12 @@ function Employeeform(props) {
                     error={EmpForm.bank_name.error}
                     errmsg={EmpForm.bank_name.errmsg}
                 /></div>
+                <div><Labelbox type="text" placeholder="Branch Name"
+                    changeData={(data) => checkValidation(data, "branch_name")}
+                    value={EmpForm.branch_name.value}
+                    error={EmpForm.branch_name.error}
+                    errmsg={EmpForm.branch_name.errmsg}
+                /></div>
 
 
             </div>}
@@ -613,7 +637,7 @@ const mapStateToProps = (state) => (
     {
         getDesignationList: state.getOptions.getDesignationList || [],
         getDepartment: state.getOptions.getDepartment || [],
-        getInterviewersList: state.getOptions.getInterviewersList || [],
+        getInterviewersList: state.getOptions.getSupervisorByDepartment || [],
         getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails || [],
         getEmployeeDetails: state.CandidateAndEmployeeDetails.getEmployeeDetails || [],
         getBankNameDetails: state.CandidateAndEmployeeDetails.getBankName || [],

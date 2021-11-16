@@ -125,8 +125,8 @@ textarea{height: 70px !important;}
         margin: 5px;
         padding: 5px 5px 10px 5px;
     }
-    >div:nth-child(2){background-color:#14D756;color: white;}
-    >div:nth-child(3){background-color:#D77E4D;color: white;}
+    // >div:nth-child(2){background-color:#14D756;color: white;}
+    // >div:nth-child(3){background-color:#D77E4D;color: white;}
 }
 .color_initmation{
     display: flex;
@@ -184,5 +184,15 @@ textarea{height: 70px !important;}
         font-weight:600;
     }
 }
-
-
+.categorylist_table{
+    color:#0353A4;
+}
+.categorylist_table .MuiTableHead-root{
+    background-color: #0353A4 !important;
+}
+.categorylist_table .MuiButtonBase-root.MuiTableSortLabel-root, .tableHeadsno{
+    color:#fff !important;
+}
+.categorylist_table .MuiTable-root {
+    background-color: white !important;
+}

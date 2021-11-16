@@ -17,7 +17,7 @@ const AddDataModel = (props) => {
   const [projtId, setProjtId] = useState("");
   const [IteriumModel, setIteriumModel] = useState(false);
   const [LitiID, setLitiID] = useState("");
-  const [Litigation_Form, setResumeFrom] = useState({
+  const [Litigation_Form, setLitigation_Form] = useState({
     counsel: {
       value: "",
       validation: [{ name: "required" }],
@@ -26,19 +26,19 @@ const AddDataModel = (props) => {
     },
     name: {
       value: "",
-      validation: [],
+      validation: [{ name: "alphabetwithspace" }],
       error: null,
       errmsg: null,
     },
     phoneno: {
       value: "",
-      validation: [],
+      validation: [{ name: "mobile" }],
       error: null,
       errmsg: null,
     },
     emailid: {
       value: "",
-      validation: [],
+      validation: [{ name: "email" }],
       error: null,
       errmsg: null,
     },
@@ -73,9 +73,17 @@ const AddDataModel = (props) => {
       errmsg: null,
     },
   });
+
   useEffect(() => {
     dispatch(getLitigationCounsel());
   }, []);
+
+  useEffect(() => {
+    Litigation_Form.counsel.value = props.LitigationCounsel_id
+    setLitigation_Form((prevState) => ({
+      ...prevState,
+    }));
+  }, [props.LitigationCounsel_id]);
 
   useEffect(() => {
     setProjtId(props.id.project_id);
@@ -106,11 +114,11 @@ const AddDataModel = (props) => {
     var filtererr = targetkeys.filter(
       (obj) => Litigation_Form[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
-      // setResumeFrom({ error: true });
+      // setLitigation_Form({ error: true });
     } else {
-      // setResumeFrom({ error: false });
+      // setLitigation_Form({ error: false });
 
       dispatch(InsertLitigationDetails(Litigation_Form, LitiID)).then(() => {
         handleCancel();
@@ -119,7 +127,7 @@ const AddDataModel = (props) => {
       });
     }
 
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
       ...prevState,
     }));
   }
@@ -139,7 +147,26 @@ const AddDataModel = (props) => {
     ResumeFrom_key.map((data) => {
       Litigation_Form[data].value = "";
     });
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
+      ...prevState,
+    }));
+  };
+
+  const handleValidation = () => {
+    let ResumeFrom_key = [
+      "name",
+      "phoneno",
+      "emailid",
+      "address",
+      "interimname",
+      "interimapplicationno",
+      "interimapplicationdate",
+      "interimdetails",
+    ];
+    ResumeFrom_key.map((data) => {
+      Litigation_Form[data].validation = [];
+    });
+    setLitigation_Form((prevState) => ({
       ...prevState,
     }));
   };
@@ -147,10 +174,41 @@ const AddDataModel = (props) => {
     setLitiID(props.Litigation_ID);
   }, [props.Litigation_ID]);
   function checkValidation(data, key, multipleId) {
-    if (data && data == 5 && key === "counsel") {
+    if (data && data === 5 && key === "counsel") {
       setIteriumModel(true);
+      handleValidation();
+
+      let ResumeFrom_key = [
+        "interimname",
+        "interimapplicationno",
+        "interimapplicationdate",
+        "interimdetails",
+      ];
+      ResumeFrom_key.map((data) => {
+        Litigation_Form[data].validation = [{ name: "required" }];
+      });
+      setLitigation_Form((prevState) => ({
+        ...prevState,
+      }));
     } else if (data && data !== 5 && key === "counsel") {
       setIteriumModel(false);
+      handleValidation();
+
+      let ResumeFrom_key = ["name", "phoneno", "emailid", "address"];
+      ResumeFrom_key.map((data) => {
+        if (data == "phoneno") {
+          Litigation_Form[data].validation = [{ name: "required" }, { name: "mobile" }];
+        }
+        else if (data == "emailid") {
+          Litigation_Form[data].validation = [{ name: "required" }, { name: "email" }];
+        }
+        else {
+          Litigation_Form[data].validation = [{ name: "required" }];
+        }
+      });
+      setLitigation_Form((prevState) => ({
+        ...prevState,
+      }));
     }
 
     var errorcheck = ValidationLibrary.checkValidation(
@@ -180,7 +238,7 @@ const AddDataModel = (props) => {
     }
     // (end)
 
-    setResumeFrom((prevState) => ({
+    setLitigation_Form((prevState) => ({
       ...prevState,
       [key]: dynObj,
     }));
@@ -200,6 +258,7 @@ const AddDataModel = (props) => {
           <Labelbox
             type="select"
             placeholder={"Counsel"}
+            disabled
             dropdown={LitiCounsel.liti_councel}
             changeData={(data) => checkValidation(data, "counsel")}
             value={Litigation_Form.counsel.value}
@@ -248,7 +307,6 @@ const AddDataModel = (props) => {
             </>
           ) : (
             <>
-              {console.log("Litigation_Form", Litigation_Form)}
               <Labelbox
                 type="text"
                 placeholder={"Interim Name"}

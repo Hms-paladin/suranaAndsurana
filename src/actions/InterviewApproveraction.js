@@ -23,17 +23,17 @@ export const Interview = () => async dispatch => {
     }
 }
 
-export const interviewApproverTableData = (id) => async dispatch => {
+export const interviewApproverTableData = (resume_id,designation_id) => async dispatch => {
     try {
         axios({
             method: 'POST',
             url: apiurl +'get_to_do_interview_by_id',
             data:{
-                resume_id:id
+                resume_id:resume_id,
+                designation_id:designation_id
             }
         })
         .then((response) => {
-            console.log(response,"res_id")
             dispatch({type:INTERVIEWAPPROVER_TABLE_DATA,payload:response.data.data})
         })
         
@@ -41,6 +41,7 @@ export const interviewApproverTableData = (id) => async dispatch => {
         
     }
 }
+
 export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res_id,task_id) => async dispatch => {
     try {
         axios({
@@ -56,8 +57,8 @@ export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res
                 "prop_designation":alldet.designationID,
                 "prop_int_date_time":alldet.date,
                 "resume_id":res_id,
-                "created_on":moment().format('YYYY-MM-DD HH:m:s')  ,
-                "updated_on":moment().format('YYYY-MM-DD HH:m:s')  ,
+                "created_on":moment().format('YYYY-MM-DD HH:m:s'),
+                "updated_on":moment().format('YYYY-MM-DD HH:m:s'),
                 "created_by":localStorage.getItem("empId"),
                 "updated_by":localStorage.getItem("empId"),
                 "ip_address":"123",
@@ -66,7 +67,6 @@ export const InsertApprove = (ApproveForm,optionvalues,int_details_id,alldet,res
             }
         })
         .then((response)=>{
-            console.log(response,"response")
             if(response.data.status===1){
                 dispatch(getHrTaskList())
                 notification.success({

@@ -1,0 +1,86 @@
+// Unblock User Active
+
+.empUserName{
+    border: 1px solid #023E7D;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.empStatus{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.useActive{
+    display: flex;
+    border: 1px solid #023E7D;
+    padding: 10px;
+    border-radius: 10px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.empActive{
+    color: white;
+    background-color: #32AC32;
+    width: 130px;
+    text-align: center;
+    padding: 6px;
+    border-radius: 40px;
+    font-weight: bold;
+}
+
+.userbtnActive{
+    text-align: right;
+    padding: 50px 0px 10px 0px;
+}
+
+.useActives {
+    .ant-switch-checked{
+        height: 32px;
+        padding: 5px;
+    }
+    .ant-switch-checked .ant-switch-handle {
+        top: calc(100% - 13px - 13px) !important;
+    }
+    .ant-switch-inner {
+        font-size: 21px;
+    }
+    .ant-switch-checked {
+        background-color: #32AC32;
+    }
+    .ant-switch::after {
+        top: 5px;
+        }
+    
+}
+
+
+
+.useActivechange{
+    .ant-switch{
+        height: 32px;
+        padding: 5px;
+        background-color: rgb(224, 211, 211);
+        border: 1px solid  #F42D2D;
+        
+    }
+    .ant-switch-handle {
+        top: 10px !important;
+    }
+    .ant-switch-inner {
+        font-size: 21px;
+        color: #F42D2D ;
+        font-weight: 600;
+    }
+    .ant-switch::after {
+        top: 5px;
+        }
+    
+    
+}
+
+

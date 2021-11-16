@@ -1,29 +1,45 @@
-import react, { useState } from "react";
+import react, { useEffect, useState } from "react";
 import './unblockUser.scss';
 import CustomButton from "../../../component/Butttons/button";
 import { Switch } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import {unblockUser } from "../../../actions/TodoListAction";
+import { useDispatch, connect } from "react-redux";
+import {getProjectTasks } from "../../../actions/TodoListAction";
 
-function UnblockUserActive() {
+function UnblockUserActive(props) {
     const [change, setChange] = useState(false)
+    const [unblockData, setUnblockData] = useState([])
     const [loading,setloading]=useState(true)
+
+    const dispatch = useDispatch();
     function changeSwitch(){
         setChange(!change)
         setloading(false)
     }
-console.log(change,"change")
+    useEffect(()=>{
+        if(props.unblock_user_data){
+            setUnblockData(props.unblock_user_data)
+        }
+    },[props.unblock_user_data])
+
+    const unblock=()=>{
+        dispatch(unblockUser(props.unblock_user_data)).then(
+            props.closemodal(false)
+        )
+    }
     return (
         <div>
-            <div className="empUserName">Employee Name</div>
+            <div className="empUserName">{props.unblock_user_data&&props.unblock_user_data.employee}</div>
             <div className="useActive">
                 <div className="empStatus">Status</div>
                 {/* <div className="empActive">ACTIVE</div> */}
                 <div className={change?"useActivechange":"useActives"}>
-                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked  onChange={changeSwitch}/>
+                    <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked disabled onChange={changeSwitch}/>
                 </div>
             </div>
             <div className="userbtnActive">
-                <CustomButton btnName={"Approve "} btnCustomColor="customPrimary" />
+                <CustomButton btnName={"Approve "} onBtnClick={unblock} btnCustomColor="customPrimary" />
             </div>
         </div>
     )

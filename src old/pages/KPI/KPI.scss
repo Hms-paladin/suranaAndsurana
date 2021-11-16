@@ -1,0 +1,38 @@
+.kpi{
+    font-weight: bold;
+    padding: 5px;
+    font-size: 16px;
+}
+.kpi_main{
+    background-color: #FAFAFA;
+    border-radius: 6px;
+}
+
+.kpi_table {
+    background-color: #F3F3F3;
+}
+.kpi_sub{
+    height: 85px;
+}
+
+.kpi_btn {
+    height: 65px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.kpi_table_header {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid lightgray;
+    font-weight: 600;
+    // background-color: #0f0fab;
+}
+// .kpi_table_fields{color: white !important;}
+
+//popup//
+.title_label {
+    text-align: initial;
+    padding-left: 15px;
+}

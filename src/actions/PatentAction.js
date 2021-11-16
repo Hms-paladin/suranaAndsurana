@@ -1,4 +1,4 @@
-import { GET_COUNTRY,GET_PATENT_STATUS,INSERT_PATENT} from "../utils/Constants";
+import { GET_COUNTRY,GET_PATENT_STATUS,INSERT_PATENT,GET_PATENT_DETAILS} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import moment from 'moment';
@@ -39,6 +39,7 @@ export const getPatentStatus= () => async dispatch => {
 }
 
 export const insertPatent = (params) => async dispatch => {
+
     try {
         axios({
             method: 'POST',
@@ -47,14 +48,32 @@ export const insertPatent = (params) => async dispatch => {
           }).then((response) => {
             if (response.data.status === 1) {
                 notification.success({
-                    message: "Patent Added Successfully",
+                    message: 'Patent '+response.data.msg,
                   });
                 dispatch({type:INSERT_PATENT,payload:response.data.status})
+                dispatch(getPatentDetails(params.project_id))
               return Promise.resolve();
             }
           });
         
     } catch (err) {
         
+    }
+}
+
+export const getPatentDetails = (ProjectId) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_patent',
+            data: {
+                "project_id": ProjectId,
+            }
+        })
+            .then((response) => {
+                dispatch({ type: GET_PATENT_DETAILS, payload: response.data.data })
+            })
+
+    } catch (err) {
     }
 }

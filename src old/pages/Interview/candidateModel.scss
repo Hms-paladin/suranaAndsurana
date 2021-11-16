@@ -1,0 +1,117 @@
+.educationtable{
+    border: 1px solid #0353A4;
+    width: 100%;
+    height: 90px;
+    border-radius: 10px;
+    margin-bottom: 3px;
+    overflow: auto;
+}
+
+.tableHeading{
+    font-size: 15px;
+    color: #0353A4;
+    font-weight: 600;
+}
+
+.educationHeader{
+    display: flex;
+    padding: 5px;
+    font-size: 13px;
+    color: #707070;
+    font-weight: 600;
+    >div{
+        width: 20%;
+    }
+}
+.educationRow{
+    display: flex;
+    padding: 5px;
+    font-size: 13px;
+    color: #969090;
+    >div{
+        width: 20%;
+    }
+    .educcatiocgpa{
+        width: 20%;
+        text-align: right;
+        padding-right: 70px;
+    }
+
+}
+
+.EmployeeHeader{
+    display: flex;
+    justify-content: space-between;
+    padding: 6px;
+    font-size: 13px;
+    color: #707070;
+    font-weight: 600;
+    >div{
+        width: 12%;
+        margin-right: 5px;
+    }
+    >div:nth-child(1){
+        width:60px;
+    }
+    >div:nth-child(2){
+        width:16%;
+    }
+    >div:nth-child(3){
+        width:16%;
+    }
+}
+
+.EmployeeRow{
+    display: flex;
+    justify-content: flex-start;
+    padding: 6px;
+    font-size: 13px;
+    color: #969090;
+     >div{
+        width: 12%;
+        margin-right: 5px;
+    }
+    >div:nth-child(1){
+        width:58px;
+    }
+    >div:nth-child(2){
+        width:148px;
+    }
+    >div:nth-child(3){
+        width:144px;
+    }
+    >div:nth-child(4){
+        width:109px;
+    }
+    >div:nth-child(5){
+        width:110px;
+    }
+    >div:nth-child(6){
+        width:109px;
+    }
+    >div:nth-child(7){
+        width:108px;
+    }
+}
+
+.educationtable::-webkit-scrollbar-track {
+    border: 1px solid #023e7d;
+    padding: 4px 0;
+    background-color: white;
+    border-radius: 0px 10px 10px 0px;
+  }
+  
+  .educationtable::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  .educationtable::-webkit-scrollbar-thumb {
+    border-radius:0px 10px 10px 0px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: rgba(2, 62, 125, 0.25);;
+    border: 1px solid #023e7d;
+  }
+
+  .expDetailes{
+      margin-bottom: 13px;
+  }

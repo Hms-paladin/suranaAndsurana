@@ -1,72 +1,112 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import CustomButton from '../../component/Butttons/button';
-
+import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import DynModel from "../../component/Model/model";
 import './KRA.scss'
-import PlusIcon from "../../images/plusIcon.svg";
 import EditIcon from "../../images/edit.svg";
+import { getKraApprove, updateKraApprove, InsertApproveKra } from '../../actions/KraAction';
+import EnhancedTable from "../../component/DynTable/table";
+import PlusIcon from "../../images/plusIcon.svg";
+import moment from "moment";
+import { notification } from 'antd';
+import { getOtherTask } from '../../actions/TodoListAction';
+
 
 const KRA = (props) => {
+    const dispatch = useDispatch();
     const header = [
-        // { id: 'table_name', label: 'Table Name' },
         { id: 'activity', label: 'Activity' },
-        { id: 'subactivity', label: 'Subactivity' },
-        { id: 'target', label: 'Target' },
-        { id: 'achievement', label: 'Achievement' },
+        { id: 'percentage', label: 'Percentage' },
     ];
-
-    const [kramodel, setKramodel] = useState(false);
-
-    const [isLoaded, setIsLoaded] = useState(true);
-
-    const [kpi_form, setKpi_form] = useState({
-
-        activity: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-        },
-        subactivity: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-        },
-        percentage: {
-            value: "",
-            validation: [{ name: "required" }],
-            error: null,
-            errmsg: null,
-        },
-
-    });
-
-    function checkValidation(data, key, multipleId) {
-
-        var errorcheck = ValidationLibrary.checkValidation(
-            data,
-            kpi_form[key].validation
-        );
-        let dynObj = {
-            value: data,
-            error: !errorcheck.state,
-            errmsg: errorcheck.msg,
-            validation: kpi_form[key].validation,
-        };
+    const [kraList, setKraList] = useState([]);
+    const [rows, setRows] = useState([]);
+    const [editinput, setEditinput] = useState()
+    const [totalPercent, setTotalPercent] = useState()
+    const [kra_form, setKra_form] = useState();
+    const [approveid, setApproveid] = useState()
+    const [kraSelected, setKraSelected] = useState()
+    const [kraempname, setKraempname] = useState()
 
 
+    useEffect(() => {
+        setKraempname(props.kraempname)
+        setApproveid(props.kraApproveid)
+        dispatch(getKraApprove(props.kraApproveid))
+    }, [props.kraApproveid, props.kraempname])
 
-        setKpi_form((prevState) => ({
-            ...prevState,
-            [key]: dynObj,
-        }));
+    useEffect(() => {
+        let periodfrom = moment(props.getKraApprove[0]?.period_from).format("MMM YYYY")
+        let periodto = moment(props.getKraApprove[0]?.period_to).format("MMM YYYY")
+        setKraSelected(periodfrom + " to " + periodto)
+        setKraList(props.getKraApprove)
+        let allkraList = []
+        props.getKraApprove && props.getKraApprove.map((data, index) => {
+            allkraList.push({
+                activity: data.activity,
+                percentage: <div className="updatePercentage">
+                    <div className="percenrInput">
+                        {editinput === index ? null : <div>{data.kra_percentage}</div>}
+                        {editinput === index &&
+                            <Labelbox type="number" changeData={(data) => checkValidation(data, "percentage")} />
+                        }</div>
+                    <div>
+                        {editinput === index ? null : <img src={EditIcon} className="editView" onClick={() => editPercentage(index)} />}
+                        {editinput === index &&
+                            <img src={PlusIcon} className="editView" onClick={() => updatePercentage(index)} />}
+                    </div>
+                </div>
+            })
+        })
+        setRows(allkraList)
+
+        // TotalPercent
+        let totalPercent = props.getKraApprove?.reduce(function (accumulator, item) {
+            return accumulator + item.kra_percentage;
+        }, 0);
+        setTotalPercent(totalPercent)
+    }, [props.getKraApprove, editinput, kra_form, approveid])
+
+
+    function checkValidation(data, key) {
+        setKra_form(data)
     }
 
+    const editPercentage = useCallback((id) => {
+        setEditinput(id)
+    }, [editinput])
 
+    const updatePercentage = useCallback((id) => {
+        dispatch(updateKraApprove(props.getKraApprove[id].kra_id, kra_form, approveid)).then((response) => {
+            dispatch(getKraApprove(approveid))
+            setEditinput()
+            return Promise.resolve();
+        })
+    }, [props.getKraApprove, kra_form, approveid])
+
+    const approveKra = useCallback(() => {
+        if (totalPercent < 100 || totalPercent > 100) {
+            notification.error({
+                message: 'Total Percent Value should 100 only',
+            });
+        } else {
+            let refLength = kraList && kraList.length
+            for (let i = 0; i < refLength; i++) {
+                let activityId;
+                kraList && kraList.filter((data) => {
+                    if (data.activity === kraList[i].activity) {
+                        activityId = data.activity_id
+                    }
+                })
+                dispatch(InsertApproveKra(approveid, kraList, activityId, kraList[i].kra_percentage, refLength, i + 1)).then((response) => {
+                    dispatch(getOtherTask())
+                })
+            }
+            props.closemodal()
+
+        }
+    }, [kraList])
 
     return (
         <div>
@@ -75,55 +115,23 @@ const KRA = (props) => {
                     <Grid container spacing={2} className="ratemaster_firstgrid" className="kpi_sub">
                         <Grid item xs={7} container direction="row" className="spaceBtGrid" alignItems="center">
                             <Grid item xs={6}>
-                                <div><label style={{ fontSize: 11 }}>Employee Name</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>Rajesh</label></div>
+                                <div><label style={{ fontSize: 16 }}>Employee Name</label></div>
+                                <div><label style={{ fontWeight: 'bold' }}>{kraempname}</label></div>
                             </Grid>
                             <Grid item xs={6}>
-                                <div><label style={{ fontSize: 11 }}>Period</label></div>
-                                <div><label style={{ fontWeight: 'bold' }}>April 2021 to March 2021</label></div>
+                                <div><label style={{ fontSize: 16 }}>Period</label></div>
+                                <div><label style={{ fontWeight: 'bold' }}>{kraSelected}</label></div>
                             </Grid>
                         </Grid>
-
-
                     </Grid>
                 </div>
-
-
                 <div className="kpi_table">
-                    <Grid container >
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ height: 45 }}>
-                            <Grid item xs={4}><label className="maintitle">Activity</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle">Sub Activity</label> </Grid>
-                            <Grid item xs={4}><label className="maintitle">Percentage</label></Grid>
-
-                        </Grid>
-
-
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={4}><label className="maintitle">Hearing</label></Grid>
-                            <Grid item xs={4}><label className="maintitle">In Effective</label></Grid>
-                            <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
-
-                        </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={4}><label className="maintitle">Documentation</label></Grid>
-                            <Grid item xs={4}><label className="maintitle"></label></Grid>
-                            <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
-
-                        </Grid>
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" >
-                            <Grid item xs={4}> <label className="maintitle">Research</label></Grid>
-                            <Grid item xs={4}> <label className="maintitle"></label></Grid>
-                            <Grid item xs={4}> <div className="kra_img"><label className="maintitle">20</label> &nbsp;&nbsp;<img src={EditIcon} style={{ cursor: 'pointer', width: 19, marginTop: -23 }} /></div> </Grid>
-
-                        </Grid>
-
-                        <Grid item xs={12} container direction="row" className="spaceBtGrid kra_table_row" alignItems="center" style={{ backgroundColor: "#D8D8D8" }}>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>Total </label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}></label></Grid>
-                            <Grid item xs={4}><label className="maintitle" style={{ color: 'black' }}>60</label></Grid>
-                        </Grid>
-                    </Grid>
+                    <EnhancedTable headCells={header} aligncss="kra_table" rows={rows} />
+                </div>
+                <div className="totalPercentageshow">
+                    <div>Total</div>
+                    <div className="percentShow">{totalPercent}
+                    </div>
                 </div>
 
                 <div className="kpi_btn">
@@ -131,21 +139,28 @@ const KRA = (props) => {
                         btnName={"Approve"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-                        onBtnClick={() => setKramodel(false)}
+                        onBtnClick={() => approveKra()}
                     />
-                    <CustomButton
+                    {/* <CustomButton
                         btnName={"Return"}
                         btnCustomColor="customPrimary"
                         custombtnCSS={"btnUsergroup"}
-                        onBtnClick={() => setKramodel(false)}
+                    // onBtnClick={() => props.handleChangeCloseModel()}
 
-                    />
+                    /> */}
                 </div>
             </div>
 
         </div>
+
+
     )
 }
 
+const mapStateToProps = (state) =>
 
-export default (KRA);
+(
+    {
+        getKraApprove: state.KraReducer.getKraApprove
+    });
+export default connect(mapStateToProps)(KRA);

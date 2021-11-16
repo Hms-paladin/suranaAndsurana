@@ -14,11 +14,11 @@ import Rupees from '../../images/rupeesIcon.svg';
 
 
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
 
-
+// import { Tooltip, Button } from 'antd';
 
 function TradeMarkTabIcons(props) {
     const [variableRateIcon, setVariableRateIcon] = useState("")
@@ -34,61 +34,99 @@ function TradeMarkTabIcons(props) {
     const handleOpen = () => {
         setOpen(true);
     };
-    const TabIcons = [{ img: Rupees, title: "VARIABLE RATE" },{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: "STAGE" }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: "STAGE  MONITOR" }]
+    var TabIcons = [{ img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: `${props.litigation ? 'CASE TYPE' : 'STAGE'}` }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE' : 'STAGE  MONITOR'}` }]
 
-const HtmlTooltip = withStyles((theme) => ({
-    arrow: {
-        color: theme.palette.common.white,
-      },
-    tooltip: {
-      backgroundColor: 'white',
-      color: 'rgba(0, 0, 0, 0.87)',
-      maxWidth: 700,
-      fontSize: theme.typography.pxToRem(12),
-      border: '1px solid #dadde9',
-    },
-  }))(Tooltip);
+    const HtmlTooltip = withStyles((theme) => ({
+        arrow: {
+            color: theme.palette.common.white,
+        },
+        tooltip: {
+            backgroundColor: 'white',
+            color: 'rgba(0, 0, 0, 0.87)',
+            maxWidth: 700,
+            fontSize: theme.typography.pxToRem(12),
+            border: '1px solid #dadde9',
+        },
+    }))(Tooltip);
 
-    useEffect(()=>{
-      setVariableRateIcon(props.variableRate.billable_type_id)
-    },[props.variableRate])
+    useEffect(() => {
+        setVariableRateIcon(props.variableRate.billable_type_id)
+    }, [props.variableRate, props.checkListsAssigned, props.projectDetails])
+
     const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
+
+    var showFromCheckList = true;
+    if (props.checkListsAssigned.length > 0) {
+        showFromCheckList = false;
+    }
+
+    if (showFromCheckList) {
+        TabIcons = [{ img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" },
+        { img: TimeSheet, title: "TIME SHEET" },
+        { img: ApproveIcon, title: `${props.litigation ? 'CASE TYPE' : 'STAGE'}` }, { img: Tasks, title: "TASKS" },
+        { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE' : 'STAGE  MONITOR'}` }]
+    }
+
+    if (showFromSec == 0) {
+        TabIcons = [{ img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" },
+        { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: `${props.litigation ? 'CASE TYPE' : 'STAGE'}` },
+        { img: Tasks, title: "TASKS" },
+        { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE' : 'STAGE  MONITOR'}` }]
+    }
+    if (showFromSec == 0 && showFromCheckList) {
+        TabIcons = [{ img: Rupees, title: "OPE" },
+        { img: TimeSheet, title: "TIME SHEET" },
+        { img: ApproveIcon, title: `${props.litigation ? 'CASE TYPE' : 'STAGE'}` }, { img: Tasks, title: "TASKS" },
+        { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE' : 'STAGE  MONITOR'}` }]
+
+    }
+
     return (
         <div className="tradeMarkIcons">
- 
+
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
+
                 {TabIcons.map((data, index) => {
-                        if(showFromSec !== index ){
+
                     return (
                         <div>
                             {data.title === "TIME SHEET" ?
 
                                 <div>
-                                    
-                                    <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
-        
-                                        title={<Timesheetmodel/>}
+
+                                    {data.title === data.title && 
+                                     <HtmlTooltip open={open} onClose={handleClose} onOpen={handleOpen} arrow
+
+                                        title={<Timesheetmodel />}
                                         onMouseEnter={() => setOpen(true)}
                                         onMouseLeave={() => setOpen(false)}
                                     >
-                                        <div className="tabIconsView" onClick={() => (tabBox(data.title),setOpen(false))}>
-                                            <Grid><img src={data.img} className="tabIconImage" /></Grid>
+                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
+                                            <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
                                             <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
                                         </div>
-                                    </HtmlTooltip>
-                               
+                                    </HtmlTooltip>  } 
+
+                                     {/* <Tooltip width={1000} title={<Timesheetmodel />}>
+                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
+                                            <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
+                                            <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
+                                        </div>
+
+                                    </Tooltip>  */}
+
                                 </div>
                                 :
                                 <div className="tabIconsView" onClick={() => tabBox(data.title)}>
-                                    <Grid><img src={data.img} className="tabIconImage" /></Grid>
-                                    <Grid> <div  style={{marginTop: -2}} className="tabiconTitle">{data.title}</div></Grid>
+                                    {data.img && <Grid><img src={data.img} className="tabIconImage" /></Grid>}
+                                    <Grid> <div style={{ marginTop: 0 }} className="tabiconTitle">{data.title}</div></Grid>
                                 </div>
                             }
 
 
                         </div>
 
-                    )}
+                    )
                 })}
 
             </Grid>

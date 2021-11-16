@@ -7,16 +7,17 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-import { getInterviewApprover, getDesignationList } from "../../actions/MasterDropdowns";
-
+import { getDesignationList } from "../../actions/MasterDropdowns";
+import { GetInterviewers, GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 const HrInterviewModel = (props) => {
   const dispatch = useDispatch();
   const [roundDropdownValues, setroundDropdownValues] = useState({})
-  const [interviewerdata, setinterviewerdata] = useState([]);
   const [interviewApprover, setInterviewApprover] = useState([]);
   const [finalRound, setFinalRound] = useState(false);
   const [rounds, setRounds] = useState();
   const [designationdata, setdesignationdata] = useState([]);
+  const [finalIntId, setFinalIntId] = useState(0);
+
   const [Interviewschedule, setInterviewschedule] = useState({
     desgination: {
       value: props.selectedDesignationID,
@@ -42,6 +43,7 @@ const HrInterviewModel = (props) => {
       errmsg: null,
     }
   })
+
   useEffect(() => {
     Axios({
       method: 'GET',
@@ -67,48 +69,62 @@ const HrInterviewModel = (props) => {
 
       // setdesignationdata({ Designation })
 
-      Axios({
-        method: "get",
-        url: apiurl + "get_interviewers",
-      }).then((response) => {
-        let Interviewer = []
-        response.data.data.map((data, index) =>
-          Interviewer.push({ id: data.emp_id, value: data.name }))
-        setinterviewerdata({ Interviewer })
-
-      })
     }, [dispatch])
 
   }, [])
   // 
   useEffect(() => {
     dispatch(getDesignationList());
-    dispatch(getInterviewApprover());
+    dispatch(GetInterviewers());
   }
     , [])
 
 
   useEffect(() => {
     let InterviewApprover = []
-    props.getInterviewApprover.map((data, index) =>
+    props.GetInterviewers.map((data, index) =>
       InterviewApprover.push({ id: data.emp_id, value: data.name }))
     setInterviewApprover({ InterviewApprover })
 
+
+    // if (props.GetInterviewers.length > 0 && props.GetInterviewers) {
+    //   let data_res_id = props.GetInterviewers.find((val) => {
+    //     return (
+    //       "Venkat" == val.name
+    //     )
+    //   })
+    //   setFinalIntId(data_res_id.emp_id)
+    // }
+
     let Designation = []
     props.getDesignationList.map((data, index) =>
-      Designation.push({ id: data.designation_id, value: data.designation })
+      Designation.push({
+        value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
+        id: data.designation_id
+      })
     )
     setdesignationdata({ Designation })
-  }
-    , [props.getInterviewApprover, props.getDesignationList])
+  }, [props.GetInterviewers, props.getDesignationList])
+
+  useEffect(() => {
+    let InterviewApprover = []
+    props.GetInterviewersApprFinal.length > 0 && props.GetInterviewersApprFinal.map((data, index) =>
+      InterviewApprover.push({ id: data.emp_id, value: data.name }))
+    setInterviewApprover({ InterviewApprover })
+
+  }, [props.GetInterviewersApprFinal])
   // ____________________
 
   function checkValidation(data, key, multipleId) {
 
-    if (data == 27 && key === "round") {
-      setFinalRound(true)
-    } else {
-      setFinalRound(false)
+    if (data === 27 && key === "round") {
+      // Interviewschedule.interviewer.value = finalIntId
+      dispatch(GetInterviewersApprFinal());
+      // setFinalRound(true)
+    }
+    if (data !== 27 && key === "round") {
+      // setFinalRound(false)
+      dispatch(GetInterviewers());
     }
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -145,7 +161,7 @@ const HrInterviewModel = (props) => {
     var filtererr = targetkeys.filter(
       (obj) => Interviewschedule[obj].error == true
     );
-    console.log(filtererr.length);
+
     if (filtererr.length > 0) {
     } else {
       dispatch(InesertInterviewDetails(Interviewschedule, props.selectedId)).then(() => {
@@ -180,24 +196,19 @@ const HrInterviewModel = (props) => {
     }));
   };
 
-
-  if (rounds === Interviewschedule.round.value) {
-  }
-
   // roundName
   useEffect(() => {
     if (roundDropdownValues.hr_round) {
       const getDisableId = roundDropdownValues.hr_round.filter((data) => {
-
         return (props.roundName === data.value)
       })
       for (let i = 0; i < getDisableId[0].id; i++) {
-        roundDropdownValues.hr_round[i].disable = true
+        if (roundDropdownValues.hr_round[i])
+          roundDropdownValues.hr_round[i].disable = true
       }
     }
-    
-  }, [props])
 
+  }, [props])
 
   return (
     <div>
@@ -224,7 +235,7 @@ const HrInterviewModel = (props) => {
       <Labelbox
         type="datepicker"
         placeholder="Proposed Date"
-        disablePast={true}
+        minDate={new Date(new Date().getTime() + 86400000)}
         changeData={(data) => checkValidation(data, "propsedDate")}
         value={Interviewschedule.propsedDate.value}
         error={Interviewschedule.propsedDate.error}
@@ -234,8 +245,8 @@ const HrInterviewModel = (props) => {
         type="select"
         placeholder="Interviewer"
         changeData={(data) => checkValidation(data, "interviewer")}
-        //   dropdown={interviewerdata.Interviewer}
-        dropdown={finalRound ? interviewApprover.InterviewApprover : interviewerdata.Interviewer}
+        // disabled={finalRound ? true : false}
+        dropdown={interviewApprover.InterviewApprover}
         value={Interviewschedule.interviewer.value}
         error={Interviewschedule.interviewer.error}
         errmsg={Interviewschedule.interviewer.errmsg}
@@ -253,10 +264,10 @@ const HrInterviewModel = (props) => {
 }
 
 const mapStateToProps = (state) => (
-  // console.log(state.getOptions.getInterviewApprover, "getProcessType")
   {
-    getInterviewApprover: state.getOptions.getInterviewApprover || [],
+    GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
     getDesignationList: state.getOptions.getDesignationList || [],
+    GetInterviewersApprFinal: state.InterviewSchedule.GetInterviewersApprFinal || [],
 
   }
 );

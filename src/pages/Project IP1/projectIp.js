@@ -12,9 +12,12 @@ import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import DynModel from '../../component/Model/model';
 import Stages from '../stages/stageicon';
 import TimeSheets from '../Search/TimeSheets/timesheetStart';
+import ChangeLogTimeSheet from '../Search/TimeSheets/changeLogTimeSheet';
 import OPEModel from './opemodel';
 import StageMonitor from '../stages/StageMonitering';
-
+import {
+    getCheckListsAssigned
+} from "../../actions/CheckListAction";
 
 // IP Project:
 // 1.TradeMark==>
@@ -49,6 +52,7 @@ import LitigationAddcase from '../Litigation/litigation';
 
 //IPAB Trademark
 import IPABRectificationFiled from './IPAB Trademark/rectification_filed'
+
 import IPABRectificationDefended from './IPAB Trademark/rectification_defended'
 import AppealFiling from './IPAB Trademark/appeal_filing';
 import RevocationFiled from './IPAB Trademark/revocation_filed'
@@ -64,22 +68,28 @@ import PatentRevocationDef from './IPAB Patent/patent_revocationdef'
 // Variable Rate master  ==>
 import VariableRate from "../stages/RateMaster";
 
-import { Checkbox } from 'antd';
 import CustomButton from '../../component/Butttons/button';
-import Tasks from '../../images/menuicon.svg';
 import EnhancedTable from "../../component/DynTable/table";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SuccessIcon from "../../images/successicon.svg";
 import AddVarData from "../../images/addvardata.svg";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";
-import {InsertProjectVariableRate,getProjectVariableRate } from "../../actions/VariableRateMaster"
-
+import {
+    InsertProjectVariableRate, getProjectVariableRate, deleteVariableRate,
+    UpdateVariableRate, Update_Variable_Rate, InsertVariableRate, UpdateCheckListNoTaskLink
+} from "../../actions/VariableRateMaster"
+import { Collapse } from "antd";
+import { Checkbox } from 'antd'
+import moment from 'moment';
+import litigation from '../Litigation/litigation';
 
 const { TabPane } = Tabs;
 
 function ProjectIp(props) {
     const dispatch = useDispatch()
+    let { rowId } = useParams()
+    const { Panel } = Collapse;
     const [projectDetails, setProjectDetails] = useState({})
     const [modelOpen, setModelOpen] = useState(false)
     const [stage, setStage] = useState(false)
@@ -89,7 +99,7 @@ function ProjectIp(props) {
     const [opeModelOpen, setOpeModelOpen] = useState(false)
     const [idDetails, setidDetails] = useState({})
     const [checklistModelOpen, setChecklistModelOpen] = useState(false)
-
+    const [changeLogTimeSheetModelOpen, setChangeLogTimeSheetModelOpen] = useState(false)
 
     const [variableid, setVariableid] = useState(false);
     const [successmodel, setSuccessmodel] = useState(false);
@@ -100,122 +110,32 @@ function ProjectIp(props) {
     const [showVariableTable, setShowVariableTable] = useState([]);
     const [sendVariableData, setSendVariableData] = useState([]);
     const [notfoundmodel, setNotfoundmodel] = useState(false);
-   
+
     const [disableCondition, setDisableCondition] = useState(true);
     const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
-
     const [applicableamount, setApplicableamount] = useState({});
 
+    const [AmountChange, setAmountChange] = useState(false)
+    const [TaskItemModel, setTaskItemModel] = useState(false);
+    const [TaskItemModelID, setTaskItemModelID] = useState(0);
+    const [multiplePanel, setMultiplePanel] = useState([]);
+    const [ProjectTaskOpen_Hearing, setProjectTaskOpen_Hearing] = useState(false)
+    const [ChecklistDetails, setChecklistDetails] = useState([])
+
+    const [ChecklistChange, setChecklistChange] = useState(false);
+    const [IndexArr, setIndexArr] = useState("");
     function callback(key) {
-        console.log(key);
     }
 
     function callbackinside(key) {
-        console.log(key);
     }
 
 
-    const [Trade_Mark, setResumeFrom] = useState({
+    const [ProjectIP, setProjectIP] = useState({
 
-        mark: {
+        checklist_item_date: {
             value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        projecttype: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        goodsdescription: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        internalstutus: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        amendment: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        prioritydetails: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        applicationNumber: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        internalstutus: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        allotment: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        order: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        usagedetails: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        coments: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        indiaStatus: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        restrictions: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        clientname: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        process_type: {
-            value: "",
-            validation: [{ "name": "required" },],
-            error: null,
-            errmsg: null,
-        },
-        filling_type: {
-            value: "",
-            validation: [{ "name": "required" },],
+            validation: [{ name: "required" }],
             error: null,
             errmsg: null,
 
@@ -234,123 +154,166 @@ function ProjectIp(props) {
         { id: "amount", label: "Amount" },
         { id: "unit", label: "Unit of Measurement" },
         { id: "add", label: "Add" },
-      ];
+    ];
 
-const headers = [
-  { id: "designation", label: "Designation" },
-  { id: "activity", label: "Activity" },
-  { id: "sub_activity", label: "Sub Activity" },
-  { id: "court", label: "Court" },
-  { id: "range", label: "Range of Project cost" },
-  { id: "lower_limit", label: "Lower Limit" },
-  { id: "upper_limit", label: "Upper Limit" },
-  { id: "amount", label: "Amount" },
-  { id: "unit", label: "Unit of Measurement" },
-  { id: "del", label: "Delete" },
-];
+    const headers = [
+        { id: "designation", label: "Designation" },
+        { id: "activity", label: "Activity" },
+        { id: "sub_activity", label: "Sub Activity" },
+        { id: "court", label: "Court" },
+        { id: "range", label: "Range of Project cost" },
+        { id: "lower_limit", label: "Lower Limit" },
+        { id: "upper_limit", label: "Upper Limit" },
+        { id: "amount", label: "Amount" },
+        { id: "unit", label: "Unit of Measurement" },
+        { id: "del", label: "Delete" },
+    ];
 
-    let { rowId } = useParams()
+
     useEffect(() => {
         dispatch(getProjectDetails(rowId))
-
     }, [])
 
-    
+
     useEffect(() => {
+
+        if (props.getCheckListsAssigned) {
+            setChecklistDetails(props.getCheckListsAssigned)
+        }
+    }, [props.getCheckListsAssigned])
+
+    useEffect(() => {
+
         setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
             project_id: props.ProjectDetails[0].project_id,
             client_id: props.ProjectDetails[0].client_id,
             billable_type_id: props.ProjectDetails[0].billable_type_id
         })
-        // console.log("dtata", props.ProjectDetails[0])
+        if (props.ProjectDetails && props.ProjectDetails.length > 0) {
+            dispatch(getCheckListsAssigned(props.ProjectDetails[0].project_id))
+        }
+
     }, [props.ProjectDetails])
 
-console.log(props.ProjectDetails,"props.ProjectDetails")
+    useEffect(() => {
 
-    function onSubmit() {
-        var mainvalue = {};
-        var targetkeys = Object.keys(Trade_Mark);
-        for (var i in targetkeys) {
-            var errorcheck = ValidationLibrary.checkValidation(
-                Trade_Mark[targetkeys[i]].value,
-                Trade_Mark[targetkeys[i]].validation
+        let multipleTab = [];
+        ChecklistDetails.map((data, index) => {
+
+            multipleTab.push(
+                <Panel
+                    header={`${data.check_list} ( ${data.check_list_type} )`}
+                    key={index + 1}
+                >
+                    <div>
+                        <div className="taskitem_heading">
+                            <div style={{ whiteSpace: 'nowrap' }} >Task Item</div>
+                            <div >status</div>
+                            <div >Assigned To</div>
+                            <div >Task End Date</div>
+                        </div>
+                        {data.details.map((data1, index1) => {
+                            return (<>
+                                <div className="taskitem_div">
+                                    <div >{data1.task}</div>
+                                    <div >{(data.check_list_type === "No Task Linked" && data1.status === "In Progress") ? <Checkbox onClick={(e) => onTaskItemClick(e, data1.check_list_details_id, index, index1, data)} checked={data1.checked ? true : false} /> : <div className="status_Btn">{data1.status}</div>} </div>
+                                    <div >{data1.name}</div>
+                                    <div >{data.check_list_type === "No Task Linked" && data1.status === "In Progress" ? ' - ' : moment(data1.end_date).format("DD-MMM-YYYY")}</div>
+                                </div>
+                            </>
+                            )
+                        })}
+                    </div>
+                </Panel>
             );
-            Trade_Mark[targetkeys[i]].error = !errorcheck.state;
-            Trade_Mark[targetkeys[i]].errmsg = errorcheck.msg;
-            mainvalue[targetkeys[i]] = Trade_Mark[targetkeys[i]].value;
+
+
+        });
+
+        setMultiplePanel(multipleTab);
+    }, [ChecklistDetails, ChecklistChange])
+
+    const onTaskItemClick = (e, data, index, index1, data1) => {
+        setIndexArr([index, index1, data1.start_date, data1.end_date])
+        if (e.target.checked === true) {
+            ChecklistDetails[index].details[index1].checked = true
         }
-        var filtererr = targetkeys.filter(
-            (obj) => Trade_Mark[obj].error == true
-        );
-        console.log(filtererr.length);
-        if (filtererr.length > 0) {
-            // setResumeFrom({ error: true });
-        } else {
-            // setResumeFrom({ error: false });
-
-            dispatch(InesertResume(Trade_Mark)).then(() => {
-                handleCancel()
-            })
+        else {
+            ChecklistDetails[index].details[index1].checked = false
         }
+        ProjectIP.checklist_item_date.value = data1.end_date;
+        setChecklistChange(!ChecklistChange)
 
-        setResumeFrom(prevState => ({
-            ...prevState
-        }));
-    };
-
-    const handleCancel = () => {
-        let ResumeFrom_key = [
-            "mark", "projecttype", "goodsdescription", "internalstutus", "basicQualification", "additionalQualification1", "additionalQualification2", "institution", "lastEmployer", "startDate", "endDate", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "industry"
-        ]
-
-        ResumeFrom_key.map((data) => {
-            Trade_Mark[data].value = ""
-        })
-        setResumeFrom(prevState => ({
+        setTaskItemModel(true)
+        setTaskItemModelID(data)
+        setProjectIP((prevState) => ({
             ...prevState,
         }));
     }
 
-    function checkValidation(data, key, multipleId) {
+    const onTaskItemComplete = async () => {
+        var mainvalue = {};
+        var targetkeys = Object.keys(ProjectIP);
 
-        var errorcheck = ValidationLibrary.checkValidation(
-            data,
-            Trade_Mark[key].validation
+        for (var i in targetkeys) {
+            var errorcheck = ValidationLibrary.checkValidation(
+                ProjectIP[targetkeys[i]].value,
+                ProjectIP[targetkeys[i]].validation
+            );
+            ProjectIP[targetkeys[i]].error = !errorcheck.state;
+            ProjectIP[targetkeys[i]].errmsg = errorcheck.msg;
+            mainvalue[targetkeys[i]] = ProjectIP[targetkeys[i]].value;
+        }
+        var filtererr = targetkeys.filter(
+            (obj) => ProjectIP[obj].error == true
         );
-        let dynObj = {
-            value: data,
-            error: !errorcheck.state,
-            errmsg: errorcheck.msg,
-            validation: Trade_Mark[key].validation
+
+        if (filtererr.length > 0) {
+            // setInsertTaskForm({ error: true });
+        } else {
+            await dispatch(UpdateCheckListNoTaskLink(TaskItemModelID, rowId, ProjectIP.checklist_item_date.value))
+            setTaskItemModel(false)
+
+            ProjectIP.checklist_item_date.value = ""
+
         }
-
-        // only for multi select (start)
-
-        let multipleIdList = []
-
-        if (multipleId) {
-            multipleId.map((item) => {
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i] === item.value) {
-                        multipleIdList.push(item.id)
-                    }
-                }
-            })
-            dynObj.valueById = multipleIdList.toString()
-        }
-        // (end)
-
-        setResumeFrom(prevState => ({
+        setProjectIP((prevState) => ({
             ...prevState,
-            [key]: dynObj,
         }));
+    }
 
-    };
+    const onTaskItemCancel = async () => {
+        ChecklistDetails[IndexArr[0]].details[IndexArr[1]].checked = false
+        setChecklistDetails((prevState) => ([
+            ...prevState,
+        ]));
+        setTaskItemModel(false)
+        setChecklistChange(!ChecklistChange)
+        ProjectIP.checklist_item_date.value = ""
+        setProjectIP((prevState) => ({
+            ...prevState,
+        }));
+    }
+
+
+    // const handleCancel = () => {
+    //     let ResumeFrom_key = [
+    //         "mark", "projecttype", "goodsdescription", "internalstutus", "basicQualification", "additionalQualification1", "additionalQualification2", "institution", "lastEmployer", "startDate", "endDate", "email1", "email2", "phone1", "phone2", "skills", "Traits", "certifications", "specializations", "talents", "intrests", "contactPhone", "emailId", "mailAddress", "state", "city", "language", "industry"
+    //     ]
+
+    //     ResumeFrom_key.map((data) => {
+    //         ProjectIP[data].value = ""
+    //     })
+    //     setProjectIP(prevState => ({
+    //         ...prevState,
+    //     }));
+    // }
+
 
     const modelContent = () => {
         return (
-            <ProjectTaskModel />
+            <ProjectTaskModel ProjectTaskOpen_Hearing={ProjectTaskOpen_Hearing} model_close={() => setModelOpen(false)} />
         )
     }
 
@@ -358,26 +321,40 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
 
         return (
 
-            <TimeSheets projectrow={projectDetails} />
+            <TimeSheets close_model={() => setTimesheetModelOpen(false)} projectrow={projectDetails} />
+        )
+    }
+
+    const changeLogTimesheetmodelContent = () => {
+
+        return (
+
+            <ChangeLogTimeSheet projectrow={projectDetails} />
         )
     }
 
     const opeModel = () => {
+
+        const handleFieldNullExp = (bln) => {
+            setOpeModelOpen(bln);
+
+        };
         return (
-            <OPEModel />
+            <OPEModel handleChangeCloseModel={(bln) => handleFieldNullExp(bln)} />
         )
     }
 
     function projectTaskModel(boxName) {
         if (boxName === "TASKS") {
+            setProjectTaskOpen_Hearing(false)
             setModelOpen(true)
         }
-        else if (boxName === "STAGE") {
+        else if (boxName === "STAGE" || boxName === "CASE TYPE") {
             setStage(true)
             setProjecttypes(false)
             setStageMonitor(false)
         }
-        else if (boxName === "STAGE  MONITOR") {
+        else if (boxName === "STAGE  MONITOR" || boxName === "CASE LIFE CYCLE") {
             setStageMonitor(true)
             setStage(false)
             setProjecttypes(false)
@@ -390,8 +367,8 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
 
         }
         else if (boxName === "VARIABLE RATE") {
-            
-        dispatch(getProjectVariableRate(props.ProjectDetails[0].project_id))
+
+            dispatch(getProjectVariableRate(props.ProjectDetails[0].project_id))
             setVariableid(true)
         }
         else if (boxName === "TIME SHEET") {
@@ -404,273 +381,306 @@ console.log(props.ProjectDetails,"props.ProjectDetails")
             setChecklistModelOpen(true)
         }
 
+        else if (boxName == "BACK LOG TIME SHEET") {
+            setChangeLogTimeSheetModelOpen(true)
+            // setChecklistModelOpen(true)
+        }
+
 
     }
 
-    // console.log(props.ProjectDetails[0].sub_project_type, "props.ProjectDetails[0].sub_project_type")
-console.log(projectSearchCreate,"projectSearchCreate")
-      //----------
+    //----------
 
-     function onsubmitvariablerate(){
-        dispatch(InsertProjectVariableRate(sendVariableData)).then((response) => {
-            setVariableid(false);
-          });
-      }
-      const onDelete = (i) => {
-          console.log(i,"showVariableTable")
-        if (i > -1) {
-          showVariableTable.splice(i, 1);
-          sendVariableData.splice(i, 1);
-        }
-        setShowVariableTable([...showVariableTable]);
-        setSendVariableData([...sendVariableData]);
-      };
+    function onsubmitvariablerate() {
+        setVariableid(false)
+        let AddRow = props.searchVariableRate.find((data) => {
+            return data.stage_list_id
+        })
+        dispatch(UpdateVariableRate(sendVariableData, projectSearchCreate, props.searchVariableRate
+            , applicableamount, props.getProjectVariableRate
+        )).then((response) => {
+            setDisableCondition(true)
+        })
 
-      const onchangeAmount = (data, key) => {
-        console.log(parseInt(data), key, "onchangeAmount")
-        // if (key === "amountSearch" && data) {
+
+    }
+
+    function PlusInsertVariableRate(data, index) {
+
+        data.project_id = rowId
+        data.Amount = projectSearchCreate['amountSearch' + index]
+
+        dispatch(InsertProjectVariableRate(data)).then((response) => {
+            setVariableid(true);
+            ///
+            setDisableCondition(true);
+            setApplicableamount({});
+            setPrpjectSearchCreate({});
+
+        });
+
         setPrpjectSearchCreate((prevState) => ({
-          ...prevState,
-          [key]: data,
+            ...prevState,
         }));
+    }
+    const onDelete = (id) => {
+        dispatch(deleteVariableRate(id, props.getProjectVariableRate[0].project_id))
+        ///
+        setDisableCondition(true);
+        setApplicableamount({});
+        setPrpjectSearchCreate({});
+    };
+
+    const onchangeAmount = (data, key) => {
+        setAmountChange(true)
+
+        // if (key && data) {
         setDisableCondition(false)
-        // }
-      };
-
-      const onchangeapplicableAmount = (data, key) => {
-        console.log(parseInt(data), key, "onchangeAmountappli")
-        // if (key === "amountSearch" && data) {
-            setApplicableamount((prevState) => ({
-          ...prevState,
-          [key]: data,
+        setPrpjectSearchCreate((prevState) => ({
+            ...prevState,
+            [key]: data,
         }));
-        // setDisableCondition(false)
+
+
         // }
-      };
+    };
 
-  const addTempTable = (data, index) => {
-    applicableamount['amountapplicable' + parseInt(showVariableTable.length+1)] = data.Amount;
-    console.log(showVariableTable.length,"applicableamount")
-    const TabLen = showVariableTable.length;
-    showVariableTable.push({
-      designation: data.designation,
-      activity: data.activity,
-      sub_activity: data.sub_activity,
-      court: data.location,
-      costRange: data.range,
-      lowerLimit: data.lower_limit,
-      upperLimit: data.upper_limit,
-      amount:
-      <Labelbox
-      type="text"
-      placeholder={"Amount"}
-      changeData={(data) => onchangeapplicableAmount(data, "amountapplicable" + parseInt(showVariableTable.length+1))}
-      value={ applicableamount['amountapplicable' + parseInt(showVariableTable.length+1)]}
-      />,
-      UOM: data.unit,
-      del: (
-        <DeleteIcon
-          style={{ cursor: "pointer", width: 19 }}
-          fontSize="small"
-          
-          onClick={() => onDelete(TabLen)}
-        />
-      ),
-    });
-    setShowVariableTable([...showVariableTable]);
-    sendVariableData.push({
-      project_id:props.ProjectDetails[0].project_id,
-      designation_id: data.designation_id,
-      activity_id: data.activity_id,
-      sub_activity_id: data.sub_activity_id,
-      location_id: data.location_id,
-      range_id: data.range_id,
-      lower_limit: data.lower_limit,
-      upper_limit: data.upper_limit,
-      base_rate: data.Amount,
-      unit_of_measure: data.unit_id,
-    });
-    setSendVariableData([...sendVariableData]);
-  };
-  ////
-  useEffect(()=>{
-    let searchVariableTableData = [];
-    let sendprojVariableTableData = [];
-    
-    props.getProjectVariableRate.length>0 &&props.getProjectVariableRate.map((data, index) => {
-        applicableamount['amountapplicable' + index] = data.amount;
-        searchVariableTableData.push({
-      designation: data.designation,
-      activity: data.activity,
-      sub_activity: data.sub_activity,
-      court: data.court,
-      costRange: data.range,
-      lowerLimit: data.lower_limit,
-      upperLimit: data.upper_limit,
-      amount: <Labelbox
-      type="text"
-      placeholder={"Amount"}
-      changeData={(data) => onchangeapplicableAmount(data, "amountapplicable" + index)}
-      value={ applicableamount['amountapplicable' + index]}
-      />,
-      UOM: data.unit_of_measure,
-      del: (
-        <DeleteIcon
-          style={{ cursor: "pointer", width: 19 }}
-          fontSize="small"
-          
-          onClick={() => onDelete(index)}
-        />
-      ),
-    });
+    const onchangeapplicableAmount = (data, key) => {
 
-    sendprojVariableTableData.push({
-        project_id:props.ProjectDetails[0].project_id,
-        rate_master_id: data.rate_master_id,
-        base_rate: data.amount,
-      });
+        if (data === '') {
+            data = 0
+        }
+        setAmountChange(true)
 
-    })
-    setShowVariableTable([...searchVariableTableData]);
-    setSendVariableData([...sendprojVariableTableData]);
+        setDisableCondition(false)
+        // if (key === "amt" && data) {
+        setApplicableamount((prevState) => ({
+            ...prevState,
+            [key]: parseInt(data),
+        }));
 
-  },[props.getProjectVariableRate])
+        // }
 
-   console.log(applicableamount,"applicableamount")
-  ///
+
+    };
+    //applicableamount,props.getProjectVariableRate
+    useEffect(() => {
+
+        let searchVariableTableData = [];
+        let sendprojVariableTableData = [];
+        let tableData = [];
+        const TabLen = props.getProjectVariableRate.length;
+
+        props.getProjectVariableRate.length > 0 && props.getProjectVariableRate.map((data, index) => {
+            // setApplicableamount({});
+            tableData.push(data)
+
+            if (disableCondition) {
+                applicableamount["amt" + index] = data.amount;
+            }
+
+            searchVariableTableData.push({
+                designation: data.designation,
+                activity: data.activity,
+                sub_activity: data.sub_activity,
+                court: data.court,
+                costRange: data.range,
+                lowerLimit: data.lower_limit,
+                upperLimit: data.upper_limit,
+                amount: <Labelbox
+                    type="text"
+                    placeholder={"Amount"}
+                    changeData={(data) => onchangeapplicableAmount(data, "amt" + index)}
+                    //   SubmitData={()=>onsubmitvariablerate(data.rate_master_id)}
+                    value={applicableamount["amt" + index]}
+
+                />,
+                UOM: data.unit_of_measure,
+                del: (
+                    <DeleteIcon
+                        style={{ cursor: "pointer", width: 19 }}
+                        fontSize="small"
+                        onClick={() => onDelete(data.rate_master_id)}
+                    />
+                ),
+            });
+            setShowVariableTable([...showVariableTable]);
+            sendprojVariableTableData.push({
+                project_id: props.ProjectDetails[0].project_id,
+                rate_master_id: data.rate_master_id,
+                base_rate: data.amount,
+            });
+
+        })
+        setShowVariableTable([...searchVariableTableData]);
+        setSendVariableData([...sendprojVariableTableData]);
+
+    }, [props.getProjectVariableRate, applicableamount])
+
+    ///
     useEffect(() => {
         if (props.lenghtData !== 0) {
-          let searchVariableTableData = [];
-          setNotfoundmodel(false);
-          props.searchVariableRate.map((data, index) => {
-            if (disableCondition) {
-              projectSearchCreate['amountSearch' + index] = data.Amount;
-            }
-            searchVariableTableData.push({
-              designation: data.designation,
-              activity: data.activity,
-              sub_activity: data.sub_activity,
-              court: data.location,
-              costRange: data.range,
-              lowerLimit: data.lower_limit,
-              upperLimit: data.upper_limit,
-              amount: (
-                <Labelbox
-                  type="text"
-                  placeholder={"Amount"}
-                  changeData={(data) => onchangeAmount(data, "amountSearch" + index)}
-                  value={projectSearchCreate['amountSearch' + index]}
-                />
-              ),
-              UOM: data.unit,
-              add: (
-                <img
-                  src={PlusIcon}
-                  style={{ cursor: "pointer", width: 19 }}
-                  onClick={() => addTempTable(data, index)}
-                />
-              ),
+            let searchVariableTableData = [];
+            setNotfoundmodel(false);
+
+            props.searchVariableRate.map((data, index) => {
+                if (disableCondition) {
+
+                    projectSearchCreate['amountSearch' + index] = data.Amount;
+
+                }
+                searchVariableTableData.push({
+                    designation: data.designation,
+                    activity: data.activity,
+                    sub_activity: data.sub_activity,
+                    court: data.location,
+                    costRange: data.range,
+                    lowerLimit: data.lower_limit,
+                    upperLimit: data.upper_limit,
+                    amount: (
+                        <Labelbox
+                            type="text"
+                            placeholder={"Amount"}
+                            changeData={(data) => onchangeAmount(data, "amountSearch" + index)}
+                            value={projectSearchCreate["amountSearch" + index]}
+                        />
+                    ),
+                    UOM: data.unit,
+                    add: (
+                        <img
+                            src={PlusIcon}
+                            style={{ cursor: "pointer", width: 19 }}
+                            onClick={() => PlusInsertVariableRate(data, index)}
+                        />
+                    ),
+                });
             });
-          });
-          setAddTableData({ searchVariableTableData });
+            setAddTableData({ searchVariableTableData });
         } else {
-          setAddsearchdata(false);
-          setNotfoundmodel(true)
+            setAddsearchdata(false);
+            setNotfoundmodel(true)
         }
-    
-      }, [props.searchVariableRate, props.lenghtData, projectSearchCreate]);
-console.log(showVariableTable,"showVariableTable")
-      
+
+    }, [props.getProjectVariableRate, props.searchVariableRate, props.lenghtData, projectSearchCreate, disableCondition]);
+
+
     const variablerateModel = () => {
         function onSearch() {
-          setSearchdata(true);
-          setAddsearchdata(false);
-          // setVariableRateCall(!variableRateCall)
-          setNotfoundmodel(true);
+            setSearchdata(true);
+            setAddsearchdata(false);
+            // setVariableRateCall(!variableRateCall)
+            setNotfoundmodel(true);
         }
-    
+
         function addSearchData() {
-          setAddsearchdata(true);
-          setSearchdata(false);
-          setSuccessmodel(true);
+            setAddsearchdata(true);
+            setSearchdata(false);
+            setSuccessmodel(true);
         }
-    
+
         return (
-          <div>
-            <VariableRate
-              variablebtnchange={true}
-              variabletablechange={true}
-              setShowSearchTable={() => setAddsearchdata(true)}
-              setNoSearchResult={() => setNotfoundmodel(true)}
-            />
-            {searchdata && (
-              <div className="addvariableData">
-                <img src={AddVarData} onClick={addSearchData} />
-              </div>
-            )}
-            {addsearchdata && (
-              <>
-                <div>
-                  <EnhancedTable
-                    headCells={header}
-                    rows={addTableData.searchVariableTableData || []}
-                  />
-                </div>
-                </>
-            )}
-                {showVariableTable.length !== 0 ? (
-                  
-                  <div>
-                        <div style={{fontSize:20,fontWeight:'bold'}}> Applicable Rates</div>
-                            <EnhancedTable headCells={headers} rows={showVariableTable || []} />
-                  </div>
-                ) : (
-                  ""
+            <div>
+                <VariableRate
+                    variablebtnchange={true}
+                    variabletablechange={true}
+                    AmountChange={true}
+                    setShowSearchTable={() => setAddsearchdata(true)}
+                    setNoSearchResult={() => setNotfoundmodel(true)}
+                />
+                {searchdata && (
+                    <div className="addvariableData">
+                        <img src={AddVarData} onClick={addSearchData} />
+                    </div>
+                )}
+                {addsearchdata && (
+                    <>
+                        <div>
+                            <EnhancedTable
+                                headCells={header}
+                                var_rate
+                                rows={addTableData.searchVariableTableData || []}
+                            />
+                        </div>
+                    </>
                 )}
 
-                  <div className="VariableRateButton">
+                {showVariableTable.length !== 0 &&
+                    <div>
+                        <div style={{ fontSize: 20, fontWeight: 'bold' }}> Applicable Rates</div>
+                        <EnhancedTable headCells={headers} var_rate rows={showVariableTable || []} />
+                    </div>}
+
+
+                <div className="VariableRateButton">
                     <CustomButton btnName={"Save"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => onsubmitvariablerate()} />
-                    <CustomButton btnName={"Cancel "}  custombtnCSS={"btnNotFound"} onBtnClick={() =>  setVariableid(false)} />
-                  </div>
-             
-            <DynModel
-              modelTitle={"Success"}
-              handleChangeModel={successmodel}
-              handleChangeCloseModel={(bln) => setSuccessmodel(bln)}
-              content={
-                <div className="successModel">
-                  <img src={SuccessIcon} />
-                  <div>Data Successfully Added in Variable Rate Master</div>
+                    <CustomButton btnName={"Cancel "} custombtnCSS={"btnNotFound"} onBtnClick={() => setVariableid(false)} />
                 </div>
-              }
-              width={400}
-            />
-            <DynModel
-              modelTitle={"Billing Criteria Not Found"}
-              handleChangeModel={notfoundmodel}
-              handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
-              content={
-                <div className="successModel">
-                  <div>
-                    {" "}
-                    <label className="notfound_label">
-                      Do You Want To Continue ?
-                    </label>
-                  </div>
-                  <div className="customNotFoundbtn">
-                    <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
-                    <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
-                  </div>
-                </div>
-              }
-              width={400}
-            />
-          </div>
+
+                <DynModel
+                    modelTitle={"Success"}
+                    handleChangeModel={successmodel}
+                    handleChangeCloseModel={(bln) => setSuccessmodel(bln)}
+                    content={
+                        <div className="successModel">
+                            <img src={SuccessIcon} />
+                            <div>Data Successfully Added in Variable Rate Master</div>
+                        </div>
+                    }
+                    width={400}
+                />
+                <DynModel
+                    modelTitle={"Billing Criteria Not Found"}
+                    handleChangeModel={notfoundmodel}
+                    handleChangeCloseModel={(bln) => setNotfoundmodel(bln)}
+                    content={
+                        <div className="successModel">
+                            <div>
+                                {" "}
+                                <label className="notfound_label">
+                                    Do You Want to Add this Item ?
+                                </label>
+                            </div>
+                            <div className="customNotFoundbtn">
+                                <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+                                <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setNotfoundmodel(false)} />
+                            </div>
+                        </div>
+                    }
+                    width={400}
+                />
+
+            </div>
         );
-      };
-      console.log()
+    };
+
+    function litigationHearingModel(data) {
+        setModelOpen(data)
+        setProjectTaskOpen_Hearing(data)
+    }
+
+    function checkValidation(data, key) {
+        let dynObj;
+
+        var errorcheck = ValidationLibrary.checkValidation(
+            data,
+            ProjectIP[key].validation
+        );
+        dynObj = {
+            value: data,
+            error: !errorcheck.state,
+            errmsg: errorcheck.msg,
+            validation: ProjectIP[key].validation,
+        };
+
+        setProjectIP((prevState) => ({
+            ...prevState,
+            [key]: dynObj,
+        }));
+    }
     return (
+
         <div>
+
             <div className="projectIpContainer">
                 {props.ProjectDetails.map((data) => {
                     return (
@@ -712,11 +722,11 @@ console.log(showVariableTable,"showVariableTable")
                                         <div>{data.billable_type}</div>
                                     </div>
                                     <div className="projectIpdata">
-                                        <div className="projectTitle">HOD / Attorney</div>
+                                        <div className="projectTitle">{props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? "DDA" : "HOD / Attorney"}</div>
                                         <div>{data.HR}</div>
                                     </div>
                                     <div className="projectIpdata">
-                                        <div className="projectTitle">Counsel</div>
+                                        <div className="projectTitle">{props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? "DDRA" : "Counsel"}</div>
                                         <div>{data.councel}</div>
                                     </div>
 
@@ -728,6 +738,26 @@ console.log(showVariableTable,"showVariableTable")
                                         <div className="projectTitle">Comments</div>
                                         <div>{data.comments}</div>
                                     </div>
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].base_rate != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Base Rate</div>
+                                        <div>{data.details[0].base_rate}</div>
+                                    </div>}
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].unit != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Unit of Measure</div>
+                                        <div>{data.details[0].unit}</div>
+                                    </div>}
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].limit_in_hours != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Limit</div>
+                                        <div>{data.details[0].limit_in_hours}</div>
+                                    </div>}
+
+                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].additional_rate != null && <div className="projectIpdata">
+                                        <div className="projectTitle">Additional Rate Hourly</div>
+                                        <div>{data.details[0].additional_rate}</div>
+                                    </div>}
                                 </div>
 
                             </Grid>
@@ -749,44 +779,63 @@ console.log(showVariableTable,"showVariableTable")
                             </div>
                         }
 
-                        {/* {props.ProjectDetails[0].project_type !== "IP Projects" && props.ProjectDetails[0].project_type !== "" &&
-                            props.ProjectDetails[0].project_type} */}
                     </div>
-                    <div className="TabIconsview"><TabIcons variableRate={idDetails} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
-                    {/* <DynModel modelTitle={"Variable Rate"} handleChangeModel={variablemodelOpen} handleChangeCloseModel={(bln) => setVariableModelOpen(bln)} content={<RateMaster  variablebtnchange={true} variabletablechange={true}   setShowSearchTable={() => setAddsearchdata(true)} project_ip={props.ProjectDetails[0]} />} width={1200} />
-                     */}
+                    <div className="TabIconsview"
+                    ><TabIcons litigation={props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? 1 : undefined} variableRate={idDetails} checkListsAssigned={props.getCheckListsAssigned} projectDetails={props.ProjectDetails[0]} onChangeTabBox={(data) => projectTaskModel(data)} /></div>
 
+                    <DynModel modelTitle={"BACK LOG TIME SHEET"} handleChangeModel={changeLogTimeSheetModelOpen} handleChangeCloseModel={(bln) => setChangeLogTimeSheetModelOpen(bln)} content={changeLogTimesheetmodelContent()} width={800} />
                     <DynModel
-                    modelTitle={"Variable Rate"}
-                    handleChangeModel={variableid}
-                    handleChangeCloseModel={(bln) => setVariableid(bln)}
-                    content={variablerateModel()} width={1300} />
+                        modelTitle={"Variable Rate"}
+                        handleChangeModel={variableid}
+                        handleChangeCloseModel={(bln) => setVariableid(bln)}
+                        content={variablerateModel()} width={1300} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
                     <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={
-                            <div style={{ textAlign: 'center' }}>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 1</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 2</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}></Grid></Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 3</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
-                                    <Grid item xs={12} container direction="row" className="spaceBtGrid" alignItems="center"><Grid item xs={7}> <label className="checklist_label">Check List 4</label></Grid><Grid item xs={2}><Checkbox /></Grid><Grid item xs={3}><img src={Tasks} className="tabIconImage" /></Grid></Grid>
-                                    <div className="customchecklistbtn">
-                                    <CustomButton
-                                        btnName={"Save"}
-                                        btnCustomColor="customPrimary"
-                                        custombtnCSS={"btnchecklist"}
-                                        onBtnClick={() => setChecklistModelOpen(false)}
-                                    />
-                                    </div>
-                                </Grid>
+                            <div className="checklist_collapse">
+                                <Collapse >{multiplePanel}</Collapse>
                             </div>
 
-                        } width={300} />
+                        } width={1000} />
+                    <DynModel
+                        modelTitle={"TaskItem Completion"}
+                        handleChangeModel={TaskItemModel}
+                        handleChangeCloseModel={onTaskItemCancel}
+                        content={
+                            <div className="successModel">
+                                <div>
+                                    {" "}
+                                    <label className="notfound_label">
+                                        Do You Want Complete This Item ?
+                                    </label>
+                                </div>
+                                <Grid item xs={12} container direction="row" style={{ justifyContent: 'center', marginTop: 10 }} spacing={2}>
+                                    <Grid item xs={9} container direction="column">
+                                        <Labelbox type="datepicker"
+                                            // disablePast={true}
+                                            minDate={moment(`${IndexArr[2]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
+                                            maxDate={moment(`${IndexArr[3]} 11:00:00 AM`, "YYYY-MM-DD HH:mm:ss A").format()}
+                                            changeData={(data) =>
+                                                checkValidation(data, "checklist_item_date")
+                                            }
+                                            value={ProjectIP.checklist_item_date.value}
+                                            error={ProjectIP.checklist_item_date.error}
+                                            errmsg={ProjectIP.checklist_item_date.errmsg} />
+                                    </Grid>
+                                </Grid>
+                                <div className="customNotFoundbtn">
+                                    <CustomButton btnName={"Yes"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onTaskItemComplete} />
+                                    <CustomButton btnName={"No "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onTaskItemCancel} />
+                                </div>
+                            </div>
+                        }
+                        width={400}
+                    />
 
                     {/* TradeMark */}
-                    {stageMonitor && <StageMonitor />}
+                    {stageMonitor && <StageMonitor cancel_btn={(data) => projectTaskModel(data)} />}
                     {stage && <Stages projectDetails={props.ProjectDetails} />}
 
                     {projecttypes && <div>{
@@ -851,7 +900,7 @@ console.log(showVariableTable,"showVariableTable")
                         {/*  */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase id_Props={idDetails} />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase TaskModel={(data) => litigationHearingModel(data)} id_Props={idDetails} />
                         }
 
                         {/* IPAB Trademark */}
@@ -878,11 +927,11 @@ console.log(showVariableTable,"showVariableTable")
                         {/* IPAB Patent */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <PatentRectificationFiled/>
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Filed" && <PatentRectificationFiled />
                         }
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <PatentRectificationDef/>
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Rectification" && props.ProjectDetails[0].filing_type === "Defended" && <PatentRectificationDef />
                         }
 
                         {
@@ -906,13 +955,13 @@ console.log(showVariableTable,"showVariableTable")
                 <TabPane tab="Intellectual Property" key="1">
                     <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
                         <TabPane tab="Trade Mark" key="1">
-                            <TradeMarkTab Type={Trade_Mark} />
+                            <TradeMarkTab Type={ProjectIP} />
                         </TabPane>
                         <TabPane tab="Design" key="2">
-                            <Design Type={Trade_Mark} />
+                            <Design Type={ProjectIP} />
                         </TabPane>
                         <TabPane tab="Patent" key="3">
-                            <Patent Type={Trade_Mark} />
+                            <Patent Type={ProjectIP} />
                         </TabPane>
                         <TabPane tab="CopyRight" key="4">
                             <CopyRight />
@@ -923,7 +972,7 @@ console.log(showVariableTable,"showVariableTable")
             </Tabs>
  */}
             </div>
-        </div>
+        </div >
     )
 }
 const mapStateToProps = (state) => (
@@ -931,6 +980,10 @@ const mapStateToProps = (state) => (
         ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
         searchVariableRate: state.variableRateMaster.searchVariableRate,
         getProjectVariableRate: state.variableRateMaster.getProjectVariableRate,
+        UpdateProjectVariableRate: state.variableRateMaster.updateProjectVariableRate,
+        UpdateVariableRate: state.variableRateMaster.UpdateVariableRate || [],
+        getCheckListsAssigned: state.CheckListReducer.getCheckListsAssigned || [],
+
     }
 );
 

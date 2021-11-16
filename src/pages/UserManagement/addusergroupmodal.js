@@ -35,7 +35,7 @@ function UserGroupModal(props) {
   // }, [props.nullFieldValue])
 
   function checkValidation(data, key) {
-    console.log(data, "onchangeValue");
+
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       UserGroup[key].validation
@@ -46,7 +46,7 @@ function UserGroupModal(props) {
       errmsg: errorcheck.msg,
       validation: UserGroup[key].validation,
     };
-    // console.log(UserGroup.project_type.value, "UserGroup.client.value")
+
     setGroupName(data);
     setUserGroup((prevState) => ({
       ...prevState,
@@ -69,7 +69,6 @@ function UserGroupModal(props) {
       mainvalue[targetkeys[i]] = UserGroup[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter((obj) => UserGroup[obj].error == true);
-    console.log(filtererr.length, "filtererr.length");
 
     if (filtererr.length >= 0) {
     } else {
@@ -109,7 +108,7 @@ function UserGroupModal(props) {
     From_key.map((data) => {
       try {
         UserGroup[data].value = "";
-        console.log("mapping", UserGroup[data].value);
+
       } catch (error) {
         throw error;
       }

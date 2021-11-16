@@ -5,10 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import CustomButton from '../../../component/Butttons/button';
 import { apiurl } from "../../../utils/baseUrl";
 import { connect, useDispatch } from "react-redux";
-import { getActivity, getPriorityList, getTagList, inserTask, getAssignedTo, getLocation } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
+import { getEmpListDepartment } from '../../../actions/MasterDropdowns';
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import { useParams } from "react-router-dom";
 function ProjectTaskModel(props) {
@@ -25,7 +25,7 @@ function ProjectTaskModel(props) {
   const [InsertTaskForm, setInsertTaskForm] = useState({
     activity: {
       value: "",
-      //validation: [{ name: "required" }],
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -37,7 +37,7 @@ function ProjectTaskModel(props) {
     },
     location: {
       value: "",
-      validation: [{ name: "required" }],
+      validation: [],
       error: null,
       errmsg: null,
     },
@@ -98,7 +98,7 @@ function ProjectTaskModel(props) {
     From_key.map((data) => {
       try {
         InsertTaskForm[data].value = "";
-        console.log("mapping", InsertTaskForm[data].value);
+
       } catch (error) {
         throw error;
       }
@@ -115,105 +115,60 @@ function ProjectTaskModel(props) {
     dispatch(getActivity());
     dispatch(getTagList());
     dispatch(getPriorityList());
-    dispatch(getAssignedTo());
+    dispatch(getEmpListDepartment());
     dispatch(getLocation());
 
   }, []);
 
-
-  const [ProjectTask_Model, setResumeFrom] = useState({
-
-    startdate: {
-      value: "",
-      validation: [{ "name": "required" },],
-      error: null,
-      errmsg: null,
-    },
-    enddate: {
-      value: "",
-      validation: [{ "name": "required" },],
-      error: null,
-      errmsg: null,
-    },
-    description: {
-      value: "",
-      validation: [{ "name": "required" },],
-      error: null,
-      errmsg: null,
-    },
-
-
-
-
-  })
-
   function onSubmit() {
     var mainvalue = {};
-    var targetkeys = Object.keys(ProjectTask_Model);
+    var targetkeys = Object.keys(InsertTaskForm);
+
     for (var i in targetkeys) {
       var errorcheck = ValidationLibrary.checkValidation(
-        ProjectTask_Model[targetkeys[i]].value,
-        ProjectTask_Model[targetkeys[i]].validation
+        InsertTaskForm[targetkeys[i]].value,
+        InsertTaskForm[targetkeys[i]].validation
       );
-      ProjectTask_Model[targetkeys[i]].error = !errorcheck.state;
-      ProjectTask_Model[targetkeys[i]].errmsg = errorcheck.msg;
-      mainvalue[targetkeys[i]] = ProjectTask_Model[targetkeys[i]].value;
+      InsertTaskForm[targetkeys[i]].error = !errorcheck.state;
+      InsertTaskForm[targetkeys[i]].errmsg = errorcheck.msg;
+      mainvalue[targetkeys[i]] = InsertTaskForm[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter(
-      (obj) => ProjectTask_Model[obj].error == true
+      (obj) => InsertTaskForm[obj].error == true
     );
-    console.log(filtererr.length);
-    if (filtererr.length > 0) {
-      // setResumeFrom({ error: true });
-    } else {
-      // setResumeFrom({ error: false });
 
-      dispatch(InesertResume(ProjectTask_Model)).then(() => {
-        handleCancel()
+    if (filtererr.length > 0) {
+      // setInsertTaskForm({ error: true });
+    } else {
+      // setInsertTaskForm({ error: false });
+      var data = {
+        "project_id": idDetails.project_id,
+        "activiity_id": InsertTaskForm.activity.value,
+        "sub_activity_id": InsertTaskForm.subActivity.value,
+        "assignee_id": InsertTaskForm.assignTo.value,
+        "start_date": InsertTaskForm.fromDate.value,
+        "end_date": InsertTaskForm.toDate.value,
+        "assigned_by": localStorage.getItem("empId"),
+        "priority": InsertTaskForm.priority.value,
+        "description": InsertTaskForm.description.value,
+        "tag": InsertTaskForm.tag.value,
+        "location_id": InsertTaskForm.location.value || 0
+      }
+
+      dispatch(inserTask(data)).then((response) => {
+        if (!props.ProjectTaskOpen_Hearing)
+          dispatch(getProjectDetails(rowId))
+        handleCancel();
+        props.model_close && props.model_close()
       })
+
     }
 
-    setResumeFrom(prevState => ({
+    setInsertTaskForm(prevState => ({
       ...prevState
     }));
   };
 
-
-  function checkValidation(data, key, multipleId) {
-
-    var errorcheck = ValidationLibrary.checkValidation(
-      data,
-      ProjectTask_Model[key].validation
-    );
-    let dynObj = {
-      value: data,
-      error: !errorcheck.state,
-      errmsg: errorcheck.msg,
-      validation: ProjectTask_Model[key].validation
-    }
-
-    // only for multi select (start)
-
-    let multipleIdList = []
-
-    if (multipleId) {
-      multipleId.map((item) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i] === item.value) {
-            multipleIdList.push(item.id)
-          }
-        }
-      })
-      dynObj.valueById = multipleIdList.toString()
-    }
-    // (end)
-
-    setResumeFrom(prevState => ({
-      ...prevState,
-      [key]: dynObj,
-    }));
-
-  };
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
@@ -274,48 +229,6 @@ function ProjectTaskModel(props) {
   props.activitysList, props.prioritysList, props.tagsList, props.locationList, props.assignToList
   ]);
 
-  function fnLoadSubActivity(data, key) {
-    if (key == "activity") {
-      // Sub Activity
-      Axios({
-        method: "POST",
-        url: apiurl + "get_sub_activity",
-        data: {
-          activity_id: data,
-        },
-      }).then((response) => {
-        let projectSubActivitydata = [];
-        response.data.data.map((data) =>
-          projectSubActivitydata.push({
-            value: data.sub_activity,
-            id: data.sub_activity_id,
-          })
-        );
-        setprojectSubActivity({ projectSubActivitydata });
-      });
-    }
-  }
-
-  function onSubmit() {
-    var data = {
-      "project_id": idDetails.project_id,
-      "activiity_id": InsertTaskForm.activity.value,
-      "sub_activity_id": InsertTaskForm.subActivity.value,
-      "assignee_id": InsertTaskForm.assignTo.value,
-      "start_date": InsertTaskForm.fromDate.value,
-      "end_date": InsertTaskForm.toDate.value,
-      "assigned_by": localStorage.getItem("empId"),
-      "priority": InsertTaskForm.priority.value,
-      "description": InsertTaskForm.description.value,
-      "tag": InsertTaskForm.tag.value
-    }
-
-    dispatch(inserTask(data)).then((response) => {
-      handleCancel();
-    })
-
-  }
-
   function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
       data,
@@ -343,7 +256,13 @@ function ProjectTaskModel(props) {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
-    if (key == "activity") {
+
+    if (InsertTaskForm.activity.value === 6) {
+      InsertTaskForm.location.validation = ([{ "name": "required" }])
+
+    }
+
+    if (data && key == "activity") {
       // Sub Activity
       Axios({
         method: "POST",
@@ -367,6 +286,11 @@ function ProjectTaskModel(props) {
       [key]: dynObj,
     }));
   }
+
+  const onCancel = () => {
+    handleCancel()
+    props.model_close && props.model_close()
+  }
   return (
     <div className="projectTaskModel">
 
@@ -389,7 +313,6 @@ function ProjectTaskModel(props) {
           <Labelbox type="select"
             dropdown={activityList.activityTypeData}
             changeData={(data) => checkValidation(data, "activity")}
-            //changeData={(data) => fnLoadSubActivity(data, "activity")}
             placeholder={"Activity"}
             value={InsertTaskForm.activity.value}
             error={InsertTaskForm.activity.error}
@@ -422,9 +345,12 @@ function ProjectTaskModel(props) {
         <Grid container spacing={3}>
           <Grid item xs={4} >
             <Labelbox type="datepicker"
+              // minDate={new Date()}
               placeholder={"Start Date"}
               changeData={(data) => checkValidation(data, "fromDate")}
               value={InsertTaskForm.fromDate.value}
+              disablePast={true}
+              // disableFuture={true}
               error={InsertTaskForm.fromDate.error}
               errmsg={InsertTaskForm.fromDate.errmsg}
 
@@ -432,6 +358,8 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="datepicker"
+              minDate={InsertTaskForm.fromDate.value}
+              // disableFuture={true}
               changeData={(data) => checkValidation(data, "toDate")}
               placeholder={" End Date"}
               value={InsertTaskForm.toDate.value}
@@ -442,7 +370,7 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="select"
-              value={InsertTaskForm.assignTo.value}
+              value={InsertTaskForm.assignTo.value ? InsertTaskForm.assignTo.value : JSON.parse(localStorage.getItem("empId"))}
               error={InsertTaskForm.assignTo.error}
               errmsg={InsertTaskForm.assignTo.errmsg}
               dropdown={assignedToLists.assignedToData}
@@ -471,7 +399,9 @@ function ProjectTaskModel(props) {
               <Labelbox type="select" value={InsertTaskForm.tag.value}
                 changeData={(data) => checkValidation(data, "tag")}
                 dropdown={taggList.tagTypeData}
-                placeholder={"Tag"} />
+                placeholder={"Tag"}
+                error={InsertTaskForm.tag.error}
+                errmsg={InsertTaskForm.tag.errmsg} />
             </Grid>
 
             <Grid item xs={12} >
@@ -480,6 +410,8 @@ function ProjectTaskModel(props) {
                 changeData={(data) => checkValidation(data, "priority")}
                 placeholder={"Priority"}
                 value={InsertTaskForm.priority.value}
+                error={InsertTaskForm.priority.error}
+                errmsg={InsertTaskForm.priority.errmsg}
               />
             </Grid>
 
@@ -487,25 +419,23 @@ function ProjectTaskModel(props) {
         </Grid>
       </div>
       <div className="projectTaskModelButtons">
-        <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={handleCancel} />
+        <CustomButton btnName={"CANCEL"} custombtnCSS={"projectTaskGo"} onBtnClick={onCancel} />
         <CustomButton btnName={"SAVE"} btnCustomColor="customPrimary" onBtnClick={onSubmit} custombtnCSS={"projectTaskGo"} />
 
       </div>
-
-
 
     </div>
   )
 }
 
 const mapStateToProps = (state) =>
-// console.log(state.getOptions.getProcessType, "getProcessType")
+
 ({
 
   activitysList: state.projectTasksReducer.getActivityList || [],
   prioritysList: state.projectTasksReducer.prioritysList || [],
   tagsList: state.projectTasksReducer.tagsList || [],
-  assignToList: state.projectTasksReducer.assignToLists || [],
+  assignToList: state.getOptions.getEmpListDepartment || [],
   locationList: state.projectTasksReducer.locationLists || [],
   ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
 });

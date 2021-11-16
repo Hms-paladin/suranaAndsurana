@@ -59,6 +59,17 @@ body {
 /* input:focus {
   border: none !important;
 } */
-
-.ant-select-dropdown{
+.ant-checkbox {
+  border: 1px solid #0354a4;
+}
+.ant-time-picker{
+  width: 100% !important;
+}
+.ant-time-picker-input{
+  border: 1px solid #023e7d !important;
+  background-color: #fff !important;
+  border-radius: 7px !important;
+}
+.ant-time-picker-input:hover{
+  border-color: rgba(0, 0, 0, 0.87) !important;
 }
