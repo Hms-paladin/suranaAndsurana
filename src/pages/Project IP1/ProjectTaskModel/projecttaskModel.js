@@ -36,10 +36,11 @@ function ProjectTaskModel(props) {
       errmsg: null,
     },
     location: {
-      value: "",
+      value: props?.pro_details!=='0'?props.pro_details:"",
       validation: [],
       error: null,
       errmsg: null,
+      disabled:props?.pro_details!=='0'?true:false,
     },
     fromDate: {
       value: "",
@@ -54,7 +55,7 @@ function ProjectTaskModel(props) {
       errmsg: null,
     },
     assignTo: {
-      value: "",
+      value: JSON.parse(localStorage.getItem("empId")),
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
@@ -97,7 +98,7 @@ function ProjectTaskModel(props) {
 
     From_key.map((data) => {
       try {
-        InsertTaskForm[data].value = "";
+        InsertTaskForm[data].value = data!=="assignTo"?"":JSON.parse(localStorage.getItem("empId"));
 
       } catch (error) {
         throw error;
@@ -107,7 +108,6 @@ function ProjectTaskModel(props) {
       ...prevState,
     }));
   };
-
 
   let { rowId } = useParams()
   useEffect(() => {
@@ -333,11 +333,13 @@ function ProjectTaskModel(props) {
       </div>
       <div className="activityTask">
         <Grid item xs={7} >
-          <Labelbox type="select" value={InsertTaskForm.location.value}
+          <Labelbox type="select"
+           value={InsertTaskForm.location.value}
             error={InsertTaskForm.location.error}
             errmsg={InsertTaskForm.location.errmsg}
             dropdown={locationslList.locationData}
             changeData={(data) => checkValidation(data, "location")}
+            disabled={InsertTaskForm.location.disabled}
             placeholder={"Location"} />
         </Grid>
       </div>
@@ -370,7 +372,7 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="select"
-              value={InsertTaskForm.assignTo.value ? InsertTaskForm.assignTo.value : JSON.parse(localStorage.getItem("empId"))}
+              value={InsertTaskForm.assignTo.value}
               error={InsertTaskForm.assignTo.error}
               errmsg={InsertTaskForm.assignTo.errmsg}
               dropdown={assignedToLists.assignedToData}

@@ -187,9 +187,17 @@ function TimeSheetStartModel(props) {
             data: insert_data
         }).then(async (response) => {
             if (response.data.status === 1) {
+                // notification.success({
+                //     message: response.data.msg,
+                // });
                 notification.success({
+                    placement: 'topRight',
+                    // bottom: 50,
+                    duration: 0.5,
+                    rtl: true,
                     message: response.data.msg,
-                });
+                    maxCount:1
+                  });
                 setTimeOverlap(true)
 
             } else if (response.data.status === 0) {
@@ -285,8 +293,8 @@ function TimeSheetStartModel(props) {
                 "assigned_by": localStorage.getItem("empId"),
                 "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
                 "start_time": startTime,
-                "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
-                "end_time": SaveProcess ? end_time : '',
+                "end_date": SaveProcess ? moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'):'0000-00-00',
+                "end_time": SaveProcess ? end_time : '00:00',
                 "comment": timeSheetForm.description.value,
                 "task_status": SaveProcess ? 1 : 0,
                 "created_on": moment().format('YYYY-MM-DD HH:m:s'),
@@ -418,6 +426,7 @@ function TimeSheetStartModel(props) {
         let endtime = moment(timeSheetForm.endTime.value, "HH:mm:ss").format("hh:mm:ss A")
 
         if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
+            if(!StartProcess){
             timeSheetForm.endTime.value = timeSheetForm.startTime.value
 
             notification.success({
@@ -427,6 +436,7 @@ function TimeSheetStartModel(props) {
             settimeSheetForm((prevState) => ({
                 ...prevState
             }));
+        }
         }
     }, [timeSheetForm.startTime.value, timeSheetForm.endTime.value])
 
@@ -456,6 +466,7 @@ function TimeSheetStartModel(props) {
 
     useEffect(() => {
         if (props.timeSheetProject.length > 0 || props.getTaskTimeSheet.length > 0 || props.project_wise_reject || props.project_wise_edit || props.project_wise) {
+         
             handleCancel();
             let response;
             let data;
@@ -481,7 +492,7 @@ function TimeSheetStartModel(props) {
 
             if (data) {
 
-                if (data.end_date && data.end_time && props.projectrow) {
+                if (data.end_date && data.end_date!=="0000-00-00"&& data.end_time!=="00:00:00"&& data.end_time && props.projectrow) {
                     setStartProcess(true)
                     return
 
@@ -496,7 +507,7 @@ function TimeSheetStartModel(props) {
                 timeSheetForm.tag.value = data.tag_id
                 timeSheetForm.startTime.value = new Date("12-30-2017 " + data.start_time)
                 timeSheetForm.fromDate.value = data.start_date
-                timeSheetForm.description.value = data?.description
+                timeSheetForm.description.value = data?.description||data?.comment
                 data.task_status && data.task_status === "Completed" ? (timeSheetForm.task_status.value = 1) : (timeSheetForm.task_status.value = 0)
                 if (props.project_wise_edit) {
                     data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
@@ -505,20 +516,20 @@ function TimeSheetStartModel(props) {
                 settimeSheetForm((prevState) => ({
                     ...prevState,
                 }));
-
-                if (!data.end_date && !data.end_time && !props.project_wise_edit) {
+                
+                if ((data.end_date==="0000-00-00"&& data.end_time==="00:00:00")||(!data.end_date &&  !data.end_time && !props.project_wise_edit)) {
                     setStartProcess(false)
                 }
                 else {
+                    console.log("esss")
                     setStartProcess(true)
                 }
+             
             }
-            // }
 
         }
-
     }, [props.timeSheetProject, props.getTaskTimeSheet, props.project_wise, props.project_wise_reject, props.project_wise_edit])
-
+    
     const [taskData, setTaskData] = useState([])
     const [hearing, setHearing] = useState(false)
     function fntaskHearingDetails() {

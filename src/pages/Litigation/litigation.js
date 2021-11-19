@@ -18,8 +18,6 @@ import {
   getTradeMarkStatus,
 } from "../../actions/MasterDropdowns";
 import { GetLitigation, InsertLitigation } from "../../actions/Litigation";
-import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
-
 
 const { TabPane } = Tabs;
 
@@ -229,6 +227,7 @@ const Litigation = (props) => {
         caseDetails.internal_case_no || 0;
       Litigation_Form["status"].value = caseDetails.status_id || 0;
       Litigation_Form["courtname"].value = caseDetails.court_id || 0;
+      props.Liti_Location(caseDetails.court_id || '0');
       Litigation_Form["casetype"].value = caseDetails.case_type_id || 0;
       Litigation_Form["courtcaseno"].value = caseDetails.court_case_no || "";
       // _________________________

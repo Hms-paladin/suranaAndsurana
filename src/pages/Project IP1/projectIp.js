@@ -114,7 +114,7 @@ function ProjectIp(props) {
     const [disableCondition, setDisableCondition] = useState(true);
     const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
     const [applicableamount, setApplicableamount] = useState({});
-
+    const [Liti_LocationId,setLiti_LocationId]=useState('0')
     const [AmountChange, setAmountChange] = useState(false)
     const [TaskItemModel, setTaskItemModel] = useState(false);
     const [TaskItemModelID, setTaskItemModelID] = useState(0);
@@ -313,7 +313,7 @@ function ProjectIp(props) {
 
     const modelContent = () => {
         return (
-            <ProjectTaskModel ProjectTaskOpen_Hearing={ProjectTaskOpen_Hearing} model_close={() => setModelOpen(false)} />
+            <ProjectTaskModel pro_details={Liti_LocationId} ProjectTaskOpen_Hearing={ProjectTaskOpen_Hearing} model_close={() => setModelOpen(false)} />
         )
     }
 
@@ -790,7 +790,7 @@ function ProjectIp(props) {
                         handleChangeCloseModel={(bln) => setVariableid(bln)}
                         content={variablerateModel()} width={1300} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} />
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} zIndex={1000}/>
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={
@@ -900,7 +900,7 @@ function ProjectIp(props) {
                         {/*  */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase TaskModel={(data) => litigationHearingModel(data)} id_Props={idDetails} />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase TaskModel={(data) => litigationHearingModel(data)} Liti_Location={setLiti_LocationId}id_Props={idDetails} />
                         }
 
                         {/* IPAB Trademark */}

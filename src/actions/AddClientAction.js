@@ -37,7 +37,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
 
     await Axios({
       method: 'POST',
-      url: apiurl + (Addclient_Form.client_id.value != '0' ? 'update_client' : 'insert_client'),
+      url: apiurl + (Addclient_Form.client_id.value != 0 ? 'update_client' : 'insert_client'),
       data: DocumentData
     }).then((response) => {
       if (response.data.status === 1) {
@@ -45,7 +45,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
         dispatch(getClientDetails())
         Document_Form.length > 0 && dispatch(InsertClientDocument(Document_Form, response.data.data.client_id))
         notification.success({
-          message: `Client ${Addclient_Form.client_id.value != '0' ? 'Edited' : 'Added'} Successfully`,
+          message: `Client ${Addclient_Form.client_id.value != 0 ? 'Edited' : 'Added'} Successfully`,
         });
         return Promise.resolve();
       }
