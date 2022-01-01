@@ -145,7 +145,7 @@ function ProjectFormCreate(props) {
     projectcostrange: {
       value: "",
       // validation: [{ name: "required" }, { "name": "allowNumaricOnly1" }],
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -156,7 +156,7 @@ function ProjectFormCreate(props) {
     },
     baseRate: {
       value: "",
-      validation: [{ name: "required" }, { "name": "custommaxValue", "params": "0" }, { "name": "allowNumaricOnly1" }],
+      validation: [{ name: "required" }, { "name": "allowNumaricOnly1" }],
       error: null,
       errmsg: null,
     },
@@ -265,9 +265,11 @@ function ProjectFormCreate(props) {
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
     checkValidation(res, key)
   }
-
+useEffect(()=>{
+  checkProjectNameExists(projectform.projectname.value)
+},[projectform.projectname.value])
   function checkValidation(data, key, multipleId) {
-    checkProjectNameExists(projectform.projectname.value)
+   
     var errorcheck = ValidationLibrary.checkValidation(
       data,
       projectform[key].validation
@@ -348,9 +350,9 @@ function ProjectFormCreate(props) {
 
       Other_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }
-            // , { "name": "allowNumaricOnly1" }
-          ])
+          // projectform[data].validation = ([{ name: "required" }
+          //   // , { "name": "allowNumaricOnly1" }
+          // ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -377,9 +379,9 @@ function ProjectFormCreate(props) {
 
       Litigation_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }
-            // , { "name": "allowNumaricOnly1" }
-          ])
+          // projectform[data].validation = ([{ name: "required" }
+          //   // , { "name": "allowNumaricOnly1" }
+          // ])
         } else {
           projectform[data].validation = ([{ name: "required" }])
         }
@@ -403,20 +405,26 @@ function ProjectFormCreate(props) {
     if (data && key === "billable_type") {
       let projectcostrange = projectform.projectcostrange.value.replace(/,/g, "");
       if (data === 1 || data === 4 || data === 5) {
-        projectform.baseRate.validation = ([{ name: "required" }, { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
+        projectform.baseRate.validation = ([{ name: "required" }
+        // , { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
           // , { "name": "allowNumaricOnly1" }
         ])
+        if(data !== 5){
         projectform.unit_measurement.validation = ([{ name: "required" }])
+        }else if(data === 5){
+          projectform.unit_measurement.validation =  []
+        }
         projectform.limits.validation = []
         projectform.additionalRate.validation = []
       }
       else if (data === 3) {
         projectform.limits.validation = ([{ "name": "allowNumaricOnly1" }])
         projectform.additionalRate.validation = ([{ "name": "required" }, { "name": "allowNumaricOnly1" }])
-        projectform.baseRate.validation = ([{ name: "required" }, {
-          "name": "custommaxValue", "params":
-            projectcostrange === '' ? '0' : projectcostrange
-        }
+        projectform.baseRate.validation = ([{ name: "required" }, 
+        // {
+        //   "name": "custommaxValue", "params":
+        //     projectcostrange === '' ? '0' : projectcostrange
+        // }
           // , { "name": "allowNumaricOnly1" }
         ])
         projectform.unit_measurement.validation = ([{ name: "required" }])
@@ -494,14 +502,14 @@ function ProjectFormCreate(props) {
     }
     // (end)
 
-    if (data && key == "projectcostrange") {
-      let projectcostrange = data.replace(/,/g, "")
-      if (projectform.baseRate.validation[1]) {
-        projectform.baseRate.validation[1].params = projectcostrange;
-      } else {
-        projectform.baseRate.validation.push({ "params": projectcostrange })
-      }
-    }
+    // if (data && key == "projectcostrange") {
+    //   let projectcostrange = data.replace(/,/g, "")
+    //   if (projectform.baseRate.validation[1]) {
+    //     projectform.baseRate.validation[1].params = projectcostrange;
+    //   } else {
+    //     projectform.baseRate.validation.push({ "params": projectcostrange })
+    //   }
+    // }
     setprojectform((prevState) => ({
       ...prevState,
       [key]: dynObj,
@@ -971,13 +979,13 @@ function ProjectFormCreate(props) {
                       value={projectform.baseRate.value}
                       error={projectform.baseRate.error}
                       errmsg={projectform.baseRate.errmsg} />  </Grid>
-                  <Grid item xs={6}> <div className="Fieldheading">Unit of Measurement</div>
+                  {projectform.billable_type.value !== 5&&<Grid item xs={6}> <div className="Fieldheading">Unit of Measurement</div>
                     <Labelbox type="select"
                       dropdown={projectUnit.projectUnitdata}
                       changeData={(data) => checkValidation(data, "unit_measurement")}
                       value={projectform.unit_measurement.value}
                       error={projectform.unit_measurement.error}
-                      errmsg={projectform.unit_measurement.errmsg} /> </Grid></Grid>
+                      errmsg={projectform.unit_measurement.errmsg} /> </Grid>}</Grid>
               ) : (
                 <Grid item xs={6}>
 
@@ -1072,14 +1080,14 @@ function ProjectFormCreate(props) {
                         value={projectform.baseRate.value}
                         error={projectform.baseRate.error}
                         errmsg={projectform.baseRate.errmsg} /> </Grid>
-                    <Grid item xs={6}> <div className="Fieldheading">Unit of Measurement</div>
+                    {projectform.billable_type.value !== 5&&<Grid item xs={6}> <div className="Fieldheading">Unit of Measurement</div>
                       <Labelbox type="select"
                         dropdown={projectUnit.projectUnitdata}
                         changeData={(data) => checkValidation(data, "unit_measurement")}
                         value={projectform.unit_measurement.value}
                         error={projectform.unit_measurement.error}
                         errmsg={projectform.unit_measurement.errmsg} />
-                    </Grid> </Grid>
+                    </Grid>} </Grid>
                 ) : (<Grid item xs={6}></Grid>
                 )}
                 <Grid item xs={6}> <div className="Fieldheading">Comments</div>
@@ -1186,7 +1194,7 @@ function ProjectFormCreate(props) {
                       error={projectform.baseRate.error}
                       errmsg={projectform.baseRate.errmsg} />
                   </Grid>
-                  <Grid item xs={6}>
+                  {projectform.billable_type.value !== 5&& <Grid item xs={6}>
                     <div className="Fieldheading">Unit of Measurement</div> <Labelbox
                       type="select"
                       dropdown={projectUnit.projectUnitdata}
@@ -1194,7 +1202,7 @@ function ProjectFormCreate(props) {
                       value={projectform.unit_measurement.value}
                       error={projectform.unit_measurement.error}
                       errmsg={projectform.unit_measurement.errmsg} />
-                  </Grid>
+                  </Grid>}
                 </Grid>
               ) : (
                 <Grid item xs={6}></Grid>

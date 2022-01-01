@@ -223,7 +223,7 @@ function GenerateInvoice(props) {
       rowdataListobj["start_date"] = data.start_date;
       rowdataListobj["end_date"] = data.end_date;
       rowdataListobj["base_rate"] = data.base_rate;
-      rowdataListobj["billablehours"] = data.status === 0 && (<Labelbox disabled={data.checked ? false : true} type="text" changeData={(data) => (checkValidation(data, "billablehours", index))} value={data?.billable_hours} />) || data?.billable_hours.replace('.', ':');
+      rowdataListobj["billablehours"] = data.status === 0 && !data.ope_id? (<Labelbox disabled={data.checked ? false : true} type="text" changeData={(data) => (checkValidation(data, "billablehours", index))} value={data?.billable_hours} />) : data?.billable_hours?.replace('.', ':');
       rowdataListobj["amount"] = data.update_amount;
 
       ipProjectDataList.push(rowdataListobj);

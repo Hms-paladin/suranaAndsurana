@@ -248,7 +248,7 @@ function Projectsearch(props) {
 
     dispatch(getProjectSearchTableData(projectform)).then((project_details) => {
 
-      stateClear();
+      // stateClear();
     });
   };
 

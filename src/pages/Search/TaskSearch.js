@@ -387,7 +387,7 @@ function Task(props) {
                                                 </div>
                                                 <div style={{ display: 'flex', fontWeight: 'bold' }}>
                                                     <p style={{ marginRight: '10px' }}>Start Date :  {data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</p>
-                                                    <p>End Date : {data.end_date && data.end_date != "" ? moment(data.end_date).format("DD MMM YYYY") : ""}</p>
+                                                    <p>End Date : {data.end_date && data.end_date != "" && data.end_date != "0000-00-00"? moment(data.end_date).format("DD MMM YYYY") : ""}</p>
                                                 </div>
                                                 <div className="task_bar_align">
                                                     <Progress trailColor={{
@@ -480,7 +480,7 @@ function Task(props) {
                                                 </div>
                                                 <div style={{ display: 'flex', fontWeight: 'bold' }}>
                                                     <p style={{ marginRight: '10px' }}>Start Date :  {data.start_date && data.start_date != "" ? moment(data.start_date).format("DD MMM YYYY") : ""}</p>
-                                                    <p>End Date : {data.end_date && data.end_date != "" ? moment(data.end_date).format("DD MMM YYYY") : ""}</p>
+                                                    <p>End Date : {data.end_date && data.end_date != ""  && data.end_date != "0000-00-00" ? moment(data.end_date).format("DD MMM YYYY") : ""}</p>
                                                 </div>
                                                 <div className="task_bar_align">
                                                     <Progress percent={data.perecent_completion} status="active" />

@@ -16,6 +16,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
 import { getDesignationList, getCity_By_Id, } from '../../actions/MasterDropdowns'
+import Edit from "../../images/eyes.svg";
 
 function AddClient(props) {
   const dispatch = useDispatch();
@@ -27,15 +28,13 @@ function AddClient(props) {
   const [selectedFile, setselectedFile] = useState([]);
   const [getdata, setgetData] = useState([])
   const [SaveButton, setSaveButton] = useState(true);
-  const [clientExists, setClientExists] = useState(1)
-
   const [Addclient_Form, setAddclient_Form] = useState({
     client_id: {
       value: "0",
     },
     client_name: {
       value: "",
-      validation: [{ name: "required" }, { name: "custommaxLength", params: "50" }, { "name": "alphaspecialwithwhitespace" }],
+      validation: [{ name: "required" }, { name: "custommaxLength", params: "70" }, { "name": "alphaspecialwithwhitespace" }],
       error: null,
       errmsg: null,
     },
@@ -74,6 +73,13 @@ function AddClient(props) {
       value: "",
       valueById: "",
       validation: [{ name: "required" }, { name: "custommaxLength", params: "250" }],
+      error: null,
+      errmsg: null,
+    },
+    postal_address_2: {
+      value: "",
+      valueById: "",
+      validation: [{ name: "custommaxLength", params: "250" }],
       error: null,
       errmsg: null,
     },
@@ -155,11 +161,9 @@ function AddClient(props) {
       errmsg: null,
     },
   });
-
-  useEffect(() => {
-  }, [props.getInsertStatus])
-
-
+  function onViewFile(url) {
+    window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
+  }
   useEffect(() => {
     dispatch(getDesignationList());
     // Client
@@ -210,19 +214,6 @@ function AddClient(props) {
       );
       setstateList({ stateData });
     });
-
-    // city
-    // Axios({
-    //   method: "GET",
-    //   url: apiurl + "get_s_tbl_m_city",
-    // }).then((response) => {
-    //   let cityData = [];
-    //   response.data.data.map((data) =>
-    //     cityData.push({ id: data.city_id, value: data.state })
-    //   );
-    //   setcityList({ cityData });
-    // });
-
   }, [setClientName, setAddclient_Form]);
 
   useEffect(() => {
@@ -426,7 +417,7 @@ function AddClient(props) {
       "emai_id_2",
       "con_ph_2",
       "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no"]
+      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no","postal_address_2"]
 
 
     From_key.map((data) => {
@@ -600,8 +591,7 @@ function AddClient(props) {
                   errmsg={Addclient_Form.email_id_1.errmsg}
                 />
               </Grid>
-            </Grid>
-            <Grid item xs={12} className="textarea_height">
+              <Grid item xs={12} className="textarea_height">
               <div className="AddClientHead">Postal Address</div>
               <Labelbox
                 type="textarea"
@@ -611,6 +601,8 @@ function AddClient(props) {
                 errmsg={Addclient_Form.postal_address.errmsg}
               />
             </Grid>
+            </Grid>
+            
             <div style={{ display: "flex" }}>
               <div>
                 <Grid md={12}>
@@ -651,13 +643,17 @@ function AddClient(props) {
               </div>
 
             </div>
-            <div className="doc_upload_div"><div style={{ width: '50%' }}>Document Title</div>  <div>File Name</div></div>
+            <div className="doc_upload_div">
+              <div style={{ width: '50%' }}>Document Title</div>
+              <div style={{ width: '40%' }}>File Name </div>
+              {props.EditClientData&&<div style={{ width: '10%' }}>View</div>}</div>
             {fileupload.map((data) => {
               return (<>
 
                 <div className="doc_upload_items">
                   <div style={{ width: '50%' }}>{data.document_upload_name || data.document_name}</div>
-                  <div>{data?.selectedFile?.name || data.url.length > 0 ? data.url.substr(35, 10) + '..' : ''}</div>
+                  <div style={{ width: '40%' }}>{((data?.selectedFile?.name)?data.selectedFile.name.substr(35, 15) + '..' : '' )|| (data?.url.length > 0 ? data.url.substr(35, 15) + '..' : '')}</div>
+                  {props.EditClientData&&<div style={{ width: '10%' }}>{data.url&&<img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( onViewFile(data.url))} ></img>}</div>}
                 </div></>
               )
             })}
@@ -734,6 +730,16 @@ function AddClient(props) {
                   errmsg={Addclient_Form.emai_id_2.errmsg}
                 />
               </Grid>
+              <Grid item xs={12} className="textarea_height">
+              <div className="AddClientHead">Postal Address</div>
+              <Labelbox
+                type="textarea"
+                changeData={(data) => checkValidation(data, "postal_address_2")}
+                value={Addclient_Form.postal_address_2.value}
+                error={Addclient_Form.postal_address_2.error}
+                errmsg={Addclient_Form.postal_address_2.errmsg}
+              />
+            </Grid>
             </Grid>
             <Grid item xs={12}>
               <div className="AddClientHead">State</div>

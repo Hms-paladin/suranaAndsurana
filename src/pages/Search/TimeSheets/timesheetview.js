@@ -11,16 +11,17 @@ import moment from 'moment';
 import { notification } from "antd";
 import axios from "axios";
 import { apiurl } from "../../../utils/baseUrl";
-
+import {getProjectTimeSheetListByTaskId } from "../../../actions/TimeSheetAction";
 function TimeSheetView(props) {
     const dispatch = useDispatch();
-    const [timesheetStart, setTimesheetStart] = useState(true)
-    const [isLoaded, setisLoaded] = useState(true)
+    const [TimeSheetStartProcess, setTimeSheetStartProcess] = useState(true)
     const [startDateDisplay, setstartDateDisplay] = useState("")
     const [startTimeDisplay, setstartTimeDisplay] = useState("")
     const [timeSheetID, settimeSheetID] = useState("")
-    const [TimeOverlap, setTimeOverlap] = useState(true);
-    const [SaveBtnProcess, setSaveBtnProcess] = useState(false);
+    const [TimeOverlap, setTimeOverlap] = useState(false);
+    const [FinalCheckTimeOverlap, setFinalCheckTimeOverlap] = useState(false);
+    const [EndDateTimeShow, setEndDateTimeShow] = useState(false);
+    const [EndTimeExceed, setEndTimeExceed] = useState(false);
     const [timeSheetForm, settimeSheetForm] = useState({
         startTime: {
             value: "",
@@ -29,7 +30,7 @@ function TimeSheetView(props) {
             errmsg: null,
         },
         fromDate: {
-            value: "",
+            value: new Date(),
             validation: [{ name: "required" }],
             error: null,
             errmsg: null,
@@ -55,68 +56,20 @@ function TimeSheetView(props) {
 
     })
 
-    useEffect(() => {
-        dispatch(getTaskTimeSheet(props.rowData.task_id));
-    }, []);
-
-
-    useEffect(() => {
-
-        handleCancel();
-        if (props.getTaskTimeSheet && props.getTaskTimeSheet[0] && props.getTaskTimeSheet[0].task_id == props.rowData.task_id) {
-            if (props.getTaskTimeSheet.length > 0) {
-
-                if (props.getTaskTimeSheet[0].timesheet.length > 0) {
-                    var tsSize = props.getTaskTimeSheet[0].timesheet.length - 1;
-                    if (props.getTaskTimeSheet[0].timesheet[tsSize].start_date == null && props.getTaskTimeSheet[0].timesheet[tsSize].start_time == null) {
-                        setTimesheetStart(true)
-                        settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
-                    } else if (props.getTaskTimeSheet[0].timesheet[tsSize].end_date != null && props.getTaskTimeSheet[0].timesheet[tsSize].end_time != null) {
-                        var timeObj = {
-
-                            "activity_id": null,
-                            "end_date": null,
-                            "end_time": null,
-                            "project_id": null,
-                            "start_date": null,
-                            "start_time": null,
-                            "sub_activity": null,
-                            "sub_activity_id": null,
-                            "task_id": props.rowData.task_id,
-                            "timesheet_id": null,
-                            "total_hours": null
-                        };
-                        props.getTaskTimeSheet[0].timesheet.push(timeObj);
-                        setTimesheetStart(true)
-                        settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize + 1].timesheet_id);
-                    }
-                    else {
-                        setTimesheetStart(false);
-
-                        setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
-
-                        timeSheetForm.fromDate.value = props.getTaskTimeSheet[0].timesheet[tsSize].start_date;
-                        timeSheetForm.description.value = props.getTaskTimeSheet[0].timesheet[tsSize].description;
-                        var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
-                        setstartTimeDisplay(startttime);
-                        settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
-
-                        settimeSheetForm((prevState) => ({
-                            ...prevState,
-                        }));
-                    }
-                }
-            } else {
-                setTimesheetStart(true)
-            }
-        } else {
-            dispatch(getTaskTimeSheet(props.rowData.task_id));
-        }
-
-    }, [props.getTaskTimeSheet, props.rowData])
-
     function checkValidation(data, key) {
-
+        if(key==="fromDate"||key==="startTime"||key==="endTime"){
+            if(!FinalCheckTimeOverlap){
+                setFinalCheckTimeOverlap(true)
+            }
+            if(key==="fromDate"){
+                Todateopen(data,timeSheetForm.startTime.value)
+            }else if(key==="startTime"){
+                Todateopen(timeSheetForm.fromDate.value,data)
+            }else{
+                TimeSheetValidation(timeSheetForm.fromDate.value,timeSheetForm.startTime.value,data)
+            }
+      
+        }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
             timeSheetForm[key].validation
@@ -128,100 +81,20 @@ function TimeSheetView(props) {
             validation: timeSheetForm[key].validation,
         };
 
-
-
         settimeSheetForm((prevState) => ({
             ...prevState,
             [key]: dynObj,
         }));
     }
 
-    useEffect(() => {
-        if (props.model_clear)
-            handleCancel()
-    }, [props.model_clear]);
-
-    function closeModel() {
-        handleCancel()
-        props.handleChangeCloseModel && props.handleChangeCloseModel(false)
-    }
-    function submitStopTimesheet() {
-        setTimesheetStart(true);
-        var timesheetData = {
-            "end_date": timeSheetForm.fromDate.value,
-            "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm') : moment(new Date()).format("HH:mm"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
-            "comment": timeSheetForm.description.value,
-            "updated_by": localStorage.getItem("empId"),
-            "timesheet_id": timeSheetID
-        }
-        dispatch(insertTimeSheetbyTime(timesheetData, false, props.rowData)).then((response) => {
-            // handleCancel();
-            // dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
-            // handleCancel();
-            // dispatch(getTaskTimeSheet(props.rowData.task_id));
-            dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
-                setSaveBtnProcess(false);
-                props.handleChangeCloseModel(false);
-            })
-            //})
-            // props.handleChangeCloseModel(false);  
-        })
-    }
-    useEffect(() => {
-        if ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value < moment().format("YYYY-MM-DD")) || ((timeSheetForm.fromDate.value !== "" && timeSheetForm.fromDate.value === moment().format("YYYY-MM-DD")) && (moment(timeSheetForm.startTime.value).format('HH:mm') < moment().subtract(5, "minutes").format('HH:mm')))) {
-            setSaveBtnProcess(true)
-            timeSheetForm.toDate.value = timeSheetForm.fromDate.value
-        } else {
-            setSaveBtnProcess(false)
-        }
-    }, [timeSheetForm.fromDate.value, timeSheetForm.startTime.value])
-
-    useEffect(() => {
-        var insert_data = {
-            "emp_id": localStorage.getItem("empId"),
-            "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
-            "start_time": moment(timeSheetForm.startTime.value).format('HH:mm'),
-            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
-            "end_time": moment(timeSheetForm.endTime.value).format('HH:mm'),
-        }
-        axios({
-            method: 'POST',
-            url: apiurl + 'check_startTime_endTime_timesheet',
-            data: insert_data
-        }).then(async (response) => {
-            if (response.data.status === 1) {
-                // if (TimeOverlap) {
-                    notification.success({
-                        message: response.data.msg,
-                    });
-                    setTimeOverlap(true)
-                // }
-
-            } else if (response.data.status === 0) {
-                setTimeOverlap(false)
-            }
-        })
-    }, [timeSheetForm.fromDate.value, timeSheetForm.toDate.value, timeSheetForm.startTime.value, timeSheetForm.endTime.value])
-
-    useEffect(() => {
-        let starttime = moment(timeSheetForm.startTime.value, "HH:mm:ss").format("hh:mm A")
-        let endtime = moment(timeSheetForm.endTime.value, "HH:mm:ss").format("hh:mm A")
-
-        if (Date.parse('01/01/2011 ' + endtime) < Date.parse('01/01/2011 ' + starttime)) {
-            timeSheetForm.endTime.value = timeSheetForm.startTime.value
-
-            notification.success({
-                message: "End Time Should not less than from time",
-            });
-
-            settimeSheetForm((prevState) => ({
-                ...prevState
-            }));
-        }
-    }, [timeSheetForm.startTime.value, timeSheetForm.endTime.value])
-
-    function submitStartTimeSheet() {
-        setTimesheetStart(false);
+    async function submitStartTimeSheet() {
+        var result1=true
+        if(!FinalCheckTimeOverlap){
+             result1= await Todateopen(timeSheetForm.fromDate.value,timeSheetForm.startTime.value,timeSheetForm.endTime.value)
+            setFinalCheckTimeOverlap(true)
+       }
+       if(result1){
+        
         var timesheetStopData;
         var timesheetData = {
             "emp_id": localStorage.getItem("empId"),
@@ -231,7 +104,7 @@ function TimeSheetView(props) {
             "comment": timeSheetForm.description.value,
             "created_by": localStorage.getItem("empId"),
         }
-        if (SaveBtnProcess) {
+        if (EndDateTimeShow) {
             timesheetStopData = {
                 "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
                 "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm') : moment(new Date()).format("HH:mm"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
@@ -243,14 +116,41 @@ function TimeSheetView(props) {
             timesheetStopData = undefined
         }
         dispatch(insertTimeSheetbyTime(timesheetData, true, props.rowData, timesheetStopData)).then((response) => {
-            // handleCancel();
-
+    
             dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
+                dispatch(getProjectTimeSheetListByTaskId(props.rowData.task_id));
+                setTimeSheetStartProcess(false);
                 props.handleChangeCloseModel(false);
             })
         })
     }
+    }
 
+   async function submitStopTimesheet() {
+    var result=true;
+        if(!FinalCheckTimeOverlap){
+           result= await Todateopen(timeSheetForm.fromDate.value,timeSheetForm.startTime.value,timeSheetForm.endTime.value)
+           setFinalCheckTimeOverlap(true)
+        }
+        if(result){
+        var timesheetData = {
+            "end_date": timeSheetForm.fromDate.value,
+            "end_time": (timeSheetForm.endTime.value !== null && timeSheetForm.endTime.value !== '') ? moment(timeSheetForm.endTime.value).format('HH:mm') : moment(new Date()).format("HH:mm"),//dateFormat(timeSheetForm.endTime.value != undefined ? timeSheetForm.endTime.value : new Date(), "hh:MM:ss"),
+            "comment": timeSheetForm.description.value,
+            "updated_by": localStorage.getItem("empId"),
+            "timesheet_id": timeSheetID
+        }
+        dispatch(insertTimeSheetbyTime(timesheetData, false, props.rowData)).then((response) => {
+            
+            dispatch(getTaskTimeSheet(props.rowData.task_id)).then((response) => {
+                setEndDateTimeShow(false);
+                dispatch(getProjectTimeSheetListByTaskId(props.rowData.task_id));
+                setTimeSheetStartProcess(true);
+                props.handleChangeCloseModel(false);
+            })
+        })
+    }
+    }
 
     const handleCancel = () => {
         let From_key = [
@@ -274,11 +174,157 @@ function TimeSheetView(props) {
         settimeSheetForm((prevState) => ({
             ...prevState,
         }));
+        setTimeSheetStartProcess(true);
+        setTimeOverlap(false);
+        setEndDateTimeShow(false)
+        setFinalCheckTimeOverlap(false);
+        setEndTimeExceed(false)
     };
-  
+
+    const TimeSheetValidation=async(from_date,start_time,end_time)=>{
+        var rtn_statement;
+        var timesheet_check_data = {
+            "emp_id": localStorage.getItem("empId"),
+            "start_date": moment(from_date,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            "start_time": moment(start_time).format('HH:mm'),
+            "end_date": moment(from_date,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            "end_time": moment(end_time).format('HH:mm'),
+        }
+       !FinalCheckTimeOverlap&&(await axios({
+            method: 'POST',
+            url: apiurl + 'check_startTime_endTime_timesheet',
+            data: timesheet_check_data
+        }).then(async (response) => {
+            if (response.data.status === 1) {
+                    setTimeOverlap(true)
+                    rtn_statement=false
+            } else if (response.data.status === 0) {
+                setTimeOverlap(false)
+                rtn_statement=true
+            }
+        }))
+
+        FinalCheckTimeOverlap&&(await axios({
+            method: 'POST',
+            url: apiurl + 'check_startTime_endTime_timesheet',
+            data: timesheet_check_data
+        }).then(async (response) => {
+            if (response.data.status === 1) {
+                    setTimeOverlap(true)
+                    rtn_statement=false
+            } else if (response.data.status === 0) {
+                setTimeOverlap(false)
+                rtn_statement=true
+            }
+        }))
+
+        if((TimeSheetStartProcess===true&&EndDateTimeShow===true)||(!TimeSheetStartProcess)){
+            let startTime = moment(start_time, "HH:mm:ss").format("hh:mm A")
+            let endTime = moment(end_time, "HH:mm:ss").format("hh:mm A")
+         
+            if (Date.parse('01/01/2011 ' + endTime) < Date.parse('01/01/2011 ' + startTime)) {
+                setEndTimeExceed(true)
+                rtn_statement=false
+               
+            }else{
+                setEndTimeExceed(false)
+            }
+        }
+        return rtn_statement;
+    }
+    const Todateopen=async(from_date,start_time)=>{
+        var return_statement=true;
+        var timesheet_statement;
+        if(TimeSheetStartProcess){
+            if ((from_date !== "" && moment(from_date).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")) || ((from_date !== "" && moment(from_date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")) && (moment(start_time).format('HH:mm:ss') < moment().subtract(5, "minutes").format('HH:mm:ss')))) {
+                setEndDateTimeShow(true);
+                return_statement=false
+                timeSheetForm.toDate.value = from_date
+            } else {
+                setEndDateTimeShow(false)
+                return_statement=true
+            }
+         }
+        timesheet_statement= await TimeSheetValidation(from_date,start_time,timeSheetForm.endTime.value)
+        return (!timesheet_statement||!return_statement)?false:true;
+    }
+    function closeModel() {
+        handleCancel()
+        props.handleChangeCloseModel && props.handleChangeCloseModel(false)
+    }
+   /********************** Use Effects ****************************/
+
+    useEffect(() => {
+        dispatch(getTaskTimeSheet(props.rowData.task_id));
+    }, []);
+
+    useEffect(() => {
+        if (props.model_clear)
+            handleCancel()
+    }, [props.model_clear]);
+
+    useEffect(() => {
+
+        handleCancel();
+        if (props.getTaskTimeSheet && props.getTaskTimeSheet[0] && props.getTaskTimeSheet[0].task_id == props.rowData.task_id) {
+            if (props.getTaskTimeSheet.length > 0) {
+
+                if (props.getTaskTimeSheet[0].timesheet.length > 0) {
+                    var tsSize = props.getTaskTimeSheet[0].timesheet.length - 1;
+                    if (props.getTaskTimeSheet[0].timesheet[tsSize].start_date == null && props.getTaskTimeSheet[0].timesheet[tsSize].start_time == null) {
+                        setTimeSheetStartProcess(true)
+                        settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+                       
+                    } else if (props.getTaskTimeSheet[0].timesheet[tsSize].end_date != null &&props.getTaskTimeSheet[0].timesheet[tsSize].end_date !=="0000-00-00" && props.getTaskTimeSheet[0].timesheet[tsSize].end_time != null&&props.getTaskTimeSheet[0].timesheet[tsSize].end_time !=="00:00:00") {
+                        var timeObj = {
+                            "activity_id": null,
+                            "end_date": null,
+                            "end_time": null,
+                            "project_id": null,
+                            "start_date": null,
+                            "start_time": null,
+                            "sub_activity": null,
+                            "sub_activity_id": null,
+                            "task_id": props.rowData.task_id,
+                            "timesheet_id": null,
+                            "total_hours": null
+                        };
+                        props.getTaskTimeSheet[0].timesheet.push(timeObj);
+                        setTimeSheetStartProcess(true)
+                        settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize + 1].timesheet_id);
+                   
+                    }
+                    else {
+                        setTimeSheetStartProcess(false);
+
+                        setstartDateDisplay(moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_date).format("DD MMM YYYY"));
+                        timeSheetForm.fromDate.value = props.getTaskTimeSheet[0].timesheet[tsSize].start_date;
+                        timeSheetForm.startTime.value=moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"])
+                        timeSheetForm.description.value = props.getTaskTimeSheet[0].timesheet[tsSize].description;
+                        var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
+                        setstartTimeDisplay(startttime);
+                        settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
+
+                        settimeSheetForm((prevState) => ({
+                            ...prevState,
+                        }));
+                       
+                    }
+                  
+                }
+            } else {
+                setTimeSheetStartProcess(true)
+             
+            }
+        } else {
+            dispatch(getTaskTimeSheet(props.rowData.task_id));
+        }
+
+    }, [props.getTaskTimeSheet, props.rowData])
+    console.log( moment(timeSheetForm.endTime.value).format('HH:mm'))
     return (
         <div className="timeSheetStartContainer">
-            {timesheetStart ?
+            {TimeSheetStartProcess ?
                 <>
                     <Grid item xs={12} container direction="row" >
                         <Grid item xs={4} container direction="column" spacing={1}>
@@ -324,11 +370,11 @@ function TimeSheetView(props) {
                                 errmsg={timeSheetForm.startTime.errmsg}
                             />
                         </Grid>
-                        {!SaveBtnProcess && <>
+                        {!EndDateTimeShow && <>
                             <Grid item xs={3}>End Date</Grid>
                             <Grid item xs={3}>End Time</Grid></>}
 
-                        {SaveBtnProcess && <>
+                        {EndDateTimeShow && <>
                             <Grid item xs={3}>
                                 <Labelbox type="datepicker"
                                     disableFuture={true}
@@ -362,7 +408,7 @@ function TimeSheetView(props) {
                     </div>
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel} />
-                        <CustomButton btnName={`${!SaveBtnProcess ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" btnDisable={TimeOverlap} custombtnCSS="timeSheetButtons" onBtnClick={submitStartTimeSheet} />
+                        <CustomButton btnName={`${!EndDateTimeShow ? 'START' : 'SAVE'}`} btnCustomColor="customPrimary" btnDisable={TimeOverlap||EndTimeExceed} custombtnCSS="timeSheetButtons" onBtnClick={submitStartTimeSheet} />
                     </div>
 
                 </>
@@ -408,7 +454,7 @@ function TimeSheetView(props) {
                             />
                         </Grid>
                         <Grid item xs={3}>
-                            <Labelbox type="timepicker"
+                            <Labelbox type="timepickernew"
                                 placeholder={"End Time"}
                                 changeData={(data) =>
                                     checkValidation(data, "endTime")
@@ -428,12 +474,15 @@ function TimeSheetView(props) {
                     </div>
                     <div className="customiseButton">
                         <CustomButton btnName={"CANCEL"} custombtnCSS="timeSheetButtons" onBtnClick={closeModel} />
-                        <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" btnDisable={TimeOverlap} onBtnClick={submitStopTimesheet} />
+                        <CustomButton btnName={"STOP"} btnCustomColor="customPrimary" custombtnCSS="timeSheetButtons" btnDisable={TimeOverlap||EndTimeExceed} onBtnClick={submitStopTimesheet} />
                     </div>
 
                 </>
+              
             }
-
+         <div className="timsheet_overlap">{TimeOverlap&&'Time Overlapping'}</div>
+         <div className="timsheet_overlap">{EndTimeExceed&&'End Time Should not less than from time'}</div>
+         
         </div >
 
     )

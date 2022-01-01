@@ -36,10 +36,11 @@ function ProjectTaskModel(props) {
       errmsg: null,
     },
     location: {
-      value: "",
+      value: props?.pro_details!=='0'?props.pro_details:"",
       validation: [],
       error: null,
       errmsg: null,
+      disabled:props?.pro_details!=='0'?true:false,
     },
     fromDate: {
       value: "",
@@ -54,7 +55,7 @@ function ProjectTaskModel(props) {
       errmsg: null,
     },
     assignTo: {
-      value: "",
+      value: JSON.parse(localStorage.getItem("empId")),
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
@@ -79,6 +80,13 @@ function ProjectTaskModel(props) {
       validation: [{ name: "required" }],
       error: null,
       errmsg: null,
+    },
+    estimate_no_of_hours: {
+      value: "",
+      valueById: "",
+      validation: [{ name: "required" }],
+      error: null,
+      errmsg: null,
     }
   });
 
@@ -92,12 +100,13 @@ function ProjectTaskModel(props) {
       "assignTo",
       "tag",
       "priority",
-      "description"
+      "description",
+      "estimate_no_of_hours"
     ];
 
     From_key.map((data) => {
       try {
-        InsertTaskForm[data].value = "";
+        InsertTaskForm[data].value = data!=="assignTo"?"":JSON.parse(localStorage.getItem("empId"));
 
       } catch (error) {
         throw error;
@@ -107,7 +116,6 @@ function ProjectTaskModel(props) {
       ...prevState,
     }));
   };
-
 
   let { rowId } = useParams()
   useEffect(() => {
@@ -152,7 +160,8 @@ function ProjectTaskModel(props) {
         "priority": InsertTaskForm.priority.value,
         "description": InsertTaskForm.description.value,
         "tag": InsertTaskForm.tag.value,
-        "location_id": InsertTaskForm.location.value || 0
+        "location_id": InsertTaskForm.location.value || 0,
+        "estimate_no_of_hours":InsertTaskForm.estimate_no_of_hours.value,
       }
 
       dispatch(inserTask(data)).then((response) => {
@@ -293,7 +302,7 @@ function ProjectTaskModel(props) {
   }
   return (
     <div className="projectTaskModel">
-
+  <div className="projectTaskDatealign">
       {projectDetails.length > 0 && projectDetails.map((data) => {
         return (
           <Grid item xs={12} container direction="row" justify="center" alignItems="center" spacing={1} className="projectTasktitle">
@@ -306,10 +315,11 @@ function ProjectTaskModel(props) {
         )
 
       })}
+</div>
 
-
-      <div className="activityTask">
-        <Grid item xs={7} >
+    <div className="projectTaskDatealign">
+        <Grid container spacing={3}>
+          <Grid item xs={6} >
           <Labelbox type="select"
             dropdown={activityList.activityTypeData}
             changeData={(data) => checkValidation(data, "activity")}
@@ -319,9 +329,7 @@ function ProjectTaskModel(props) {
             errmsg={InsertTaskForm.activity.errmsg}
           />
         </Grid>
-      </div>
-      <div className="activityTask">
-        <Grid item xs={7} >
+        <Grid item xs={6} >
           <Labelbox type="select"
             dropdown={projectSubActivity.projectSubActivitydata}
             changeData={(data) => checkValidation(data, "subActivity")}
@@ -330,15 +338,30 @@ function ProjectTaskModel(props) {
             error={InsertTaskForm.subActivity.error}
             errmsg={InsertTaskForm.subActivity.errmsg} />
         </Grid>
+        </Grid>
       </div>
-      <div className="activityTask">
-        <Grid item xs={7} >
-          <Labelbox type="select" value={InsertTaskForm.location.value}
+  
+      <div className="projectTaskDatealign">
+        <Grid container spacing={3}>
+          <Grid item xs={6} >
+          <Labelbox type="select"
+           value={InsertTaskForm.location.value}
             error={InsertTaskForm.location.error}
             errmsg={InsertTaskForm.location.errmsg}
             dropdown={locationslList.locationData}
             changeData={(data) => checkValidation(data, "location")}
+            disabled={InsertTaskForm.location.disabled}
             placeholder={"Location"} />
+        </Grid>
+        <Grid item xs={6} >
+          <Labelbox type="text"
+           value={InsertTaskForm.estimate_no_of_hours.value}
+            error={InsertTaskForm.estimate_no_of_hours.error}
+            errmsg={InsertTaskForm.estimate_no_of_hours.errmsg}
+            changeData={(data) => checkValidation(data, "estimate_no_of_hours")}
+            disabled={InsertTaskForm.estimate_no_of_hours.disabled}
+            placeholder={"Estimate No. of hours"} />
+        </Grid>
         </Grid>
       </div>
       <div className="projectTaskDatealign">
@@ -370,7 +393,7 @@ function ProjectTaskModel(props) {
           </Grid>
           <Grid item xs={4} >
             <Labelbox type="select"
-              value={InsertTaskForm.assignTo.value ? InsertTaskForm.assignTo.value : JSON.parse(localStorage.getItem("empId"))}
+              value={InsertTaskForm.assignTo.value}
               error={InsertTaskForm.assignTo.error}
               errmsg={InsertTaskForm.assignTo.errmsg}
               dropdown={assignedToLists.assignedToData}

@@ -7,9 +7,9 @@ import { getClientDetails } from "./MasterDropdowns";
 
 export const InsertClient = (Addclient_Form, Document_Form) => async dispatch => {
   try {
-
+var client_id=(Addclient_Form.client_id.value === '' ? '0' : Addclient_Form.client_id.value) || '0'
     var DocumentData = new FormData();
-    DocumentData.set("client_id", (Addclient_Form.client_id.value === '' ? 0 : Addclient_Form.client_id.value) || 0)
+    DocumentData.set("client_id", client_id)
     DocumentData.set("client_name", Addclient_Form.client_name.value)
     DocumentData.set("industry", Addclient_Form.industrty.value)
     DocumentData.set("client_type", Addclient_Form.client_type.value)
@@ -24,6 +24,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
     DocumentData.set("state", Addclient_Form.state.value)
     DocumentData.set("city", Addclient_Form.city.value)
     DocumentData.set("address", Addclient_Form.postal_address.value)
+    DocumentData.set("address_2", Addclient_Form.postal_address_2.value)
     DocumentData.set("contact_person_2", Addclient_Form.cont_per_2.value || 0)
     DocumentData.set("designation_id_1", Addclient_Form.designation_id_1.value || 0)
 
@@ -37,15 +38,22 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
 
     await Axios({
       method: 'POST',
-      url: apiurl + (Addclient_Form.client_id.value != '0' ? 'update_client' : 'insert_client'),
+      url: apiurl + (Addclient_Form.client_id.value != 0 ? 'update_client' : 'insert_client'),
       data: DocumentData
     }).then((response) => {
       if (response.data.status === 1) {
         dispatch({ type: ADD_CLIENT, payload: response.data.status })
-        dispatch(getClientDetails())
-        Document_Form.length > 0 && dispatch(InsertClientDocument(Document_Form, response.data.data.client_id))
+       
+        if(response.data.data?.client_id){
+          client_id=response.data.data?.client_id
+        }
+        if(Document_Form.length > 0 && client_id!='0'){
+          dispatch(InsertClientDocument(Document_Form, client_id))
+        }else{
+          dispatch(getClientDetails())
+        }
         notification.success({
-          message: `Client ${Addclient_Form.client_id.value != '0' ? 'Edited' : 'Added'} Successfully`,
+          message: `Client ${Addclient_Form.client_id.value != 0 ? 'Edited' : 'Added'} Successfully`,
         });
         return Promise.resolve();
       }
@@ -58,6 +66,7 @@ export const InsertClient = (Addclient_Form, Document_Form) => async dispatch =>
 export const InsertClientDocument = (Document_Form, id) => async dispatch => {
 
   for (var i = 0; i < Document_Form.length; i++) {
+    if(Document_Form[i].selectedFile){
     var fileObject = Document_Form[i].selectedFile;
     var document_upload_name = Document_Form[i].document_upload_name;
 
@@ -71,7 +80,7 @@ export const InsertClientDocument = (Document_Form, id) => async dispatch => {
     DocumentData.set("updated_by", localStorage.getItem("empId"))
 
     try {
-      Axios({
+      await Axios({
         method: "POST",
         url: apiurl + "insert_client_document",
         data: DocumentData, headers: { "Content-Type": "multipart/form-data" },
@@ -89,6 +98,8 @@ export const InsertClientDocument = (Document_Form, id) => async dispatch => {
 
     }
   }
+  }
+  dispatch(getClientDetails())
 }
 
 

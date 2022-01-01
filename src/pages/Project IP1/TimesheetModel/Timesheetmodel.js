@@ -17,10 +17,13 @@ function Timesheetmodel(props) {
     const [timesheetview, setTimeSheetView] = useState(false)
     const dispatch = useDispatch()
     let { rowId } = useParams()
-    useEffect(() => {
-
-    }, [props.rowData])
     let task_id;
+    useEffect(() => {
+        if (rowId && rowId != undefined) {
+            dispatch(getProjectTimeSheetList(rowId));
+        }
+    }, [rowId])
+  
     if (rowId == undefined) {
         if (props.rowData && props.rowData != undefined) {
             task_id = props.rowData.task_id;
@@ -28,9 +31,7 @@ function Timesheetmodel(props) {
     }
 
     useEffect(() => {
-        if (rowId && rowId != undefined) {
-            dispatch(getProjectTimeSheetList(rowId));
-        } else if (props.rowData && props.rowData != undefined) {
+    if (props.rowData && props.rowData != undefined) {
             dispatch(getProjectTimeSheetListByTaskId(props.rowData.task_id));
         }
     }, [props.rowData]);
