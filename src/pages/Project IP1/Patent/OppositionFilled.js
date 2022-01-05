@@ -15,11 +15,8 @@ import moment from 'moment'
 
 function OppositionFilled(props) {
 
-    const [projectDetails, setProjectDetails] = useState({})
     const [idDetails, setidDetails] = useState({})
     const dispatch = useDispatch()
-    const [tradeStatusList, settradeStatusList] = useState({})
-    const [countryDetList, setcountryDetList] = useState({})
     const [patentForm, setpatentForm] = useState({
 
         opp_fill_date: {
@@ -81,35 +78,11 @@ function OppositionFilled(props) {
     }, []);
 
     useEffect(() => {
-        setProjectDetails(props.ProjectDetails);
         props.ProjectDetails.length > 0 && setidDetails({
             project_id: props.ProjectDetails[0].project_id,
             client_id: props.ProjectDetails[0].client_id,
         })
-
-        let tradeStatusData = []
-        props.tradeStatusList.map((data) =>
-            tradeStatusData.push({
-                value: data.Status,
-                id: data.status_id
-            })
-        )
-        settradeStatusList({ tradeStatusData })
-
-        let countryListsData = []
-        props.countriesList.map((data) =>
-            countryListsData.push({
-                value: data.country,
-                id: data.country_id
-            })
-        )
-        setcountryDetList({ countryListsData })
-
-
-
-    }, [props.ProjectDetails,
-    props.tradeStatusList, props.countriesList
-    ]);
+    }, [props.ProjectDetails]);
 
     useEffect(() => {
         handleCancel()
@@ -325,9 +298,6 @@ function OppositionFilled(props) {
 }
 const mapStateToProps = (state) =>
 ({
-
-    tradeStatusList: state.tradeMarkReducer.getTradeMarkStatusList || [],
-    countriesList: state.tradeMarkReducer.getCountryList || [],
     ProjectDetails: state.ProjectFillingFinalReducer.getProjectDetails || [],
     getPatentDetails: state.PatentReducer.getPatentDetails || [],
 });

@@ -14,7 +14,6 @@ import {
 import { insertPatent, getPatentDetails } from "../../../actions/PatentAction";
 import moment from "moment";
 function ApplicationDomestic(props) {
-  const [projectDetails, setProjectDetails] = useState({});
   const [idDetails, setidDetails] = useState({});
   const dispatch = useDispatch();
   const [tradeStatusList, settradeStatusList] = useState({});
@@ -35,7 +34,7 @@ function ApplicationDomestic(props) {
     },
     associate: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -71,7 +70,7 @@ function ApplicationDomestic(props) {
     },
     comments: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -83,14 +82,14 @@ function ApplicationDomestic(props) {
     },
     priority_num: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
 
     priority_date: {
       value: "",
-      validation: [{ name: "required" }],
+      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -104,7 +103,6 @@ function ApplicationDomestic(props) {
   }, []);
 
   useEffect(() => {
-    setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 &&
       setidDetails({
         project_id: props.ProjectDetails[0].project_id,

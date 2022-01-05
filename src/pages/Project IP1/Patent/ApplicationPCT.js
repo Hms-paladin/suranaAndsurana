@@ -14,7 +14,6 @@ import { insertPatent, getPatentDetails } from "../../../actions/PatentAction";
 import moment from 'moment'
 
 function ApplicationPCT(props) {
-  const [projectDetails, setProjectDetails] = useState({})
   const [idDetails, setidDetails] = useState({})
   const dispatch = useDispatch()
   const [tradeStatusList, settradeStatusList] = useState({})
@@ -84,21 +83,17 @@ function ApplicationPCT(props) {
     },
     priority_num: {
       value: "",
-      validation: [{ "name": "required" }],
+      // validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
 
     priority_date: {
       value: "",
-      validation: [{ "name": "required" }],
+      // validation: [{ "name": "required" }],
       error: null,
       errmsg: null,
     },
-
-
-
-
 
   })
 
@@ -111,7 +106,6 @@ function ApplicationPCT(props) {
   }, []);
 
   useEffect(() => {
-    setProjectDetails(props.ProjectDetails);
     props.ProjectDetails.length > 0 && setidDetails({
       project_id: props.ProjectDetails[0].project_id,
       client_id: props.ProjectDetails[0].client_id,

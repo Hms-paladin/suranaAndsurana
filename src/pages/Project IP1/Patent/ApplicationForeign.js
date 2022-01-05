@@ -36,7 +36,7 @@ function ApplicationForeign(props) {
         },
         associate: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -66,7 +66,7 @@ function ApplicationForeign(props) {
         },
         comments: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
@@ -84,20 +84,17 @@ function ApplicationForeign(props) {
         },
         priority_num: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
 
         priority_date: {
             value: "",
-            validation: [{ "name": "required" }],
+            // validation: [{ "name": "required" }],
             error: null,
             errmsg: null,
         },
-
-
-
     })
 
     let { rowId } = useParams()

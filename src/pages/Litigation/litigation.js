@@ -248,6 +248,7 @@ const Litigation = (props) => {
 
     //________________________________
   }, [props.getLitigationDetails, props.EmployeeList]);
+
   useEffect(() => {
     //hod/attony, Counsel ,DRA and DDRA
     let EmployeeList = [];
@@ -449,7 +450,7 @@ const Litigation = (props) => {
               <Labelbox
                 type="datepicker"
                 // placeholder={"Next Hearing Date"}
-                disablePast={true}
+                // disablePast={true}
                 changeData={(data) => checkValidation(data, "hearingdate")}
                 value={Litigation_Form.hearingdate.value}
                 error={Litigation_Form.hearingdate.error}
@@ -461,7 +462,7 @@ const Litigation = (props) => {
               <Labelbox
                 type="datepicker"
                 // placeholder={"Due Date"}
-                disablePast={true}
+                // disablePast={true}
                 changeData={(data) => checkValidation(data, "duedate")}
                 value={Litigation_Form.duedate.value}
                 error={Litigation_Form.duedate.error}

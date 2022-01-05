@@ -321,7 +321,6 @@ function TimeSheetView(props) {
         }
 
     }, [props.getTaskTimeSheet, props.rowData])
-    console.log( moment(timeSheetForm.endTime.value).format('HH:mm'))
     return (
         <div className="timeSheetStartContainer">
             {TimeSheetStartProcess ?
