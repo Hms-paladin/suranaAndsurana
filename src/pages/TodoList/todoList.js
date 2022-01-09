@@ -39,9 +39,12 @@ const headCells = [
 
 const projectheadCells = [
     { id: 'id', label: 'Task' },
-    { id: 'activity', label: 'Activity' },
-    { id: 'subactivity', label: 'Sub Activity' },
-    { id: 'case', label: 'Case' },
+    // { id: 'activity', label: 'Activity' },
+    // { id: 'subactivity', label: 'Sub Activity' },
+    // { id: 'case', label: 'Case' },
+     { id: 'project_name', label: 'Project Name' },
+    { id: 'client_name', label: 'Client Name' },
+    { id: 'assigned_by', label: 'Assigned By' },
     { id: 'startdate', label: 'Start Date' },
     { id: 'enddate', label: 'End Date' },
 ];
@@ -118,9 +121,7 @@ function TodoList(props) {
     const [unblockUser, setUnblockUser] = useState([])
     const [timesheetID, setTimesheetID] = useState()
 
-    let empid = localStorage.getItem("empId");
     useEffect(() => {
-        dispatch(getTaskList(empid));
         dispatch(getHrTaskList())
         dispatch(getOtherTask())
         dispatch(getProjectTasks())
@@ -196,11 +197,11 @@ function TodoList(props) {
 
             projectTask.push({
                 id: <div onClick={(id, name) => ProjectTaskFunction(data.task, data.task_id, data)} className="tempClass" >{data.task ? data.task : data.task}</div>,
-                activity: data.activity,
-                sub_activity: data.sub_activity,
-                case: '',
+                project_name: data.project_name,
+                client_name: data.client,
+                assigned_name: data.assigned_name,
                 start_date: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
-                end_date: data.end_date ? moment(data.end_date).format('DD-MMM-YYYY') : null,
+                end_date: data.end_date && data.end_date!=='0000-00-00' ? moment(data.end_date).format('DD-MMM-YYYY') : null,
             },
             )
 
@@ -315,8 +316,8 @@ function TodoList(props) {
     }
 
     function ProjectTaskFunction(name, id, data) {
-
-        if (data.checklist_id && data.checklist_id !== 0) {
+        // if (data.checklist_id && data.checklist_id !== 0) {
+        if (data) {
             history.push(`/Home/search/task/${data.task_id}`);
         } else if (name === "Timesheet Approval") {
             setTimesheetID(id)
@@ -475,7 +476,6 @@ const mapStateToProps = state => (
     {
         getHrTodoList: state.getHrTodoList.getHrToDoListTableData || [],
         getOtherTask: state.getHrTodoList.getOtherTask || [],
-        getTaskLists: state.projectTasksReducer.getTaskLists,
         getProjectTasks: state.getHrTodoList.getProjectTasks,
     }
 )

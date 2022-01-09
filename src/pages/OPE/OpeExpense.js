@@ -10,6 +10,7 @@ import { getExpenseType, getPaymentMode } from '../../actions/projectTaskAction'
 import { InsertOpeExpenses, GetOpeProjectType, ProjectBased_ClientName } from '../../actions/OutofPacketActions'
 import { useDispatch, connect } from "react-redux";
 import { UploadOutlined } from '@ant-design/icons';
+import { useHistory } from "react-router-dom";
 import PublishIcon from '@material-ui/icons/Publish';
 import ValidationLibrary from "../../helpers/validationfunction";
 import moment from 'moment'
@@ -18,6 +19,7 @@ function OPE_Expense(props) {
     const [saveRights, setSaveRights] = useState([])
     const [ListItems, setListItems] = useState("")
     let dispatch = useDispatch()
+    const history = useHistory();
     const [FileList, setFileList] = useState("")
     const [bill, setbill] = useState(false)
     const [disable, setdisable] = useState(false)
@@ -74,7 +76,7 @@ function OPE_Expense(props) {
 
     })
     function onFileChange(e) {
-
+        console.log(e.target.files,'e.target.files[0]')
         setFileList(e.target.files[0])
 
     }
@@ -307,7 +309,7 @@ function OPE_Expense(props) {
                     <div className="upload_div">
                         <div style={{ width: "70%", backgroundColor: "#023e7d" }}>
 
-                            <input type="file" name="img" accept="image/*" style={{ fontSize: "14px", color: "#fff" }}
+                            <input type="file" name="img" accept="image/*" multiple style={{ fontSize: "14px", color: "#fff" }}
                                 onChange={onFileChange} id="img" /> <PublishIcon className="publish_ic" />
                         </div>
 
@@ -330,6 +332,7 @@ function OPE_Expense(props) {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <CustomButton btnName={"Save"} btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false}
                         btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSubmit} />
+                    <CustomButton btnName={"Cancel"} custombtnCSS="custom_save" onBtnClick={() => history.push('/Home/outofpacket')} />
                 </div>
             </div>
         </div>

@@ -453,7 +453,7 @@ const RateMaster = (props) => {
         let projectDesignationData = [];
         response.data.data.map((data) =>
           projectDesignationData.push({
-            value: data.designation,
+            value: data['dept-desig'],
             id: data.designation_id,
           })
         );

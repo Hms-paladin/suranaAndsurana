@@ -56,7 +56,7 @@ function OnlineTest(props) {
 
         let Designation = [];
         props.getDesignationList.map((data, index) => {
-            Designation.push({ value: data.designation, id: data.designation_id });
+            Designation.push({ value: data['dept-desig'], id: data.designation_id });
         });
         setDesignation({ Designation })
 

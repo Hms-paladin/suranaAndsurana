@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import CustomButton from '../../component/Butttons/button';
@@ -8,11 +8,9 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import { getLeaveType } from "../../actions/MasterDropdowns";
 import { useDispatch, connect } from "react-redux";
 import './leaveupdate.scss';
-import { Input, Space } from 'antd';
-import { AudioOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
 import { updateLeaveBalance,insertLeaveUpdate,getEmployee,getLeaveBalance} from "../../actions/LeaveUpdateAction";
-import Delete from "../../images/dashboard/delete.svg";
-import { useLocation, Switch } from 'react-router-dom'; 
+import { useLocation } from 'react-router-dom'; 
 import { notification } from "antd";
 import moment from 'moment';
 

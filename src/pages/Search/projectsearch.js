@@ -302,8 +302,8 @@ function Projectsearch(props) {
         } else if (localStorage.getItem("department_id") === '3' || localStorage.getItem("department_id") === '9' || localStorage.getItem("department_id") === '8' || localStorage.getItem("department_id") === '4' || localStorage.getItem("department_id") === '7') {
           rowdataListobj["projectname"] = <Link to={`/Home/projectIp/${data.project_id}`}>{data.project_name}</Link>;
           rowdataListobj["clientname"] = data.client;
-          rowdataListobj["hodAttorney"] = data.councel_name;
-          rowdataListobj["Counsel"] = data.HR_name;
+          rowdataListobj["hodAttorney"] = data.HR_name;
+            rowdataListobj["Counsel"] = data.councel_name;
           // rowdataListobj["rangeOfCost"] = data.filing_type;
           rowdataListobj["billabletype"] = data.billable_type;
         }

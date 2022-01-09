@@ -8,7 +8,7 @@ import {
 const intialState = {
     getProjectStageList: [], getActivityList: [], prioritysList: [], tagsList: [], insertTask: [], getTaskLists: [],
     insertAdhocTask: [], locationLists: [], stagesList: [], SubStagesList: [], getAllStage: [],
-    getTaskTimeSheet: [], getHearingDets: [], getAdjournDets: [], InsertHearingDets: [], InsertAdjournDets: [], getTaskTimeSheetbyTaskId: [],
+    getTaskTimeSheet: [], getHearingDets: [], getAdjournDets: [], InsertHearingDetails: [], InsertAdjournDets: [], getTaskTimeSheetbyTaskId: [],
     backLog: [], getAdjournTakenBy: [], getTaskWeekMonth: []
 }
 
@@ -54,7 +54,7 @@ export default function (state = intialState, action) {
         case GET_ADJOURN_DET:
             return { ...state, getAdjournDets: payload }
         case INSERT_ADJOURN:
-            return { ...state, InsertHearingDets: payload }
+            return { ...state, InsertHearingDetails: payload }
         case INSERT_HEARING:
             return { ...state, InsertAdjournDets: payload }
         case GET_TIMESHEET_BY_TASK:

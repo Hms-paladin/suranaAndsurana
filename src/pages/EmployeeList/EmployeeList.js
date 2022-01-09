@@ -75,7 +75,7 @@ function EmployeeList(props) {
     useEffect(() => {
         let Designation = [];
         props.getDesignationList.map((data, index) =>
-            Designation.push({ id: data.designation_id, value: data.designation })
+            Designation.push({ id: data.designation_id, value: data['dept-desig'] })
         );
         setgetData({ Designation });
 

@@ -73,7 +73,7 @@ const UserGroups = (props) => {
     let DesigData = []
     props.getDesignationList.map((data) => {
       DesigData.push({
-        value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
+        value: data['dept-desig'],
         id: data.designation_id
       })
     }

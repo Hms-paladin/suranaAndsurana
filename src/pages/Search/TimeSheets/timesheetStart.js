@@ -1,11 +1,11 @@
-import react, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './timesheets.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../helpers/labelbox/labelbox';
 import CustomButton from '../../../component/Butttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";
+import { getActivity, getPriorityList, getTagList, getLocation } from "../../../actions/projectTaskAction";
 import moment from 'moment';
 import { useParams } from "react-router-dom";
 import { getProjectTimeSheetList, getProjectWise_TimeSheet, EditProjectwiseTimesheet } from "../../../actions/TimeSheetAction";
@@ -14,8 +14,7 @@ import { apiurl } from "../../../utils/baseUrl";
 import { notification } from "antd";
 import { get_projectName_by_Desig, getSubactivity } from "../../../actions/MasterDropdowns";
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
-import { getTaskTimeSheet } from "../../../actions/projectTaskAction";
-import { Checkbox } from 'antd'
+import { getTaskTimeSheet, InsertHearingDetails } from "../../../actions/projectTaskAction";
 import Order from "../../../images/order.png";
 import AddHearing from '../../task/AddHearing';
 import DynModel from '../../../component/Model/model';
@@ -109,6 +108,9 @@ function TimeSheetStartModel(props) {
             validation: [],
             error: null,
             errmsg: null,
+        },
+        task_id: {
+            value: 0,
         }
 
     })
@@ -116,8 +118,6 @@ function TimeSheetStartModel(props) {
     const dateFormat = (data) => {
         return moment(data, "HH:mm").format("HH:mm")
     }
-
-   
 
     function fntaskHearingDetails() {
         setTaskData([timeSheetForm, props.ProjectDetails]);
@@ -147,110 +147,120 @@ function TimeSheetStartModel(props) {
                 message: "Please Add Hearing Details",
             });
         } else {
-            var result1=true
-            if(!FinalCheckTimeOverlap){
-                 result1= await Todateopen(timeSheetForm.fromDate.value,timeSheetForm.startTime.value,timeSheetForm.endTime.value)
+            var result1 = true
+            if (!FinalCheckTimeOverlap) {
+                result1 = await Todateopen(timeSheetForm.fromDate.value, timeSheetForm.startTime.value, timeSheetForm.endTime.value)
                 setFinalCheckTimeOverlap(true)
-           }
-           if(result1){
-            let startTime = dateFormat(timeSheetForm.startTime.value && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
-            let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
-
-            var insert_data = {
-                "project_id": props.approve_timesheet && props.approve_timesheet != '' && props.approve_timesheet.project_id || rowId || timeSheetForm.projectname.value != '' && timeSheetForm.projectname.value || 0,
-                "activity_id": timeSheetForm.activity.value,
-                "sub_activity_id": timeSheetForm.subActivity.value,
-                "assignee_id": localStorage.getItem("empId"),
-                "assigned_by": localStorage.getItem("empId"),
-                "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
-                "start_time": startTime,
-                "end_date": EndDateTimeShow ? moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'):'0000-00-00',
-                "end_time": EndDateTimeShow ? end_time : '00:00',
-                "comment": timeSheetForm.description.value,
-                "task_status": EndDateTimeShow ? 1 : 0,
-                "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-                "created_by": localStorage.getItem("empId")
             }
-            axios({
-                method: 'POST',
-                url: apiurl + 'insert_task_timesheet',
-                data: insert_data
-            }).then(async (response) => {
-                if (response.data.status === 1) {
-                    if (!props.project_wise) {
-                        await dispatch(getProjectTimeSheetList(rowId));
-                    } else if (props.project_wise || props.project_wise_reject || props.project_wise_edit) {
-                        dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1] || props.project_wise_reject[1]))
-                    }
-                    notification.success({
-                        message: `Timesheet ${EndDateTimeShow ? 'saved' : 'started'} successfully`,
-                    });
-                    handleCancel();
-                    props.close_model && props.close_model()
-                } else if (response.data.status === 0) {
-                    notification.success({
-                        message: response.data.msg,
-                    });
-                }
-            })
+            if (result1) {
+                let startTime = dateFormat(timeSheetForm.startTime.value && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
+                let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
 
+                var insert_data = {
+                    "project_id": props.approve_timesheet && props.approve_timesheet != '' && props.approve_timesheet.project_id || rowId || timeSheetForm.projectname.value != '' && timeSheetForm.projectname.value || 0,
+                    "activity_id": timeSheetForm.activity.value,
+                    "sub_activity_id": timeSheetForm.subActivity.value,
+                    "assignee_id": localStorage.getItem("empId"),
+                    "assigned_by": localStorage.getItem("empId"),
+                    "start_date": moment(timeSheetForm.fromDate.value, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+                    "start_time": startTime,
+                    "end_date": EndDateTimeShow ? moment(timeSheetForm.fromDate.value, 'YYYY-MM-DD').format('YYYY-MM-DD') : '0000-00-00',
+                    "end_time": EndDateTimeShow ? end_time : '00:00',
+                    "comment": timeSheetForm.description.value,
+                    "task_status": EndDateTimeShow ? 1 : 0,
+                    "created_on": moment().format('YYYY-MM-DD HH:m:s'),
+                    "created_by": localStorage.getItem("empId")
+                }
+                axios({
+                    method: 'POST',
+                    url: apiurl + 'insert_task_timesheet',
+                    data: insert_data
+                }).then(async (response) => {
+                    if (response.data.status === 1) {
+                        console.log(response.data.data[0].task_id, response.data.data, 'sss')
+                        if (timeSheetForm.activity.value === 6) {
+                            AddHearing_Data[0].task_id = response.data.data[0].task_id
+                            setAddHearing_Data((prevState) => [
+                                ...prevState,
+                            ])
+                            dispatch(InsertHearingDetails(AddHearing_Data[0]))
+                        }
+                        if (!props.project_wise) {
+                            await dispatch(getProjectTimeSheetList(rowId));
+                        } else if (props.project_wise || props.project_wise_reject || props.project_wise_edit) {
+                            dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1] || props.project_wise_reject[1]))
+                        }
+
+                        notification.success({
+                            message: `Timesheet ${EndDateTimeShow ? 'saved' : 'started'} successfully`,
+                        });
+                        handleCancel();
+                        props.close_model && props.close_model()
+                    } else if (response.data.status === 0) {
+                        notification.success({
+                            message: response.data.msg,
+                        });
+                    }
+                })
+
+            }
         }
-    }
         settimeSheetForm(prevState => ({
             ...prevState
         }));
-    
+
     }
 
     const submitStopTimesheet = async () => {
-        var result=true;
-        if(!FinalCheckTimeOverlap){
-           result= await Todateopen(timeSheetForm.fromDate.value,timeSheetForm.startTime.value,timeSheetForm.endTime.value)
-           setFinalCheckTimeOverlap(true)
+        var result = true;
+        if (!FinalCheckTimeOverlap) {
+            result = await Todateopen(timeSheetForm.fromDate.value, timeSheetForm.startTime.value, timeSheetForm.endTime.value)
+            setFinalCheckTimeOverlap(true)
         }
-        if(result){
-        let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
-        var timesheetData = {
-            "emp_id": localStorage.getItem("empId"),
-            "timesheet_id": timeSheetForm.timesheet_id.value,
-            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
-            "end_time": end_time,
-            "comment": timeSheetForm.description.value,
-            "created_by": localStorage.getItem("empId")
-        }
+        if (result) {
+            let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
+            var timesheetData = {
+                "emp_id": localStorage.getItem("empId"),
+                "timesheet_id": timeSheetForm.timesheet_id.value,
+                "end_date": moment(timeSheetForm.fromDate.value, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+                "end_time": end_time,
+                "comment": timeSheetForm.description.value,
+                "created_by": localStorage.getItem("empId")
+            }
 
-        try {
-            await axios({
-                method: 'POST',
-                url: apiurl + 'insert_stop_time',
-                data: timesheetData
-            }).then((response) => {
-                if (response.data.status === 1) {
-                    notification.success({
-                        message: "Time Sheet Stopped Successfully",
-                    });
+            try {
+                await axios({
+                    method: 'POST',
+                    url: apiurl + 'insert_stop_time',
+                    data: timesheetData
+                }).then((response) => {
+                    if (response.data.status === 1) {
+                        notification.success({
+                            message: "Time Sheet Stopped Successfully",
+                        });
 
-                    handleCancel();
-                    if (!props.project_wise && !props.project_wise_edit && !props.project_wise_reject) {
-                        dispatch(getProjectTimeSheetList(rowId));
-                    } else if (props.project_wise || props.project_wise_reject || props.project_wise_edit) {
-                        dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1] || props.project_wise_reject[1]))
+                        handleCancel();
+                        if (!props.project_wise && !props.project_wise_edit && !props.project_wise_reject) {
+                            dispatch(getProjectTimeSheetList(rowId));
+                        } else if (props.project_wise || props.project_wise_reject || props.project_wise_edit) {
+                            dispatch(getProjectWise_TimeSheet(props.project_wise || props.project_wise_edit[1] || props.project_wise_reject[1]))
+                        }
+                        setTimeSheetStartProcess(true)
+                        props.close_model && props.close_model()
+                        return Promise.resolve();
+                    } else if (response.data.status === 0) {
+                        notification.success({
+                            message: "Stop Time " + response.data.msg,
+                        });
                     }
-                    setTimeSheetStartProcess(true)
-                    props.close_model && props.close_model()
-                    return Promise.resolve();
-                } else if (response.data.status === 0) {
-                    notification.success({
-                        message: "Stop Time " + response.data.msg,
-                    });
-                }
-            });
+                });
 
-        } catch (err) {
+            } catch (err) {
 
+            }
         }
     }
-    }
+    console.log(AddHearing_Data, 'AddHearing_Data')
     const onEditTimesheet = async () => {
         let startTime = dateFormat(timeSheetForm.startTime.value && timeSheetForm.startTime.value != '' ? timeSheetForm.startTime.value : new Date());
         let end_time = dateFormat(timeSheetForm.endTime.value && timeSheetForm.endTime.value != '' ? timeSheetForm.endTime.value : new Date());
@@ -261,9 +271,9 @@ function TimeSheetStartModel(props) {
             "activity_id": timeSheetForm.activity.value,
             "sub_activity_id": timeSheetForm.subActivity.value,
             "assignee_id": localStorage.getItem("empId"),
-            "start_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            "start_date": moment(timeSheetForm.fromDate.value, 'YYYY-MM-DD').format('YYYY-MM-DD'),
             "start_time": startTime,
-            "end_date": moment(timeSheetForm.fromDate.value,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            "end_date": moment(timeSheetForm.fromDate.value, 'YYYY-MM-DD').format('YYYY-MM-DD'),
             "end_time": end_time,
             "assigned_by": localStorage.getItem("empId"),
             "priority": 0,
@@ -272,6 +282,13 @@ function TimeSheetStartModel(props) {
             "task_status": 0,
         }
         dispatch(EditProjectwiseTimesheet(timesheetData, props.project_wise_edit[1]))
+        if (timeSheetForm.activity.value === 6 && AddHearing_Data.length > 0) {
+            AddHearing_Data[0].task_id = timeSheetForm.task_id.value
+            setAddHearing_Data((prevState) => [
+                ...prevState,
+            ])
+            dispatch(InsertHearingDetails(AddHearing_Data[0]))
+        }
         props.close_model && props.close_model()
 
     }
@@ -283,19 +300,19 @@ function TimeSheetStartModel(props) {
             else
                 data = 0
         }
-       
-        if(key==="fromDate"||key==="startTime"||key==="endTime"){
-            if(!FinalCheckTimeOverlap){
+
+        if (key === "fromDate" || key === "startTime" || key === "endTime") {
+            if (!FinalCheckTimeOverlap) {
                 setFinalCheckTimeOverlap(true)
             }
-            if(key==="fromDate"){
-                Todateopen(data,timeSheetForm.startTime.value)
-            }else if(key==="startTime"){
-                Todateopen(timeSheetForm.fromDate.value,data)
-            }else{
-                TimeSheetValidation(timeSheetForm.fromDate.value,timeSheetForm.startTime.value,data)
+            if (key === "fromDate") {
+                Todateopen(data, timeSheetForm.startTime.value)
+            } else if (key === "startTime") {
+                Todateopen(timeSheetForm.fromDate.value, data)
+            } else {
+                TimeSheetValidation(timeSheetForm.fromDate.value, timeSheetForm.startTime.value, data)
             }
-      
+
         }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -352,72 +369,72 @@ function TimeSheetStartModel(props) {
 
     };
 
-    const TimeSheetValidation=async(from_date,start_time,end_time)=>{
+    const TimeSheetValidation = async (from_date, start_time, end_time) => {
         var rtn_statement;
         var timesheet_check_data = {
             "emp_id": localStorage.getItem("empId"),
-            "start_date": moment(from_date,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            "start_date": moment(from_date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
             "start_time": moment(start_time).format('HH:mm'),
-            "end_date": moment(from_date,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            "end_date": moment(from_date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
             "end_time": moment(end_time).format('HH:mm'),
         }
-       !FinalCheckTimeOverlap&&(await axios({
+        !FinalCheckTimeOverlap && (await axios({
             method: 'POST',
             url: apiurl + 'check_startTime_endTime_timesheet',
             data: timesheet_check_data
         }).then(async (response) => {
             if (response.data.status === 1) {
-                    setTimeOverlap(true)
-                    rtn_statement=false
+                setTimeOverlap(true)
+                rtn_statement = false
             } else if (response.data.status === 0) {
                 setTimeOverlap(false)
-                rtn_statement=true
+                rtn_statement = true
             }
         }))
 
-        FinalCheckTimeOverlap&&(await axios({
+        FinalCheckTimeOverlap && (await axios({
             method: 'POST',
             url: apiurl + 'check_startTime_endTime_timesheet',
             data: timesheet_check_data
         }).then(async (response) => {
             if (response.data.status === 1) {
-                    setTimeOverlap(true)
-                    rtn_statement=false
+                setTimeOverlap(true)
+                rtn_statement = false
             } else if (response.data.status === 0) {
                 setTimeOverlap(false)
-                rtn_statement=true
+                rtn_statement = true
             }
         }))
 
-        if((TimeSheetStartProcess===true&&EndDateTimeShow===true)||(!TimeSheetStartProcess)){
+        if ((TimeSheetStartProcess === true && EndDateTimeShow === true) || (!TimeSheetStartProcess)) {
             let startTime = moment(start_time, "HH:mm:ss").format("hh:mm A")
             let endTime = moment(end_time, "HH:mm:ss").format("hh:mm A")
-         
+
             if (Date.parse('01/01/2011 ' + endTime) < Date.parse('01/01/2011 ' + startTime)) {
                 setEndTimeExceed(true)
-                rtn_statement=false
-               
-            }else{
+                rtn_statement = false
+
+            } else {
                 setEndTimeExceed(false)
             }
         }
         return rtn_statement;
     }
-    const Todateopen=async(from_date,start_time)=>{
-        var return_statement=true;
+    const Todateopen = async (from_date, start_time) => {
+        var return_statement = true;
         var timesheet_statement;
-        if(TimeSheetStartProcess){
+        if (TimeSheetStartProcess) {
             if ((from_date !== "" && moment(from_date).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")) || ((from_date !== "" && moment(from_date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")) && (moment(start_time).format('HH:mm:ss') < moment().subtract(5, "minutes").format('HH:mm:ss')))) {
                 setEndDateTimeShow(true);
-                return_statement=false
+                return_statement = false
                 timeSheetForm.toDate.value = from_date
             } else {
                 setEndDateTimeShow(false)
-                return_statement=true
+                return_statement = true
             }
-         }
-        timesheet_statement= await TimeSheetValidation(from_date,start_time,timeSheetForm.endTime.value)
-        return (!timesheet_statement||!return_statement)?false:true;
+        }
+        timesheet_statement = await TimeSheetValidation(from_date, start_time, timeSheetForm.endTime.value)
+        return (!timesheet_statement || !return_statement) ? false : true;
     }
     useEffect(() => {
         dispatch(getActivity());
@@ -510,8 +527,9 @@ function TimeSheetStartModel(props) {
 
     useEffect(() => {
         if (props.timeSheetProject.length > 0 || props.getTaskTimeSheet.length > 0 || props.project_wise_reject || props.project_wise_edit || props.project_wise) {
-         
+
             handleCancel();
+            setAddHearing_Data([])
             let response;
             let data;
             if (props.project_wise && !props.project_wise_edit && !props.project_wise_reject) {
@@ -536,7 +554,7 @@ function TimeSheetStartModel(props) {
 
             if (data) {
 
-                if (data.end_date && data.end_date!=="0000-00-00"&& data.end_time!=="00:00:00"&& data.end_time && props.projectrow) {
+                if (data.end_date && data.end_date !== "0000-00-00" && data.end_time !== "00:00:00" && data.end_time && props.projectrow) {
                     setTimeSheetStartProcess(true)
                     return
 
@@ -551,29 +569,32 @@ function TimeSheetStartModel(props) {
                 timeSheetForm.tag.value = data.tag_id
                 timeSheetForm.startTime.value = new Date("12-30-2017 " + data.start_time)
                 timeSheetForm.fromDate.value = data.start_date
-                timeSheetForm.description.value = data?.description||data?.comment
+                timeSheetForm.description.value = data?.description || data?.comment
+                timeSheetForm.task_id.value = data.task_id
                 data.task_status && data.task_status === "Completed" ? (timeSheetForm.task_status.value = 1) : (timeSheetForm.task_status.value = 0)
-                if (props.project_wise_edit) {
+                if (props.project_wise_edit && data.end_date !== "0000-00-00" && data.end_time !== "00:00:00") {
                     data.end_time && (timeSheetForm.endTime.value = new Date("12-30-2017 " + data.end_time))
                     data.end_date && (timeSheetForm.fromDate.value = data.end_date)
                 }
                 settimeSheetForm((prevState) => ({
                     ...prevState,
                 }));
-                
-                if ((data.end_date==="0000-00-00"&& data.end_time==="00:00:00")||(!data.end_date &&  !data.end_time && !props.project_wise_edit)) {
+                if (data.end_date !== "0000-00-00" && data.end_time !== "00:00:00") {
+                    setEndDateTimeShow(true);
+                }
+                if ((data.end_date === "0000-00-00" && data.end_time === "00:00:00") || (!data.end_date && !data.end_time && !props.project_wise_edit)) {
                     setTimeSheetStartProcess(false)
                 }
                 else {
                     setTimeSheetStartProcess(true)
                 }
-             
+
             }
 
         }
     }, [props.timeSheetProject, props.getTaskTimeSheet, props.project_wise, props.project_wise_reject, props.project_wise_edit])
-    
- 
+
+
     return (
         <div className="timeSheetStartContainer">
             {TimeSheetStartProcess ?
@@ -790,7 +811,7 @@ function TimeSheetStartModel(props) {
                                 errmsg={timeSheetForm.subActivity.errmsg}
                             />
                         </Grid>
-                        <Grid item xs={3}>
+                        {/* <Grid item xs={3}>
                             <Labelbox type="select"
                                 placeholder={"Priority"}
 
@@ -806,7 +827,7 @@ function TimeSheetStartModel(props) {
                                 value={timeSheetForm.tag.value}
                                 changeData={(data) => checkValidation(data, "tag")}
                                 dropdown={taggList.tagTypeData}
-                            /></Grid>
+                            /></Grid> */}
                     </Grid>
                     <Grid item xs={12} container direction="row" spacing={3}>
                         <Grid item xs={3}>
@@ -816,7 +837,7 @@ function TimeSheetStartModel(props) {
 
                         <Grid item xs={3}>
                             {/* Start Time */}
-                            {moment(timeSheetForm.startTime.value).format('hh:mm:ss')}
+                            {moment(timeSheetForm.startTime.value).format('HH:mm:ss')}
                         </Grid>
                         <Grid item xs={3}>
                             <Labelbox type="datepicker"
@@ -856,8 +877,8 @@ function TimeSheetStartModel(props) {
 
                 </div>
             }
-            <div className="timsheet_overlap">{TimeOverlap&&'Time Overlapping'}</div>
-            <div className="timsheet_overlap">{EndTimeExceed&&'End Time Should not less than from time'}</div>
+            <div className="timsheet_overlap">{TimeOverlap && 'Time Overlapping'}</div>
+            <div className="timsheet_overlap">{EndTimeExceed && 'End Time Should not less than from time'}</div>
             <DynModel modelTitle={"Hearing"} handleChangeModel={hearing} handleChangeCloseModel={(bln) => setHearing(bln)} content={<AddHearing project_wise={taskData} AddHearing_output={(data) => setAddHearing_Data([data])} onhearingclose={() => setHearing(false)} />} width={1000} />
         </div>
 

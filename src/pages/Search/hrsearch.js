@@ -136,7 +136,7 @@ function Hrsearch(props) {
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data.designation }))
+        Designation.push({ id: data.designation_id, value: data['dept-desig'] }))
 
       setdesignationdata({ Designation })
 

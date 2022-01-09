@@ -301,7 +301,7 @@ function TimeSheetView(props) {
                         timeSheetForm.fromDate.value = props.getTaskTimeSheet[0].timesheet[tsSize].start_date;
                         timeSheetForm.startTime.value=moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"])
                         timeSheetForm.description.value = props.getTaskTimeSheet[0].timesheet[tsSize].description;
-                        var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("hh:mm A");
+                        var startttime = moment(props.getTaskTimeSheet[0].timesheet[tsSize].start_time, ["HH.mm"]).format("HH:mm:ss");
                         setstartTimeDisplay(startttime);
                         settimeSheetID(props.getTaskTimeSheet[0].timesheet[tsSize].timesheet_id);
 

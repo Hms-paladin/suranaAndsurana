@@ -1,4 +1,4 @@
-import { ADD_CLIENT, ADD_CLIENT_DOCUMENT, CLIENT_NAME_CHECK } from "../utils/Constants";
+import { ADD_CLIENT, ADD_CLIENT_DOCUMENT, CLIENT_NAME_CHECK, GET_CLIENT_DETAILS } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import Axios from "axios";
 import moment from 'moment';
@@ -7,7 +7,7 @@ import { getClientDetails } from "./MasterDropdowns";
 
 export const InsertClient = (Addclient_Form, Document_Form) => async dispatch => {
   try {
-var client_id=(Addclient_Form.client_id.value === '' ? '0' : Addclient_Form.client_id.value) || '0'
+    var client_id = (Addclient_Form.client_id.value === '' ? '0' : Addclient_Form.client_id.value) || '0'
     var DocumentData = new FormData();
     DocumentData.set("client_id", client_id)
     DocumentData.set("client_name", Addclient_Form.client_name.value)
@@ -24,9 +24,9 @@ var client_id=(Addclient_Form.client_id.value === '' ? '0' : Addclient_Form.clie
     DocumentData.set("state", Addclient_Form.state.value)
     DocumentData.set("city", Addclient_Form.city.value)
     DocumentData.set("address", Addclient_Form.postal_address.value)
-    DocumentData.set("address_2", Addclient_Form.postal_address_2.value)
+    DocumentData.set("ct_address", Addclient_Form.ct_address.value)
     DocumentData.set("contact_person_2", Addclient_Form.cont_per_2.value || 0)
-    DocumentData.set("designation_id_1", Addclient_Form.designation_id_1.value || 0)
+    DocumentData.set("designation_id_2", Addclient_Form.designation_id_2.value || 0)
 
     DocumentData.set("ct_contact_no", Number(Addclient_Form.con_ph_2.value) || 0)
     DocumentData.set("ct_email_id", Addclient_Form.emai_id_2.value || 0)
@@ -40,16 +40,17 @@ var client_id=(Addclient_Form.client_id.value === '' ? '0' : Addclient_Form.clie
       method: 'POST',
       url: apiurl + (Addclient_Form.client_id.value != 0 ? 'update_client' : 'insert_client'),
       data: DocumentData
-    }).then((response) => {
+    }).then(async (response) => {
       if (response.data.status === 1) {
         dispatch({ type: ADD_CLIENT, payload: response.data.status })
-       
-        if(response.data.data?.client_id){
-          client_id=response.data.data?.client_id
+
+        if (response.data.data?.client_id) {
+          client_id = response.data.data?.client_id
         }
-        if(Document_Form.length > 0 && client_id!='0'){
-          dispatch(InsertClientDocument(Document_Form, client_id))
-        }else{
+        if (Document_Form.length > 0 && client_id != '0') {
+          await dispatch(InsertClientDocument(Document_Form, client_id))
+          dispatch(getClientDetails())
+        } else {
           dispatch(getClientDetails())
         }
         notification.success({
@@ -66,42 +67,52 @@ var client_id=(Addclient_Form.client_id.value === '' ? '0' : Addclient_Form.clie
 export const InsertClientDocument = (Document_Form, id) => async dispatch => {
 
   for (var i = 0; i < Document_Form.length; i++) {
-    if(Document_Form[i].selectedFile){
-    var fileObject = Document_Form[i].selectedFile;
-    var document_upload_name = Document_Form[i].document_upload_name;
+    if (Document_Form[i].selectedFile) {
+      var fileObject = Document_Form[i].selectedFile;
+      var document_upload_name = Document_Form[i].document_upload_name;
 
-    var DocumentData = new FormData();
-    DocumentData.set("client_id", id)
-    DocumentData.set("POA", document_upload_name || "")
-    DocumentData.append("file_name_upload", fileObject)
-    DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
-    DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
-    DocumentData.set("created_by", localStorage.getItem("empId"))
-    DocumentData.set("updated_by", localStorage.getItem("empId"))
+      var DocumentData = new FormData();
+      DocumentData.set("client_id", id)
+      DocumentData.set("POA", document_upload_name || "")
+      DocumentData.append("file_name_upload", fileObject)
+      DocumentData.set("created_on", moment().format('YYYY-MM-DD HH:m:s'))
+      DocumentData.set("updated_on", moment().format('YYYY-MM-DD HH:m:s'))
+      DocumentData.set("created_by", localStorage.getItem("empId"))
+      DocumentData.set("updated_by", localStorage.getItem("empId"))
 
-    try {
-      await Axios({
-        method: "POST",
-        url: apiurl + "insert_client_document",
-        data: DocumentData, headers: { "Content-Type": "multipart/form-data" },
-      }).then((response) => {
-        if (Document_Form.length == i) {
-          if (response.data.status === 1) {
-            dispatch({ type: ADD_CLIENT_DOCUMENT, payload: response.data.status })
+      try {
+        await Axios({
+          method: "POST",
+          url: apiurl + "insert_client_document",
+          data: DocumentData, headers: { "Content-Type": "multipart/form-data" },
+        }).then((response) => {
+          if (Document_Form.length == i) {
+            if (response.data.status === 1) {
+              dispatch({ type: ADD_CLIENT_DOCUMENT, payload: response.data.status })
 
-            return Promise.resolve();
+              return Promise.resolve();
+            }
           }
-        }
-      });
+        });
 
-    } catch (err) {
+      } catch (err) {
 
+      }
     }
-  }
   }
   dispatch(getClientDetails())
 }
 
+export const getClientDetailsByName = (clientName) => async (dispatch) => {
+  const response = await Axios({
+    method: "post",
+    url: apiurl + "get_client_details_by_client_name",
+    data: {
+      "client_name": clientName,
+    },
+  });
+  return dispatch({ type: GET_CLIENT_DETAILS, payload: response.data.data });
+};
 
 export const getClientNameCheck = (clientName) => async (dispatch) => {
   const response = await Axios({

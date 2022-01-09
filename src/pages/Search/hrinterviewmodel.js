@@ -65,7 +65,7 @@ const HrInterviewModel = (props) => {
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data.designation }))
+        Designation.push({ id: data.designation_id, value: data['dept-desig'] }))
 
       // setdesignationdata({ Designation })
 
@@ -99,7 +99,7 @@ const HrInterviewModel = (props) => {
     let Designation = []
     props.getDesignationList.map((data, index) =>
       Designation.push({
-        value: <div style={{ whiteSpace: 'nowrap', display: 'flex', color: 'black' }}><div style={{ fontWeight: 'bold' }}>{!data.department ? ' - ' : data.department}</div>{' - ' + data.designation}</div>,
+        value: data['dept-desig'],
         id: data.designation_id
       })
     )

@@ -43,7 +43,7 @@ const StageMonitor = (props) => {
   })
   const header = [
     { id: 'stages', label: Litigation ? 'Case Types' : 'Stages' },
-    { id: 'subStage', label: Litigation ? 'Sub Case Types' : 'Stages' },
+    { id: 'subStage', label: Litigation ? 'Sub Case Types' : 'Sub Stages' },
     { id: 'compDate', label: 'Compliance Date' },
     { id: 'actDate', label: 'Actual Date' },
     { id: 'statusImg', label: '' },

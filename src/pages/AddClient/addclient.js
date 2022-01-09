@@ -76,7 +76,7 @@ function AddClient(props) {
       error: null,
       errmsg: null,
     },
-    postal_address_2: {
+    ct_address: {
       value: "",
       valueById: "",
       validation: [{ name: "custommaxLength", params: "250" }],
@@ -219,7 +219,7 @@ function AddClient(props) {
   useEffect(() => {
     let Designation = [];
     props.getDesignationList.map((data, index) =>
-      Designation.push({ id: data.designation_id, value: data.designation })
+      Designation.push({ id: data.designation_id, value: data['dept-desig'] })
     );
     setgetData({ Designation });
     if (Addclient_Form.state.value != "") {
@@ -280,7 +280,18 @@ function AddClient(props) {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
-
+    if (key === "client_type") {
+      if (Number(data) === 16) {
+        Addclient_Form['gst_no'].validation = [];
+        Addclient_Form['pan_no'].validation = [];
+      } else {
+        Addclient_Form['gst_no'].validation = [{ name: "required" }, { name: "gst" }];
+        Addclient_Form['pan_no'].validation = [{ name: "required" }, { name: "pan" }];
+      }
+      setAddclient_Form((prevState) => ({
+        ...prevState,
+      }));
+    }
     if (key === "client_name" && data) {
 
 
@@ -417,7 +428,7 @@ function AddClient(props) {
       "emai_id_2",
       "con_ph_2",
       "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no","postal_address_2"]
+      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "ct_address", "document_upload_name"]
 
 
     From_key.map((data) => {
@@ -448,7 +459,7 @@ function AddClient(props) {
         "emai_id_2",
         "con_ph_2",
         "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-        "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "document_upload_name"]
+        "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "document_upload_name", "ct_address"]
 
 
       let CreateClient_value = [
@@ -458,7 +469,7 @@ function AddClient(props) {
         "ct_email_id",
         "ct_contact_no",
         "designation_id_2", "contact_person_2", "client_type_id", "address", "email_id", "contact_no",
-        "designation_id_1", "contact_person_1", "industry_id", "client", "client_id", "gst_no", "pan_no", "document_upload_name"];
+        "designation_id_1", "contact_person_1", "industry_id", "client", "client_id", "gst_no", "pan_no", "document_upload_name", "ct_address"];
 
       CreateClient_key.map((data, index) => {
         if (data === "document_upload_name") {
@@ -480,7 +491,7 @@ function AddClient(props) {
       onStateClear()
     }
   }, [props.EditClientData])
-
+  console.log(fileupload, "fileupload")
   return (
     <div>
       <div
@@ -592,17 +603,17 @@ function AddClient(props) {
                 />
               </Grid>
               <Grid item xs={12} className="textarea_height">
-              <div className="AddClientHead">Postal Address</div>
-              <Labelbox
-                type="textarea"
-                changeData={(data) => checkValidation(data, "postal_address")}
-                value={Addclient_Form.postal_address.value}
-                error={Addclient_Form.postal_address.error}
-                errmsg={Addclient_Form.postal_address.errmsg}
-              />
+                <div className="AddClientHead">Postal Address</div>
+                <Labelbox
+                  type="textarea"
+                  changeData={(data) => checkValidation(data, "postal_address")}
+                  value={Addclient_Form.postal_address.value}
+                  error={Addclient_Form.postal_address.error}
+                  errmsg={Addclient_Form.postal_address.errmsg}
+                />
+              </Grid>
             </Grid>
-            </Grid>
-            
+
             <div style={{ display: "flex" }}>
               <div>
                 <Grid md={12}>
@@ -646,14 +657,14 @@ function AddClient(props) {
             <div className="doc_upload_div">
               <div style={{ width: '50%' }}>Document Title</div>
               <div style={{ width: '40%' }}>File Name </div>
-              {props.EditClientData&&<div style={{ width: '10%' }}>View</div>}</div>
+              {props.EditClientData && <div style={{ width: '10%' }}>View</div>}</div>
             {fileupload.map((data) => {
               return (<>
 
                 <div className="doc_upload_items">
                   <div style={{ width: '50%' }}>{data.document_upload_name || data.document_name}</div>
-                  <div style={{ width: '40%' }}>{((data?.selectedFile?.name)?data.selectedFile.name.substr(35, 15) + '..' : '' )|| (data?.url.length > 0 ? data.url.substr(35, 15) + '..' : '')}</div>
-                  {props.EditClientData&&<div style={{ width: '10%' }}>{data.url&&<img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( onViewFile(data.url))} ></img>}</div>}
+                  <div style={{ width: '40%' }}>{((data?.selectedFile?.name) ? data.selectedFile.name.substr(data.selectedFile.name, 20) + '..' : '') || (data?.url?.length > 0 ? data.url.substr(35, 15) + '..' : '')}</div>
+                  {props.EditClientData && <div style={{ width: '10%' }}>{data.url && <img src={Edit} className="editImage" style={{ cursor: 'pointer' }} onClick={() => (onViewFile(data.url))} ></img>}</div>}
                 </div></>
               )
             })}
@@ -731,15 +742,15 @@ function AddClient(props) {
                 />
               </Grid>
               <Grid item xs={12} className="textarea_height">
-              <div className="AddClientHead">Postal Address</div>
-              <Labelbox
-                type="textarea"
-                changeData={(data) => checkValidation(data, "postal_address_2")}
-                value={Addclient_Form.postal_address_2.value}
-                error={Addclient_Form.postal_address_2.error}
-                errmsg={Addclient_Form.postal_address_2.errmsg}
-              />
-            </Grid>
+                <div className="AddClientHead">Postal Address</div>
+                <Labelbox
+                  type="textarea"
+                  changeData={(data) => checkValidation(data, "ct_address")}
+                  value={Addclient_Form.ct_address.value}
+                  error={Addclient_Form.ct_address.error}
+                  errmsg={Addclient_Form.ct_address.errmsg}
+                />
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <div className="AddClientHead">State</div>

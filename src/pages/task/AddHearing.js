@@ -8,7 +8,7 @@ import ValidationLibrary from "../../helpers/validationfunction";
 import EditTimeSheet from './Timesheet/Timesheet'
 import Adjournment from './Adjournment'
 import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
-import { getHearingDetails, InsertHearingDets } from "../../actions/projectTaskAction";
+import { getHearingDetails, InsertHearingDetails } from "../../actions/projectTaskAction";
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction";
 import { useDispatch, connect } from "react-redux";
 import moment from 'moment'
@@ -123,6 +123,12 @@ export function Hearing(props) {
     if (props.getHearingDets && props.getHearingDets.length > 0) {
       HearingData.nexthearing.value = props.getHearingDets[0].next_hearing_date;
       HearingData.hearingoutcome.value = props.getHearingDets[0].hearing_outcome;
+      HearingData.adjournment_taken_by.value = props.getHearingDets[0].adjournment_taken_by;
+      HearingData.person_responsible.value = props.getHearingDets[0].person_responsible_id;
+      HearingData.reason.value = props.getHearingDets[0].reason;
+      HearingData.action_to_be_taken.value = props.getHearingDets[0].action_to_be_taken;
+      HearingData.subActivity.value = props.getHearingDets[0].sub_activity_id;
+      HearingData.due_date.value = props.getHearingDets[0].due_date;
       HearingData.hearing_id.value = props.getHearingDets[0].hearing_id;
     }
 
@@ -195,7 +201,7 @@ export function Hearing(props) {
         props.AddHearing_output && props.AddHearing_output(data);
         handleCancel();
       } else {
-        dispatch(InsertHearingDets(data)).then((response) => {
+        dispatch(InsertHearingDetails(data)).then((response) => {
           handleCancel();
         })
       }
@@ -232,12 +238,18 @@ export function Hearing(props) {
       [key]: dynObj,
     }));
   }
+
   const setadjournDetails = (data) => {
     HearingData.adjournment_taken_by.value = data.adjournment_taken_by.value
     HearingData.reason.value = data.reason.value
     setadjourn(false)
     setAddAdjourn(true)
   }
+
+  useEffect(() => {
+    if (props.project_wise && props.project_wise.length > 0 && props.project_wise[0].task_id)
+      dispatch(getHearingDetails({ task_id: props.project_wise[0]?.task_id.value, project_id: props.project_wise[0]?.projectname.value }));
+  }, [props.project_wise])
 
   return (
     <div>
@@ -303,7 +315,7 @@ export function Hearing(props) {
             error={HearingData.person_responsible.error}
             errmsg={HearingData.person_responsible.errmsg} />
         </Grid>
-        <Grid item xs={3} container direction="column">
+        <Grid item xs={6} container direction="column">
           <div className="TThead">Hearing Outcome</div>
           <Labelbox type="textarea"
             changeData={(data) => checkValidation(data, "hearingoutcome")}
@@ -325,7 +337,7 @@ export function Hearing(props) {
 
 
 
-      <DynModel modelTitle={"Adjournment"} handleChangeModel={adjourn} handleChangeCloseModel={(bln) => setadjourn(bln)} content={<Adjournment closeModel={() => setadjourn(false)} setadjournDetails={(data) => setadjournDetails(data)} />} />
+      <DynModel modelTitle={"Adjournment"} handleChangeModel={adjourn} handleChangeCloseModel={(bln) => setadjourn(bln)} content={<Adjournment closeModel={() => setadjourn(false)} adjournDetails={HearingData} setadjournDetails={(data) => setadjournDetails(data)} />} />
 
     </div>
   )

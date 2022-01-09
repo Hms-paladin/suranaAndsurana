@@ -67,6 +67,12 @@ class ValidationLibrary extends Component {
           return { msg: "Please Enter 10 digit Mobile Number", state: false };
         }
       }
+      else if (validatorsArray[valid].name == 'moneyformat') { // 8 Digit Only
+        var re = /^[0-9,]*$/;
+        if (re.test(textValue) == false) {
+          return { msg: "Please Enter value in Correct Format", state: false };
+        }
+      }
       else if (validatorsArray[valid].name == "regex") {
         // var re = /^(0|[1-9][0-9]*){10}$/;
         if (new RegExp(validatorsArray[valid].params).test(textValue) == false) {

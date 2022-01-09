@@ -6,12 +6,15 @@ import CustomButton from '../../component/Butttons/button'
 import Divider from '@material-ui/core/Divider';
 import { useDispatch, connect } from "react-redux";
 import { GetOpeAdvance, InsertOpeAdvance } from '../../actions/OutofPacketActions'
+import { useHistory } from "react-router-dom";
+
 function OPE(props) {
     let dispatch = useDispatch()
     const [saveRights, setSaveRights] = useState([])
     const [OpeDetails, setOpeDetails] = useState([])
     const [Advance_amt, setAdvance_amt] = useState("")
     const [Error, setError] = useState("")
+    const history = useHistory();
     ///***********user permission**********/
     useEffect(() => {
         if (props.UserPermission.length > 0 && props.UserPermission) {
@@ -59,6 +62,10 @@ function OPE(props) {
         setOpeDetails(AdvanceData)
     }, [props.OpeAdvance])
 
+    const handleOnCancel=()=>{
+        setAdvance_amt('')
+        history.push('/Home/outofpacket')
+    }
     ////////
     return (
         <div>
@@ -83,7 +90,7 @@ function OPE(props) {
                 </div>
                 <div className="ope_advance_btns">
                     <CustomButton btnName={"Save"} btnCustomColor="customPrimary" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="ope_save" onBtnClick={SubmitAdvanceAmt} />
-                    <CustomButton btnName={"Cancel"} custombtnCSS="ope_save" onBtnClick={() => setAdvance_amt("")} />
+                    <CustomButton btnName={"Cancel"} custombtnCSS="ope_save" onBtnClick={handleOnCancel} />
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./projectFormcreate.scss";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
@@ -6,7 +6,7 @@ import CustomButton from "../../../component/Butttons/button";
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { apiurl } from "../../../utils/baseUrl";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import DynModel from "../../../component/Model/model";
 import {
@@ -24,7 +24,6 @@ import SuccessIcon from "../../../images/successicon.svg";
 import { InsertIpProject, getEmployeeByDepartment } from "../../../actions/ProjectformAction";
 import PlusIcon from "../../../images/plusIcon.svg";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { SearchVariableRate } from "../../../actions/VariableRateMaster"
 // Table Data ==>
 
 const header = [
@@ -144,7 +143,7 @@ function ProjectFormCreate(props) {
     },
     projectcostrange: {
       value: "",
-      // validation: [{ name: "required" }, { "name": "allowNumaricOnly1" }],
+      validation: [{ "name": "moneyformat" }],
       // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
@@ -326,7 +325,7 @@ useEffect(()=>{
 
       IP_project_key.map((data) => {
         if (data === "projectcostrange") {
-          projectform[data].validation = ([{ name: "required" }])
+          projectform[data].validation = ([{ name: "required" }, { "name": "moneyformat" }])
           // , { "name": "allowNumaricOnly1" }
         } else {
           projectform[data].validation = ([{ name: "required" }])
@@ -403,7 +402,6 @@ useEffect(()=>{
     }
 
     if (data && key === "billable_type") {
-      let projectcostrange = projectform.projectcostrange.value.replace(/,/g, "");
       if (data === 1 || data === 4 || data === 5) {
         projectform.baseRate.validation = ([{ name: "required" }
         // , { "name": "custommaxValue", "params": projectcostrange === '' ? '0' : projectcostrange }
@@ -556,7 +554,7 @@ useEffect(()=>{
 
     if (projectform.billable_type.value && projectform.billable_type.value === 2 && filtererr.length === 0) {
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
-        (response) => {
+        () => {
           handleCancel();
         }
       );
@@ -565,7 +563,7 @@ useEffect(()=>{
     }
     else if (filtererr.length == 0) {
       dispatch(InsertIpProject(projectform, sendVariableData, proj_type_name)).then(
-        (response) => {
+        () => {
           handleCancel();
         }
       );
@@ -690,12 +688,6 @@ useEffect(()=>{
   // },[localStorage.getItem("token")])
 
   const variablerateModel = () => {
-    function onSearch() {
-      setSearchdata(true);
-      setAddsearchdata(false);
-      // setVariableRateCall(!variableRateCall)
-      setNotfoundmodel(true);
-    }
 
     function addSearchData() {
       setAddsearchdata(true);
@@ -703,7 +695,7 @@ useEffect(()=>{
       setSuccessmodel(true);
     }
 
-    const newInsertrow = (data) => {
+    const newInsertrow = () => {
 
     }
 

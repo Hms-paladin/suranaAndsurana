@@ -74,15 +74,15 @@ export const inserTask = (params, timeSheetParams, stopData, project_wise, AddHe
                 }
 
                 dispatch({ type: INSERT_TASK, payload: response.data.data })
-                if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
-                    let tid = response.data.data[response.data.data.length - 1].task_id;
-                    timeSheetParams.task_id = tid;
-                    if (AddHearing_Data && AddHearing_Data.length > 0 && params.activiity_id === 6) {
-                        AddHearing_Data[0].activity_id = params.activiity_id;
-                        AddHearing_Data[0].task_id = tid;
-                    }
-                    await dispatch(insertTimeSheet(timeSheetParams, stopData, project_wise, AddHearing_Data))
-                }
+                // if (timeSheetParams && response.data.data && response.data.data.length > 0 && response.data.data[response.data.data.length - 1]) {
+                //     let tid = response.data.data[response.data.data.length - 1].task_id;
+                //     timeSheetParams.task_id = tid;
+                //     if (AddHearing_Data && AddHearing_Data.length > 0 && params.activiity_id === 6) {
+                //         AddHearing_Data[0].activity_id = params.activiity_id;
+                //         AddHearing_Data[0].task_id = tid;
+                //     }
+                //     await dispatch(insertTimeSheet(timeSheetParams, stopData, project_wise, AddHearing_Data))
+                // }
 
                 return Promise.resolve();
             } else if (response.data.status === 0) {
@@ -138,77 +138,77 @@ export const insertAdhocTask = (params) => async dispatch => {
     }
 }
 
-export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Data) => async dispatch => {
+// export const insertTimeSheet = (params, stopdetails, project_wise, AddHearing_Data) => async dispatch => {
 
-    try {
-        await axios({
-            method: 'POST',
-            url: apiurl + 'insert_start_time',
-            data: params
-        }).then((response) => {
-            if (response.data.status === 1) {
+//     try {
+//         await axios({
+//             method: 'POST',
+//             url: apiurl + 'insert_start_time',
+//             data: params
+//         }).then((response) => {
+//             if (response.data.status === 1) {
 
-                if (AddHearing_Data && AddHearing_Data.length > 0 && AddHearing_Data[0].activity_id === 6) {
-                    dispatch(InsertHearingDets(AddHearing_Data[0]))
-                }
+//                 if (AddHearing_Data && AddHearing_Data.length > 0 && AddHearing_Data[0].activity_id === 6) {
+//                     dispatch(InsertHearingDetails(AddHearing_Data[0]))
+//                 }
 
-                if (!stopdetails) {
-                    notification.success({
-                        message: "Time Sheet Started Successfully",
-                    });
-                    if (project_wise) {
-                        dispatch(getProjectWise_TimeSheet(project_wise));
-                        dispatch(getTaskTimeSheet(params.task_id));
-                    }
-                    !project_wise && (dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status }))
+//                 if (!stopdetails) {
+//                     notification.success({
+//                         message: "Time Sheet Started Successfully",
+//                     });
+//                     if (project_wise) {
+//                         dispatch(getProjectWise_TimeSheet(project_wise));
+//                         dispatch(getTaskTimeSheet(params.task_id));
+//                     }
+//                     !project_wise && (dispatch({ type: INSERT_TIME_SHEET, payload: response.data.status }))
 
-                    return Promise.resolve();
-                } else {
-                    if (response.data.data && response.data.data.length > 0 && response.data.data[0]) {
-                        let tid = response.data.data[0].timesheet_id;
-                        stopdetails.timesheet_id = tid;
+//                     return Promise.resolve();
+//                 } else {
+//                     if (response.data.data && response.data.data.length > 0 && response.data.data[0]) {
+//                         let tid = response.data.data[0].timesheet_id;
+//                         stopdetails.timesheet_id = tid;
 
-                        axios({
-                            method: 'POST',
-                            url: apiurl + 'insert_stop_time',
-                            data: stopdetails
-                        }).then((response) => {
-                            if (response.data.status === 1) {
+//                         axios({
+//                             method: 'POST',
+//                             url: apiurl + 'insert_stop_time',
+//                             data: stopdetails
+//                         }).then((response) => {
+//                             if (response.data.status === 1) {
 
-                                if (stopdetails.task_status === 0) {
-                                    notification.success({
-                                        message: "Time Sheet Saved Successfully",
-                                    });
-                                } else if (stopdetails.task_status === 1) {
-                                    notification.success({
-                                        message: "Time Sheet Saved and Task Completed Successfully",
-                                    });
-                                }
+//                                 if (stopdetails.task_status === 0) {
+//                                     notification.success({
+//                                         message: "Time Sheet Saved Successfully",
+//                                     });
+//                                 } else if (stopdetails.task_status === 1) {
+//                                     notification.success({
+//                                         message: "Time Sheet Saved and Task Completed Successfully",
+//                                     });
+//                                 }
 
-                                if (project_wise) {
-                                    dispatch(getProjectWise_TimeSheet(project_wise))
-                                }
-                                return Promise.resolve();
-                            } else if (response.data.status === 0) {
-                                notification.success({
-                                    message: response.data.msg,
-                                });
-                            }
-                        });
-                    }
+//                                 if (project_wise) {
+//                                     dispatch(getProjectWise_TimeSheet(project_wise))
+//                                 }
+//                                 return Promise.resolve();
+//                             } else if (response.data.status === 0) {
+//                                 notification.success({
+//                                     message: response.data.msg,
+//                                 });
+//                             }
+//                         });
+//                     }
 
-                }
-            } else if (response.data.status === 0) {
-                notification.success({
-                    message: response.data.msg,
-                });
-            }
-        });
+//                 }
+//             } else if (response.data.status === 0) {
+//                 notification.success({
+//                     message: response.data.msg,
+//                 });
+//             }
+//         });
 
-    } catch (err) {
+//     } catch (err) {
 
-    }
-}
+//     }
+// }
 
 
 export const updateTaskDates = (params) => async dispatch => {
@@ -441,7 +441,7 @@ export const getProjectStageList = (project_type_id, sub_proj_type_id, process_i
             data: {
                 "project_type_id": project_type_id,
                 "sub_proj_type_id": sub_proj_type_id,
-                "project_id": process_id,
+                "process_id": process_id,
             }
         })
             .then((response) => {
@@ -605,17 +605,22 @@ export const getHearingDetails = (data) => async dispatch => {
     }
 }
 
-export const InsertHearingDets = (data) => async dispatch => {
+export const InsertHearingDetails = (data) => async dispatch => {
+
+    let EDIT = false;
+    if (data.hearing_id && data.hearing_id !== '0' && data.hearing_id !== 0) {
+        EDIT = true;
+    }
     try {
         await axios({
             method: 'POST',
-            url: apiurl + 'insert_hearing',
+            url: `${apiurl}${EDIT ? 'update_hearing' : 'insert_hearing'}`,
             data: data
         })
             .then(function (response) {
                 if (response.data.status === 1) {
                     notification.success({
-                        message: 'Hearing Details Added Successfully',
+                        message: `Hearing Details ${EDIT ? 'Updated' : 'Added'} Successfully`,
                     });
                     return Promise.resolve();
                 }
@@ -674,6 +679,7 @@ export const insert_reassign_task_assignee = (empId, task_id) => async dispatch 
             data: {
                 "assignee_id": empId || localStorage.getItem("empId"),
                 "task_id": task_id || "0",
+                "reassigned_by": localStorage.getItem("empId"),
             }
         })
             .then((response) => {

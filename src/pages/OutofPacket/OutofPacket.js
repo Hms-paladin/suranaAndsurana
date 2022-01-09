@@ -29,6 +29,8 @@ function OutofPacket(props) {
   const Header = [
     { id: "ope", label: "OPE/OPA" },
     { id: "date", label: "Date" },
+    { id: "client", label: "Client Name" },
+    { id: "project", label: "Project Name" },
     { id: "expensetype", label: "Expense Type" },
     { id: "amount", label: "Amount" },
     { id: "mop", label: "MOP" },
@@ -114,6 +116,8 @@ function OutofPacket(props) {
       PacketList.push({
         ope_type_id: data.ope_type,
         date: moment(data.ope_date).format("DD-MMM-YYYY"),
+        client: data.client,
+        project: data.project_name,
         expanse_type: data.expence_type,
         amount: data.expence_type_id ? data.amount : data.advance_amount,
         mop: data.mode_of_payment,

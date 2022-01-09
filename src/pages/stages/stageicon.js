@@ -48,7 +48,7 @@ function Stages(props) {
                 setLitigation(false)
             }
             dispatch(getStagesByProjectId(props.projectDetails[0].project_id, props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id));
-            dispatch(getProjectStageList(props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id, props.projectDetails[0].project_id))
+            dispatch(getProjectStageList(props.projectDetails[0].project_type_id, props.projectDetails[0].sub_project_id, props.projectDetails[0].process_id))
         }
     }, [props.projectDetails]);
 
