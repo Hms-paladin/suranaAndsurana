@@ -239,26 +239,6 @@ export default class Labelbox extends Component {
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
 					<div >
-
-						{/* <MuiPickersUtilsProvider utils={DateFnsUtils} >
-							<KeyboardTimePicker
-								margin="normal"
-								inputVariant="outlined"
-								id="time-picker"
-								value={this.props.value || new Date()}
-								onChange={(time) => this.timepickerChange(time)}
-								KeyboardButtonProps={{
-									'aria-label': 'change time',
-								}}
-								minTime={this.props.minTime && this.props.minTime}
-								maxTime={this.props.maxTime && this.props.maxTime}
-								InputProps={{ readOnly: true }}
-								keyboardIcon={<img src={TimerIcon} className="labelboxTimePicker"
-									minTime={this.props.minTime && this.props.minTime}
-									maxTime={this.props.maxTime && this.props.maxTime} />
-								}
-							/>
-						</MuiPickersUtilsProvider> */}
 						<TimePicker
 							onChange={(time) => this.newtimepickerChange(time)}
 							value={(data.value && data.value != '') ? moment(data.value, 'HH:mm') : ''}

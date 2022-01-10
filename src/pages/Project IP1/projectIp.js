@@ -729,15 +729,18 @@ function ProjectIp(props) {
                                         <div className="projectTitle">{props.ProjectDetails.length > 0 && props.ProjectDetails[0].project_type_id === 6 ? "DDRA" : "Counsel"}</div>
                                         <div>{data.councel}</div>
                                     </div>
-
-                                </div>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <div className="projectIpFields">
                                     <div className="projectIpdata">
                                         <div className="projectTitle">Comments</div>
                                         <div>{data.comments}</div>
                                     </div>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="projectIpFields">
+                                    {data.project_cost && data.project_cost!=='' && <div className="projectIpdata">
+                                        <div className="projectTitle">Project Value</div>
+                                        <div>{data.project_cost}</div>
+                                    </div>}
 
                                     {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].base_rate != null && <div className="projectIpdata">
                                         <div className="projectTitle">Base Rate</div>
