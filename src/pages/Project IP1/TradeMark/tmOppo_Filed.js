@@ -510,35 +510,13 @@ function TradeMarkOposition1(properties) {
 
         if (filtererr.length > 0) {
         } else {
-            // let params = {
-            //     "project_id":rowId,//radeMarkForm.project_id.value,
-            //     "status_id": TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value,
-            //     "our_reference": TradeMarkForm.ourReference.value,
-            //     "mark_id": TradeMarkForm.mark_id.value,
-            //     "upload_image": selectedFile,
-            //     "application_no": TradeMarkForm.application_no.value,
-            //     "application_date": TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value,
-            //     "tmj_number": TradeMarkForm.tmj_number.value,
-            //     "tmj_date": TradeMarkForm.tmj_date.value === '' ? '0000-00-00' : TradeMarkForm.tmj_date.value,
-            //     "opposition_no": TradeMarkForm.oppositionNumber.value,
-            //     "applicant": TradeMarkForm.applicant.value,
-            //     "applicant_agent": TradeMarkForm.applicantAgent.value,
-            //     "internal_status": TradeMarkForm.internal_status.value,
-            //     "deadline": TradeMarkForm.end_date.value === '' ? '0000-00-00' : moment(TradeMarkForm.end_date.value, 'YYYY-MM-DD').format('YYYY-MM-DD'),
-            //     "created_by": localStorage.getItem("empId"),
-            //     "created_on": moment().format('YYYY-MM-DD HH:m:s'),
-            //     "updated_on": moment().format('YYYY-MM-DD HH:m:s'),
-            //     "updated_by": localStorage.getItem("empId"),
-            //     "ip_address": "ddf"
-            // }
-
             let formData = new FormData();
             formData.append("project_id", rowId)
             formData.append("status_id", TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value)
             formData.append("our_reference", TradeMarkForm.ourReference.value || '')
             formData.append("mark_id", TradeMarkForm.mark_id.value)
-            formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(35)))
-            formData.append("orders", (!TradeMarkForm.orders.view_file && !TradeMarkForm.orders.value) ? [] : (TradeMarkForm.orders.value ? TradeMarkForm.orders.value : TradeMarkForm.orders.view_file.substr(35)))
+            formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(36)))
+            formData.append("orders", (!TradeMarkForm.orders.view_file && !TradeMarkForm.orders.value) ? [] : (TradeMarkForm.orders.value ? TradeMarkForm.orders.value : TradeMarkForm.orders.view_file.substr(36)))
             formData.append("application_no", TradeMarkForm.application_no.value || '')
             formData.append("application_date", TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value)
             formData.append("tmj_number", TradeMarkForm.tmj_number.value || '')

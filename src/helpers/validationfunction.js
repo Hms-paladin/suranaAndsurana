@@ -70,7 +70,7 @@ class ValidationLibrary extends Component {
       else if (validatorsArray[valid].name == 'moneyformat') { // 8 Digit Only
         var re = /^[0-9,]*$/;
         if (re.test(textValue) == false) {
-          return { msg: "Please Enter value in Correct Format", state: false };
+          return { msg: "Please Enter Numeric Value only", state: false };
         }
       }
       else if (validatorsArray[valid].name == "regex") {

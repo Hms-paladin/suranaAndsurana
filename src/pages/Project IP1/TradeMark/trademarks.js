@@ -1,16 +1,12 @@
 
-import react, { useState, useEffect } from 'react';
-import { useParams, useHistory } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import './trademark.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { InesertResume } from "../../../actions/ResumeAction";
 import CustomButton from '../../../component/Butttons/button';
-import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
-import PublishIcon from '@material-ui/icons/Publish';
-import { Upload, message, Button, Icon } from 'antd';
 import { getProjectDetails } from "../../../actions/ProjectFillingFinalAction";
 import moment from 'moment'
 import {
@@ -20,16 +16,12 @@ import {
 
 function TradeMark(properties) {
 
-    const history = useHistory();
     const [tradeStatusList, settradeStatusList] = useState({})
     const [classDetList, setclassDetList] = useState({})
     const [poaList, setpoaList] = useState({})
     const [usageDetList, setusageDetList] = useState({})
-    const [selectedFile, setselectedFile] = useState([]);
-    const [selectedFile1, setselectedFile1] = useState([]);
-    const [projectDetails, setProjectDetails] = useState({})
-    const [idDetails, setidDetails] = useState({})
     let { rowId } = useParams()
+
     useEffect(() => {
         dispatch(getTradeMark(rowId))
         dispatch(getProjectDetails(rowId))
@@ -37,9 +29,7 @@ function TradeMark(properties) {
         dispatch(getClassDetails());
         dispatch(getPoaDetails(properties.ProjectDetails[0].client_id));
         dispatch(getUsageDetails());
-
-
-    }, []);
+    },[]);
 
     useEffect(() => {
         handleCancel()
@@ -49,7 +39,7 @@ function TradeMark(properties) {
             TradeMarkForm.comments.value = obj.comments;
             TradeMarkForm.trademark_id.value = obj.trademark_id;
 
-            if (obj.next_renewal != '0000-00-00')
+            if (obj.next_renewal !== '0000-00-00')
                 TradeMarkForm.next_renewal.value = obj.next_renewal;
             // if (obj.next_renewal && obj.next_renewal.length)
             //     TradeMarkForm.next_renewal.disabled = false;
@@ -66,7 +56,7 @@ function TradeMark(properties) {
             // if (obj.status_id && obj.status_id.length)
             //     TradeMarkForm.status_id.disabled = false;
 
-            if (obj.mark_id != 0)
+            if (obj.mark_id !== 0)
                 TradeMarkForm.mark_id.value = obj.mark_id
             // if (obj.mark_id && obj.mark_id.length)
             //     TradeMarkForm.mark_id.disabled = false;
@@ -94,7 +84,7 @@ function TradeMark(properties) {
             // if (obj.goods_description && obj.goods_description.length)
             //     TradeMarkForm.goods_description.disabled = false;
 
-            if (obj.usage_from_date != '0000-00-00')
+            if (obj.usage_from_date !== '0000-00-00')
                 TradeMarkForm.usage_from_date.value = obj.usage_from_date;
             // if (obj.usage_from_date && obj.usage_from_date.length)
             //     TradeMarkForm.usage_from_date.disabled = false;
@@ -128,7 +118,7 @@ function TradeMark(properties) {
             // if (obj.tmj_number && obj.tmj_number.length)
             //     TradeMarkForm.tmj_number.disabled = false;
 
-            if (obj.tmj_date != '0000-00-00')
+            if (obj.tmj_date !== '0000-00-00')
                 TradeMarkForm.tmj_date.value = obj.tmj_date;
             // if (obj.tmj_date && obj.tmj_date.length)
             //     TradeMarkForm.status_id.disabled = false;
@@ -138,24 +128,19 @@ function TradeMark(properties) {
             // if (obj.journel_extract && obj.journel_extract.length)
             //     TradeMarkForm.journel_extract.disabled = false;
 
-            if (obj.certificate_date != '0000-00-00')
+            if (obj.certificate_date !== '0000-00-00')
                 TradeMarkForm.certificate_date.value = obj.certificate_date;
             // if (obj.certificate_date && obj.certificate_date.length)
             //     TradeMarkForm.certificate_date.disabled = false;
 
-            if (obj.renewal_certificate_date != '0000-00-00')
+            if (obj.renewal_certificate_date !== '0000-00-00')
                 TradeMarkForm.renewal_certificate_date.value = obj.renewal_certificate_date;
             // if (obj.renewal_certificate_date && obj.renewal_certificate_date.length)
             //     TradeMarkForm.renewal_certificate_date.disabled = false;
-            obj.upload_image && (obj.upload_image != '') && (TradeMarkForm.upload.view_file = obj.upload_image);
-            obj.orders && (obj.orders != '') && (TradeMarkForm.orders.view_file = obj.orders);
+            obj.upload_image && (obj.upload_image !== '') && (TradeMarkForm.upload.view_file = obj.upload_image);
+            obj.orders && (obj.orders !== '') && (TradeMarkForm.orders.view_file = obj.orders);
 
         }
-        setProjectDetails(properties.ProjectDetails);
-        properties.ProjectDetails.length > 0 && setidDetails({
-            project_id: properties.ProjectDetails[0].project_id,
-            client_id: properties.ProjectDetails[0].client_id,
-        })
 
         let tradeStatusData = []
         properties.tradeStatusList.map((data) =>
@@ -197,37 +182,6 @@ function TradeMark(properties) {
     properties.tradeStatusList, properties.classDetailsList, properties.POAList, properties.tmUsageDetailsList
     ]);
 
-
-    /*useEffect(() => {
-        dispatch(getProjectDetails(rowId))
-    }, [])
-    useEffect(() => {
-        setProjectDetails(properties.ProjectDetails);
-        properties.ProjectDetails.length > 0 && setidDetails({
-            project_id:properties.ProjectDetails[0].project_id,
-            client_id:properties.ProjectDetails[0].client_id,
-        })
-    }, [properties.ProjectDetails])
-  
-    */
-    const props = {
-        name: 'file',
-        // action: '//jsonplaceholder.typicode.com/posts/',
-        //  headers: {
-        //     authorization: 'authorization-text',
-        // },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-
-            }
-            if (info.file.status === 'done') {
-                setselectedFile(info.file.originFileObj);
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
     const dispatch = useDispatch()
 
     const [TradeMarkForm, setTradeMarkForm] = useState({
@@ -455,16 +409,15 @@ function TradeMark(properties) {
             mainvalue[targetkeys[i]] = TradeMarkForm[targetkeys[i]].value;
         }
         var filtererr = targetkeys.filter(
-            (obj) => TradeMarkForm[obj].error == true
+            (obj) => TradeMarkForm[obj].error === true
         );
 
         let formData = new FormData();
         formData.append("project_id", rowId)
         formData.append("status_id", TradeMarkForm.status_id.value === '' ? '0' : TradeMarkForm.status_id.value)
-        // formData.append("our_reference",TradeMarkForm.ourReference.value||'')
         formData.append("mark_id", TradeMarkForm.mark_id.value)
-        formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(35)))
-        formData.append("orders", (!TradeMarkForm.orders.view_file && !TradeMarkForm.orders.value) ? [] : (TradeMarkForm.orders.value ? TradeMarkForm.orders.value : TradeMarkForm.orders.view_file.substr(35)))
+        formData.append("upload_image", (!TradeMarkForm.upload.view_file && !TradeMarkForm.upload.value) ? [] : (TradeMarkForm.upload.value ? TradeMarkForm.upload.value : TradeMarkForm.upload.view_file.substr(36)))
+        formData.append("orders", (!TradeMarkForm.orders.view_file && !TradeMarkForm.orders.value) ? [] : (TradeMarkForm.orders.value ? TradeMarkForm.orders.value : TradeMarkForm.orders.view_file.substr(36)))
         formData.append("application_no", TradeMarkForm.application_no.value || '')
         formData.append("application_date", TradeMarkForm.application_date.value === '' ? '0000-00-00' : TradeMarkForm.application_date.value)
 
@@ -488,16 +441,16 @@ function TradeMark(properties) {
         formData.append("updated_by", localStorage.getItem("empId"))
         formData.append("ip_address", "ddf")
 
-        if (TradeMarkForm.class_id.value && TradeMarkForm.class_id.value != "") {
+        if (TradeMarkForm.class_id.value && TradeMarkForm.class_id.value !== "") {
             formData.set("class_id", TradeMarkForm.class_id.value)
             // params["class_id"] = TradeMarkForm.class_id.value;
         }
 
-        if (TradeMarkForm.trademark_id.value != 0) {
+        if (TradeMarkForm.trademark_id.value !== 0) {
             formData.set("trademark_id", TradeMarkForm.trademark_id.value)
         }
 
-        if (TradeMarkForm.poa.value && TradeMarkForm.poa.value != "") {
+        if (TradeMarkForm.poa.value && TradeMarkForm.poa.value !== "") {
             formData.set("poa", TradeMarkForm.poa.value)
         }
 
@@ -526,12 +479,12 @@ function TradeMark(properties) {
 
         From_key.map((data) => {
             try {
-                if (data != "upload" || data != "orders") {
+                if (data !== "upload" || data !== "orders") {
                     TradeMarkForm[data].value = ""
-                    TradeMarkForm[data].empty = false
                 } else {
                     TradeMarkForm[data].view_file = ""
                     TradeMarkForm[data].value = null;
+                    TradeMarkForm[data].empty = true;
                 }
             } catch (error) {
                 throw error;
@@ -540,7 +493,6 @@ function TradeMark(properties) {
         setTradeMarkForm(prevState => ({
             ...prevState,
         }));
-        // history.goBack();
     }
 
     function checkValidation(data, key, multipleId) {

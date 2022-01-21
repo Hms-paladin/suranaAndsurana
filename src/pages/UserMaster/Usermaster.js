@@ -1724,8 +1724,6 @@ const UserMaster = (props) => {
             value={UserMaster.tablename.value}
             error={UserMaster.tablename.error}
             errmsg={UserMaster.tablename.errmsg}
-            //  dropdown={[{id:"1",value:"Group Name"},{id:"2",value:"Status"},{id:"3",value:"Class"},{id:"4",value:"CheckList"}
-            //  ,{id:"5",value:"SubStage"}]}
             dropdown={tablevalues.table_data}
           />
 

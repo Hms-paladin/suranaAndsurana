@@ -1,18 +1,12 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "axios";
 import { apiurl } from "../../utils/baseUrl";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import CustomButton from "../../component/Butttons/button";
-import { Label } from "@material-ui/icons";
-import moment from "moment";
-import { notification } from "antd";
-import { InsertClient, getClientNameCheck } from "../../actions/AddClientAction"
-import PublishIcon from '@material-ui/icons/Publish';
+import { InsertClient } from "../../actions/AddClientAction"
 import { connect, useDispatch } from "react-redux";
-import { Upload, message, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
 import { getDesignationList, getCity_By_Id, } from '../../actions/MasterDropdowns'
@@ -52,7 +46,6 @@ function AddClient(props) {
     },
     designation_id_1: {
       value: "",
-      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
@@ -140,7 +133,8 @@ function AddClient(props) {
       error: null,
       errmsg: null,
       disabled: false,
-      view_file: null
+      view_file: null,
+      empty: false,
     },
     gst_no: {
       value: "",
@@ -156,13 +150,14 @@ function AddClient(props) {
     },
     state_code: {
       value: "",
-      // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
   });
+  let myWindow;
   function onViewFile(url) {
-    window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
+    myWindow?.close();
+    myWindow = window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
   }
   useEffect(() => {
     dispatch(getDesignationList());
@@ -251,6 +246,18 @@ function AddClient(props) {
 
     }
   };
+  useEffect(() => {
+    if (Number(Addclient_Form.client_type.value) === 16) {
+      Addclient_Form['gst_no'].validation = [];
+      Addclient_Form['pan_no'].validation = [];
+    } else {
+      Addclient_Form['gst_no'].validation = [{ name: "required" }, { name: "gst" }];
+      Addclient_Form['pan_no'].validation = [{ name: "required" }, { name: "pan" }];
+    }
+    setAddclient_Form((prevState) => ({
+      ...prevState,
+    }));
+  }, [Addclient_Form.client_type.value])
 
   async function checkValidation(data, key, multipleId) {
     var errorcheck = ValidationLibrary.checkValidation(
@@ -280,18 +287,7 @@ function AddClient(props) {
       dynObj.valueById = multipleIdList.toString();
     }
     // (end)
-    if (key === "client_type") {
-      if (Number(data) === 16) {
-        Addclient_Form['gst_no'].validation = [];
-        Addclient_Form['pan_no'].validation = [];
-      } else {
-        Addclient_Form['gst_no'].validation = [{ name: "required" }, { name: "gst" }];
-        Addclient_Form['pan_no'].validation = [{ name: "required" }, { name: "pan" }];
-      }
-      setAddclient_Form((prevState) => ({
-        ...prevState,
-      }));
-    }
+
     if (key === "client_name" && data) {
 
 
@@ -365,6 +361,7 @@ function AddClient(props) {
 
   async function onfileupload() {
     const From_key = ['document_upload_name', 'upload'];
+
     if (!Addclient_Form.upload.value || Addclient_Form.upload.value === '' || Addclient_Form.document_upload_name.value === '') {
       From_key.map((data) => {
         if (!Addclient_Form[data].value || Addclient_Form[data].value === '') {
@@ -382,14 +379,17 @@ function AddClient(props) {
       });
 
     } else {
-      setFileupload((prevState) => (
-        [...prevState, {
-          document_upload_name: Addclient_Form.document_upload_name.value,
-          selectedFile: Addclient_Form.upload.value,
-        }]
 
-      ));
-
+      var sss = {
+        document_upload_name: Addclient_Form.document_upload_name.value,
+        selectedFile: Addclient_Form.upload.value
+      }
+      setFileupload((prevState) => ([
+        ...prevState, sss
+      ]));
+      Addclient_Form['document_upload_name'].value = '';
+      Addclient_Form.upload.empty = true;
+      // Addclient_Form.upload.value = '';
       // From_key.map((data) => {
 
       //   try {
@@ -428,19 +428,22 @@ function AddClient(props) {
       "emai_id_2",
       "con_ph_2",
       "designation_id_2", "cont_per_2", "client_type", "postal_address", "email_id_1", "con_ph_1",
-      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "ct_address", "document_upload_name"]
+      "designation_id_1", "con_per_1", "industrty", "client_name", "client_id", "gst_no", "pan_no", "ct_address", "upload"]
 
 
     From_key.map((data) => {
 
       try {
         Addclient_Form[data].value = "";
+        Addclient_Form[data].error = false;
+        Addclient_Form[data].errmsg = null;
       } catch (error) {
         throw (error)
       }
     });
     setselectedFile([])
     setFileupload([])
+    setSaveButton(true)
     setAddclient_Form((prevState) => ({
       ...prevState,
     }));
@@ -451,9 +454,9 @@ function AddClient(props) {
     props.model_close && props.model_close()
   }
   useEffect(() => {
+    onStateClear()
     if (props.EditClientData) {
       let CreateClient_key = [
-
         "city",
         "state",
         "emai_id_2",
@@ -463,7 +466,6 @@ function AddClient(props) {
 
 
       let CreateClient_value = [
-        // "document_upload_name",
         "city_id",
         "state_id",
         "ct_email_id",
@@ -486,9 +488,6 @@ function AddClient(props) {
       setAddclient_Form((prevState) => ({
         ...prevState,
       }));
-    }
-    else {
-      onStateClear()
     }
   }, [props.EditClientData])
   console.log(fileupload, "fileupload")
@@ -634,15 +633,10 @@ function AddClient(props) {
                 <Labelbox type="upload"
                   changeData={(data) => checkValidation(data, "upload")}
                   view_file={Addclient_Form.upload.view_file}
-                  // remove_file={() => (setAddclient_Form(prevState => ({
-                  //   ...prevState,
-                  //   upload: {
-                  //     value: [], error: Addclient_Form.upload.error, errmsg: Addclient_Form.upload.errmsg, disabled: Addclient_Form.upload.disabled, view_file: null
-                  //   },
-                  // })))}
                   value={Addclient_Form.upload.value}
                   error={Addclient_Form.upload.error}
                   errmsg={Addclient_Form.upload.errmsg}
+                  empty={Addclient_Form.upload.empty}
                   disabled={Addclient_Form.upload.disabled}
                 />
 

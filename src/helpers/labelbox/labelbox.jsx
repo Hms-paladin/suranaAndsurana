@@ -20,11 +20,12 @@ import Delete from '../../images/dashboard/delete.svg';
 import PublishIcon from '@material-ui/icons/Publish';
 import DynModel from "../../component/Model/model";
 import CustomButton from "../../component/Butttons/button";
+import { useState } from 'react';
 
 export default class Labelbox extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { upload_model: false, gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
+		this.state = { upload_model: false, multi_files: [], gender: 'M', open: false, value: null, selectedtime: props.value, selecteddate: props.value ? props.value : null };
 		// ? props.value : new Date()
 	}
 	changeGender = (data) => {
@@ -234,7 +235,7 @@ export default class Labelbox extends Component {
 			function onChange(date, dateString) {
 
 			}
-		
+
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
@@ -331,24 +332,38 @@ export default class Labelbox extends Component {
 				</div>
 			)
 		} else if (data.type == 'upload') {
-
+			let myWindow;
 			function onFileView(url) {
-				window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
+				myWindow?.close();
+				myWindow = window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
 			}
 			if (this.props.empty && this.props.upload_id && document.getElementById(this.props.upload_id)) {
 				document.getElementById(this.props.upload_id).value = "";
+			}
+			const onFileUpload = (e) => {
+				if (data.multiple) {
+					this.setState({ multi_files: [...this.state.multi_files, e.target.files[0]] })
+					return this.state.multi_files.length > 0 ? [...this.state.multi_files, e.target.files[0]] : e.target.files[0]
+				} else {
+					return e.target.files[0]
+				}
+			}
+			const onChange = (e) => {
+				let Files = onFileUpload(e)
+				this.props.changeData && this.props.changeData(Files)
+				// console.log(Files, 'Files')
 			}
 			return (<>
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
 					<div className={`${data.error && "brdred"} upload`}>
 
-						<div style={{ width: "100%", display: "flex" }}>
+						<div className='file_upload_div'>
 							<input type="file"
 								//  accept=".doc, .docx,.ppt, .pptx,.txt,.pdf"
 								style={{ fontSize: 12 }}
 								id={this.props.upload_id}
-								onChange={(e) => this.props.changeData && this.props.changeData(e.target.files[0])}
+								onChange={(e) => this.props.changeData && onChange(e)}
 								disabled={this.props.disabled}
 								hidden={this.props.hidden} />
 							<PublishIcon />
@@ -358,6 +373,7 @@ export default class Labelbox extends Component {
 							<div style={{ display: "flex", marginTop: -6 }}>
 								<div style={{ width: "100%", cursor: 'pointer' }} onClick={() => onFileView(this.props.view_file)}>{(this.props.view_file && this.props.view_file.length > 0 ? (this.props.view_file.substr(35, 16).length > 15 ? this.props.view_file.substr(35, 16) + '..' : this.props.view_file.substr(35, 16)) : '')}</div>
 								<img src={Delete}
+									alt='img'
 									onClick={() => this.setState({ upload_model: true })}
 									style={{ width: '20px', cursor: 'pointer', padding: '3px' }} />
 							</div>

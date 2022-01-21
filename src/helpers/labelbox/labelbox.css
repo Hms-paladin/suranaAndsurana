@@ -272,3 +272,10 @@ div.formdiv > div.selectbrdred > div.ant-select-selection{
 input:disabled{
 background-color: #c9c8c8 !important;
 }
+
+.file_upload_div{
+  width: 100%;
+  display: flex;
+  background-color: #0354a4;
+  color: white;
+}
