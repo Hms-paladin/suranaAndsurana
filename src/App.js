@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthContext } from "./context/auth";
-import PrivateRoute from './Router/PrivateRoute';
 import Login from "./pages/Login/login.js";
-import Routes from "./Router/route";
 import { useDispatch } from "react-redux";
 import Navbar from "./component/Navbar/navbar.js";
-import { get_user_rights } from "./actions/UserAccessRightsAction";
+
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("token"));
   const [authTokens, setAuthTokens] = useState(existingTokens);

@@ -399,8 +399,11 @@ const RateMaster = (props) => {
 
       // Activity
       Axios({
-        method: "GET",
-        url: apiurl + "get_activity",
+        method: 'POST',
+        url: apiurl + 'get_activity_by_departmentId',
+        data: {
+          department_id: localStorage.getItem("department_id"),
+        },
       }).then((response) => {
         let projectActivitydata = [];
         response.data.data.map((data) =>

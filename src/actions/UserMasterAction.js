@@ -316,17 +316,17 @@ export const InsertClass = (UserMaster, ClassId, Editvisible, Classtype_id) => a
 }
 
 // subactivity insert api 
-export const InsertSubActivity = (UserMaster, EditId, Editvisible, ActivityId) => async dispatch => {
+export const InsertSubActivity = (UserMaster) => async dispatch => {
 
   try {
     axios({
       method: 'POST',
-      url: apiurl + 'insert_sub_activity',
+      url: apiurl + 'insert_sub_activity_department',
       data:
       {
         "activity": UserMaster.activity_drop.value,
         "sub_activity": UserMaster.sub_activity.value,
-        // "sub_activity_id":Editvisible?EditId.sub_activity_id:0,
+        "department_id": UserMaster.department.value,
       },
     })
       .then((response) => {
@@ -336,7 +336,7 @@ export const InsertSubActivity = (UserMaster, EditId, Editvisible, ActivityId) =
           });
           dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
 
-          dispatch(getSubActivity(ActivityId))
+          dispatch(getSubActivity(UserMaster.department.value))
           return Promise.resolve();
         }
         else if (response.data.status === 0) {
@@ -355,7 +355,7 @@ export const InsertSubActivity = (UserMaster, EditId, Editvisible, ActivityId) =
 }
 
 // subactivity update api 
-export const UpdateSubActivity = (UserMaster, EditId, Editvisible, ActivityId) => async dispatch => {
+export const UpdateSubActivity = (UserMaster, EditId, Editvisible,DepartmentID) => async dispatch => {
 
   try {
     axios({
@@ -363,7 +363,6 @@ export const UpdateSubActivity = (UserMaster, EditId, Editvisible, ActivityId) =
       url: apiurl + 'update_sub_activity',
       data:
       {
-        "activity": UserMaster.activity_drop.value,
         "sub_activity": UserMaster.sub_activity.value,
         "sub_activity_id": Editvisible ? EditId.sub_activity_id : 0,
       },
@@ -375,7 +374,7 @@ export const UpdateSubActivity = (UserMaster, EditId, Editvisible, ActivityId) =
           });
           dispatch({ type: UPDATE_SUBACTIVITY, payload: response.data.status })
 
-          dispatch(getSubActivity(ActivityId))
+          dispatch(getSubActivity(DepartmentID))
           return Promise.resolve();
         }
         else if (response.data.status === 0) {
@@ -771,9 +770,9 @@ export const getTableClass = (id) => async (dispatch) => {
 export const getSubActivity = (id) => async (dispatch) => {
   const response = await axios({
     method: "post",
-    url: apiurl + "get_sub_activity",
+    url: apiurl + "get_sub_activity_by_department",
     data: {
-      activity_id: id,
+      department_id: id,
     },
   });
   return dispatch({ type: GET_TABLE_SUBACTIVITY, payload: response.data.data });

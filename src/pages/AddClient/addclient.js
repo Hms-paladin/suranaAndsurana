@@ -227,25 +227,6 @@ function AddClient(props) {
 
   }, [props.getDesignationListByDept, props.getCity]);
 
-  const handleChange = (info, uploadName) => {
-
-
-    if (info.status !== 'error' && info.status !== "uploading") {
-
-      let fileList = [...info.fileList];
-
-      // fileList = fileList.slice(-1);
-
-      fileList = fileList.map(file => {
-        if (file.response) {
-          file.url = file.response.url;
-        }
-        return file;
-      });
-      setselectedFile(fileList);
-
-    }
-  };
   useEffect(() => {
     if (Number(Addclient_Form.client_type.value) === 16) {
       Addclient_Form['gst_no'].validation = [];

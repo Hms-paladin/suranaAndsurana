@@ -1,21 +1,23 @@
 import {
-    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_BACK_LOG, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
+    GET_ACTIVITY, GET_TAG, GET_PRIORITY, INSERT_TASK, INSERT_ADHOC_TASK, GET_TIMESHEET_BY_TASK,
     GET_LOCATION, INSERT_TIME_SHEET, GET_EXPENSE_TYPE,
     GET_PAYMENT_MODE, GET_STAGESBY_PROJECT, GET_SUBSTAGES, GET_PROJECTSTAGES,
-    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_TASK_WEEK_MONTH, INSERT_ADJOURN, INSERT_HEARING, GET_ADJOURN_TAKEN_BY
+    GET_PROJECT_STAGES_LIST, GET_TASK_LIST, GET_TASK_TIME_SHEET, GET_HEARING_DETS, GET_TASK_WEEK_MONTH, GET_ADJOURN_TAKEN_BY
 } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
-import moment from 'moment';
 import { notification } from "antd";
-import { GetOpeSearch } from './OutofPacketActions'
-import { getProjectWise_TimeSheet } from "./TimeSheetAction";
+import { GetOpeSearch } from './OutofPacketActions';
+
 export const getActivity = () => async dispatch => {
     try {
 
         axios({
-            method: 'GET',
-            url: apiurl + 'get_activity'
+            method: 'POST',
+            url: apiurl + 'get_activity_by_departmentId',
+            data: {
+                department_id: localStorage.getItem("department_id"),
+            },
         })
             .then((response) => {
                 dispatch({ type: GET_ACTIVITY, payload: response.data.data })

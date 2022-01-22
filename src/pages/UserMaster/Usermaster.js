@@ -141,6 +141,7 @@ const UserMaster = (props) => {
     // { id: " ", label: "Delete" },
   ];
   const header17 = [
+    { id: "department", label: "Department" },
     { id: "activity", label: "Activity" },
     { id: "activityname", label: "Sub Activity Name" },
     { id: "", label: "Edit" },
@@ -421,7 +422,7 @@ const UserMaster = (props) => {
     if (key === "class_type") {
       dispatch(getTableClass(data));
     }
-    if (data && key === "activity_drop") {
+    if (data && key === "department") {
       dispatch(getSubActivity(data));
     }
     // if (key === "status_type") {
@@ -627,9 +628,9 @@ const UserMaster = (props) => {
     dispatch(getCaseType());
     dispatch(getSubStage());
     dispatch(getTableClass());
-    dispatch(getSubActivity());
+    // dispatch(getSubActivity());
     dispatch(getTableGroup(table_name_value.table_names));
-    dispatch(getCheckList());
+    // dispatch(getCheckList());
     dispatch(getControls())
     dispatch(getLoactionsList())
   }, []);
@@ -740,14 +741,6 @@ const UserMaster = (props) => {
             className="edit_p"
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
     props.StatusTableData.map((data, index) => {
@@ -762,14 +755,6 @@ const UserMaster = (props) => {
             className="edit_p"
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -784,14 +769,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.skill_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -806,14 +783,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.traitTable, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -828,14 +797,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.certification_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -850,14 +811,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.specialization_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -872,14 +825,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.qualification_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -894,14 +839,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.industry_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -916,14 +853,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.institute_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -938,14 +867,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.capability_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -960,14 +881,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.talent_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -982,14 +895,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.resource_type_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1005,14 +910,6 @@ const UserMaster = (props) => {
             onClick={() => EditDesignation(data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1027,14 +924,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.question_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1056,14 +945,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.department_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
     setDepartmentList({ departmentData })
@@ -1078,14 +959,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.activity_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1100,14 +973,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.location_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1122,14 +987,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.stage_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1144,14 +1001,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.range_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1166,14 +1015,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.case_type_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1189,14 +1030,6 @@ const UserMaster = (props) => {
             onClick={() => EditSubStage(data.sub_stage_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1213,19 +1046,12 @@ const UserMaster = (props) => {
             onClick={() => EditClass(data.class_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
     props.SubActivity_Data.map((data, index) => {
       sub_activity.push({
+        department: data.department,
         activity: data.activity,
         activityname: data.sub_activity,
         edit: (
@@ -1236,14 +1062,6 @@ const UserMaster = (props) => {
             onClick={() => EditSubActivity(data.proj_activity_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1259,14 +1077,6 @@ const UserMaster = (props) => {
             onClick={() => Editchecklist(data.check_list_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
     props.getTableControl.map((data, index) => {
@@ -1280,14 +1090,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.screen_control_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
     props.getLoactionsList.map((data, index) => {
@@ -1301,14 +1103,6 @@ const UserMaster = (props) => {
             onClick={() => CommonEdit(data.office_location_id, data)}
           />
         ),
-        // delete: (
-        //   <img
-        // alt=""
-        //     src={Edit}
-        //     onClick={() => CommonEdit(data.group_id, data)}
-        //     className="edit_p"
-        //   />
-        // ),
       });
     });
 
@@ -1384,7 +1178,7 @@ const UserMaster = (props) => {
         });
       } else if (data === 20) {
         if (Editvisible) {
-          dispatch(UpdateSubActivity(UserMaster, EditStoreData.SubActivityEdit, Editvisible, props.SubActivity_Data && props.SubActivity_Data[0].activity_id)).then(() => {
+          dispatch(UpdateSubActivity(UserMaster, EditStoreData.SubActivityEdit, Editvisible)).then(() => {
             setEditvisible(false);
             handleCancel()
           });
@@ -1671,6 +1465,7 @@ const UserMaster = (props) => {
 
   const EditSubActivity = (id, data) => {
     UserMaster.activity_drop.value = data.activity_id;
+    UserMaster.department.value = data.department_id;
     UserMaster.sub_activity.value = data.sub_activity;
     var SubActivityEdit = props.SubActivity_Data.find((data) => {
       return data.proj_activity_id === id;
@@ -2183,9 +1978,6 @@ const UserMaster = (props) => {
       </Grid>
 
       <div className="rate_enhanced_table">
-        {/* <EnhancedTable headCells={header1}
-          rows={""}
-           aligncss="aligncss"/> */}
 
         {UserMaster.tablename.value === 3 && (
           <EnhancedTable

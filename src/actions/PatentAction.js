@@ -10,8 +10,11 @@ export const getCountry= () => async dispatch => {
     try {
 
         axios({
-            method: 'GET',
-            url: apiurl +'get_activity'
+            method: 'POST',
+            url: apiurl + 'get_activity_by_departmentId',
+            data: {
+                department_id: localStorage.getItem("department_id"),
+            },
         })
         .then((response) => {
             dispatch({type:GET_COUNTRY,payload:response.data.data})
@@ -26,8 +29,11 @@ export const getPatentStatus= () => async dispatch => {
     try {
 
         axios({
-            method: 'GET',
-            url: apiurl +'get_activity'
+            method: 'POST',
+            url: apiurl + 'get_activity_by_departmentId',
+            data: {
+                department_id: localStorage.getItem("department_id"),
+            },
         })
         .then((response) => {
             dispatch({type:GET_PATENT_STATUS,payload:response.data.data})

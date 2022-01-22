@@ -125,12 +125,6 @@ export const getTalents = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_talents");
   return dispatch({ type: GET_TALENTS, payload: response.data.data });
 };
-
-// export const getStatus = () => async (dispatch) => {
-//   const response = await axios.get(apiurl + "/get_s_tbl_m_status");
-//   return dispatch({ type: GET_STATUS, payload: response.data.data });
-// };
-
 export const getQualification = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_qual");
   return dispatch({ type: GET_QUALIFICATION, payload: response.data.data });
@@ -396,7 +390,14 @@ export const getSubCaseType = (id) => async (dispatch) => {
 // TimeSheet==>
 
 export const getActivity = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "/get_activity");
+  // const response = await axios.get(apiurl + "/get_activity");
+  const response = await axios({
+    method: "post",
+    url: apiurl + "get_activity_by_departmentId",
+    data: {
+      department_id: localStorage.getItem("department_id"),
+    },
+  });
   return dispatch({ type: GET_ACTIVITY, payload: response.data.data });
 };
 
