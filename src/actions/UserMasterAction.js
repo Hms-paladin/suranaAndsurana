@@ -767,12 +767,13 @@ export const getTableClass = (id) => async (dispatch) => {
   return dispatch({ type: GET_TABLE_CLASS, payload: response.data.data });
 };
 
-export const getSubActivity = (id) => async (dispatch) => {
+export const getSubActivity = (id, activity_id) => async (dispatch) => {
   const response = await axios({
     method: "post",
     url: apiurl + "get_sub_activity_by_department",
     data: {
       department_id: id,
+      activity_id: activity_id,
     },
   });
   return dispatch({ type: GET_TABLE_SUBACTIVITY, payload: response.data.data });

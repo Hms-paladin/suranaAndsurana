@@ -36,11 +36,11 @@ function ProjectTaskModel(props) {
       errmsg: null,
     },
     location: {
-      value: props?.pro_details!=='0'?props.pro_details:"",
+      value: props?.pro_details !== '0' ? props.pro_details : "",
       validation: [],
       error: null,
       errmsg: null,
-      disabled:props?.pro_details!=='0'?true:false,
+      disabled: props?.pro_details !== '0' ? true : false,
     },
     fromDate: {
       value: "",
@@ -106,7 +106,7 @@ function ProjectTaskModel(props) {
 
     From_key.map((data) => {
       try {
-        InsertTaskForm[data].value = data!=="assignTo"?"":JSON.parse(localStorage.getItem("empId"));
+        InsertTaskForm[data].value = data !== "assignTo" ? "" : JSON.parse(localStorage.getItem("empId"));
 
       } catch (error) {
         throw error;
@@ -161,7 +161,7 @@ function ProjectTaskModel(props) {
         "description": InsertTaskForm.description.value,
         "tag": InsertTaskForm.tag.value,
         "location_id": InsertTaskForm.location.value || 0,
-        "estimate_no_of_hours":InsertTaskForm.estimate_no_of_hours.value,
+        "estimate_no_of_hours": InsertTaskForm.estimate_no_of_hours.value,
       }
 
       dispatch(inserTask(data)).then((response) => {
@@ -275,9 +275,10 @@ function ProjectTaskModel(props) {
       // Sub Activity
       Axios({
         method: "POST",
-        url: apiurl + "get_sub_activity",
+        url: apiurl + "get_sub_activity_by_department",
         data: {
           activity_id: data,
+          department_id: localStorage.getItem("department_id"),
         },
       }).then((response) => {
         let projectSubActivitydata = [];
@@ -302,66 +303,66 @@ function ProjectTaskModel(props) {
   }
   return (
     <div className="projectTaskModel">
-  <div className="projectTaskDatealign">
-      {projectDetails.length > 0 && projectDetails.map((data) => {
-        return (
-          <Grid item xs={12} container direction="row" justify="center" alignItems="center" spacing={1} className="projectTasktitle">
-            <Grid item xs={4} container justify="center" alignItems="center">{data.project_type}</Grid>
-            <Grid item xs={4} container justify="center" alignItems="center">{data.project_name}</Grid>
-            <Grid item xs={4} container justify="center" alignItems="center">{data.client}</Grid>
+      <div className="projectTaskDatealign">
+        {projectDetails.length > 0 && projectDetails.map((data) => {
+          return (
+            <Grid item xs={12} container direction="row" justify="center" alignItems="center" spacing={1} className="projectTasktitle">
+              <Grid item xs={4} container justify="center" alignItems="center">{data.project_type}</Grid>
+              <Grid item xs={4} container justify="center" alignItems="center">{data.project_name}</Grid>
+              <Grid item xs={4} container justify="center" alignItems="center">{data.client}</Grid>
 
-          </Grid>
+            </Grid>
 
-        )
+          )
 
-      })}
-</div>
-
-    <div className="projectTaskDatealign">
-        <Grid container spacing={3}>
-          <Grid item xs={6} >
-          <Labelbox type="select"
-            dropdown={activityList.activityTypeData}
-            changeData={(data) => checkValidation(data, "activity")}
-            placeholder={"Activity"}
-            value={InsertTaskForm.activity.value}
-            error={InsertTaskForm.activity.error}
-            errmsg={InsertTaskForm.activity.errmsg}
-          />
-        </Grid>
-        <Grid item xs={6} >
-          <Labelbox type="select"
-            dropdown={projectSubActivity.projectSubActivitydata}
-            changeData={(data) => checkValidation(data, "subActivity")}
-            placeholder={"Sub Activity"}
-            value={InsertTaskForm.subActivity.value}
-            error={InsertTaskForm.subActivity.error}
-            errmsg={InsertTaskForm.subActivity.errmsg} />
-        </Grid>
-        </Grid>
+        })}
       </div>
-  
+
       <div className="projectTaskDatealign">
         <Grid container spacing={3}>
           <Grid item xs={6} >
-          <Labelbox type="select"
-           value={InsertTaskForm.location.value}
-            error={InsertTaskForm.location.error}
-            errmsg={InsertTaskForm.location.errmsg}
-            dropdown={locationslList.locationData}
-            changeData={(data) => checkValidation(data, "location")}
-            disabled={InsertTaskForm.location.disabled}
-            placeholder={"Location"} />
+            <Labelbox type="select"
+              dropdown={activityList.activityTypeData}
+              changeData={(data) => checkValidation(data, "activity")}
+              placeholder={"Activity"}
+              value={InsertTaskForm.activity.value}
+              error={InsertTaskForm.activity.error}
+              errmsg={InsertTaskForm.activity.errmsg}
+            />
+          </Grid>
+          <Grid item xs={6} >
+            <Labelbox type="select"
+              dropdown={projectSubActivity.projectSubActivitydata}
+              changeData={(data) => checkValidation(data, "subActivity")}
+              placeholder={"Sub Activity"}
+              value={InsertTaskForm.subActivity.value}
+              error={InsertTaskForm.subActivity.error}
+              errmsg={InsertTaskForm.subActivity.errmsg} />
+          </Grid>
         </Grid>
-        <Grid item xs={6} >
-          <Labelbox type="text"
-           value={InsertTaskForm.estimate_no_of_hours.value}
-            error={InsertTaskForm.estimate_no_of_hours.error}
-            errmsg={InsertTaskForm.estimate_no_of_hours.errmsg}
-            changeData={(data) => checkValidation(data, "estimate_no_of_hours")}
-            disabled={InsertTaskForm.estimate_no_of_hours.disabled}
-            placeholder={"Estimate No. of hours"} />
-        </Grid>
+      </div>
+
+      <div className="projectTaskDatealign">
+        <Grid container spacing={3}>
+          <Grid item xs={6} >
+            <Labelbox type="select"
+              value={InsertTaskForm.location.value}
+              error={InsertTaskForm.location.error}
+              errmsg={InsertTaskForm.location.errmsg}
+              dropdown={locationslList.locationData}
+              changeData={(data) => checkValidation(data, "location")}
+              disabled={InsertTaskForm.location.disabled}
+              placeholder={"Location"} />
+          </Grid>
+          <Grid item xs={6} >
+            <Labelbox type="text"
+              value={InsertTaskForm.estimate_no_of_hours.value}
+              error={InsertTaskForm.estimate_no_of_hours.error}
+              errmsg={InsertTaskForm.estimate_no_of_hours.errmsg}
+              changeData={(data) => checkValidation(data, "estimate_no_of_hours")}
+              disabled={InsertTaskForm.estimate_no_of_hours.disabled}
+              placeholder={"Estimate No. of hours"} />
+          </Grid>
         </Grid>
       </div>
       <div className="projectTaskDatealign">

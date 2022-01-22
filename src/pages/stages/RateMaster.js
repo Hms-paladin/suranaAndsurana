@@ -88,10 +88,6 @@ const RateMaster = (props) => {
     amount: {
       value: "",
       validation: [{ name: "required" }, { name: "allowNumaricOnly" },
-        // { name: amountError === 1 ? "Upto5lakh":'' }
-        // { name: "Upto5lakh" },
-        // { name: "custommaxValue",params:"0" },
-        // { name: "customminValue",params:"0" }
       ],
       error: null,
       errmsg: null,
@@ -116,9 +112,6 @@ const RateMaster = (props) => {
 
     // setAmountDis(false)
   }, [props.variabletablechange, props.variablebtnchange, props.AmountChange]);
-  // useEffect(() => {
-  //   // setAmountDis(false)
-  // }, [props.variableRateCall]);
 
   useEffect(() => {
     dispatch(getVariableRateTableData());
@@ -182,15 +175,7 @@ const RateMaster = (props) => {
       }
       else {
         dispatch(InsertVariableRate(RateMaster)).then((response) => {
-          // dispatch(SearchVariableRate(RateMaster)).then((response) => {
-          //   // setNotfoundmodel(false);
-          //   SearchTable()
-          //    props.setShowSearchTable()
-          //   // props.handleChangeCloseModel()
-          // })
-          // if(variablebtnchange===true){
-          // handleCancel()
-          // }
+
           setNotfoundmodel(false);
           handleCancel()
 
@@ -217,27 +202,6 @@ const RateMaster = (props) => {
     if (data && key == "range_project_cost") {
       setEnabled(false)
       RateMaster.amount.value = "";
-      // projectRange.projectRangedata.filter((sl)=> {
-      //   if(data===sl.id){
-      //     switch (true) {
-      //       case sl.value.includes("Upto"):
-      //         RateMaster.amount.validation[2].params = Number((sl.value.slice(5,sl.value.length).replace(/,/g, "")))
-      //         RateMaster.amount.validation[3].params = ""
-
-
-      //         break;
-      //       case sl.value.includes("Above"):
-      //         RateMaster.amount.validation[3].params = Number((sl.value.slice(6,sl.value.length).replace(/,/g, "")))
-
-      //         RateMaster.amount.validation[2].params = ""
-
-
-      //         break;  
-      //       default:
-      //         break;
-      //     }
-      //   }
-      // })
 
     }
     var errorcheck = ValidationLibrary.checkValidation(
@@ -260,20 +224,15 @@ const RateMaster = (props) => {
       }));
     }
 
-    // Lower Limit Validation ==>
-
-    // if (data && key == "lower_limit") {
-    //   RateMaster[key].validation[1].params = RateMaster.upper_limit.value
-    // }
-
     // let multipleIdList = [];
     if (key == "activity") {
       // Sub Activity
       Axios({
         method: "POST",
-        url: apiurl + "get_sub_activity",
+        url: apiurl + "get_sub_activity_by_department",
         data: {
           activity_id: data,
+          department_id: localStorage.getItem("department_id"),
         },
       }).then((response) => {
         let projectSubActivitydata = [];
@@ -336,30 +295,6 @@ const RateMaster = (props) => {
   }, [props.searchVariableRate, props.lenghtData]);
   useEffect(() => {
     if (isLoaded) {
-      // Axios({
-      //   method: "GET",
-      //   url: apiurl + "get_variable_rate",
-      // }).then((response) => {
-      //   let variableRateList = [];
-      //   response.data.data.map((data) => variableRateList.push(data));
-      //   var rateList = [];
-      //   for (var m = 0; m < variableRateList.length; m++) {
-      //     var listarray = {
-      //       designation: variableRateList[m].designation,
-      //       activity: variableRateList[m].activity,
-      //       sub_activity: variableRateList[m].sub_activity,
-      //       court: variableRateList[m].location,
-      //       range: variableRateList[m].range,
-      //       lower_limit: variableRateList[m].lower_limit,
-      //       upper_limit: variableRateList[m].upper_limit,
-      //       amount: variableRateList[m].rate,
-      //       unit: variableRateList[m].unit,
-      //     };
-      //     rateList.push(listarray);
-      //   }
-      //   setvarRateList({ rateList });
-      // });
-
       // Range
       Axios({
         method: "GET",
@@ -418,9 +353,10 @@ const RateMaster = (props) => {
       // Sub Activity
       Axios({
         method: "POST",
-        url: apiurl + "get_sub_activity",
+        url: apiurl + "get_sub_activity_by_department",
         data: {
-          activity_id: 1,
+          activity_id: RateMaster.activity.value,
+          department_id: localStorage.getItem("department_id"),
         },
       }).then((response) => {
         let projectSubActivitydata = [];
@@ -470,26 +406,6 @@ const RateMaster = (props) => {
     }
   });
   const onSearch = () => {
-    // var mainvalue = {};
-    // var targetkeys = Object.keys(RateMaster);
-    // for (var i in targetkeys) {
-    //   var errorcheck = ValidationLibrary.checkValidation(
-    //     RateMaster[targetkeys[i]].value,
-    //     RateMaster[targetkeys[i]].validation
-    //   );
-    //   RateMaster[targetkeys[i]].error = !errorcheck.state;
-    //   RateMaster[targetkeys[i]].errmsg = errorcheck.msg;
-    //   mainvalue[targetkeys[i]] = RateMaster[targetkeys[i]].value;
-    // }
-    // var filtererr = targetkeys.filter(
-    //     (obj) => RateMaster[obj].error === true
-    // );
-    // if (filtererr.length > 0) {
-    // setRateMaster({ error: true });
-
-    // } else {
-
-
     dispatch(SearchVariableRate(RateMaster))
       .then(() => {
         props.setShowSearchTable()

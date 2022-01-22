@@ -23,7 +23,7 @@ import {
   getLoactionsList
 } from "../../actions/UserMasterAction";
 import {
-  getActivity,
+  getActivityList,
   getProjectType,
   UsergetStatus,
   getCaseType,
@@ -50,7 +50,6 @@ import {
   getSubStage,
   getTableClass,
   getSubActivity,
-  getCheckList,
   Common_Update_text,
   getProjectCostRange,
   insertDesignationMaster
@@ -423,11 +422,12 @@ const UserMaster = (props) => {
       dispatch(getTableClass(data));
     }
     if (data && key === "department") {
-      dispatch(getSubActivity(data));
+      dispatch(getSubActivity(data, UserMaster.activity_drop.value));
     }
-    // if (key === "status_type") {
-    //   dispatch(getTableStatus(data));
-    // }
+    if (data && key === "activity_drop") {
+      dispatch(getSubActivity(UserMaster.department.value, data));
+    }
+
     if (data && key === "tablename") {
       handleCancel()
       var value = props.table_name.find((item) => {
@@ -596,14 +596,14 @@ const UserMaster = (props) => {
   const [UserGroupsList, setUserGroupsList] = useState([]);
   const [table_name_value, settable_name_value] = useState([]);
   const [TableData, setTableData] = useState([]);
-  const [SndTableData, setSndTableData] = useState([]);
   const [Editvisible, setEditvisible] = useState(false);
   const [EditStoreData, setEditStoreData] = useState([]);
+
   useEffect(() => {
     dispatch(get_Tablenames());
     dispatch(getClass());
     dispatch(getStageList());
-    dispatch(getActivity());
+    dispatch(getActivityList());
     dispatch(getProjectType());
     dispatch(UsergetStatus());
 
@@ -2171,7 +2171,7 @@ const mapStateToProps = (state) => ({
   table_name: state.UserMasterReducer.TableNamedropdownData,
   class_type: state.getOptions.getClass || [],
   stage: state.UserMasterReducer.getStage,
-  activity: state.getOptions.getActivity,
+  activity: state.getOptions.getActivityList,
   project_type_value: state.getOptions.getProjectType,
   Status: state.getOptions.getUserStatus,
   // table get api

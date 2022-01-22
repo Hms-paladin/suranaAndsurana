@@ -237,9 +237,10 @@ function ChangeLogTimeSheet(props) {
             // Sub Activity
             Axios({
                 method: "POST",
-                url: apiurl + "get_sub_activity",
+                url: apiurl + "get_sub_activity_by_department",
                 data: {
                     activity_id: data,
+                    department_id: localStorage.getItem("department_id"),
                 },
             }).then((response) => {
                 let projectSubActivitydata = [];

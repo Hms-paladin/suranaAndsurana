@@ -102,6 +102,7 @@ export const GET_PROJECT_DETAILS = "GET_PROJECT_DETAILS";
 //TASK & TIMESHEET
 
 export const GET_ACTIVITY = "GET_ACTIVITY";
+export const GET_ACTIVITY_LIST = "GET_ACTIVITY_LIST"; 
 export const GET_TAG = "GET_TAG";
 export const GET_PRIORITY = "GET_PRIORITY";
 export const INSERT_TASK = "INSERT_TASK";

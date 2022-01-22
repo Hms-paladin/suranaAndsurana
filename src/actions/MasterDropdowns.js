@@ -63,7 +63,8 @@ import {
   GET_PROJECT_NAME_BY_DESIG,
   GET_SUPERVISOR_BY_DEPT,
   GET_EMP_LIST_PROJECT,
-  GET_CLIENT_DETAILS
+  GET_CLIENT_DETAILS,
+  GET_ACTIVITY_LIST
 } from "../utils/Constants.js";
 //_________________________________
 export const getResourceType = () => async (dispatch) => {
@@ -401,12 +402,18 @@ export const getActivity = () => async (dispatch) => {
   return dispatch({ type: GET_ACTIVITY, payload: response.data.data });
 };
 
+export const getActivityList = () => async (dispatch) => {
+  const response = await axios.get(apiurl + "/get_activity");
+  return dispatch({ type: GET_ACTIVITY_LIST, payload: response.data.data });
+};
+
 export const getSubactivity = (id) => async (dispatch) => {
   const response = await axios({
     method: "post",
-    url: apiurl + "get_sub_activity",
+    url: apiurl + "get_sub_activity_by_department",
     data: {
       activity_id: id.Activity || id,
+      department_id: localStorage.getItem("department_id"),
     },
   });
   return dispatch({ type: GET_SUBACTIVITY, payload: response.data.data });

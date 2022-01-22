@@ -56,7 +56,8 @@ import {
   GET_DEVELOPMENT,
   GET_SUPERVISOR_BY_DEPT,
   GET_EMP_LIST_PROJECT,
-  GET_CLIENT_DETAILS
+  GET_CLIENT_DETAILS,
+  GET_ACTIVITY_LIST
 } from "../utils/Constants.js";
 
 const initalState = {
@@ -101,6 +102,7 @@ const initalState = {
   getCaseType: [],
   getSubCaseType: [],
   getActivity: [],
+  getActivityList: [],
   getSubactivity: [],
   getLitigationCounsel: [],
   getLeaveType: [],
@@ -212,6 +214,8 @@ export default function ReducerCall(state = initalState, action) {
       return { ...state, getStageList: payload };
     case GET_ACTIVITY:
       return { ...state, getActivity: payload };
+    case GET_ACTIVITY_LIST:
+      return { ...state, getActivityList: payload };
     case GET_SUBACTIVITY:
       return { ...state, getSubactivity: payload };
     case GET_LITIGATION_COUNSEL:
