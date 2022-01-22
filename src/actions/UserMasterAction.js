@@ -709,7 +709,13 @@ export const getTableResource = () => async (dispatch) => {
   return dispatch({ type: GET_TABLE_RESOURCE, payload: response.data.data });
 };
 export const getTableDesgination = () => async (dispatch) => {
-  const response = await axios.get(apiurl + "/get_s_tbl_m_designation");
+  const response = await axios({
+    method: "POST",
+    url: apiurl + "/get_designation_by_departmentId",
+    data: {
+      department_id: localStorage.getItem("department_id"),
+    },
+  });
   return dispatch({ type: GET_TABLE_DESGINATION, payload: response.data.data });
 };
 export const getTableQuestion = () => async (dispatch) => {
@@ -818,7 +824,7 @@ export const insertDesignationMaster = (data) => async dispatch => {
         dispatch(getTableDesgination())
         // dispatch({ type: DESIGNATION, payload: response.data.status })
         return Promise.resolve();
-      }else if (response.data.status === 0){
+      } else if (response.data.status === 0) {
         notification.success({
           message: response.data.msg,
         });

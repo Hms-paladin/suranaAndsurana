@@ -10,7 +10,7 @@ import { notification } from 'antd';
 import moment from "moment";
 import { getHrTaskList } from "../../actions/TodoListAction";
 import { connect, useDispatch } from "react-redux";
-import { getDesignationList, getDepartment, getInterviewers, getSupervisorByDepartment } from '../../actions/MasterDropdowns'
+import { getDesignationListByDept, getDepartment, getInterviewers, getSupervisorByDepartment } from '../../actions/MasterDropdowns'
 import { GetCandiateDetails, GetEmployeeDetails, getBankName } from '../../actions/CandidateAndEmployeeDetails';
 
 import './employeeform.scss'
@@ -96,7 +96,7 @@ function Employeeform(props) {
 
     //Dropdowns
     useEffect(() => {
-        dispatch(getDesignationList());
+        dispatch(getDesignationListByDept());
         dispatch(getDepartment());
         dispatch(getBankName());
         dispatch(getInterviewers());
@@ -108,13 +108,13 @@ function Employeeform(props) {
         if (!props.emp_list) {
             EmpForm.desgination.value = props.emp_form_id.designation_id
             // EmpForm.desgination.value = Number(localStorage.getItem("designation_id"))
-           
-            let data_res_id = props.getDesignationList.find((val) => {
+
+            let data_res_id = props.getDesignationListByDept.find((val) => {
                 return (
                     props.emp_form_id.designation_id == val.designation_id
                 )
             })
-             EmpForm.department.value = data_res_id
+            EmpForm.department.value = data_res_id
             dispatch(getSupervisorByDepartment(data_res_id))
             dispatch(GetCandiateDetails(props.emp_form_id.int_status_id));
         } else {
@@ -152,9 +152,9 @@ function Employeeform(props) {
     //SETDropdowns 
     useEffect(() => {
         let Designation = [];
-        props.getDesignationList.map((data, index) =>
+        props.getDesignationListByDept.map((data, index) =>
             Designation.push({
-                value: data['dept-desig'],
+                value: data.designation,
                 id: data.designation_id
             })
         );
@@ -172,7 +172,7 @@ function Employeeform(props) {
 
         setsup_name({ Supervisor });
     }, [
-        props.getDesignationList,
+        props.getDesignationListByDept,
         props.getDepartment,
         props.getInterviewersList,
     ]);
@@ -635,7 +635,7 @@ function Employeeform(props) {
 
 const mapStateToProps = (state) => (
     {
-        getDesignationList: state.getOptions.getDesignationList || [],
+        getDesignationListByDept: state.getOptions.getDesignationListByDept || [],
         getDepartment: state.getOptions.getDepartment || [],
         getInterviewersList: state.getOptions.getSupervisorByDepartment || [],
         getCandidatesDetails: state.CandidateAndEmployeeDetails.getCandidatesDetails || [],

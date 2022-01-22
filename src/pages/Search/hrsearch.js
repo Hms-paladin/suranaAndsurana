@@ -131,12 +131,15 @@ function Hrsearch(props) {
       setroundDropdownValues({ hr_round })
     })
     Axios({
-      method: "GET",
-      url: apiurl + "get_s_tbl_m_designation",
+      method: "POST",
+      url: apiurl + "get_designation_by_departmentId",
+      data: {
+        department_id: localStorage.getItem("department_id"),
+      },
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data['dept-desig'] }))
+        Designation.push({ id: data.designation_id, value: data.designation }))
 
       setdesignationdata({ Designation })
 

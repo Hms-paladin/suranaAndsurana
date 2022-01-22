@@ -48,9 +48,6 @@ function UserGroup(props) {
                 group: data.group_name,
                 action: <><img src={Edit} className="editicon" onClick={() => editGroupNames(data.id, groupid)} />
                     <img src={Delete} className="editicon" onClick={() => deleteGroupNames(data.id)} /></>
-
-                //  action: <><img src={Edit} className="editicon" onClick={()=>( permission.allow_edit==='Y'?(editGroupNames(data.id, groupid)):rights())}  /> 
-                // <img src={Delete} className="editicon" onClick={()=>( permission.allow_delete==='Y'?(deleteGroupNames(data.id)):rights())}  /></>
             },
             )
         })
@@ -93,7 +90,7 @@ function UserGroup(props) {
         if (props.UserPermission.length > 0 && props.UserPermission[0].item[0].item) {
             let data_res_id = props.UserPermission[0].item[0].item.find((val) => {
                 return (
-                    "User Group" == val.screen_name
+                    "User Group" === val.screen_name
                 )
             })
             setPermission(data_res_id)

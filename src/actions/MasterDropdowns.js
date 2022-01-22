@@ -11,7 +11,7 @@ import { GET_TALENTS } from "../utils/Constants.js";
 import { GET_QUALIFICATION } from '../utils/Constants.js'
 import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants'
 import {
-  GET_PROJECT_TYPE_ALL,
+  GET_DESIGNATION_LIST,
   GET_RESOURCE_TYPE,
   GET_INSTITUTE,
   GET_SPECIAL_INTEREST,
@@ -19,7 +19,7 @@ import {
   GET_CITY,
   GET_TRADE_MARK_STATUS,
   GET_LANGUAGES,
-  GET_DESIGNATION_LIST,
+  GET_DESIGNATION_LIST_BY_DEPT,
   GET_DEPARTMENT,
   GET_INTERVIEWERS_LIST,
   GET_INTERVIEW_STATUS,
@@ -178,6 +178,17 @@ export const getInterviewStatus = (id) => async (dispatch) => {
 export const getDesignationList = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_s_tbl_m_designation");
   return dispatch({ type: GET_DESIGNATION_LIST, payload: response.data.data });
+};
+
+export const getDesignationListByDept = () => async (dispatch) => {
+  const response = await axios({
+    method: "POST",
+    url: apiurl + "/get_designation_by_departmentId",
+    data: {
+      department_id: localStorage.getItem("department_id"),
+    },
+  });
+  return dispatch({ type: GET_DESIGNATION_LIST_BY_DEPT, payload: response.data.data });
 };
 export const getLoactionsList = () => async (dispatch) => {
   const response = await axios.get(apiurl + "/get_location_office_ticket");

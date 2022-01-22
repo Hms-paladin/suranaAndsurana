@@ -8,6 +8,7 @@ import { USER_GET_CLASS, USER_GET_STATUS } from '../utils/Constants.js';
 import { GET_CATEGORY, GET_SUBCATEGORY } from "../utils/Constants.js";
 import {
   GET_TALENTS,
+  GET_DESIGNATION_LIST_BY_DEPT,
   GET_DESIGNATION_LIST,
   GET_DEPARTMENT,
   GET_LOCATION_LIST,
@@ -89,6 +90,7 @@ const initalState = {
   getProjectCostRange: [],
   getClientlist: [],
   getStageList: [],
+  getDesignationListByDept: [],
   getDesignationList: [],
   getLoactionList: [],
   getDepartment: [],
@@ -120,10 +122,10 @@ const initalState = {
   get_projectName_by_Desig: [],
   getSupervisorByDepartment: [],
   getEmpListByProjectId: [],
-  getClientDetails:[]
+  getClientDetails: []
 };
 
-export default function (state = initalState, action) {
+export default function ReducerCall(state = initalState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_RESOURCE_TYPE:
@@ -182,6 +184,8 @@ export default function (state = initalState, action) {
       return { ...state, getFilingType: payload };
     case GET_EMPLOYEE_LIST:
       return { ...state, getEmployeeList: payload };
+    case GET_DESIGNATION_LIST_BY_DEPT:
+      return { ...state, getDesignationListByDept: payload };
     case GET_DESIGNATION_LIST:
       return { ...state, getDesignationList: payload };
     case GET_LOCATION_LIST:

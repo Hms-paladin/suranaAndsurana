@@ -9,7 +9,7 @@ import { InsertClient } from "../../actions/AddClientAction"
 import { connect, useDispatch } from "react-redux";
 import "./addclient.scss";
 import PlusIcon from "../../images/plusIcon.svg";
-import { getDesignationList, getCity_By_Id, } from '../../actions/MasterDropdowns'
+import { getDesignationListByDept, getCity_By_Id, } from '../../actions/MasterDropdowns'
 import Edit from "../../images/eyes.svg";
 
 function AddClient(props) {
@@ -160,7 +160,7 @@ function AddClient(props) {
     myWindow = window.open(`${url}`, "Popup", "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")
   }
   useEffect(() => {
-    dispatch(getDesignationList());
+    dispatch(getDesignationListByDept());
     // Client
     Axios({
       method: "GET",
@@ -213,8 +213,8 @@ function AddClient(props) {
 
   useEffect(() => {
     let Designation = [];
-    props.getDesignationList.map((data, index) =>
-      Designation.push({ id: data.designation_id, value: data['dept-desig'] })
+    props.getDesignationListByDept.map((data, index) =>
+      Designation.push({ id: data.designation_id, value: data.designation })
     );
     setgetData({ Designation });
     if (Addclient_Form.state.value != "") {
@@ -225,7 +225,7 @@ function AddClient(props) {
       setcityList({ cityData });
     }
 
-  }, [props.getDesignationList, props.getCity]);
+  }, [props.getDesignationListByDept, props.getCity]);
 
   const handleChange = (info, uploadName) => {
 
@@ -798,7 +798,7 @@ function AddClient(props) {
 const mapStateToProps = (state) => (
   {
     // getTableData: state.variableRateMaster.getVariableRateTableData || [],
-    getDesignationList: state.getOptions.getDesignationList || [],
+    getDesignationListByDept: state.getOptions.getDesignationListByDept || [],
     getInsertStatus: state.AddClientReducer.InsertClient,
     clientNameCheck: state.AddClientReducer.clientNameCheck,
     getCity: state.getOptions.getCity_By_Id || []

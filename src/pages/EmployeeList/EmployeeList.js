@@ -5,7 +5,7 @@ import CustomButton from '../../component/Butttons/button';
 import './EmployeeList.scss'
 import EnhancedTable from '../../component/DynTable/table'
 import { useDispatch, connect } from "react-redux";
-import { getDesignationList, getDepartment } from '../../actions/MasterDropdowns'
+import { getDesignationListByDept, getDepartment } from '../../actions/MasterDropdowns'
 import { getEmpListDepartmentSearch, getEmployeeCode } from '../../actions/EmployeeListAction'
 import ValidationLibrary from "../../helpers/validationfunction";
 import moment from 'moment'
@@ -66,7 +66,7 @@ function EmployeeList(props) {
 
     //Dropdowns
     useEffect(() => {
-        dispatch(getDesignationList());
+        dispatch(getDesignationListByDept());
         dispatch(getDepartment());
         dispatch(getEmployeeCode());
     }, [])
@@ -74,8 +74,8 @@ function EmployeeList(props) {
     //SETDropdowns 
     useEffect(() => {
         let Designation = [];
-        props.getDesignationList.map((data, index) =>
-            Designation.push({ id: data.designation_id, value: data['dept-desig'] })
+        props.getDesignationListByDept.map((data, index) =>
+            Designation.push({ id: data.designation_id, value: data.designation })
         );
         setgetData({ Designation });
 
@@ -92,7 +92,7 @@ function EmployeeList(props) {
         setEmpCode({ EmpCode });
 
     }, [
-        props.getDesignationList,
+        props.getDesignationListByDept,
         props.getDepartment,
         props.getEmployeeCode,
     ]);
@@ -273,7 +273,7 @@ function EmployeeList(props) {
 
 const mapStateToProps = (state) => (
     {
-        getDesignationList: state.getOptions.getDesignationList || [],
+        getDesignationListByDept: state.getOptions.getDesignationListByDept || [],
         getDepartment: state.getOptions.getDepartment || [],
         getEmployeeCode: state.EmployeeListReducer.getEmployeeCode || [],
         getEmployee_List_Data: state.EmployeeListReducer.getEmpListDepartmentSearch || [],

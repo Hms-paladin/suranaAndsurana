@@ -7,7 +7,7 @@ import ValidationLibrary from '../../helpers/validationfunction';
 import Axios from 'axios';
 import { apiurl } from "../../utils/baseUrl";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
-import { getDesignationList } from "../../actions/MasterDropdowns";
+import { getDesignationListByDept } from "../../actions/MasterDropdowns";
 import { GetInterviewers, GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 const HrInterviewModel = (props) => {
   const dispatch = useDispatch();
@@ -60,12 +60,15 @@ const HrInterviewModel = (props) => {
       setroundDropdownValues({ hr_round })
     })
     Axios({
-      method: "GET",
-      url: apiurl + "get_s_tbl_m_designation",
+      method: "POST",
+      url: apiurl + "get_designation_by_departmentId",
+      data: {
+        department_id: localStorage.getItem("department_id"),
+      },
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
-        Designation.push({ id: data.designation_id, value: data['dept-desig'] }))
+        Designation.push({ id: data.designation_id, value: data.designation }))
 
       // setdesignationdata({ Designation })
 
@@ -74,7 +77,7 @@ const HrInterviewModel = (props) => {
   }, [])
   // 
   useEffect(() => {
-    dispatch(getDesignationList());
+    dispatch(getDesignationListByDept());
     dispatch(GetInterviewers());
   }
     , [])
@@ -97,14 +100,14 @@ const HrInterviewModel = (props) => {
     // }
 
     let Designation = []
-    props.getDesignationList.map((data, index) =>
+    props.getDesignationListByDept.map((data, index) =>
       Designation.push({
-        value: data['dept-desig'],
+        value: data.designation,
         id: data.designation_id
       })
     )
     setdesignationdata({ Designation })
-  }, [props.GetInterviewers, props.getDesignationList])
+  }, [props.GetInterviewers, props.getDesignationListByDept])
 
   useEffect(() => {
     let InterviewApprover = []
@@ -266,7 +269,7 @@ const HrInterviewModel = (props) => {
 const mapStateToProps = (state) => (
   {
     GetInterviewers: state.InterviewSchedule.GetInterviewers || [],
-    getDesignationList: state.getOptions.getDesignationList || [],
+    getDesignationListByDept: state.getOptions.getDesignationListByDept || [],
     GetInterviewersApprFinal: state.InterviewSchedule.GetInterviewersApprFinal || [],
 
   }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
-import CustomButton from "../../component/Butttons/button";
 import EnhancedTable from "../../component/DynTable/table";
 import PlusIcon from "../../images/plusIcon.svg";
 import Edit from "../../images/pencil.svg";
@@ -202,25 +201,11 @@ const UserMaster = (props) => {
     // { id: " ", label: "Delete" },
   ];
   const dispatch = useDispatch();
-  const [tableHeaderMaster, setTableHeaderMaster] = useState({
-    header1: [
-      // { id: 'table_name', label: 'Table Name' },
-      { id: "groupname", label: "Group Name" },
-      { id: " ", label: "Edit" },
-      // { id: " ", label: "Delete" },
-    ],
-    header2: [
-      { id: "status", label: "Status" },
-      { id: "type", label: "Status Type" },
-      { id: " ", label: "Edit" },
-      // { id: " ", label: "Delete" },
-    ],
-  });
   const [DepartmentList, setDepartmentList] = useState({})
   const [substageId, setsubstageId] = useState([])
   const [tablevalues, settablevalues] = useState([]);
   const [Statusvalue, setStatusvalue] = useState("")
-  
+
   const [UserMaster, setUserMaster] = useState({
     tablename: {
       value: "",
@@ -749,6 +734,7 @@ const UserMaster = (props) => {
         groupname: data.group_name,
         edit: (
           <img
+            alt=""
             src={Edit}
             onClick={() => CommonEdit(data.group_id, data)}
             className="edit_p"
@@ -756,6 +742,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -769,6 +756,7 @@ const UserMaster = (props) => {
         statusname: data.status,
         edit: (
           <img
+            alt=""
             src={Edit}
             onClick={() => EditStatus(data.status_id, data)}
             className="edit_p"
@@ -776,6 +764,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -789,6 +778,7 @@ const UserMaster = (props) => {
         skills: data.skill_name,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.skill_id, data)}
@@ -796,6 +786,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -809,6 +800,7 @@ const UserMaster = (props) => {
         traits: data.traits,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.traitTable, data)}
@@ -816,6 +808,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -829,6 +822,7 @@ const UserMaster = (props) => {
         certification: data.certification,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.certification_id, data)}
@@ -836,6 +830,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -849,6 +844,7 @@ const UserMaster = (props) => {
         specification: data.specilization,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.specialization_id, data)}
@@ -856,6 +852,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -869,6 +866,7 @@ const UserMaster = (props) => {
         qualification: data.qual_name,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.qualification_id, data)}
@@ -876,6 +874,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -889,6 +888,7 @@ const UserMaster = (props) => {
         industry: data.industry,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.industry_id, data)}
@@ -896,6 +896,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -909,6 +910,7 @@ const UserMaster = (props) => {
         institute: data.institute,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.institute_id, data)}
@@ -916,6 +918,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -929,6 +932,7 @@ const UserMaster = (props) => {
         capability: data.capability,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.capability_id, data)}
@@ -936,6 +940,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -949,6 +954,7 @@ const UserMaster = (props) => {
         talents: data.talent,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.talent_id, data)}
@@ -956,6 +962,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -969,6 +976,7 @@ const UserMaster = (props) => {
         resource: data.resource_type,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.resource_type_id, data)}
@@ -976,6 +984,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -990,6 +999,7 @@ const UserMaster = (props) => {
         department: data.department,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => EditDesignation(data)}
@@ -997,6 +1007,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1010,6 +1021,7 @@ const UserMaster = (props) => {
         question: data.questions,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.question_id, data)}
@@ -1017,6 +1029,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1037,6 +1050,7 @@ const UserMaster = (props) => {
         department: data.department,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.department_id, data)}
@@ -1044,6 +1058,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1057,6 +1072,7 @@ const UserMaster = (props) => {
         activity: data.activity,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.activity_id, data)}
@@ -1064,6 +1080,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1077,6 +1094,7 @@ const UserMaster = (props) => {
         court: data.location,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.location_id, data)}
@@ -1084,6 +1102,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1097,6 +1116,7 @@ const UserMaster = (props) => {
         stage: data.stage,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.stage_id, data)}
@@ -1104,6 +1124,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1117,6 +1138,7 @@ const UserMaster = (props) => {
         range: data.range,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.range_id, data)}
@@ -1124,6 +1146,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1137,6 +1160,7 @@ const UserMaster = (props) => {
         case: data.case_type,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.case_type_id, data)}
@@ -1144,6 +1168,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1158,6 +1183,7 @@ const UserMaster = (props) => {
         sub_stage: data.sub_stage,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => EditSubStage(data.sub_stage_id, data)}
@@ -1165,6 +1191,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1180,6 +1207,7 @@ const UserMaster = (props) => {
         des: data.class_description,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => EditClass(data.class_id, data)}
@@ -1187,6 +1215,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1201,6 +1230,7 @@ const UserMaster = (props) => {
         activityname: data.sub_activity,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => EditSubActivity(data.proj_activity_id, data)}
@@ -1208,6 +1238,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1222,6 +1253,7 @@ const UserMaster = (props) => {
         checklist_name: data.check_list,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => Editchecklist(data.check_list_id, data)}
@@ -1229,6 +1261,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1241,6 +1274,7 @@ const UserMaster = (props) => {
         control: data.control,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.screen_control_id, data)}
@@ -1248,6 +1282,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1260,6 +1295,7 @@ const UserMaster = (props) => {
         officeLocation: data.office_location,
         edit: (
           <img
+            alt=""
             src={Edit}
             className="edit_p"
             onClick={() => CommonEdit(data.office_location_id, data)}
@@ -1267,6 +1303,7 @@ const UserMaster = (props) => {
         ),
         // delete: (
         //   <img
+        // alt=""
         //     src={Edit}
         //     onClick={() => CommonEdit(data.group_id, data)}
         //     className="edit_p"
@@ -1457,68 +1494,68 @@ const UserMaster = (props) => {
 
   const CommonEdit = (id, data) => {
     var group = props.GroupData.find((data) => {
-      return data.group_id == id;
+      return data.group_id === id;
     });
     var traits = props.TraitsData.find((data) => {
-      return data.traitTable == id;
+      return data.traitTable === id;
     });
     var skills = props.SkillsData.find((data) => {
-      return data.skill_id == id;
+      return data.skill_id === id;
     });
     var certification = props.Certification.find((data) => {
-      return data.certification_id == id;
+      return data.certification_id === id;
     });
     var specification = props.Specification_data.find((data) => {
-      return data.specialization_id == id;
+      return data.specialization_id === id;
     });
     var qualification = props.Qualification_data.find((data) => {
-      return data.qualification_id == id;
+      return data.qualification_id === id;
     });
     var industry = props.Industry.find((data) => {
-      return data.industry_id == id;
+      return data.industry_id === id;
     });
     var institute = props.Institute.find((data) => {
-      return data.institute_id == id;
+      return data.institute_id === id;
     });
     var capability = props.Capability.find((data) => {
-      return data.capability_id == id;
+      return data.capability_id === id;
     });
     var talents = props.Talents.find((data) => {
-      return data.talent_id == id;
+      return data.talent_id === id;
     });
     var resource = props.Resource.find((data) => {
-      return data.resource_type_id == id;
+      return data.resource_type_id === id;
     });
     // var designation = props.Designation.find((data) => {
-    //   return data.designation_id == id;
+    //   return data.designation_id === id;
     // });
     var question = props.Question.find((data) => {
-      return data.question_id == id
+      return data.question_id === id
     })
     var department = props.Department.find((data) => {
-      return data.department_id == id;
+      return data.department_id === id;
     });
     var activity = props.Activity.find((data) => {
-      return data.activity_id == id;
+      return data.activity_id === id;
     });
 
     var court = props.Court.find((data) => {
-      return data.location_id == id;
+      return data.location_id === id;
     });
     var range = props.Range.find((data) => {
-      return data.range_id == id;
+      return data.range_id === id;
     });
     var stage = props.stage.find((data) => {
-      return data.stage_id == id;
+      return data.stage_id === id;
     });
     var casetype = props.CaseType.find((data) => {
-      return data.case_type_id == id;
+      return data.case_type_id === id;
     });
     var control = props.getTableControl.find((data) => {
-      return data.screen_control_id == id
+      return data.screen_control_id === id
     })
     var office_Location = props.getLoactionsList.find((data) => {
-      return data.office_location_id == id
+      return data.office_location_id === id
     })
     UserMaster.groupname.value = data.group_name;
     UserMaster.skill_name.value = data.skill_name;
@@ -1576,7 +1613,7 @@ const UserMaster = (props) => {
     UserMaster.checklist_name.value = data.check_list;
     setEditvisible(true);
     var ChecklistEdit = props.CheckList_Data.find((data) => {
-      return data.check_list_id == id;
+      return data.check_list_id === id;
     });
     setEditStoreData({ ChecklistEdit });
     setUserMaster((prevState) => ({
@@ -1592,7 +1629,7 @@ const UserMaster = (props) => {
     UserMaster.designation.value = data.designation;
 
     var DesignationEdit = props.Designation.find((data1) => {
-      return data1.designation_id == data.designation_id;
+      return data1.designation_id === data.designation_id;
     });
     setEditvisible(true);
 
@@ -1607,7 +1644,7 @@ const UserMaster = (props) => {
     UserMaster.class_name.value = data.class;
     UserMaster.description.value = data.class_description;
     var ClassEdit = props.Class_Table_Data.find((data) => {
-      return data.class_id == id;
+      return data.class_id === id;
     });
     setEditvisible(true);
 
@@ -1620,7 +1657,7 @@ const UserMaster = (props) => {
   const EditStatus = (id, data) => {
     UserMaster.status_type.value = data.status_id.toString();
     var StatusEdit = props.StatusTableData.find((data) => {
-      return data.status_id == id;
+      return data.status_id === id;
     });
     UserMaster.status_name.value = data.status;
 
@@ -1636,7 +1673,7 @@ const UserMaster = (props) => {
     UserMaster.activity_drop.value = data.activity_id;
     UserMaster.sub_activity.value = data.sub_activity;
     var SubActivityEdit = props.SubActivity_Data.find((data) => {
-      return data.proj_activity_id == id;
+      return data.proj_activity_id === id;
     });
     setEditvisible(true);
 
@@ -1650,7 +1687,7 @@ const UserMaster = (props) => {
     UserMaster.stage_dropdown.value = data.stage_id;
     UserMaster.sub_stage.value = data.sub_stage;
     var SubStageEdit = props.SubStage_data.find((data) => {
-      return data.sub_stage_id == id;
+      return data.sub_stage_id === id;
     });
     setEditvisible(true);
 
@@ -1944,6 +1981,15 @@ const UserMaster = (props) => {
             <div className="table_cont_change">
               <Labelbox
                 type="select"
+                dropdown={DepartmentList.departmentData}
+                placeholder={"Department"}
+                changeData={(data) => checkValidation(data, "department")}
+                value={UserMaster.department.value}
+                error={UserMaster.department.error}
+                errmsg={UserMaster.department.errmsg}
+              />
+              <Labelbox
+                type="select"
                 placeholder={"Activity"}
                 changeData={(data) => checkValidation(data, "activity_drop")}
                 dropdown={tablevalues.activity_list}
@@ -2125,6 +2171,7 @@ const UserMaster = (props) => {
           <div>
             {UserMaster.tablename.value >= 3 && (
               <img
+                alt=""
                 src={PlusIcon}
                 onClick={() => saveRights && saveRights.display_control && saveRights.display_control === 'Y' && Submit(UserMaster.tablename.value)}
                 style={{ cursor: saveRights && saveRights.display_control && saveRights.display_control === "Y" ? 'pointer' : 'not-allowed' }}

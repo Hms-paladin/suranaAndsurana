@@ -6,7 +6,7 @@ import './ticketcreation.scss';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import {
-    getDepartment, getDesignationList, getLoactionsList, getQualification, getStates, getLanguages, getSkills,
+    getDepartment, getDesignationListByDept, getLoactionsList, getQualification, getStates, getLanguages, getSkills,
     getTraits,
     getCertification,
     getSpecilization,
@@ -157,7 +157,7 @@ function TicketCreation(props) {
     useEffect(() => {
         dispatch(getDepartment());
         dispatch(getLoactionsList());
-        dispatch(getDesignationList());
+        dispatch(getDesignationListByDept());
         dispatch(getQualification());
         dispatch(getStates());
         dispatch(getLanguages());
@@ -765,7 +765,7 @@ function TicketCreation(props) {
 }
 const mapStateToProps = (state) => ({
     Department: state.getOptions.getDepartment || [],
-    DesignationList: state.getOptions.getDesignationList || [],
+    DesignationList: state.getOptions.getDesignationListByDept || [],
     LocationList: state.getOptions.getLoactionList || [],
     Qualification: state.getOptions.getQualification || [],
     getState: state.getOptions.getState || [],

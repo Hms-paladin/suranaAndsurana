@@ -172,13 +172,16 @@ function DynModel(props) {
   useEffect(() => {
 
     Axios({
-      method: "get",
-      url: apiurl + "get_s_tbl_m_designation",
+      method: "POST",
+      url: apiurl + "get_designation_by_departmentId",
+      data: {
+        department_id: localStorage.getItem("department_id"),
+      },
     }).then((response) => {
       let Designation = []
       response.data.data.map((data, index) =>
         Designation.push({
-          value: data['dept-desig'],
+          value: data.designation,
           id: data.designation_id
         }))
 

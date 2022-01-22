@@ -6,7 +6,7 @@ import PlusIcon from "../../images/plusIcon.svg";
 import { Redirect, Link } from "react-router-dom";
 import DynModel from "../../component/Model/model";
 import InstructionModal from '../OnlineTest/instructionModal'
-import { getDesignationList, getCandidateName, GetTemplateName } from "../../actions/MasterDropdowns";
+import { getDesignationListByDept, getCandidateName, GetTemplateName } from "../../actions/MasterDropdowns";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import './onlinetest.scss';
@@ -42,7 +42,7 @@ function OnlineTest(props) {
 
 
     useEffect(() => {
-        dispatch(getDesignationList())
+        dispatch(getDesignationListByDept())
         dispatch(getCandidateName())
         dispatch(GetTemplateName())
     }, [])
@@ -55,8 +55,8 @@ function OnlineTest(props) {
         setCandidate({ Candidate })
 
         let Designation = [];
-        props.getDesignationList.map((data, index) => {
-            Designation.push({ value: data['dept-desig'], id: data.designation_id });
+        props.getDesignationListByDept.map((data, index) => {
+            Designation.push({ value: data.designation, id: data.designation_id });
         });
         setDesignation({ Designation })
 
@@ -65,7 +65,7 @@ function OnlineTest(props) {
             TemplateName.push({ value: data.TestTempName, id: data.TestTempId });
         });
         setTemplateName({ TemplateName })
-    }, [props.getDesignationList, props.getCandidateName, props.GetTemplateName])
+    }, [props.getDesignationListByDept, props.getCandidateName, props.GetTemplateName])
 
     function checkValidation(data, key,) {
 
@@ -200,7 +200,7 @@ function OnlineTest(props) {
 const mapStateToProps = (state) => (
 
     {
-        getDesignationList: state.getOptions.getDesignationList || [],
+        getDesignationListByDept: state.getOptions.getDesignationListByDept || [],
         getCandidateName: state.getOptions.getCandidateName || [],
         GetTemplateName: state.getOptions.GetTemplateName || [],
         UserPermission: state.UserPermissionReducer.getUserPermission,

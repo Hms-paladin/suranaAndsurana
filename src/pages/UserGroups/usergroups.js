@@ -15,7 +15,6 @@ import {
 } from "../../actions/UserGroupAction";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
-import { notification } from "antd";
 import { getDesignationList } from '../../actions/MasterDropdowns'
 
 const UserGroups = (props) => {
