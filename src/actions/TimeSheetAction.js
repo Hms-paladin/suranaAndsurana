@@ -103,11 +103,9 @@ export const getDayReport_TimeSheet = (data) => async dispatch => {
     try {
         axios({
             method: 'POST',
-            // url: apiurl + 'get_dashboard_day_report',
             url: apiurl + 'get_day_report',
             data: {
-                "start_date": data.from_date.value,
-                "end_date": data.to_date.value,
+                "dates": data.dates.value,
             }
         })
             .then((response) => {

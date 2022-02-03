@@ -91,44 +91,28 @@ const SignInSide = (props) => {
         }
 
         if (!emailError && !passwordError && !invalidEmail) {
-                axios.post(apiurl+"login", {
-                    email:email,
-                    password:password
-                  }).then(res => {
-                    if (res.status === 200) {
-                        if(res.data.status===1){
-                      setAuthTokens(res.data);
-                    //   setLoggedIn(true);
-                    history.push("/Home/dashboardnew");
-                       }else{
+            axios.post(apiurl + "login", {
+                email: email,
+                password: password
+            }).then(res => {
+                if (res.status === 200) {
+                    if (res.data.status === 1) {
+                        setAuthTokens(res.data);
+                        history.push("/Home/dashboardnew");
+                    } else {
                         notification.error({
                             message: res.data.msg,
-                          });
-                        }
+                        });
                     }
-                  }).catch(e => {
-                    notification.error({
-                        message: 'Email and Password Does Not Match',
-                      });
-                  });
+                }
+            }).catch(e => {
+                notification.error({
+                    message: 'Something went wrong please try again',
+                });
+            });
         }
 
     }
-
-    // if (isLoggedIn) {
-    //     return <Redirect to="/Home/dashboardnew" />;
-    //   }
-
-
-    // const validateEmail = data => {
-    //     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //     if (re.test(data)) {
-    //         setInvalidEmail(false)
-    //     } else {
-    //         setInvalidEmail(true)
-    //     }
-    // }
-
 
     const storeUserDetails = (event) => {
         if (event.target.name === "email") {
@@ -188,7 +172,7 @@ const SignInSide = (props) => {
                 <div className={classes.paper}>
                     <img src={Surana} width='197px' height='194px' />   <Typography component="h5" variant="h6">
                         {/* Client Portal */}
-          </Typography>
+                    </Typography>
                     <form className={classes.form} noValidate onSubmit={handleSubmit}>
 
                         <TextField

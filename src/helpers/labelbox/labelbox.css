@@ -55,7 +55,7 @@ div.formdiv > div.selectbrdred > div.ant-select-selection{
 }
 
 .formdiv .radiobtncolor {
-  color: #82af3f !important;
+  display: flex;
 }
 
 .formdiv .datepickerchnge input {

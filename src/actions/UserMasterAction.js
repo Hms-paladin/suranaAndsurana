@@ -317,7 +317,8 @@ export const InsertClass = (UserMaster, ClassId, Editvisible, Classtype_id) => a
 
 // subactivity insert api 
 export const InsertSubActivity = (UserMaster) => async dispatch => {
-
+  var activity = UserMaster.activity_drop.value === "" ? 0 : UserMaster.activity_drop.value;
+  var department_id = UserMaster.department.value;
   try {
     axios({
       method: 'POST',
@@ -336,7 +337,7 @@ export const InsertSubActivity = (UserMaster) => async dispatch => {
           });
           dispatch({ type: INSERT_ACTIVITY, payload: response.data.status })
 
-          dispatch(getSubActivity(UserMaster.department.value))
+          dispatch(getSubActivity(department_id, activity))
           return Promise.resolve();
         }
         else if (response.data.status === 0) {
@@ -355,8 +356,9 @@ export const InsertSubActivity = (UserMaster) => async dispatch => {
 }
 
 // subactivity update api 
-export const UpdateSubActivity = (UserMaster, EditId, Editvisible,DepartmentID) => async dispatch => {
-
+export const UpdateSubActivity = (UserMaster, EditId, Editvisible) => async dispatch => {
+  var activity = UserMaster.activity_drop.value === "" ? 0 : UserMaster.activity_drop.value;
+  var department_id = UserMaster.department.value;
   try {
     axios({
       method: 'POST',
@@ -374,7 +376,7 @@ export const UpdateSubActivity = (UserMaster, EditId, Editvisible,DepartmentID) 
           });
           dispatch({ type: UPDATE_SUBACTIVITY, payload: response.data.status })
 
-          dispatch(getSubActivity(DepartmentID))
+          dispatch(getSubActivity(department_id, activity))
           return Promise.resolve();
         }
         else if (response.data.status === 0) {
@@ -767,12 +769,12 @@ export const getTableClass = (id) => async (dispatch) => {
   return dispatch({ type: GET_TABLE_CLASS, payload: response.data.data });
 };
 
-export const getSubActivity = (id, activity_id) => async (dispatch) => {
+export const getSubActivity = (department_id, activity_id) => async (dispatch) => {
   const response = await axios({
     method: "post",
     url: apiurl + "get_sub_activity_by_department",
     data: {
-      department_id: id,
+      department_id: department_id,
       activity_id: activity_id,
     },
   });

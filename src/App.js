@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthContext } from "./context/auth";
 import Login from "./pages/Login/login.js";
-import { useDispatch } from "react-redux";
 import Navbar from "./component/Navbar/navbar.js";
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("token"));
   const [authTokens, setAuthTokens] = useState(existingTokens);
-  const dispatch = useDispatch();
   const setTokens = (data) => {
     localStorage.setItem("token", JSON.stringify(data.data[0]));
     localStorage.setItem("empId", JSON.stringify(data.data[0].emp_id));
@@ -21,7 +19,7 @@ function App() {
     setAuthTokens(data);
   }
 
-  return (
+  return ( 
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Router basename="suranaAndsurana/?/">
         <Switch>
@@ -30,7 +28,6 @@ function App() {
         </Switch>
       </Router>
     </AuthContext.Provider>
-
   );
 }
 

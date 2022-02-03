@@ -1,4 +1,4 @@
-import React, { useRef,useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import CustomButton from "../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
@@ -29,7 +29,7 @@ function DayReport(props) {
     const [projectList, setprojectList] = useState([])
     const [confirmmodel, setConfirmModel] = useState(false);
     const [dayReportSearch, setdayReportSearch] = useState({
-        from_date: {
+        dates: {
             value: moment().format('YYYY-MM-DD'),
             validation: [{ name: "required" }],
             error: null,
@@ -43,11 +43,15 @@ function DayReport(props) {
         },
         select_task_id: {
             value: 0,
-
         },
         emp_name: {
             value: "",
             validation: [{ name: "required" }],
+            error: null,
+            errmsg: null,
+        },
+        day_report_type: {
+            value: "1",
             error: null,
             errmsg: null,
         }
@@ -114,36 +118,12 @@ function DayReport(props) {
             dispatch(getDayReport_TimeSheet(dayReportSearch))
         }
 
-        // setdayReportSearch({
-        //     curr_date: {
-        //         value: "",
-        //         validation: [{ name: "required" }],
-        //         error: null,
-        //         errmsg: null,
-        //     },
-        //     dept_name: {
-        //         value: "",
-        //         validation: [{ name: "required" }],
-        //         error: null,
-        //         errmsg: null,
-        //     },
-        //     emp_name: {
-        //         value: "",
-        //         validation: [{ name: "required" }],
-        //         error: null,
-        //         errmsg: null,
-        //     }
-        // })
     }
 
     //For page render dropdowns
     useEffect(() => {
-        // let department = []
         let empList = []
 
-        // props.getDepartment.map((data) => {
-        //     department.push({ id: data.department_id, value: data.department })
-        // })
         props.EmployeeList.map((data) => {
             empList.push({ id: data.emp_id, value: data.name })
         })
@@ -151,47 +131,79 @@ function DayReport(props) {
     }, [props.EmployeeList])
 
 
-    const headCells = [
-        { id: "surana_case_no", label: "Surana Case No." },
-        { id: "court_no", label: "Case No." },
+    const headCellsDayEnd = [
+        { id: "surana_case_no", label: "Internal Case No." },
+        { id: "last_day_outcome", label: "Last Hearing Date Outcome" },
+        { id: "last_attended_counsel", label: "Last Attended Counsel Name" },
+        { id: "court_no", label: "Case Number" },
         { id: "court", label: "Court" },
-        { id: "our_client_vs_other_party", label: "Our Client vs Other Party" },
-        { id: "last_heard", label: "Last Heard" },
-        { id: "counsel", label: "Counsel" },
-        { id: "days_outcome", label: "Day's Outcome" },
-        { id: "next_hearing", label: "Next Hearing" },
+        { id: "filing_type", label: "Filing Type" },
+        { id: "our_client_vs_other_party", label: "Client Vs. Other Party" },
+        { id: "last_heard", label: "Last Heard Date" },
+        { id: "counsel", label: "Counsel to be assigned for the day" },
+        { id: "days_outcome", label: "Days Outcome" },
+        { id: "next_hearing", label: "Next Hearing Date" },
+        { id: "adjournment", label: "Adjournment By COURT       By SELF           By OTHER PARTY" },
+        { id: "reason_comments", label: "Reason / Comments" },
         { id: "action_to_be_taken", label: "Action to be Taken" },
-        { id: "person_responsible", label: "Person Responsible" },
         { id: "due_date", label: "Due Date" },
-        { id: "reassign", label: "Reassign" },
+        { id: "given_by", label: "Given by" },
+    ];
+
+    const headCellsDayBegin = [
+        { id: "surana_case_no", label: "Internal Case No." },
+        { id: "last_day_outcome", label: "Last Hearing Date Outcome" },
+        { id: "counsel", label: "Last Attended Counsel Name" },
+        { id: "court_no", label: "Case Number" },
+        { id: "court", label: "Court" },
+        { id: "filling_type", label: "Filing Type" },
+        { id: "our_client_vs_other_party", label: "Client Vs. Other Party" },
+        { id: "last_heard", label: "Last Heard" },
+        { id: "reassign", label: "Counsel  to be assigned for the day" },
     ];
     ////Define collapse types based on project types (ID)
     useEffect(() => {
-        // let multipleTab = [];
-        // props?.dayReport?.map((data, i) => {
         let rowDataList = []
-        props?.dayReport?.map((data, index) => {
-            rowDataList.push({
-
-                surana_case_no: data.internal_case_no,
-                court_no: data.court_case_no,
-                court: data.court,
-                our_client_vs_other_party: data.client + ' vs ' + data.other_party,
-                last_heard: data.hearing_date&&moment(data.hearing_date).format("DD-MMM-YYYY"),
-                counsel: data.assignee,
-                days_outcome: data.hearing_outcome,
-                next_hearing: data.due_date&&moment(data.due_date).format("DD-MMM-YYYY"),
-                action_to_be_taken: data.action_to_be_taken,
-                person_responsible: data.person_responsible,
-                due_date: data.due_date,
-                reassign: <img src={Reassign} onClick={() => reassign_model_open(data)} className="Reassign_Img" />
-            })
+        props?.dayReport?.map((data) => {
+            if (dayReportSearch?.day_report_type?.value === '1') {
+                rowDataList.push({
+                    surana_case_no: data.internal_case_no,
+                    last_day_outcome: data.hearing_outcome,
+                    last_counsel: data.last_attend_councel_name,
+                    court_no: data.court_case_no,
+                    court: data.court,
+                    filing_type: data.filing_type,
+                    our_client_vs_other_party: data.client + ' vs ' + data.other_party,
+                    last_heard: data.last_hearing_date && moment(data.last_hearing_date).format("DD-MMM-YYYY"),
+                    reassign: <><img src={Reassign} alt="Reassign" onClick={() => reassign_model_open(data)} className="Reassign_Img" /> {data.assignee}</>,
+                })
+            }
+            else if (dayReportSearch?.day_report_type?.value === '2') {
+                rowDataList.push({
+                    surana_case_no: data.internal_case_no,
+                    last_day_outcome: '',
+                    last_counsel: data.last_attend_councel_name,
+                    court_no: data.court_case_no,
+                    court: data.court,
+                    filing_type: data.filing_type,
+                    our_client_vs_other_party: data.client + ' vs ' + data.other_party,
+                    last_heard: data.last_hearing_date && moment(data.last_hearing_date).format("DD-MMM-YYYY"),
+                    counsel: data.assignee,
+                    days_outcome: data.hearing_outcome,
+                    next_hearing: data.next_hearing_date && moment(data.next_hearing_date).format("DD-MMM-YYYY"),
+                    adjournment: data.adjournment_taken_by,
+                    reason: data.reason,
+                    action_to_be_taken: data.action_to_be_taken,
+                    due_date: data.due_date,
+                    given_by: '',
+                })
+            }
+            return true;
         })
 
         setTableData({ rowDataList })
-        // })
-        // setTableData()
-    }, [props.dayReport]);
+    }, [props.dayReport, dayReportSearch?.day_report_type?.value]);
+
     const reassign_model_open = (data) => {
         dayReportSearch.select_task_id.value = data.task_id
         setConfirmModel(true)
@@ -200,255 +212,52 @@ function DayReport(props) {
         await dispatch(insert_day_report_reassign(dayReportSearch))
         setConfirmModel(false)
     }
-    // useEffect(() => {
-
-    //     let multipleTab = [];
-    //     let subCollapse = [];
-    //     let checkDupliactesProjectIds = [];
-    //     props?.dayReport?.map((data, i) => {
-    //         let rowDataList = {}
-    //         let sample = {};
-    //         let tableRow1 = [];
-    //         let tableRow = [];
-    //         let tableRow2 = [];
-    //         let tableRow3 = [];
-    //         let tableRow4 = [];
-    //         let tableRow5 = [];
-    //         checkDupliactesProjectIds?.push(data.project_type_id)
-    //         if (data.project_type_id === 1) {
-
-    //             sample["Design"] = data.project_details.filter((val) => val?.sub_project_id === 2)
-    //             sample["Patent"] = data.project_details.filter((val) => val?.sub_project_id === 3)
-    //             sample["Trademark"] = data.project_details.filter((val) => val?.sub_project_id === 1)
-    //             sample["Copyright"] = data.project_details.filter((val) => val?.sub_project_id === 4)
-    //             sample["IPABTrademark"] = data.project_details.filter((val) => val?.sub_project_id === 5)
-    //             sample["IPABDesign"] = data.project_details.filter((val) => val?.sub_project_id === 6)
-
-    //             if (sample?.Design.length > 0) {
-    //                 sample?.Design.map((dat, k) => {
-    //                     let currentData = {}
-    //                     let aEndDate = dat.actual_end_date;
-    //                     let endDate = dat.end_date;
-    //                     currentData["actitvity"] = dat.activity;
-    //                     currentData["subactivity"] = dat.sub_activity;
-    //                     currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                     currentData["by"] = dat.assigned_name;;
-    //                     currentData["tag"] = dat.tag
-    //                     tableRow1.push(currentData);
-    //                 })
-
-    //             }
-    //             if (tableRow1.length) {
-    //                 sample["Design"] = tableRow1;
-    //             }
-
-    //             if (sample?.Patent.length > 0) {
-    //                 let currentData = {}
-    //                 sample?.Patent.map((dat, k) => {
-    //                     let aEndDate = dat.actual_end_date;
-    //                     let endDate = dat.end_date;
-    //                     currentData["actitvity"] = dat.activity;
-    //                     currentData["subactivity"] = dat.sub_activity;
-    //                     currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                     currentData["by"] = dat.assigned_name;;
-    //                     currentData["tag"] = dat.tag
-    //                     tableRow2.push(currentData);
-    //                 })
-    //             }
-    //             if (tableRow2.length) {
-    //                 sample["Patent"] = tableRow2;
-    //             }
-
-
-    //             if (sample?.Trademark.length > 0) {
-    //                 let currentData = {}
-    //                 sample?.Trademark.map((dat, k) => {
-    //                     let aEndDate = dat.actual_end_date;
-    //                     let endDate = dat.end_date;
-    //                     currentData["actitvity"] = dat.activity;
-    //                     currentData["subactivity"] = dat.sub_activity;
-    //                     currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                     currentData["by"] = dat.assigned_name;;
-    //                     currentData["tag"] = dat.tag
-    //                     tableRow.push(currentData);
-    //                 })
-    //             }
-    //             if (tableRow.length) {
-    //                 sample["Trademark"] = tableRow;
-    //             }
-
-    //             if (sample?.Copyright.length > 0) {
-    //                 let currentData = {}
-    //                 sample?.Copyright.map((dat, k) => {
-    //                     let aEndDate = dat.actual_end_date;
-    //                     let endDate = dat.end_date;
-    //                     currentData["actitvity"] = dat.activity;
-    //                     currentData["subactivity"] = dat.sub_activity;
-    //                     currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                     currentData["by"] = dat.assigned_name;;
-    //                     currentData["tag"] = dat.tag
-    //                     tableRow3.push(currentData);
-    //                 })
-    //             }
-    //             if (tableRow3.length) {
-    //                 sample["Copyright"] = tableRow3;
-    //             }
-
-
-    //             if (sample?.IPABTrademark.length > 0) {
-    //                 let currentData = {}
-    //                 sample?.IPABTrademark.map((dat, k) => {
-    //                     let aEndDate = dat.actual_end_date;
-    //                     let endDate = dat.end_date;
-    //                     currentData["actitvity"] = dat.activity;
-    //                     currentData["subactivity"] = dat.sub_activity;
-    //                     currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                     currentData["by"] = dat.assigned_name;;
-    //                     currentData["tag"] = dat.tag
-    //                     tableRow4.push(currentData);
-    //                 })
-    //             }
-    //             if (tableRow4.length) {
-    //                 sample["IPABTrademark"] = tableRow4;
-    //             }
-
-    //             if (sample?.IPABDesign.length > 0) {
-    //                 let currentData = {}
-    //                 sample?.IPABDesign.map((dat, k) => {
-    //                     let aEndDate = dat.actual_end_date;
-    //                     let endDate = dat.end_date;
-    //                     currentData["actitvity"] = dat.activity;
-    //                     currentData["subactivity"] = dat.sub_activity;
-    //                     currentData["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                     currentData["by"] = dat.assigned_name;;
-    //                     currentData["tag"] = dat.tag
-    //                     tableRow5.push(currentData);
-    //                 })
-    //             }
-    //             if (tableRow5.length) {
-    //                 sample["IPABDesign"] = tableRow5;
-
-    //             }
-    //             for (let [index, [key, value]] of Object.entries(Object.entries(sample))) {
-    //                 subCollapse.push(
-    //                     value.length &&
-    //                     <Panel
-    //                         header={`${key} (${value.length})`}
-    //                         key={index + 1}
-    //                     >
-
-    //                         <EnhancedTable
-    //                             headCells={
-    //                                 headCells
-    //                             }
-    //                             rows={value}
-    //                             tabletitle={""}
-    //                         />
-    //                     </Panel>
-    //                 )
-
-    //             }
-    //             multipleTab.push(
-    //                 <Panel
-    //                     header={`${data.project_type} (${data?.project_details?.length})`}
-    //                     key={i + 1}
-    //                 >
-    //                     <Collapse>{subCollapse}</Collapse>
-
-    //                 </Panel>
-    //             );
-    //         } else if ((data.project_type_id !== 1) && (checkDupliactesProjectIds[i] == data.project_type_id)) {
-    //             let otherDataList = []
-    //             data.project_details.length && data.project_details.map((dat, k) => {
-    //                 let aEndDate = dat.actual_end_date;
-    //                 let endDate = dat.end_date;
-    //                 rowDataList["actitvity"] = dat.activity;
-    //                 rowDataList["subactivity"] = dat.sub_activity;
-    //                 rowDataList["completion"] = aEndDate > endDate ? "DELYED" : aEndDate <= endDate ? "ON TIME" : "DELAYED";
-    //                 rowDataList["by"] = dat.assigned_name;;
-    //                 rowDataList["tag"] = dat.tag
-    //                 otherDataList.push(rowDataList)
-
-    //             })
-    //             multipleTab.push(
-    //                 data?.project_details?.length &&
-    //                 <Panel
-    //                     header={`${data.project_type} (${data?.project_details?.length})`}
-    //                     key={i + 1}
-    //                 >
-    //                     <EnhancedTable
-    //                         headCells={
-    //                             headCells
-    //                         }
-    //                         rows={otherDataList}
-
-    //                     />
-    //                 </Panel>
-    //             );
-    //         }
-    //         setMultiplePanel(multipleTab);
-    //     })
-
-    // }, [props.dayReport]);
-
-
-
-
+    
     return (
         <div>
             <div className="DRtitle">Day Report</div>
+            <Labelbox type="radio"
+                changeData={(data) => checkValidation(data, "day_report_type")}
+                options={[
+                    { name: "Day Begin", value: 1 },
+                    { name: "Day End", value: 2 },
+                ]}
+                value={dayReportSearch?.day_report_type?.value}
+                error={dayReportSearch?.day_report_type?.error}
+                errmsg={dayReportSearch?.day_report_type?.errmsg}
+            />
             <div className="DayReportContainer">
                 <Grid item xs={12} container direction="row" spacing={3}>
                     <Grid item xs={3} container direction="column" spacing={1}>
-                        <div className="Reporthead">From</div>
+                        <div className="Reporthead">Date</div>
                         <Labelbox type="datepicker"
-                            changeData={(data) => checkValidation(data, "from_date")}
-                            value={dayReportSearch?.from_date?.value}
-                            error={dayReportSearch?.from_date?.error}
-                            errmsg={dayReportSearch?.from_date?.errmsg}
+                            changeData={(data) => checkValidation(data, "dates")}
+                            value={dayReportSearch?.dates?.value}
+                            error={dayReportSearch?.dates?.error}
+                            errmsg={dayReportSearch?.dates?.errmsg}
+                            disableFuture={dayReportSearch?.day_report_type?.value === '2' ? true : false}
+                            disablePast={dayReportSearch?.day_report_type?.value === '1' ? true : false}
                         />
                     </Grid>
-                    <Grid item xs={3} container direction="column" spacing={1}>
-                        <div className="Reporthead">To</div>
-                        <Labelbox type="datepicker"
-                            changeData={(data) => checkValidation(data, "to_date")}
-                            value={dayReportSearch?.to_date?.value}
-                            error={dayReportSearch?.to_date?.error}
-                            errmsg={dayReportSearch?.to_date?.errmsg}
-                        />
-                    </Grid>
-                    {/* <Grid item xs={3} container direction="column" spacing={1}>
-                        <div className="Reporthead">Employee</div>
-                        <Labelbox type="select"
-                            dropdown={projectList?.empList}
-                            changeData={(data) => checkValidation(data, "emp_name")}
-                            value={dayReportSearch?.emp_name.value}
-                            error={dayReportSearch?.emp_name.error}
-                            errmsg={dayReportSearch?.emp_name.errmsg}
-                        />
-                    </Grid> */}
                     <Grid item xs={2} container direction="row" justify="center" alignItems="center">
                         <CustomButton btnName={"Search"} btnCustomColor="customPrimary" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
                     </Grid>
                 </Grid>
             </div>
             <div className="DRcollapsecss">
-                {/* <Collapse>
-                    {multiplePanel}
-                </Collapse> */}
-                <EnhancedTable headCells={headCells}
-                    rows={TableData.length == 0 ? TableData : TableData.rowDataList} />
+                <EnhancedTable headCells={dayReportSearch?.day_report_type?.value === '1' ? headCellsDayBegin : headCellsDayEnd}
+                    rows={TableData.length === 0 ? TableData : TableData.rowDataList} />
             </div>
 
 
             <ReactToPrint
                 trigger={() => <div className="printBtn">  <Grid item xs={2} container direction="row" justify="center" alignItems="center">
-                <CustomButton btnName={"Print"} btnCustomColor="customPrimary" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
-            </Grid></div>}
+                    <CustomButton btnName={"Print"} btnCustomColor="customPrimary" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} custombtnCSS="Reportbtnsearch" onBtnClick={SearchData} />
+                </Grid></div>}
                 content={() => componentRef.current}
             // onAfterPrint={()=>setProductDetails([])}
             />
-            <div style={{display:'none'}} ><ComponentToPrint ref={componentRef} productDetails={TableData.length == 0 ? TableData : TableData.rowDataList} /></div>
+            <div style={{ display: 'none' }} ><ComponentToPrint ref={componentRef} productDetails={TableData.length === 0 ? TableData : TableData.rowDataList} /></div>
             <DynModel
                 modelTitle={"Reassign"}
                 handleChangeModel={confirmmodel}

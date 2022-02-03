@@ -15,12 +15,10 @@ import { TimePicker } from 'antd';
 import { DatePicker, Select } from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
-// import { TimePicker } from '@material-ui/pickers'
 import Delete from '../../images/dashboard/delete.svg';
 import PublishIcon from '@material-ui/icons/Publish';
 import DynModel from "../../component/Model/model";
 import CustomButton from "../../component/Butttons/button";
-import { useState } from 'react';
 
 export default class Labelbox extends Component {
 	constructor(props) {
@@ -81,7 +79,7 @@ export default class Labelbox extends Component {
 	};
 
 	renderinput = (data) => {
-		if (data.type == 'text') {
+		if (data.type === 'text') {
 			return (
 				<div className="formdiv inputlabel">
 					<label className="labeltxt">{data.labelname}</label>
@@ -99,7 +97,7 @@ export default class Labelbox extends Component {
 				</div>
 
 			)
-		} else if (data.type == 'number') {
+		} else if (data.type === 'number') {
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
@@ -115,7 +113,7 @@ export default class Labelbox extends Component {
 				</div>
 
 			)
-		} else if (data.type == 'textarea') {
+		} else if (data.type === 'textarea') {
 			return (
 				<div className="formdiv">
 					<label className="labeltxt">{data.labelname}</label>
@@ -131,20 +129,29 @@ export default class Labelbox extends Component {
 				</div>
 
 			)
-		} else if (data.type == 'radio') {
+		} else if (data.type === 'radio') {
 			return (
-				<div className="formdiv">
-					<label className="labeltxt">{data.labelname}</label>
-					<div>
-						<FormControlLabel control={<Radio className="radiobtncolor" icon={<RadioButtonUncheckedIcon fontSize="small" />}
-							checkedIcon={<RadioButtonCheckedIcon fontSize="small" />} onClick={() => this.changeGender('M')} checked={this.props.checked == 'M'} fontSize="small" />} label="Amount" />
-						<FormControlLabel value="female" control={<Radio className="radiobtncolor" icon={<RadioButtonUncheckedIcon fontSize="small" />}
-							checkedIcon={<RadioButtonCheckedIcon fontSize="small" />} onClick={() => this.changeGender('F')} checked={this.props.checked == 'F'} fontSize="small" />} label="Percentage" />
-					</div>
+				<div className="formdiv radio" >
+					{data.options && data.options.map((data1, index) => (
 
+						<div>
+							<Radio
+								checked={this.props.value === data1.value.toString()}
+								onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
+								value={data1.value}
+								name="radio-buttons"
+								inputProps={{ "aria-label": "A" }}
+								style={{ color: '#0354a4' }}
+
+							/>
+							<label for={this.props.value} class="radio-label">
+								{data1.name}
+							</label>
+						</div>
+					))}
 				</div>
 			)
-		} else if (data.type == 'datepicker') {
+		} else if (data.type === 'datepicker') {
 			function onChange(date, dateString) {
 
 			}
@@ -190,7 +197,7 @@ export default class Labelbox extends Component {
 
 				</div>
 			)
-		} else if (data.type == 'timepicker') {
+		} else if (data.type === 'timepicker') {
 			function onChange(date, dateString) {
 
 			}
@@ -231,7 +238,7 @@ export default class Labelbox extends Component {
 
 				</div>
 			)
-		} else if (data.type == 'timepickernew') {
+		} else if (data.type === 'timepickernew') {
 			function onChange(date, dateString) {
 
 			}
@@ -256,7 +263,7 @@ export default class Labelbox extends Component {
 				</div>
 			)
 		}
-		else if (data.type == 'select') {
+		else if (data.type === 'select') {
 			function onChange(value) {
 			}
 			const { Option } = Select;
@@ -331,7 +338,7 @@ export default class Labelbox extends Component {
 
 				</div>
 			)
-		} else if (data.type == 'upload') {
+		} else if (data.type === 'upload') {
 			let myWindow;
 			function onFileView(url) {
 				myWindow?.close();

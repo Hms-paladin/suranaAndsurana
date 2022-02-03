@@ -422,7 +422,7 @@ const UserMaster = (props) => {
       dispatch(getTableClass(data));
     }
     if (data && key === "department") {
-      dispatch(getSubActivity(data, UserMaster.activity_drop.value));
+      dispatch(getSubActivity(data, UserMaster.activity_drop.value === "" ? 0 : UserMaster.activity_drop.value));
     }
     if (data && key === "activity_drop") {
       dispatch(getSubActivity(UserMaster.department.value, data));

@@ -5,7 +5,6 @@ import CustomButton from '../../component/Butttons/button';
 import './AddHearing.scss'
 import DynModel from "../../component/Model/model";
 import ValidationLibrary from "../../helpers/validationfunction";
-import EditTimeSheet from './Timesheet/Timesheet'
 import Adjournment from './Adjournment'
 import ProjectTaskModel from '../Project IP1/ProjectTaskModel/projecttaskModel';
 import { getHearingDetails, InsertHearingDetails } from "../../actions/projectTaskAction";
@@ -105,13 +104,16 @@ export function Hearing(props) {
   }
 
   useEffect(() => {
+    dispatch(getEmpListDepartment());
+  }, []);
+  useEffect(() => {
     if (props.rowData) {
       dispatch(getProjectDetails(props.rowData.data.project_id))
       dispatch(getHearingDetails(props.rowData.data));
       dispatch(getSubactivity(props.rowData.data.activiity_id))
     }
     dispatch(getEmpListDepartment());
-  }, []);
+  }, [props.rowData]);
 
   useEffect(() => {
     setProjectDetails(props.ProjectDetails);
@@ -119,7 +121,11 @@ export function Hearing(props) {
       project_id: props.ProjectDetails[0].project_id,
       client_id: props.ProjectDetails[0].client_id,
     })
-    props.rowData && (settaskDetails(props.rowData.data))
+    if (props.rowData) {
+      HearingData.current_hearing.value = props.rowData.data.current_hearing_date;
+      HearingData.due_date.value = props.rowData.data.due_date;
+      settaskDetails(props.rowData.data)
+    }
     if (props.getHearingDets && props.getHearingDets.length > 0) {
       HearingData.nexthearing.value = props.getHearingDets[0].next_hearing_date;
       HearingData.hearingoutcome.value = props.getHearingDets[0].hearing_outcome;
@@ -152,7 +158,7 @@ export function Hearing(props) {
   }, [props.rowData, props.getHearingDets, props.ProjectDetails, props.getSubactivity, props.getEmpListDepartment]);
 
 
-  function onSubmit() {
+  async function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(HearingData);
     for (var i in targetkeys) {
@@ -201,9 +207,12 @@ export function Hearing(props) {
         props.AddHearing_output && props.AddHearing_output(data);
         handleCancel();
       } else {
-        dispatch(InsertHearingDetails(data)).then((response) => {
-          handleCancel();
-        })
+        await dispatch(InsertHearingDetails(data));
+        handleCancel();
+        if (props.rowData.data) {
+          dispatch(getHearingDetails(props.rowData.data));
+        }
+
       }
     }
     setHearingData((prevState) => ({
@@ -212,8 +221,8 @@ export function Hearing(props) {
   }
 
   const handleCancel = () => {
-    let HearingData = [];
-    HearingData.map((data) => {
+    var HearingDataKey = Object.keys(HearingData);
+    HearingDataKey.map((data) => {
       HearingData[data].value = "";
     });
     setHearingData((prevState) => ({
