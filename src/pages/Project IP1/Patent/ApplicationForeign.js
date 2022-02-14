@@ -267,7 +267,7 @@ function ApplicationForeign(props) {
         <div>
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">File Cover</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "file_cover")}
@@ -276,7 +276,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.file_cover.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Our Reference</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "our_ref")}
@@ -285,7 +285,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.our_ref.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Client Reference</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "client_ref")}
@@ -294,7 +294,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.client_ref.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Application number</div>
                         <Labelbox type="number"
                             changeData={(data) => checkValidation(data, "app_num")}
@@ -303,7 +303,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.app_num.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Application Date</div>
                         <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "app_date")}
@@ -312,7 +312,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.app_date.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Priority No</div>
                         <Labelbox type="number"
                             changeData={(data) => checkValidation(data, "priority_num")}
@@ -321,7 +321,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.priority_num.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Priority Date</div>
                         <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "priority_date")}
@@ -330,7 +330,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.priority_date.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Title</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "title")}
@@ -339,7 +339,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.title.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Country</div>
                         <Labelbox type="select"
                             dropdown={countryDetList.countryListsData}
@@ -350,7 +350,7 @@ function ApplicationForeign(props) {
                     </Grid>
 
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Associate</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "associate")}
@@ -359,7 +359,7 @@ function ApplicationForeign(props) {
                             errmsg={patentForm.associate.errmsg} />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Status</div>
                         <Labelbox type="select"
                             changeData={(data) => checkValidation(data, "status")}
@@ -370,7 +370,7 @@ function ApplicationForeign(props) {
                         />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Comment</div>
                         <div className="coments_div"><Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}

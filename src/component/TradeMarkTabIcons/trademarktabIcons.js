@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useCallback, useState, memo } from 'react';
 import './trademarktabIcons.scss';
 import Grid from '@material-ui/core/Grid';
 
@@ -17,23 +18,33 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 
 import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmodel';
-
-// import { Tooltip, Button } from 'antd';
+import OpeModel from '../../pages/OPE/OpeModel';
 
 function TradeMarkTabIcons(props) {
-    const [variableRateIcon, setVariableRateIcon] = useState("")
+    // const [variableRateIcon, setVariableRateIcon] = useState("")
     const tabBox = (boxName) => {
         props.onChangeTabBox && props.onChangeTabBox(boxName)
     }
-    const [open, setOpen] = useState(false);
+    const [opeOpen, setOpeOpen] = useState(false);
+    const [timeSheetOpen, setTimeSheetOpen] = useState(false);
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleOpeClose = () => {
+        setOpeOpen(false)
     };
 
-    const handleOpen = () => {
-        setOpen(true);
+    const handleOpeOpen = useCallback(() => {
+        setOpeOpen(true)
+        handleTimeSheetClose()
+    }, []);
+
+    const handleTimeSheetClose = () => {
+        setTimeSheetOpen(false)
     };
+
+    const handleTimeSheetOpen = useCallback(() => {
+        setTimeSheetOpen(true)
+        handleOpeClose()
+    }, []);
     var TabIcons = [{ img: Rupees, title: "VARIABLE RATE" }, { img: Rupees, title: "OPE" }, { img: TimeSheet, title: "TIME SHEET" }, { img: CheckList, title: "CHECKLIST" }, { img: ApproveIcon, title: `${props.litigation ? 'CASE TYPE' : 'STAGE'}` }, { img: Tasks, title: "TASKS" }, { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE' : 'STAGE  MONITOR'}` }]
 
     const HtmlTooltip = withStyles((theme) => ({
@@ -49,9 +60,9 @@ function TradeMarkTabIcons(props) {
         },
     }))(Tooltip);
 
-    useEffect(() => {
-        setVariableRateIcon(props.variableRate.billable_type_id)
-    }, [props.variableRate, props.checkListsAssigned, props.projectDetails])
+    // useEffect(() => {
+    //     setVariableRateIcon(props.variableRate.billable_type_id)
+    // }, [props.variableRate, props.checkListsAssigned, props.projectDetails])
 
     const showFromSec = props?.variableRate?.billable_type_id !== 2 ? 0 : null
 
@@ -80,47 +91,50 @@ function TradeMarkTabIcons(props) {
         { img: Application, title: "APPLICATION" }, { img: GroupIcon, title: `${props.litigation ? 'CASE LIFE CYCLE' : 'STAGE  MONITOR'}` }]
 
     }
-
     return (
         <div className="tradeMarkIcons">
 
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
 
                 {TabIcons.map((data, index) => {
-
+                    // console.log(data.title, 'data.title')
                     return (
                         <div>
                             {data.title === "TIME SHEET" ?
-
                                 <div>
-
-                                    {data.title === data.title && 
-                                     <HtmlTooltip key="uniqueId1" open={open} onClose={handleClose} onOpen={handleOpen} arrow
+                                    <HtmlTooltip key={`${index}_TIME_SHEET`} open={timeSheetOpen} onClose={handleTimeSheetClose} onOpen={handleTimeSheetOpen} arrow
 
                                         title={<Timesheetmodel />}
-                                        onMouseEnter={() => setOpen(true)}
-                                        onMouseLeave={() => setOpen(false)}
+                                        onMouseEnter={handleTimeSheetOpen}
+                                        onMouseLeave={handleTimeSheetClose}
                                     >
-                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
+                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setTimeSheetOpen(false))}>
                                             <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
                                             <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
                                         </div>
-                                    </HtmlTooltip>  } 
-
-                                     {/* <Tooltip width={1000} title={<Timesheetmodel />}>
-                                        <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpen(false))}>
-                                            <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
-                                            <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
-                                        </div>
-
-                                    </Tooltip>  */}
+                                    </HtmlTooltip>
 
                                 </div>
                                 :
-                                <div className="tabIconsView" onClick={() => tabBox(data.title)}>
-                                    {data.img && <Grid><img src={data.img} className="tabIconImage" /></Grid>}
-                                    <Grid> <div style={{ marginTop: 0 }} className="tabiconTitle">{data.title}</div></Grid>
-                                </div>
+                                data.title === "OPE" ?
+                                    <div>
+                                        <HtmlTooltip key={`${index}_OPE`} open={opeOpen} onClose={handleOpeClose} onOpen={handleOpeOpen} arrow
+
+                                            title={<OpeModel />}
+                                            onMouseEnter={handleOpeOpen}
+                                            onMouseLeave={handleOpeClose}
+                                        >
+                                            <div className="tabIconsView" onClick={() => (tabBox(data.title), setOpeOpen(false))}>
+                                                <Grid>{data.img && <img src={data.img} className="tabIconImage" />}</Grid>
+                                                <Grid> <div className="tabiconTitle">{data.title}</div></Grid>
+                                            </div>
+                                        </HtmlTooltip>
+
+                                    </div> :
+                                    <div className="tabIconsView" onClick={() => tabBox(data.title)}>
+                                        {data.img && <Grid><img src={data.img} className="tabIconImage" /></Grid>}
+                                        <Grid> <div style={{ marginTop: 0 }} className="tabiconTitle">{data.title}</div></Grid>
+                                    </div>
                             }
 
 
@@ -133,7 +147,7 @@ function TradeMarkTabIcons(props) {
         </div >
     )
 }
-export default TradeMarkTabIcons;
+export default memo(TradeMarkTabIcons);
 
 
 

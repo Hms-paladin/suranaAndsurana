@@ -210,7 +210,7 @@ function OppositionDefended(props) {
         <div>
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Opposition Filed Date</div>
                         <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "opp_fill_date")}
@@ -219,7 +219,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.opp_fill_date.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Types of Grant</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "type_grant")}
@@ -228,7 +228,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.type_grant.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Patent Application Number</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "app_num")}
@@ -237,7 +237,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.app_num.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Patent Title</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "title")}
@@ -246,7 +246,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.title.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Publication Date</div>
                         <Labelbox type="datepicker"
                             changeData={(data) => checkValidation(data, "publicationdate")}
@@ -255,7 +255,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.publicationdate.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Opponent</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "opponent")}
@@ -264,7 +264,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.opponent.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Opponent Agent</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "opponent_agent")}
@@ -273,7 +273,7 @@ function OppositionDefended(props) {
                             errmsg={patentForm.opponent_agent.errmsg} />
                     </Grid>
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Comments</div>
                         <div className="foreign_div"><Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}

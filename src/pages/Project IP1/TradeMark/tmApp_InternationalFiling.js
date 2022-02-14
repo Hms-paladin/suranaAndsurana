@@ -520,7 +520,6 @@ function TradeMarkInternational(properties) {
         <div className="tradeMarkContainer">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Grid item xs={1}></Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Status</div>
                         <Labelbox type="select"
@@ -575,9 +574,6 @@ function TradeMarkInternational(properties) {
                             disabled={TradeMarkForm.mark_id.disabled}
                         />
                     </Grid>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={1}></Grid>
-
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Upload</div>
                         <Labelbox type="upload"
@@ -598,7 +594,6 @@ function TradeMarkInternational(properties) {
                         />
 
                     </Grid>
-                    {/* </Labelbox> */}
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Associate</div>
                         <Labelbox type="textarea"
@@ -641,8 +636,6 @@ function TradeMarkInternational(properties) {
                             disabled={TradeMarkForm.country_id.disabled}
                         />
                     </Grid>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={1}></Grid>
                     <Grid item xs={2}>
                         <div className="Tradeheadings">Priority Details</div>
                         <Labelbox type="textarea"

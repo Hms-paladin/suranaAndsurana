@@ -1,10 +1,10 @@
-import react, { useEffect, useState } from 'react';
+/* eslint-disable jsx-a11y/alt-text */
+import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import './projectIp.scss';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
-import { InesertResume } from "../../actions/ResumeAction";
 import { Tabs } from 'antd';
 import TabIcons from '../../component/TradeMarkTabIcons/trademarktabIcons';
 import { getProjectDetails } from "../../actions/ProjectFillingFinalAction"
@@ -77,13 +77,12 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";
 import {
     InsertProjectVariableRate, getProjectVariableRate, deleteVariableRate,
-    UpdateVariableRate, Update_Variable_Rate, InsertVariableRate, UpdateCheckListNoTaskLink
+    UpdateVariableRate, UpdateCheckListNoTaskLink
 } from "../../actions/VariableRateMaster"
 import { Collapse } from "antd";
 import { Checkbox } from 'antd'
 import moment from 'moment';
-import litigation from '../Litigation/litigation';
-
+import CorporateComplance from './Corporate Complaince/CorporateComplance'
 const { TabPane } = Tabs;
 
 function ProjectIp(props) {
@@ -114,7 +113,7 @@ function ProjectIp(props) {
     const [disableCondition, setDisableCondition] = useState(true);
     const [projectSearchCreate, setPrpjectSearchCreate] = useState({});
     const [applicableamount, setApplicableamount] = useState({});
-    const [Liti_LocationId,setLiti_LocationId]=useState('0')
+    const [Liti_LocationId, setLiti_LocationId] = useState('0')
     const [AmountChange, setAmountChange] = useState(false)
     const [TaskItemModel, setTaskItemModel] = useState(false);
     const [TaskItemModelID, setTaskItemModelID] = useState(0);
@@ -124,12 +123,6 @@ function ProjectIp(props) {
 
     const [ChecklistChange, setChecklistChange] = useState(false);
     const [IndexArr, setIndexArr] = useState("");
-    function callback(key) {
-    }
-
-    function callbackinside(key) {
-    }
-
 
     const [ProjectIP, setProjectIP] = useState({
 
@@ -393,12 +386,9 @@ function ProjectIp(props) {
 
     function onsubmitvariablerate() {
         setVariableid(false)
-        let AddRow = props.searchVariableRate.find((data) => {
-            return data.stage_list_id
-        })
         dispatch(UpdateVariableRate(sendVariableData, projectSearchCreate, props.searchVariableRate
             , applicableamount, props.getProjectVariableRate
-        )).then((response) => {
+        )).then(() => {
             setDisableCondition(true)
         })
 
@@ -410,7 +400,7 @@ function ProjectIp(props) {
         data.project_id = rowId
         data.Amount = projectSearchCreate['amountSearch' + index]
 
-        dispatch(InsertProjectVariableRate(data)).then((response) => {
+        dispatch(InsertProjectVariableRate(data)).then(() => {
             setVariableid(true);
             ///
             setDisableCondition(true);
@@ -469,7 +459,6 @@ function ProjectIp(props) {
         let searchVariableTableData = [];
         let sendprojVariableTableData = [];
         let tableData = [];
-        const TabLen = props.getProjectVariableRate.length;
 
         props.getProjectVariableRate.length > 0 && props.getProjectVariableRate.map((data, index) => {
             // setApplicableamount({});
@@ -565,12 +554,6 @@ function ProjectIp(props) {
 
 
     const variablerateModel = () => {
-        function onSearch() {
-            setSearchdata(true);
-            setAddsearchdata(false);
-            // setVariableRateCall(!variableRateCall)
-            setNotfoundmodel(true);
-        }
 
         function addSearchData() {
             setAddsearchdata(true);
@@ -735,35 +718,36 @@ function ProjectIp(props) {
                                     </div>
                                 </div>
                             </Grid>
-                            <Grid item xs={12}>
-                                <div className="projectIpFields">
-                                    {data.project_cost && data.project_cost!=='' && <div className="projectIpdata">
-                                        <div className="projectTitle">Project Value</div>
-                                        <div>{data.project_cost}</div>
-                                    </div>}
+                            {data.project_cost && data.project_cost !== '' || data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].base_rate != null || data.billable_type_id !== 5 && data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].unit != null || data.billable_type_id === 3 && data.details && data.details.length > 0 && data.details[0].limit_in_hours != null || data.billable_type_id === 3 && data.details && data.details.length > 0 && data.details[0].additional_rate != null &&
+                                <Grid item xs={12}>
+                                    <div className="projectIpFields">
+                                        {data.project_cost && data.project_cost !== '' && <div className="projectIpdata">
+                                            <div className="projectTitle">Project Value</div>
+                                            <div>{data.project_cost}</div>
+                                        </div>}
 
-                                    {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].base_rate != null && <div className="projectIpdata">
-                                        <div className="projectTitle">Base Rate</div>
-                                        <div>{data.details[0].base_rate}</div>
-                                    </div>}
+                                        {data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].base_rate != null && <div className="projectIpdata">
+                                            <div className="projectTitle">Base Rate</div>
+                                            <div>{data.details[0].base_rate}</div>
+                                        </div>}
 
-                                    {data.billable_type_id !== 5 && data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].unit != null && <div className="projectIpdata">
-                                        <div className="projectTitle">Unit of Measure</div>
-                                        <div>{data.details[0].unit}</div>
-                                    </div>}
+                                        {data.billable_type_id !== 5 && data.billable_type_id !== 2 && data.details && data.details.length > 0 && data.details[0].unit != null && <div className="projectIpdata">
+                                            <div className="projectTitle">Unit of Measure</div>
+                                            <div>{data.details[0].unit}</div>
+                                        </div>}
 
-                                    {data.billable_type_id === 3 && data.details && data.details.length > 0 && data.details[0].limit_in_hours != null && <div className="projectIpdata">
-                                        <div className="projectTitle">Limit</div>
-                                        <div>{data.details[0].limit_in_hours}</div>
-                                    </div>}
+                                        {data.billable_type_id === 3 && data.details && data.details.length > 0 && data.details[0].limit_in_hours != null && <div className="projectIpdata">
+                                            <div className="projectTitle">Limit</div>
+                                            <div>{data.details[0].limit_in_hours}</div>
+                                        </div>}
 
-                                    {data.billable_type_id === 3 && data.details && data.details.length > 0 && data.details[0].additional_rate != null && <div className="projectIpdata">
-                                        <div className="projectTitle">Additional Rate Hourly</div>
-                                        <div>{data.details[0].additional_rate}</div>
-                                    </div>}
-                                </div>
+                                        {data.billable_type_id === 3 && data.details && data.details.length > 0 && data.details[0].additional_rate != null && <div className="projectIpdata">
+                                            <div className="projectTitle">Additional Rate Hourly</div>
+                                            <div>{data.details[0].additional_rate}</div>
+                                        </div>}
+                                    </div>
 
-                            </Grid>
+                                </Grid>}
                         </div>
 
                     )
@@ -793,7 +777,7 @@ function ProjectIp(props) {
                         handleChangeCloseModel={(bln) => setVariableid(bln)}
                         content={variablerateModel()} width={1300} />
                     <DynModel modelTitle={"Project Task"} handleChangeModel={modelOpen} handleChangeCloseModel={(bln) => setModelOpen(bln)} content={modelContent()} width={800} />
-                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} zIndex={1000}/>
+                    <DynModel modelTitle={"Time Sheet"} handleChangeModel={timesheetModelOpen} handleChangeCloseModel={(bln) => setTimesheetModelOpen(bln)} content={timesheetmodelContent()} width={1000} zIndex={1000} />
                     <DynModel modelTitle={"OPE"} handleChangeModel={opeModelOpen} handleChangeCloseModel={(bln) => setOpeModelOpen(bln)} content={opeModel()} width={800} />
                     <DynModel modelTitle={"Check List"} handleChangeModel={checklistModelOpen} handleChangeCloseModel={(bln) => setChecklistModelOpen(bln)}
                         content={
@@ -903,7 +887,7 @@ function ProjectIp(props) {
                         {/*  */}
 
                         {
-                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase TaskModel={(data) => litigationHearingModel(data)} Liti_Location={setLiti_LocationId}id_Props={idDetails} />
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Litigation Projects" && <LitigationAddcase TaskModel={(data) => litigationHearingModel(data)} Liti_Location={setLiti_LocationId} id_Props={idDetails} />
                         }
 
                         {/* IPAB Trademark */}
@@ -948,32 +932,15 @@ function ProjectIp(props) {
                         {
                             props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "IP Projects" && props.ProjectDetails[0].sub_project_type === "IPAB Patent" && props.ProjectDetails[0].process === "Revocation" && props.ProjectDetails[0].filing_type === "Defended" && <PatentRevocationDef />
                         }
+                        {/* /*********CorporateComplance ********/}
+                        {
+                            props.ProjectDetails[0] && props.ProjectDetails[0].project_type === "Corporate Compliance Projects" && <CorporateComplance />
+                        }
 
                     </div>}
 
                 </div>
 
-
-                {/* <Tabs onChange={callback} type="card" className="intellectualPropertyTab">
-                <TabPane tab="Intellectual Property" key="1">
-                    <Tabs onChange={callbackinside} type="card" className="tradeMarkTab">
-                        <TabPane tab="Trade Mark" key="1">
-                            <TradeMarkTab Type={ProjectIP} />
-                        </TabPane>
-                        <TabPane tab="Design" key="2">
-                            <Design Type={ProjectIP} />
-                        </TabPane>
-                        <TabPane tab="Patent" key="3">
-                            <Patent Type={ProjectIP} />
-                        </TabPane>
-                        <TabPane tab="CopyRight" key="4">
-                            <CopyRight />
-                        </TabPane>
-                    </Tabs>
-                </TabPane>
-
-            </Tabs>
- */}
             </div>
         </div >
     )

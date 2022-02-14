@@ -279,3 +279,22 @@ background-color: #c9c8c8 !important;
   background-color: #0354a4;
   color: white;
 }
+.formdiv .upload{
+    /* margin: 7px 20px 15px 7px; */
+    background-color: white;
+    /* width: 180px !important; */
+    border-radius: 8px;
+    border: 1px solid #023e7d;
+    padding: 2px;
+
+   .upload-files-view{
+     display: flex;
+     margin-top: -6px;
+
+     .upload-name-view{
+       width: 100%;
+       cursor: pointer;
+       overflow-wrap: anywhere;
+     }
+    }
+}

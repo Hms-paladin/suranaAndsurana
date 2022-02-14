@@ -632,7 +632,6 @@ function TradeMarkOposition1(properties) {
                         <Grid item xs={6} >
                             <div className="Fieldheading">Status</div>
                             <Labelbox type="select"
-                                // placeholder={" Status"} 
                                 changeData={(data) => checkValidation(data, "status_id")}
                                 dropdown={tradeStatusList.tradeStatusData}
                                 value={TradeMarkForm.status_id.value}
@@ -645,7 +644,6 @@ function TradeMarkOposition1(properties) {
                         <Grid item xs={6} >
                             <div className="Fieldheading">Our Reference</div>
                             <Labelbox type="text"
-                                // placeholder={" Our Reference"}
                                 changeData={(data) => checkValidation(data, "ourReference")}
                                 value={TradeMarkForm.ourReference.value}
                                 error={TradeMarkForm.ourReference.error}
@@ -694,7 +692,6 @@ function TradeMarkOposition1(properties) {
                     <Grid item xs={12} container direction="row" spacing={1}>
                         <Grid item xs={6} > <div className="Fieldheading">Mark</div>
                             <Labelbox type="text"
-                                // placeholder={" Mark"}
                                 changeData={(data) => checkValidation(data, "mark_id")}
                                 value={TradeMarkForm.mark_id.value}
                                 error={TradeMarkForm.mark_id.error}
@@ -760,10 +757,8 @@ function TradeMarkOposition1(properties) {
 
                 </Grid>
                 <Grid item xs={4} container direction="column" spacing={2}>
-
                     <Grid item xs={12} > <div className="Fieldheading">Class</div>
                         <Labelbox type="select"
-                            // placeholder={" Class"}
                             dropdown={classDetList.classDetailsData}
                             changeData={(data) => checkValidation(data, "class_id")}
                             value={TradeMarkForm.class_id.value}
@@ -774,7 +769,6 @@ function TradeMarkOposition1(properties) {
                     </Grid>
                     <Grid item xs={12} > <div className="Fieldheading">Opposition Number</div>
                         <Labelbox type="text"
-                            // placeholder={"Opposition Number"}
                             changeData={(data) => checkValidation(data, "oppositionNumber")}
                             value={TradeMarkForm.oppositionNumber.value}
                             error={TradeMarkForm.oppositionNumber.error}
@@ -785,7 +779,6 @@ function TradeMarkOposition1(properties) {
 
                     <Grid item xs={12} > <div className="Fieldheading">Internal status</div>
                         <Labelbox type="text"
-                            // placeholder={" Internal status"}
                             changeData={(data) => checkValidation(data, "internal_status")}
                             value={TradeMarkForm.internal_status.value}
                             error={TradeMarkForm.internal_status.error}
@@ -793,15 +786,11 @@ function TradeMarkOposition1(properties) {
                             disabled={TradeMarkForm.internal_status.disabled}
                         />
                     </Grid>
-
-
                 </Grid>
                 <Grid item xs={12} container direction="row" spacing={2} >
                     <Grid item xs={4} container direction="row" spacing={1}>
                         <Grid item xs={6} > <div className="Fieldheading">Deadline</div>
                             <Labelbox type="datepicker"
-                                // placeholder={" Deadline"}
-                                // disableFuture={true}
                                 changeData={(data) => checkValidation(data, "end_date")}
                                 value={TradeMarkForm.end_date.value}
                                 error={TradeMarkForm.end_date.error}
@@ -809,7 +798,7 @@ function TradeMarkOposition1(properties) {
                                 disabled={TradeMarkForm.end_date.disabled}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={6}>
                             <div className="Tradeheadings">Order</div>
                             <Labelbox type="upload"
                                 changeData={(data) => checkValidation(data, "orders")}

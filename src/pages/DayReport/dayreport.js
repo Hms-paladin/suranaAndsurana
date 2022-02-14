@@ -4,7 +4,6 @@ import CustomButton from "../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import EnhancedTable from '../../component/DynTable/table';
-import { Link } from 'react-router-dom';
 import { Collapse } from 'antd';
 import './dayreport.scss'
 import ValidationLibrary from "../../helpers/validationfunction";

@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import './Timesheetmodel.scss';
 import Grid from '@material-ui/core/Grid';
-import PlusIcon from "../../../images/plusIcon.svg";
-import EditIcon from "../../../images/editable.svg";
-import Delete from '../../../images/dashboard/delete.svg';
-import CustomButton from '../../../component/Butttons/button';
 import TimeSheetView from '../../Search/TimeSheets/timesheetview';
 import DynModel from "../../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
@@ -23,7 +19,7 @@ function Timesheetmodel(props) {
             dispatch(getProjectTimeSheetList(rowId));
         }
     }, [rowId])
-  
+
     if (rowId == undefined) {
         if (props.rowData && props.rowData != undefined) {
             task_id = props.rowData.task_id;
@@ -31,7 +27,7 @@ function Timesheetmodel(props) {
     }
 
     useEffect(() => {
-    if (props.rowData && props.rowData != undefined) {
+        if (props.rowData && props.rowData != undefined) {
             dispatch(getProjectTimeSheetListByTaskId(props.rowData.task_id));
         }
     }, [props.rowData]);
@@ -123,7 +119,7 @@ const mapStateToProps = (state) =>
     timeSheetProject: state.getTaskList.getTimeSheetProject || []
 });
 
-export default connect(mapStateToProps)(Timesheetmodel);
+export default connect(mapStateToProps)(memo(Timesheetmodel));
 
 
 

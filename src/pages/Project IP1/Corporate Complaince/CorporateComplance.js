@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import '../Patent/Patent.scss'
 import CustomButton from '../../../component/Butttons/button';
 import Labelbox from "../../../helpers/labelbox/labelbox";
-import { Upload, Button } from 'antd';
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
-import { UploadOutlined } from '@ant-design/icons';
 
+const CorporateComplance = () => {
 
-
-const CorporateComplance = (props) => {
-
-    const dispatch = useDispatch()
     const [IdDetails, setIdDetails] = useState({});
     const [fileupload, setFileupload] = useState([]);
     const [Corporate, setCorporate] = useState({
@@ -51,31 +46,6 @@ const CorporateComplance = (props) => {
 
     })
 
-
-
-
-    const handleChange = (info, uploadName) => {
-
-        if (info.status !== 'error' && info.status !== "uploading") {
-
-            let fileList = [...info.fileList];
-
-            // fileList = fileList.slice(-1);
-
-            fileList = fileList.map(file => {
-                if (file.response) {
-                    file.url = file.response.url;
-                }
-                return file;
-            });
-            setFileupload(fileList);
-
-        }
-    };
-
-
-
-
     function onSubmit() {
         var mainvalue = {};
         var targetkeys = Object.keys(Corporate);
@@ -104,18 +74,6 @@ const CorporateComplance = (props) => {
         }));
     };
 
-    const handleCancel = () => {
-        let ResumeFrom_key = [
-            "type_of_work", "status", "reference", "title"
-        ]
-
-        ResumeFrom_key.map((data) => {
-            Corporate[data].value = ""
-        })
-        setCorporate(prevState => ({
-            ...prevState,
-        }));
-    }
 
     function checkValidation(data, key, multipleId) {
 
@@ -160,7 +118,7 @@ const CorporateComplance = (props) => {
             <div className="CorporateComplance_div">
                 <Grid item xs={12} md={12} className="app_cont_domestic">
 
-                    <Grid >
+                    <Grid xs={2}>
                         <div className="copyFieldheadings">Title</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "title")}
@@ -169,7 +127,7 @@ const CorporateComplance = (props) => {
                             errmsg={Corporate.title.errmsg} />
                     </Grid>
 
-                    {/* <Grid>
+                    {/*  <Grid xs={2}>
                         <div className="copyFieldheadings">Type of work</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "type_of_work")}
@@ -178,7 +136,7 @@ const CorporateComplance = (props) => {
                             errmsg={Corporate.type_of_work.errmsg} />
                     </Grid> */}
 
-                    <Grid xs={4}>
+                    <Grid xs={2}>
                         <div className="Tradeheadings">Upload</div>
                         <Labelbox type="upload"
                             changeData={(data) => checkValidation(data, "upload")}
@@ -197,7 +155,7 @@ const CorporateComplance = (props) => {
                     </Grid>
 
 
-                    {/* <Grid>
+                    {/*  <Grid xs={2}>
                         <div className="copyFieldheadings">Reference</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "reference")}
@@ -206,7 +164,7 @@ const CorporateComplance = (props) => {
                             errmsg={Corporate.reference.errmsg} />
                     </Grid> */}
 
-                    {/* <Grid>
+                    {/*  <Grid xs={2}>
                         <div className="copyFieldheadings">Status</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "status")}

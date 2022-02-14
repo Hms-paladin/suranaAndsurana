@@ -1,13 +1,12 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./litigation.scss";
-import { Tabs, Radio, Divider } from "antd";
+import { Tabs } from "antd";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import AddIcon from "../../images/addIcon.svg";
 import CustomButton from "../../component/Butttons/button";
-import { message } from "antd";
 import DynModel from "../../component/Model/model";
 import AddDataModel from "./adddataModel";
 import {
@@ -39,61 +38,71 @@ const Litigation = (props) => {
     internalcaseno: {
       value: "",
       validation: [{ name: "required" }],
+      disabled: false,
       error: null,
       errmsg: null,
     },
     status: {
       value: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     courtname: {
       value: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     casetype: {
       value: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     courtcaseno: {
       value: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     ddra: {
       value: "",
       valueById: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     hearingdate: {
       value: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     duedate: {
       value: "",
-      // validation: [{ name: "required" }],
+      disabled: false,
+      validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     subcase: {
       value: "",
+      disabled: false,
       // validation: [{ name: "required" }],
       error: null,
       errmsg: null,
     },
     suitvalue: {
       value: "",
-      validation: [{ name: "numericanddot" }],
+      disabled: false,
+      validation: [{ name: "required" }, { name: "numericanddot" }],
       error: null,
       errmsg: null,
     },
@@ -105,8 +114,8 @@ const Litigation = (props) => {
     dispatch(getTradeMarkStatus());
     dispatch(getCaseType());
   }, []);
-  useEffect(() => {
 
+  useEffect(() => {
     if (props.id_Props && props.id_Props.project_id) {
       handleCancel();
       setIdDetails(props.id_Props);
@@ -170,6 +179,7 @@ const Litigation = (props) => {
                   <span>{data.liti_councel}</span>{" "}
                   {data.liti_councel !== "Adjournment" && <img
                     src={AddIcon}
+                    alt="AddIcon"
                     style={{ height: "20px" }}
                     onClick={() => setLitigationCounselModel(data.liti_councel_id)}
                   />}
@@ -203,13 +213,12 @@ const Litigation = (props) => {
       props.getLitigationDetails &&
       props.getLitigationDetails[0] &&
       props.getLitigationDetails[0].case[0] &&
-      props.EmployeeList
+      props.getLitigationDetails[0].case[0].length > 0
     ) {
       const strArr = [];
       const string = caseDetails.responsible_attorney;
       strArr.push(string.split(","));
 
-      // const PrefillCounsel=[]
       let MultipleCouncelValue = [];
 
       if (caseDetails) {
@@ -223,22 +232,38 @@ const Litigation = (props) => {
               });
           });
       }
-      Litigation_Form["internalcaseno"].value =
-        caseDetails.internal_case_no || 0;
-      Litigation_Form["status"].value = caseDetails.status_id || 0;
-      Litigation_Form["courtname"].value = caseDetails.court_id || 0;
       props.Liti_Location(caseDetails.court_id || '0');
+      Litigation_Form["internalcaseno"].value = caseDetails.internal_case_no || 0;
+      Litigation_Form["internalcaseno"].disabled = true;
+
+      Litigation_Form["status"].value = caseDetails.status_id || 0;
+      Litigation_Form["status"].disabled = true;
+
+      Litigation_Form["courtname"].value = caseDetails.court_id || 0;
+      Litigation_Form["courtname"].disabled = true;
+
       Litigation_Form["casetype"].value = caseDetails.case_type_id || 0;
+      Litigation_Form["casetype"].disabled = true;
+
       Litigation_Form["courtcaseno"].value = caseDetails.court_case_no || "";
-      // _________________________
+      Litigation_Form["courtcaseno"].disabled = true;
+
       Litigation_Form["ddra"].value = MultipleCouncelValue || "";
       Litigation_Form["ddra"].valueById = caseDetails.responsible_attorney;
+      Litigation_Form["ddra"].disabled = true;
 
       // __________________________________________________
-      caseDetails.next_hearing_date && caseDetails.next_hearing_date != "0000-00-00" && (Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date);
-      caseDetails.due_date && caseDetails.due_date != "0000-00-00" && (Litigation_Form["duedate"].value = caseDetails.due_date);
+      caseDetails.next_hearing_date && caseDetails.next_hearing_date !== "0000-00-00" && (Litigation_Form["hearingdate"].value = caseDetails.next_hearing_date);
+      Litigation_Form["hearingdate"].disabled = true;
+
+      caseDetails.due_date && caseDetails.due_date !== "0000-00-00" && (Litigation_Form["duedate"].value = caseDetails.due_date);
+      Litigation_Form["duedate"].disabled = true;
+
       Litigation_Form["subcase"].value = caseDetails.sub_case || 0;
+      Litigation_Form["subcase"].disabled = true;
+
       Litigation_Form["suitvalue"].value = caseDetails.suit_value || "";
+      Litigation_Form["suitvalue"].disabled = true;
     }
     setLitigationForm((prevState) => ({
       ...prevState,
@@ -247,7 +272,7 @@ const Litigation = (props) => {
     setLitigationCase(caseDetails);
 
     //________________________________
-  }, [props.getLitigationDetails, props.EmployeeList]);
+  }, [props.getLitigationDetails]);
 
   useEffect(() => {
     //hod/attony, Counsel ,DRA and DDRA
@@ -282,6 +307,7 @@ const Litigation = (props) => {
     setLitigationCounsel(true);
     setLitigationCounsel_id(id);
   };
+
   function onSubmit() {
     var mainvalue = {};
     var targetkeys = Object.keys(Litigation_Form);
@@ -295,21 +321,23 @@ const Litigation = (props) => {
       mainvalue[targetkeys[i]] = Litigation_Form[targetkeys[i]].value;
     }
     var filtererr = targetkeys.filter(
-      (obj) => Litigation_Form[obj].error == true
+      (obj) => Litigation_Form[obj].error === true
     );
 
     if (filtererr.length > 0) {
       // setResumeFrom({ error: true });
     } else {
       // setResumeFrom({ error: false });
-
-      dispatch(InsertLitigation(Litigation_Form, IdDetails))
-
+      setConfirmModel(true)
     }
-    setConfirmModel(false)
     setLitigationForm((prevState) => ({
       ...prevState,
     }));
+  }
+
+  const onHandleModelClick = () => {
+    dispatch(InsertLitigation(Litigation_Form, IdDetails))
+    setConfirmModel(false)
   }
 
   const handleCancel = () => {
@@ -346,15 +374,6 @@ const Litigation = (props) => {
       validation: Litigation_Form[key].validation,
     };
 
-    // if (data && key === "hearingdate") {
-    //   props.TaskModel && props.TaskModel(true);
-    // }
-    // else {
-    //   props.TaskModel && props.TaskModel(false);
-    // }
-
-    // only for multi select (start)
-
     let multipleIdList = [];
 
     if (multipleId) {
@@ -385,61 +404,61 @@ const Litigation = (props) => {
           <div className="AddClientHead">Internal Case No.</div>
           <Labelbox
             type="text"
-            // placeholder={"Internal Case No."}
             changeData={(data) => checkValidation(data, "internalcaseno")}
             value={Litigation_Form.internalcaseno.value}
+            disabled={Litigation_Form.internalcaseno.disabled}
             error={Litigation_Form.internalcaseno.error}
             errmsg={Litigation_Form.internalcaseno.errmsg}
           />
           <div className="AddClientHead">Status</div>
           <Labelbox
             type="select"
-            // placeholder={"Status"}
             dropdown={tradeMarkStatus.tradeMark}
             changeData={(data) => checkValidation(data, "status")}
             value={Litigation_Form.status.value}
+            disabled={Litigation_Form.status.disabled}
             error={Litigation_Form.status.error}
             errmsg={Litigation_Form.status.errmsg}
           />
           <div className="AddClientHead">Court Name</div>
           <Labelbox
             type="select"
-            // placeholder={"Court Name"}
             dropdown={locationslList.locationData}
             changeData={(data) => checkValidation(data, "courtname")}
             value={Litigation_Form.courtname.value}
+            disabled={Litigation_Form.courtname.disabled}
             error={Litigation_Form.courtname.error}
             errmsg={Litigation_Form.courtname.errmsg}
           />
           <div className="AddClientHead">Case Type</div>
           <Labelbox
             type="select"
-            // placeholder={"Case Type"}
             dropdown={CaseType.caseType}
             changeData={(data) => checkValidation(data, "casetype")}
             value={Litigation_Form.casetype.value}
+            disabled={Litigation_Form.casetype.disabled}
             error={Litigation_Form.casetype.error}
             errmsg={Litigation_Form.casetype.errmsg}
           />
           <div className="AddClientHead">Court Case No.</div>
           <Labelbox
             type="text"
-            // placeholder={"Court Case No."}
             changeData={(data) => checkValidation(data, "courtcaseno")}
             value={Litigation_Form.courtcaseno.value}
+            disabled={Litigation_Form.courtcaseno.disabled}
             error={Litigation_Form.courtcaseno.error}
             errmsg={Litigation_Form.courtcaseno.errmsg}
           />
           <div className="AddClientHead">DDRA</div>
           <Labelbox
             type="select"
-            // placeholder={"DDRA"}
             mode={"multiple"}
             dropdown={employeeList.EmployeeList}
             changeData={(data) =>
               checkValidation(data, "ddra", employeeList.EmployeeList)
             }
             value={Litigation_Form.ddra.value}
+            disabled={Litigation_Form.ddra.disabled}
             error={Litigation_Form.ddra.error}
             errmsg={Litigation_Form.ddra.errmsg}
           />
@@ -449,10 +468,10 @@ const Litigation = (props) => {
               <div className="AddClientHead">Next Hearing Date</div>
               <Labelbox
                 type="datepicker"
-                // placeholder={"Next Hearing Date"}
                 // disablePast={true}
                 changeData={(data) => checkValidation(data, "hearingdate")}
                 value={Litigation_Form.hearingdate.value}
+                disabled={Litigation_Form.hearingdate.disabled}
                 error={Litigation_Form.hearingdate.error}
                 errmsg={Litigation_Form.hearingdate.errmsg}
               />
@@ -461,10 +480,10 @@ const Litigation = (props) => {
               <div className="AddClientHead">Due Date</div>
               <Labelbox
                 type="datepicker"
-                // placeholder={"Due Date"}
                 // disablePast={true}
                 changeData={(data) => checkValidation(data, "duedate")}
                 value={Litigation_Form.duedate.value}
+                disabled={Litigation_Form.duedate.disabled}
                 error={Litigation_Form.duedate.error}
                 errmsg={Litigation_Form.duedate.errmsg}
                 minDate={Litigation_Form.hearingdate.value}
@@ -474,19 +493,19 @@ const Litigation = (props) => {
           <div className="AddClientHead">Sub case</div>
           <Labelbox
             type="select"
-            // placeholder={"Sub case"}
             dropdown={SubCaseType.subCaseType}
             changeData={(data) => checkValidation(data, "subcase")}
             value={Litigation_Form.subcase.value}
+            disabled={Litigation_Form.subcase.disabled}
             error={Litigation_Form.subcase.error}
             errmsg={Litigation_Form.subcase.errmsg}
           />
           <div className="AddClientHead">Suit Value (Numeric)</div>
           <Labelbox
             type="text"
-            // placeholder={"Suit Value (Numeric)"}
             changeData={(data) => checkValidation(data, "suitvalue")}
             value={Litigation_Form.suitvalue.value}
+            disabled={Litigation_Form.suitvalue.disabled}
             error={Litigation_Form.suitvalue.error}
             errmsg={Litigation_Form.suitvalue.errmsg}
           />
@@ -507,12 +526,12 @@ const Litigation = (props) => {
               />
             }
           />
-          <div className="customAddcasebtn">
+          {!props.getLitigationDetails[0]?.case.length > 0 && <div className="customAddcasebtn">
             <CustomButton
               btnName={"SAVE "}
               btnCustomColor="customPrimary"
               custombtnCSS={"btnProjectForm"}
-              onBtnClick={() => setConfirmModel(true)}
+              onBtnClick={onSubmit}
             />
 
             <CustomButton
@@ -520,7 +539,7 @@ const Litigation = (props) => {
               custombtnCSS={"btnProjectForm"}
               onBtnClick={handleCancel}
             />
-          </div>
+          </div>}
         </Grid>
       </Grid>
 
@@ -537,7 +556,7 @@ const Litigation = (props) => {
               </label>
             </div>
             <div className="customNotFoundbtn">
-              <CustomButton btnName={"YES"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onSubmit} />
+              <CustomButton btnName={"YES"} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={onHandleModelClick} />
               <CustomButton btnName={"NO "} btnCustomColor="customPrimary" custombtnCSS={"btnNotFound"} onBtnClick={() => setConfirmModel(false)} />
             </div>
           </div>

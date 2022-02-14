@@ -106,6 +106,7 @@ export const getDayReport_TimeSheet = (data) => async dispatch => {
             url: apiurl + 'get_day_report',
             data: {
                 "dates": data.dates.value,
+                "status": Number(data.day_report_type.value) === 1 ? 0 : 1,
             }
         })
             .then((response) => {

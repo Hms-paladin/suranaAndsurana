@@ -1,8 +1,26 @@
-import {GET_OPE_SEARCH,GET_OPE_ADVANCE,INSERT_OPE_ADVANCE,GET_OPEPROJECT_TYPE,GET_PROJECT_TYPEBASED_CLIENT_TYPE} from "../utils/Constants";
+import {GET_OPE_BY_PROJECT_ID,GET_OPE_SEARCH,GET_OPE_ADVANCE,INSERT_OPE_ADVANCE,GET_OPEPROJECT_TYPE,GET_PROJECT_TYPEBASED_CLIENT_TYPE} from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd';
 import moment from 'moment'
+
+export const GetOpeByProjectId = (data) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_ope_project_id',
+            data: {
+                "project_id": data
+            },
+        })
+            .then((response) => {
+                dispatch({ type: GET_OPE_BY_PROJECT_ID, payload: response.data.data })
+            })
+
+    } catch (err) {
+
+    }
+}
 
 export const GetOpeSearch = (data) => async dispatch => {
     try {

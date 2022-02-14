@@ -4,12 +4,9 @@ import DynModel from "../../component/Model/model";
 import { getHrTaskList, getOtherTask } from "../../actions/TodoListAction";
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
-import { Redirect, Link, useHistory } from "react-router-dom";
-
-
+import { Redirect, useHistory } from "react-router-dom";
 
 // Model
-import InterviewApprover from "../InterviewApprover/InterviewApprover";
 import InerviewScreen from "../Interview/interview";
 import EmployeeApprove from '../Employeeform/EmployeeApprove';
 import UnblockUserActive from './UnblockUser/unblockuserActive';
@@ -22,7 +19,6 @@ import KRI from '../KRA/kraModel';
 import TimeSheetApproval from '../task/Timesheet/TimesheetTable'
 import RecruitmentModal from './RecruitmentModal'
 import "./todoList.scss"
-import { getTaskList } from "../../actions/projectTaskAction";
 import { getProjectTasks } from "../../actions/TodoListAction";
 
 // Hr Task:
@@ -39,10 +35,7 @@ const headCells = [
 
 const projectheadCells = [
     { id: 'id', label: 'Task' },
-    // { id: 'activity', label: 'Activity' },
-    // { id: 'subactivity', label: 'Sub Activity' },
-    // { id: 'case', label: 'Case' },
-     { id: 'project_name', label: 'Project Name' },
+    { id: 'project_name', label: 'Project Name' },
     { id: 'client_name', label: 'Client Name' },
     { id: 'assigned_by', label: 'Assigned By' },
     { id: 'startdate', label: 'Start Date' },
@@ -64,10 +57,6 @@ const workflowheadCells = [
 
 ];
 
-// const workFlow = [{ id: 1, requestedby: "Francis", requestedon: "11-jan-2020", approvedby: "Winston", startdateon: "12-jan-2020" }]
-
-
-
 function TodoList(props) {
 
     const dispatch = useDispatch();
@@ -87,7 +76,6 @@ function TodoList(props) {
     const [Employee_Data, setEmployee_Data] = useState([])
     const [res_id, setres_id] = useState([])
     const [viewer_id, setviewer_id] = useState([])
-    const [modelTitle, setModeltitle] = useState()
     const [TaskModelTitle, setTaskModelTitle] = useState()
     const [kpiapprovemodel, setKpiapprovemodel] = useState(false);
     // timesheet
@@ -127,19 +115,8 @@ function TodoList(props) {
         dispatch(getProjectTasks())
     }, [])
 
-    // let { rowId } = useParams(false)
-    // useEffect(() => {
-    //     setTest(rowId)
-    // }, [])
-
     useEffect(() => {
-
-
         let hrList = []
-        let todoListdata = []
-        let hrlist2 = []
-
-
         props.getHrTodoList.map((data) => {
             let showId = null
             let showName = null
@@ -171,7 +148,7 @@ function TodoList(props) {
                 showName = ""
             }
             hrList.push({
-                id: <div onClick={(id, name) => openModelFunc(showName, showId)} className="tempClass" >{data.task_name ? data.task_name : data.task}</div>,
+                id: <div onClick={() => openModelFunc(showName, showId)} className="tempClass" >{data.task_name ? data.task_name : data.task}</div>,
                 interviewDate: data.Interview_Date ? moment(data.Interview_Date).format('DD-MMM-YYYY') : null,
                 designation: data.designation,
                 candidates: data.no_of_candidates,
@@ -190,23 +167,16 @@ function TodoList(props) {
 
     useEffect(() => {
         let projectTask = []
-
         props.getProjectTasks.length > 0 && props.getProjectTasks.map((data) => {
-            let showId = null
-            let showName = null
-
             projectTask.push({
-                id: <div onClick={(id, name) => ProjectTaskFunction(data.task, data.task_id, data)} className="tempClass" >{data.task ? data.task : data.task}</div>,
+                id: <div onClick={() => ProjectTaskFunction(data.task, data.task_id, data)} className="tempClass" >{(data.description && data.description.length > 0 ? (data.description.substr(0, 10).length > 15 ? data.description.substr(0, 10) + '..' : data.description) : '-')}</div>,
                 project_name: data.project_name,
                 client_name: data.client,
                 assigned_name: data.assigned_name,
                 start_date: data.start_date ? moment(data.start_date).format('DD-MMM-YYYY') : null,
-                end_date: data.end_date && data.end_date!=='0000-00-00' ? moment(data.end_date).format('DD-MMM-YYYY') : null,
+                end_date: data.end_date && data.end_date !== '0000-00-00' ? moment(data.end_date).format('DD-MMM-YYYY') : null,
             },
             )
-
-
-
         })
         setProjectTodoList(projectTask)
 
@@ -257,12 +227,7 @@ function TodoList(props) {
             })
         })
         setOtherTodoList(otherTask)
-        // setOtherTodoList((prevState) => ({
-        //     ...prevState,
-        // }));
-
     }, [props.getOtherTask, props.getProjectTasks])
-
 
     function openModelFunc(name, id) {
         if (name === "interviewer_id") {
@@ -316,7 +281,6 @@ function TodoList(props) {
     }
 
     function ProjectTaskFunction(name, id, data) {
-        // if (data.checklist_id && data.checklist_id !== 0) {
         if (data) {
             history.push(`/Home/search/task/${data.task_id}`);
         } else if (name === "Timesheet Approval") {
@@ -367,7 +331,6 @@ function TodoList(props) {
                 return id === val.emp_appr_id
 
             })
-            // setAppraisalData(Appraisaldata.task === "Employee Appraisal" ? 1 : null)
             setAppraisalData(Appraisaldata)
 
         }
@@ -380,23 +343,6 @@ function TodoList(props) {
             })
             setKpiApproval(Kpi)
         }
-    }
-
-    // unblockUsers ==>
-    // function unblockUser() {
-    //     setUnblockuserActive(true)
-    // }
-
-    // resignationApproveval
-
-    const resignationApproveval = (val) => {
-        setResignationApprove(true)
-        setModeltitle(val)
-    }
-
-    const leaveApprovalModel = (val) => {
-        setLeaveApproval(true)
-        // setleaveModelTitle(val)
     }
 
     const onNewPageClear = (bln) => {

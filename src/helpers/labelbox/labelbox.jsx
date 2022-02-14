@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import dateFormat from 'dateformat';
 import moment from 'moment';
 import {
@@ -377,8 +374,8 @@ export default class Labelbox extends Component {
 						</div>
 						{(this.props.view_file && this.props.view_file != 'null' && this.props.view_file.length > 0) && <>
 							<hr />
-							<div style={{ display: "flex", marginTop: -6 }}>
-								<div style={{ width: "100%", cursor: 'pointer' }} onClick={() => onFileView(this.props.view_file)}>{(this.props.view_file && this.props.view_file.length > 0 ? (this.props.view_file.substr(35, 16).length > 15 ? this.props.view_file.substr(35, 16) + '..' : this.props.view_file.substr(35, 16)) : '')}</div>
+							<div className='upload-files-view'>
+								<span className='upload-name-view' onClick={() => onFileView(this.props.view_file)}>{(this.props.view_file && this.props.view_file.length > 0 ? (this.props.view_file.substr(35, 16).length > 15 ? this.props.view_file.substr(35, 16) + '..' : this.props.view_file.substr(35, 16)) : '')}</span>
 								<img src={Delete}
 									alt='img'
 									onClick={() => this.setState({ upload_model: true })}
@@ -421,7 +418,7 @@ export default class Labelbox extends Component {
 	}
 	render() {
 
-		const labelcss = require('./labelbox.css');
+		require('./labelbox.scss');
 		return (
 			<div className="custom_labelbox">
 				{this.renderinput(this.props)}

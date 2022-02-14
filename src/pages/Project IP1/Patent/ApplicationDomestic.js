@@ -263,7 +263,7 @@ function ApplicationDomestic(props) {
       <Grid container>
         <Grid item xs={12} md={12} className="app_cont_domestic">
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">File Cover</div>
             <Labelbox
               type="text"
@@ -274,7 +274,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Our Reference</div>
             <Labelbox
               type="text"
@@ -285,7 +285,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Client Reference</div>
             <Labelbox
               type="text"
@@ -296,7 +296,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Application number</div>
             <Labelbox
               type="text"
@@ -307,7 +307,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Application Date</div>
             <Labelbox
               type="datepicker"
@@ -318,7 +318,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Priority No</div>
             <Labelbox
               type="text"
@@ -329,7 +329,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Priority Date</div>
             <Labelbox
               type="datepicker"
@@ -340,7 +340,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Title</div>
             <Labelbox
               type="text"
@@ -351,7 +351,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Country</div>
             <Labelbox
               type="select"
@@ -363,7 +363,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Associate</div>
             <Labelbox
               type="text"
@@ -374,7 +374,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Status</div>
             <Labelbox
               type="select"
@@ -386,7 +386,7 @@ function ApplicationDomestic(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Comments</div>
             <div className="coments_div">
               <Labelbox
