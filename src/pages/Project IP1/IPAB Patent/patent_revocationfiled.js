@@ -329,7 +329,6 @@ function PatentRevocationFiled(props) {
     return (
         <div>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
@@ -380,8 +379,6 @@ function PatentRevocationFiled(props) {
                         disabled={TradeMarkForm.serial_no.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Org Appeal No.</div>
                     <Labelbox type="text"
@@ -434,8 +431,6 @@ function PatentRevocationFiled(props) {
                         disabled={TradeMarkForm.filing_type_id.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Status</div>
                     <Labelbox type="select"

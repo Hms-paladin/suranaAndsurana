@@ -324,7 +324,6 @@ function AppealFiling(props) {
     return (
         <div>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
@@ -376,8 +375,6 @@ function AppealFiling(props) {
                         disabled={TradeMarkForm.appeal_filing_date.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings"> Serial No</div>
                     <Labelbox type="text"
@@ -430,7 +427,6 @@ function AppealFiling(props) {
                         disabled={TradeMarkForm.comments.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
             </Grid>
             <div className="trademarkbtn">
                 <CustomButton btnName={"Save"} custombtnCSS="custom_cancel" btnCustomColor="customPrimary" onBtnClick={onSubmit} />

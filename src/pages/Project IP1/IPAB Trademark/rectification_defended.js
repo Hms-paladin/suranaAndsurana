@@ -352,7 +352,6 @@ function IPABRectificationDefended(props) {
     return (
         <div>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
@@ -405,8 +404,6 @@ function IPABRectificationDefended(props) {
                         disabled={TradeMarkForm.rectification_filing_date.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
@@ -458,8 +455,6 @@ function IPABRectificationDefended(props) {
                         disabled={TradeMarkForm.applicant_rep.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"

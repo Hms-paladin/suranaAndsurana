@@ -154,7 +154,7 @@ function RectificationDefended(props) {
         <div className="container">
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Design Number</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "des_number")}
@@ -165,7 +165,7 @@ function RectificationDefended(props) {
                     </Grid>
 
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Respondent</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "respondent")}
@@ -176,7 +176,7 @@ function RectificationDefended(props) {
                     </Grid>
 
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Petitioner Rep</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "petitioner_rep")}
@@ -187,7 +187,7 @@ function RectificationDefended(props) {
                     </Grid>
 
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Status</div>
                         <Labelbox type="select"
                             changeData={(data) => checkValidation(data, "status")}
@@ -199,7 +199,7 @@ function RectificationDefended(props) {
                     </Grid>
 
 
-                    <Grid>
+                    <Grid item xs={2}>
                         <div className="Fieldheadings">Comments</div>
                         <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}

@@ -367,7 +367,6 @@ function RevocationFiled(props) {
     return (
         <div>
             <Grid item xs={12} container direction="row" spacing={2}>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Client - Applicant</div>
                     <Labelbox type="text"
@@ -423,8 +422,6 @@ function RevocationFiled(props) {
                         disabled={TradeMarkForm.revocation_filing_date.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Serial No</div>
                     <Labelbox type="text"
@@ -480,8 +477,6 @@ function RevocationFiled(props) {
                         disabled={TradeMarkForm.respondent_rep.disabled}
                     />
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1}></Grid>
                 <Grid item xs={2}>
                     <div className="copyFieldheadings">Filing Type</div>
                     <Labelbox type="select"

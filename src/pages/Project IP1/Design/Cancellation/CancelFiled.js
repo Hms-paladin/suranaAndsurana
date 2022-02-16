@@ -179,7 +179,7 @@ function CancelFiled(props) {
 
             <Grid container direction={"column"}>
                 <Grid item xs={12} md={12} className="app_cont_domestic">
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Client Petitioner</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "client_petition")}
@@ -190,7 +190,7 @@ function CancelFiled(props) {
                         />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Design Number</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "des_number")}
@@ -201,7 +201,7 @@ function CancelFiled(props) {
                         />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Petitioner</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "petitioner")}
@@ -212,7 +212,7 @@ function CancelFiled(props) {
                         />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Responent Rep</div>
                         <Labelbox type="text"
                             changeData={(data) => checkValidation(data, "respondent_rep")}
@@ -223,7 +223,7 @@ function CancelFiled(props) {
                         />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Status</div>
                         <Labelbox type="select"
                             changeData={(data) => checkValidation(data, "status")}
@@ -235,7 +235,7 @@ function CancelFiled(props) {
                         />
                     </Grid>
 
-                    <Grid>
+                     <Grid item xs={2}>
                         <div className="Fieldheadings">Comments</div>
                         <Labelbox type="textarea"
                             changeData={(data) => checkValidation(data, "comments")}

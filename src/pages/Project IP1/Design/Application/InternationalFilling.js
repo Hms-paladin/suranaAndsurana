@@ -254,7 +254,7 @@ function InternationalFilling(props) {
     <div className="container">
       <Grid container direction={"column"}>
         <Grid item xs={12} md={12} className="app_cont_domestic">
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">File cover</div>
             <Labelbox type="text"
               placeholder={"File cover"}
@@ -266,7 +266,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Associate</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "associate")}
@@ -277,7 +277,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Our Reference</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "our_ref")}
@@ -288,7 +288,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Client Reference</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "client_ref")}
@@ -299,7 +299,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Application Number</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "app_num")}
@@ -310,7 +310,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Application Date</div>
             <Labelbox type="datepicker"
               changeData={(data) => checkValidation(data, "app_date")}
@@ -321,7 +321,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Applicant</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "applicant")}
@@ -332,7 +332,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Title</div>
             <Labelbox type="text"
               changeData={(data) => checkValidation(data, "title")}
@@ -343,7 +343,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Class</div>
             <Labelbox type="select"
               dropdown={interFilGetList.getClassList}
@@ -355,7 +355,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Country</div>
             <Labelbox type="select"
               dropdown={interFilGetList.getCountryList}
@@ -367,7 +367,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Priority Country</div>
             <Labelbox type="select"
               dropdown={interFilGetList.getCountryList}
@@ -379,7 +379,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Priority Date</div>
             <Labelbox type="datepicker"
               changeData={(data) => checkValidation(data, "priority_date")}
@@ -390,7 +390,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Status</div>
             <Labelbox type="select"
               dropdown={interFilGetList.getStatusList}
@@ -402,7 +402,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Comments</div>
             <Labelbox type="textarea"
               changeData={(data) => checkValidation(data, "comments")}
@@ -413,7 +413,7 @@ function InternationalFilling(props) {
             />
           </Grid>
 
-          <Grid>
+           <Grid item xs={2}>
             <div className="Fieldheadings">Renewal Date</div>
             <Labelbox type="datepicker" disablePas={true}
               changeData={(data) => checkValidation(data, "renewal_date")}
