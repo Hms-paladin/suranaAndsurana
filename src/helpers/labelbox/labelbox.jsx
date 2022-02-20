@@ -249,6 +249,9 @@ export default class Labelbox extends Component {
 							value={(data.value && data.value != '') ? moment(data.value, 'HH:mm') : ''}
 							autoComplete={'off'}
 							minuteStep={5}
+							defaultValue={data.defaultValue && data.defaultValue}
+							disabledHours={() => data.disabledHours && data.disabledHours}
+							disabledMinutes={() => data.disabledMinutes && data.disabledMinutes}
 							format={'HH:mm'} />
 						{
 							<div className="Errormsg">

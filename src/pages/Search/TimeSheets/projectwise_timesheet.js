@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import react, { useState, useEffect } from 'react';
 import CustomButton from "../../../component/Butttons/button";
 import Grid from "@material-ui/core/Grid";
@@ -38,6 +39,12 @@ function ProjectwiseTS(props) {
             error: null,
             errmsg: null,
         },
+        submit_date: {
+            value: '',
+            validation: [],
+            error: null,
+            errmsg: null,
+        },
         from_date: {
             value: '',
             validation: [{ name: "required" }],
@@ -50,11 +57,20 @@ function ProjectwiseTS(props) {
             error: null,
             errmsg: null,
         },
+        all_checkbox: false,
     })
-
+  
     function checkValidation(data, key) {
         if (key === "project_type") {
             dispatch(getProjectSubType(data))
+        }
+
+        if (key === "submit_date") {
+            projectSearch['from_date'].value = ""
+            projectSearch['to_date'].value = ""
+        }
+        if (key === "from_date" || key === "to_date") {
+            projectSearch['submit_date'].value = ""
         }
         var errorcheck = ValidationLibrary.checkValidation(
             data,
@@ -75,23 +91,33 @@ function ProjectwiseTS(props) {
     };
 
     useEffect(() => {
-        if (projectSearch.emp_name.value != "" && projectSearch.from_date.value != "" && projectSearch.to_date.value != "") {
+        if (projectSearch.emp_name.value != "") {
             dispatch(getProjectWise_TimeSheet(projectSearch))
+            if (projectSearch.submit_date.value && projectSearch.submit_date.value !== '') {
+                setprojectSearch(prevState => ({
+                    ...prevState,
+                    'all_checkbox': true,
+                }));
+            }
         }
-    }, [projectSearch.emp_name.value, projectSearch.from_date.value, projectSearch.to_date.value])
 
-    function selectAll(e) {
-        if (e.target.checked === true) {
+    }, [projectSearch.emp_name.value, projectSearch.from_date.value, projectSearch.submit_date.value, projectSearch.to_date.value])
+
+    function selectAll(checkData) {
+        if (checkData === true) {
             TimeSheetArr.map((data, index) => {
-                TimeSheetArr[index].editicon = true
+                TimeSheetArr[index]['editicon'] = true
             })
         } else {
             TimeSheetArr.map((data, index) => {
-                TimeSheetArr[index].editicon = false
+                TimeSheetArr[index]['editicon'] = false
             })
         }
         setTrigger(!trigger)
-
+        setprojectSearch(prevState => ({
+            ...prevState,
+            'all_checkbox': checkData,
+        }));
     }
 
     const headCells = [
@@ -105,7 +131,7 @@ function ProjectwiseTS(props) {
         { id: "project_name", label: "Project Name" },
         { id: "project_type", label: "Project Type" },
         { id: "client", label: "Client" },
-        { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox onClick={(e) => selectAll(e)} /></div> }]
+        { id: "status", label: <div style={{ whiteSpace: 'nowrap' }}>Status <Checkbox checked={projectSearch.all_checkbox} onClick={(e) => selectAll(e.target.checked)} /></div> }]
 
     useEffect(() => {
         dispatch(getEmployeeList())
@@ -185,9 +211,16 @@ function ProjectwiseTS(props) {
     useEffect(() => {
         var updatelist = [];
         TimeSheetArr && TimeSheetArr.length > 0 && TimeSheetArr.map((data, index) => {
+            if (projectSearch.submit_date.value !== "" && projectSearch.all_checkbox) {
+                // if (data.hasOwnProperty('editicon')) {
+                // } else {
+                data.editicon = true
+                // }
+            }
             let start_time = data.approved_start_time ? data.approved_start_time : data.start_time
             let end_time = data.approved_end_time ? data.approved_end_time : data.end_time
             let hrs_arr = data.no_of_hrs.split(':')
+
             var listarray = {
                 start_date: (data.start_date === "0000-00-00" || data.start_date === null) ? 0 : moment(data.start_date).format("DD-MM-YYYY"),
                 start_time: (start_time === "00:00:00" || start_time === null) ? 0 : moment(start_time, "HH:mm:ss").format("hh:mm A"),
@@ -200,14 +233,15 @@ function ProjectwiseTS(props) {
                 project_type: data.project_type,
                 client: data.client,
                 status: (data.status_submit ? (data.status_submit === "Not Approved" ? (
-                    <>    <img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} />&nbsp;&nbsp;
-                        <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
-                    </>
+                    <div style={{ display: 'grid' }}>  {data.status_submit === "Rejected" ? data.status_submit : ''}
+                        <div style={{ display: 'flex' }}><img src={Edit} className="editImage" onClick={() => onEdit(data)} style={{ cursor: 'pointer' }} /> &nbsp; &nbsp;
+                            <Checkbox checked={data?.editicon} onClick={(e) => checkboxClick(e, index)} /></div>
+                    </div>
                     // ) : data.status_submit === "Rejected" ? (<label className="RejectLabel" onClick={() => onReject(data)}>Rejected</label>) : data.status_submit) :
                 ) : data.status_submit) :
                     data.status_appprove && data.status_appprove === "Not Approved" && (
                         <>
-                            <Checkbox checked={data.editicon ? true : false} onClick={(e) => checkboxClick(e, index)} />
+                            <Checkbox checked={data?.editicon} onClick={(e) => checkboxClick(e, index)} />
                         </>
                     )),
             }
@@ -288,7 +322,15 @@ function ProjectwiseTS(props) {
                             errmsg={projectSearch.emp_name.errmsg}
                         />
                     </Grid>}
-
+                    <Grid item xs={2} container direction="column" spacing={1}>
+                        <div className="Reporthead">Date</div>
+                        <Labelbox type="datepicker"
+                            changeData={(data) => checkValidation(data, "submit_date")}
+                            value={projectSearch.submit_date.value}
+                            error={projectSearch.submit_date.error}
+                            errmsg={projectSearch.submit_date.errmsg}
+                        />
+                    </Grid>
                     <Grid item xs={2} container direction="column" spacing={1}>
                         <div className="Reporthead">From Date</div>
                         <Labelbox type="datepicker"
@@ -319,11 +361,10 @@ function ProjectwiseTS(props) {
 
             </div>
 
-            {/* <div className="DRcollapsecss"> */}
             <div className="leavetableformat">
                 <EnhancedTable headCells={headCells} projectwise tabletitle={""} rows={TimeSheetTable.length == 0 ? TimeSheetTable : TimeSheetTable.updatelist} />
             </div>
-            {/* </div> */}
+
             <div className="projectwise_Btn_div">
                 {props.EmployeeList && props.EmployeeList.length > 1 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Reject"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(2)} />}
                 {props.EmployeeList && props.EmployeeList.length > 1 && (projectSearch.emp_name.value && projectSearch.emp_name.value !== "") && (Number(localStorage.getItem("empId")) !== projectSearch.emp_name.value && projectSearch.emp_name.value) && <CustomButton btnName={"Approve"} btnDisable={!searchRights || searchRights.display_control && searchRights.display_control === 'N' ? true : false} btnCustomColor="customPrimary" custombtnCSS="projectwise_btn" onBtnClick={() => Approve(1)} />}

@@ -86,6 +86,11 @@
     display: inline-flex;
     justify-content: flex-start;
     align-items: center;
+    .hearing_project{
+        margin-right: '5px'; 
+        width: '25px';
+        cursor: 'pointer';
+    }
 }
 
 .project_wise_save{

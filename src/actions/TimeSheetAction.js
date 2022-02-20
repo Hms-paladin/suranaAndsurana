@@ -1,7 +1,7 @@
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { GET_PROJECT_TIME_SHEET } from '../utils/Constants'
-import { PROJECTWISE_TIME_SHEET_SEARCH, DAY_REPORT_SEARCH } from '../utils/Constants'
+import { PROJECTWISE_TIME_SHEET_SEARCH, DAY_REPORT_SEARCH, GET_LAST_TIME_SHEET } from '../utils/Constants'
 import { notification } from "antd";
 
 export const getProjectTimeSheetList = (project_id) => async dispatch => {
@@ -42,7 +42,24 @@ export const getProjectTimeSheetListByTaskId = (taskId) => async dispatch => {
     }
 }
 
+export const getLastTimeSheet = (emp_id) => async dispatch => {
+    try {
+        axios({
+            method: 'POST',
+            url: apiurl + 'get_last_timesheet',
+            data: {
+                "emp_id": emp_id || localStorage.getItem("empId"),
+            }
+        })
+            .then((response) => {
 
+                dispatch({ type: GET_LAST_TIME_SHEET, payload: response.data.data || [] })
+            })
+
+    } catch (err) {
+
+    }
+}
 
 export const getProjectWise_TimeSheet = (data) => async dispatch => {
 
@@ -58,15 +75,18 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
             dataObj["emp_id"] = data.emp_name.value
             dataObj["status"] = 1
         }
-
     }
 
     if (data.from_date.value) {
         dataObj["start_date"] = data.from_date.value
-    } if (data.to_date.value) {
+    }
+    if (data.to_date.value) {
         dataObj["end_date"] = data.to_date.value
     }
-
+    if (data.submit_date.value) {
+        dataObj["start_date"] = data.submit_date.value
+        dataObj["end_date"] = data.submit_date.value
+    }
     try {
         await axios({
             method: 'POST',

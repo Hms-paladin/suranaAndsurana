@@ -210,7 +210,7 @@ function Navbar(props) {
   const [drawer, setDrawer] = React.useState(false);
 
   const handleDrawerOpen = () => {
-    setDrawer(true);
+    setDrawer(!drawer);
   };
   const handleDrawerClose = () => {
     setDrawer(false);

@@ -508,14 +508,6 @@ function LeaveForm(props) {
 
     }, [props.getLeaveForm])
 
-    // const handletempbtn = () => {
-    //     let dates_arr = []
-    //     leaveFormTable.map((data) => {
-    //         dates_arr.push({ from: data.fromdate, to: data.todate })
-    //     })
-    //     setSameDateVal(dates_arr)
-    // }
-
     const hideValidation = (From_key) => {
         From_key.map((data) => {
             try {
