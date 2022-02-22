@@ -32,6 +32,7 @@ export const InsertStageMaster = (RateMaster) => async dispatch => {
       method: "POST",
       url: apiurl + 'insert_stage_master',
       data: {
+        "map_stage_id": RateMaster.map_stage_id.value,
         "project_type_id": RateMaster.project_type.value,
         "process_id": RateMaster.process_type.value || 0,
         "sub_proj_type_id": RateMaster.sub_project_type.value || 0,
@@ -48,12 +49,12 @@ export const InsertStageMaster = (RateMaster) => async dispatch => {
       if (response.data.status === 1) {
         dispatch(getStageMaster())
         notification.success({
-          message: 'Stage Master Added Successfully',
+          message: response.data.msg,
         });
         return Promise.resolve();
       } else if (response.data.status === 0) {
         notification.warn({
-          message: 'Given Data Already Exist',
+          message: response.data.msg,
         });
         return Promise.resolve();
       }

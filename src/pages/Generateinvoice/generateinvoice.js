@@ -253,7 +253,7 @@ function GenerateInvoice(props) {
     };
 
     if (key === "billablehours") {
-      // console.log(Billablerows[index].actual_hrs.replace(':', '.'), "billablehours")
+    
       Billablerows[index].update_amount = data.trim() === "" ? Billablerows[index].amount : ((Billablerows[index].base_rate / Billablerows[index].actual_hrs.replace(':', '.')) * data).toFixed(2)
       Billablerows[index].billable_hours = data
       GrandTotal()

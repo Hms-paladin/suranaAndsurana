@@ -5,12 +5,11 @@ import CustomButton from '../../component/Butttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import ValidationLibrary from "../../helpers/validationfunction";
 import { connect, useDispatch } from 'react-redux';
-import { getStageMasterSearch, getStageMasterTableData, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
+import { getStageMasterSearch, InsertStageMaster, getStageMaster } from '../../actions/StageMasterAction'
 import { getProjectType, getProjectSubType, getProcessType, getStageList, getSubStage } from '../../actions/MasterDropdowns';
 import './StagesMaster.scss'
-import { notification } from "antd";
-import Usermaster from '../UserMaster/Usermaster';
-import { useLocation, Switch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Edit from "../../images/editable.svg";
 
 const StagesMaster = (props) => {
   const header = [
@@ -21,6 +20,7 @@ const StagesMaster = (props) => {
     { id: 'sub_stage', label: 'Sub Stage' },
     { id: 'no_days', label: 'Number of Days' },
     { id: 'reminder_days', label: 'Reminder Days' },
+    { id: 'edit', label: 'Edit' },
   ];
   const location = useLocation();
   const dispatch = useDispatch()
@@ -36,6 +36,12 @@ const StagesMaster = (props) => {
   const [PageLoad, setPageLoad] = useState(false)
 
   const [RateMaster, setRateMaster] = useState({
+    map_stage_id: {
+      value: "0",
+      validation: [],
+      error: null,
+      errmsg: null,
+    },
     project_type: {
       value: "",
       validation: [{ "name": "required" }],
@@ -107,29 +113,48 @@ const StagesMaster = (props) => {
     dispatch(getStageList());
   }, []);
 
+  /////////// 
+
+  const onEdit = (editData) => {
+    RateMaster.noOfDays.validation[1].params = editData.no_of_compliance_days
+    setRateMaster({
+      ...RateMaster,
+      map_stage_id: { ...RateMaster.map_stage_id, value: editData.map_stage_id },
+      process_type: { ...RateMaster.process_type, value: editData.process_id },
+      project_type: { ...RateMaster.project_type, value: editData.project_type_id },
+      sub_project_type: { ...RateMaster.sub_project_type, value: editData.sub_proj_type_id },
+      sub_stages: { ...RateMaster.sub_stages, value: editData.sub_stage_id },
+      compliance: { ...RateMaster.compliance, value: editData.no_of_compliance_days },
+      noOfDays: { ...RateMaster.noOfDays, value: editData.remainder_days },
+      stages: { ...RateMaster.stage_id, value: editData.stage_id },
+    });
+    // RateMaster[key].validation[1].params = RateMaster.compliance.value
+    dispatch(getProjectSubType(editData.project_type_id))
+    dispatch(getSubStage(editData.stage_id))
+    setEnabled(false)
+    setSearchAdd(true)
+  }
+
   useEffect(() => {
     //stageTableData
     let stageMasterListData = []
     !PageLoad && props.getStageMasterSearch.map((data) =>
       stageMasterListData.push(data)
     )
-    var rateList = [];
-
-    for (var m = 0; m < stageMasterListData.length; m++) {
-      var listarray = {
-        "project_type": stageMasterListData[m].project_type,
-        "sub_project_type": stageMasterListData[m].sub_project_type,
-        "process_type": stageMasterListData[m].process,
-        "stage": stageMasterListData[m].stage,
-        "sub_stage": stageMasterListData[m].sub_stage,
-        "noOfdays": stageMasterListData[m].no_of_compliance_days,
-        "reminderDays": stageMasterListData[m].remainder_days,
-      }
-      rateList.push(listarray);
-    }
-    setStageMasterList({ rateList })
-    // permission.allow_view==='Y'?setStageMasterList({ rateList }):setStageMasterList([]);
-
+    const rateList = stageMasterListData.map((data) => {
+      return (
+        {
+          "project_type": data.project_type,
+          "sub_project_type": data.sub_project_type,
+          "process_type": data.process,
+          "stage": data.stage,
+          "sub_stage": data.sub_stage,
+          "noOfdays": data.no_of_compliance_days,
+          "reminderDays": data.remainder_days,
+          "edit": <img src={Edit} className="editImage" alt="edit" style={{ cursor: 'pointer' }} onClick={() => onEdit(data)} />,
+        });
+    });
+    setStageMasterList(rateList)
     //ProjectType
     let projectTypedata = []
     props.ProjectType.map((data) =>
@@ -347,7 +372,7 @@ const StagesMaster = (props) => {
 
   }
   const handleCancel = () => {
-    let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance", "process_type_search", "sub_project_type_search", "project_type_search"]
+    let From_key = ["project_type", "sub_project_type", "process_type", "stages", "sub_stages", "noOfDays", "compliance"]
     // setStageEnabled(true)
     setEnabled(true)
     From_key.map((data) => {
@@ -449,7 +474,6 @@ const StagesMaster = (props) => {
               errmsg={RateMaster.project_type.errmsg}
             />
             <Labelbox type="select" placeholder={"Stage"}
-
               dropdown={Stage.projectStagedata}
               changeData={(data) => checkValidation(data, "stages")}
               value={RateMaster.stages.value}
@@ -492,7 +516,6 @@ const StagesMaster = (props) => {
             />
             <Labelbox type="text" placeholder={"Number of Days"}
               changeData={(data) => checkValidation(data, "compliance")}
-
               value={RateMaster.compliance.value}
               error={RateMaster.compliance.error}
               errmsg={RateMaster.compliance.errmsg}
@@ -500,9 +523,7 @@ const StagesMaster = (props) => {
           </Grid>
         </>
         }
-        {/* <Grid  item xs={4} spacing={2}>
-        
-          </Grid>   */}
+
         <Grid item xs={10} spacing={4} alignItems={"flex-end"}>
           {!SearchAdd && <><CustomButton btnName={"Search"} btnCustomColor="customPrimary" custombtnCSS="custom_save" onBtnClick={onSearch} />
             <CustomButton btnName={"Add"} btnCustomColor="customPrimary" custombtnCSS="custom_save" btnDisable={!saveRights || saveRights.display_control && saveRights.display_control === 'N' ? true : false} onBtnClick={() => setSearchAdd(true)} />
@@ -514,7 +535,7 @@ const StagesMaster = (props) => {
       </Grid>
       {!SearchAdd && <div className="rate_enhanced_table">
         <EnhancedTable headCells={header}
-          rows={StageMasterList.length == 0 ? StageMasterList : StageMasterList.rateList}
+          rows={StageMasterList}
         />
       </div>}
     </div>

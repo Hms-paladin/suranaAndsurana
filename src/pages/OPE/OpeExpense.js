@@ -76,7 +76,7 @@ function OPE_Expense(props) {
 
     })
     function onFileChange(e) {
-        console.log(e.target.files,'e.target.files[0]')
+     
         setFileList(e.target.files[0])
 
     }

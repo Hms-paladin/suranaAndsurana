@@ -179,9 +179,7 @@ function LeaveUpdate(props) {
             currentbalance: leaveUpdateList[m].current_balance===0?'0':leaveUpdateList[m].current_balance,
             action: (
                 <>
-                    <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])}    />{" "}
-                  {/* <img src={Edit} className="editImage" style={{cursor:'pointer'}} onClick={()=>( permission.allow_edit&&permission.allow_edit==='N'?(onEditLeaveForm(leaveUpdateList[index])):rights())}    />{" "} */}
-                  {/* <img src={Delete} className="editImage" style={{cursor:'pointer'}} id={leaveUpdateList[m].emp_leave_mas_id} /> */}
+                    <img src={Edit} className="editImage" alt="edit" style={{cursor:'pointer'}} onClick={()=>onEditLeaveForm(leaveUpdateList[index])}    />{" "}
                 </>
               ),
           };

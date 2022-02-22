@@ -471,7 +471,7 @@ function AddClient(props) {
       }));
     }
   }, [props.EditClientData])
-  console.log(fileupload, "fileupload")
+
   return (
     <div>
       <div

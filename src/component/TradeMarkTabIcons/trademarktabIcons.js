@@ -97,7 +97,6 @@ function TradeMarkTabIcons(props) {
             <Grid item xs={12} container direction="row" justify="flex-end" className="tabsIcons" >
 
                 {TabIcons.map((data, index) => {
-                    // console.log(data.title, 'data.title')
                     return (
                         <div>
                             {data.title === "TIME SHEET" ?
