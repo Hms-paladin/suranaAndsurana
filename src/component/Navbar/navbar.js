@@ -6,14 +6,14 @@ import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
-import { Layout, Input, DatePicker, Space } from "antd";
+import { Input } from "antd";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import InfoIcon from "@material-ui/icons/Info";
 import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
-import { Select, Row, Col } from "antd";
-import { Redirect, Link } from "react-router-dom";
+import { Select } from "antd";
+import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import logo from "../../images/surana.gif";
 import Button from "@material-ui/core/Button";
@@ -45,7 +45,6 @@ import IconExpandMore from "@material-ui/icons/ExpandMore";
 import { useHistory, Route } from "react-router-dom";
 
 import "./navbar.scss";
-// import DashboardNew from '../../pages/Dashboard/dashboardnew';
 
 // pages
 import Dashboard from "../../pages/Dashboard/dashboard.js";
@@ -57,10 +56,8 @@ import ProjectIp1 from "../../pages/Project IP1/projectIp";
 import Employeeform from "../../pages/Employeeform/employeeform.js";
 import SearchProject from "../../pages/Search/search";
 import Stages from "../../pages/stages/stageicon";
-import ProjectForm from "../../pages/Search/ProjectForm_IP/projectFormCreate";
 import Task from "../../pages/task/Task";
 import AddClient from "../../pages/AddClient/addclient";
-// import GenerateInvoice from "../pages/Generateinvoi/ce/generateinvoice";
 import GenerateInvoice from "../../pages/Generateinvoice/generateinvoice";
 import StagesMaster from "../../pages/stages/StagesMaster";
 import AddHearing from "../../pages/task/AddHearing";
@@ -217,7 +214,6 @@ function Navbar(props) {
   };
 
   function handleLogout() {
-    // menuItems1.current=[];
     localStorage.clear();
     history.push("/");
     window.location.reload();
