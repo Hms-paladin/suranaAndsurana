@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import EnhancedTable from '../../component/DynTable/table';

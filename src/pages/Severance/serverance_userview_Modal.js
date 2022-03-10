@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import { Skeleton, List, Avatar } from 'antd';
 import './severance.scss'
 import { connect, useDispatch } from 'react-redux'

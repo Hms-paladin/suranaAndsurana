@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import './employeeFeedback.scss';
 import { Checkbox } from 'antd'
 import { notification } from "antd";

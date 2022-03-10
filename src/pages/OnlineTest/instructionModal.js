@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { Redirect, Link } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import './onlinetest.scss';

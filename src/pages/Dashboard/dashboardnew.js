@@ -14,7 +14,7 @@ import OPAdv from "../../images/dashboard/opadv.svg";
 import { Redirect, Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import DynModel from "../../component/Model/model";
 import AdhocTaskModal from "../Search/adhoctask"
 import { Calendar } from 'antd';

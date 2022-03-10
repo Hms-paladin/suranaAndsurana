@@ -6,7 +6,7 @@ import DynModelView from "./model";
 import DynModel from "../../component/Model/model";
 import { useDispatch, connect } from "react-redux";
 import { GetCandiateDetails } from "../../actions/interviewActions";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InsertInterviewquestions } from "../../actions/interviewActions";

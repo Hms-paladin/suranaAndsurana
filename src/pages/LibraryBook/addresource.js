@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import './LibraryBook.scss'
 import EnhancedTable from '../../component/DynTable/table'
 import { notification } from "antd";

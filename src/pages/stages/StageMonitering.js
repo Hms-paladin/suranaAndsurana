@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, connect } from "react-redux";
 import './StageMonitering.scss'
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import EnhancedTable from '../../component/DynTable/table';
-import Calender from "../../images/calender.svg";
 import Like from "../../images/like.svg";
 import Unlike from "../../images/unlike.svg";
 import More from "../../images/Check.svg";
@@ -134,7 +133,8 @@ const StageMonitor = (props) => {
 
         StageListData.push({
           stage: data.stage,
-          substage: data.sub_stage, compliancedate: data.compliance_date,
+          substage: data.sub_stage, 
+          compliancedate:  data.compliance_date && moment(data.compliance_date).format("DD-MMM-YYYY") || '-',
           actualdate: <div style={{ width: '70%' }}>
             <Labelbox type='datepicker' placeholder={'Actual Date'}
               changeData={(data) => checkValidation(data, 'compDate')}

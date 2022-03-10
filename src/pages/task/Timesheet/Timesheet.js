@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import Labelbox from '../../../helpers/labelbox/labelbox'
 import './Timesheet.scss'
-import CustomButton from '../../../component/Butttons/button';
+import CustomButton from '../../../component/Buttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import moment from 'moment';
 

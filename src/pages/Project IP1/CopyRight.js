@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
 import '../Project IP1/Patent/Patent.scss'
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { Upload, Button } from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';

@@ -1,6 +1,6 @@
 import react, { useEffect, useState } from "react";
 import './unblockUser.scss';
-import CustomButton from "../../../component/Butttons/button";
+import CustomButton from "../../../component/Buttons/button";
 import { Switch } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import {unblockUser } from "../../../actions/TodoListAction";

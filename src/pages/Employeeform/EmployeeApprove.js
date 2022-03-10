@@ -5,7 +5,7 @@ import { useDispatch, connect } from "react-redux";
 import { GetEmployeeApprove } from '../../actions/EmployeeApproveAction'
 import { apiurl } from '../../utils/baseUrl'
 import Axios from 'axios'
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import { notification } from 'antd'
 import { EmployeeApproveOrReject } from '../../actions/TodoListAction'
 import moment from 'moment';

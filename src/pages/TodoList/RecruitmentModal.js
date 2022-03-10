@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './RecruitmentModal.scss'
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, connect } from "react-redux";
 import { getRecruitmentTicket, updateTicketStatus } from '../../actions/TicketCreationAction';

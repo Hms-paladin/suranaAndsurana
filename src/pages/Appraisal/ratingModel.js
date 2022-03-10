@@ -2,7 +2,7 @@ import react, { useEffect, useState } from 'react';
 import './appraisal.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import PlusIcon from "../../images/plusIcon.svg";
 import { GetDevelopment } from '../../actions/MasterDropdowns';
 import { useDispatch, connect } from "react-redux";

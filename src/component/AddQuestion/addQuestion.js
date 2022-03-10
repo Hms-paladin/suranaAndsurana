@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CustomButton from "../Butttons/button";
+import CustomButton from "../Buttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import PlusIcon from "../../images/plusIcon.svg";

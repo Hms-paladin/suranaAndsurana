@@ -4,7 +4,7 @@ import { apiurl } from "../../utils/baseUrl";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { InsertClient } from "../../actions/AddClientAction"
 import { connect, useDispatch } from "react-redux";
 import "./addclient.scss";

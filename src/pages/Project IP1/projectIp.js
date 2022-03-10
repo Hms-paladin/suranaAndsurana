@@ -68,7 +68,7 @@ import PatentRevocationDef from './IPAB Patent/patent_revocationdef'
 // Variable Rate master  ==>
 import VariableRate from "../stages/RateMaster";
 
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import EnhancedTable from "../../component/DynTable/table";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SuccessIcon from "../../images/successicon.svg";

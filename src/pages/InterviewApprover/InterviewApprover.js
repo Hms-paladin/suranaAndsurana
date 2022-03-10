@@ -8,7 +8,7 @@ import { useDispatch, connect } from "react-redux";
 import { apiurl } from "../../utils/baseUrl";
 import SelectionIcon from "../../images/select.svg";
 import Axios from "axios";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Labelbox from "../../helpers/labelbox/labelbox";
 

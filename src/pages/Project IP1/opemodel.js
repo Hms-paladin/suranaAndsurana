@@ -6,7 +6,7 @@ import { Checkbox } from 'antd';
 import UploadIcon from '../../images/uploadIcon.svg';
 import { Upload, message, Button, Icon } from 'antd';
 import PublishIcon from '@material-ui/icons/Publish';
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { InesertResume } from "../../actions/ResumeAction";

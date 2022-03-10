@@ -45,7 +45,7 @@ import { useDispatch, connect } from "react-redux";
 import moment from "moment";
 import { useLocation, useParams } from "react-router-dom"
 import { getEmpListDepartment, getEmployeeList } from "../../actions/MasterDropdowns";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 
 const HtmlTooltip = withStyles((theme) => ({
     arrow: {

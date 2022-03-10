@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import EnhancedTable from '../../component/DynTable/table';
 import Edit from "../../images/editable.svg";
 import ValidationLibrary from "../../helpers/validationfunction";

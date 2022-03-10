@@ -7,7 +7,7 @@ import { useDispatch, connect } from "react-redux";
 import { apiurl } from '../../utils/baseUrl';
 import { GetInterviewers, GetInterviewersApprFinal } from "../../actions/GetInterviewersActions";
 import ValidationLibrary from '../../helpers/validationfunction';
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { InesertInterviewDetails } from "../../actions/InterviewDetailsAction";
 import { getInterviewApprover } from "../../actions/MasterDropdowns";
 import './search.scss'

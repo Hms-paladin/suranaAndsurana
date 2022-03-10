@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './generateinvoice.scss';
 import { Grid } from '@material-ui/core';
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import EnhancedTable from "../../component/DynTable/table";
 import { Checkbox } from 'antd';

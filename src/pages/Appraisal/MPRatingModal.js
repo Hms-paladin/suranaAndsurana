@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import EditIcon from "../../images/editable.svg";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import './appraisal.scss';
 function MPRating() {
     return (

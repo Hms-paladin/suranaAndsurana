@@ -3,7 +3,7 @@ import EnhancedTable from '../../component/DynTable/table';
 import { useDispatch, connect } from "react-redux";
 import { getClientDetails } from "../../actions/MasterDropdowns";
 import { getClientDetailsByName } from "../../actions/AddClientAction";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import Grid from '@material-ui/core/Grid';
 import './search.scss'
 import Edit from "../../images/editable.svg";

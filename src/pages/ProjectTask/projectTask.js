@@ -5,7 +5,7 @@ import { Radio } from 'antd';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { Button, Checkbox } from '@material-ui/core';
 import EnhancedTable from "../../component/DynTable/table";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import DynModel from '../../component/Model/model';
 import LabelBox from '../../helpers/labelbox/labelbox';
 import ValidationLibrary from "../../helpers/validationfunction";

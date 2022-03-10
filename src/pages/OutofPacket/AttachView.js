@@ -7,7 +7,7 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import File from '../../images/attachfile.png'
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import CustomButton from '../../component/Butttons/button'
+import CustomButton from '../../component/Buttons/button'
 function SampleNextArrow(props) {
     const { className, style, onClick } = props
     return (

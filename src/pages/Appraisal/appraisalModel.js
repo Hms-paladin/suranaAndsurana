@@ -3,7 +3,7 @@ import './appraisal.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
 import { PinDropSharp } from '@material-ui/icons';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 
 
 function AppraisalModel(props) {

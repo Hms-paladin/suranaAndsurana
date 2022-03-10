@@ -3,7 +3,7 @@ import { Upload, Button, message, notification } from 'antd';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
 import { Checkbox, Collapse } from 'antd';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import './OpeAdvance.scss'
 import { getProjectType, get_projectName_by_Desig } from '../../actions/MasterDropdowns'
 import { getExpenseType, getPaymentMode } from '../../actions/projectTaskAction'

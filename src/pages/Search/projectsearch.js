@@ -16,7 +16,7 @@ import {
 } from "../../actions/MasterDropdowns";
 import Axios from "axios";
 import { Collapse } from "antd";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { Redirect, Link } from "react-router-dom";
 import AdhocTaskModel from "./adhoctask";
 import DynModel from "../../component/Model/model";

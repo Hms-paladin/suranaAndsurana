@@ -2,7 +2,7 @@ import react, { useState, useEffect } from 'react';
 import './projectModel.scss';
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import Grid from '@material-ui/core/Grid';
-import CustomButton from '../../../component/Butttons/button';
+import CustomButton from '../../../component/Buttons/button';
 import { apiurl } from "../../../utils/baseUrl";
 import { connect, useDispatch } from "react-redux";
 import { getActivity, getPriorityList, getTagList, inserTask, getLocation } from "../../../actions/projectTaskAction";

@@ -2,7 +2,7 @@ import react, { useEffect, useState } from 'react';
 import './leaveupdate.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../helpers/labelbox/labelbox';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import { connect, useDispatch } from 'react-redux'
 import moment from "moment";
 import jsPDF from "jspdf";

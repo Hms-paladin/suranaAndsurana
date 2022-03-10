@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import react, { useState, useEffect } from 'react';
-import CustomButton from "../../../component/Butttons/button";
+import CustomButton from "../../../component/Buttons/button";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import EnhancedTable from '../../../component/DynTable/table';

@@ -5,7 +5,7 @@ import ApplicationPCT from './ApplicationPCT'
 import OppositionDefended from './OppositionDefended'
 import OppositionFilled from './OppositionFilled'
 import Grid from '@material-ui/core/Grid';
-import CustomButton from '../../../component/Butttons/button';
+import CustomButton from '../../../component/Buttons/button';
 import Tabs from '../../../component/TradeMarkTabIcons/trademarktabIcons';
 import Labelbox from "../../../helpers/labelbox/labelbox";
 import DynModel from '../../../component/Model/model';

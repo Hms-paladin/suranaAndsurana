@@ -10,7 +10,7 @@ import { useDispatch, connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import { searchRowdata } from "../../actions/ResumeSearchAction";
 import { getSkills, getTraits, getCertification, getAchievement, getSpecilization, getCapability, getTalents, getStatus, getQualification } from "../../actions/MasterDropdowns";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Eyes from "../../images/neweye.svg";
 import DynModelView from "../Interview/model";

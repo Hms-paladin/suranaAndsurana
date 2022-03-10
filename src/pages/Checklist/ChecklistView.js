@@ -10,7 +10,7 @@ import { Collapse } from "antd";
 import { Checkbox } from 'antd'
 import ValidationLibrary from "../../helpers/validationfunction";
 import Grid from '@material-ui/core/Grid';
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import { useParams } from "react-router-dom";
 import DynModel from '../../component/Model/model';
 

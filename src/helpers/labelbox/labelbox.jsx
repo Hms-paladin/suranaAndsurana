@@ -15,7 +15,7 @@ import TimerIcon from '../../images/timerIcon.svg';
 import Delete from '../../images/dashboard/delete.svg';
 import PublishIcon from '@material-ui/icons/Publish';
 import DynModel from "../../component/Model/model";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 
 export default class Labelbox extends Component {
 	constructor(props) {

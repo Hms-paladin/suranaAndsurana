@@ -6,7 +6,7 @@ import { InesertResume } from "../../../actions/ResumeAction";
 import { useDispatch, connect } from "react-redux";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import PublishIcon from '@material-ui/icons/Publish';
-import CustomButton from '../../../component/Butttons/button';
+import CustomButton from '../../../component/Buttons/button';
 import moment from 'moment'
 import {
     getTradeMarkStatus, getClassDetails, getPoaDetails, getCountryDetails, getTradeMark,

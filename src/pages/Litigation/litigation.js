@@ -6,7 +6,7 @@ import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import AddIcon from "../../images/addIcon.svg";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import DynModel from "../../component/Model/model";
 import AddDataModel from "./adddataModel";
 import {

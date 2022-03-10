@@ -3,7 +3,7 @@ import './TimeSheetTable.scss'
 import { Checkbox } from 'antd'
 import EnhancedTable from '../../../component/DynTable/table';
 import Labelbox from '../../../helpers/labelbox/labelbox';
-import CustomButton from '../../../component/Butttons/button';
+import CustomButton from '../../../component/Buttons/button';
 import edit from '../../../images/edit.svg'
 import DynModel from "../../../component/Model/model";
 import EditTimeSheet from '../Timesheet/Timesheet'

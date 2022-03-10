@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './timesheets.scss';
 import Grid from '@material-ui/core/Grid';
 import Labelbox from '../../../helpers/labelbox/labelbox';
-import CustomButton from '../../../component/Butttons/button';
+import CustomButton from '../../../component/Buttons/button';
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
 import { getActivity, getLocation } from "../../../actions/projectTaskAction";

@@ -8,7 +8,7 @@ import UserGroupModal from "./addusergroupmodal"
 import './usermanagement.scss';
 import { connect, useDispatch } from "react-redux";
 import { getGroupName, deleteGroupName } from "../../actions/UserGroupAction";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { notification } from "antd";
 
 

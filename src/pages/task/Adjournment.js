@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Labelbox from "../../helpers/labelbox/labelbox";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import './AddHearing.scss'
 import ValidationLibrary from "../../helpers/validationfunction";
 import { getAdjournTakenBy } from "../../actions/projectTaskAction";

@@ -9,7 +9,7 @@ import { connect, useDispatch } from "react-redux";
 import { apiurl } from "../../utils/baseUrl.js";
 import axios from "axios";
 import { getTaskList } from "../../actions/projectTaskAction";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 function TaskStatus(props) {
     const dispatch = useDispatch();
     function valuetext(value) {

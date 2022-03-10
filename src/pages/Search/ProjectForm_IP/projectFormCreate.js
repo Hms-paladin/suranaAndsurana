@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./projectFormcreate.scss";
 import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../../helpers/labelbox/labelbox";
-import CustomButton from "../../../component/Butttons/button";
+import CustomButton from "../../../component/Buttons/button";
 import Axios from "axios";
 import ValidationLibrary from "../../../helpers/validationfunction";
 import { apiurl } from "../../../utils/baseUrl";

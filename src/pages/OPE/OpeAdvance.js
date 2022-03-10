@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Input, Icon } from 'antd';
 import './OpeAdvance.scss'
 import Dollar from '../../images/dollar.svg'
-import CustomButton from '../../component/Butttons/button'
+import CustomButton from '../../component/Buttons/button'
 import Divider from '@material-ui/core/Divider';
 import { useDispatch, connect } from "react-redux";
 import { GetOpeAdvance, InsertOpeAdvance } from '../../actions/OutofPacketActions'

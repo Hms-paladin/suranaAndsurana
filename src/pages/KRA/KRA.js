@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Labelbox from "../../helpers/labelbox/labelbox";
-import CustomButton from '../../component/Butttons/button';
+import CustomButton from '../../component/Buttons/button';
 import { useDispatch, connect } from "react-redux";
 import EnhancedTable from "../../component/DynTable/table";
 import ValidationLibrary from "../../helpers/validationfunction";

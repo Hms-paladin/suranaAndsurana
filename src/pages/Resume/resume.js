@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import ValidationLibrary from "../../helpers/validationfunction";
 import { useDispatch, connect } from "react-redux";
-import CustomButton from "../../component/Butttons/button";
+import CustomButton from "../../component/Buttons/button";
 import { InesertResume, UpdateResume } from "../../actions/ResumeAction";
 import EducationModel from "./educationModel";
 import ExperienceModel from "./experienceModel";
