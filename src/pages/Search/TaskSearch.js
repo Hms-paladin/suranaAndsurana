@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 
 import React, { useState, useEffect } from 'react';
 // import './search.s/css';
@@ -10,14 +11,10 @@ import Percentage from "../../images/percentage.png";
 import Grid from '@material-ui/core/Grid';
 import Order from "../../images/order.png";
 import Clock from "../../images/clock.png";
-import Arrow from "../../images/arrow.svg";
-import Star from "../../images/star.png";
 import Tick from "../../images/tick.png";
 import H_icon from "../../images/H_icon.svg";
 import M_icon from "../../images/Medium_priority.svg";
 import L_icon from "../../images/Low_priority.svg";
-import Delete from "../../images/delete.png";
-import Plus from "../../images/plus.png";
 import Reassign from "../../images/Reassign.svg";
 import Labelbox from "../../helpers/labelbox/labelbox";
 import TablePagination from '@material-ui/core/TablePagination';
@@ -25,16 +22,13 @@ import Blue from "../../images/blue_round.png";
 import Light from "../../images/light_round.png";
 import Orange from "../../images/orange_round.png";
 import Red from "../../images/red_round.png";
-import { apiurl } from "../../utils/baseUrl.js";
-import axios from "axios";
 //TimeSheet Start && Stop  ==>
 import DynModel from '../../component/Model/model';
-import TimesheetStart from '../Search/TimeSheets/timesheetStart';
 import TimeSheetView from '../Search/TimeSheets/timesheetview';
 import TaskPriority from '../Search/task_priority'
 import TaskTag from '../Search/tasktag'
 import TaskStatus from '../Search/taskstatus'
-import { getTaskList, getTaskWeekMonth, insert_reassign_task_assignee } from "../../actions/projectTaskAction";
+import { getTaskList, insert_reassign_task_assignee } from "../../actions/projectTaskAction";
 import ValidationLibrary from "../../helpers/validationfunction";
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
@@ -43,7 +37,7 @@ import Timesheetmodel from '../../pages/Project IP1/TimesheetModel/Timesheetmode
 import AddHearing from '../task/AddHearing';
 import { useDispatch, connect } from "react-redux";
 import moment from "moment";
-import { useLocation, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { getEmpListDepartment, getEmployeeList } from "../../actions/MasterDropdowns";
 import CustomButton from '../../component/Buttons/button';
 

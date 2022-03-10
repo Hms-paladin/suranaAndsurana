@@ -56,7 +56,7 @@ import ProjectIp1 from "../../pages/Project IP1/projectIp";
 import Employeeform from "../../pages/Employeeform/employeeform.js";
 import SearchProject from "../../pages/Search/search";
 import Stages from "../../pages/stages/stageicon";
-import Task from "../../pages/task/Task";
+// import Task from "../../pages/task/Task";
 import AddClient from "../../pages/AddClient/addclient";
 import GenerateInvoice from "../../pages/Generateinvoice/generateinvoice";
 import StagesMaster from "../../pages/stages/StagesMaster";
@@ -924,7 +924,6 @@ function Navbar(props) {
           component={TaskSearch}
           exact
         />
-        <Route path={`${props.match.path}/task`} component={Task} exact />
         <Route
           path={`${props.match.path}/addclient`}
           component={AddClient}

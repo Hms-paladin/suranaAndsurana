@@ -1,4 +1,7 @@
 
 //Hearing Actiivity
-export const HEARING_ACTIVITY = "Hearing";
-export const HEARING_ACTIVITY_ID = 6;
+const PROJECT_IDS = {
+    hearingId: 6,
+    hearingActivity: "Hearing"
+}
+export { PROJECT_IDS };

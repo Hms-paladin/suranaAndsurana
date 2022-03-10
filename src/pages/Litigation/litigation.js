@@ -209,12 +209,14 @@ const Litigation = (props) => {
       props.getLitigationDetails &&
       props.getLitigationDetails[0] &&
       props.getLitigationDetails[0].case[0];
+    
     if (
       props.getLitigationDetails &&
       props.getLitigationDetails[0] &&
-      props.getLitigationDetails[0].case[0] &&
-      props.getLitigationDetails[0].case[0].length > 0
+      props.getLitigationDetails[0].case[0] 
+      // props.getLitigationDetails[0].case[0].length > 0
     ) {
+      console.log(caseDetails,'caseDetails')
       const strArr = [];
       const string = caseDetails.responsible_attorney;
       strArr.push(string.split(","));
@@ -273,6 +275,7 @@ const Litigation = (props) => {
 
     //________________________________
   }, [props.getLitigationDetails]);
+
 
   useEffect(() => {
     //hod/attony, Counsel ,DRA and DDRA
@@ -356,6 +359,7 @@ const Litigation = (props) => {
 
     ResumeFrom_key.map((data) => {
       Litigation_Form[data].value = "";
+      Litigation_Form[data].disabled = false;
     });
     setLitigationForm((prevState) => ({
       ...prevState,
