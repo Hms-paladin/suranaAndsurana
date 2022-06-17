@@ -1,14 +1,11 @@
 
-import { INSERT_GROUPACCESS, GET_GROUPNAME,GET_GROUPPERMISION } from "../utils/Constants";
+import { INSERT_GROUPACCESS, GET_GROUPPERMISION } from "../utils/Constants";
 import { apiurl } from "../utils/baseUrl.js";
 import axios from "axios";
 import { notification } from 'antd'
-import moment from 'moment'
-
 
 export const GetGroupPermision = () => async dispatch => {
     
-
         try {
             axios({
                 method: "POST",
@@ -19,9 +16,6 @@ export const GetGroupPermision = () => async dispatch => {
             }).then((response) => {
                 if (response.data.status === 1) {
                     dispatch({ type: GET_GROUPPERMISION, payload: true })
-                    /*notification.success({
-                        message: " inserted Successfully",
-                    });*/
                     return Promise.resolve();
                 }
             });

@@ -112,21 +112,13 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
 }
 
 export const getDayReport_TimeSheet = (data) => async dispatch => {
-    // let dataObj = {}
-    // if (data.emp_name?.value) {
-    //     dataObj["emp_id"] = data?.emp_name?.value
-    // }
-    // if (data.curr_date?.value) {
-    //     dataObj["cur_date"] = data?.curr_date?.value
-    // }
-
     try {
         axios({
             method: 'POST',
             url: apiurl + 'get_day_report',
             data: {
                 "dates": data.dates.value,
-                "status": Number(data.day_report_type.value) === 1 ? 0 : 1,
+                "beginEnd": data.day_report_type.value,
             }
         })
             .then((response) => {

@@ -112,7 +112,6 @@ function DayReport(props) {
         };
 
         // Get the size of an object
-        var size = Object.size(dayReportSearch);
         if (dayReportSearch) {
             dispatch(getDayReport_TimeSheet(dayReportSearch))
         }

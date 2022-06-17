@@ -75,6 +75,7 @@ const SignInSide = (props) => {
     const { setAuthTokens } = useAuth();
     const history = useHistory();
     const handleSubmit = event => {
+        console.log(axios,'axios')
         event.preventDefault()
 
         if (email === "") {

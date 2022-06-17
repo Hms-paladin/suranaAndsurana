@@ -21,7 +21,7 @@ function App() {
 
   return ( 
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-      <Router basename="suranaAndsurana/?/">
+      <Router basename="/SuranaAndSurana">
         <Switch>
           <Route path="/" component={Login} exact />
           <Route path="/Home" component={Navbar} />

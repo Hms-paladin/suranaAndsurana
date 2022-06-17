@@ -24,7 +24,7 @@
     "jspdf-autotable": "^3.5.14",
     "materialui-pagination": "0.0.6",
     "moment": "^2.29.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^6.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",

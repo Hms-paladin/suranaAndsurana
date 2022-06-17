@@ -49,7 +49,6 @@ export const InesertResume = (Resume_Form, educationList, experienceList) => asy
       }
     })
       .then(function (response) {
-        // moment(Resume_Form.startDate).format("YYYY-MM-DD, hh:mm:ss")
         if (response.data.status === 1) {
           notification.success({
             message: 'Resume Added Successfully',
