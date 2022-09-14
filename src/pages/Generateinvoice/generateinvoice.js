@@ -58,8 +58,6 @@ function GenerateInvoice(props) {
     }
   });
 
-
-
   useEffect(() => {
     dispatch(getClientlist());
   }, []);

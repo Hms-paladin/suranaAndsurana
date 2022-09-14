@@ -9,7 +9,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { TimePicker } from 'antd';
-import { DatePicker, Select } from 'antd';
+import { DatePicker, Select, AutoComplete } from 'antd';
 import SelectionIcon from '../../images/select.svg';
 import TimerIcon from '../../images/timerIcon.svg';
 import Delete from '../../images/dashboard/delete.svg';
@@ -85,6 +85,32 @@ export default class Labelbox extends Component {
 							onChange={(e) => this.props.changeData && this.props.changeData(e.target.value)}
 							onBlur={(e) => this.props.SubmitData && this.props.SubmitData(e.target.value)}
 							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden} />
+						{
+							<div className="Errormsg">
+								<div>{data.error && data.errmsg}</div>
+							</div>
+						}
+					</div>
+				</div>
+
+			)
+		} if (data.type === 'autoComplete') {
+
+			const { Option } = AutoComplete;
+
+			return (
+				<div className="">
+					<label className="labeltxt">{data.labelname}</label>
+					<div>
+						<AutoComplete className={`${data.error && "brdred"} brdrcls formdiv`} value={this.props.value} maxLength={this.props.maxlength} type="text"
+							onSearch={(value) => this.props.changeData && this.props.changeData(value)}
+							onBlur={(value) => this.props.SubmitData && this.props.SubmitData(value)}
+							placeholder={this.props.placeholder} disabled={this.props.disabled} hidden={this.props.hidden} >
+							{data?.dropdown?.map((data, index) => (
+								<Option key={index} value={data.client}>
+									{data.client}
+								</Option>
+							))}</AutoComplete>
 						{
 							<div className="Errormsg">
 								<div>{data.error && data.errmsg}</div>

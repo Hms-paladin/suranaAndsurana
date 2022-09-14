@@ -17,6 +17,7 @@ function AddClient(props) {
   const [clientName, setClientName] = useState({});
   const [fileupload, setFileupload] = useState([]);
   const [stateList, setstateList] = useState({});
+  const [clientNameDropDown, setClientNameDropDown] = useState([]);
   const [cityList, setcityList] = useState({});
   const [Industry, setIndustry] = useState({});
   const [selectedFile, setselectedFile] = useState([]);
@@ -84,7 +85,6 @@ function AddClient(props) {
       errmsg: null,
     },
     cont_per_2: {
-
       value: "",
       valueById: "",
       validation: [{ name: "custommaxLength", params: "50" }, { name: "alphaspecialwithwhitespace" }],
@@ -270,28 +270,29 @@ function AddClient(props) {
     // (end)
 
     if (key === "client_name" && data) {
-
-
       Axios({
         method: "POST",
-        url: apiurl + "get_client_name_check",
+        url: apiurl + "get_client_name_search",
         data: {
           "client_name": data,
         },
       }).then((response) => {
-        if (response.data.status === 0) {
-          let dynObj = {
-            value: data,
-            error: true,
-            errmsg: "Client Name Already Exits",
-            validation: Addclient_Form[key].validation,
-          };
+        if (response.data.status === 1) {
+          setClientNameDropDown(response.data.data)
+          // let dynObj = {
+          //   value: data,
+          //   error: true,
+          //   errmsg: "Client Name Already Exits",
+          //   validation: Addclient_Form[key].validation,
+          // };
 
-          setAddclient_Form((prevState) => ({
-            ...prevState,
-            ['client_name']: dynObj,
-          }));
+          // setAddclient_Form((prevState) => ({
+          //   ...prevState,
+          //   ['client_name']: dynObj,
+          // }));
           return Promise.resolve();
+        } else {
+          setClientNameDropDown([])
         }
 
       });
@@ -471,7 +472,7 @@ function AddClient(props) {
       }));
     }
   }, [props.EditClientData])
-
+  console.log(clientNameDropDown, 'clientNameDropDown')
   return (
     <div>
       <div
@@ -486,11 +487,12 @@ function AddClient(props) {
               <Grid item xs={12}>
                 <div className="AddClientHead">Client Name</div>
                 <Labelbox
-                  type="text"
+                  type="autoComplete"
                   changeData={(data) => checkValidation(data, "client_name")}
                   value={Addclient_Form.client_name.value}
                   error={Addclient_Form.client_name.error}
                   errmsg={Addclient_Form.client_name.errmsg}
+                  dropdown={clientNameDropDown}
                 />
               </Grid>
 

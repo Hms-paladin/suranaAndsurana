@@ -83,10 +83,10 @@ export const getProjectWise_TimeSheet = (data) => async dispatch => {
     if (data.to_date.value) {
         dataObj["end_date"] = data.to_date.value
     }
-    if (data.submit_date.value) {
-        dataObj["start_date"] = data.submit_date.value
-        dataObj["end_date"] = data.submit_date.value
-    }
+    // if (data.submit_date.value) {
+    dataObj["start_date"] = data.submit_date.value || ""
+    dataObj["end_date"] = data.submit_date.value || ""
+    // }
     try {
         await axios({
             method: 'POST',

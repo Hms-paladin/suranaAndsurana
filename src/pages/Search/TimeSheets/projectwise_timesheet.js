@@ -59,7 +59,7 @@ function ProjectwiseTS(props) {
         },
         all_checkbox: false,
     })
-  
+
     function checkValidation(data, key) {
         if (key === "project_type") {
             dispatch(getProjectSubType(data))
@@ -203,7 +203,6 @@ function ProjectwiseTS(props) {
     }
 
     const onEdit = (data) => {
-
         setTimesheetModelOpen(true)
         setOnEditData([data, projectSearch])
     }
